@@ -130,12 +130,14 @@ public sealed record class BetaPackages : JsonModel
     /// <summary>
     /// Package configuration type
     /// </summary>
-    public ApiEnum<string, BetaPackagesType>? Type
+    public ApiEnum<string, global::Anthropic.Models.Beta.Environments.Type>? Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, BetaPackagesType>>("type");
+            return this._rawData.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Beta.Environments.Type>
+            >("type");
         }
         init
         {
@@ -199,15 +201,15 @@ class BetaPackagesFromRaw : IFromRawJson<BetaPackages>
 /// <summary>
 /// Package configuration type
 /// </summary>
-[JsonConverter(typeof(BetaPackagesTypeConverter))]
-public enum BetaPackagesType
+[JsonConverter(typeof(TypeConverter))]
+public enum Type
 {
     Packages,
 }
 
-sealed class BetaPackagesTypeConverter : JsonConverter<BetaPackagesType>
+sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Environments.Type>
 {
-    public override BetaPackagesType Read(
+    public override global::Anthropic.Models.Beta.Environments.Type Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -215,14 +217,14 @@ sealed class BetaPackagesTypeConverter : JsonConverter<BetaPackagesType>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "packages" => BetaPackagesType.Packages,
-            _ => (BetaPackagesType)(-1),
+            "packages" => global::Anthropic.Models.Beta.Environments.Type.Packages,
+            _ => (global::Anthropic.Models.Beta.Environments.Type)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaPackagesType value,
+        global::Anthropic.Models.Beta.Environments.Type value,
         JsonSerializerOptions options
     )
     {
@@ -230,7 +232,7 @@ sealed class BetaPackagesTypeConverter : JsonConverter<BetaPackagesType>
             writer,
             value switch
             {
-                BetaPackagesType.Packages => "packages",
+                global::Anthropic.Models.Beta.Environments.Type.Packages => "packages",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

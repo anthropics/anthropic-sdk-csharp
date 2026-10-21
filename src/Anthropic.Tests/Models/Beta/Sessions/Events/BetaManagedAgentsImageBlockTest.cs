@@ -12,26 +12,18 @@ public class BetaManagedAgentsImageBlockTest : TestBase
     {
         var model = new BetaManagedAgentsImageBlock
         {
-            Source = new BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = BetaManagedAgentsImageBlockType.Image,
+            Source = new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" },
         };
 
         BetaManagedAgentsImageBlockSource expectedSource = new BetaManagedAgentsBase64ImageSource()
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
-        ApiEnum<string, BetaManagedAgentsImageBlockType> expectedType =
-            BetaManagedAgentsImageBlockType.Image;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
 
         Assert.Equal(expectedSource, model.Source);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -39,13 +31,7 @@ public class BetaManagedAgentsImageBlockTest : TestBase
     {
         var model = new BetaManagedAgentsImageBlock
         {
-            Source = new BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = BetaManagedAgentsImageBlockType.Image,
+            Source = new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,13 +48,7 @@ public class BetaManagedAgentsImageBlockTest : TestBase
     {
         var model = new BetaManagedAgentsImageBlock
         {
-            Source = new BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = BetaManagedAgentsImageBlockType.Image,
+            Source = new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -82,13 +62,11 @@ public class BetaManagedAgentsImageBlockTest : TestBase
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
-        ApiEnum<string, BetaManagedAgentsImageBlockType> expectedType =
-            BetaManagedAgentsImageBlockType.Image;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("image");
 
         Assert.Equal(expectedSource, deserialized.Source);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -96,13 +74,7 @@ public class BetaManagedAgentsImageBlockTest : TestBase
     {
         var model = new BetaManagedAgentsImageBlock
         {
-            Source = new BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = BetaManagedAgentsImageBlockType.Image,
+            Source = new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" },
         };
 
         model.Validate();
@@ -113,13 +85,7 @@ public class BetaManagedAgentsImageBlockTest : TestBase
     {
         var model = new BetaManagedAgentsImageBlock
         {
-            Source = new BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = BetaManagedAgentsImageBlockType.Image,
+            Source = new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" },
         };
 
         BetaManagedAgentsImageBlock copied = new(model);
@@ -137,7 +103,6 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         value.Validate();
     }
@@ -145,22 +110,14 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsUrlImageValidationWorks()
     {
-        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource()
-        {
-            Type = BetaManagedAgentsUrlImageSourceType.Url,
-            Url = "x",
-        };
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsFileImageValidationWorks()
     {
-        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource()
-        {
-            FileID = "x",
-            Type = BetaManagedAgentsFileImageSourceType.File,
-        };
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource("x");
         value.Validate();
     }
 
@@ -171,7 +128,6 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64ImageSourceType.Base64,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsImageBlockSource>(
@@ -185,11 +141,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsUrlImageSerializationRoundtripWorks()
     {
-        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource()
-        {
-            Type = BetaManagedAgentsUrlImageSourceType.Url,
-            Url = "x",
-        };
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsImageBlockSource>(
             element,
@@ -202,11 +154,7 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileImageSerializationRoundtripWorks()
     {
-        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource()
-        {
-            FileID = "x",
-            Type = BetaManagedAgentsFileImageSourceType.File,
-        };
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsImageBlockSource>(
             element,
@@ -215,41 +163,95 @@ public class BetaManagedAgentsImageBlockSourceTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsBase64ImageTypeWorks()
+    {
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsBase64ImageSource()
+        {
+            Data = "x",
+            MediaType = "x",
+        };
+        Assert.Equal(BetaManagedAgentsImageBlockSourceType.Base64, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUrlImageTypeWorks()
+    {
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsUrlImageSource("x");
+        Assert.Equal(BetaManagedAgentsImageBlockSourceType.Url, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsFileImageTypeWorks()
+    {
+        BetaManagedAgentsImageBlockSource value = new BetaManagedAgentsFileImageSource("x");
+        Assert.Equal(BetaManagedAgentsImageBlockSourceType.File, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsImageBlockSource value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "base64"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsImageBlockSourceType> expectedType =
+            BetaManagedAgentsImageBlockSourceType.Base64;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsImageBlockSource emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsImageBlockTypeTest : TestBase
+public class BetaManagedAgentsImageBlockSourceTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsImageBlockType.Image)]
-    public void Validation_Works(BetaManagedAgentsImageBlockType rawValue)
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Base64)]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Url)]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.File)]
+    public void Validation_Works(BetaManagedAgentsImageBlockSourceType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsImageBlockType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsImageBlockSourceType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsImageBlockType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsImageBlockType.Image)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsImageBlockType rawValue)
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Base64)]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Url)]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.File)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsImageBlockSourceType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsImageBlockType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsImageBlockSourceType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsImageBlockType>
+            ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -258,13 +260,12 @@ public class BetaManagedAgentsImageBlockTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsImageBlockType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsImageBlockType>
+            ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

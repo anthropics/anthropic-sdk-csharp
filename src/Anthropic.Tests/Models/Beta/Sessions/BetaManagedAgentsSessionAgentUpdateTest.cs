@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 
@@ -18,7 +19,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -26,24 +26,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -54,7 +49,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
@@ -62,24 +56,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
         [
             new BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ];
@@ -108,7 +97,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -116,24 +104,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -158,7 +141,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -166,24 +148,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -201,7 +178,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
@@ -209,24 +185,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
         [
             new BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ];
@@ -255,7 +226,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -263,24 +233,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -334,7 +299,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -342,24 +306,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -399,7 +358,6 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -407,24 +365,19 @@ public class BetaManagedAgentsSessionAgentUpdateTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -444,24 +397,19 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
         BetaManagedAgentsSessionAgentUpdateTool value =
             new BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             };
         value.Validate();
@@ -473,24 +421,19 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
         BetaManagedAgentsSessionAgentUpdateTool value = new BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         value.Validate();
@@ -511,7 +454,6 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = BetaManagedAgentsCustomToolParamsType.Custom,
         };
         value.Validate();
     }
@@ -522,24 +464,19 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
         BetaManagedAgentsSessionAgentUpdateTool value =
             new BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -557,24 +494,19 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
         BetaManagedAgentsSessionAgentUpdateTool value = new BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -601,13 +533,164 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = BetaManagedAgentsCustomToolParamsType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionAgentUpdateTool>(
             element,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentToolset20260401ParamsTypeWorks()
+    {
+        BetaManagedAgentsSessionAgentUpdateTool value =
+            new BetaManagedAgentsAgentToolset20260401Params()
+            {
+                Configs =
+                [
+                    new BetaManagedAgentsBashToolConfigParams()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Type.Bash,
+                    },
+                ],
+                DefaultConfig = new()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            };
+        Assert.Equal(
+            BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpToolsetParamsTypeWorks()
+    {
+        BetaManagedAgentsSessionAgentUpdateTool value = new BetaManagedAgentsMcpToolsetParams()
+        {
+            McpServerName = "x",
+            Configs =
+            [
+                new()
+                {
+                    Name = "x",
+                    Enabled = true,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(BetaManagedAgentsSessionAgentUpdateToolType.McpToolset, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomToolParamsTypeWorks()
+    {
+        BetaManagedAgentsSessionAgentUpdateTool value = new BetaManagedAgentsCustomToolParams()
+        {
+            Description = "x",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["string"],
+            },
+            Name = "x",
+        };
+        Assert.Equal(BetaManagedAgentsSessionAgentUpdateToolType.Custom, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsSessionAgentUpdateTool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent_toolset_20260401"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType> expectedType =
+            BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsSessionAgentUpdateTool emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsSessionAgentUpdateToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401)]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.McpToolset)]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.Custom)]
+    public void Validation_Works(BetaManagedAgentsSessionAgentUpdateToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401)]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.McpToolset)]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.Custom)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionAgentUpdateToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

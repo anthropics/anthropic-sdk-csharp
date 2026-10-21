@@ -634,7 +634,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
+                Messages = [new UserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
@@ -663,7 +663,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
+                Messages = [new UserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
@@ -689,10 +689,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Beta.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
-                ],
+                Messages = [new BetaUserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
@@ -721,10 +718,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Beta.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
-                ],
+                Messages = [new BetaUserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
@@ -759,7 +753,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "", Role = Anthropic.Models.Messages.Role.User }],
+                Messages = [new UserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken
@@ -805,10 +799,7 @@ public class StructuredOutputTest
             new Anthropic.Models.Beta.Messages.MessageCreateParams
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new() { Content = "", Role = Anthropic.Models.Beta.Messages.Role.User },
-                ],
+                Messages = [new BetaUserMessageParam { Content = "" }],
                 Model = Model.ClaudeSonnet4_5,
             },
             TestContext.Current.CancellationToken

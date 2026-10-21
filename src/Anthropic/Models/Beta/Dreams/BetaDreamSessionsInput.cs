@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -41,14 +40,12 @@ public sealed record class BetaDreamSessionsInput : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaDreamSessionsInputType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaDreamSessionsInputType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -57,10 +54,16 @@ public sealed record class BetaDreamSessionsInput : JsonModel
     public override void Validate()
     {
         _ = this.SessionIds;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("sessions")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaDreamSessionsInput() { }
+    public BetaDreamSessionsInput()
+    {
+        this.Type = JsonSerializer.SerializeToElement("sessions");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -71,6 +74,8 @@ public sealed record class BetaDreamSessionsInput : JsonModel
     public BetaDreamSessionsInput(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("sessions");
     }
 
 #pragma warning disable CS8618
@@ -88,6 +93,13 @@ public sealed record class BetaDreamSessionsInput : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaDreamSessionsInput(IReadOnlyList<string> sessionIds)
+        : this()
+    {
+        this.SessionIds = sessionIds;
+    }
 }
 
 class BetaDreamSessionsInputFromRaw : IFromRawJson<BetaDreamSessionsInput>
@@ -96,45 +108,4 @@ class BetaDreamSessionsInputFromRaw : IFromRawJson<BetaDreamSessionsInput>
     public BetaDreamSessionsInput FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaDreamSessionsInput.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaDreamSessionsInputTypeConverter))]
-public enum BetaDreamSessionsInputType
-{
-    Sessions,
-}
-
-sealed class BetaDreamSessionsInputTypeConverter : JsonConverter<BetaDreamSessionsInputType>
-{
-    public override BetaDreamSessionsInputType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "sessions" => BetaDreamSessionsInputType.Sessions,
-            _ => (BetaDreamSessionsInputType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaDreamSessionsInputType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaDreamSessionsInputType.Sessions => "sessions",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

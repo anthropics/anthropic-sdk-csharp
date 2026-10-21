@@ -13,11 +13,8 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
             SecretName = "secret_name",
-            Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
         BetaManagedAgentsInjectionLocationResponse expectedInjectionLocation = new()
@@ -26,17 +23,14 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
             Header = true,
         };
         Networking expectedNetworking =
-            new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            );
+            new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse();
         string expectedSecretName = "secret_name";
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> expectedType =
-            BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
 
         Assert.Equal(expectedInjectionLocation, model.InjectionLocation);
         Assert.Equal(expectedNetworking, model.Networking);
         Assert.Equal(expectedSecretName, model.SecretName);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -45,11 +39,8 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
             SecretName = "secret_name",
-            Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -68,11 +59,8 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
             SecretName = "secret_name",
-            Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -89,17 +77,14 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
             Header = true,
         };
         Networking expectedNetworking =
-            new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            );
+            new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse();
         string expectedSecretName = "secret_name";
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> expectedType =
-            BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
 
         Assert.Equal(expectedInjectionLocation, deserialized.InjectionLocation);
         Assert.Equal(expectedNetworking, deserialized.Networking);
         Assert.Equal(expectedSecretName, deserialized.SecretName);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -108,11 +93,8 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
             SecretName = "secret_name",
-            Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
         model.Validate();
@@ -124,11 +106,8 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableAuthResponse
         {
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
             SecretName = "secret_name",
-            Type = BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
         };
 
         BetaManagedAgentsEnvironmentVariableAuthResponse copied = new(model);
@@ -142,29 +121,21 @@ public class NetworkingTest : TestBase
     [Fact]
     public void BetaManagedAgentsUnrestrictedCredentialNetworkingResponseValidationWorks()
     {
-        Networking value = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-            BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-        );
+        Networking value = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsLimitedCredentialNetworkingResponseValidationWorks()
     {
-        Networking value = new BetaManagedAgentsLimitedCredentialNetworkingResponse()
-        {
-            AllowedHosts = ["string"],
-            Type = BetaManagedAgentsLimitedCredentialNetworkingResponseType.Limited,
-        };
+        Networking value = new BetaManagedAgentsLimitedCredentialNetworkingResponse(["string"]);
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsUnrestrictedCredentialNetworkingResponseSerializationRoundtripWorks()
     {
-        Networking value = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-            BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-        );
+        Networking value = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Networking>(
             element,
@@ -177,11 +148,7 @@ public class NetworkingTest : TestBase
     [Fact]
     public void BetaManagedAgentsLimitedCredentialNetworkingResponseSerializationRoundtripWorks()
     {
-        Networking value = new BetaManagedAgentsLimitedCredentialNetworkingResponse()
-        {
-            AllowedHosts = ["string"],
-            Type = BetaManagedAgentsLimitedCredentialNetworkingResponseType.Limited,
-        };
+        Networking value = new BetaManagedAgentsLimitedCredentialNetworkingResponse(["string"]);
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Networking>(
             element,
@@ -190,43 +157,82 @@ public class NetworkingTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsUnrestrictedCredentialNetworkingResponseTypeWorks()
+    {
+        Networking value = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse();
+        Assert.Equal(NetworkingType.Unrestricted, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsLimitedCredentialNetworkingResponseTypeWorks()
+    {
+        Networking value = new BetaManagedAgentsLimitedCredentialNetworkingResponse(["string"]);
+        Assert.Equal(NetworkingType.Limited, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Networking value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "unrestricted"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, NetworkingType> expectedType = NetworkingType.Unrestricted;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Networking emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsEnvironmentVariableAuthResponseTypeTest : TestBase
+public class NetworkingTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable)]
-    public void Validation_Works(BetaManagedAgentsEnvironmentVariableAuthResponseType rawValue)
+    [InlineData(NetworkingType.Unrestricted)]
+    [InlineData(NetworkingType.Limited)]
+    public void Validation_Works(NetworkingType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> value = rawValue;
+        ApiEnum<string, NetworkingType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsEnvironmentVariableAuthResponseType rawValue
-    )
+    [InlineData(NetworkingType.Unrestricted)]
+    [InlineData(NetworkingType.Limited)]
+    public void SerializationRoundtrip_Works(NetworkingType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> value = rawValue;
+        ApiEnum<string, NetworkingType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -234,13 +240,15 @@ public class BetaManagedAgentsEnvironmentVariableAuthResponseTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

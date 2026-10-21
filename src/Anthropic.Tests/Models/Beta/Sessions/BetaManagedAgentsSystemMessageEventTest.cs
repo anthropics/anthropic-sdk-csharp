@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
@@ -15,29 +14,16 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
         string expectedID = "id";
         List<BetaManagedAgentsSystemContentBlock> expectedContent =
         [
-            new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsSystemContentBlockType.Text,
-            },
+            new("Where is my order #1234?"),
         ];
-        ApiEnum<string, BetaManagedAgentsSystemMessageEventType> expectedType =
-            BetaManagedAgentsSystemMessageEventType.SystemMessage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("system.message");
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
         Assert.Equal(expectedID, model.ID);
@@ -46,7 +32,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         {
             Assert.Equal(expectedContent[i], model.Content[i]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
     }
 
@@ -56,15 +42,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -83,15 +61,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -105,14 +75,9 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         string expectedID = "id";
         List<BetaManagedAgentsSystemContentBlock> expectedContent =
         [
-            new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsSystemContentBlockType.Text,
-            },
+            new("Where is my order #1234?"),
         ];
-        ApiEnum<string, BetaManagedAgentsSystemMessageEventType> expectedType =
-            BetaManagedAgentsSystemMessageEventType.SystemMessage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("system.message");
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -121,7 +86,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         {
             Assert.Equal(expectedContent[i], deserialized.Content[i]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
     }
 
@@ -131,15 +96,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -152,15 +109,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
         };
 
         Assert.Null(model.ProcessedAt);
@@ -173,15 +122,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
         };
 
         model.Validate();
@@ -193,15 +134,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
 
             ProcessedAt = null,
         };
@@ -216,15 +149,7 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
 
             ProcessedAt = null,
         };
@@ -238,72 +163,12 @@ public class BetaManagedAgentsSystemMessageEventTest : TestBase
         var model = new BetaManagedAgentsSystemMessageEvent
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
         BetaManagedAgentsSystemMessageEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSystemMessageEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSystemMessageEventType.SystemMessage)]
-    public void Validation_Works(BetaManagedAgentsSystemMessageEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSystemMessageEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSystemMessageEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSystemMessageEventType.SystemMessage)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSystemMessageEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSystemMessageEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSystemMessageEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSystemMessageEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSystemMessageEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

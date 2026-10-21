@@ -164,6 +164,66 @@ public class BetaRawContentBlockDeltaTest : TestBase
     }
 
     [Fact]
+    public void TextTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaTextDelta("text");
+        Assert.Equal(BetaRawContentBlockDeltaType.TextDelta, value.Type.Value());
+    }
+
+    [Fact]
+    public void InputJsonTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaInputJsonDelta("partial_json");
+        Assert.Equal(BetaRawContentBlockDeltaType.InputJsonDelta, value.Type.Value());
+    }
+
+    [Fact]
+    public void CitationsTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaCitationsDelta(
+            new BetaCitationCharLocation()
+            {
+                CitedText = "The grass is green. The sky is blue.",
+                DocumentIndex = 0,
+                DocumentTitle = "My Document",
+                EndCharIndex = 0,
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                StartCharIndex = 0,
+            }
+        );
+        Assert.Equal(BetaRawContentBlockDeltaType.CitationsDelta, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThinkingTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaThinkingDelta()
+        {
+            EstimatedTokens = 0,
+            Thinking = "thinking",
+        };
+        Assert.Equal(BetaRawContentBlockDeltaType.ThinkingDelta, value.Type.Value());
+    }
+
+    [Fact]
+    public void SignatureTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaSignatureDelta("signature");
+        Assert.Equal(BetaRawContentBlockDeltaType.SignatureDelta, value.Type.Value());
+    }
+
+    [Fact]
+    public void CompactionTypeWorks()
+    {
+        BetaRawContentBlockDelta value = new BetaCompactionContentBlockDelta()
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+        };
+        Assert.Equal(BetaRawContentBlockDeltaType.CompactionDelta, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaRawContentBlockDelta value = new(
@@ -177,12 +237,77 @@ public class BetaRawContentBlockDeltaTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("text_delta");
+        ApiEnum<string, BetaRawContentBlockDeltaType> expectedType =
+            BetaRawContentBlockDeltaType.TextDelta;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaRawContentBlockDelta emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaRawContentBlockDeltaTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaRawContentBlockDeltaType.TextDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.InputJsonDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.CitationsDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.ThinkingDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.SignatureDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.CompactionDelta)]
+    public void Validation_Works(BetaRawContentBlockDeltaType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaRawContentBlockDeltaType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaRawContentBlockDeltaType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaRawContentBlockDeltaType.TextDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.InputJsonDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.CitationsDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.ThinkingDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.SignatureDelta)]
+    [InlineData(BetaRawContentBlockDeltaType.CompactionDelta)]
+    public void SerializationRoundtrip_Works(BetaRawContentBlockDeltaType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaRawContentBlockDeltaType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRawContentBlockDeltaType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaRawContentBlockDeltaType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRawContentBlockDeltaType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

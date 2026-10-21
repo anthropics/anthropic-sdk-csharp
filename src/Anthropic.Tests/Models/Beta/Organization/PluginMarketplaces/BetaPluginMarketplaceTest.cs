@@ -279,6 +279,20 @@ public class OwnerTest : TestBase
     }
 
     [Fact]
+    public void BetaPluginOwnerOrganizationTypeWorks()
+    {
+        Owner value = new Plugins::BetaPluginOwnerOrganization();
+        Assert.Equal(OwnerTypeValue.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginOwnerUserTypeWorks()
+    {
+        Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Assert.Equal(OwnerTypeValue.User, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Owner value = new(
@@ -292,13 +306,71 @@ public class OwnerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+        ApiEnum<string, OwnerTypeValue> expectedType = OwnerTypeValue.Organization;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Owner emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class OwnerTypeValueTest : TestBase
+{
+    [Theory]
+    [InlineData(OwnerTypeValue.Organization)]
+    [InlineData(OwnerTypeValue.User)]
+    public void Validation_Works(OwnerTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, OwnerTypeValue> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, OwnerTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(OwnerTypeValue.Organization)]
+    [InlineData(OwnerTypeValue.User)]
+    public void SerializationRoundtrip_Works(OwnerTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, OwnerTypeValue> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OwnerTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, OwnerTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OwnerTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

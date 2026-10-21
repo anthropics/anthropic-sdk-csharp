@@ -29,17 +29,20 @@ public record class ToolChoice : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ToolChoiceType> Type
     {
         get
         {
             return this.Value switch
             {
-                ToolChoiceAuto x => x.Type,
-                ToolChoiceAny x => x.Type,
-                ToolChoiceTool x => x.Type,
-                ToolChoiceNone x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                ToolChoiceAuto _ => ToolChoiceType.Auto,
+                ToolChoiceAny _ => ToolChoiceType.Any,
+                ToolChoiceTool _ => ToolChoiceType.Tool,
+                ToolChoiceNone _ => ToolChoiceType.None,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ToolChoiceType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -431,5 +434,55 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolChoiceTypeConverter))]
+public enum ToolChoiceType
+{
+    Auto,
+    Any,
+    Tool,
+    None,
+}
+
+sealed class ToolChoiceTypeConverter : JsonConverter<ToolChoiceType>
+{
+    public override ToolChoiceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "auto" => ToolChoiceType.Auto,
+            "any" => ToolChoiceType.Any,
+            "tool" => ToolChoiceType.Tool,
+            "none" => ToolChoiceType.None,
+            _ => (ToolChoiceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolChoiceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolChoiceType.Auto => "auto",
+                ToolChoiceType.Any => "any",
+                ToolChoiceType.Tool => "tool",
+                ToolChoiceType.None => "none",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -407,6 +407,65 @@ public class IterationTest : TestBase
     }
 
     [Fact]
+    public void BetaMessageIterationUsageTypeWorks()
+    {
+        Iteration value = new BetaMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeHaiku5_5,
+            OutputTokens = 0,
+        };
+        Assert.Equal(IterationType.Message, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCompactionIterationUsageTypeWorks()
+    {
+        Iteration value = new BetaCompactionIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            OutputTokens = 0,
+        };
+        Assert.Equal(IterationType.Compaction, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaAdvisorMessageIterationUsageTypeWorks()
+    {
+        Iteration value = new BetaAdvisorMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeHaiku5_5,
+            OutputTokens = 0,
+        };
+        Assert.Equal(IterationType.AdvisorMessage, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaFallbackMessageIterationUsageTypeWorks()
+    {
+        Iteration value = new BetaFallbackMessageIterationUsage()
+        {
+            CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
+            CacheCreationInputTokens = 0,
+            CacheReadInputTokens = 0,
+            InputTokens = 0,
+            Model = Model.ClaudeHaiku5_5,
+            OutputTokens = 0,
+        };
+        Assert.Equal(IterationType.FallbackMessage, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Iteration value = new(
@@ -439,7 +498,7 @@ public class IterationTest : TestBase
         long expectedInputTokens = 0;
         ApiEnum<string, Model> expectedModel = Model.ClaudeHaiku5_5;
         long expectedOutputTokens = 0;
-        JsonElement expectedType = JsonSerializer.SerializeToElement("message");
+        ApiEnum<string, IterationType> expectedType = IterationType.Message;
 
         Assert.Equal(expectedCacheCreation, value.CacheCreation);
         Assert.Equal(expectedCacheCreationInputTokens, value.CacheCreationInputTokens);
@@ -447,7 +506,7 @@ public class IterationTest : TestBase
         Assert.Equal(expectedInputTokens, value.InputTokens);
         Assert.Equal(expectedModel, value.Model);
         Assert.Equal(expectedOutputTokens, value.OutputTokens);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Iteration emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -490,5 +549,67 @@ public class IterationTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.CacheReadInputTokens);
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.InputTokens);
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.OutputTokens);
+    }
+}
+
+public class IterationTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(IterationType.Message)]
+    [InlineData(IterationType.Compaction)]
+    [InlineData(IterationType.AdvisorMessage)]
+    [InlineData(IterationType.FallbackMessage)]
+    public void Validation_Works(IterationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, IterationType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, IterationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(IterationType.Message)]
+    [InlineData(IterationType.Compaction)]
+    [InlineData(IterationType.AdvisorMessage)]
+    [InlineData(IterationType.FallbackMessage)]
+    public void SerializationRoundtrip_Works(IterationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, IterationType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IterationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, IterationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IterationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,8 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -39,12 +39,12 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     /// Snapshot of the agent at fire time. Always fully resolved — deployments pin
     /// agent + version.
     /// </summary>
-    public required BetaManagedAgentsAgentReference Agent
+    public required Agents::BetaManagedAgentsAgentReference Agent
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaManagedAgentsAgentReference>("agent");
+            return this._rawData.GetNotNullClass<Agents::BetaManagedAgentsAgentReference>("agent");
         }
         init { this._rawData.Set("agent", value); }
     }
@@ -52,12 +52,12 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     /// <summary>
     /// Time this run record was persisted.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -118,14 +118,12 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
         init { this._rawData.Set("trigger_context", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeploymentRunType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeploymentRunType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -140,10 +138,16 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
         this.Error?.Validate();
         _ = this.SessionID;
         this.TriggerContext.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("deployment_run")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsDeploymentRun() { }
+    public BetaManagedAgentsDeploymentRun()
+    {
+        this.Type = JsonSerializer.SerializeToElement("deployment_run");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -156,6 +160,8 @@ public sealed record class BetaManagedAgentsDeploymentRun : JsonModel
     public BetaManagedAgentsDeploymentRun(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("deployment_run");
     }
 
 #pragma warning disable CS8618
@@ -228,6 +234,43 @@ public record class Error : ModelBase
                 BetaManagedAgentsSelfHostedResourcesUnsupportedRunError x => x.Message,
                 BetaManagedAgentsMcpEgressBlockedRunError x => x.Message,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
+            };
+        }
+    }
+
+    public ApiEnum<string, ErrorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsEnvironmentArchivedRunError _ =>
+                    ErrorType.EnvironmentArchivedError,
+                BetaManagedAgentsAgentArchivedRunError _ => ErrorType.AgentArchivedError,
+                BetaManagedAgentsEnvironmentNotFoundRunError _ =>
+                    ErrorType.EnvironmentNotFoundError,
+                BetaManagedAgentsVaultNotFoundRunError _ => ErrorType.VaultNotFoundError,
+                BetaManagedAgentsVaultArchivedRunError _ => ErrorType.VaultArchivedError,
+                BetaManagedAgentsFileNotFoundRunError _ => ErrorType.FileNotFoundError,
+                BetaManagedAgentsMemoryStoreArchivedRunError _ =>
+                    ErrorType.MemoryStoreArchivedError,
+                BetaManagedAgentsSkillNotFoundRunError _ => ErrorType.SkillNotFoundError,
+                BetaManagedAgentsSessionResourceNotFoundRunError _ =>
+                    ErrorType.SessionResourceNotFoundError,
+                BetaManagedAgentsWorkspaceArchivedRunError _ => ErrorType.WorkspaceArchivedError,
+                BetaManagedAgentsOrganizationDisabledRunError _ =>
+                    ErrorType.OrganizationDisabledError,
+                BetaManagedAgentsSessionRateLimitedRunError _ => ErrorType.SessionRateLimitedError,
+                BetaManagedAgentsSessionCreationRejectedRunError _ =>
+                    ErrorType.SessionCreationRejectedError,
+                BetaManagedAgentsUnknownRunError _ => ErrorType.UnknownError,
+                BetaManagedAgentsSelfHostedResourcesUnsupportedRunError _ =>
+                    ErrorType.SelfHostedResourcesUnsupportedError,
+                BetaManagedAgentsMcpEgressBlockedRunError _ => ErrorType.McpEgressBlockedError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ErrorType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -745,22 +788,22 @@ public record class Error : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsEnvironmentArchivedRunError> betaManagedAgentsEnvironmentArchivedRun,
-        System::Action<BetaManagedAgentsAgentArchivedRunError> betaManagedAgentsAgentArchivedRun,
-        System::Action<BetaManagedAgentsEnvironmentNotFoundRunError> betaManagedAgentsEnvironmentNotFoundRun,
-        System::Action<BetaManagedAgentsVaultNotFoundRunError> betaManagedAgentsVaultNotFoundRun,
-        System::Action<BetaManagedAgentsVaultArchivedRunError> betaManagedAgentsVaultArchivedRun,
-        System::Action<BetaManagedAgentsFileNotFoundRunError> betaManagedAgentsFileNotFoundRun,
-        System::Action<BetaManagedAgentsMemoryStoreArchivedRunError> betaManagedAgentsMemoryStoreArchivedRun,
-        System::Action<BetaManagedAgentsSkillNotFoundRunError> betaManagedAgentsSkillNotFoundRun,
-        System::Action<BetaManagedAgentsSessionResourceNotFoundRunError> betaManagedAgentsSessionResourceNotFoundRun,
-        System::Action<BetaManagedAgentsWorkspaceArchivedRunError> betaManagedAgentsWorkspaceArchivedRun,
-        System::Action<BetaManagedAgentsOrganizationDisabledRunError> betaManagedAgentsOrganizationDisabledRun,
-        System::Action<BetaManagedAgentsSessionRateLimitedRunError> betaManagedAgentsSessionRateLimitedRun,
-        System::Action<BetaManagedAgentsSessionCreationRejectedRunError> betaManagedAgentsSessionCreationRejectedRun,
-        System::Action<BetaManagedAgentsUnknownRunError> betaManagedAgentsUnknownRun,
-        System::Action<BetaManagedAgentsSelfHostedResourcesUnsupportedRunError> betaManagedAgentsSelfHostedResourcesUnsupportedRun,
-        System::Action<BetaManagedAgentsMcpEgressBlockedRunError> betaManagedAgentsMcpEgressBlockedRun
+        Action<BetaManagedAgentsEnvironmentArchivedRunError> betaManagedAgentsEnvironmentArchivedRun,
+        Action<BetaManagedAgentsAgentArchivedRunError> betaManagedAgentsAgentArchivedRun,
+        Action<BetaManagedAgentsEnvironmentNotFoundRunError> betaManagedAgentsEnvironmentNotFoundRun,
+        Action<BetaManagedAgentsVaultNotFoundRunError> betaManagedAgentsVaultNotFoundRun,
+        Action<BetaManagedAgentsVaultArchivedRunError> betaManagedAgentsVaultArchivedRun,
+        Action<BetaManagedAgentsFileNotFoundRunError> betaManagedAgentsFileNotFoundRun,
+        Action<BetaManagedAgentsMemoryStoreArchivedRunError> betaManagedAgentsMemoryStoreArchivedRun,
+        Action<BetaManagedAgentsSkillNotFoundRunError> betaManagedAgentsSkillNotFoundRun,
+        Action<BetaManagedAgentsSessionResourceNotFoundRunError> betaManagedAgentsSessionResourceNotFoundRun,
+        Action<BetaManagedAgentsWorkspaceArchivedRunError> betaManagedAgentsWorkspaceArchivedRun,
+        Action<BetaManagedAgentsOrganizationDisabledRunError> betaManagedAgentsOrganizationDisabledRun,
+        Action<BetaManagedAgentsSessionRateLimitedRunError> betaManagedAgentsSessionRateLimitedRun,
+        Action<BetaManagedAgentsSessionCreationRejectedRunError> betaManagedAgentsSessionCreationRejectedRun,
+        Action<BetaManagedAgentsUnknownRunError> betaManagedAgentsUnknownRun,
+        Action<BetaManagedAgentsSelfHostedResourcesUnsupportedRunError> betaManagedAgentsSelfHostedResourcesUnsupportedRun,
+        Action<BetaManagedAgentsMcpEgressBlockedRunError> betaManagedAgentsMcpEgressBlockedRun
     )
     {
         switch (this.Value)
@@ -854,52 +897,43 @@ public record class Error : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsEnvironmentArchivedRunError,
             T
         > betaManagedAgentsEnvironmentArchivedRun,
-        System::Func<BetaManagedAgentsAgentArchivedRunError, T> betaManagedAgentsAgentArchivedRun,
-        System::Func<
+        Func<BetaManagedAgentsAgentArchivedRunError, T> betaManagedAgentsAgentArchivedRun,
+        Func<
             BetaManagedAgentsEnvironmentNotFoundRunError,
             T
         > betaManagedAgentsEnvironmentNotFoundRun,
-        System::Func<BetaManagedAgentsVaultNotFoundRunError, T> betaManagedAgentsVaultNotFoundRun,
-        System::Func<BetaManagedAgentsVaultArchivedRunError, T> betaManagedAgentsVaultArchivedRun,
-        System::Func<BetaManagedAgentsFileNotFoundRunError, T> betaManagedAgentsFileNotFoundRun,
-        System::Func<
+        Func<BetaManagedAgentsVaultNotFoundRunError, T> betaManagedAgentsVaultNotFoundRun,
+        Func<BetaManagedAgentsVaultArchivedRunError, T> betaManagedAgentsVaultArchivedRun,
+        Func<BetaManagedAgentsFileNotFoundRunError, T> betaManagedAgentsFileNotFoundRun,
+        Func<
             BetaManagedAgentsMemoryStoreArchivedRunError,
             T
         > betaManagedAgentsMemoryStoreArchivedRun,
-        System::Func<BetaManagedAgentsSkillNotFoundRunError, T> betaManagedAgentsSkillNotFoundRun,
-        System::Func<
+        Func<BetaManagedAgentsSkillNotFoundRunError, T> betaManagedAgentsSkillNotFoundRun,
+        Func<
             BetaManagedAgentsSessionResourceNotFoundRunError,
             T
         > betaManagedAgentsSessionResourceNotFoundRun,
-        System::Func<
-            BetaManagedAgentsWorkspaceArchivedRunError,
-            T
-        > betaManagedAgentsWorkspaceArchivedRun,
-        System::Func<
+        Func<BetaManagedAgentsWorkspaceArchivedRunError, T> betaManagedAgentsWorkspaceArchivedRun,
+        Func<
             BetaManagedAgentsOrganizationDisabledRunError,
             T
         > betaManagedAgentsOrganizationDisabledRun,
-        System::Func<
-            BetaManagedAgentsSessionRateLimitedRunError,
-            T
-        > betaManagedAgentsSessionRateLimitedRun,
-        System::Func<
+        Func<BetaManagedAgentsSessionRateLimitedRunError, T> betaManagedAgentsSessionRateLimitedRun,
+        Func<
             BetaManagedAgentsSessionCreationRejectedRunError,
             T
         > betaManagedAgentsSessionCreationRejectedRun,
-        System::Func<BetaManagedAgentsUnknownRunError, T> betaManagedAgentsUnknownRun,
-        System::Func<
+        Func<BetaManagedAgentsUnknownRunError, T> betaManagedAgentsUnknownRun,
+        Func<
             BetaManagedAgentsSelfHostedResourcesUnsupportedRunError,
             T
         > betaManagedAgentsSelfHostedResourcesUnsupportedRun,
-        System::Func<
-            BetaManagedAgentsMcpEgressBlockedRunError,
-            T
-        > betaManagedAgentsMcpEgressBlockedRun
+        Func<BetaManagedAgentsMcpEgressBlockedRunError, T> betaManagedAgentsMcpEgressBlockedRun
     )
     {
         return this.Value switch
@@ -1082,7 +1116,7 @@ sealed class ErrorConverter : JsonConverter<Error?>
 {
     public override Error? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1447,31 +1481,61 @@ sealed class ErrorConverter : JsonConverter<Error?>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsDeploymentRunTypeConverter))]
-public enum BetaManagedAgentsDeploymentRunType
+[JsonConverter(typeof(ErrorTypeConverter))]
+public enum ErrorType
 {
-    DeploymentRun,
+    EnvironmentArchivedError,
+    AgentArchivedError,
+    EnvironmentNotFoundError,
+    VaultNotFoundError,
+    VaultArchivedError,
+    FileNotFoundError,
+    MemoryStoreArchivedError,
+    SkillNotFoundError,
+    SessionResourceNotFoundError,
+    WorkspaceArchivedError,
+    OrganizationDisabledError,
+    SessionRateLimitedError,
+    SessionCreationRejectedError,
+    UnknownError,
+    SelfHostedResourcesUnsupportedError,
+    McpEgressBlockedError,
 }
 
-sealed class BetaManagedAgentsDeploymentRunTypeConverter
-    : JsonConverter<BetaManagedAgentsDeploymentRunType>
+sealed class ErrorTypeConverter : JsonConverter<ErrorType>
 {
-    public override BetaManagedAgentsDeploymentRunType Read(
+    public override ErrorType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "deployment_run" => BetaManagedAgentsDeploymentRunType.DeploymentRun,
-            _ => (BetaManagedAgentsDeploymentRunType)(-1),
+            "environment_archived_error" => ErrorType.EnvironmentArchivedError,
+            "agent_archived_error" => ErrorType.AgentArchivedError,
+            "environment_not_found_error" => ErrorType.EnvironmentNotFoundError,
+            "vault_not_found_error" => ErrorType.VaultNotFoundError,
+            "vault_archived_error" => ErrorType.VaultArchivedError,
+            "file_not_found_error" => ErrorType.FileNotFoundError,
+            "memory_store_archived_error" => ErrorType.MemoryStoreArchivedError,
+            "skill_not_found_error" => ErrorType.SkillNotFoundError,
+            "session_resource_not_found_error" => ErrorType.SessionResourceNotFoundError,
+            "workspace_archived_error" => ErrorType.WorkspaceArchivedError,
+            "organization_disabled_error" => ErrorType.OrganizationDisabledError,
+            "session_rate_limited_error" => ErrorType.SessionRateLimitedError,
+            "session_creation_rejected_error" => ErrorType.SessionCreationRejectedError,
+            "unknown_error" => ErrorType.UnknownError,
+            "self_hosted_resources_unsupported_error" =>
+                ErrorType.SelfHostedResourcesUnsupportedError,
+            "mcp_egress_blocked_error" => ErrorType.McpEgressBlockedError,
+            _ => (ErrorType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsDeploymentRunType value,
+        ErrorType value,
         JsonSerializerOptions options
     )
     {
@@ -1479,7 +1543,23 @@ sealed class BetaManagedAgentsDeploymentRunTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsDeploymentRunType.DeploymentRun => "deployment_run",
+                ErrorType.EnvironmentArchivedError => "environment_archived_error",
+                ErrorType.AgentArchivedError => "agent_archived_error",
+                ErrorType.EnvironmentNotFoundError => "environment_not_found_error",
+                ErrorType.VaultNotFoundError => "vault_not_found_error",
+                ErrorType.VaultArchivedError => "vault_archived_error",
+                ErrorType.FileNotFoundError => "file_not_found_error",
+                ErrorType.MemoryStoreArchivedError => "memory_store_archived_error",
+                ErrorType.SkillNotFoundError => "skill_not_found_error",
+                ErrorType.SessionResourceNotFoundError => "session_resource_not_found_error",
+                ErrorType.WorkspaceArchivedError => "workspace_archived_error",
+                ErrorType.OrganizationDisabledError => "organization_disabled_error",
+                ErrorType.SessionRateLimitedError => "session_rate_limited_error",
+                ErrorType.SessionCreationRejectedError => "session_creation_rejected_error",
+                ErrorType.UnknownError => "unknown_error",
+                ErrorType.SelfHostedResourcesUnsupportedError =>
+                    "self_hosted_resources_unsupported_error",
+                ErrorType.McpEgressBlockedError => "mcp_egress_blocked_error",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

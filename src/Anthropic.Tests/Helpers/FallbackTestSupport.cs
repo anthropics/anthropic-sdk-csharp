@@ -269,7 +269,8 @@ static class FallbackTestSupport
 
     /// <summary>
     /// Captures everything the action writes to <see cref="Console.Error"/>. Tests using this
-    /// must share the "console stderr" xunit collection so they don't race on the global writer.
+    /// must share the "console stderr" xunit collection, or be in one that disables
+    /// parallelization, so they don't race on the global writer.
     /// </summary>
     public static async Task<string> CaptureStderr(Func<Task> action)
     {

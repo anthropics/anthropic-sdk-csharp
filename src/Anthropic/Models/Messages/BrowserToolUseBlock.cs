@@ -112,44 +112,46 @@ public record class BrowserToolUseBlock : ModelBase
         }
     }
 
-    public JsonElement Name
+    public ApiEnum<string, BrowserToolUseBlockName> Name
     {
         get
         {
             return this.Value switch
             {
-                BrowserNavigateToolUseBlock x => x.Name,
-                BrowserListTabsToolUseBlock x => x.Name,
-                BrowserNewTabToolUseBlock x => x.Name,
-                BrowserSwitchTabToolUseBlock x => x.Name,
-                BrowserCloseTabToolUseBlock x => x.Name,
-                BrowserReadPageToolUseBlock x => x.Name,
-                BrowserGetPageTextToolUseBlock x => x.Name,
-                BrowserReadConsoleToolUseBlock x => x.Name,
-                BrowserReadNetworkToolUseBlock x => x.Name,
-                BrowserFindToolUseBlock x => x.Name,
-                BrowserFormInputToolUseBlock x => x.Name,
-                BrowserFileUploadToolUseBlock x => x.Name,
-                BrowserScrollToToolUseBlock x => x.Name,
-                BrowserScreenshotToolUseBlock x => x.Name,
-                BrowserZoomToolUseBlock x => x.Name,
-                BrowserLeftClickToolUseBlock x => x.Name,
-                BrowserRightClickToolUseBlock x => x.Name,
-                BrowserMiddleClickToolUseBlock x => x.Name,
-                BrowserDoubleClickToolUseBlock x => x.Name,
-                BrowserTripleClickToolUseBlock x => x.Name,
-                BrowserHoverToolUseBlock x => x.Name,
-                BrowserLeftClickDragToolUseBlock x => x.Name,
-                BrowserLeftMouseDownToolUseBlock x => x.Name,
-                BrowserLeftMouseUpToolUseBlock x => x.Name,
-                BrowserMouseMoveToolUseBlock x => x.Name,
-                BrowserScrollToolUseBlock x => x.Name,
-                BrowserTypeToolUseBlock x => x.Name,
-                BrowserKeyToolUseBlock x => x.Name,
-                BrowserHoldKeyToolUseBlock x => x.Name,
-                BrowserWaitToolUseBlock x => x.Name,
-                BrowserJavascriptExecToolUseBlock x => x.Name,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "name"),
+                BrowserNavigateToolUseBlock _ => BrowserToolUseBlockName.Navigate,
+                BrowserListTabsToolUseBlock _ => BrowserToolUseBlockName.ListTabs,
+                BrowserNewTabToolUseBlock _ => BrowserToolUseBlockName.NewTab,
+                BrowserSwitchTabToolUseBlock _ => BrowserToolUseBlockName.SwitchTab,
+                BrowserCloseTabToolUseBlock _ => BrowserToolUseBlockName.CloseTab,
+                BrowserReadPageToolUseBlock _ => BrowserToolUseBlockName.ReadPage,
+                BrowserGetPageTextToolUseBlock _ => BrowserToolUseBlockName.GetPageText,
+                BrowserReadConsoleToolUseBlock _ => BrowserToolUseBlockName.ReadConsole,
+                BrowserReadNetworkToolUseBlock _ => BrowserToolUseBlockName.ReadNetwork,
+                BrowserFindToolUseBlock _ => BrowserToolUseBlockName.Find,
+                BrowserFormInputToolUseBlock _ => BrowserToolUseBlockName.FormInput,
+                BrowserFileUploadToolUseBlock _ => BrowserToolUseBlockName.FileUpload,
+                BrowserScrollToToolUseBlock _ => BrowserToolUseBlockName.ScrollTo,
+                BrowserScreenshotToolUseBlock _ => BrowserToolUseBlockName.Screenshot,
+                BrowserZoomToolUseBlock _ => BrowserToolUseBlockName.Zoom,
+                BrowserLeftClickToolUseBlock _ => BrowserToolUseBlockName.LeftClick,
+                BrowserRightClickToolUseBlock _ => BrowserToolUseBlockName.RightClick,
+                BrowserMiddleClickToolUseBlock _ => BrowserToolUseBlockName.MiddleClick,
+                BrowserDoubleClickToolUseBlock _ => BrowserToolUseBlockName.DoubleClick,
+                BrowserTripleClickToolUseBlock _ => BrowserToolUseBlockName.TripleClick,
+                BrowserHoverToolUseBlock _ => BrowserToolUseBlockName.Hover,
+                BrowserLeftClickDragToolUseBlock _ => BrowserToolUseBlockName.LeftClickDrag,
+                BrowserLeftMouseDownToolUseBlock _ => BrowserToolUseBlockName.LeftMouseDown,
+                BrowserLeftMouseUpToolUseBlock _ => BrowserToolUseBlockName.LeftMouseUp,
+                BrowserMouseMoveToolUseBlock _ => BrowserToolUseBlockName.MouseMove,
+                BrowserScrollToolUseBlock _ => BrowserToolUseBlockName.Scroll,
+                BrowserTypeToolUseBlock _ => BrowserToolUseBlockName.Type,
+                BrowserKeyToolUseBlock _ => BrowserToolUseBlockName.Key,
+                BrowserHoldKeyToolUseBlock _ => BrowserToolUseBlockName.HoldKey,
+                BrowserWaitToolUseBlock _ => BrowserToolUseBlockName.Wait,
+                BrowserJavascriptExecToolUseBlock _ => BrowserToolUseBlockName.JavascriptExec,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BrowserToolUseBlockName>
+                >(this.Json, "name"),
             };
         }
     }
@@ -2254,5 +2256,136 @@ sealed class BrowserToolUseBlockConverter : JsonConverter<BrowserToolUseBlock>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BrowserToolUseBlockNameConverter))]
+public enum BrowserToolUseBlockName
+{
+    Navigate,
+    ListTabs,
+    NewTab,
+    SwitchTab,
+    CloseTab,
+    ReadPage,
+    GetPageText,
+    ReadConsole,
+    ReadNetwork,
+    Find,
+    FormInput,
+    FileUpload,
+    ScrollTo,
+    Screenshot,
+    Zoom,
+    LeftClick,
+    RightClick,
+    MiddleClick,
+    DoubleClick,
+    TripleClick,
+    Hover,
+    LeftClickDrag,
+    LeftMouseDown,
+    LeftMouseUp,
+    MouseMove,
+    Scroll,
+    Type,
+    Key,
+    HoldKey,
+    Wait,
+    JavascriptExec,
+}
+
+sealed class BrowserToolUseBlockNameConverter : JsonConverter<BrowserToolUseBlockName>
+{
+    public override BrowserToolUseBlockName Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "navigate" => BrowserToolUseBlockName.Navigate,
+            "list_tabs" => BrowserToolUseBlockName.ListTabs,
+            "new_tab" => BrowserToolUseBlockName.NewTab,
+            "switch_tab" => BrowserToolUseBlockName.SwitchTab,
+            "close_tab" => BrowserToolUseBlockName.CloseTab,
+            "read_page" => BrowserToolUseBlockName.ReadPage,
+            "get_page_text" => BrowserToolUseBlockName.GetPageText,
+            "read_console" => BrowserToolUseBlockName.ReadConsole,
+            "read_network" => BrowserToolUseBlockName.ReadNetwork,
+            "find" => BrowserToolUseBlockName.Find,
+            "form_input" => BrowserToolUseBlockName.FormInput,
+            "file_upload" => BrowserToolUseBlockName.FileUpload,
+            "scroll_to" => BrowserToolUseBlockName.ScrollTo,
+            "screenshot" => BrowserToolUseBlockName.Screenshot,
+            "zoom" => BrowserToolUseBlockName.Zoom,
+            "left_click" => BrowserToolUseBlockName.LeftClick,
+            "right_click" => BrowserToolUseBlockName.RightClick,
+            "middle_click" => BrowserToolUseBlockName.MiddleClick,
+            "double_click" => BrowserToolUseBlockName.DoubleClick,
+            "triple_click" => BrowserToolUseBlockName.TripleClick,
+            "hover" => BrowserToolUseBlockName.Hover,
+            "left_click_drag" => BrowserToolUseBlockName.LeftClickDrag,
+            "left_mouse_down" => BrowserToolUseBlockName.LeftMouseDown,
+            "left_mouse_up" => BrowserToolUseBlockName.LeftMouseUp,
+            "mouse_move" => BrowserToolUseBlockName.MouseMove,
+            "scroll" => BrowserToolUseBlockName.Scroll,
+            "type" => BrowserToolUseBlockName.Type,
+            "key" => BrowserToolUseBlockName.Key,
+            "hold_key" => BrowserToolUseBlockName.HoldKey,
+            "wait" => BrowserToolUseBlockName.Wait,
+            "javascript_exec" => BrowserToolUseBlockName.JavascriptExec,
+            _ => (BrowserToolUseBlockName)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BrowserToolUseBlockName value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BrowserToolUseBlockName.Navigate => "navigate",
+                BrowserToolUseBlockName.ListTabs => "list_tabs",
+                BrowserToolUseBlockName.NewTab => "new_tab",
+                BrowserToolUseBlockName.SwitchTab => "switch_tab",
+                BrowserToolUseBlockName.CloseTab => "close_tab",
+                BrowserToolUseBlockName.ReadPage => "read_page",
+                BrowserToolUseBlockName.GetPageText => "get_page_text",
+                BrowserToolUseBlockName.ReadConsole => "read_console",
+                BrowserToolUseBlockName.ReadNetwork => "read_network",
+                BrowserToolUseBlockName.Find => "find",
+                BrowserToolUseBlockName.FormInput => "form_input",
+                BrowserToolUseBlockName.FileUpload => "file_upload",
+                BrowserToolUseBlockName.ScrollTo => "scroll_to",
+                BrowserToolUseBlockName.Screenshot => "screenshot",
+                BrowserToolUseBlockName.Zoom => "zoom",
+                BrowserToolUseBlockName.LeftClick => "left_click",
+                BrowserToolUseBlockName.RightClick => "right_click",
+                BrowserToolUseBlockName.MiddleClick => "middle_click",
+                BrowserToolUseBlockName.DoubleClick => "double_click",
+                BrowserToolUseBlockName.TripleClick => "triple_click",
+                BrowserToolUseBlockName.Hover => "hover",
+                BrowserToolUseBlockName.LeftClickDrag => "left_click_drag",
+                BrowserToolUseBlockName.LeftMouseDown => "left_mouse_down",
+                BrowserToolUseBlockName.LeftMouseUp => "left_mouse_up",
+                BrowserToolUseBlockName.MouseMove => "mouse_move",
+                BrowserToolUseBlockName.Scroll => "scroll",
+                BrowserToolUseBlockName.Type => "type",
+                BrowserToolUseBlockName.Key => "key",
+                BrowserToolUseBlockName.HoldKey => "hold_key",
+                BrowserToolUseBlockName.Wait => "wait",
+                BrowserToolUseBlockName.JavascriptExec => "javascript_exec",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

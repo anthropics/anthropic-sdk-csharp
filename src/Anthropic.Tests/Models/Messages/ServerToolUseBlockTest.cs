@@ -201,6 +201,27 @@ public class CallerTest : TestBase
     }
 
     [Fact]
+    public void DirectTypeWorks()
+    {
+        Caller value = new DirectCaller();
+        Assert.Equal(CallerType.Direct, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolTypeWorks()
+    {
+        Caller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(CallerType.CodeExecution20250825, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolCaller20260120TypeWorks()
+    {
+        Caller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(CallerType.CodeExecution20260120, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Caller value = new(
@@ -215,10 +236,10 @@ public class CallerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        ApiEnum<string, CallerType> expectedType = CallerType.Direct;
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
 
         Caller emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -239,6 +260,66 @@ public class CallerTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ToolID);
+    }
+}
+
+public class CallerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CallerType.Direct)]
+    [InlineData(CallerType.CodeExecution20250825)]
+    [InlineData(CallerType.CodeExecution20260120)]
+    public void Validation_Works(CallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CallerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CallerType.Direct)]
+    [InlineData(CallerType.CodeExecution20250825)]
+    [InlineData(CallerType.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(CallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CallerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CallerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CallerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

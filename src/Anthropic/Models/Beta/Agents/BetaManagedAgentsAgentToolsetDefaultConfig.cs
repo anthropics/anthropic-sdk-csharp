@@ -114,6 +114,22 @@ public record class PermissionPolicy : ModelBase
         }
     }
 
+    public ApiEnum<string, PermissionPolicyType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAlwaysAllowPolicy _ => PermissionPolicyType.AlwaysAllow,
+                BetaManagedAgentsAlwaysAskPolicy _ => PermissionPolicyType.AlwaysAsk,
+                BetaManagedAgentsAutoPolicy _ => PermissionPolicyType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, PermissionPolicyType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public PermissionPolicy(BetaManagedAgentsAlwaysAllowPolicy value, JsonElement? element = null)
     {
         this.Value = value;
@@ -448,5 +464,52 @@ sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(PermissionPolicyTypeConverter))]
+public enum PermissionPolicyType
+{
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
+}
+
+sealed class PermissionPolicyTypeConverter : JsonConverter<PermissionPolicyType>
+{
+    public override PermissionPolicyType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "always_allow" => PermissionPolicyType.AlwaysAllow,
+            "always_ask" => PermissionPolicyType.AlwaysAsk,
+            "auto" => PermissionPolicyType.Auto,
+            _ => (PermissionPolicyType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        PermissionPolicyType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                PermissionPolicyType.AlwaysAllow => "always_allow",
+                PermissionPolicyType.AlwaysAsk => "always_ask",
+                PermissionPolicyType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

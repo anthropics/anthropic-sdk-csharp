@@ -4,8 +4,8 @@
     <Authors>Anthropic</Authors>
     <Company>Anthropic</Company>
     <PackageTags>sdk;api;http;library</PackageTags>
-    <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <Copyright>Copyright 2026 Anthropic</Copyright>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <Copyright>Copyright 2023 Anthropic, PBC.</Copyright>
     <PackageProjectUrl>https://docs.anthropic.com/claude/reference/</PackageProjectUrl>
     <RepositoryUrl>https://www.github.com/anthropics/anthropic-sdk-csharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -10,32 +9,21 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsPlainTextDocumentSource
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        var model = new BetaManagedAgentsPlainTextDocumentSource { Data = "x" };
 
         string expectedData = "x";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.TextPlain;
-        ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> expectedType =
-            BetaManagedAgentsPlainTextDocumentSourceType.Text;
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("text/plain");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedData, model.Data);
-        Assert.Equal(expectedMediaType, model.MediaType);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedMediaType, model.MediaType));
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsPlainTextDocumentSource
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        var model = new BetaManagedAgentsPlainTextDocumentSource { Data = "x" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsPlainTextDocumentSource>(
@@ -49,12 +37,7 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsPlainTextDocumentSource
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        var model = new BetaManagedAgentsPlainTextDocumentSource { Data = "x" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsPlainTextDocumentSource>(
@@ -64,24 +47,18 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedData = "x";
-        ApiEnum<string, MediaType> expectedMediaType = MediaType.TextPlain;
-        ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> expectedType =
-            BetaManagedAgentsPlainTextDocumentSourceType.Text;
+        JsonElement expectedMediaType = JsonSerializer.SerializeToElement("text/plain");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedData, deserialized.Data);
-        Assert.Equal(expectedMediaType, deserialized.MediaType);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedMediaType, deserialized.MediaType));
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsPlainTextDocumentSource
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        var model = new BetaManagedAgentsPlainTextDocumentSource { Data = "x" };
 
         model.Validate();
     }
@@ -89,123 +66,10 @@ public class BetaManagedAgentsPlainTextDocumentSourceTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsPlainTextDocumentSource
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        var model = new BetaManagedAgentsPlainTextDocumentSource { Data = "x" };
 
         BetaManagedAgentsPlainTextDocumentSource copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class MediaTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(MediaType.TextPlain)]
-    public void Validation_Works(MediaType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, MediaType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(MediaType.TextPlain)]
-    public void SerializationRoundtrip_Works(MediaType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, MediaType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class BetaManagedAgentsPlainTextDocumentSourceTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsPlainTextDocumentSourceType.Text)]
-    public void Validation_Works(BetaManagedAgentsPlainTextDocumentSourceType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsPlainTextDocumentSourceType.Text)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsPlainTextDocumentSourceType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

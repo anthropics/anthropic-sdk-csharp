@@ -281,6 +281,31 @@ public class ImageBlockParamSourceTest : TestBase
     }
 
     [Fact]
+    public void Base64ImageTypeWorks()
+    {
+        ImageBlockParamSource value = new Base64ImageSource()
+        {
+            Data = "U3RhaW5sZXNzIHJvY2tz",
+            MediaType = MediaType.ImageJpeg,
+        };
+        Assert.Equal(ImageBlockParamSourceType.Base64, value.Type.Value());
+    }
+
+    [Fact]
+    public void UrlImageTypeWorks()
+    {
+        ImageBlockParamSource value = new UrlImageSource("url");
+        Assert.Equal(ImageBlockParamSourceType.Url, value.Type.Value());
+    }
+
+    [Fact]
+    public void FileImageTypeWorks()
+    {
+        ImageBlockParamSource value = new FileImageSource("file_id");
+        Assert.Equal(ImageBlockParamSourceType.File, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ImageBlockParamSource value = new(
@@ -294,12 +319,72 @@ public class ImageBlockParamSourceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
+        ApiEnum<string, ImageBlockParamSourceType> expectedType = ImageBlockParamSourceType.Base64;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ImageBlockParamSource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ImageBlockParamSourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ImageBlockParamSourceType.Base64)]
+    [InlineData(ImageBlockParamSourceType.Url)]
+    [InlineData(ImageBlockParamSourceType.File)]
+    public void Validation_Works(ImageBlockParamSourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ImageBlockParamSourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ImageBlockParamSourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ImageBlockParamSourceType.Base64)]
+    [InlineData(ImageBlockParamSourceType.Url)]
+    [InlineData(ImageBlockParamSourceType.File)]
+    public void SerializationRoundtrip_Works(ImageBlockParamSourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ImageBlockParamSourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ImageBlockParamSourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ImageBlockParamSourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ImageBlockParamSourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

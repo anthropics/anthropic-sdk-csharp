@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.7.0...Vertex-v0.8.0) (2026-10-21)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** add support for new API version 2026-10-21
+
+### Features
+
+* **api:** add support for new API version 2026-10-21
+
 ## [0.7.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v0.6.0...Vertex-v0.7.0) (2026-10-20)
 
 ### Features

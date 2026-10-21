@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
@@ -32,14 +31,12 @@ public sealed record class BetaManagedAgentsSessionActor : JsonModel
         init { this._rawData.Set("session_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionActorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionActorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -48,10 +45,16 @@ public sealed record class BetaManagedAgentsSessionActor : JsonModel
     public override void Validate()
     {
         _ = this.SessionID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session_actor")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionActor() { }
+    public BetaManagedAgentsSessionActor()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_actor");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -64,6 +67,8 @@ public sealed record class BetaManagedAgentsSessionActor : JsonModel
     public BetaManagedAgentsSessionActor(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_actor");
     }
 
 #pragma warning disable CS8618
@@ -81,6 +86,13 @@ public sealed record class BetaManagedAgentsSessionActor : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionActor(string sessionID)
+        : this()
+    {
+        this.SessionID = sessionID;
+    }
 }
 
 class BetaManagedAgentsSessionActorFromRaw : IFromRawJson<BetaManagedAgentsSessionActor>
@@ -89,46 +101,4 @@ class BetaManagedAgentsSessionActorFromRaw : IFromRawJson<BetaManagedAgentsSessi
     public BetaManagedAgentsSessionActor FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionActor.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionActorTypeConverter))]
-public enum BetaManagedAgentsSessionActorType
-{
-    SessionActor,
-}
-
-sealed class BetaManagedAgentsSessionActorTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionActorType>
-{
-    public override BetaManagedAgentsSessionActorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session_actor" => BetaManagedAgentsSessionActorType.SessionActor,
-            _ => (BetaManagedAgentsSessionActorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionActorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionActorType.SessionActor => "session_actor",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -365,6 +365,42 @@ public class BetaFederationIssuerJwksTest : TestBase
     }
 
     [Fact]
+    public void BetaJwksDiscoveryTypeWorks()
+    {
+        BetaFederationIssuerJwks value = new BetaJwksDiscovery()
+        {
+            CACertPem = "ca_cert_pem",
+            DiscoveryBase = "discovery_base",
+        };
+        Assert.Equal(BetaFederationIssuerJwksType.Discovery, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaJwksExplicitUrlTypeWorks()
+    {
+        BetaFederationIssuerJwks value = new BetaJwksExplicitUrl()
+        {
+            Url = "x",
+            CACertPem = "ca_cert_pem",
+        };
+        Assert.Equal(BetaFederationIssuerJwksType.ExplicitUrl, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaJwksInlineTypeWorks()
+    {
+        BetaFederationIssuerJwks value = new BetaJwksInline(
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ]
+        );
+        Assert.Equal(BetaFederationIssuerJwksType.Inline, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaFederationIssuerJwks value = new(
@@ -379,10 +415,11 @@ public class BetaFederationIssuerJwksTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("discovery");
+        ApiEnum<string, BetaFederationIssuerJwksType> expectedType =
+            BetaFederationIssuerJwksType.Discovery;
         string expectedCACertPem = "ca_cert_pem";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCACertPem, value.CACertPem);
 
         BetaFederationIssuerJwks emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -403,5 +440,63 @@ public class BetaFederationIssuerJwksTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CACertPem);
+    }
+}
+
+public class BetaFederationIssuerJwksTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaFederationIssuerJwksType.Discovery)]
+    [InlineData(BetaFederationIssuerJwksType.ExplicitUrl)]
+    [InlineData(BetaFederationIssuerJwksType.Inline)]
+    public void Validation_Works(BetaFederationIssuerJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaFederationIssuerJwksType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaFederationIssuerJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaFederationIssuerJwksType.Discovery)]
+    [InlineData(BetaFederationIssuerJwksType.ExplicitUrl)]
+    [InlineData(BetaFederationIssuerJwksType.Inline)]
+    public void SerializationRoundtrip_Works(BetaFederationIssuerJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaFederationIssuerJwksType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaFederationIssuerJwksType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaFederationIssuerJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaFederationIssuerJwksType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

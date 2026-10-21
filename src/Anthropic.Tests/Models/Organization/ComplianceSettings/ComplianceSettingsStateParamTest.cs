@@ -48,6 +48,20 @@ public class ComplianceSettingsStateParamTest : TestBase
     }
 
     [Fact]
+    public void EnabledTypeWorks()
+    {
+        ComplianceSettingsStateParam value = new ComplianceSettingsStateEnabledParam();
+        Assert.Equal(ComplianceSettingsStateParamType.Enabled, value.Type.Value());
+    }
+
+    [Fact]
+    public void DisabledTypeWorks()
+    {
+        ComplianceSettingsStateParam value = new ComplianceSettingsStateDisabledParam();
+        Assert.Equal(ComplianceSettingsStateParamType.Disabled, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ComplianceSettingsStateParam value = new(
@@ -61,14 +75,71 @@ public class ComplianceSettingsStateParamTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        ApiEnum<string, ComplianceSettingsStateParamType> expectedType =
+            ComplianceSettingsStateParamType.Enabled;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ComplianceSettingsStateParam emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ComplianceSettingsStateParamTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ComplianceSettingsStateParamType.Enabled)]
+    [InlineData(ComplianceSettingsStateParamType.Disabled)]
+    public void Validation_Works(ComplianceSettingsStateParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ComplianceSettingsStateParamType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ComplianceSettingsStateParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ComplianceSettingsStateParamType.Enabled)]
+    [InlineData(ComplianceSettingsStateParamType.Disabled)]
+    public void SerializationRoundtrip_Works(ComplianceSettingsStateParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ComplianceSettingsStateParamType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ComplianceSettingsStateParamType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ComplianceSettingsStateParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ComplianceSettingsStateParamType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

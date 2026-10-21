@@ -450,6 +450,26 @@ public class CreatedByTest : TestBase
     }
 
     [Fact]
+    public void BetaPluginUserActorTypeWorks()
+    {
+        Plugins::CreatedBy value = new Plugins::BetaPluginUserActor()
+        {
+            EmailAddress = "user@example.com",
+            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+        };
+        Assert.Equal(Plugins::CreatedByType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginApiActorTypeWorks()
+    {
+        Plugins::CreatedBy value = new Plugins::BetaPluginApiActor(
+            "apikey_01Rj2N8SVvo6BePZj99NhmiT"
+        );
+        Assert.Equal(Plugins::CreatedByType.ApiActor, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Plugins::CreatedBy value = new(
@@ -463,13 +483,71 @@ public class CreatedByTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+        ApiEnum<string, Plugins::CreatedByType> expectedType = Plugins::CreatedByType.UserActor;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Plugins::CreatedBy emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class CreatedByTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(Plugins::CreatedByType.UserActor)]
+    [InlineData(Plugins::CreatedByType.ApiActor)]
+    public void Validation_Works(Plugins::CreatedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Plugins::CreatedByType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Plugins::CreatedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Plugins::CreatedByType.UserActor)]
+    [InlineData(Plugins::CreatedByType.ApiActor)]
+    public void SerializationRoundtrip_Works(Plugins::CreatedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Plugins::CreatedByType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::CreatedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Plugins::CreatedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::CreatedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -574,6 +652,20 @@ public class OwnerTest : TestBase
     }
 
     [Fact]
+    public void BetaPluginOwnerOrganizationTypeWorks()
+    {
+        Plugins::Owner value = new Plugins::BetaPluginOwnerOrganization();
+        Assert.Equal(Plugins::OwnerTypeValue.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginOwnerUserTypeWorks()
+    {
+        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Assert.Equal(Plugins::OwnerTypeValue.User, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Plugins::Owner value = new(
@@ -587,13 +679,72 @@ public class OwnerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+        ApiEnum<string, Plugins::OwnerTypeValue> expectedType =
+            Plugins::OwnerTypeValue.Organization;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Plugins::Owner emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class OwnerTypeValueTest : TestBase
+{
+    [Theory]
+    [InlineData(Plugins::OwnerTypeValue.Organization)]
+    [InlineData(Plugins::OwnerTypeValue.User)]
+    public void Validation_Works(Plugins::OwnerTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Plugins::OwnerTypeValue> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Plugins::OwnerTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Plugins::OwnerTypeValue.Organization)]
+    [InlineData(Plugins::OwnerTypeValue.User)]
+    public void SerializationRoundtrip_Works(Plugins::OwnerTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Plugins::OwnerTypeValue> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::OwnerTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Plugins::OwnerTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::OwnerTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

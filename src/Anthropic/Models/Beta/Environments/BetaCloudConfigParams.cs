@@ -132,15 +132,17 @@ public record class BetaCloudConfigParamsNetworking : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaCloudConfigParamsNetworkingType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaUnrestrictedNetwork x => x.Type,
-                BetaLimitedNetworkParams x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaUnrestrictedNetwork _ => BetaCloudConfigParamsNetworkingType.Unrestricted,
+                BetaLimitedNetworkParams _ => BetaCloudConfigParamsNetworkingType.Limited,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaCloudConfigParamsNetworkingType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -425,5 +427,50 @@ sealed class BetaCloudConfigParamsNetworkingConverter
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaCloudConfigParamsNetworkingTypeConverter))]
+public enum BetaCloudConfigParamsNetworkingType
+{
+    Unrestricted,
+    Limited,
+}
+
+sealed class BetaCloudConfigParamsNetworkingTypeConverter
+    : JsonConverter<BetaCloudConfigParamsNetworkingType>
+{
+    public override BetaCloudConfigParamsNetworkingType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "unrestricted" => BetaCloudConfigParamsNetworkingType.Unrestricted,
+            "limited" => BetaCloudConfigParamsNetworkingType.Limited,
+            _ => (BetaCloudConfigParamsNetworkingType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaCloudConfigParamsNetworkingType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaCloudConfigParamsNetworkingType.Unrestricted => "unrestricted",
+                BetaCloudConfigParamsNetworkingType.Limited => "limited",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

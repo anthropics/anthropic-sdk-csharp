@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -30,14 +29,12 @@ public sealed record class BetaManagedAgentsAnthropicSkill : JsonModel
         init { this._rawData.Set("skill_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAnthropicSkillType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAnthropicSkillType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -56,11 +53,17 @@ public sealed record class BetaManagedAgentsAnthropicSkill : JsonModel
     public override void Validate()
     {
         _ = this.SkillID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("anthropic")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Version;
     }
 
-    public BetaManagedAgentsAnthropicSkill() { }
+    public BetaManagedAgentsAnthropicSkill()
+    {
+        this.Type = JsonSerializer.SerializeToElement("anthropic");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -73,6 +76,8 @@ public sealed record class BetaManagedAgentsAnthropicSkill : JsonModel
     public BetaManagedAgentsAnthropicSkill(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("anthropic");
     }
 
 #pragma warning disable CS8618
@@ -98,46 +103,4 @@ class BetaManagedAgentsAnthropicSkillFromRaw : IFromRawJson<BetaManagedAgentsAnt
     public BetaManagedAgentsAnthropicSkill FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAnthropicSkill.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAnthropicSkillTypeConverter))]
-public enum BetaManagedAgentsAnthropicSkillType
-{
-    Anthropic,
-}
-
-sealed class BetaManagedAgentsAnthropicSkillTypeConverter
-    : JsonConverter<BetaManagedAgentsAnthropicSkillType>
-{
-    public override BetaManagedAgentsAnthropicSkillType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "anthropic" => BetaManagedAgentsAnthropicSkillType.Anthropic,
-            _ => (BetaManagedAgentsAnthropicSkillType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAnthropicSkillType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAnthropicSkillType.Anthropic => "anthropic",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

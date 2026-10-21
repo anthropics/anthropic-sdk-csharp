@@ -15,33 +15,22 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
             FromAgentName = "from_agent_name",
         };
 
         string expectedID = "id";
         List<BetaManagedAgentsAgentThreadMessageReceivedEventContent> expectedContent =
         [
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
+            new BetaManagedAgentsTextBlock("Where is my order #1234?"),
         ];
         string expectedFromSessionThreadID = "from_session_thread_id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType> expectedType =
-            BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "agent.thread_message_received"
+        );
         string expectedFromAgentName = "from_agent_name";
 
         Assert.Equal(expectedID, model.ID);
@@ -52,7 +41,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         }
         Assert.Equal(expectedFromSessionThreadID, model.FromSessionThreadID);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedFromAgentName, model.FromAgentName);
     }
 
@@ -62,17 +51,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
             FromAgentName = "from_agent_name",
         };
 
@@ -92,17 +73,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
             FromAgentName = "from_agent_name",
         };
 
@@ -117,16 +90,13 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         string expectedID = "id";
         List<BetaManagedAgentsAgentThreadMessageReceivedEventContent> expectedContent =
         [
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
+            new BetaManagedAgentsTextBlock("Where is my order #1234?"),
         ];
         string expectedFromSessionThreadID = "from_session_thread_id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType> expectedType =
-            BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "agent.thread_message_received"
+        );
         string expectedFromAgentName = "from_agent_name";
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -137,7 +107,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         }
         Assert.Equal(expectedFromSessionThreadID, deserialized.FromSessionThreadID);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedFromAgentName, deserialized.FromAgentName);
     }
 
@@ -147,17 +117,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
             FromAgentName = "from_agent_name",
         };
 
@@ -170,17 +132,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
         };
 
         Assert.Null(model.FromAgentName);
@@ -193,17 +147,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
         };
 
         model.Validate();
@@ -215,17 +161,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
 
             FromAgentName = null,
         };
@@ -240,17 +178,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
 
             FromAgentName = null,
         };
@@ -264,17 +194,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTest : TestBase
         var model = new BetaManagedAgentsAgentThreadMessageReceivedEvent
         {
             ID = "id",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             FromSessionThreadID = "from_session_thread_id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
             FromAgentName = "from_agent_name",
         };
 
@@ -290,11 +212,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsTextBlockValidationWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            };
+            new BetaManagedAgentsTextBlock("Where is my order #1234?");
         value.Validate();
     }
 
@@ -302,16 +220,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsImageBlockValidationWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsImageBlock()
-            {
-                Source = new BetaManagedAgentsBase64ImageSource()
-                {
-                    Data = "x",
-                    MediaType = "x",
-                    Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-                },
-                Type = BetaManagedAgentsImageBlockType.Image,
-            };
+            new BetaManagedAgentsImageBlock(
+                new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+            );
         value.Validate();
     }
 
@@ -325,9 +236,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
                 {
                     Data = "x",
                     MediaType = "x",
-                    Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
                 },
-                Type = BetaManagedAgentsDocumentBlockType.Document,
                 Context = "context",
                 Title = "title",
             };
@@ -338,7 +247,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsRedactedBlockValidationWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsRedactedBlock(BetaManagedAgentsRedactedBlockType.Redacted);
+            new BetaManagedAgentsRedactedBlock();
         value.Validate();
     }
 
@@ -346,11 +255,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            };
+            new BetaManagedAgentsTextBlock("Where is my order #1234?");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsAgentThreadMessageReceivedEventContent>(
@@ -365,16 +270,9 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsImageBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsImageBlock()
-            {
-                Source = new BetaManagedAgentsBase64ImageSource()
-                {
-                    Data = "x",
-                    MediaType = "x",
-                    Type = BetaManagedAgentsBase64ImageSourceType.Base64,
-                },
-                Type = BetaManagedAgentsImageBlockType.Image,
-            };
+            new BetaManagedAgentsImageBlock(
+                new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+            );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsAgentThreadMessageReceivedEventContent>(
@@ -395,9 +293,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
                 {
                     Data = "x",
                     MediaType = "x",
-                    Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
                 },
-                Type = BetaManagedAgentsDocumentBlockType.Document,
                 Context = "context",
                 Title = "title",
             };
@@ -415,7 +311,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
     public void BetaManagedAgentsRedactedBlockSerializationRoundtripWorks()
     {
         BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
-            new BetaManagedAgentsRedactedBlock(BetaManagedAgentsRedactedBlockType.Redacted);
+            new BetaManagedAgentsRedactedBlock();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsAgentThreadMessageReceivedEventContent>(
@@ -425,16 +321,103 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTest : TestB
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsTextBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
+            new BetaManagedAgentsTextBlock("Where is my order #1234?");
+        Assert.Equal(
+            BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsImageBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
+            new BetaManagedAgentsImageBlock(
+                new BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+            );
+        Assert.Equal(
+            BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsDocumentBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
+            new BetaManagedAgentsDocumentBlock()
+            {
+                Source = new BetaManagedAgentsBase64DocumentSource()
+                {
+                    Data = "x",
+                    MediaType = "x",
+                },
+                Context = "context",
+                Title = "title",
+            };
+        Assert.Equal(
+            BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent value =
+            new BetaManagedAgentsRedactedBlock();
+        Assert.Equal(
+            BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType> expectedType =
+            BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsAgentThreadMessageReceivedEventContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsAgentThreadMessageReceivedEventTypeTest : TestBase
+public class BetaManagedAgentsAgentThreadMessageReceivedEventContentTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived)]
-    public void Validation_Works(BetaManagedAgentsAgentThreadMessageReceivedEventType rawValue)
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted)]
+    public void Validation_Works(
+        BetaManagedAgentsAgentThreadMessageReceivedEventContentType rawValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType> value =
+            rawValue;
         value.Validate();
     }
 
@@ -442,7 +425,7 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType>
+            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -450,17 +433,21 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document)]
+    [InlineData(BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted)]
     public void SerializationRoundtrip_Works(
-        BetaManagedAgentsAgentThreadMessageReceivedEventType rawValue
+        BetaManagedAgentsAgentThreadMessageReceivedEventContentType rawValue
     )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType> value =
+            rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType>
+            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -470,11 +457,11 @@ public class BetaManagedAgentsAgentThreadMessageReceivedEventTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType>
+            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType>
+            ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

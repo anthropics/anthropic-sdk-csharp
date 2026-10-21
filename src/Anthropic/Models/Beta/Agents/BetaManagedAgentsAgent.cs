@@ -195,14 +195,12 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsAgentType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -258,12 +256,18 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         _ = this.Version;
     }
 
-    public BetaManagedAgentsAgent() { }
+    public BetaManagedAgentsAgent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -274,6 +278,8 @@ public sealed record class BetaManagedAgentsAgent : JsonModel
     public BetaManagedAgentsAgent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent");
     }
 
 #pragma warning disable CS8618
@@ -331,6 +337,31 @@ public record class Skill : ModelBase
                 BetaManagedAgentsAnthropicSkill x => x.SkillID,
                 BetaManagedAgentsCustomSkill x => x.SkillID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "skill_id"),
+            };
+        }
+    }
+
+    public ApiEnum<string, global::Anthropic.Models.Beta.Agents.SkillType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkill _ => global::Anthropic
+                    .Models
+                    .Beta
+                    .Agents
+                    .SkillType
+                    .Anthropic,
+                BetaManagedAgentsCustomSkill _ => global::Anthropic
+                    .Models
+                    .Beta
+                    .Agents
+                    .SkillType
+                    .Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, global::Anthropic.Models.Beta.Agents.SkillType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -618,6 +649,50 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Agents
     }
 }
 
+[JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.SkillTypeConverter))]
+public enum SkillType
+{
+    Anthropic,
+    Custom,
+}
+
+sealed class SkillTypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.SkillType>
+{
+    public override global::Anthropic.Models.Beta.Agents.SkillType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "anthropic" => global::Anthropic.Models.Beta.Agents.SkillType.Anthropic,
+            "custom" => global::Anthropic.Models.Beta.Agents.SkillType.Custom,
+            _ => (global::Anthropic.Models.Beta.Agents.SkillType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        global::Anthropic.Models.Beta.Agents.SkillType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                global::Anthropic.Models.Beta.Agents.SkillType.Anthropic => "anthropic",
+                global::Anthropic.Models.Beta.Agents.SkillType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Union type for tool configurations returned in API responses.
 /// </summary>
@@ -636,6 +711,23 @@ public record class BetaManagedAgentsAgentTool : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsAgentToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentToolset20260401 _ =>
+                    BetaManagedAgentsAgentToolType.AgentToolset20260401,
+                BetaManagedAgentsMcpToolset _ => BetaManagedAgentsAgentToolType.McpToolset,
+                BetaManagedAgentsCustomTool _ => BetaManagedAgentsAgentToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentToolType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -992,15 +1084,17 @@ sealed class BetaManagedAgentsAgentToolConverter : JsonConverter<BetaManagedAgen
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsAgentTypeConverter))]
-public enum BetaManagedAgentsAgentType
+[JsonConverter(typeof(BetaManagedAgentsAgentToolTypeConverter))]
+public enum BetaManagedAgentsAgentToolType
 {
-    Agent,
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
 }
 
-sealed class BetaManagedAgentsAgentTypeConverter : JsonConverter<BetaManagedAgentsAgentType>
+sealed class BetaManagedAgentsAgentToolTypeConverter : JsonConverter<BetaManagedAgentsAgentToolType>
 {
-    public override BetaManagedAgentsAgentType Read(
+    public override BetaManagedAgentsAgentToolType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -1008,14 +1102,16 @@ sealed class BetaManagedAgentsAgentTypeConverter : JsonConverter<BetaManagedAgen
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent" => BetaManagedAgentsAgentType.Agent,
-            _ => (BetaManagedAgentsAgentType)(-1),
+            "agent_toolset_20260401" => BetaManagedAgentsAgentToolType.AgentToolset20260401,
+            "mcp_toolset" => BetaManagedAgentsAgentToolType.McpToolset,
+            "custom" => BetaManagedAgentsAgentToolType.Custom,
+            _ => (BetaManagedAgentsAgentToolType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsAgentType value,
+        BetaManagedAgentsAgentToolType value,
         JsonSerializerOptions options
     )
     {
@@ -1023,7 +1119,9 @@ sealed class BetaManagedAgentsAgentTypeConverter : JsonConverter<BetaManagedAgen
             writer,
             value switch
             {
-                BetaManagedAgentsAgentType.Agent => "agent",
+                BetaManagedAgentsAgentToolType.AgentToolset20260401 => "agent_toolset_20260401",
+                BetaManagedAgentsAgentToolType.McpToolset => "mcp_toolset",
+                BetaManagedAgentsAgentToolType.Custom => "custom",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -65,14 +64,12 @@ public sealed record class BetaManagedAgentsCustomToolParams : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsCustomToolParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsCustomToolParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -83,10 +80,16 @@ public sealed record class BetaManagedAgentsCustomToolParams : JsonModel
         _ = this.Description;
         this.InputSchema.Validate();
         _ = this.Name;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("custom")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsCustomToolParams() { }
+    public BetaManagedAgentsCustomToolParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("custom");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -99,6 +102,8 @@ public sealed record class BetaManagedAgentsCustomToolParams : JsonModel
     public BetaManagedAgentsCustomToolParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("custom");
     }
 
 #pragma warning disable CS8618
@@ -124,46 +129,4 @@ class BetaManagedAgentsCustomToolParamsFromRaw : IFromRawJson<BetaManagedAgentsC
     public BetaManagedAgentsCustomToolParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCustomToolParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsCustomToolParamsTypeConverter))]
-public enum BetaManagedAgentsCustomToolParamsType
-{
-    Custom,
-}
-
-sealed class BetaManagedAgentsCustomToolParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsCustomToolParamsType>
-{
-    public override BetaManagedAgentsCustomToolParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "custom" => BetaManagedAgentsCustomToolParamsType.Custom,
-            _ => (BetaManagedAgentsCustomToolParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCustomToolParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCustomToolParamsType.Custom => "custom",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

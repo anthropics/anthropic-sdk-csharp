@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
@@ -13,26 +12,16 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
 
-        BetaManagedAgentsTextBlock expectedContent = new()
-        {
-            Text = "Where is my order #1234?",
-            Type = BetaManagedAgentsTextBlockType.Text,
-        };
-        ApiEnum<string, BetaManagedAgentsDeltaContentType> expectedType =
-            BetaManagedAgentsDeltaContentType.ContentDelta;
+        BetaManagedAgentsTextBlock expectedContent = new("Where is my order #1234?");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_delta");
         long expectedIndex = 0;
 
         Assert.Equal(expectedContent, model.Content);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedIndex, model.Index);
     }
 
@@ -41,12 +30,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
 
@@ -64,12 +48,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
 
@@ -80,17 +59,12 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaManagedAgentsTextBlock expectedContent = new()
-        {
-            Text = "Where is my order #1234?",
-            Type = BetaManagedAgentsTextBlockType.Text,
-        };
-        ApiEnum<string, BetaManagedAgentsDeltaContentType> expectedType =
-            BetaManagedAgentsDeltaContentType.ContentDelta;
+        BetaManagedAgentsTextBlock expectedContent = new("Where is my order #1234?");
+        JsonElement expectedType = JsonSerializer.SerializeToElement("content_delta");
         long expectedIndex = 0;
 
         Assert.Equal(expectedContent, deserialized.Content);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedIndex, deserialized.Index);
     }
 
@@ -99,12 +73,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
 
@@ -114,15 +83,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsDeltaContent
-        {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-        };
+        var model = new BetaManagedAgentsDeltaContent { Content = new("Where is my order #1234?") };
 
         Assert.Null(model.Index);
         Assert.False(model.RawData.ContainsKey("index"));
@@ -131,15 +92,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsDeltaContent
-        {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-        };
+        var model = new BetaManagedAgentsDeltaContent { Content = new("Where is my order #1234?") };
 
         model.Validate();
     }
@@ -149,12 +102,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
 
             // Null should be interpreted as omitted for these properties
             Index = null,
@@ -169,12 +117,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         } with
         {
@@ -191,12 +134,7 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
 
             // Null should be interpreted as omitted for these properties
             Index = null,
@@ -210,71 +148,12 @@ public class BetaManagedAgentsDeltaContentTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaContent
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
 
         BetaManagedAgentsDeltaContent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsDeltaContentTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsDeltaContentType.ContentDelta)]
-    public void Validation_Works(BetaManagedAgentsDeltaContentType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDeltaContentType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDeltaContentType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsDeltaContentType.ContentDelta)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsDeltaContentType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDeltaContentType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDeltaContentType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDeltaContentType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDeltaContentType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

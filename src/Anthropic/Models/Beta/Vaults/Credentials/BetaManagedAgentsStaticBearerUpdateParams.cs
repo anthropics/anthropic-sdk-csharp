@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 )]
 public sealed record class BetaManagedAgentsStaticBearerUpdateParams : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,11 +46,17 @@ public sealed record class BetaManagedAgentsStaticBearerUpdateParams : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("static_bearer")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Token;
     }
 
-    public BetaManagedAgentsStaticBearerUpdateParams() { }
+    public BetaManagedAgentsStaticBearerUpdateParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("static_bearer");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -68,6 +71,8 @@ public sealed record class BetaManagedAgentsStaticBearerUpdateParams : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("static_bearer");
     }
 
 #pragma warning disable CS8618
@@ -85,15 +90,6 @@ public sealed record class BetaManagedAgentsStaticBearerUpdateParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsStaticBearerUpdateParams(
-        ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsStaticBearerUpdateParamsFromRaw
@@ -103,46 +99,4 @@ class BetaManagedAgentsStaticBearerUpdateParamsFromRaw
     public BetaManagedAgentsStaticBearerUpdateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsStaticBearerUpdateParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsStaticBearerUpdateParamsTypeConverter))]
-public enum BetaManagedAgentsStaticBearerUpdateParamsType
-{
-    StaticBearer,
-}
-
-sealed class BetaManagedAgentsStaticBearerUpdateParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsStaticBearerUpdateParamsType>
-{
-    public override BetaManagedAgentsStaticBearerUpdateParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "static_bearer" => BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            _ => (BetaManagedAgentsStaticBearerUpdateParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsStaticBearerUpdateParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer => "static_bearer",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

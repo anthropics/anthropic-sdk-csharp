@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.MemoryStores;
 
 namespace Anthropic.Tests.Models.Beta.MemoryStores;
@@ -20,7 +19,6 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -30,8 +28,7 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         string expectedDescription = "description";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "name";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreType> expectedType =
-            BetaManagedAgentsMemoryStoreType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
         Assert.Equal(expectedID, model.ID);
@@ -46,7 +43,7 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Assert.Equal(value, model.Metadata[item.Key]);
         }
         Assert.Equal(expectedName, model.Name);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
 
@@ -61,7 +58,6 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -85,7 +81,6 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -102,8 +97,7 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
         string expectedDescription = "description";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "name";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreType> expectedType =
-            BetaManagedAgentsMemoryStoreType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -118,7 +112,7 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
         Assert.Equal(expectedName, deserialized.Name);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
 
@@ -133,7 +127,6 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -151,66 +144,11 @@ public class BetaManagedAgentsMemoryStoreTest : TestBase
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Name = "name",
-            Type = BetaManagedAgentsMemoryStoreType.MemoryStore,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
         BetaManagedAgentsMemoryStore copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryStoreTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreType.MemoryStore)]
-    public void Validation_Works(BetaManagedAgentsMemoryStoreType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryStoreType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreType.MemoryStore)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryStoreType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryStoreType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

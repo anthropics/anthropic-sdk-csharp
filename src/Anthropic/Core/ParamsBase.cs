@@ -29,7 +29,7 @@ public abstract record class ParamsBase
             ["X-Stainless-Package-Version"] = GetPackageVersion(),
             ["X-Stainless-Runtime"] = runtime.Name,
             ["X-Stainless-Runtime-Version"] = runtime.Version,
-            ["anthropic-version"] = "2023-06-01",
+            ["anthropic-version"] = "2026-10-21",
         };
 
         var customHeadersEnv = Environment.GetEnvironmentVariable("ANTHROPIC_CUSTOM_HEADERS");
@@ -279,9 +279,9 @@ public abstract record class ParamsBase
 
         if (options.ApiKey != null)
         {
-            request.Headers.Add("X-Api-Key", options.ApiKey);
+            request.Headers.Add("Authorization", string.Format("Bearer {0}", options.ApiKey));
         }
-        if (options.AuthToken != null)
+        else if (options.AuthToken != null)
         {
             request.Headers.Add("Authorization", string.Format("Bearer {0}", options.AuthToken));
         }

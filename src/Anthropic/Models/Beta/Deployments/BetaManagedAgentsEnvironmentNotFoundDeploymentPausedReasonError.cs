@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -21,17 +20,12 @@ namespace Anthropic.Models.Beta.Deployments;
 public sealed record class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError
     : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -39,10 +33,21 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedR
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("environment_not_found_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError() { }
+    public BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("environment_not_found_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -57,6 +62,8 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedR
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("environment_not_found_error");
     }
 
 #pragma warning disable CS8618
@@ -76,15 +83,6 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedR
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorFromRaw
@@ -94,50 +92,4 @@ class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(
-    typeof(BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorTypeConverter)
-)]
-public enum BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType
-{
-    EnvironmentNotFoundError,
-}
-
-sealed class BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "environment_not_found_error" =>
-                BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType.EnvironmentNotFoundError,
-            _ => (BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType.EnvironmentNotFoundError =>
-                    "environment_not_found_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

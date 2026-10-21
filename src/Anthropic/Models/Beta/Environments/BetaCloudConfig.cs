@@ -126,15 +126,18 @@ public record class Networking : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, NetworkingType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaUnrestrictedNetwork x => x.Type,
-                BetaLimitedNetwork x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaUnrestrictedNetwork _ => NetworkingType.Unrestricted,
+                BetaLimitedNetwork _ => NetworkingType.Limited,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, NetworkingType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -404,5 +407,49 @@ sealed class NetworkingConverter : JsonConverter<Networking>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(NetworkingTypeConverter))]
+public enum NetworkingType
+{
+    Unrestricted,
+    Limited,
+}
+
+sealed class NetworkingTypeConverter : JsonConverter<NetworkingType>
+{
+    public override NetworkingType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "unrestricted" => NetworkingType.Unrestricted,
+            "limited" => NetworkingType.Limited,
+            _ => (NetworkingType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        NetworkingType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                NetworkingType.Unrestricted => "unrestricted",
+                NetworkingType.Limited => "limited",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

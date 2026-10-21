@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -36,12 +36,12 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
     /// <summary>
     /// Timestamp of status change.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -72,14 +72,12 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
         init { this._rawData.Set("stop_reason", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionStatusIdleEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionStatusIdleEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -91,10 +89,21 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
         _ = this.ProcessedAt;
         this.StopDetails?.Validate();
         this.StopReason.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session.status_idle")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionStatusIdleEvent() { }
+    public BetaManagedAgentsSessionStatusIdleEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.status_idle");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -107,6 +116,8 @@ public sealed record class BetaManagedAgentsSessionStatusIdleEvent : JsonModel
     public BetaManagedAgentsSessionStatusIdleEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.status_idle");
     }
 
 #pragma warning disable CS8618
@@ -150,6 +161,25 @@ public record class StopReason : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, StopReasonType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsSessionEndTurn _ => StopReasonType.EndTurn,
+                BetaManagedAgentsSessionRequiresAction _ => StopReasonType.RequiresAction,
+                BetaManagedAgentsSessionRetriesExhausted _ => StopReasonType.RetriesExhausted,
+                BetaManagedAgentsSessionBudgetReached _ => StopReasonType.BudgetReached,
+                BetaManagedAgentsSessionRefusal _ => StopReasonType.Refusal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, StopReasonType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -327,11 +357,11 @@ public record class StopReason : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
-        System::Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
-        System::Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
-        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
-        System::Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
+        Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
+        Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
+        Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
+        Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
+        Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
     )
     {
         switch (this.Value)
@@ -383,20 +413,11 @@ public record class StopReason : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionEndTurn, T> betaManagedAgentsSessionEndTurn,
-        System::Func<
-            BetaManagedAgentsSessionRequiresAction,
-            T
-        > betaManagedAgentsSessionRequiresAction,
-        System::Func<
-            BetaManagedAgentsSessionRetriesExhausted,
-            T
-        > betaManagedAgentsSessionRetriesExhausted,
-        System::Func<
-            BetaManagedAgentsSessionBudgetReached,
-            T
-        > betaManagedAgentsSessionBudgetReached,
-        System::Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
+        Func<BetaManagedAgentsSessionEndTurn, T> betaManagedAgentsSessionEndTurn,
+        Func<BetaManagedAgentsSessionRequiresAction, T> betaManagedAgentsSessionRequiresAction,
+        Func<BetaManagedAgentsSessionRetriesExhausted, T> betaManagedAgentsSessionRetriesExhausted,
+        Func<BetaManagedAgentsSessionBudgetReached, T> betaManagedAgentsSessionBudgetReached,
+        Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
     )
     {
         return this.Value switch
@@ -492,7 +513,7 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
 {
     public override StopReason? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -629,31 +650,38 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionStatusIdleEventTypeConverter))]
-public enum BetaManagedAgentsSessionStatusIdleEventType
+[JsonConverter(typeof(StopReasonTypeConverter))]
+public enum StopReasonType
 {
-    SessionStatusIdle,
+    EndTurn,
+    RequiresAction,
+    RetriesExhausted,
+    BudgetReached,
+    Refusal,
 }
 
-sealed class BetaManagedAgentsSessionStatusIdleEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionStatusIdleEventType>
+sealed class StopReasonTypeConverter : JsonConverter<StopReasonType>
 {
-    public override BetaManagedAgentsSessionStatusIdleEventType Read(
+    public override StopReasonType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "session.status_idle" => BetaManagedAgentsSessionStatusIdleEventType.SessionStatusIdle,
-            _ => (BetaManagedAgentsSessionStatusIdleEventType)(-1),
+            "end_turn" => StopReasonType.EndTurn,
+            "requires_action" => StopReasonType.RequiresAction,
+            "retries_exhausted" => StopReasonType.RetriesExhausted,
+            "budget_reached" => StopReasonType.BudgetReached,
+            "refusal" => StopReasonType.Refusal,
+            _ => (StopReasonType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionStatusIdleEventType value,
+        StopReasonType value,
         JsonSerializerOptions options
     )
     {
@@ -661,8 +689,11 @@ sealed class BetaManagedAgentsSessionStatusIdleEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionStatusIdleEventType.SessionStatusIdle =>
-                    "session.status_idle",
+                StopReasonType.EndTurn => "end_turn",
+                StopReasonType.RequiresAction => "requires_action",
+                StopReasonType.RetriesExhausted => "retries_exhausted",
+                StopReasonType.BudgetReached => "budget_reached",
+                StopReasonType.Refusal => "refusal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

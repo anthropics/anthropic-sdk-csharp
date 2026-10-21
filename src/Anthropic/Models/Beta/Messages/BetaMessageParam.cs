@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -10,111 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Beta.Messages;
 
-[JsonConverter(typeof(JsonModelConverter<BetaMessageParam, BetaMessageParamFromRaw>))]
-public sealed record class BetaMessageParam : JsonModel
-{
-    public required BetaMessageParamContent Content
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaMessageParamContent>("content");
-        }
-        init { this._rawData.Set("content", value); }
-    }
-
-    public required ApiEnum<string, Role> Role
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
-        }
-        init { this._rawData.Set("role", value); }
-    }
-
-    /// <summary>
-    /// How long this system message's text stays in front of the model. `"never"`
-    /// (the default) renders it on every request that includes it. `"next_user_message"`
-    /// renders it only for the user turn it follows: once a later `role: "user"`
-    /// message exists in `messages` the message stays in the array (send it unchanged)
-    /// but is no longer shown to the model. Only permitted on `role: "system"` messages.
-    /// </summary>
-    public ApiEnum<string, ClearAt>? ClearAt
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ApiEnum<string, ClearAt>>("clear_at");
-        }
-        init { this._rawData.Set("clear_at", value); }
-    }
-
-    /// <summary>
-    /// Per-message output configuration on a role:"system" input message.
-    ///
-    /// <para>Fields here apply per-turn; ``format`` remains top-level only. An empty
-    /// ``{}`` is accepted on a message that carries content; a message with neither
-    /// content nor output_config fields is rejected.</para>
-    /// </summary>
-    public BetaSystemMessageOutputConfig? OutputConfig
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaSystemMessageOutputConfig>("output_config");
-        }
-        init { this._rawData.Set("output_config", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        this.Content.Validate();
-        this.Role.Validate();
-        this.ClearAt?.Validate();
-        this.OutputConfig?.Validate();
-    }
-
-    public BetaMessageParam() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaMessageParam(BetaMessageParam betaMessageParam)
-        : base(betaMessageParam) { }
-#pragma warning restore CS8618
-
-    public BetaMessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaMessageParam(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaMessageParamFromRaw.FromRawUnchecked"/>
-    public static BetaMessageParam FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class BetaMessageParamFromRaw : IFromRawJson<BetaMessageParam>
-{
-    /// <inheritdoc/>
-    public BetaMessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        BetaMessageParam.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaMessageParamContentConverter))]
-public record class BetaMessageParamContent : ModelBase
+[JsonConverter(typeof(BetaMessageParamConverter))]
+public record class BetaMessageParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -131,67 +28,155 @@ public record class BetaMessageParamContent : ModelBase
         }
     }
 
-    public BetaMessageParamContent(string value, JsonElement? element = null)
+    public BetaMessageContentParam? Content
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaUserMessageParam x => x.Content,
+                BetaAssistantMessageParam x => x.Content,
+                BetaSystemMessageParam x => x.Content is { } value
+                    ? value switch
+                    {
+                        { Value: string value1 } => new BetaMessageContentParam(value1),
+                        { Value: IReadOnlyList<SystemMessageContentBlock> value1 } =>
+                            new BetaMessageContentParam(
+                                ImmutableArray.ToImmutableArray(
+                                    Enumerable.Select(
+                                        value1,
+                                        (item) =>
+                                            item switch
+                                            {
+                                                { Value: BetaTextBlockParam value2 } =>
+                                                    new BetaContentBlockParam(value2),
+                                                { Value: BetaRequestToolAdditionBlock value2 } =>
+                                                    new BetaContentBlockParam(value2),
+                                                { Value: BetaRequestToolRemovalBlock value2 } =>
+                                                    new BetaContentBlockParam(value2),
+                                                var unknown =>
+                                                    WrappedJsonSerializer.GetNotNullClass<BetaContentBlockParam>(
+                                                        unknown.Json,
+                                                        nameof(SystemMessageContentBlock)
+                                                    ),
+                                            }
+                                    )
+                                )
+                            ),
+                        var unknown =>
+                            WrappedJsonSerializer.GetNotNullClass<BetaMessageContentParam>(
+                                unknown.Json,
+                                nameof(BetaSystemMessageParamContent)
+                            ),
+                    }
+                    : null,
+                _ => WrappedJsonSerializer.GetNullableClassProperty<BetaMessageContentParam>(
+                    this.Json,
+                    "content"
+                ),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaMessageParamRole> Role
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaUserMessageParam _ => BetaMessageParamRole.User,
+                BetaAssistantMessageParam _ => BetaMessageParamRole.Assistant,
+                BetaSystemMessageParam _ => BetaMessageParamRole.System,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaMessageParamRole>
+                >(this.Json, "role"),
+            };
+        }
+    }
+
+    public BetaMessageParam(BetaUserMessageParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public BetaMessageParamContent(
-        IReadOnlyList<BetaContentBlockParam> value,
-        JsonElement? element = null
-    )
+    public BetaMessageParam(BetaAssistantMessageParam value, JsonElement? element = null)
     {
-        this.Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
         this._element = element;
     }
 
-    public BetaMessageParamContent(JsonElement element)
+    public BetaMessageParam(BetaSystemMessageParam value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaMessageParam(JsonElement element)
     {
         this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="string"/>.
+    /// type <see cref="BetaUserMessageParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickString(out var value)) {
-    ///     // `value` is of type `string`
+    /// if (instance.TryPickUser(out var value)) {
+    ///     // `value` is of type `BetaUserMessageParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickString([NotNullWhen(true)] out string? value)
+    public bool TryPickUser([NotNullWhen(true)] out BetaUserMessageParam? value)
     {
-        value = this.Value as string;
+        value = this.Value as BetaUserMessageParam;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="List{T}"/> where <c>T</c> is a <c>BetaContentBlockParam</c>.
+    /// type <see cref="BetaAssistantMessageParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickBetaContentBlockParams(out var value)) {
-    ///     // `value` is of type `IReadOnlyList&lt;BetaContentBlockParam&gt;`
+    /// if (instance.TryPickAssistant(out var value)) {
+    ///     // `value` is of type `BetaAssistantMessageParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickBetaContentBlockParams(
-        [NotNullWhen(true)] out IReadOnlyList<BetaContentBlockParam>? value
-    )
+    public bool TryPickAssistant([NotNullWhen(true)] out BetaAssistantMessageParam? value)
     {
-        value = this.Value as IReadOnlyList<BetaContentBlockParam>;
+        value = this.Value as BetaAssistantMessageParam;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSystemMessageParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSystem(out var value)) {
+    ///     // `value` is of type `BetaSystemMessageParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSystem([NotNullWhen(true)] out BetaSystemMessageParam? value)
+    {
+        value = this.Value as BetaSystemMessageParam;
         return value != null;
     }
 
@@ -209,28 +194,33 @@ public record class BetaMessageParamContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (string value) =&gt; {...},
-    ///     (IReadOnlyList&lt;BetaContentBlockParam&gt; value) =&gt; {...}
+    ///     (BetaUserMessageParam value) =&gt; {...},
+    ///     (BetaAssistantMessageParam value) =&gt; {...},
+    ///     (BetaSystemMessageParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<IReadOnlyList<BetaContentBlockParam>> betaContentBlockParams
+        System::Action<BetaUserMessageParam> user,
+        System::Action<BetaAssistantMessageParam> assistant,
+        System::Action<BetaSystemMessageParam> system
     )
     {
         switch (this.Value)
         {
-            case string value:
-                @string(value);
+            case BetaUserMessageParam value:
+                user(value);
                 break;
-            case IReadOnlyList<BetaContentBlockParam> value:
-                betaContentBlockParams(value);
+            case BetaAssistantMessageParam value:
+                assistant(value);
+                break;
+            case BetaSystemMessageParam value:
+                system(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of BetaMessageParamContent"
+                    "Data did not match any variant of BetaMessageParam"
                 );
         }
     }
@@ -250,31 +240,35 @@ public record class BetaMessageParamContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (string value) =&gt; {...},
-    ///     (IReadOnlyList&lt;BetaContentBlockParam&gt; value) =&gt; {...}
+    ///     (BetaUserMessageParam value) =&gt; {...},
+    ///     (BetaAssistantMessageParam value) =&gt; {...},
+    ///     (BetaSystemMessageParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<IReadOnlyList<BetaContentBlockParam>, T> betaContentBlockParams
+        System::Func<BetaUserMessageParam, T> user,
+        System::Func<BetaAssistantMessageParam, T> assistant,
+        System::Func<BetaSystemMessageParam, T> system
     )
     {
         return this.Value switch
         {
-            string value => @string(value),
-            IReadOnlyList<BetaContentBlockParam> value => betaContentBlockParams(value),
+            BetaUserMessageParam value => user(value),
+            BetaAssistantMessageParam value => assistant(value),
+            BetaSystemMessageParam value => system(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMessageParamContent"
+                "Data did not match any variant of BetaMessageParam"
             ),
         };
     }
 
-    public static implicit operator BetaMessageParamContent(string value) => new(value);
+    public static implicit operator BetaMessageParam(BetaUserMessageParam value) => new(value);
 
-    public static implicit operator BetaMessageParamContent(List<BetaContentBlockParam> value) =>
-        new((IReadOnlyList<BetaContentBlockParam>)value);
+    public static implicit operator BetaMessageParam(BetaAssistantMessageParam value) => new(value);
+
+    public static implicit operator BetaMessageParam(BetaSystemMessageParam value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -291,22 +285,17 @@ public record class BetaMessageParamContent : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of BetaMessageParamContent"
+                "Data did not match any variant of BetaMessageParam"
             );
         }
         this.Switch(
-            (_) => { },
-            (betaContentBlockParams) =>
-            {
-                foreach (var item in betaContentBlockParams)
-                {
-                    item.Validate();
-                }
-            }
+            (user) => user.Validate(),
+            (assistant) => assistant.Validate(),
+            (system) => system.Validate()
         );
     }
 
-    public virtual bool Equals(BetaMessageParamContent? other) =>
+    public virtual bool Equals(BetaMessageParam? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -326,61 +315,105 @@ public record class BetaMessageParamContent : ModelBase
     {
         return this.Value switch
         {
-            string _ => 0,
-            IReadOnlyList<BetaContentBlockParam> _ => 1,
+            BetaUserMessageParam _ => 0,
+            BetaAssistantMessageParam _ => 1,
+            BetaSystemMessageParam _ => 2,
             _ => -1,
         };
     }
 }
 
-sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamContent>
+sealed class BetaMessageParamConverter : JsonConverter<BetaMessageParam>
 {
-    public override BetaMessageParamContent? Read(
+    public override BetaMessageParam? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? role;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(element, options);
-            if (deserialized != null)
-            {
-                return new(deserialized, element);
-            }
+            role = element.GetProperty("role").GetString();
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            role = null;
         }
 
-        try
+        switch (role)
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaContentBlockParam>>(
-                element,
-                options
-            );
-            if (deserialized != null)
+            case "user":
             {
-                foreach (var item in deserialized)
+                try
                 {
-                    item.Validate();
+                    var deserialized = JsonSerializer.Deserialize<BetaUserMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
                 }
-                return new(deserialized, element);
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "assistant":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAssistantMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "system":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaSystemMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                return new BetaMessageParam(element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaMessageParamContent value,
+        BetaMessageParam value,
         JsonSerializerOptions options
     )
     {
@@ -388,17 +421,17 @@ sealed class BetaMessageParamContentConverter : JsonConverter<BetaMessageParamCo
     }
 }
 
-[JsonConverter(typeof(RoleConverter))]
-public enum Role
+[JsonConverter(typeof(BetaMessageParamRoleConverter))]
+public enum BetaMessageParamRole
 {
     User,
     Assistant,
     System,
 }
 
-sealed class RoleConverter : JsonConverter<Role>
+sealed class BetaMessageParamRoleConverter : JsonConverter<BetaMessageParamRole>
 {
-    public override Role Read(
+    public override BetaMessageParamRole Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -406,69 +439,26 @@ sealed class RoleConverter : JsonConverter<Role>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user" => Role.User,
-            "assistant" => Role.Assistant,
-            "system" => Role.System,
-            _ => (Role)(-1),
+            "user" => BetaMessageParamRole.User,
+            "assistant" => BetaMessageParamRole.Assistant,
+            "system" => BetaMessageParamRole.System,
+            _ => (BetaMessageParamRole)(-1),
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, Role value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Role.User => "user",
-                Role.Assistant => "assistant",
-                Role.System => "system",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// How long this system message's text stays in front of the model. `"never"` (the
-/// default) renders it on every request that includes it. `"next_user_message"`
-/// renders it only for the user turn it follows: once a later `role: "user"` message
-/// exists in `messages` the message stays in the array (send it unchanged) but is
-/// no longer shown to the model. Only permitted on `role: "system"` messages.
-/// </summary>
-[JsonConverter(typeof(ClearAtConverter))]
-public enum ClearAt
-{
-    NextUserMessage,
-    Never,
-}
-
-sealed class ClearAtConverter : JsonConverter<ClearAt>
-{
-    public override ClearAt Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMessageParamRole value,
         JsonSerializerOptions options
     )
     {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "next_user_message" => ClearAt.NextUserMessage,
-            "never" => ClearAt.Never,
-            _ => (ClearAt)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, ClearAt value, JsonSerializerOptions options)
-    {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                ClearAt.NextUserMessage => "next_user_message",
-                ClearAt.Never => "never",
+                BetaMessageParamRole.User => "user",
+                BetaMessageParamRole.Assistant => "assistant",
+                BetaMessageParamRole.System => "system",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

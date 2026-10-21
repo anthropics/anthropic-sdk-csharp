@@ -20,12 +20,9 @@ namespace Anthropic;
 /// <inheritdoc/>
 public class AnthropicClient : IAnthropicClient
 {
-    private static int s_shadowWarningEmitted;
-
-    internal static void ResetShadowWarningForTests() => s_shadowWarningEmitted = 0;
-
     protected readonly ClientOptions _options;
-    private readonly bool _ownsCredentials;
+    private TokenCache? _ownedCredentials;
+    private readonly Lazy<ClientOptions> _resolvedOptions;
 
     /// <inheritdoc/>
     public HttpClient HttpClient
@@ -44,7 +41,7 @@ public class AnthropicClient : IAnthropicClient
     /// <inheritdoc/>
     public string BaseUrl
     {
-        get { return this._options.BaseUrl; }
+        get { return this._resolvedOptions.Value.BaseUrl; }
         init { this._options.BaseUrl = value; }
     }
 
@@ -141,7 +138,7 @@ public class AnthropicClient : IAnthropicClient
     /// <inheritdoc/>
     public virtual IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicClient(modifier(this._options));
+        return new AnthropicClient(this._resolvedOptions.Value.Apply(modifier));
     }
 
     readonly Lazy<IMessageService> _messages;
@@ -188,10 +185,7 @@ public class AnthropicClient : IAnthropicClient
 
     public void Dispose()
     {
-        if (_ownsCredentials)
-        {
-            _options.Credentials?.Dispose();
-        }
+        _ownedCredentials?.Dispose();
         this._options.DisposeHttpResources();
         GC.SuppressFinalize(this);
     }
@@ -206,16 +200,17 @@ public class AnthropicClient : IAnthropicClient
     public AnthropicClient()
         : this(new ClientOptions()) { }
 
-    public AnthropicClient(ClientOptions options)
+    /// <summary>
+    /// Returns the options with the credential found in the environment, if any. This runs on
+    /// first use because the constructor can't see a credential passed in an object initializer.
+    /// </summary>
+    private ClientOptions ResolveCredentials()
     {
+        var options = _options;
+
         // Auto-resolve credentials when nothing explicit was provided.
         // Cloud-backend subclasses opt out via ShouldAutoResolveCredentials.
-        if (
-            ShouldAutoResolveCredentials
-            && options.Credentials == null
-            && !options.ApiKeyExplicit
-            && !options.AuthTokenExplicit
-        )
+        if (ShouldAutoResolveCredentials && options.CredentialIsUnset)
         {
             // Base URL precedence: explicit ctor > ANTHROPIC_BASE_URL > profile > Production.
             // Only let the profile's base_url through to Resolve (and adopt it for API
@@ -227,7 +222,8 @@ public class AnthropicClient : IAnthropicClient
             );
             if (resolved != null)
             {
-                options.Credentials = resolved.Credentials;
+                _ownedCredentials = new TokenCache(resolved.Credentials);
+                options.Credentials = _ownedCredentials;
                 if (!hasUserBaseUrl && resolved.BaseUrl != null)
                 {
                     options.BaseUrl = resolved.BaseUrl;
@@ -250,45 +246,38 @@ public class AnthropicClient : IAnthropicClient
             }
         }
 
-        // Warn once if an explicit API key / auth token shadows credentials the
-        // user clearly intended to use (passed Credentials, or set ANTHROPIC_PROFILE).
-        // The silent fallback-to-disk case is intentionally excluded.
-        var explicitStaticCred =
-            (options.ApiKeyExplicit && options.ApiKey != null)
-            || (options.AuthTokenExplicit && options.AuthToken != null);
-        var intendedProfileAuth =
-            options.Credentials != null
-            || Environment.GetEnvironmentVariable(CredentialsConstants.EnvProfile) != null;
-        if (
-            explicitStaticCred
-            && intendedProfileAuth
-            && Interlocked.CompareExchange(ref s_shadowWarningEmitted, 1, 0) == 0
-        )
-        {
-            Console.Error.WriteLine(
-                "WARNING: An explicit API key/auth token is set; the provided "
-                    + "credentials/profile will be ignored. Remove one to silence this warning. "
-                    + "(This warning is shown once per process.)"
-            );
-        }
+        return options;
+    }
 
+    public AnthropicClient(ClientOptions options)
+    {
         // Wrap any user-supplied provider in the shared token cache so the
         // raw-response client and 401-retry path see a single cached instance.
         // We own (and will dispose) the credentials only when this ctor created
         // or wrapped them; a TokenCache passed in (e.g. from a WithOptions clone)
         // is owned by whoever built it.
-        _ownsCredentials = options.Credentials != null && options.Credentials is not TokenCache;
-        if (_ownsCredentials)
+        if (options.Credentials is { } credentials and not TokenCache)
         {
-            options.Credentials = new TokenCache(options.Credentials!);
+            _ownedCredentials = new TokenCache(credentials);
+            options.Credentials = _ownedCredentials;
+        }
+
+        if (!ShouldAutoResolveCredentials)
+        {
+            // A cloud-backend client sets its own credential next, which replaces a first-party
+            // one in these options instead of counting as a second.
+            options = options.InheritCredential();
         }
 
         // The tracing environment variables are read now: a later change of the environment does
         // not reach this client.
         _ = options.ResolvedOpenTelemetry;
         _options = options;
+        _resolvedOptions = new(ResolveCredentials);
 
-        _withRawResponse = new(() => new AnthropicClientWithRawResponse(this._options));
+        _withRawResponse = new(() =>
+            new AnthropicClientWithRawResponse(this._resolvedOptions.Value)
+        );
         _messages = new(() => new MessageService(this));
         _models = new(() => new ModelService(this));
         _files = new(() => new FileService(this));
@@ -319,8 +308,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 #endif
 
     protected readonly ClientOptions _options;
-    private readonly TokenCache? _tokenCache;
-    private readonly bool _ownsCredentials;
+    private readonly TokenCache? _ownedCredentials;
 
     /// <inheritdoc/>
     public HttpClient HttpClient
@@ -397,7 +385,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         Func<ClientOptions, ClientOptions> modifier
     )
     {
-        var options = modifier(this._options);
+        var options = this._options.Apply(modifier);
         // Cloud-backend clients carry their adaptation handler in the options; restore
         // it if the modifier returned fresh options, so requests keep being adapted
         // (rewritten/signed) for the backend. Guarded instead of `??=` because even a
@@ -490,18 +478,20 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             // Gated on retries == 0 so an auth retry never stacks on top of a transport
             // retry, and on IsBodyRepeatable because a multipart body reads from the caller's
             // streams, which the first attempt has already consumed.
-            if (response?.StatusCode == HttpStatusCode.Unauthorized && UsingTokenCredentials)
+            if (
+                response?.StatusCode == HttpStatusCode.Unauthorized
+                && ActiveTokenCache is { } tokenCache
+            )
             {
-                // UsingTokenCredentials => _tokenCache != null, so the ! deref is safe.
                 if (!authRetryConsumed && retries == 0 && request.Params.IsBodyRepeatable())
                 {
                     authRetryConsumed = true;
-                    var failedToken = _tokenCache!.Cached?.Token;
+                    var failedToken = tokenCache.Cached?.Token;
                     // Prime the cache so the retry's BeforeSend picks up the fresh token.
                     AccessToken fresh;
                     try
                     {
-                        fresh = await _tokenCache
+                        fresh = await tokenCache
                             .GetTokenAsync(forceRefresh: true, cancellationToken)
                             .ConfigureAwait(false);
                     }
@@ -524,7 +514,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 else
                 {
                     // Not retrying — invalidate so the caller's next request fetches fresh.
-                    _tokenCache!.Invalidate();
+                    tokenCache.Invalidate();
                 }
             }
 
@@ -573,7 +563,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         }
     }
 
-    private bool UsingTokenCredentials
+    private TokenCache? ActiveTokenCache
     {
         get
         {
@@ -583,14 +573,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             // token-refresh retry applies to them.
             if (_options.BackendAdaptationHandler != null)
             {
-                return false;
+                return null;
             }
 
-            // Precedence: explicit ApiKey/AuthToken > Credentials > env-var ApiKey/AuthToken.
-            var explicitKeyAuth =
-                (_options.ApiKeyExplicit && _options.ApiKey != null)
-                || (_options.AuthTokenExplicit && _options.AuthToken != null);
-            return _tokenCache != null && !explicitKeyAuth;
+            return _options.Credentials as TokenCache;
         }
     }
 
@@ -601,13 +587,11 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     )
         where T : ParamsBase
     {
-        if (UsingTokenCredentials)
-        {
-            // Strip env-var-based API key / auth token headers that AddDefaultHeaders added.
-            requestMessage.Headers.Remove("X-Api-Key");
-            requestMessage.Headers.Remove("Authorization");
+        _options.WarnIfEnvironmentHoldsApiKeyAndAuthToken();
 
-            var token = await _tokenCache!
+        if (ActiveTokenCache is { } tokenCache)
+        {
+            var token = await tokenCache
                 .GetTokenAsync(forceRefresh: false, cancellationToken)
                 .ConfigureAwait(false);
             requestMessage.Headers.Authorization = new AuthenticationHeaderValue(
@@ -939,10 +923,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 
     public void Dispose()
     {
-        if (_ownsCredentials)
-        {
-            _options.Credentials?.Dispose();
-        }
+        _ownedCredentials?.Dispose();
         this._options.DisposeHttpResources();
         GC.SuppressFinalize(this);
     }
@@ -970,13 +951,12 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         // AnthropicClient.WithRawResponse this is already a TokenCache and is reused.
         // We own (and will dispose) the credentials only when this ctor created the
         // wrap; a TokenCache passed in is owned by whoever built it.
-        _ownsCredentials = options.Credentials != null && options.Credentials is not TokenCache;
-        if (_ownsCredentials)
+        if (options.Credentials is { } credentials and not TokenCache)
         {
-            options.Credentials = new TokenCache(options.Credentials!);
+            _ownedCredentials = new TokenCache(credentials);
+            options.Credentials = _ownedCredentials;
         }
         _ = options.ResolvedOpenTelemetry;
         _options = options;
-        _tokenCache = _options.Credentials as TokenCache;
     }
 }

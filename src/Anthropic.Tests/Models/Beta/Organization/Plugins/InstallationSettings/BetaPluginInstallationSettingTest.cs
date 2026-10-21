@@ -263,6 +263,34 @@ public class BetaPluginInstallationSettingTargetTest : TestBase
     }
 
     [Fact]
+    public void BetaPluginTargetOrganizationTypeWorks()
+    {
+        BetaPluginInstallationSettingTarget value = new BetaPluginTargetOrganization();
+        Assert.Equal(BetaPluginInstallationSettingTargetType.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginTargetRbacGroupTypeWorks()
+    {
+        BetaPluginInstallationSettingTarget value = new BetaPluginTargetRbacGroup(
+            "rbac_group_012rppKaSVsmTo6NqRDXQXNF"
+        );
+        Assert.Equal(BetaPluginInstallationSettingTargetType.RbacGroup, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginTargetOrganizationMemberTypeWorks()
+    {
+        BetaPluginInstallationSettingTarget value = new BetaPluginTargetOrganizationMember(
+            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        );
+        Assert.Equal(
+            BetaPluginInstallationSettingTargetType.OrganizationMember,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaPluginInstallationSettingTarget value = new(
@@ -276,14 +304,71 @@ public class BetaPluginInstallationSettingTargetTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+        ApiEnum<string, BetaPluginInstallationSettingTargetType> expectedType =
+            BetaPluginInstallationSettingTargetType.Organization;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaPluginInstallationSettingTarget emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaPluginInstallationSettingTargetTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaPluginInstallationSettingTargetType.Organization)]
+    [InlineData(BetaPluginInstallationSettingTargetType.RbacGroup)]
+    [InlineData(BetaPluginInstallationSettingTargetType.OrganizationMember)]
+    public void Validation_Works(BetaPluginInstallationSettingTargetType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaPluginInstallationSettingTargetType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaPluginInstallationSettingTargetType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaPluginInstallationSettingTargetType.Organization)]
+    [InlineData(BetaPluginInstallationSettingTargetType.RbacGroup)]
+    [InlineData(BetaPluginInstallationSettingTargetType.OrganizationMember)]
+    public void SerializationRoundtrip_Works(BetaPluginInstallationSettingTargetType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaPluginInstallationSettingTargetType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaPluginInstallationSettingTargetType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaPluginInstallationSettingTargetType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaPluginInstallationSettingTargetType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

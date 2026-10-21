@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -46,23 +46,25 @@ public record class BetaDreamingError : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaDreamingErrorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaInvalidRequestError x => x.Type,
-                BetaAuthenticationError x => x.Type,
-                BetaBillingError x => x.Type,
-                BetaPermissionError x => x.Type,
-                BetaNotFoundError x => x.Type,
-                BetaRateLimitError x => x.Type,
-                BetaGatewayTimeoutError x => x.Type,
-                BetaApiError x => x.Type,
-                BetaOverloadedError x => x.Type,
-                BetaTargetStoreHeldError x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaInvalidRequestError _ => BetaDreamingErrorType.InvalidRequestError,
+                BetaAuthenticationError _ => BetaDreamingErrorType.AuthenticationError,
+                BetaBillingError _ => BetaDreamingErrorType.BillingError,
+                BetaPermissionError _ => BetaDreamingErrorType.PermissionError,
+                BetaNotFoundError _ => BetaDreamingErrorType.NotFoundError,
+                BetaRateLimitError _ => BetaDreamingErrorType.RateLimitError,
+                BetaGatewayTimeoutError _ => BetaDreamingErrorType.TimeoutError,
+                BetaApiError _ => BetaDreamingErrorType.ApiError,
+                BetaOverloadedError _ => BetaDreamingErrorType.OverloadedError,
+                BetaTargetStoreHeldError _ => BetaDreamingErrorType.ConflictError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaDreamingErrorType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -371,16 +373,16 @@ public record class BetaDreamingError : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaInvalidRequestError> invalidRequest,
-        System::Action<BetaAuthenticationError> authentication,
-        System::Action<BetaBillingError> billing,
-        System::Action<BetaPermissionError> permission,
-        System::Action<BetaNotFoundError> notFound,
-        System::Action<BetaRateLimitError> rateLimit,
-        System::Action<BetaGatewayTimeoutError> gatewayTimeout,
-        System::Action<BetaApiError> api,
-        System::Action<BetaOverloadedError> overloaded,
-        System::Action<BetaTargetStoreHeldError> targetStoreHeld
+        Action<BetaInvalidRequestError> invalidRequest,
+        Action<BetaAuthenticationError> authentication,
+        Action<BetaBillingError> billing,
+        Action<BetaPermissionError> permission,
+        Action<BetaNotFoundError> notFound,
+        Action<BetaRateLimitError> rateLimit,
+        Action<BetaGatewayTimeoutError> gatewayTimeout,
+        Action<BetaApiError> api,
+        Action<BetaOverloadedError> overloaded,
+        Action<BetaTargetStoreHeldError> targetStoreHeld
     )
     {
         switch (this.Value)
@@ -452,16 +454,16 @@ public record class BetaDreamingError : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaInvalidRequestError, T> invalidRequest,
-        System::Func<BetaAuthenticationError, T> authentication,
-        System::Func<BetaBillingError, T> billing,
-        System::Func<BetaPermissionError, T> permission,
-        System::Func<BetaNotFoundError, T> notFound,
-        System::Func<BetaRateLimitError, T> rateLimit,
-        System::Func<BetaGatewayTimeoutError, T> gatewayTimeout,
-        System::Func<BetaApiError, T> api,
-        System::Func<BetaOverloadedError, T> overloaded,
-        System::Func<BetaTargetStoreHeldError, T> targetStoreHeld
+        Func<BetaInvalidRequestError, T> invalidRequest,
+        Func<BetaAuthenticationError, T> authentication,
+        Func<BetaBillingError, T> billing,
+        Func<BetaPermissionError, T> permission,
+        Func<BetaNotFoundError, T> notFound,
+        Func<BetaRateLimitError, T> rateLimit,
+        Func<BetaGatewayTimeoutError, T> gatewayTimeout,
+        Func<BetaApiError, T> api,
+        Func<BetaOverloadedError, T> overloaded,
+        Func<BetaTargetStoreHeldError, T> targetStoreHeld
     )
     {
         return this.Value switch
@@ -573,7 +575,7 @@ sealed class BetaDreamingErrorConverter : JsonConverter<BetaDreamingError>
 {
     public override BetaDreamingError? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -801,5 +803,73 @@ sealed class BetaDreamingErrorConverter : JsonConverter<BetaDreamingError>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaDreamingErrorTypeConverter))]
+public enum BetaDreamingErrorType
+{
+    InvalidRequestError,
+    AuthenticationError,
+    BillingError,
+    PermissionError,
+    NotFoundError,
+    RateLimitError,
+    TimeoutError,
+    ApiError,
+    OverloadedError,
+    ConflictError,
+}
+
+sealed class BetaDreamingErrorTypeConverter : JsonConverter<BetaDreamingErrorType>
+{
+    public override BetaDreamingErrorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "invalid_request_error" => BetaDreamingErrorType.InvalidRequestError,
+            "authentication_error" => BetaDreamingErrorType.AuthenticationError,
+            "billing_error" => BetaDreamingErrorType.BillingError,
+            "permission_error" => BetaDreamingErrorType.PermissionError,
+            "not_found_error" => BetaDreamingErrorType.NotFoundError,
+            "rate_limit_error" => BetaDreamingErrorType.RateLimitError,
+            "timeout_error" => BetaDreamingErrorType.TimeoutError,
+            "api_error" => BetaDreamingErrorType.ApiError,
+            "overloaded_error" => BetaDreamingErrorType.OverloadedError,
+            "conflict_error" => BetaDreamingErrorType.ConflictError,
+            _ => (BetaDreamingErrorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaDreamingErrorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaDreamingErrorType.InvalidRequestError => "invalid_request_error",
+                BetaDreamingErrorType.AuthenticationError => "authentication_error",
+                BetaDreamingErrorType.BillingError => "billing_error",
+                BetaDreamingErrorType.PermissionError => "permission_error",
+                BetaDreamingErrorType.NotFoundError => "not_found_error",
+                BetaDreamingErrorType.RateLimitError => "rate_limit_error",
+                BetaDreamingErrorType.TimeoutError => "timeout_error",
+                BetaDreamingErrorType.ApiError => "api_error",
+                BetaDreamingErrorType.OverloadedError => "overloaded_error",
+                BetaDreamingErrorType.ConflictError => "conflict_error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

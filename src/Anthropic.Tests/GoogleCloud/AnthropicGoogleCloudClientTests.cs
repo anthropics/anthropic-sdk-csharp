@@ -491,8 +491,10 @@ public class AnthropicGoogleCloudClientTests : IDisposable
     /// First-party Anthropic env vars must never leak onto the wire — even when set,
     /// no <c>X-Api-Key</c> and no first-party <c>Authorization</c> reach the gateway.
     /// </summary>
-    [Fact]
-    public async Task Isolation_FirstPartyEnvVarsNotSent()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task Isolation_FirstPartyEnvVarsNotSent(bool freshOptions)
     {
         Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", "first-party-api-key");
         Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
@@ -506,12 +508,47 @@ public class AnthropicGoogleCloudClientTests : IDisposable
                 BaseUrl = "http://localhost",
             }
         );
+        if (freshOptions)
+        {
+            client = Assert.IsType<AnthropicGoogleCloudClient>(
+                client.WithOptions(opts => new ClientOptions { BaseUrl = opts.BaseUrl })
+            );
+        }
         var req = await SendOneRequest(client);
 
         Assert.False(req.Headers.Contains("X-Api-Key"));
         var auth = req.Headers.GetValues("Authorization").ToArray();
         Assert.Equal(["Bearer google-tok"], auth);
         Assert.Equal("http://localhost/v1/messages", req.RequestUri!.ToString());
+    }
+
+    [Fact]
+    public async Task Isolation_FirstPartyEnvVarsNotSent_RawResponseFreshOptions()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", "first-party-api-key");
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+
+        var client = NewClient(
+            new()
+            {
+                TokenProvider = StaticToken("google-tok"),
+                WorkspaceId = "ws",
+                BaseUrl = "http://localhost",
+            }
+        );
+        var (httpClient, captured) = CreateCapturingClient();
+        var raw = client.WithRawResponse.WithOptions(o => new ClientOptions
+        {
+            HttpClient = httpClient,
+            BaseUrl = o.BaseUrl,
+        });
+        await raw.Execute(
+            new HttpRequest<BlankParams> { Method = HttpMethod.Post, Params = new() },
+            TestContext.Current.CancellationToken
+        );
+
+        var req = Assert.Single(captured);
+        Assert.Equal("Bearer google-tok", req.Headers.GetValues("Authorization").Single());
     }
 
     [Fact]
@@ -568,7 +605,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         Assert.False(req.Headers.Contains("anthropic-workspace-id"));
         // Default headers are present, so the absence above is a real negative — the
         // header pipeline ran and simply never adds the workspace header.
-        Assert.Equal("2023-06-01", req.Headers.GetValues("anthropic-version").Single());
+        Assert.True(req.Headers.Contains("anthropic-version"));
     }
 
     [Fact]

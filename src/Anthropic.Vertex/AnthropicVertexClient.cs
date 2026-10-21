@@ -68,6 +68,6 @@ public class AnthropicVertexClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicVertexClient(_vertexCredentials, modifier(this._options));
+        return new AnthropicVertexClient(_vertexCredentials, this._options.Apply(modifier));
     }
 }

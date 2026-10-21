@@ -1,7 +1,7 @@
-using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -10,73 +10,8 @@ using System = System;
 
 namespace Anthropic.Models.Messages;
 
-[JsonConverter(typeof(JsonModelConverter<MessageParam, MessageParamFromRaw>))]
-public sealed record class MessageParam : JsonModel
-{
-    public required MessageParamContent Content
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<MessageParamContent>("content");
-        }
-        init { this._rawData.Set("content", value); }
-    }
-
-    public required ApiEnum<string, Role> Role
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, Role>>("role");
-        }
-        init { this._rawData.Set("role", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        this.Content.Validate();
-        this.Role.Validate();
-    }
-
-    public MessageParam() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public MessageParam(MessageParam messageParam)
-        : base(messageParam) { }
-#pragma warning restore CS8618
-
-    public MessageParam(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    MessageParam(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="MessageParamFromRaw.FromRawUnchecked"/>
-    public static MessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class MessageParamFromRaw : IFromRawJson<MessageParam>
-{
-    /// <inheritdoc/>
-    public MessageParam FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
-        MessageParam.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(MessageParamContentConverter))]
-public record class MessageParamContent : ModelBase
+[JsonConverter(typeof(MessageParamConverter))]
+public record class MessageParam : ModelBase
 {
     public object? Value { get; } = null;
 
@@ -93,64 +28,134 @@ public record class MessageParamContent : ModelBase
         }
     }
 
-    public MessageParamContent(string value, JsonElement? element = null)
+    public MessageContentParam Content
+    {
+        get
+        {
+            return this.Value switch
+            {
+                UserMessageParam x => x.Content,
+                AssistantMessageParam x => x.Content,
+                SystemMessageParam x => x.Content switch
+                {
+                    { Value: string value } => new MessageContentParam(value),
+                    { Value: IReadOnlyList<TextBlockParam> value } => new MessageContentParam(
+                        ImmutableArray.ToImmutableArray(
+                            Enumerable.Select(value, (item) => new ContentBlockParam(item))
+                        )
+                    ),
+                    var unknown => WrappedJsonSerializer.GetNotNullClass<MessageContentParam>(
+                        unknown.Json,
+                        nameof(SystemMessageParamContent)
+                    ),
+                },
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<MessageContentParam>(
+                    this.Json,
+                    "content"
+                ),
+            };
+        }
+    }
+
+    public ApiEnum<string, MessageParamRole> Role
+    {
+        get
+        {
+            return this.Value switch
+            {
+                UserMessageParam _ => MessageParamRole.User,
+                AssistantMessageParam _ => MessageParamRole.Assistant,
+                SystemMessageParam _ => MessageParamRole.System,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, MessageParamRole>
+                >(this.Json, "role"),
+            };
+        }
+    }
+
+    public MessageParam(UserMessageParam value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public MessageParamContent(IReadOnlyList<ContentBlockParam> value, JsonElement? element = null)
+    public MessageParam(AssistantMessageParam value, JsonElement? element = null)
     {
-        this.Value = ImmutableArray.ToImmutableArray(value);
+        this.Value = value;
         this._element = element;
     }
 
-    public MessageParamContent(JsonElement element)
+    public MessageParam(SystemMessageParam value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public MessageParam(JsonElement element)
     {
         this._element = element;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="string"/>.
+    /// type <see cref="UserMessageParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickString(out var value)) {
-    ///     // `value` is of type `string`
+    /// if (instance.TryPickUser(out var value)) {
+    ///     // `value` is of type `UserMessageParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickString([NotNullWhen(true)] out string? value)
+    public bool TryPickUser([NotNullWhen(true)] out UserMessageParam? value)
     {
-        value = this.Value as string;
+        value = this.Value as UserMessageParam;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="List{T}"/> where <c>T</c> is a <c>ContentBlockParam</c>.
+    /// type <see cref="AssistantMessageParam"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
-    /// if (instance.TryPickContentBlockParams(out var value)) {
-    ///     // `value` is of type `IReadOnlyList&lt;ContentBlockParam&gt;`
+    /// if (instance.TryPickAssistant(out var value)) {
+    ///     // `value` is of type `AssistantMessageParam`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickContentBlockParams(
-        [NotNullWhen(true)] out IReadOnlyList<ContentBlockParam>? value
-    )
+    public bool TryPickAssistant([NotNullWhen(true)] out AssistantMessageParam? value)
     {
-        value = this.Value as IReadOnlyList<ContentBlockParam>;
+        value = this.Value as AssistantMessageParam;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="SystemMessageParam"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSystem(out var value)) {
+    ///     // `value` is of type `SystemMessageParam`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSystem([NotNullWhen(true)] out SystemMessageParam? value)
+    {
+        value = this.Value as SystemMessageParam;
         return value != null;
     }
 
@@ -168,28 +173,33 @@ public record class MessageParamContent : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (string value) =&gt; {...},
-    ///     (IReadOnlyList&lt;ContentBlockParam&gt; value) =&gt; {...}
+    ///     (UserMessageParam value) =&gt; {...},
+    ///     (AssistantMessageParam value) =&gt; {...},
+    ///     (SystemMessageParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<IReadOnlyList<ContentBlockParam>> contentBlockParams
+        System::Action<UserMessageParam> user,
+        System::Action<AssistantMessageParam> assistant,
+        System::Action<SystemMessageParam> system
     )
     {
         switch (this.Value)
         {
-            case string value:
-                @string(value);
+            case UserMessageParam value:
+                user(value);
                 break;
-            case IReadOnlyList<ContentBlockParam> value:
-                contentBlockParams(value);
+            case AssistantMessageParam value:
+                assistant(value);
+                break;
+            case SystemMessageParam value:
+                system(value);
                 break;
             default:
                 throw new AnthropicInvalidDataException(
-                    "Data did not match any variant of MessageParamContent"
+                    "Data did not match any variant of MessageParam"
                 );
         }
     }
@@ -209,31 +219,35 @@ public record class MessageParamContent : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (string value) =&gt; {...},
-    ///     (IReadOnlyList&lt;ContentBlockParam&gt; value) =&gt; {...}
+    ///     (UserMessageParam value) =&gt; {...},
+    ///     (AssistantMessageParam value) =&gt; {...},
+    ///     (SystemMessageParam value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<IReadOnlyList<ContentBlockParam>, T> contentBlockParams
+        System::Func<UserMessageParam, T> user,
+        System::Func<AssistantMessageParam, T> assistant,
+        System::Func<SystemMessageParam, T> system
     )
     {
         return this.Value switch
         {
-            string value => @string(value),
-            IReadOnlyList<ContentBlockParam> value => contentBlockParams(value),
+            UserMessageParam value => user(value),
+            AssistantMessageParam value => assistant(value),
+            SystemMessageParam value => system(value),
             _ => throw new AnthropicInvalidDataException(
-                "Data did not match any variant of MessageParamContent"
+                "Data did not match any variant of MessageParam"
             ),
         };
     }
 
-    public static implicit operator MessageParamContent(string value) => new(value);
+    public static implicit operator MessageParam(UserMessageParam value) => new(value);
 
-    public static implicit operator MessageParamContent(List<ContentBlockParam> value) =>
-        new((IReadOnlyList<ContentBlockParam>)value);
+    public static implicit operator MessageParam(AssistantMessageParam value) => new(value);
+
+    public static implicit operator MessageParam(SystemMessageParam value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -250,22 +264,17 @@ public record class MessageParamContent : ModelBase
         if (this.Value == null)
         {
             throw new AnthropicInvalidDataException(
-                "Data did not match any variant of MessageParamContent"
+                "Data did not match any variant of MessageParam"
             );
         }
         this.Switch(
-            (_) => { },
-            (contentBlockParams) =>
-            {
-                foreach (var item in contentBlockParams)
-                {
-                    item.Validate();
-                }
-            }
+            (user) => user.Validate(),
+            (assistant) => assistant.Validate(),
+            (system) => system.Validate()
         );
     }
 
-    public virtual bool Equals(MessageParamContent? other) =>
+    public virtual bool Equals(MessageParam? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -285,61 +294,105 @@ public record class MessageParamContent : ModelBase
     {
         return this.Value switch
         {
-            string _ => 0,
-            IReadOnlyList<ContentBlockParam> _ => 1,
+            UserMessageParam _ => 0,
+            AssistantMessageParam _ => 1,
+            SystemMessageParam _ => 2,
             _ => -1,
         };
     }
 }
 
-sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
+sealed class MessageParamConverter : JsonConverter<MessageParam>
 {
-    public override MessageParamContent? Read(
+    public override MessageParam? Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? role;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<string>(element, options);
-            if (deserialized != null)
-            {
-                return new(deserialized, element);
-            }
+            role = element.GetProperty("role").GetString();
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            role = null;
         }
 
-        try
+        switch (role)
         {
-            var deserialized = JsonSerializer.Deserialize<List<ContentBlockParam>>(
-                element,
-                options
-            );
-            if (deserialized != null)
+            case "user":
             {
-                foreach (var item in deserialized)
+                try
                 {
-                    item.Validate();
+                    var deserialized = JsonSerializer.Deserialize<UserMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
                 }
-                return new(deserialized, element);
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "assistant":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<AssistantMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "system":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<SystemMessageParam>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                return new MessageParam(element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        MessageParamContent value,
+        MessageParam value,
         JsonSerializerOptions options
     )
     {
@@ -347,17 +400,17 @@ sealed class MessageParamContentConverter : JsonConverter<MessageParamContent>
     }
 }
 
-[JsonConverter(typeof(RoleConverter))]
-public enum Role
+[JsonConverter(typeof(MessageParamRoleConverter))]
+public enum MessageParamRole
 {
     User,
     Assistant,
     System,
 }
 
-sealed class RoleConverter : JsonConverter<Role>
+sealed class MessageParamRoleConverter : JsonConverter<MessageParamRole>
 {
-    public override Role Read(
+    public override MessageParamRole Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -365,22 +418,26 @@ sealed class RoleConverter : JsonConverter<Role>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user" => Role.User,
-            "assistant" => Role.Assistant,
-            "system" => Role.System,
-            _ => (Role)(-1),
+            "user" => MessageParamRole.User,
+            "assistant" => MessageParamRole.Assistant,
+            "system" => MessageParamRole.System,
+            _ => (MessageParamRole)(-1),
         };
     }
 
-    public override void Write(Utf8JsonWriter writer, Role value, JsonSerializerOptions options)
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageParamRole value,
+        JsonSerializerOptions options
+    )
     {
         JsonSerializer.Serialize(
             writer,
             value switch
             {
-                Role.User => "user",
-                Role.Assistant => "assistant",
-                Role.System => "system",
+                MessageParamRole.User => "user",
+                MessageParamRole.Assistant => "assistant",
+                MessageParamRole.System => "system",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

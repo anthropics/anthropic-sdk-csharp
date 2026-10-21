@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -28,16 +28,21 @@ public record class BetaManagedAgentsWorkflowRunResult : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsWorkflowRunResultType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsWorkflowRunResultCompleted x => x.Type,
-                BetaManagedAgentsWorkflowRunResultError x => x.Type,
-                BetaManagedAgentsWorkflowRunResultStopped x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsWorkflowRunResultCompleted _ =>
+                    BetaManagedAgentsWorkflowRunResultType.Completed,
+                BetaManagedAgentsWorkflowRunResultError _ =>
+                    BetaManagedAgentsWorkflowRunResultType.Error,
+                BetaManagedAgentsWorkflowRunResultStopped _ =>
+                    BetaManagedAgentsWorkflowRunResultType.Stopped,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsWorkflowRunResultType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -163,9 +168,9 @@ public record class BetaManagedAgentsWorkflowRunResult : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsWorkflowRunResultCompleted> completed,
-        System::Action<BetaManagedAgentsWorkflowRunResultError> error,
-        System::Action<BetaManagedAgentsWorkflowRunResultStopped> stopped
+        Action<BetaManagedAgentsWorkflowRunResultCompleted> completed,
+        Action<BetaManagedAgentsWorkflowRunResultError> error,
+        Action<BetaManagedAgentsWorkflowRunResultStopped> stopped
     )
     {
         switch (this.Value)
@@ -209,9 +214,9 @@ public record class BetaManagedAgentsWorkflowRunResult : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsWorkflowRunResultCompleted, T> completed,
-        System::Func<BetaManagedAgentsWorkflowRunResultError, T> error,
-        System::Func<BetaManagedAgentsWorkflowRunResultStopped, T> stopped
+        Func<BetaManagedAgentsWorkflowRunResultCompleted, T> completed,
+        Func<BetaManagedAgentsWorkflowRunResultError, T> error,
+        Func<BetaManagedAgentsWorkflowRunResultStopped, T> stopped
     )
     {
         return this.Value switch
@@ -295,7 +300,7 @@ sealed class BetaManagedAgentsWorkflowRunResultConverter
 {
     public override BetaManagedAgentsWorkflowRunResult? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -389,5 +394,53 @@ sealed class BetaManagedAgentsWorkflowRunResultConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsWorkflowRunResultTypeConverter))]
+public enum BetaManagedAgentsWorkflowRunResultType
+{
+    Completed,
+    Error,
+    Stopped,
+}
+
+sealed class BetaManagedAgentsWorkflowRunResultTypeConverter
+    : JsonConverter<BetaManagedAgentsWorkflowRunResultType>
+{
+    public override BetaManagedAgentsWorkflowRunResultType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "completed" => BetaManagedAgentsWorkflowRunResultType.Completed,
+            "error" => BetaManagedAgentsWorkflowRunResultType.Error,
+            "stopped" => BetaManagedAgentsWorkflowRunResultType.Stopped,
+            _ => (BetaManagedAgentsWorkflowRunResultType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsWorkflowRunResultType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsWorkflowRunResultType.Completed => "completed",
+                BetaManagedAgentsWorkflowRunResultType.Error => "error",
+                BetaManagedAgentsWorkflowRunResultType.Stopped => "stopped",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

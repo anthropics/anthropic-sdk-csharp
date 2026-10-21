@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -17,14 +16,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsEffortXhigh : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsEffortXhighType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsEffortXhighType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -32,10 +29,16 @@ public sealed record class BetaManagedAgentsEffortXhigh : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("xhigh")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEffortXhigh() { }
+    public BetaManagedAgentsEffortXhigh()
+    {
+        this.Type = JsonSerializer.SerializeToElement("xhigh");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -46,6 +49,8 @@ public sealed record class BetaManagedAgentsEffortXhigh : JsonModel
     public BetaManagedAgentsEffortXhigh(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("xhigh");
     }
 
 #pragma warning disable CS8618
@@ -63,13 +68,6 @@ public sealed record class BetaManagedAgentsEffortXhigh : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsEffortXhigh(ApiEnum<string, BetaManagedAgentsEffortXhighType> type)
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsEffortXhighFromRaw : IFromRawJson<BetaManagedAgentsEffortXhigh>
@@ -78,46 +76,4 @@ class BetaManagedAgentsEffortXhighFromRaw : IFromRawJson<BetaManagedAgentsEffort
     public BetaManagedAgentsEffortXhigh FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEffortXhigh.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsEffortXhighTypeConverter))]
-public enum BetaManagedAgentsEffortXhighType
-{
-    Xhigh,
-}
-
-sealed class BetaManagedAgentsEffortXhighTypeConverter
-    : JsonConverter<BetaManagedAgentsEffortXhighType>
-{
-    public override BetaManagedAgentsEffortXhighType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "xhigh" => BetaManagedAgentsEffortXhighType.Xhigh,
-            _ => (BetaManagedAgentsEffortXhighType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEffortXhighType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEffortXhighType.Xhigh => "xhigh",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

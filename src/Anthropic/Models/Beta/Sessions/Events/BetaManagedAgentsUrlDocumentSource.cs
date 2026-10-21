@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 )]
 public sealed record class BetaManagedAgentsUrlDocumentSource : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsUrlDocumentSourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUrlDocumentSourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -48,11 +45,17 @@ public sealed record class BetaManagedAgentsUrlDocumentSource : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("url")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Url;
     }
 
-    public BetaManagedAgentsUrlDocumentSource() { }
+    public BetaManagedAgentsUrlDocumentSource()
+    {
+        this.Type = JsonSerializer.SerializeToElement("url");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +68,8 @@ public sealed record class BetaManagedAgentsUrlDocumentSource : JsonModel
     public BetaManagedAgentsUrlDocumentSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +87,13 @@ public sealed record class BetaManagedAgentsUrlDocumentSource : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsUrlDocumentSource(string url)
+        : this()
+    {
+        this.Url = url;
+    }
 }
 
 class BetaManagedAgentsUrlDocumentSourceFromRaw : IFromRawJson<BetaManagedAgentsUrlDocumentSource>
@@ -90,46 +102,4 @@ class BetaManagedAgentsUrlDocumentSourceFromRaw : IFromRawJson<BetaManagedAgents
     public BetaManagedAgentsUrlDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUrlDocumentSource.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUrlDocumentSourceTypeConverter))]
-public enum BetaManagedAgentsUrlDocumentSourceType
-{
-    Url,
-}
-
-sealed class BetaManagedAgentsUrlDocumentSourceTypeConverter
-    : JsonConverter<BetaManagedAgentsUrlDocumentSourceType>
-{
-    public override BetaManagedAgentsUrlDocumentSourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "url" => BetaManagedAgentsUrlDocumentSourceType.Url,
-            _ => (BetaManagedAgentsUrlDocumentSourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUrlDocumentSourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUrlDocumentSourceType.Url => "url",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

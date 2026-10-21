@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -38,14 +37,12 @@ public sealed record class BetaOutputBehaviorUpdateExisting : JsonModel
         init { this._rawData.Set("memory_store_id", value); }
     }
 
-    public required ApiEnum<string, BetaOutputBehaviorUpdateExistingType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaOutputBehaviorUpdateExistingType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -54,10 +51,18 @@ public sealed record class BetaOutputBehaviorUpdateExisting : JsonModel
     public override void Validate()
     {
         _ = this.MemoryStoreID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("update_existing"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaOutputBehaviorUpdateExisting() { }
+    public BetaOutputBehaviorUpdateExisting()
+    {
+        this.Type = JsonSerializer.SerializeToElement("update_existing");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -70,6 +75,8 @@ public sealed record class BetaOutputBehaviorUpdateExisting : JsonModel
     public BetaOutputBehaviorUpdateExisting(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("update_existing");
     }
 
 #pragma warning disable CS8618
@@ -87,6 +94,13 @@ public sealed record class BetaOutputBehaviorUpdateExisting : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaOutputBehaviorUpdateExisting(string memoryStoreID)
+        : this()
+    {
+        this.MemoryStoreID = memoryStoreID;
+    }
 }
 
 class BetaOutputBehaviorUpdateExistingFromRaw : IFromRawJson<BetaOutputBehaviorUpdateExisting>
@@ -95,46 +109,4 @@ class BetaOutputBehaviorUpdateExistingFromRaw : IFromRawJson<BetaOutputBehaviorU
     public BetaOutputBehaviorUpdateExisting FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaOutputBehaviorUpdateExisting.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaOutputBehaviorUpdateExistingTypeConverter))]
-public enum BetaOutputBehaviorUpdateExistingType
-{
-    UpdateExisting,
-}
-
-sealed class BetaOutputBehaviorUpdateExistingTypeConverter
-    : JsonConverter<BetaOutputBehaviorUpdateExistingType>
-{
-    public override BetaOutputBehaviorUpdateExistingType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "update_existing" => BetaOutputBehaviorUpdateExistingType.UpdateExisting,
-            _ => (BetaOutputBehaviorUpdateExistingType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaOutputBehaviorUpdateExistingType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaOutputBehaviorUpdateExistingType.UpdateExisting => "update_existing",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -51,14 +50,12 @@ public sealed record class BetaManagedAgentsAgentToolset20260401 : JsonModel
         init { this._rawData.Set("default_config", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentToolset20260401Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentToolset20260401Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -71,10 +68,21 @@ public sealed record class BetaManagedAgentsAgentToolset20260401 : JsonModel
             item.Validate();
         }
         this.DefaultConfig.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent_toolset_20260401")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAgentToolset20260401() { }
+    public BetaManagedAgentsAgentToolset20260401()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent_toolset_20260401");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -87,6 +95,8 @@ public sealed record class BetaManagedAgentsAgentToolset20260401 : JsonModel
     public BetaManagedAgentsAgentToolset20260401(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent_toolset_20260401");
     }
 
 #pragma warning disable CS8618
@@ -113,48 +123,4 @@ class BetaManagedAgentsAgentToolset20260401FromRaw
     public BetaManagedAgentsAgentToolset20260401 FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentToolset20260401.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentToolset20260401TypeConverter))]
-public enum BetaManagedAgentsAgentToolset20260401Type
-{
-    AgentToolset20260401,
-}
-
-sealed class BetaManagedAgentsAgentToolset20260401TypeConverter
-    : JsonConverter<BetaManagedAgentsAgentToolset20260401Type>
-{
-    public override BetaManagedAgentsAgentToolset20260401Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent_toolset_20260401" =>
-                BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
-            _ => (BetaManagedAgentsAgentToolset20260401Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentToolset20260401Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401 =>
-                    "agent_toolset_20260401",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

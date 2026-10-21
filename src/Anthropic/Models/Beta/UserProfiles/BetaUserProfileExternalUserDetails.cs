@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -96,12 +96,12 @@ public sealed record class BetaUserProfileExternalUserDetails : JsonModel
     /// When the entity opened its account with the platform, as stated by the platform,
     /// in RFC 3339 format (UTC). `null` until the platform supplies one.
     /// </summary>
-    public required System::DateTimeOffset? OnboardedAt
+    public required DateTimeOffset? OnboardedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("onboarded_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("onboarded_at");
         }
         init { this._rawData.Set("onboarded_at", value); }
     }
@@ -200,7 +200,7 @@ sealed class AccountStatusConverter : JsonConverter<AccountStatus>
 {
     public override AccountStatus Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -252,7 +252,7 @@ sealed class EntityTypeConverter : JsonConverter<EntityType>
 {
     public override EntityType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

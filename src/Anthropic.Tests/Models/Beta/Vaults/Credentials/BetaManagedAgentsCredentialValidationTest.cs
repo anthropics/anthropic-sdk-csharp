@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -38,7 +37,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
                 Status = Status.Succeeded,
             },
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
-            Type = BetaManagedAgentsCredentialValidationType.VaultCredentialValidation,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -69,8 +67,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         };
         ApiEnum<string, BetaManagedAgentsCredentialValidationStatus> expectedStatus =
             BetaManagedAgentsCredentialValidationStatus.Valid;
-        ApiEnum<string, BetaManagedAgentsCredentialValidationType> expectedType =
-            BetaManagedAgentsCredentialValidationType.VaultCredentialValidation;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential_validation");
         DateTimeOffset expectedValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
 
@@ -79,7 +76,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         Assert.Equal(expectedMcpProbe, model.McpProbe);
         Assert.Equal(expectedRefresh, model.Refresh);
         Assert.Equal(expectedStatus, model.Status);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedValidatedAt, model.ValidatedAt);
         Assert.Equal(expectedVaultID, model.VaultID);
     }
@@ -114,7 +111,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
                 Status = Status.Succeeded,
             },
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
-            Type = BetaManagedAgentsCredentialValidationType.VaultCredentialValidation,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -158,7 +154,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
                 Status = Status.Succeeded,
             },
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
-            Type = BetaManagedAgentsCredentialValidationType.VaultCredentialValidation,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -196,8 +191,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         };
         ApiEnum<string, BetaManagedAgentsCredentialValidationStatus> expectedStatus =
             BetaManagedAgentsCredentialValidationStatus.Valid;
-        ApiEnum<string, BetaManagedAgentsCredentialValidationType> expectedType =
-            BetaManagedAgentsCredentialValidationType.VaultCredentialValidation;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential_validation");
         DateTimeOffset expectedValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
 
@@ -206,7 +200,7 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         Assert.Equal(expectedMcpProbe, deserialized.McpProbe);
         Assert.Equal(expectedRefresh, deserialized.Refresh);
         Assert.Equal(expectedStatus, deserialized.Status);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedValidatedAt, deserialized.ValidatedAt);
         Assert.Equal(expectedVaultID, deserialized.VaultID);
     }
@@ -241,7 +235,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
                 Status = Status.Succeeded,
             },
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
-            Type = BetaManagedAgentsCredentialValidationType.VaultCredentialValidation,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -279,7 +272,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
                 Status = Status.Succeeded,
             },
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
-            Type = BetaManagedAgentsCredentialValidationType.VaultCredentialValidation,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -287,57 +279,5 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         BetaManagedAgentsCredentialValidation copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsCredentialValidationTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsCredentialValidationType.VaultCredentialValidation)]
-    public void Validation_Works(BetaManagedAgentsCredentialValidationType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCredentialValidationType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialValidationType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsCredentialValidationType.VaultCredentialValidation)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsCredentialValidationType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCredentialValidationType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialValidationType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialValidationType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialValidationType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

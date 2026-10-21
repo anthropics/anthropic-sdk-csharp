@@ -433,6 +433,38 @@ public class EnvironmentUpdateParamsConfigTest : TestBase
     }
 
     [Fact]
+    public void BetaCloudConfigParamsTypeWorks()
+    {
+        EnvironmentUpdateParamsConfig value = new BetaCloudConfigParams()
+        {
+            Networking = new BetaLimitedNetworkParams()
+            {
+                AllowMcpServers = true,
+                AllowPackageManagers = true,
+                AllowedHosts = ["api.example.com"],
+            },
+            Packages = new()
+            {
+                Apt = ["string"],
+                Cargo = ["string"],
+                Gem = ["string"],
+                Go = ["string"],
+                Npm = ["string"],
+                Pip = ["pandas", "numpy"],
+                Type = BetaPackagesParamsType.Packages,
+            },
+        };
+        Assert.Equal(EnvironmentUpdateParamsConfigType.Cloud, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSelfHostedConfigParamsTypeWorks()
+    {
+        EnvironmentUpdateParamsConfig value = new BetaSelfHostedConfigParams();
+        Assert.Equal(EnvironmentUpdateParamsConfigType.SelfHosted, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         EnvironmentUpdateParamsConfig value = new(
@@ -446,15 +478,72 @@ public class EnvironmentUpdateParamsConfigTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+        ApiEnum<string, EnvironmentUpdateParamsConfigType> expectedType =
+            EnvironmentUpdateParamsConfigType.Cloud;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         EnvironmentUpdateParamsConfig emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class EnvironmentUpdateParamsConfigTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(EnvironmentUpdateParamsConfigType.Cloud)]
+    [InlineData(EnvironmentUpdateParamsConfigType.SelfHosted)]
+    public void Validation_Works(EnvironmentUpdateParamsConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, EnvironmentUpdateParamsConfigType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, EnvironmentUpdateParamsConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(EnvironmentUpdateParamsConfigType.Cloud)]
+    [InlineData(EnvironmentUpdateParamsConfigType.SelfHosted)]
+    public void SerializationRoundtrip_Works(EnvironmentUpdateParamsConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, EnvironmentUpdateParamsConfigType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, EnvironmentUpdateParamsConfigType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, EnvironmentUpdateParamsConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, EnvironmentUpdateParamsConfigType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 

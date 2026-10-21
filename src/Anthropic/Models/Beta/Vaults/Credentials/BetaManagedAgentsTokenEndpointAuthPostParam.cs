@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostParam : JsonMod
         init { this._rawData.Set("client_secret", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsTokenEndpointAuthPostParamType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsTokenEndpointAuthPostParamType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostParam : JsonMod
     public override void Validate()
     {
         _ = this.ClientSecret;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("client_secret_post")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsTokenEndpointAuthPostParam() { }
+    public BetaManagedAgentsTokenEndpointAuthPostParam()
+    {
+        this.Type = JsonSerializer.SerializeToElement("client_secret_post");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -67,6 +75,8 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostParam : JsonMod
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("client_secret_post");
     }
 
 #pragma warning disable CS8618
@@ -84,6 +94,13 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostParam : JsonMod
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsTokenEndpointAuthPostParam(string clientSecret)
+        : this()
+    {
+        this.ClientSecret = clientSecret;
+    }
 }
 
 class BetaManagedAgentsTokenEndpointAuthPostParamFromRaw
@@ -93,48 +110,4 @@ class BetaManagedAgentsTokenEndpointAuthPostParamFromRaw
     public BetaManagedAgentsTokenEndpointAuthPostParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsTokenEndpointAuthPostParam.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsTokenEndpointAuthPostParamTypeConverter))]
-public enum BetaManagedAgentsTokenEndpointAuthPostParamType
-{
-    ClientSecretPost,
-}
-
-sealed class BetaManagedAgentsTokenEndpointAuthPostParamTypeConverter
-    : JsonConverter<BetaManagedAgentsTokenEndpointAuthPostParamType>
-{
-    public override BetaManagedAgentsTokenEndpointAuthPostParamType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "client_secret_post" =>
-                BetaManagedAgentsTokenEndpointAuthPostParamType.ClientSecretPost,
-            _ => (BetaManagedAgentsTokenEndpointAuthPostParamType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsTokenEndpointAuthPostParamType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsTokenEndpointAuthPostParamType.ClientSecretPost =>
-                    "client_secret_post",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -47,14 +47,12 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
         init { this._rawData.Set("timezone", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsCronScheduleType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsCronScheduleType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,12 +61,12 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
     /// Time the most recent scheduled run actually started. Null until one completes;
     /// preserved after the deployment is archived. Manual runs do not update this.
     /// </summary>
-    public System::DateTimeOffset? LastRunAt
+    public DateTimeOffset? LastRunAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("last_run_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("last_run_at");
         }
         init { this._rawData.Set("last_run_at", value); }
     }
@@ -80,12 +78,12 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
     /// by a small per-schedule jitter, so a run will actually start at or shortly
     /// after its listed time.
     /// </summary>
-    public IReadOnlyList<System::DateTimeOffset>? UpcomingRunsAt
+    public IReadOnlyList<DateTimeOffset>? UpcomingRunsAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<ImmutableArray<System::DateTimeOffset>>(
+            return this._rawData.GetNullableStruct<ImmutableArray<DateTimeOffset>>(
                 "upcoming_runs_at"
             );
         }
@@ -97,7 +95,7 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<System::DateTimeOffset>?>(
+            this._rawData.Set<ImmutableArray<DateTimeOffset>?>(
                 "upcoming_runs_at",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -109,12 +107,18 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
     {
         _ = this.Expression;
         _ = this.Timezone;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("cron")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.LastRunAt;
         _ = this.UpcomingRunsAt;
     }
 
-    public BetaManagedAgentsCronSchedule() { }
+    public BetaManagedAgentsCronSchedule()
+    {
+        this.Type = JsonSerializer.SerializeToElement("cron");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -127,6 +131,8 @@ public sealed record class BetaManagedAgentsCronSchedule : JsonModel
     public BetaManagedAgentsCronSchedule(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("cron");
     }
 
 #pragma warning disable CS8618
@@ -152,46 +158,4 @@ class BetaManagedAgentsCronScheduleFromRaw : IFromRawJson<BetaManagedAgentsCronS
     public BetaManagedAgentsCronSchedule FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCronSchedule.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsCronScheduleTypeConverter))]
-public enum BetaManagedAgentsCronScheduleType
-{
-    Cron,
-}
-
-sealed class BetaManagedAgentsCronScheduleTypeConverter
-    : JsonConverter<BetaManagedAgentsCronScheduleType>
-{
-    public override BetaManagedAgentsCronScheduleType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "cron" => BetaManagedAgentsCronScheduleType.Cron,
-            _ => (BetaManagedAgentsCronScheduleType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCronScheduleType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCronScheduleType.Cron => "cron",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

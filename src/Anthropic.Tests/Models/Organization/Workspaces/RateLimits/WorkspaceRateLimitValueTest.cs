@@ -146,6 +146,20 @@ public class SourceTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceRateLimitWorkspaceTypeWorks()
+    {
+        Source value = new WorkspaceRateLimitWorkspaceSource();
+        Assert.Equal(SourceType.Workspace, value.Type.Value());
+    }
+
+    [Fact]
+    public void WorkspaceRateLimitOrganizationTypeWorks()
+    {
+        Source value = new WorkspaceRateLimitOrganizationSource();
+        Assert.Equal(SourceType.Organization, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Source value = new(
@@ -159,12 +173,70 @@ public class SourceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
+        ApiEnum<string, SourceType> expectedType = SourceType.Workspace;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Source emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class SourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(SourceType.Workspace)]
+    [InlineData(SourceType.Organization)]
+    public void Validation_Works(SourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(SourceType.Workspace)]
+    [InlineData(SourceType.Organization)]
+    public void SerializationRoundtrip_Works(SourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

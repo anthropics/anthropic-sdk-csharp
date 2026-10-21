@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -50,12 +50,12 @@ public sealed record class BetaManagedAgentsSessionThreadStatusTerminatedEvent :
     /// <summary>
     /// Timestamp of the status transition.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -73,14 +73,12 @@ public sealed record class BetaManagedAgentsSessionThreadStatusTerminatedEvent :
         init { this._rawData.Set("session_thread_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionThreadStatusTerminatedEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionThreadStatusTerminatedEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -92,10 +90,21 @@ public sealed record class BetaManagedAgentsSessionThreadStatusTerminatedEvent :
         _ = this.AgentName;
         _ = this.ProcessedAt;
         _ = this.SessionThreadID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session.thread_status_terminated")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionThreadStatusTerminatedEvent() { }
+    public BetaManagedAgentsSessionThreadStatusTerminatedEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.thread_status_terminated");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -110,6 +119,8 @@ public sealed record class BetaManagedAgentsSessionThreadStatusTerminatedEvent :
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.thread_status_terminated");
     }
 
 #pragma warning disable CS8618
@@ -138,48 +149,4 @@ class BetaManagedAgentsSessionThreadStatusTerminatedEventFromRaw
     public BetaManagedAgentsSessionThreadStatusTerminatedEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionThreadStatusTerminatedEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusTerminatedEventTypeConverter))]
-public enum BetaManagedAgentsSessionThreadStatusTerminatedEventType
-{
-    SessionThreadStatusTerminated,
-}
-
-sealed class BetaManagedAgentsSessionThreadStatusTerminatedEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionThreadStatusTerminatedEventType>
-{
-    public override BetaManagedAgentsSessionThreadStatusTerminatedEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.thread_status_terminated" =>
-                BetaManagedAgentsSessionThreadStatusTerminatedEventType.SessionThreadStatusTerminated,
-            _ => (BetaManagedAgentsSessionThreadStatusTerminatedEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionThreadStatusTerminatedEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionThreadStatusTerminatedEventType.SessionThreadStatusTerminated =>
-                    "session.thread_status_terminated",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

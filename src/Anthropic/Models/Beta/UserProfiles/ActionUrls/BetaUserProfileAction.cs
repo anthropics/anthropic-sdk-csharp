@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles.ActionUrls;
 
@@ -25,6 +25,20 @@ public record class BetaUserProfileAction : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaUserProfileActionType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaUserProfileEnrollEndUserAction _ => BetaUserProfileActionType.EnrollEndUser,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaUserProfileActionType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -84,7 +98,7 @@ public record class BetaUserProfileAction : ModelBase
     /// </code>
     /// </example>
     /// </summary>
-    public void Switch(System::Action<BetaUserProfileEnrollEndUserAction> enrollEndUser)
+    public void Switch(Action<BetaUserProfileEnrollEndUserAction> enrollEndUser)
     {
         switch (this.Value)
         {
@@ -118,7 +132,7 @@ public record class BetaUserProfileAction : ModelBase
     /// </code>
     /// </example>
     /// </summary>
-    public T Match<T>(System::Func<BetaUserProfileEnrollEndUserAction, T> enrollEndUser)
+    public T Match<T>(Func<BetaUserProfileEnrollEndUserAction, T> enrollEndUser)
     {
         return this.Value switch
         {
@@ -184,7 +198,7 @@ sealed class BetaUserProfileActionConverter : JsonConverter<BetaUserProfileActio
 {
     public override BetaUserProfileAction? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -236,5 +250,46 @@ sealed class BetaUserProfileActionConverter : JsonConverter<BetaUserProfileActio
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaUserProfileActionTypeConverter))]
+public enum BetaUserProfileActionType
+{
+    EnrollEndUser,
+}
+
+sealed class BetaUserProfileActionTypeConverter : JsonConverter<BetaUserProfileActionType>
+{
+    public override BetaUserProfileActionType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enroll_end_user" => BetaUserProfileActionType.EnrollEndUser,
+            _ => (BetaUserProfileActionType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaUserProfileActionType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaUserProfileActionType.EnrollEndUser => "enroll_end_user",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

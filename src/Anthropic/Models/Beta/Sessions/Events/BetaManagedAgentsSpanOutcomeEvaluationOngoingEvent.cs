@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -64,24 +64,22 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent : 
     /// <summary>
     /// Timestamp when this heartbeat was emitted.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -93,10 +91,21 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent : 
         _ = this.Iteration;
         _ = this.OutcomeID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("span.outcome_evaluation_ongoing")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent() { }
+    public BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("span.outcome_evaluation_ongoing");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -111,6 +120,8 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent : 
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("span.outcome_evaluation_ongoing");
     }
 
 #pragma warning disable CS8618
@@ -139,48 +150,4 @@ class BetaManagedAgentsSpanOutcomeEvaluationOngoingEventFromRaw
     public BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSpanOutcomeEvaluationOngoingEventTypeConverter))]
-public enum BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType
-{
-    SpanOutcomeEvaluationOngoing,
-}
-
-sealed class BetaManagedAgentsSpanOutcomeEvaluationOngoingEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType>
-{
-    public override BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "span.outcome_evaluation_ongoing" =>
-                BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType.SpanOutcomeEvaluationOngoing,
-            _ => (BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSpanOutcomeEvaluationOngoingEventType.SpanOutcomeEvaluationOngoing =>
-                    "span.outcome_evaluation_ongoing",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

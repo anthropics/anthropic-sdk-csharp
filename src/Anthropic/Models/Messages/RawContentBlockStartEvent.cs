@@ -123,25 +123,34 @@ public record class RawContentBlockStartEventContentBlock : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, RawContentBlockStartEventContentBlockType> Type
     {
         get
         {
             return this.Value switch
             {
-                TextBlock x => x.Type,
-                ThinkingBlock x => x.Type,
-                RedactedThinkingBlock x => x.Type,
-                ToolUseBlock x => x.Type,
-                ServerToolUseBlock x => x.Type,
-                WebSearchToolResultBlock x => x.Type,
-                WebFetchToolResultBlock x => x.Type,
-                CodeExecutionToolResultBlock x => x.Type,
-                BashCodeExecutionToolResultBlock x => x.Type,
-                TextEditorCodeExecutionToolResultBlock x => x.Type,
-                ToolSearchToolResultBlock x => x.Type,
-                ContainerUploadBlock x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                TextBlock _ => RawContentBlockStartEventContentBlockType.Text,
+                ThinkingBlock _ => RawContentBlockStartEventContentBlockType.Thinking,
+                RedactedThinkingBlock _ =>
+                    RawContentBlockStartEventContentBlockType.RedactedThinking,
+                ToolUseBlock _ => RawContentBlockStartEventContentBlockType.ToolUse,
+                ServerToolUseBlock _ => RawContentBlockStartEventContentBlockType.ServerToolUse,
+                WebSearchToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.WebSearchToolResult,
+                WebFetchToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.WebFetchToolResult,
+                CodeExecutionToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.CodeExecutionToolResult,
+                BashCodeExecutionToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult,
+                TextEditorCodeExecutionToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult,
+                ToolSearchToolResultBlock _ =>
+                    RawContentBlockStartEventContentBlockType.ToolSearchToolResult,
+                ContainerUploadBlock _ => RawContentBlockStartEventContentBlockType.ContainerUpload,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, RawContentBlockStartEventContentBlockType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -1101,5 +1110,91 @@ sealed class RawContentBlockStartEventContentBlockConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(RawContentBlockStartEventContentBlockTypeConverter))]
+public enum RawContentBlockStartEventContentBlockType
+{
+    Text,
+    Thinking,
+    RedactedThinking,
+    ToolUse,
+    ServerToolUse,
+    WebSearchToolResult,
+    WebFetchToolResult,
+    CodeExecutionToolResult,
+    BashCodeExecutionToolResult,
+    TextEditorCodeExecutionToolResult,
+    ToolSearchToolResult,
+    ContainerUpload,
+}
+
+sealed class RawContentBlockStartEventContentBlockTypeConverter
+    : JsonConverter<RawContentBlockStartEventContentBlockType>
+{
+    public override RawContentBlockStartEventContentBlockType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => RawContentBlockStartEventContentBlockType.Text,
+            "thinking" => RawContentBlockStartEventContentBlockType.Thinking,
+            "redacted_thinking" => RawContentBlockStartEventContentBlockType.RedactedThinking,
+            "tool_use" => RawContentBlockStartEventContentBlockType.ToolUse,
+            "server_tool_use" => RawContentBlockStartEventContentBlockType.ServerToolUse,
+            "web_search_tool_result" =>
+                RawContentBlockStartEventContentBlockType.WebSearchToolResult,
+            "web_fetch_tool_result" => RawContentBlockStartEventContentBlockType.WebFetchToolResult,
+            "code_execution_tool_result" =>
+                RawContentBlockStartEventContentBlockType.CodeExecutionToolResult,
+            "bash_code_execution_tool_result" =>
+                RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult,
+            "text_editor_code_execution_tool_result" =>
+                RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult,
+            "tool_search_tool_result" =>
+                RawContentBlockStartEventContentBlockType.ToolSearchToolResult,
+            "container_upload" => RawContentBlockStartEventContentBlockType.ContainerUpload,
+            _ => (RawContentBlockStartEventContentBlockType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        RawContentBlockStartEventContentBlockType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                RawContentBlockStartEventContentBlockType.Text => "text",
+                RawContentBlockStartEventContentBlockType.Thinking => "thinking",
+                RawContentBlockStartEventContentBlockType.RedactedThinking => "redacted_thinking",
+                RawContentBlockStartEventContentBlockType.ToolUse => "tool_use",
+                RawContentBlockStartEventContentBlockType.ServerToolUse => "server_tool_use",
+                RawContentBlockStartEventContentBlockType.WebSearchToolResult =>
+                    "web_search_tool_result",
+                RawContentBlockStartEventContentBlockType.WebFetchToolResult =>
+                    "web_fetch_tool_result",
+                RawContentBlockStartEventContentBlockType.CodeExecutionToolResult =>
+                    "code_execution_tool_result",
+                RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult =>
+                    "bash_code_execution_tool_result",
+                RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult =>
+                    "text_editor_code_execution_tool_result",
+                RawContentBlockStartEventContentBlockType.ToolSearchToolResult =>
+                    "tool_search_tool_result",
+                RawContentBlockStartEventContentBlockType.ContainerUpload => "container_upload",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

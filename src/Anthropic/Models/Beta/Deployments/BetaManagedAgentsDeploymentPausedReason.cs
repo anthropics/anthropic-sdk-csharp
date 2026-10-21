@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -25,6 +25,23 @@ public record class BetaManagedAgentsDeploymentPausedReason : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsManualDeploymentPausedReason _ =>
+                    BetaManagedAgentsDeploymentPausedReasonType.Manual,
+                BetaManagedAgentsErrorDeploymentPausedReason _ =>
+                    BetaManagedAgentsDeploymentPausedReasonType.Error,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -118,8 +135,8 @@ public record class BetaManagedAgentsDeploymentPausedReason : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsManualDeploymentPausedReason> manual,
-        System::Action<BetaManagedAgentsErrorDeploymentPausedReason> error
+        Action<BetaManagedAgentsManualDeploymentPausedReason> manual,
+        Action<BetaManagedAgentsErrorDeploymentPausedReason> error
     )
     {
         switch (this.Value)
@@ -159,8 +176,8 @@ public record class BetaManagedAgentsDeploymentPausedReason : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsManualDeploymentPausedReason, T> manual,
-        System::Func<BetaManagedAgentsErrorDeploymentPausedReason, T> error
+        Func<BetaManagedAgentsManualDeploymentPausedReason, T> manual,
+        Func<BetaManagedAgentsErrorDeploymentPausedReason, T> error
     )
     {
         return this.Value switch
@@ -234,7 +251,7 @@ sealed class BetaManagedAgentsDeploymentPausedReasonConverter
 {
     public override BetaManagedAgentsDeploymentPausedReason? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -307,5 +324,50 @@ sealed class BetaManagedAgentsDeploymentPausedReasonConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsDeploymentPausedReasonTypeConverter))]
+public enum BetaManagedAgentsDeploymentPausedReasonType
+{
+    Manual,
+    Error,
+}
+
+sealed class BetaManagedAgentsDeploymentPausedReasonTypeConverter
+    : JsonConverter<BetaManagedAgentsDeploymentPausedReasonType>
+{
+    public override BetaManagedAgentsDeploymentPausedReasonType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "manual" => BetaManagedAgentsDeploymentPausedReasonType.Manual,
+            "error" => BetaManagedAgentsDeploymentPausedReasonType.Error,
+            _ => (BetaManagedAgentsDeploymentPausedReasonType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsDeploymentPausedReasonType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsDeploymentPausedReasonType.Manual => "manual",
+                BetaManagedAgentsDeploymentPausedReasonType.Error => "error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

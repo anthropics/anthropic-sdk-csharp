@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsDeletedCredential : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeletedCredentialType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeletedCredentialType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsDeletedCredential : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("vault_credential_deleted")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsDeletedCredential() { }
+    public BetaManagedAgentsDeletedCredential()
+    {
+        this.Type = JsonSerializer.SerializeToElement("vault_credential_deleted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +73,8 @@ public sealed record class BetaManagedAgentsDeletedCredential : JsonModel
     public BetaManagedAgentsDeletedCredential(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("vault_credential_deleted");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +92,13 @@ public sealed record class BetaManagedAgentsDeletedCredential : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDeletedCredential(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
 class BetaManagedAgentsDeletedCredentialFromRaw : IFromRawJson<BetaManagedAgentsDeletedCredential>
@@ -90,48 +107,4 @@ class BetaManagedAgentsDeletedCredentialFromRaw : IFromRawJson<BetaManagedAgents
     public BetaManagedAgentsDeletedCredential FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsDeletedCredential.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsDeletedCredentialTypeConverter))]
-public enum BetaManagedAgentsDeletedCredentialType
-{
-    VaultCredentialDeleted,
-}
-
-sealed class BetaManagedAgentsDeletedCredentialTypeConverter
-    : JsonConverter<BetaManagedAgentsDeletedCredentialType>
-{
-    public override BetaManagedAgentsDeletedCredentialType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "vault_credential_deleted" =>
-                BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted,
-            _ => (BetaManagedAgentsDeletedCredentialType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsDeletedCredentialType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsDeletedCredentialType.VaultCredentialDeleted =>
-                    "vault_credential_deleted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

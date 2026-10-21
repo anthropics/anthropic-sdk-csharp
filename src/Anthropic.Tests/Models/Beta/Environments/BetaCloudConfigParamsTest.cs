@@ -284,27 +284,101 @@ public class BetaCloudConfigParamsNetworkingTest : TestBase
     }
 
     [Fact]
+    public void BetaUnrestrictedNetworkTypeWorks()
+    {
+        BetaCloudConfigParamsNetworking value = new BetaUnrestrictedNetwork();
+        Assert.Equal(BetaCloudConfigParamsNetworkingType.Unrestricted, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaLimitedNetworkParamsTypeWorks()
+    {
+        BetaCloudConfigParamsNetworking value = new BetaLimitedNetworkParams()
+        {
+            AllowMcpServers = true,
+            AllowPackageManagers = true,
+            AllowedHosts = ["string"],
+        };
+        Assert.Equal(BetaCloudConfigParamsNetworkingType.Limited, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaCloudConfigParamsNetworking value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "unrestricted"
+                  "type": "limited"
                 }
                 """
             )
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("unrestricted");
+        ApiEnum<string, BetaCloudConfigParamsNetworkingType> expectedType =
+            BetaCloudConfigParamsNetworkingType.Limited;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaCloudConfigParamsNetworking emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaCloudConfigParamsNetworkingTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaCloudConfigParamsNetworkingType.Unrestricted)]
+    [InlineData(BetaCloudConfigParamsNetworkingType.Limited)]
+    public void Validation_Works(BetaCloudConfigParamsNetworkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCloudConfigParamsNetworkingType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCloudConfigParamsNetworkingType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaCloudConfigParamsNetworkingType.Unrestricted)]
+    [InlineData(BetaCloudConfigParamsNetworkingType.Limited)]
+    public void SerializationRoundtrip_Works(BetaCloudConfigParamsNetworkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCloudConfigParamsNetworkingType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCloudConfigParamsNetworkingType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCloudConfigParamsNetworkingType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCloudConfigParamsNetworkingType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

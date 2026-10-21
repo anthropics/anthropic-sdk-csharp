@@ -12,29 +12,19 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> expectedType =
-            BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("github_repository");
         string expectedUrl = "https://github.com/example-org/example-repo";
         string expectedAuthorizationToken = "ghp_exampletoken";
-        Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout("main");
         string expectedMountPath = "x";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUrl, model.Url);
         Assert.Equal(expectedAuthorizationToken, model.AuthorizationToken);
         Assert.Equal(expectedCheckout, model.Checkout);
@@ -46,14 +36,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -72,14 +57,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -91,18 +71,13 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> expectedType =
-            BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("github_repository");
         string expectedUrl = "https://github.com/example-org/example-repo";
         string expectedAuthorizationToken = "ghp_exampletoken";
-        Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout expectedCheckout = new BetaManagedAgentsBranchCheckout("main");
         string expectedMountPath = "x";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUrl, deserialized.Url);
         Assert.Equal(expectedAuthorizationToken, deserialized.AuthorizationToken);
         Assert.Equal(expectedCheckout, deserialized.Checkout);
@@ -114,14 +89,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -133,13 +103,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -152,13 +117,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -170,13 +130,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
 
             // Null should be interpreted as omitted for these properties
@@ -192,14 +147,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         } with
         {
@@ -216,13 +166,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
 
             // Null should be interpreted as omitted for these properties
@@ -237,7 +182,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
         };
@@ -253,7 +197,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
         };
@@ -266,7 +209,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
 
@@ -285,7 +227,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
 
@@ -301,14 +242,9 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceParams
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
 
@@ -318,92 +254,26 @@ public class BetaManagedAgentsGitHubRepositoryResourceParamsTest : TestBase
     }
 }
 
-public class BetaManagedAgentsGitHubRepositoryResourceParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository)]
-    public void Validation_Works(BetaManagedAgentsGitHubRepositoryResourceParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsGitHubRepositoryResourceParamsType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
 public class CheckoutTest : TestBase
 {
     [Fact]
     public void BetaManagedAgentsBranchValidationWorks()
     {
-        Checkout value = new BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout value = new BetaManagedAgentsBranchCheckout("main");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsCommitValidationWorks()
     {
-        Checkout value = new BetaManagedAgentsCommitCheckout()
-        {
-            Sha = "xxxxxxx",
-            Type = BetaManagedAgentsCommitCheckoutType.Commit,
-        };
+        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsBranchSerializationRoundtripWorks()
     {
-        Checkout value = new BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout value = new BetaManagedAgentsBranchCheckout("main");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Checkout>(
             element,
@@ -416,14 +286,105 @@ public class CheckoutTest : TestBase
     [Fact]
     public void BetaManagedAgentsCommitSerializationRoundtripWorks()
     {
-        Checkout value = new BetaManagedAgentsCommitCheckout()
-        {
-            Sha = "xxxxxxx",
-            Type = BetaManagedAgentsCommitCheckoutType.Commit,
-        };
+        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Checkout>(
             element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsBranchTypeWorks()
+    {
+        Checkout value = new BetaManagedAgentsBranchCheckout("main");
+        Assert.Equal(CheckoutType.Branch, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCommitTypeWorks()
+    {
+        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
+        Assert.Equal(CheckoutType.Commit, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Checkout value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "branch"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, CheckoutType> expectedType = CheckoutType.Branch;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Checkout emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class CheckoutTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CheckoutType.Branch)]
+    [InlineData(CheckoutType.Commit)]
+    public void Validation_Works(CheckoutType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CheckoutType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CheckoutType.Branch)]
+    [InlineData(CheckoutType.Commit)]
+    public void SerializationRoundtrip_Works(CheckoutType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CheckoutType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            json,
             ModelBase.SerializerOptions
         );
 

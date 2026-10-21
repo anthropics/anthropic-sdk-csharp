@@ -297,6 +297,68 @@ public class BetaRequestToolAdditionBlockToolTest : TestBase
     }
 
     [Fact]
+    public void BetaToolChangeToolReferenceTypeWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeToolReference("name");
+        Assert.Equal(BetaRequestToolAdditionBlockToolType.ToolReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaToolChangeMcpToolReferenceTypeWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeMcpToolReference()
+        {
+            Name = "name",
+            ServerName = "server_name",
+        };
+        Assert.Equal(BetaRequestToolAdditionBlockToolType.McpToolReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaToolChangeMcpToolsetReferenceTypeWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeMcpToolsetReference(
+            "server_name"
+        );
+        Assert.Equal(BetaRequestToolAdditionBlockToolType.McpToolsetReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaToolChangeToolDefinitionParamTypeWorks()
+    {
+        BetaRequestToolAdditionBlockTool value = new BetaToolChangeToolDefinitionParam(
+            new BetaTool()
+            {
+                InputSchema = new()
+                {
+                    Properties = new Dictionary<string, JsonElement>()
+                    {
+                        { "location", JsonSerializer.SerializeToElement("bar") },
+                        { "unit", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Required = ["location"],
+                },
+                Name = "name",
+                AllowedCallers = [BetaToolAllowedCaller.Direct],
+                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                DeferLoading = true,
+                Description = "Get the current weather in a given location",
+                EagerInputStreaming = true,
+                InputExamples =
+                [
+                    new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                ],
+                Strict = true,
+                Type = BetaToolType.Custom,
+            }
+        );
+        Assert.Equal(BetaRequestToolAdditionBlockToolType.ToolDefinition, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaRequestToolAdditionBlockTool value = new(
@@ -313,11 +375,12 @@ public class BetaRequestToolAdditionBlockToolTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
+        ApiEnum<string, BetaRequestToolAdditionBlockToolType> expectedType =
+            BetaRequestToolAdditionBlockToolType.ToolReference;
         string expectedServerName = "server_name";
 
         Assert.Equal(expectedName, value.Name);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedServerName, value.ServerName);
 
         BetaRequestToolAdditionBlockTool emptyValue = new(
@@ -345,5 +408,63 @@ public class BetaRequestToolAdditionBlockToolTest : TestBase
 
         Assert.Null(mismatchedValue.Name);
         Assert.Null(mismatchedValue.ServerName);
+    }
+}
+
+public class BetaRequestToolAdditionBlockToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaRequestToolAdditionBlockToolType.ToolReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.McpToolReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.McpToolsetReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.ToolDefinition)]
+    public void Validation_Works(BetaRequestToolAdditionBlockToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaRequestToolAdditionBlockToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRequestToolAdditionBlockToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaRequestToolAdditionBlockToolType.ToolReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.McpToolReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.McpToolsetReference)]
+    [InlineData(BetaRequestToolAdditionBlockToolType.ToolDefinition)]
+    public void SerializationRoundtrip_Works(BetaRequestToolAdditionBlockToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaRequestToolAdditionBlockToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRequestToolAdditionBlockToolType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRequestToolAdditionBlockToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaRequestToolAdditionBlockToolType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

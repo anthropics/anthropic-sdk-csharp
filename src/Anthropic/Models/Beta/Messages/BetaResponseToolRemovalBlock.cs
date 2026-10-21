@@ -136,16 +136,21 @@ public record class BetaResponseToolRemovalBlockTool : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaResponseToolRemovalBlockToolType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaResponseToolChangeToolReference x => x.Type,
-                BetaResponseToolChangeMcpToolReference x => x.Type,
-                BetaResponseToolChangeMcpToolsetReference x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaResponseToolChangeToolReference _ =>
+                    BetaResponseToolRemovalBlockToolType.ToolReference,
+                BetaResponseToolChangeMcpToolReference _ =>
+                    BetaResponseToolRemovalBlockToolType.McpToolReference,
+                BetaResponseToolChangeMcpToolsetReference _ =>
+                    BetaResponseToolRemovalBlockToolType.McpToolsetReference,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaResponseToolRemovalBlockToolType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -527,5 +532,53 @@ sealed class BetaResponseToolRemovalBlockToolConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaResponseToolRemovalBlockToolTypeConverter))]
+public enum BetaResponseToolRemovalBlockToolType
+{
+    ToolReference,
+    McpToolReference,
+    McpToolsetReference,
+}
+
+sealed class BetaResponseToolRemovalBlockToolTypeConverter
+    : JsonConverter<BetaResponseToolRemovalBlockToolType>
+{
+    public override BetaResponseToolRemovalBlockToolType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tool_reference" => BetaResponseToolRemovalBlockToolType.ToolReference,
+            "mcp_tool_reference" => BetaResponseToolRemovalBlockToolType.McpToolReference,
+            "mcp_toolset_reference" => BetaResponseToolRemovalBlockToolType.McpToolsetReference,
+            _ => (BetaResponseToolRemovalBlockToolType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaResponseToolRemovalBlockToolType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaResponseToolRemovalBlockToolType.ToolReference => "tool_reference",
+                BetaResponseToolRemovalBlockToolType.McpToolReference => "mcp_tool_reference",
+                BetaResponseToolRemovalBlockToolType.McpToolsetReference => "mcp_toolset_reference",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

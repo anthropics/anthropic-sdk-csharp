@@ -18,15 +18,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -34,14 +26,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -52,30 +39,14 @@ public class EventListPageResponseTest : TestBase
             new BetaManagedAgentsUserMessageEvent()
             {
                 ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsAgentMessageEvent()
             {
                 ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Let me look up order #1234 for you.",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
+                Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -99,15 +70,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -115,14 +78,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -147,15 +105,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -163,14 +113,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -188,30 +133,14 @@ public class EventListPageResponseTest : TestBase
             new BetaManagedAgentsUserMessageEvent()
             {
                 ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsAgentMessageEvent()
             {
                 ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Let me look up order #1234 for you.",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
+                Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -235,15 +164,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -251,14 +172,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -309,15 +225,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -325,14 +233,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -370,15 +273,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -386,14 +281,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
         };
@@ -412,15 +302,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -428,14 +310,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
         };
@@ -453,15 +330,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -469,14 +338,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
 
@@ -497,15 +361,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -513,14 +369,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
 
@@ -540,15 +391,7 @@ public class EventListPageResponseTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsAgentMessageEvent()
@@ -556,14 +399,9 @@ public class EventListPageResponseTest : TestBase
                     ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
                     Content =
                     [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Let me look up order #1234 for you.",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
+                        new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
                     ],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

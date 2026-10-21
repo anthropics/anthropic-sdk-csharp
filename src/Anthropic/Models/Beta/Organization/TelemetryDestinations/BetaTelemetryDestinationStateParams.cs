@@ -30,15 +30,19 @@ public record class BetaTelemetryDestinationStateParams : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTelemetryDestinationStateParamsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTelemetryDestinationStateEnabledParams x => x.Type,
-                BetaTelemetryDestinationStateDisabledParams x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTelemetryDestinationStateEnabledParams _ =>
+                    BetaTelemetryDestinationStateParamsType.Enabled,
+                BetaTelemetryDestinationStateDisabledParams _ =>
+                    BetaTelemetryDestinationStateParamsType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTelemetryDestinationStateParamsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -322,5 +326,50 @@ sealed class BetaTelemetryDestinationStateParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTelemetryDestinationStateParamsTypeConverter))]
+public enum BetaTelemetryDestinationStateParamsType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaTelemetryDestinationStateParamsTypeConverter
+    : JsonConverter<BetaTelemetryDestinationStateParamsType>
+{
+    public override BetaTelemetryDestinationStateParamsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaTelemetryDestinationStateParamsType.Enabled,
+            "disabled" => BetaTelemetryDestinationStateParamsType.Disabled,
+            _ => (BetaTelemetryDestinationStateParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTelemetryDestinationStateParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTelemetryDestinationStateParamsType.Enabled => "enabled",
+                BetaTelemetryDestinationStateParamsType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

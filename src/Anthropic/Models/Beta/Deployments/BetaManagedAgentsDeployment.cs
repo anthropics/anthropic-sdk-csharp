@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,7 +9,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -51,12 +51,12 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     /// <summary>
     /// Time the deployment was archived. Null if not archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -64,12 +64,12 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     /// <summary>
     /// Time the deployment was created.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -222,14 +222,12 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
         init { this._rawData.Set("status", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeploymentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsDeploymentType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -237,12 +235,12 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     /// <summary>
     /// Time the deployment was last updated.
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -302,13 +300,19 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
         }
         this.Schedule?.Validate();
         this.Status.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("deployment")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         _ = this.VaultIds;
         this.Budget?.Validate();
     }
 
-    public BetaManagedAgentsDeployment() { }
+    public BetaManagedAgentsDeployment()
+    {
+        this.Type = JsonSerializer.SerializeToElement("deployment");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -319,6 +323,8 @@ public sealed record class BetaManagedAgentsDeployment : JsonModel
     public BetaManagedAgentsDeployment(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("deployment");
     }
 
 #pragma warning disable CS8618
@@ -344,46 +350,4 @@ class BetaManagedAgentsDeploymentFromRaw : IFromRawJson<BetaManagedAgentsDeploym
     public BetaManagedAgentsDeployment FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsDeployment.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsDeploymentTypeConverter))]
-public enum BetaManagedAgentsDeploymentType
-{
-    Deployment,
-}
-
-sealed class BetaManagedAgentsDeploymentTypeConverter
-    : JsonConverter<BetaManagedAgentsDeploymentType>
-{
-    public override BetaManagedAgentsDeploymentType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "deployment" => BetaManagedAgentsDeploymentType.Deployment,
-            _ => (BetaManagedAgentsDeploymentType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsDeploymentType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsDeploymentType.Deployment => "deployment",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

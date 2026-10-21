@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 )]
 public sealed record class BetaManagedAgentsTokenEndpointAuthPostUpdateParam : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsTokenEndpointAuthPostUpdateParamType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsTokenEndpointAuthPostUpdateParamType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -52,11 +49,22 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostUpdateParam : J
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("client_secret_post")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ClientSecret;
     }
 
-    public BetaManagedAgentsTokenEndpointAuthPostUpdateParam() { }
+    public BetaManagedAgentsTokenEndpointAuthPostUpdateParam()
+    {
+        this.Type = JsonSerializer.SerializeToElement("client_secret_post");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -71,6 +79,8 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostUpdateParam : J
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("client_secret_post");
     }
 
 #pragma warning disable CS8618
@@ -88,15 +98,6 @@ public sealed record class BetaManagedAgentsTokenEndpointAuthPostUpdateParam : J
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsTokenEndpointAuthPostUpdateParam(
-        ApiEnum<string, BetaManagedAgentsTokenEndpointAuthPostUpdateParamType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsTokenEndpointAuthPostUpdateParamFromRaw
@@ -106,48 +107,4 @@ class BetaManagedAgentsTokenEndpointAuthPostUpdateParamFromRaw
     public BetaManagedAgentsTokenEndpointAuthPostUpdateParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsTokenEndpointAuthPostUpdateParam.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsTokenEndpointAuthPostUpdateParamTypeConverter))]
-public enum BetaManagedAgentsTokenEndpointAuthPostUpdateParamType
-{
-    ClientSecretPost,
-}
-
-sealed class BetaManagedAgentsTokenEndpointAuthPostUpdateParamTypeConverter
-    : JsonConverter<BetaManagedAgentsTokenEndpointAuthPostUpdateParamType>
-{
-    public override BetaManagedAgentsTokenEndpointAuthPostUpdateParamType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "client_secret_post" =>
-                BetaManagedAgentsTokenEndpointAuthPostUpdateParamType.ClientSecretPost,
-            _ => (BetaManagedAgentsTokenEndpointAuthPostUpdateParamType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsTokenEndpointAuthPostUpdateParamType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsTokenEndpointAuthPostUpdateParamType.ClientSecretPost =>
-                    "client_secret_post",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

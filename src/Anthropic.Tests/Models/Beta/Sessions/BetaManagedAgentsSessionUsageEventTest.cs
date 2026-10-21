@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
@@ -17,7 +16,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -28,17 +26,12 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
         };
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionUsageEventType> expectedType =
-            BetaManagedAgentsSessionUsageEventType.SessionUsage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.usage");
         BetaManagedAgentsSessionUsageSnapshot expectedUsage = new()
         {
             ActiveSeconds = 0,
@@ -49,15 +42,13 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
             OutputTokens = 0,
             ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
         };
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
         Assert.Equal(expectedBudget, model.Budget);
     }
@@ -69,7 +60,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -80,11 +70,7 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -103,7 +89,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -114,11 +99,7 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -130,8 +111,7 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionUsageEventType> expectedType =
-            BetaManagedAgentsSessionUsageEventType.SessionUsage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.usage");
         BetaManagedAgentsSessionUsageSnapshot expectedUsage = new()
         {
             ActiveSeconds = 0,
@@ -142,15 +122,13 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
             OutputTokens = 0,
             ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
         };
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUsage, deserialized.Usage);
         Assert.Equal(expectedBudget, deserialized.Budget);
     }
@@ -162,7 +140,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -173,11 +150,7 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
         };
 
         model.Validate();
@@ -190,7 +163,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -214,7 +186,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -237,7 +208,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -263,7 +233,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -288,7 +257,6 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionUsageEventType.SessionUsage,
             Usage = new()
             {
                 ActiveSeconds = 0,
@@ -299,67 +267,11 @@ public class BetaManagedAgentsSessionUsageEventTest : TestBase
                 OutputTokens = 0,
                 ServerToolUse = new() { WebFetchRequests = 0, WebSearchRequests = 3 },
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
         };
 
         BetaManagedAgentsSessionUsageEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSessionUsageEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionUsageEventType.SessionUsage)]
-    public void Validation_Works(BetaManagedAgentsSessionUsageEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionUsageEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionUsageEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionUsageEventType.SessionUsage)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionUsageEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionUsageEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionUsageEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionUsageEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionUsageEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

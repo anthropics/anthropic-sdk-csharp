@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -38,14 +37,12 @@ public sealed record class BetaManagedAgentsStartEvent : JsonModel
         init { this._rawData.Set("event", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsStartEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsStartEventType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -54,10 +51,16 @@ public sealed record class BetaManagedAgentsStartEvent : JsonModel
     public override void Validate()
     {
         this.Event.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("event_start")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsStartEvent() { }
+    public BetaManagedAgentsStartEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("event_start");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -68,6 +71,8 @@ public sealed record class BetaManagedAgentsStartEvent : JsonModel
     public BetaManagedAgentsStartEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("event_start");
     }
 
 #pragma warning disable CS8618
@@ -85,6 +90,13 @@ public sealed record class BetaManagedAgentsStartEvent : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsStartEvent(BetaManagedAgentsStartEventPreview event_)
+        : this()
+    {
+        this.Event = event_;
+    }
 }
 
 class BetaManagedAgentsStartEventFromRaw : IFromRawJson<BetaManagedAgentsStartEvent>
@@ -93,46 +105,4 @@ class BetaManagedAgentsStartEventFromRaw : IFromRawJson<BetaManagedAgentsStartEv
     public BetaManagedAgentsStartEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsStartEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsStartEventTypeConverter))]
-public enum BetaManagedAgentsStartEventType
-{
-    EventStart,
-}
-
-sealed class BetaManagedAgentsStartEventTypeConverter
-    : JsonConverter<BetaManagedAgentsStartEventType>
-{
-    public override BetaManagedAgentsStartEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "event_start" => BetaManagedAgentsStartEventType.EventStart,
-            _ => (BetaManagedAgentsStartEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsStartEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsStartEventType.EventStart => "event_start",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

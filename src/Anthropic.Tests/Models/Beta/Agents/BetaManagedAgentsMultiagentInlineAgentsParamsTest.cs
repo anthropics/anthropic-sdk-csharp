@@ -54,6 +54,25 @@ public class BetaManagedAgentsMultiagentInlineAgentsParamsTest : TestBase
     }
 
     [Fact]
+    public void EnabledTypeWorks()
+    {
+        BetaManagedAgentsMultiagentInlineAgentsParams value =
+            new BetaManagedAgentsMultiagentInlineAgentsEnabledParams();
+        Assert.Equal(BetaManagedAgentsMultiagentInlineAgentsParamsType.Enabled, value.Type.Value());
+    }
+
+    [Fact]
+    public void DisabledTypeWorks()
+    {
+        BetaManagedAgentsMultiagentInlineAgentsParams value =
+            new BetaManagedAgentsMultiagentInlineAgentsDisabledParams();
+        Assert.Equal(
+            BetaManagedAgentsMultiagentInlineAgentsParamsType.Disabled,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsMultiagentInlineAgentsParams value = new(
@@ -67,14 +86,71 @@ public class BetaManagedAgentsMultiagentInlineAgentsParamsTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType> expectedType =
+            BetaManagedAgentsMultiagentInlineAgentsParamsType.Enabled;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaManagedAgentsMultiagentInlineAgentsParams emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsMultiagentInlineAgentsParamsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsMultiagentInlineAgentsParamsType.Enabled)]
+    [InlineData(BetaManagedAgentsMultiagentInlineAgentsParamsType.Disabled)]
+    public void Validation_Works(BetaManagedAgentsMultiagentInlineAgentsParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsMultiagentInlineAgentsParamsType.Enabled)]
+    [InlineData(BetaManagedAgentsMultiagentInlineAgentsParamsType.Disabled)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsMultiagentInlineAgentsParamsType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMultiagentInlineAgentsParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

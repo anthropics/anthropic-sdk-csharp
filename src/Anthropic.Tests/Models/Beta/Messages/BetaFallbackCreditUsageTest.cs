@@ -112,6 +112,24 @@ public class StatusTest : TestBase
     }
 
     [Fact]
+    public void BetaFallbackCreditRedeemedTypeWorks()
+    {
+        Status value = new BetaFallbackCreditRedeemed();
+        Assert.Equal(StatusType.Redeemed, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaFallbackCreditNotAppliedTypeWorks()
+    {
+        Status value = new BetaFallbackCreditNotApplied()
+        {
+            Reason = Reason.BodyMismatch,
+            RemoveToRedeem = ["string"],
+        };
+        Assert.Equal(StatusType.NotApplied, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Status value = new(
@@ -125,12 +143,70 @@ public class StatusTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("redeemed");
+        ApiEnum<string, StatusType> expectedType = StatusType.Redeemed;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Status emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class StatusTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(StatusType.Redeemed)]
+    [InlineData(StatusType.NotApplied)]
+    public void Validation_Works(StatusType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, StatusType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, StatusType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(StatusType.Redeemed)]
+    [InlineData(StatusType.NotApplied)]
+    public void SerializationRoundtrip_Works(StatusType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, StatusType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, StatusType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, StatusType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, StatusType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

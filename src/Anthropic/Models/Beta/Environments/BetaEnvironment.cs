@@ -240,15 +240,17 @@ public record class BetaEnvironmentConfig : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaEnvironmentConfigType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaCloudConfig x => x.Type,
-                BetaSelfHostedConfig x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaCloudConfig _ => BetaEnvironmentConfigType.Cloud,
+                BetaSelfHostedConfig _ => BetaEnvironmentConfigType.SelfHosted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaEnvironmentConfigType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -518,6 +520,50 @@ sealed class BetaEnvironmentConfigConverter : JsonConverter<BetaEnvironmentConfi
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaEnvironmentConfigTypeConverter))]
+public enum BetaEnvironmentConfigType
+{
+    Cloud,
+    SelfHosted,
+}
+
+sealed class BetaEnvironmentConfigTypeConverter : JsonConverter<BetaEnvironmentConfigType>
+{
+    public override BetaEnvironmentConfigType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "cloud" => BetaEnvironmentConfigType.Cloud,
+            "self_hosted" => BetaEnvironmentConfigType.SelfHosted,
+            _ => (BetaEnvironmentConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaEnvironmentConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaEnvironmentConfigType.Cloud => "cloud",
+                BetaEnvironmentConfigType.SelfHosted => "self_hosted",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

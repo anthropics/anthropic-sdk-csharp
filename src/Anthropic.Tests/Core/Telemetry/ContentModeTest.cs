@@ -57,10 +57,9 @@ public class ContentModeTest : TracingTestBase
             StopSequences = ["END", "STOP"],
             Messages =
             [
-                new() { Role = Role.User, Content = "What is the weather?" },
-                new()
+                new UserMessageParam { Content = "What is the weather?" },
+                new AssistantMessageParam
                 {
-                    Role = Role.Assistant,
                     Content = new List<ContentBlockParam>
                     {
                         new ToolUseBlockParam
@@ -74,9 +73,8 @@ public class ContentModeTest : TracingTestBase
                         },
                     },
                 },
-                new()
+                new UserMessageParam
                 {
-                    Role = Role.User,
                     Content = new List<ContentBlockParam>
                     {
                         new ToolResultBlockParam("toolu_0") { Content = "sunny" },
@@ -132,9 +130,8 @@ public class ContentModeTest : TracingTestBase
         {
             Messages =
             [
-                new()
+                new UserMessageParam
                 {
-                    Role = Role.User,
                     Content = new List<ContentBlockParam>
                     {
                         new ToolResultBlockParam("toolu_0")
@@ -504,10 +501,9 @@ public class ContentModeTest : TracingTestBase
         {
             Messages =
             [
-                new() { Role = Role.User, Content = "What is the weather?" },
-                new()
+                new UserMessageParam { Content = "What is the weather?" },
+                new AssistantMessageParam
                 {
-                    Role = Role.Assistant,
                     Content = new List<ContentBlockParam>
                     {
                         new ThinkingBlockParam { Thinking = "Which city?", Signature = "sig_in" },
@@ -515,7 +511,7 @@ public class ContentModeTest : TracingTestBase
                         new TextBlockParam { Text = "Which city?" },
                     },
                 },
-                new() { Role = Role.User, Content = "Paris" },
+                new UserMessageParam { Content = "Paris" },
             ],
         };
 
@@ -1033,11 +1029,11 @@ public class ContentModeTest : TracingTestBase
         {
             Messages =
             [
-                new() { Role = Role.User, Content = "1" + big },
-                new() { Role = Role.Assistant, Content = "2" + big },
-                new() { Role = Role.User, Content = "3" + big },
-                new() { Role = Role.Assistant, Content = "4" + big },
-                new() { Role = Role.User, Content = "5" },
+                new UserMessageParam { Content = "1" + big },
+                new AssistantMessageParam { Content = "2" + big },
+                new UserMessageParam { Content = "3" + big },
+                new AssistantMessageParam { Content = "4" + big },
+                new UserMessageParam { Content = "5" },
             ],
         };
 
@@ -1088,9 +1084,9 @@ public class ContentModeTest : TracingTestBase
         {
             Messages =
             [
-                new() { Role = Role.User, Content = "1" },
-                new() { Role = Role.Assistant, Content = "2" },
-                new() { Role = Role.User, Content = new string('x', 300_000) },
+                new UserMessageParam { Content = "1" },
+                new AssistantMessageParam { Content = "2" },
+                new UserMessageParam { Content = new string('x', 300_000) },
             ],
         };
 
@@ -1358,11 +1354,11 @@ public class ContentModeTest : TracingTestBase
         {
             Messages =
             [
-                new() { Role = Role.User, Content = "1" + big },
-                new() { Role = Role.Assistant, Content = "2" + big },
-                new() { Role = Role.User, Content = "3" + big },
-                new() { Role = Role.Assistant, Content = "4" + big },
-                new() { Role = Role.User, Content = "5" },
+                new UserMessageParam { Content = "1" + big },
+                new AssistantMessageParam { Content = "2" + big },
+                new UserMessageParam { Content = "3" + big },
+                new AssistantMessageParam { Content = "4" + big },
+                new UserMessageParam { Content = "5" },
             ],
         };
 

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -21,17 +20,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 )]
 public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingResponse : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -39,10 +33,16 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingResp
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("unrestricted")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUnrestrictedCredentialNetworkingResponse() { }
+    public BetaManagedAgentsUnrestrictedCredentialNetworkingResponse()
+    {
+        this.Type = JsonSerializer.SerializeToElement("unrestricted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -57,6 +57,8 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingResp
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("unrestricted");
     }
 
 #pragma warning disable CS8618
@@ -76,15 +78,6 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingResp
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-        ApiEnum<string, BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsUnrestrictedCredentialNetworkingResponseFromRaw
@@ -94,48 +87,4 @@ class BetaManagedAgentsUnrestrictedCredentialNetworkingResponseFromRaw
     public BetaManagedAgentsUnrestrictedCredentialNetworkingResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUnrestrictedCredentialNetworkingResponse.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUnrestrictedCredentialNetworkingResponseTypeConverter))]
-public enum BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType
-{
-    Unrestricted,
-}
-
-sealed class BetaManagedAgentsUnrestrictedCredentialNetworkingResponseTypeConverter
-    : JsonConverter<BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType>
-{
-    public override BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "unrestricted" =>
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted,
-            _ => (BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted =>
-                    "unrestricted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

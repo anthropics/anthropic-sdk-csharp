@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +10,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services.Beta;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -248,10 +248,10 @@ public record class DreamCreateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/dreams")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/dreams")
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
@@ -392,8 +392,8 @@ public record class Model : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<BetaDreamModelConfigParam> betaDreamModelConfigParam
+        Action<string> @string,
+        Action<BetaDreamModelConfigParam> betaDreamModelConfigParam
     )
     {
         switch (this.Value)
@@ -431,8 +431,8 @@ public record class Model : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<BetaDreamModelConfigParam, T> betaDreamModelConfigParam
+        Func<string, T> @string,
+        Func<BetaDreamModelConfigParam, T> betaDreamModelConfigParam
     )
     {
         return this.Value switch
@@ -500,7 +500,7 @@ sealed class ModelConverter : JsonConverter<Model>
 {
     public override Model? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -517,7 +517,7 @@ sealed class ModelConverter : JsonConverter<Model>
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -530,7 +530,7 @@ sealed class ModelConverter : JsonConverter<Model>
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }

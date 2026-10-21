@@ -1,7 +1,7 @@
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -33,7 +33,7 @@ sealed class BetaManagedAgentsMemoryViewConverter : JsonConverter<BetaManagedAge
 {
     public override BetaManagedAgentsMemoryView Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

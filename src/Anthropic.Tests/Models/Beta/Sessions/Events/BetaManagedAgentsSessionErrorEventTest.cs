@@ -19,12 +19,9 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
                 Message =
                     "The repository host rejected the credentials for the repository, or required credentials and received none.",
                 RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                    BetaManagedAgentsRetryStatusRetryingType.Retrying
-                ),
+                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         string expectedID = "id";
@@ -33,18 +30,15 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
             Message =
                 "The repository host rejected the credentials for the repository, or required credentials and received none.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionErrorEventType> expectedType =
-            BetaManagedAgentsSessionErrorEventType.SessionError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.error");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedError, model.Error);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -58,12 +52,9 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
                 Message =
                     "The repository host rejected the credentials for the repository, or required credentials and received none.",
                 RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                    BetaManagedAgentsRetryStatusRetryingType.Retrying
-                ),
+                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -86,12 +77,9 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
                 Message =
                     "The repository host rejected the credentials for the repository, or required credentials and received none.",
                 RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                    BetaManagedAgentsRetryStatusRetryingType.Retrying
-                ),
+                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -107,18 +95,15 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
             Message =
                 "The repository host rejected the credentials for the repository, or required credentials and received none.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionErrorEventType> expectedType =
-            BetaManagedAgentsSessionErrorEventType.SessionError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.error");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedError, deserialized.Error);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -132,12 +117,9 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
                 Message =
                     "The repository host rejected the credentials for the repository, or required credentials and received none.",
                 RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                    BetaManagedAgentsRetryStatusRetryingType.Retrying
-                ),
+                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         model.Validate();
@@ -154,12 +136,9 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
                 Message =
                     "The repository host rejected the credentials for the repository, or required credentials and received none.",
                 RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                    BetaManagedAgentsRetryStatusRetryingType.Retrying
-                ),
+                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionErrorEventType.SessionError,
         };
 
         BetaManagedAgentsSessionErrorEvent copied = new(model);
@@ -176,10 +155,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsUnknownError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsUnknownErrorType.UnknownError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -190,10 +166,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelOverloadedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelOverloadedErrorType.ModelOverloadedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -204,10 +177,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelRateLimitedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRateLimitedErrorType.ModelRateLimitedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -218,10 +188,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelRequestFailedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -233,10 +200,7 @@ public class ErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -248,10 +212,7 @@ public class ErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpAuthenticationFailedErrorType.McpAuthenticationFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -262,10 +223,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsBillingError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsBillingErrorType.BillingError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -277,11 +235,7 @@ public class ErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
         value.Validate();
@@ -295,9 +249,7 @@ public class ErrorTest : TestBase
             Message =
                 "The repository host rejected the credentials for the repository, or required credentials and received none.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -309,9 +261,7 @@ public class ErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -323,9 +273,7 @@ public class ErrorTest : TestBase
         {
             Message = "The repository host reported the repository as not found.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -337,9 +285,7 @@ public class ErrorTest : TestBase
         {
             Message = "The requested branch or commit does not exist in the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -351,9 +297,7 @@ public class ErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         value.Validate();
     }
@@ -364,10 +308,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsUnknownError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsUnknownErrorType.UnknownError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -381,10 +322,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelOverloadedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelOverloadedErrorType.ModelOverloadedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -398,10 +336,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelRateLimitedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRateLimitedErrorType.ModelRateLimitedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -415,10 +350,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsModelRequestFailedError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -433,10 +365,7 @@ public class ErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -451,10 +380,7 @@ public class ErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpAuthenticationFailedErrorType.McpAuthenticationFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -468,10 +394,7 @@ public class ErrorTest : TestBase
         Error value = new BetaManagedAgentsBillingError()
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsBillingErrorType.BillingError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -486,11 +409,7 @@ public class ErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -507,9 +426,7 @@ public class ErrorTest : TestBase
             Message =
                 "The repository host rejected the credentials for the repository, or required credentials and received none.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -524,9 +441,7 @@ public class ErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -541,9 +456,7 @@ public class ErrorTest : TestBase
         {
             Message = "The repository host reported the repository as not found.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -558,9 +471,7 @@ public class ErrorTest : TestBase
         {
             Message = "The requested branch or commit does not exist in the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
@@ -575,14 +486,165 @@ public class ErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUnknownTypeWorks()
+    {
+        Error value = new BetaManagedAgentsUnknownError()
+        {
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.UnknownError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsModelOverloadedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsModelOverloadedError()
+        {
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.ModelOverloadedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsModelRateLimitedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsModelRateLimitedError()
+        {
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.ModelRateLimitedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsModelRequestFailedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsModelRequestFailedError()
+        {
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.ModelRequestFailedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpConnectionFailedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsMcpConnectionFailedError()
+        {
+            McpServerName = "mcp_server_name",
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.McpConnectionFailedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpAuthenticationFailedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsMcpAuthenticationFailedError()
+        {
+            McpServerName = "mcp_server_name",
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.McpAuthenticationFailedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsBillingTypeWorks()
+    {
+        Error value = new BetaManagedAgentsBillingError()
+        {
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.BillingError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCredentialHostUnreachableTypeWorks()
+    {
+        Error value = new BetaManagedAgentsCredentialHostUnreachableError()
+        {
+            CredentialID = "credential_id",
+            Message = "message",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+            VaultID = "vault_id",
+        };
+        Assert.Equal(ErrorType.CredentialHostUnreachableError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryAuthenticationTypeWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryAuthenticationError()
+        {
+            Message =
+                "The repository host rejected the credentials for the repository, or required credentials and received none.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.RepositoryAuthenticationError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryForbiddenTypeWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryForbiddenError()
+        {
+            Message = "The repository host refused access to the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.RepositoryForbiddenError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryNotFoundTypeWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryNotFoundError()
+        {
+            Message = "The repository host reported the repository as not found.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.RepositoryNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCheckoutTypeWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCheckoutError()
+        {
+            Message = "The requested branch or commit does not exist in the repository.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.RepositoryCheckoutError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRepositoryCloneTypeWorks()
+    {
+        Error value = new BetaManagedAgentsRepositoryCloneError()
+        {
+            Message = "The repository could not be cloned.",
+            RepositoryUrl = "https://github.com/example-org/example-repo",
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+        };
+        Assert.Equal(ErrorType.RepositoryCloneError, value.Type.Value());
     }
 
     [Fact]
@@ -593,6 +655,7 @@ public class ErrorTest : TestBase
                 """
                 {
                   "message": "message",
+                  "type": "unknown_error",
                   "mcp_server_name": "mcp_server_name",
                   "repository_url": "https://github.com/example-org/example-repo"
                 }
@@ -602,16 +665,19 @@ public class ErrorTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMessage = "message";
+        ApiEnum<string, ErrorType> expectedType = ErrorType.UnknownError;
         string expectedMcpServerName = "mcp_server_name";
         string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
 
         Assert.Equal(expectedMessage, value.Message);
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedMcpServerName, value.McpServerName);
         Assert.Equal(expectedRepositoryUrl, value.RepositoryUrl);
 
         Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.McpServerName);
         Assert.Null(emptyValue.RepositoryUrl);
 
@@ -639,39 +705,65 @@ public class ErrorTest : TestBase
     }
 }
 
-public class BetaManagedAgentsSessionErrorEventTypeTest : TestBase
+public class ErrorTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsSessionErrorEventType.SessionError)]
-    public void Validation_Works(BetaManagedAgentsSessionErrorEventType rawValue)
+    [InlineData(ErrorType.UnknownError)]
+    [InlineData(ErrorType.ModelOverloadedError)]
+    [InlineData(ErrorType.ModelRateLimitedError)]
+    [InlineData(ErrorType.ModelRequestFailedError)]
+    [InlineData(ErrorType.McpConnectionFailedError)]
+    [InlineData(ErrorType.McpAuthenticationFailedError)]
+    [InlineData(ErrorType.BillingError)]
+    [InlineData(ErrorType.CredentialHostUnreachableError)]
+    [InlineData(ErrorType.RepositoryAuthenticationError)]
+    [InlineData(ErrorType.RepositoryForbiddenError)]
+    [InlineData(ErrorType.RepositoryNotFoundError)]
+    [InlineData(ErrorType.RepositoryCheckoutError)]
+    [InlineData(ErrorType.RepositoryCloneError)]
+    public void Validation_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionErrorEventType> value = rawValue;
+        ApiEnum<string, ErrorType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionErrorEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionErrorEventType.SessionError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionErrorEventType rawValue)
+    [InlineData(ErrorType.UnknownError)]
+    [InlineData(ErrorType.ModelOverloadedError)]
+    [InlineData(ErrorType.ModelRateLimitedError)]
+    [InlineData(ErrorType.ModelRequestFailedError)]
+    [InlineData(ErrorType.McpConnectionFailedError)]
+    [InlineData(ErrorType.McpAuthenticationFailedError)]
+    [InlineData(ErrorType.BillingError)]
+    [InlineData(ErrorType.CredentialHostUnreachableError)]
+    [InlineData(ErrorType.RepositoryAuthenticationError)]
+    [InlineData(ErrorType.RepositoryForbiddenError)]
+    [InlineData(ErrorType.RepositoryNotFoundError)]
+    [InlineData(ErrorType.RepositoryCheckoutError)]
+    [InlineData(ErrorType.RepositoryCloneError)]
+    public void SerializationRoundtrip_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionErrorEventType> value = rawValue;
+        ApiEnum<string, ErrorType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionErrorEventType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -679,13 +771,15 @@ public class BetaManagedAgentsSessionErrorEventTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionErrorEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionErrorEventType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

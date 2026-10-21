@@ -261,8 +261,8 @@ public class BetaMcpTest
 
         var converted = BetaMcp.Message(promptMessage);
 
-        Assert.Equal("assistant", (string)converted.Role);
-        Assert.True(converted.Content.TryPickBetaContentBlockParams(out var blocks));
+        Assert.True(converted.TryPickAssistant(out var assistant));
+        Assert.True(assistant.Content.TryPickBetaContentBlockParams(out var blocks));
         Assert.Single(blocks!);
         Assert.True(blocks![0].TryPickText(out var text));
         Assert.Equal("thinking...", text!.Text);

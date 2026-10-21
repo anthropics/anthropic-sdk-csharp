@@ -25,19 +25,21 @@ public record class BetaRawContentBlockDelta : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaRawContentBlockDeltaType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTextDelta x => x.Type,
-                BetaInputJsonDelta x => x.Type,
-                BetaCitationsDelta x => x.Type,
-                BetaThinkingDelta x => x.Type,
-                BetaSignatureDelta x => x.Type,
-                BetaCompactionContentBlockDelta x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTextDelta _ => BetaRawContentBlockDeltaType.TextDelta,
+                BetaInputJsonDelta _ => BetaRawContentBlockDeltaType.InputJsonDelta,
+                BetaCitationsDelta _ => BetaRawContentBlockDeltaType.CitationsDelta,
+                BetaThinkingDelta _ => BetaRawContentBlockDeltaType.ThinkingDelta,
+                BetaSignatureDelta _ => BetaRawContentBlockDeltaType.SignatureDelta,
+                BetaCompactionContentBlockDelta _ => BetaRawContentBlockDeltaType.CompactionDelta,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaRawContentBlockDeltaType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -548,5 +550,61 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaRawContentBlockDeltaTypeConverter))]
+public enum BetaRawContentBlockDeltaType
+{
+    TextDelta,
+    InputJsonDelta,
+    CitationsDelta,
+    ThinkingDelta,
+    SignatureDelta,
+    CompactionDelta,
+}
+
+sealed class BetaRawContentBlockDeltaTypeConverter : JsonConverter<BetaRawContentBlockDeltaType>
+{
+    public override BetaRawContentBlockDeltaType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text_delta" => BetaRawContentBlockDeltaType.TextDelta,
+            "input_json_delta" => BetaRawContentBlockDeltaType.InputJsonDelta,
+            "citations_delta" => BetaRawContentBlockDeltaType.CitationsDelta,
+            "thinking_delta" => BetaRawContentBlockDeltaType.ThinkingDelta,
+            "signature_delta" => BetaRawContentBlockDeltaType.SignatureDelta,
+            "compaction_delta" => BetaRawContentBlockDeltaType.CompactionDelta,
+            _ => (BetaRawContentBlockDeltaType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaRawContentBlockDeltaType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaRawContentBlockDeltaType.TextDelta => "text_delta",
+                BetaRawContentBlockDeltaType.InputJsonDelta => "input_json_delta",
+                BetaRawContentBlockDeltaType.CitationsDelta => "citations_delta",
+                BetaRawContentBlockDeltaType.ThinkingDelta => "thinking_delta",
+                BetaRawContentBlockDeltaType.SignatureDelta => "signature_delta",
+                BetaRawContentBlockDeltaType.CompactionDelta => "compaction_delta",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

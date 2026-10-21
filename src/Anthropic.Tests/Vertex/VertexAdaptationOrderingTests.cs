@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
@@ -32,12 +33,18 @@ public class VertexAdaptationOrderingTests
 
     private record class JsonBodyParams : ParamsBase
     {
+        public string? VersionHeader { get; set; }
+
         internal override void AddHeadersToRequest(
-            HttpRequestMessage _request,
+            HttpRequestMessage request,
             ClientOptions _options
         )
         {
-            // Skip default headers so ambient ANTHROPIC_* env vars can't interfere.
+            // Skip the other default headers so ambient ANTHROPIC_* env vars can't interfere.
+            if (VersionHeader is not null)
+            {
+                request.Headers.TryAddWithoutValidation("anthropic-version", VersionHeader);
+            }
         }
 
         public override Uri Url(ClientOptions options) => new($"{options.BaseUrl}/v1/messages");
@@ -46,8 +53,15 @@ public class VertexAdaptationOrderingTests
             new StringContent("{\"model\":\"claude-sonnet-4-5\",\"max_tokens\":1024}");
     }
 
-    [Fact]
-    public async Task UserHandlers_ObserveAnthropicShape_WireObservesVertexShape()
+    [Theory]
+    [InlineData("2000-01-01", null, "2000-01-01")]
+    [InlineData("2000-01-01", "2000-01-02", "2000-01-02")]
+    [InlineData(null, null, null)]
+    public async Task UserHandlers_ObserveAnthropicShape_WireObservesVertexShape(
+        string? versionHeader,
+        string? callerVersionHeader,
+        string? expectedBodyVersion
+    )
     {
         HttpRequestMessage? wireRequest = null;
         string? wireBody = null;
@@ -93,6 +107,9 @@ public class VertexAdaptationOrderingTests
         var client = new AnthropicVertexClient(new FakeVertexCredentials())
         {
             HttpClient = new HttpClient(handlerMock.Object),
+            ExtraHeaders = callerVersionHeader is null
+                ? null
+                : new Dictionary<string, string> { ["anthropic-version"] = callerVersionHeader },
             Handlers = new List<DelegatingHandler>
             {
                 Handler.Create(
@@ -112,7 +129,11 @@ public class VertexAdaptationOrderingTests
         };
 
         var response = await client.WithRawResponse.Execute(
-            new HttpRequest<JsonBodyParams> { Method = HttpMethod.Post, Params = new() },
+            new HttpRequest<JsonBodyParams>
+            {
+                Method = HttpMethod.Post,
+                Params = new() { VersionHeader = versionHeader },
+            },
             TestContext.Current.CancellationToken
         );
 
@@ -131,7 +152,9 @@ public class VertexAdaptationOrderingTests
             wireRequest!.RequestUri!.AbsolutePath
         );
         Assert.DoesNotContain("\"model\"", wireBody);
-        Assert.Contains("\"anthropic_version\"", wireBody);
+        var wireVersion = JsonNode.Parse(wireBody!)!["anthropic_version"];
+        Assert.Equal(expectedBodyVersion, (string?)wireVersion);
+        Assert.False(wireRequest.Headers.Contains("anthropic-version"));
         Assert.True(wireRequest.Headers.Contains("Authorization"));
     }
 }

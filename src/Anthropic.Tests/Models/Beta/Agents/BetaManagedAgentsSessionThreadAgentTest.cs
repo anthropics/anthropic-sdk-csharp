@@ -21,27 +21,18 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Name = "Researcher",
-            Skills =
-            [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
-            ],
+            Skills = [new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" }],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
             Tools =
@@ -53,22 +44,16 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
 
@@ -81,26 +66,20 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            Effort = new BetaManagedAgentsEffortLow(),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
         string expectedName = "Researcher";
         List<BetaManagedAgentsSessionThreadAgentSkill> expectedSkills =
         [
-            new BetaManagedAgentsAnthropicSkill()
-            {
-                SkillID = "xlsx",
-                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                Version = "1",
-            },
+            new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem =
             "You are a research subagent that gathers and summarises sources for the coordinating agent.";
@@ -113,23 +92,17 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                     new BetaManagedAgentsBashToolConfig()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                 },
-                Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
             },
         ];
-        ApiEnum<string, BetaManagedAgentsSessionThreadAgentType> expectedType =
-            BetaManagedAgentsSessionThreadAgentType.Agent;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
         int expectedVersion = 1;
 
         Assert.Equal(expectedID, model.ID);
@@ -153,7 +126,7 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
         {
             Assert.Equal(expectedTools[i], model.Tools[i]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedVersion, model.Version);
     }
 
@@ -170,27 +143,18 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Name = "Researcher",
-            Skills =
-            [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
-            ],
+            Skills = [new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" }],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
             Tools =
@@ -202,22 +166,16 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
 
@@ -243,27 +201,18 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Name = "Researcher",
-            Skills =
-            [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
-            ],
+            Skills = [new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" }],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
             Tools =
@@ -275,22 +224,16 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
 
@@ -310,26 +253,20 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+            Effort = new BetaManagedAgentsEffortLow(),
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
         string expectedName = "Researcher";
         List<BetaManagedAgentsSessionThreadAgentSkill> expectedSkills =
         [
-            new BetaManagedAgentsAnthropicSkill()
-            {
-                SkillID = "xlsx",
-                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                Version = "1",
-            },
+            new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem =
             "You are a research subagent that gathers and summarises sources for the coordinating agent.";
@@ -342,23 +279,17 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                     new BetaManagedAgentsBashToolConfig()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                 },
-                Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
             },
         ];
-        ApiEnum<string, BetaManagedAgentsSessionThreadAgentType> expectedType =
-            BetaManagedAgentsSessionThreadAgentType.Agent;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
         int expectedVersion = 1;
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -382,7 +313,7 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
         {
             Assert.Equal(expectedTools[i], deserialized.Tools[i]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedVersion, deserialized.Version);
     }
 
@@ -399,27 +330,18 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Name = "Researcher",
-            Skills =
-            [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
-            ],
+            Skills = [new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" }],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
             Tools =
@@ -431,22 +353,16 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
 
@@ -466,27 +382,18 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
             Name = "Researcher",
-            Skills =
-            [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
-            ],
+            Skills = [new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" }],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
             Tools =
@@ -498,22 +405,16 @@ public class BetaManagedAgentsSessionThreadAgentTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
 
@@ -531,7 +432,6 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsAnthropicSkill()
         {
             SkillID = "xlsx",
-            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
             Version = "1",
         };
         value.Validate();
@@ -543,7 +443,6 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsCustomSkill()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
         value.Validate();
@@ -555,7 +454,6 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsAnthropicSkill()
         {
             SkillID = "xlsx",
-            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
             Version = "1",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -573,7 +471,6 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsCustomSkill()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -586,6 +483,28 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsAnthropicTypeWorks()
+    {
+        BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsAnthropicSkill()
+        {
+            SkillID = "xlsx",
+            Version = "1",
+        };
+        Assert.Equal(BetaManagedAgentsSessionThreadAgentSkillType.Anthropic, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomTypeWorks()
+    {
+        BetaManagedAgentsSessionThreadAgentSkill value = new BetaManagedAgentsCustomSkill()
+        {
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
+            Version = "2",
+        };
+        Assert.Equal(BetaManagedAgentsSessionThreadAgentSkillType.Custom, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsSessionThreadAgentSkill value = new(
@@ -593,6 +512,7 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
                 """
                 {
                   "skill_id": "xlsx",
+                  "type": "anthropic",
                   "version": "1"
                 }
                 """
@@ -601,9 +521,12 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedSkillID = "xlsx";
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType> expectedType =
+            BetaManagedAgentsSessionThreadAgentSkillType.Anthropic;
         string expectedVersion = "1";
 
         Assert.Equal(expectedSkillID, value.SkillID);
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedVersion, value.Version);
 
         BetaManagedAgentsSessionThreadAgentSkill emptyValue = new(
@@ -611,6 +534,7 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Version);
 
         BetaManagedAgentsSessionThreadAgentSkill mismatchedValue = new(
@@ -633,6 +557,60 @@ public class BetaManagedAgentsSessionThreadAgentSkillTest : TestBase
     }
 }
 
+public class BetaManagedAgentsSessionThreadAgentSkillTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Anthropic)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Custom)]
+    public void Validation_Works(BetaManagedAgentsSessionThreadAgentSkillType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Anthropic)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Custom)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionThreadAgentSkillType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
 {
     [Fact]
@@ -645,19 +623,14 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
-            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
         };
         value.Validate();
     }
@@ -673,20 +646,15 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 {
                     Enabled = true,
                     Name = "name",
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
             McpServerName = "mcp_server_name",
-            Type = BetaManagedAgentsMcpToolsetType.McpToolset,
         };
         value.Validate();
     }
@@ -706,7 +674,6 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
         value.Validate();
     }
@@ -721,19 +688,14 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 new BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
-            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadAgentTool>(
@@ -755,20 +717,15 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 {
                     Enabled = true,
                     Name = "name",
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
             McpServerName = "mcp_server_name",
-            Type = BetaManagedAgentsMcpToolsetType.McpToolset,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadAgentTool>(
@@ -794,7 +751,6 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadAgentTool>(
@@ -804,16 +760,112 @@ public class BetaManagedAgentsSessionThreadAgentToolTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsAgentToolset20260401TypeWorks()
+    {
+        BetaManagedAgentsSessionThreadAgentTool value = new BetaManagedAgentsAgentToolset20260401()
+        {
+            Configs =
+            [
+                new BetaManagedAgentsBashToolConfig()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(
+            BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpToolsetTypeWorks()
+    {
+        BetaManagedAgentsSessionThreadAgentTool value = new BetaManagedAgentsMcpToolset()
+        {
+            Configs =
+            [
+                new()
+                {
+                    Enabled = true,
+                    Name = "name",
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+            McpServerName = "mcp_server_name",
+        };
+        Assert.Equal(BetaManagedAgentsSessionThreadAgentToolType.McpToolset, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomTypeWorks()
+    {
+        BetaManagedAgentsSessionThreadAgentTool value = new BetaManagedAgentsCustomTool()
+        {
+            Description = "description",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["string"],
+            },
+            Name = "name",
+        };
+        Assert.Equal(BetaManagedAgentsSessionThreadAgentToolType.Custom, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsSessionThreadAgentTool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent_toolset_20260401"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType> expectedType =
+            BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsSessionThreadAgentTool emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsSessionThreadAgentTypeTest : TestBase
+public class BetaManagedAgentsSessionThreadAgentToolTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsSessionThreadAgentType.Agent)]
-    public void Validation_Works(BetaManagedAgentsSessionThreadAgentType rawValue)
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.McpToolset)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.Custom)]
+    public void Validation_Works(BetaManagedAgentsSessionThreadAgentToolType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionThreadAgentType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType> value = rawValue;
         value.Validate();
     }
 
@@ -821,7 +873,7 @@ public class BetaManagedAgentsSessionThreadAgentTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionThreadAgentType>
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -829,15 +881,17 @@ public class BetaManagedAgentsSessionThreadAgentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionThreadAgentType.Agent)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionThreadAgentType rawValue)
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.McpToolset)]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.Custom)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionThreadAgentToolType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionThreadAgentType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionThreadAgentType>
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -847,11 +901,11 @@ public class BetaManagedAgentsSessionThreadAgentTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionThreadAgentType>
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionThreadAgentType>
+            ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

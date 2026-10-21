@@ -32,17 +32,23 @@ public record class BetaTelemetryDestinationDisabledReason : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTelemetryDestinationDisabledReasonType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTelemetryDestinationDisabledReasonCaller x => x.Type,
-                BetaTelemetryDestinationDisabledReasonSustainedFailure x => x.Type,
-                BetaTelemetryDestinationDisabledReasonInvalidAddress x => x.Type,
-                BetaTelemetryDestinationDisabledReasonRedirect x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTelemetryDestinationDisabledReasonCaller _ =>
+                    BetaTelemetryDestinationDisabledReasonType.Caller,
+                BetaTelemetryDestinationDisabledReasonSustainedFailure _ =>
+                    BetaTelemetryDestinationDisabledReasonType.SustainedFailure,
+                BetaTelemetryDestinationDisabledReasonInvalidAddress _ =>
+                    BetaTelemetryDestinationDisabledReasonType.InvalidAddress,
+                BetaTelemetryDestinationDisabledReasonRedirect _ =>
+                    BetaTelemetryDestinationDisabledReasonType.Redirect,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -463,5 +469,56 @@ sealed class BetaTelemetryDestinationDisabledReasonConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTelemetryDestinationDisabledReasonTypeConverter))]
+public enum BetaTelemetryDestinationDisabledReasonType
+{
+    Caller,
+    SustainedFailure,
+    InvalidAddress,
+    Redirect,
+}
+
+sealed class BetaTelemetryDestinationDisabledReasonTypeConverter
+    : JsonConverter<BetaTelemetryDestinationDisabledReasonType>
+{
+    public override BetaTelemetryDestinationDisabledReasonType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "caller" => BetaTelemetryDestinationDisabledReasonType.Caller,
+            "sustained_failure" => BetaTelemetryDestinationDisabledReasonType.SustainedFailure,
+            "invalid_address" => BetaTelemetryDestinationDisabledReasonType.InvalidAddress,
+            "redirect" => BetaTelemetryDestinationDisabledReasonType.Redirect,
+            _ => (BetaTelemetryDestinationDisabledReasonType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTelemetryDestinationDisabledReasonType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTelemetryDestinationDisabledReasonType.Caller => "caller",
+                BetaTelemetryDestinationDisabledReasonType.SustainedFailure => "sustained_failure",
+                BetaTelemetryDestinationDisabledReasonType.InvalidAddress => "invalid_address",
+                BetaTelemetryDestinationDisabledReasonType.Redirect => "redirect",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

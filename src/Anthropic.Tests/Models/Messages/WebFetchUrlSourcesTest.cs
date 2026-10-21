@@ -262,6 +262,34 @@ public class ClientToolResultsTest : TestBase
     }
 
     [Fact]
+    public void WebFetchUrlSourceAllTypeWorks()
+    {
+        ClientToolResults value = new WebFetchUrlSourceAll();
+        Assert.Equal(ClientToolResultsType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceNoneTypeWorks()
+    {
+        ClientToolResults value = new WebFetchUrlSourceNone();
+        Assert.Equal(ClientToolResultsType.None, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceOnlyTypeWorks()
+    {
+        ClientToolResults value = new WebFetchUrlSourceOnly([new("name")]);
+        Assert.Equal(ClientToolResultsType.Only, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceExceptTypeWorks()
+    {
+        ClientToolResults value = new WebFetchUrlSourceExcept([new("name")]);
+        Assert.Equal(ClientToolResultsType.Except, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ClientToolResults value = new(
@@ -281,10 +309,10 @@ public class ClientToolResultsTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, ClientToolResultsType> expectedType = ClientToolResultsType.All;
         List<WebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.NotNull(value.Tools);
         Assert.Equal(expectedTools.Count, value.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
@@ -296,6 +324,68 @@ public class ClientToolResultsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.Tools);
+    }
+}
+
+public class ClientToolResultsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ClientToolResultsType.All)]
+    [InlineData(ClientToolResultsType.None)]
+    [InlineData(ClientToolResultsType.Only)]
+    [InlineData(ClientToolResultsType.Except)]
+    public void Validation_Works(ClientToolResultsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ClientToolResultsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ClientToolResultsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ClientToolResultsType.All)]
+    [InlineData(ClientToolResultsType.None)]
+    [InlineData(ClientToolResultsType.Only)]
+    [InlineData(ClientToolResultsType.Except)]
+    public void SerializationRoundtrip_Works(ClientToolResultsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ClientToolResultsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClientToolResultsType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ClientToolResultsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClientToolResultsType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -382,6 +472,34 @@ public class ServerToolResultsTest : TestBase
     }
 
     [Fact]
+    public void WebFetchUrlSourceAllTypeWorks()
+    {
+        ServerToolResults value = new WebFetchUrlSourceAll();
+        Assert.Equal(ServerToolResultsType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceNoneTypeWorks()
+    {
+        ServerToolResults value = new WebFetchUrlSourceNone();
+        Assert.Equal(ServerToolResultsType.None, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceOnlyTypeWorks()
+    {
+        ServerToolResults value = new WebFetchUrlSourceOnly([new("name")]);
+        Assert.Equal(ServerToolResultsType.Only, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceExceptTypeWorks()
+    {
+        ServerToolResults value = new WebFetchUrlSourceExcept([new("name")]);
+        Assert.Equal(ServerToolResultsType.Except, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ServerToolResults value = new(
@@ -401,10 +519,10 @@ public class ServerToolResultsTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, ServerToolResultsType> expectedType = ServerToolResultsType.All;
         List<WebFetchUrlSourceToolReference> expectedTools = [new("name")];
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.NotNull(value.Tools);
         Assert.Equal(expectedTools.Count, value.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
@@ -416,6 +534,68 @@ public class ServerToolResultsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.Tools);
+    }
+}
+
+public class ServerToolResultsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ServerToolResultsType.All)]
+    [InlineData(ServerToolResultsType.None)]
+    [InlineData(ServerToolResultsType.Only)]
+    [InlineData(ServerToolResultsType.Except)]
+    public void Validation_Works(ServerToolResultsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ServerToolResultsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ServerToolResultsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ServerToolResultsType.All)]
+    [InlineData(ServerToolResultsType.None)]
+    [InlineData(ServerToolResultsType.Only)]
+    [InlineData(ServerToolResultsType.Except)]
+    public void SerializationRoundtrip_Works(ServerToolResultsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ServerToolResultsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServerToolResultsType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ServerToolResultsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServerToolResultsType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -462,6 +642,20 @@ public class UserInputTest : TestBase
     }
 
     [Fact]
+    public void WebFetchUrlSourceAllTypeWorks()
+    {
+        UserInput value = new WebFetchUrlSourceAll();
+        Assert.Equal(UserInputType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchUrlSourceNoneTypeWorks()
+    {
+        UserInput value = new WebFetchUrlSourceNone();
+        Assert.Equal(UserInputType.None, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         UserInput value = new(
@@ -475,12 +669,70 @@ public class UserInputTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, UserInputType> expectedType = UserInputType.All;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         UserInput emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class UserInputTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(UserInputType.All)]
+    [InlineData(UserInputType.None)]
+    public void Validation_Works(UserInputType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UserInputType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UserInputType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(UserInputType.All)]
+    [InlineData(UserInputType.None)]
+    public void SerializationRoundtrip_Works(UserInputType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, UserInputType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserInputType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, UserInputType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserInputType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

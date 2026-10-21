@@ -28,15 +28,19 @@ public record class BetaManagedAgentsExecutionIdentity : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsExecutionIdentityType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsAwsRoleExecutionIdentity x => x.Type,
-                BetaManagedAgentsServiceAccountExecutionIdentity x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsAwsRoleExecutionIdentity _ =>
+                    BetaManagedAgentsExecutionIdentityType.AwsRole,
+                BetaManagedAgentsServiceAccountExecutionIdentity _ =>
+                    BetaManagedAgentsExecutionIdentityType.ServiceAccount,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsExecutionIdentityType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -320,5 +324,50 @@ sealed class BetaManagedAgentsExecutionIdentityConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsExecutionIdentityTypeConverter))]
+public enum BetaManagedAgentsExecutionIdentityType
+{
+    AwsRole,
+    ServiceAccount,
+}
+
+sealed class BetaManagedAgentsExecutionIdentityTypeConverter
+    : JsonConverter<BetaManagedAgentsExecutionIdentityType>
+{
+    public override BetaManagedAgentsExecutionIdentityType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "aws_role" => BetaManagedAgentsExecutionIdentityType.AwsRole,
+            "service_account" => BetaManagedAgentsExecutionIdentityType.ServiceAccount,
+            _ => (BetaManagedAgentsExecutionIdentityType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsExecutionIdentityType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsExecutionIdentityType.AwsRole => "aws_role",
+                BetaManagedAgentsExecutionIdentityType.ServiceAccount => "service_account",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -124,15 +124,17 @@ public record class AppliedEdit : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, AppliedEditType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaClearToolUses20250919EditResponse x => x.Type,
-                BetaClearThinking20251015EditResponse x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaClearToolUses20250919EditResponse _ => AppliedEditType.ClearToolUses20250919,
+                BetaClearThinking20251015EditResponse _ => AppliedEditType.ClearThinking20251015,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, AppliedEditType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -419,5 +421,49 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(AppliedEditTypeConverter))]
+public enum AppliedEditType
+{
+    ClearToolUses20250919,
+    ClearThinking20251015,
+}
+
+sealed class AppliedEditTypeConverter : JsonConverter<AppliedEditType>
+{
+    public override AppliedEditType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "clear_tool_uses_20250919" => AppliedEditType.ClearToolUses20250919,
+            "clear_thinking_20251015" => AppliedEditType.ClearThinking20251015,
+            _ => (AppliedEditType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        AppliedEditType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AppliedEditType.ClearToolUses20250919 => "clear_tool_uses_20250919",
+                AppliedEditType.ClearThinking20251015 => "clear_thinking_20251015",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

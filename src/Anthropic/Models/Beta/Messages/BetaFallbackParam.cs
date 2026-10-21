@@ -269,17 +269,20 @@ public record class Thinking : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ThinkingType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaThinkingConfigEnabled x => x.Type,
-                BetaThinkingConfigDisabled x => x.Type,
-                BetaThinkingConfigBetweenTools x => x.Type,
-                BetaThinkingConfigAdaptive x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaThinkingConfigEnabled _ => ThinkingType.Enabled,
+                BetaThinkingConfigDisabled _ => ThinkingType.Disabled,
+                BetaThinkingConfigBetweenTools _ => ThinkingType.BetweenTools,
+                BetaThinkingConfigAdaptive _ => ThinkingType.Adaptive,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ThinkingType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -691,5 +694,55 @@ sealed class ThinkingConverter : JsonConverter<Thinking?>
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ThinkingTypeConverter))]
+public enum ThinkingType
+{
+    Enabled,
+    Disabled,
+    BetweenTools,
+    Adaptive,
+}
+
+sealed class ThinkingTypeConverter : JsonConverter<ThinkingType>
+{
+    public override ThinkingType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => ThinkingType.Enabled,
+            "disabled" => ThinkingType.Disabled,
+            "between_tools" => ThinkingType.BetweenTools,
+            "adaptive" => ThinkingType.Adaptive,
+            _ => (ThinkingType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ThinkingType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ThinkingType.Enabled => "enabled",
+                ThinkingType.Disabled => "disabled",
+                ThinkingType.BetweenTools => "between_tools",
+                ThinkingType.Adaptive => "adaptive",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

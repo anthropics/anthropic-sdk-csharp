@@ -392,15 +392,18 @@ public record class CreatedBy : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, CreatedByType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaPluginUserActor x => x.Type,
-                BetaPluginApiActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaPluginUserActor _ => CreatedByType.UserActor,
+                BetaPluginApiActor _ => CreatedByType.ApiActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, CreatedByType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -671,6 +674,50 @@ sealed class CreatedByConverter : JsonConverter<CreatedBy?>
     }
 }
 
+[JsonConverter(typeof(CreatedByTypeConverter))]
+public enum CreatedByType
+{
+    UserActor,
+    ApiActor,
+}
+
+sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
+{
+    public override CreatedByType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => CreatedByType.UserActor,
+            "api_actor" => CreatedByType.ApiActor,
+            _ => (CreatedByType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        CreatedByType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                CreatedByType.UserActor => "user_actor",
+                CreatedByType.ApiActor => "api_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Organization-owned Plugin: the organization-wide installation setting every member
 /// gets unless an RBAC Group they belong to holds its own — the Plugin's own setting,
@@ -751,15 +798,18 @@ public record class Owner : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, OwnerTypeValue> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaPluginOwnerOrganization x => x.Type,
-                BetaPluginOwnerUser x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaPluginOwnerOrganization _ => OwnerTypeValue.Organization,
+                BetaPluginOwnerUser _ => OwnerTypeValue.User,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, OwnerTypeValue>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -1021,6 +1071,50 @@ sealed class OwnerConverter : JsonConverter<Owner>
     public override void Write(Utf8JsonWriter writer, Owner value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(OwnerTypeValueConverter))]
+public enum OwnerTypeValue
+{
+    Organization,
+    User,
+}
+
+sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
+{
+    public override OwnerTypeValue Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => OwnerTypeValue.Organization,
+            "user" => OwnerTypeValue.User,
+            _ => (OwnerTypeValue)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        OwnerTypeValue value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                OwnerTypeValue.Organization => "organization",
+                OwnerTypeValue.User => "user",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

@@ -52,7 +52,7 @@ public class AnthropicGoogleCloudLiveTests
             {
                 Model = Model,
                 MaxTokens = 64,
-                Messages = [new() { Role = "user", Content = "Say hello in exactly three words." }],
+                Messages = [new UserMessageParam { Content = "Say hello in exactly three words." }],
             },
             TestContext.Current.CancellationToken
         );
@@ -73,7 +73,7 @@ public class AnthropicGoogleCloudLiveTests
                 {
                     Model = Model,
                     MaxTokens = 64,
-                    Messages = [new() { Role = "user", Content = "Count to three." }],
+                    Messages = [new UserMessageParam { Content = "Count to three." }],
                 },
                 TestContext.Current.CancellationToken
             )
@@ -103,7 +103,7 @@ public class AnthropicGoogleCloudLiveTests
                 {
                     Model = "no-such-model",
                     MaxTokens = 1,
-                    Messages = [new() { Role = "user", Content = "hi" }],
+                    Messages = [new UserMessageParam { Content = "hi" }],
                 },
                 TestContext.Current.CancellationToken
             )

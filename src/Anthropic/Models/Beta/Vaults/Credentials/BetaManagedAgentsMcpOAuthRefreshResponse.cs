@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -155,6 +155,25 @@ public record class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth : 
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTokenEndpointAuthNoneResponse _ =>
+                    BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None,
+                BetaManagedAgentsTokenEndpointAuthBasicResponse _ =>
+                    BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic,
+                BetaManagedAgentsTokenEndpointAuthPostResponse _ =>
+                    BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth(
         BetaManagedAgentsTokenEndpointAuthNoneResponse value,
         JsonElement? element = null
@@ -278,9 +297,9 @@ public record class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth : 
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTokenEndpointAuthNoneResponse> betaManagedAgentsTokenEndpointAuthNoneResponse,
-        System::Action<BetaManagedAgentsTokenEndpointAuthBasicResponse> betaManagedAgentsTokenEndpointAuthBasicResponse,
-        System::Action<BetaManagedAgentsTokenEndpointAuthPostResponse> betaManagedAgentsTokenEndpointAuthPostResponse
+        Action<BetaManagedAgentsTokenEndpointAuthNoneResponse> betaManagedAgentsTokenEndpointAuthNoneResponse,
+        Action<BetaManagedAgentsTokenEndpointAuthBasicResponse> betaManagedAgentsTokenEndpointAuthBasicResponse,
+        Action<BetaManagedAgentsTokenEndpointAuthPostResponse> betaManagedAgentsTokenEndpointAuthPostResponse
     )
     {
         switch (this.Value)
@@ -324,15 +343,15 @@ public record class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth : 
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthNoneResponse,
             T
         > betaManagedAgentsTokenEndpointAuthNoneResponse,
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthBasicResponse,
             T
         > betaManagedAgentsTokenEndpointAuthBasicResponse,
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthPostResponse,
             T
         > betaManagedAgentsTokenEndpointAuthPostResponse
@@ -425,7 +444,7 @@ sealed class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthConverter
 {
     public override BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -519,5 +538,57 @@ sealed class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeConverter))]
+public enum BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType
+{
+    None,
+    ClientSecretBasic,
+    ClientSecretPost,
+}
+
+sealed class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeConverter
+    : JsonConverter<BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+{
+    public override BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "none" => BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None,
+            "client_secret_basic" =>
+                BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic,
+            "client_secret_post" =>
+                BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost,
+            _ => (BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None => "none",
+                BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic =>
+                    "client_secret_basic",
+                BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost =>
+                    "client_secret_post",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

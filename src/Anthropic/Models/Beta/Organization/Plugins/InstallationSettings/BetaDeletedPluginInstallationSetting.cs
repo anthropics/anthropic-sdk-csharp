@@ -143,16 +143,18 @@ public record class Target : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, TargetTypeValue> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaPluginTargetOrganization x => x.Type,
-                BetaPluginTargetRbacGroup x => x.Type,
-                BetaPluginTargetOrganizationMember x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaPluginTargetOrganization _ => TargetTypeValue.Organization,
+                BetaPluginTargetRbacGroup _ => TargetTypeValue.RbacGroup,
+                BetaPluginTargetOrganizationMember _ => TargetTypeValue.OrganizationMember,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, TargetTypeValue>
+                >(this.Json, "type"),
             };
         }
     }
@@ -480,5 +482,52 @@ sealed class TargetConverter : JsonConverter<Target>
     public override void Write(Utf8JsonWriter writer, Target value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(TargetTypeValueConverter))]
+public enum TargetTypeValue
+{
+    Organization,
+    RbacGroup,
+    OrganizationMember,
+}
+
+sealed class TargetTypeValueConverter : JsonConverter<TargetTypeValue>
+{
+    public override TargetTypeValue Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => TargetTypeValue.Organization,
+            "rbac_group" => TargetTypeValue.RbacGroup,
+            "organization_member" => TargetTypeValue.OrganizationMember,
+            _ => (TargetTypeValue)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TargetTypeValue value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TargetTypeValue.Organization => "organization",
+                TargetTypeValue.RbacGroup => "rbac_group",
+                TargetTypeValue.OrganizationMember => "organization_member",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

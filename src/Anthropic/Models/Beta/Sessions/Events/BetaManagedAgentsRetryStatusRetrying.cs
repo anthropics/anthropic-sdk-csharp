@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 )]
 public sealed record class BetaManagedAgentsRetryStatusRetrying : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsRetryStatusRetryingType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsRetryStatusRetryingType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -36,10 +33,16 @@ public sealed record class BetaManagedAgentsRetryStatusRetrying : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("retrying")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsRetryStatusRetrying() { }
+    public BetaManagedAgentsRetryStatusRetrying()
+    {
+        this.Type = JsonSerializer.SerializeToElement("retrying");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -52,6 +55,8 @@ public sealed record class BetaManagedAgentsRetryStatusRetrying : JsonModel
     public BetaManagedAgentsRetryStatusRetrying(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("retrying");
     }
 
 #pragma warning disable CS8618
@@ -69,15 +74,6 @@ public sealed record class BetaManagedAgentsRetryStatusRetrying : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsRetryStatusRetrying(
-        ApiEnum<string, BetaManagedAgentsRetryStatusRetryingType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsRetryStatusRetryingFromRaw
@@ -87,46 +83,4 @@ class BetaManagedAgentsRetryStatusRetryingFromRaw
     public BetaManagedAgentsRetryStatusRetrying FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsRetryStatusRetrying.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsRetryStatusRetryingTypeConverter))]
-public enum BetaManagedAgentsRetryStatusRetryingType
-{
-    Retrying,
-}
-
-sealed class BetaManagedAgentsRetryStatusRetryingTypeConverter
-    : JsonConverter<BetaManagedAgentsRetryStatusRetryingType>
-{
-    public override BetaManagedAgentsRetryStatusRetryingType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "retrying" => BetaManagedAgentsRetryStatusRetryingType.Retrying,
-            _ => (BetaManagedAgentsRetryStatusRetryingType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsRetryStatusRetryingType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsRetryStatusRetryingType.Retrying => "retrying",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -34,14 +33,12 @@ public sealed record class BetaManagedAgentsSessionRateLimitedRunError : JsonMod
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionRateLimitedRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionRateLimitedRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -50,10 +47,21 @@ public sealed record class BetaManagedAgentsSessionRateLimitedRunError : JsonMod
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session_rate_limited_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionRateLimitedRunError() { }
+    public BetaManagedAgentsSessionRateLimitedRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_rate_limited_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -68,6 +76,8 @@ public sealed record class BetaManagedAgentsSessionRateLimitedRunError : JsonMod
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_rate_limited_error");
     }
 
 #pragma warning disable CS8618
@@ -85,6 +95,13 @@ public sealed record class BetaManagedAgentsSessionRateLimitedRunError : JsonMod
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionRateLimitedRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsSessionRateLimitedRunErrorFromRaw
@@ -94,48 +111,4 @@ class BetaManagedAgentsSessionRateLimitedRunErrorFromRaw
     public BetaManagedAgentsSessionRateLimitedRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionRateLimitedRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionRateLimitedRunErrorTypeConverter))]
-public enum BetaManagedAgentsSessionRateLimitedRunErrorType
-{
-    SessionRateLimitedError,
-}
-
-sealed class BetaManagedAgentsSessionRateLimitedRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionRateLimitedRunErrorType>
-{
-    public override BetaManagedAgentsSessionRateLimitedRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session_rate_limited_error" =>
-                BetaManagedAgentsSessionRateLimitedRunErrorType.SessionRateLimitedError,
-            _ => (BetaManagedAgentsSessionRateLimitedRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionRateLimitedRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionRateLimitedRunErrorType.SessionRateLimitedError =>
-                    "session_rate_limited_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

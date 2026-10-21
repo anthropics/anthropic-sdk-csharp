@@ -66,7 +66,7 @@ public class HttpAttributesTest : TracingTestBase
         await client.Beta.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Role = Role.User, Content = "Hi" }],
+                Messages = [new BetaUserMessageParam { Content = "Hi" }],
                 Model = "claude-test",
             },
             TestContext.Current.CancellationToken
@@ -1184,7 +1184,7 @@ public class HttpAttributesTest : TracingTestBase
             await copy.Beta.Messages.CountTokens(
                 new()
                 {
-                    Messages = [new() { Role = Role.User, Content = "Hi" }],
+                    Messages = [new BetaUserMessageParam { Content = "Hi" }],
                     Model = "claude-test",
                 },
                 TestContext.Current.CancellationToken

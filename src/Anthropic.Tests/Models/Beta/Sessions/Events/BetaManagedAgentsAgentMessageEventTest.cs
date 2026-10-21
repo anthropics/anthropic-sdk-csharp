@@ -15,30 +15,17 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         var model = new BetaManagedAgentsAgentMessageEvent
         {
             ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Let me look up order #1234 for you.",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
         string expectedID = "sevt_011CZkZHPq1jCdq5mbRTjiVn";
         List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Let me look up order #1234 for you.",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
+            new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
         ];
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        ApiEnum<string, BetaManagedAgentsAgentMessageEventType> expectedType =
-            BetaManagedAgentsAgentMessageEventType.AgentMessage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.message");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedContent.Count, model.Content.Count);
@@ -47,7 +34,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             Assert.Equal(expectedContent[i], model.Content[i]);
         }
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -56,16 +43,8 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         var model = new BetaManagedAgentsAgentMessageEvent
         {
             ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Let me look up order #1234 for you.",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -83,16 +62,8 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         var model = new BetaManagedAgentsAgentMessageEvent
         {
             ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Let me look up order #1234 for you.",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -105,15 +76,10 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         string expectedID = "sevt_011CZkZHPq1jCdq5mbRTjiVn";
         List<BetaManagedAgentsAgentMessageEventContent> expectedContent =
         [
-            new BetaManagedAgentsTextBlock()
-            {
-                Text = "Let me look up order #1234 for you.",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
+            new BetaManagedAgentsTextBlock("Let me look up order #1234 for you."),
         ];
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        ApiEnum<string, BetaManagedAgentsAgentMessageEventType> expectedType =
-            BetaManagedAgentsAgentMessageEventType.AgentMessage;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.message");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedContent.Count, deserialized.Content.Count);
@@ -122,7 +88,7 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
             Assert.Equal(expectedContent[i], deserialized.Content[i]);
         }
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -131,16 +97,8 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         var model = new BetaManagedAgentsAgentMessageEvent
         {
             ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Let me look up order #1234 for you.",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
         model.Validate();
@@ -152,16 +110,8 @@ public class BetaManagedAgentsAgentMessageEventTest : TestBase
         var model = new BetaManagedAgentsAgentMessageEvent
         {
             ID = "sevt_011CZkZHPq1jCdq5mbRTjiVn",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Let me look up order #1234 for you.",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Let me look up order #1234 for you.")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
         };
 
         BetaManagedAgentsAgentMessageEvent copied = new(model);
@@ -175,31 +125,25 @@ public class BetaManagedAgentsAgentMessageEventContentTest : TestBase
     [Fact]
     public void BetaManagedAgentsTextBlockValidationWorks()
     {
-        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock()
-        {
-            Text = "Where is my order #1234?",
-            Type = BetaManagedAgentsTextBlockType.Text,
-        };
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock(
+            "Where is my order #1234?"
+        );
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsRedactedBlockValidationWorks()
     {
-        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock(
-            BetaManagedAgentsRedactedBlockType.Redacted
-        );
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
-        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock()
-        {
-            Text = "Where is my order #1234?",
-            Type = BetaManagedAgentsTextBlockType.Text,
-        };
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock(
+            "Where is my order #1234?"
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentMessageEventContent>(
             element,
@@ -212,9 +156,7 @@ public class BetaManagedAgentsAgentMessageEventContentTest : TestBase
     [Fact]
     public void BetaManagedAgentsRedactedBlockSerializationRoundtripWorks()
     {
-        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock(
-            BetaManagedAgentsRedactedBlockType.Redacted
-        );
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentMessageEventContent>(
             element,
@@ -223,16 +165,59 @@ public class BetaManagedAgentsAgentMessageEventContentTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsTextBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsTextBlock(
+            "Where is my order #1234?"
+        );
+        Assert.Equal(BetaManagedAgentsAgentMessageEventContentType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRedactedBlockTypeWorks()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new BetaManagedAgentsRedactedBlock();
+        Assert.Equal(BetaManagedAgentsAgentMessageEventContentType.Redacted, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsAgentMessageEventContent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType> expectedType =
+            BetaManagedAgentsAgentMessageEventContentType.Text;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsAgentMessageEventContent emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsAgentMessageEventTypeTest : TestBase
+public class BetaManagedAgentsAgentMessageEventContentTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsAgentMessageEventType.AgentMessage)]
-    public void Validation_Works(BetaManagedAgentsAgentMessageEventType rawValue)
+    [InlineData(BetaManagedAgentsAgentMessageEventContentType.Text)]
+    [InlineData(BetaManagedAgentsAgentMessageEventContentType.Redacted)]
+    public void Validation_Works(BetaManagedAgentsAgentMessageEventContentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentMessageEventType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType> value = rawValue;
         value.Validate();
     }
 
@@ -240,7 +225,7 @@ public class BetaManagedAgentsAgentMessageEventTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMessageEventType>
+            ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -248,15 +233,16 @@ public class BetaManagedAgentsAgentMessageEventTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentMessageEventType.AgentMessage)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentMessageEventType rawValue)
+    [InlineData(BetaManagedAgentsAgentMessageEventContentType.Text)]
+    [InlineData(BetaManagedAgentsAgentMessageEventContentType.Redacted)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentMessageEventContentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentMessageEventType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMessageEventType>
+            ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -266,11 +252,11 @@ public class BetaManagedAgentsAgentMessageEventTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMessageEventType>
+            ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMessageEventType>
+            ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

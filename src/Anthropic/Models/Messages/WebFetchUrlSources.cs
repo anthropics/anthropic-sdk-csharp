@@ -156,17 +156,19 @@ public record class ClientToolResults : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ClientToolResultsType> Type
     {
         get
         {
             return this.Value switch
             {
-                WebFetchUrlSourceAll x => x.Type,
-                WebFetchUrlSourceNone x => x.Type,
-                WebFetchUrlSourceOnly x => x.Type,
-                WebFetchUrlSourceExcept x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                WebFetchUrlSourceAll _ => ClientToolResultsType.All,
+                WebFetchUrlSourceNone _ => ClientToolResultsType.None,
+                WebFetchUrlSourceOnly _ => ClientToolResultsType.Only,
+                WebFetchUrlSourceExcept _ => ClientToolResultsType.Except,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ClientToolResultsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -576,6 +578,56 @@ sealed class ClientToolResultsConverter : JsonConverter<ClientToolResults>
     }
 }
 
+[JsonConverter(typeof(ClientToolResultsTypeConverter))]
+public enum ClientToolResultsType
+{
+    All,
+    None,
+    Only,
+    Except,
+}
+
+sealed class ClientToolResultsTypeConverter : JsonConverter<ClientToolResultsType>
+{
+    public override ClientToolResultsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => ClientToolResultsType.All,
+            "none" => ClientToolResultsType.None,
+            "only" => ClientToolResultsType.Only,
+            "except" => ClientToolResultsType.Except,
+            _ => (ClientToolResultsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ClientToolResultsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ClientToolResultsType.All => "all",
+                ClientToolResultsType.None => "none",
+                ClientToolResultsType.Only => "only",
+                ClientToolResultsType.Except => "except",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Which server tools' results contribute fetchable URLs: "all", "none", or an only
 /// or except list of server tool names from tools[]; only web_search and web_fetch
@@ -599,17 +651,19 @@ public record class ServerToolResults : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ServerToolResultsType> Type
     {
         get
         {
             return this.Value switch
             {
-                WebFetchUrlSourceAll x => x.Type,
-                WebFetchUrlSourceNone x => x.Type,
-                WebFetchUrlSourceOnly x => x.Type,
-                WebFetchUrlSourceExcept x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                WebFetchUrlSourceAll _ => ServerToolResultsType.All,
+                WebFetchUrlSourceNone _ => ServerToolResultsType.None,
+                WebFetchUrlSourceOnly _ => ServerToolResultsType.Only,
+                WebFetchUrlSourceExcept _ => ServerToolResultsType.Except,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ServerToolResultsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -1019,6 +1073,56 @@ sealed class ServerToolResultsConverter : JsonConverter<ServerToolResults>
     }
 }
 
+[JsonConverter(typeof(ServerToolResultsTypeConverter))]
+public enum ServerToolResultsType
+{
+    All,
+    None,
+    Only,
+    Except,
+}
+
+sealed class ServerToolResultsTypeConverter : JsonConverter<ServerToolResultsType>
+{
+    public override ServerToolResultsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => ServerToolResultsType.All,
+            "none" => ServerToolResultsType.None,
+            "only" => ServerToolResultsType.Only,
+            "except" => ServerToolResultsType.Except,
+            _ => (ServerToolResultsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ServerToolResultsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ServerToolResultsType.All => "all",
+                ServerToolResultsType.None => "none",
+                ServerToolResultsType.Only => "only",
+                ServerToolResultsType.Except => "except",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Whether URLs in user messages are fetchable: "all" or "none".
 /// </summary>
@@ -1040,15 +1144,18 @@ public record class UserInput : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, UserInputType> Type
     {
         get
         {
             return this.Value switch
             {
-                WebFetchUrlSourceAll x => x.Type,
-                WebFetchUrlSourceNone x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                WebFetchUrlSourceAll _ => UserInputType.All,
+                WebFetchUrlSourceNone _ => UserInputType.None,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, UserInputType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -1316,5 +1423,49 @@ sealed class UserInputConverter : JsonConverter<UserInput>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(UserInputTypeConverter))]
+public enum UserInputType
+{
+    All,
+    None,
+}
+
+sealed class UserInputTypeConverter : JsonConverter<UserInputType>
+{
+    public override UserInputType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => UserInputType.All,
+            "none" => UserInputType.None,
+            _ => (UserInputType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        UserInputType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                UserInputType.All => "all",
+                UserInputType.None => "none",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

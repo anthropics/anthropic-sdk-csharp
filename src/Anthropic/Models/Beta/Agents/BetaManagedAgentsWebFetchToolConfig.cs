@@ -223,6 +223,25 @@ public record class BetaManagedAgentsWebFetchToolConfigPermissionPolicy : ModelB
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAlwaysAllowPolicy _ =>
+                    BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow,
+                BetaManagedAgentsAlwaysAskPolicy _ =>
+                    BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk,
+                BetaManagedAgentsAutoPolicy _ =>
+                    BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsWebFetchToolConfigPermissionPolicy(
         BetaManagedAgentsAlwaysAllowPolicy value,
         JsonElement? element = null
@@ -570,5 +589,54 @@ sealed class BetaManagedAgentsWebFetchToolConfigPermissionPolicyConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsWebFetchToolConfigPermissionPolicyTypeConverter))]
+public enum BetaManagedAgentsWebFetchToolConfigPermissionPolicyType
+{
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
+}
+
+sealed class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTypeConverter
+    : JsonConverter<BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+{
+    public override BetaManagedAgentsWebFetchToolConfigPermissionPolicyType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "always_allow" => BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow,
+            "always_ask" => BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk,
+            "auto" => BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto,
+            _ => (BetaManagedAgentsWebFetchToolConfigPermissionPolicyType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicyType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow =>
+                    "always_allow",
+                BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk => "always_ask",
+                BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

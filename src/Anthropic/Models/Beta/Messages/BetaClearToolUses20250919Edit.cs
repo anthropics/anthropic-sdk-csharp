@@ -446,15 +446,18 @@ public record class Trigger : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, TriggerType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaInputTokensTrigger x => x.Type,
-                BetaToolUsesTrigger x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaInputTokensTrigger _ => TriggerType.InputTokens,
+                BetaToolUsesTrigger _ => TriggerType.ToolUses,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, TriggerType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -731,5 +734,49 @@ sealed class TriggerConverter : JsonConverter<Trigger>
     public override void Write(Utf8JsonWriter writer, Trigger value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(TriggerTypeConverter))]
+public enum TriggerType
+{
+    InputTokens,
+    ToolUses,
+}
+
+sealed class TriggerTypeConverter : JsonConverter<TriggerType>
+{
+    public override TriggerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "input_tokens" => TriggerType.InputTokens,
+            "tool_uses" => TriggerType.ToolUses,
+            _ => (TriggerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TriggerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TriggerType.InputTokens => "input_tokens",
+                TriggerType.ToolUses => "tool_uses",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

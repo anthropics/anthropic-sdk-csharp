@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -70,24 +70,22 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
     /// <summary>
     /// Timestamp when this tool use was processed.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Events.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Events.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -115,11 +113,22 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
         _ = this.Input;
         _ = this.Name;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent.custom_tool_use")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.SessionThreadID;
     }
 
-    public BetaManagedAgentsAgentCustomToolUseEvent() { }
+    public BetaManagedAgentsAgentCustomToolUseEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.custom_tool_use");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -134,6 +143,8 @@ public sealed record class BetaManagedAgentsAgentCustomToolUseEvent : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.custom_tool_use");
     }
 
 #pragma warning disable CS8618
@@ -160,52 +171,4 @@ class BetaManagedAgentsAgentCustomToolUseEventFromRaw
     public BetaManagedAgentsAgentCustomToolUseEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentCustomToolUseEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    AgentCustomToolUse,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Events.Type>
-{
-    public override global::Anthropic.Models.Beta.Sessions.Events.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent.custom_tool_use" => global::Anthropic
-                .Models
-                .Beta
-                .Sessions
-                .Events
-                .Type
-                .AgentCustomToolUse,
-            _ => (global::Anthropic.Models.Beta.Sessions.Events.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Events.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.Sessions.Events.Type.AgentCustomToolUse =>
-                    "agent.custom_tool_use",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

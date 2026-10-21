@@ -165,6 +165,33 @@ public class BetaResponseToolRemovalBlockToolTest : TestBase
     }
 
     [Fact]
+    public void BetaResponseToolChangeToolReferenceTypeWorks()
+    {
+        BetaResponseToolRemovalBlockTool value = new BetaResponseToolChangeToolReference("name");
+        Assert.Equal(BetaResponseToolRemovalBlockToolType.ToolReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaResponseToolChangeMcpToolReferenceTypeWorks()
+    {
+        BetaResponseToolRemovalBlockTool value = new BetaResponseToolChangeMcpToolReference()
+        {
+            Name = "name",
+            ServerName = "server_name",
+        };
+        Assert.Equal(BetaResponseToolRemovalBlockToolType.McpToolReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaResponseToolChangeMcpToolsetReferenceTypeWorks()
+    {
+        BetaResponseToolRemovalBlockTool value = new BetaResponseToolChangeMcpToolsetReference(
+            "server_name"
+        );
+        Assert.Equal(BetaResponseToolRemovalBlockToolType.McpToolsetReference, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaResponseToolRemovalBlockTool value = new(
@@ -181,11 +208,12 @@ public class BetaResponseToolRemovalBlockToolTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedName = "name";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_reference");
+        ApiEnum<string, BetaResponseToolRemovalBlockToolType> expectedType =
+            BetaResponseToolRemovalBlockToolType.ToolReference;
         string expectedServerName = "server_name";
 
         Assert.Equal(expectedName, value.Name);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedServerName, value.ServerName);
 
         BetaResponseToolRemovalBlockTool emptyValue = new(
@@ -213,5 +241,61 @@ public class BetaResponseToolRemovalBlockToolTest : TestBase
 
         Assert.Null(mismatchedValue.Name);
         Assert.Null(mismatchedValue.ServerName);
+    }
+}
+
+public class BetaResponseToolRemovalBlockToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaResponseToolRemovalBlockToolType.ToolReference)]
+    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolReference)]
+    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolsetReference)]
+    public void Validation_Works(BetaResponseToolRemovalBlockToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaResponseToolRemovalBlockToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaResponseToolRemovalBlockToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaResponseToolRemovalBlockToolType.ToolReference)]
+    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolReference)]
+    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolsetReference)]
+    public void SerializationRoundtrip_Works(BetaResponseToolRemovalBlockToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaResponseToolRemovalBlockToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaResponseToolRemovalBlockToolType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaResponseToolRemovalBlockToolType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaResponseToolRemovalBlockToolType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

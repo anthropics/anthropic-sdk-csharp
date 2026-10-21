@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -35,14 +34,12 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
         init { this._rawData.Set("mcp_server_name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -93,7 +90,10 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
     public override void Validate()
     {
         _ = this.McpServerName;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_toolset")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         foreach (var item in this.Configs ?? [])
         {
             item.Validate();
@@ -101,7 +101,10 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
         this.DefaultConfig?.Validate();
     }
 
-    public BetaManagedAgentsMcpToolsetParams() { }
+    public BetaManagedAgentsMcpToolsetParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -114,6 +117,8 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
     public BetaManagedAgentsMcpToolsetParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
     }
 
 #pragma warning disable CS8618
@@ -131,6 +136,13 @@ public sealed record class BetaManagedAgentsMcpToolsetParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsMcpToolsetParams(string mcpServerName)
+        : this()
+    {
+        this.McpServerName = mcpServerName;
+    }
 }
 
 class BetaManagedAgentsMcpToolsetParamsFromRaw : IFromRawJson<BetaManagedAgentsMcpToolsetParams>
@@ -139,46 +151,4 @@ class BetaManagedAgentsMcpToolsetParamsFromRaw : IFromRawJson<BetaManagedAgentsM
     public BetaManagedAgentsMcpToolsetParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMcpToolsetParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMcpToolsetParamsTypeConverter))]
-public enum BetaManagedAgentsMcpToolsetParamsType
-{
-    McpToolset,
-}
-
-sealed class BetaManagedAgentsMcpToolsetParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpToolsetParamsType>
-{
-    public override BetaManagedAgentsMcpToolsetParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "mcp_toolset" => BetaManagedAgentsMcpToolsetParamsType.McpToolset,
-            _ => (BetaManagedAgentsMcpToolsetParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMcpToolsetParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMcpToolsetParamsType.McpToolset => "mcp_toolset",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
@@ -10,28 +9,19 @@ public class BetaManagedAgentsSkillNotFoundRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSkillNotFoundRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        var model = new BetaManagedAgentsSkillNotFoundRunError { Message = "message" };
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType> expectedType =
-            BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("skill_not_found_error");
 
         Assert.Equal(expectedMessage, model.Message);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSkillNotFoundRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        var model = new BetaManagedAgentsSkillNotFoundRunError { Message = "message" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSkillNotFoundRunError>(
@@ -45,11 +35,7 @@ public class BetaManagedAgentsSkillNotFoundRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsSkillNotFoundRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        var model = new BetaManagedAgentsSkillNotFoundRunError { Message = "message" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSkillNotFoundRunError>(
@@ -59,21 +45,16 @@ public class BetaManagedAgentsSkillNotFoundRunErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType> expectedType =
-            BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("skill_not_found_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsSkillNotFoundRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        var model = new BetaManagedAgentsSkillNotFoundRunError { Message = "message" };
 
         model.Validate();
     }
@@ -81,66 +62,10 @@ public class BetaManagedAgentsSkillNotFoundRunErrorTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsSkillNotFoundRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        var model = new BetaManagedAgentsSkillNotFoundRunError { Message = "message" };
 
         BetaManagedAgentsSkillNotFoundRunError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSkillNotFoundRunErrorTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError)]
-    public void Validation_Works(BetaManagedAgentsSkillNotFoundRunErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSkillNotFoundRunErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSkillNotFoundRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

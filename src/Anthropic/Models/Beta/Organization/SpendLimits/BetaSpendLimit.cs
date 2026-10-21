@@ -216,20 +216,23 @@ public record class BetaSpendLimitScope : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaSpendLimitScopeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserScope x => x.Type,
-                BetaSpendLimitSeatTierScope x => x.Type,
-                BetaSpendLimitRbacGroupScope x => x.Type,
-                BetaSpendLimitOrganizationServiceScope x => x.Type,
-                BetaSpendLimitOrganizationScope x => x.Type,
-                BetaSpendLimitWorkspaceScope x => x.Type,
-                BetaSpendLimitUsageTierScope x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserScope _ => BetaSpendLimitScopeType.User,
+                BetaSpendLimitSeatTierScope _ => BetaSpendLimitScopeType.SeatTier,
+                BetaSpendLimitRbacGroupScope _ => BetaSpendLimitScopeType.RbacGroup,
+                BetaSpendLimitOrganizationServiceScope _ =>
+                    BetaSpendLimitScopeType.OrganizationService,
+                BetaSpendLimitOrganizationScope _ => BetaSpendLimitScopeType.Organization,
+                BetaSpendLimitWorkspaceScope _ => BetaSpendLimitScopeType.Workspace,
+                BetaSpendLimitUsageTierScope _ => BetaSpendLimitScopeType.UsageTier,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaSpendLimitScopeType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -820,5 +823,64 @@ sealed class BetaSpendLimitScopeConverter : JsonConverter<BetaSpendLimitScope>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaSpendLimitScopeTypeConverter))]
+public enum BetaSpendLimitScopeType
+{
+    User,
+    SeatTier,
+    RbacGroup,
+    OrganizationService,
+    Organization,
+    Workspace,
+    UsageTier,
+}
+
+sealed class BetaSpendLimitScopeTypeConverter : JsonConverter<BetaSpendLimitScopeType>
+{
+    public override BetaSpendLimitScopeType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user" => BetaSpendLimitScopeType.User,
+            "seat_tier" => BetaSpendLimitScopeType.SeatTier,
+            "rbac_group" => BetaSpendLimitScopeType.RbacGroup,
+            "organization_service" => BetaSpendLimitScopeType.OrganizationService,
+            "organization" => BetaSpendLimitScopeType.Organization,
+            "workspace" => BetaSpendLimitScopeType.Workspace,
+            "usage_tier" => BetaSpendLimitScopeType.UsageTier,
+            _ => (BetaSpendLimitScopeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaSpendLimitScopeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaSpendLimitScopeType.User => "user",
+                BetaSpendLimitScopeType.SeatTier => "seat_tier",
+                BetaSpendLimitScopeType.RbacGroup => "rbac_group",
+                BetaSpendLimitScopeType.OrganizationService => "organization_service",
+                BetaSpendLimitScopeType.Organization => "organization",
+                BetaSpendLimitScopeType.Workspace => "workspace",
+                BetaSpendLimitScopeType.UsageTier => "usage_tier",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

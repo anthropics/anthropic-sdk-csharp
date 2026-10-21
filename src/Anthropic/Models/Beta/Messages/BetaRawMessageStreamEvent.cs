@@ -25,19 +25,21 @@ public record class BetaRawMessageStreamEvent : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaRawMessageStreamEventType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaRawMessageStartEvent x => x.Type,
-                BetaRawMessageDeltaEvent x => x.Type,
-                BetaRawMessageStopEvent x => x.Type,
-                BetaRawContentBlockStartEvent x => x.Type,
-                BetaRawContentBlockDeltaEvent x => x.Type,
-                BetaRawContentBlockStopEvent x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaRawMessageStartEvent _ => BetaRawMessageStreamEventType.MessageStart,
+                BetaRawMessageDeltaEvent _ => BetaRawMessageStreamEventType.MessageDelta,
+                BetaRawMessageStopEvent _ => BetaRawMessageStreamEventType.MessageStop,
+                BetaRawContentBlockStartEvent _ => BetaRawMessageStreamEventType.ContentBlockStart,
+                BetaRawContentBlockDeltaEvent _ => BetaRawMessageStreamEventType.ContentBlockDelta,
+                BetaRawContentBlockStopEvent _ => BetaRawMessageStreamEventType.ContentBlockStop,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaRawMessageStreamEventType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -581,5 +583,61 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaRawMessageStreamEventTypeConverter))]
+public enum BetaRawMessageStreamEventType
+{
+    MessageStart,
+    MessageDelta,
+    MessageStop,
+    ContentBlockStart,
+    ContentBlockDelta,
+    ContentBlockStop,
+}
+
+sealed class BetaRawMessageStreamEventTypeConverter : JsonConverter<BetaRawMessageStreamEventType>
+{
+    public override BetaRawMessageStreamEventType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "message_start" => BetaRawMessageStreamEventType.MessageStart,
+            "message_delta" => BetaRawMessageStreamEventType.MessageDelta,
+            "message_stop" => BetaRawMessageStreamEventType.MessageStop,
+            "content_block_start" => BetaRawMessageStreamEventType.ContentBlockStart,
+            "content_block_delta" => BetaRawMessageStreamEventType.ContentBlockDelta,
+            "content_block_stop" => BetaRawMessageStreamEventType.ContentBlockStop,
+            _ => (BetaRawMessageStreamEventType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaRawMessageStreamEventType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaRawMessageStreamEventType.MessageStart => "message_start",
+                BetaRawMessageStreamEventType.MessageDelta => "message_delta",
+                BetaRawMessageStreamEventType.MessageStop => "message_stop",
+                BetaRawMessageStreamEventType.ContentBlockStart => "content_block_start",
+                BetaRawMessageStreamEventType.ContentBlockDelta => "content_block_delta",
+                BetaRawMessageStreamEventType.ContentBlockStop => "content_block_stop",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -645,38 +645,6 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
-    /// Amount of randomness injected into the response.
-    ///
-    /// <para>Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer
-    /// to `0.0` for analytical / multiple choice, and closer to `1.0` for creative
-    /// and generative tasks.</para>
-    ///
-    /// <para>Note that even with `temperature` of `0.0`, the results will not be
-    /// fully deterministic.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
-    )]
-    public double? Temperature
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<double>("temperature");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawData.Remove("temperature");
-                return;
-            }
-
-            this._rawData.Set("temperature", value);
-        }
-    }
-
-    /// <summary>
     /// Configuration for Claude's thinking.
     ///
     /// <para>With `{"type": "adaptive"}`, Claude decides when and how much to think.
@@ -799,67 +767,6 @@ public sealed record class Params : JsonModel
         }
     }
 
-    /// <summary>
-    /// Only sample from the top K options for each subsequent token.
-    ///
-    /// <para>Used to remove "long tail" low probability responses. [Learn more technical
-    /// details here](https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277).</para>
-    ///
-    /// <para>Recommended for advanced use cases only.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error."
-    )]
-    public long? TopK
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("top_k");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawData.Remove("top_k");
-                return;
-            }
-
-            this._rawData.Set("top_k", value);
-        }
-    }
-
-    /// <summary>
-    /// Use nucleus sampling.
-    ///
-    /// <para>In nucleus sampling, we compute the cumulative distribution over all
-    /// the options for each subsequent token in decreasing probability order and
-    /// cut it off once it reaches a particular probability specified by `top_p`.</para>
-    ///
-    /// <para>Recommended for advanced use cases only.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
-    )]
-    public double? TopP
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<double>("top_p");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawData.Remove("top_p");
-                return;
-            }
-
-            this._rawData.Set("top_p", value);
-        }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -880,15 +787,12 @@ public sealed record class Params : JsonModel
         _ = this.StopSequences;
         _ = this.Stream;
         this.System?.Validate();
-        _ = this.Temperature;
         this.Thinking?.Validate();
         this.ToolChoice?.Validate();
         foreach (var item in this.Tools ?? [])
         {
             item.Validate();
         }
-        _ = this.TopK;
-        _ = this.TopP;
     }
 
     public Params() { }

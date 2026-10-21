@@ -17,15 +17,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -33,15 +25,10 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
 
         string expectedID = "id";
         string expectedToolUseID = "tool_use_id";
-        ApiEnum<string, BetaManagedAgentsUserToolResultEventType> expectedType =
-            BetaManagedAgentsUserToolResultEventType.UserToolResult;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.tool_result");
         List<Content> expectedContent =
         [
-            new Events::BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = Events::BetaManagedAgentsTextBlockType.Text,
-            },
+            new Events::BetaManagedAgentsTextBlock("Where is my order #1234?"),
         ];
         bool expectedIsError = true;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -49,7 +36,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.NotNull(model.Content);
         Assert.Equal(expectedContent.Count, model.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)
@@ -68,15 +55,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -98,15 +77,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -121,15 +92,10 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
 
         string expectedID = "id";
         string expectedToolUseID = "tool_use_id";
-        ApiEnum<string, BetaManagedAgentsUserToolResultEventType> expectedType =
-            BetaManagedAgentsUserToolResultEventType.UserToolResult;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.tool_result");
         List<Content> expectedContent =
         [
-            new Events::BetaManagedAgentsTextBlock()
-            {
-                Text = "Where is my order #1234?",
-                Type = Events::BetaManagedAgentsTextBlockType.Text,
-            },
+            new Events::BetaManagedAgentsTextBlock("Where is my order #1234?"),
         ];
         bool expectedIsError = true;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -137,7 +103,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.NotNull(deserialized.Content);
         Assert.Equal(expectedContent.Count, deserialized.Content.Count);
         for (int i = 0; i < expectedContent.Count; i++)
@@ -156,15 +122,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -180,7 +138,6 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -197,7 +154,6 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -213,7 +169,6 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -233,15 +188,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -262,7 +209,6 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -281,15 +227,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
         };
 
         Assert.Null(model.IsError);
@@ -307,15 +245,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
         };
 
         model.Validate();
@@ -328,15 +258,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
 
             IsError = null,
             ProcessedAt = null,
@@ -358,15 +280,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
 
             IsError = null,
             ProcessedAt = null,
@@ -383,15 +297,7 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new Events::BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = Events::BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new Events::BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -403,84 +309,21 @@ public class BetaManagedAgentsUserToolResultEventTest : TestBase
     }
 }
 
-public class BetaManagedAgentsUserToolResultEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsUserToolResultEventType.UserToolResult)]
-    public void Validation_Works(BetaManagedAgentsUserToolResultEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserToolResultEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolResultEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsUserToolResultEventType.UserToolResult)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsUserToolResultEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserToolResultEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolResultEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolResultEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolResultEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
 public class ContentTest : TestBase
 {
     [Fact]
     public void BetaManagedAgentsTextBlockValidationWorks()
     {
-        Content value = new Events::BetaManagedAgentsTextBlock()
-        {
-            Text = "Where is my order #1234?",
-            Type = Events::BetaManagedAgentsTextBlockType.Text,
-        };
+        Content value = new Events::BetaManagedAgentsTextBlock("Where is my order #1234?");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsImageBlockValidationWorks()
     {
-        Content value = new Events::BetaManagedAgentsImageBlock()
-        {
-            Source = new Events::BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = Events::BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = Events::BetaManagedAgentsImageBlockType.Image,
-        };
+        Content value = new Events::BetaManagedAgentsImageBlock(
+            new Events::BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+        );
         value.Validate();
     }
 
@@ -493,9 +336,7 @@ public class ContentTest : TestBase
             {
                 Data = "x",
                 MediaType = "x",
-                Type = Events::BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
-            Type = Events::BetaManagedAgentsDocumentBlockType.Document,
             Context = "context",
             Title = "title",
         };
@@ -508,13 +349,9 @@ public class ContentTest : TestBase
         Content value = new Events::BetaManagedAgentsSearchResultBlock()
         {
             Citations = new(true),
-            Content =
-            [
-                new() { Text = "x", Type = Events::BetaManagedAgentsSearchResultContentType.Text },
-            ],
+            Content = [new("x")],
             Source = "x",
             Title = "x",
-            Type = Events::BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
         value.Validate();
     }
@@ -522,11 +359,7 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaManagedAgentsTextBlockSerializationRoundtripWorks()
     {
-        Content value = new Events::BetaManagedAgentsTextBlock()
-        {
-            Text = "Where is my order #1234?",
-            Type = Events::BetaManagedAgentsTextBlockType.Text,
-        };
+        Content value = new Events::BetaManagedAgentsTextBlock("Where is my order #1234?");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
             element,
@@ -539,16 +372,9 @@ public class ContentTest : TestBase
     [Fact]
     public void BetaManagedAgentsImageBlockSerializationRoundtripWorks()
     {
-        Content value = new Events::BetaManagedAgentsImageBlock()
-        {
-            Source = new Events::BetaManagedAgentsBase64ImageSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = Events::BetaManagedAgentsBase64ImageSourceType.Base64,
-            },
-            Type = Events::BetaManagedAgentsImageBlockType.Image,
-        };
+        Content value = new Events::BetaManagedAgentsImageBlock(
+            new Events::BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
             element,
@@ -567,9 +393,7 @@ public class ContentTest : TestBase
             {
                 Data = "x",
                 MediaType = "x",
-                Type = Events::BetaManagedAgentsBase64DocumentSourceType.Base64,
             },
-            Type = Events::BetaManagedAgentsDocumentBlockType.Document,
             Context = "context",
             Title = "title",
         };
@@ -588,13 +412,9 @@ public class ContentTest : TestBase
         Content value = new Events::BetaManagedAgentsSearchResultBlock()
         {
             Citations = new(true),
-            Content =
-            [
-                new() { Text = "x", Type = Events::BetaManagedAgentsSearchResultContentType.Text },
-            ],
+            Content = [new("x")],
             Source = "x",
             Title = "x",
-            Type = Events::BetaManagedAgentsSearchResultBlockType.SearchResult,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Content>(
@@ -606,12 +426,58 @@ public class ContentTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsTextBlockTypeWorks()
+    {
+        Content value = new Events::BetaManagedAgentsTextBlock("Where is my order #1234?");
+        Assert.Equal(ContentType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsImageBlockTypeWorks()
+    {
+        Content value = new Events::BetaManagedAgentsImageBlock(
+            new Events::BetaManagedAgentsBase64ImageSource() { Data = "x", MediaType = "x" }
+        );
+        Assert.Equal(ContentType.Image, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsDocumentBlockTypeWorks()
+    {
+        Content value = new Events::BetaManagedAgentsDocumentBlock()
+        {
+            Source = new Events::BetaManagedAgentsBase64DocumentSource()
+            {
+                Data = "x",
+                MediaType = "x",
+            },
+            Context = "context",
+            Title = "title",
+        };
+        Assert.Equal(ContentType.Document, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSearchResultBlockTypeWorks()
+    {
+        Content value = new Events::BetaManagedAgentsSearchResultBlock()
+        {
+            Citations = new(true),
+            Content = [new("x")],
+            Source = "x",
+            Title = "x",
+        };
+        Assert.Equal(ContentType.SearchResult, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Content value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
+                  "type": "text",
                   "title": "title"
                 }
                 """
@@ -619,12 +485,15 @@ public class ContentTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
+        ApiEnum<string, ContentType> expectedType = ContentType.Text;
         string expectedTitle = "title";
 
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedTitle, value.Title);
 
         Content emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.Title);
 
         Content mismatchedValue = new(
@@ -640,5 +509,67 @@ public class ContentTest : TestBase
         );
 
         Assert.Null(mismatchedValue.Title);
+    }
+}
+
+public class ContentTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ContentType.Text)]
+    [InlineData(ContentType.Image)]
+    [InlineData(ContentType.Document)]
+    [InlineData(ContentType.SearchResult)]
+    public void Validation_Works(ContentType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContentType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContentType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ContentType.Text)]
+    [InlineData(ContentType.Image)]
+    [InlineData(ContentType.Document)]
+    [InlineData(ContentType.SearchResult)]
+    public void SerializationRoundtrip_Works(ContentType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContentType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContentType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -21,7 +21,7 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                            Messages = [new UserMessageParam("Hello, world")],
                             Model = Model.ClaudeOpus5_5,
                             CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Container = new ContainerParams()
@@ -75,7 +75,6 @@ public class BatchServiceTest : TestBase
                                     },
                                 ]
                             ),
-                            Temperature = 1,
                             Thinking = new ThinkingConfigAdaptive()
                             {
                                 Display = Display.Summarized,
@@ -114,8 +113,6 @@ public class BatchServiceTest : TestBase
                                     Type = Type.Custom,
                                 },
                             ],
-                            TopK = 5,
-                            TopP = 0.7,
                         },
                     },
                 ],

@@ -182,15 +182,18 @@ public record class Actor : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ActorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserActor x => x.Type,
-                BetaSpendLimitScopedApiKeyActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserActor _ => ActorType.UserActor,
+                BetaSpendLimitScopedApiKeyActor _ => ActorType.ScopedApiKeyActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ActorType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -455,6 +458,50 @@ sealed class ActorConverter : JsonConverter<Actor>
     }
 }
 
+[JsonConverter(typeof(ActorTypeConverter))]
+public enum ActorType
+{
+    UserActor,
+    ScopedApiKeyActor,
+}
+
+sealed class ActorTypeConverter : JsonConverter<ActorType>
+{
+    public override ActorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => ActorType.UserActor,
+            "scoped_api_key_actor" => ActorType.ScopedApiKeyActor,
+            _ => (ActorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ActorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ActorType.UserActor => "user_actor",
+                ActorType.ScopedApiKeyActor => "scoped_api_key_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 [JsonConverter(typeof(BetaSpendSummaryScopeConverter))]
 public record class BetaSpendSummaryScope : ModelBase
 {
@@ -473,20 +520,23 @@ public record class BetaSpendSummaryScope : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaSpendSummaryScopeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserScope x => x.Type,
-                BetaSpendLimitSeatTierScope x => x.Type,
-                BetaSpendLimitRbacGroupScope x => x.Type,
-                BetaSpendLimitOrganizationServiceScope x => x.Type,
-                BetaSpendLimitOrganizationScope x => x.Type,
-                BetaSpendLimitWorkspaceScope x => x.Type,
-                BetaSpendLimitUsageTierScope x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserScope _ => BetaSpendSummaryScopeType.User,
+                BetaSpendLimitSeatTierScope _ => BetaSpendSummaryScopeType.SeatTier,
+                BetaSpendLimitRbacGroupScope _ => BetaSpendSummaryScopeType.RbacGroup,
+                BetaSpendLimitOrganizationServiceScope _ =>
+                    BetaSpendSummaryScopeType.OrganizationService,
+                BetaSpendLimitOrganizationScope _ => BetaSpendSummaryScopeType.Organization,
+                BetaSpendLimitWorkspaceScope _ => BetaSpendSummaryScopeType.Workspace,
+                BetaSpendLimitUsageTierScope _ => BetaSpendSummaryScopeType.UsageTier,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaSpendSummaryScopeType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -1080,6 +1130,65 @@ sealed class BetaSpendSummaryScopeConverter : JsonConverter<BetaSpendSummaryScop
     }
 }
 
+[JsonConverter(typeof(BetaSpendSummaryScopeTypeConverter))]
+public enum BetaSpendSummaryScopeType
+{
+    User,
+    SeatTier,
+    RbacGroup,
+    OrganizationService,
+    Organization,
+    Workspace,
+    UsageTier,
+}
+
+sealed class BetaSpendSummaryScopeTypeConverter : JsonConverter<BetaSpendSummaryScopeType>
+{
+    public override BetaSpendSummaryScopeType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user" => BetaSpendSummaryScopeType.User,
+            "seat_tier" => BetaSpendSummaryScopeType.SeatTier,
+            "rbac_group" => BetaSpendSummaryScopeType.RbacGroup,
+            "organization_service" => BetaSpendSummaryScopeType.OrganizationService,
+            "organization" => BetaSpendSummaryScopeType.Organization,
+            "workspace" => BetaSpendSummaryScopeType.Workspace,
+            "usage_tier" => BetaSpendSummaryScopeType.UsageTier,
+            _ => (BetaSpendSummaryScopeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaSpendSummaryScopeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaSpendSummaryScopeType.User => "user",
+                BetaSpendSummaryScopeType.SeatTier => "seat_tier",
+                BetaSpendSummaryScopeType.RbacGroup => "rbac_group",
+                BetaSpendSummaryScopeType.OrganizationService => "organization_service",
+                BetaSpendSummaryScopeType.Organization => "organization",
+                BetaSpendSummaryScopeType.Workspace => "workspace",
+                BetaSpendSummaryScopeType.UsageTier => "usage_tier",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 [JsonConverter(typeof(SourceConverter))]
 public record class Source : ModelBase
 {
@@ -1098,20 +1207,23 @@ public record class Source : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, SourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserScope x => x.Type,
-                BetaSpendLimitSeatTierScope x => x.Type,
-                BetaSpendLimitRbacGroupScope x => x.Type,
-                BetaSpendLimitOrganizationServiceScope x => x.Type,
-                BetaSpendLimitOrganizationScope x => x.Type,
-                BetaSpendLimitWorkspaceScope x => x.Type,
-                BetaSpendLimitUsageTierScope x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserScope _ => SourceType.User,
+                BetaSpendLimitSeatTierScope _ => SourceType.SeatTier,
+                BetaSpendLimitRbacGroupScope _ => SourceType.RbacGroup,
+                BetaSpendLimitOrganizationServiceScope _ => SourceType.OrganizationService,
+                BetaSpendLimitOrganizationScope _ => SourceType.Organization,
+                BetaSpendLimitWorkspaceScope _ => SourceType.Workspace,
+                BetaSpendLimitUsageTierScope _ => SourceType.UsageTier,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, SourceType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -1687,5 +1799,64 @@ sealed class SourceConverter : JsonConverter<Source>
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(SourceTypeConverter))]
+public enum SourceType
+{
+    User,
+    SeatTier,
+    RbacGroup,
+    OrganizationService,
+    Organization,
+    Workspace,
+    UsageTier,
+}
+
+sealed class SourceTypeConverter : JsonConverter<SourceType>
+{
+    public override SourceType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user" => SourceType.User,
+            "seat_tier" => SourceType.SeatTier,
+            "rbac_group" => SourceType.RbacGroup,
+            "organization_service" => SourceType.OrganizationService,
+            "organization" => SourceType.Organization,
+            "workspace" => SourceType.Workspace,
+            "usage_tier" => SourceType.UsageTier,
+            _ => (SourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        SourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                SourceType.User => "user",
+                SourceType.SeatTier => "seat_tier",
+                SourceType.RbacGroup => "rbac_group",
+                SourceType.OrganizationService => "organization_service",
+                SourceType.Organization => "organization",
+                SourceType.Workspace => "workspace",
+                SourceType.UsageTier => "usage_tier",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
@@ -10,24 +9,17 @@ public class BetaManagedAgentsManualTriggerContextTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsManualTriggerContext
-        {
-            Type = BetaManagedAgentsManualTriggerContextType.Manual,
-        };
+        var model = new BetaManagedAgentsManualTriggerContext { };
 
-        ApiEnum<string, BetaManagedAgentsManualTriggerContextType> expectedType =
-            BetaManagedAgentsManualTriggerContextType.Manual;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("manual");
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsManualTriggerContext
-        {
-            Type = BetaManagedAgentsManualTriggerContextType.Manual,
-        };
+        var model = new BetaManagedAgentsManualTriggerContext { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsManualTriggerContext>(
@@ -41,10 +33,7 @@ public class BetaManagedAgentsManualTriggerContextTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsManualTriggerContext
-        {
-            Type = BetaManagedAgentsManualTriggerContextType.Manual,
-        };
+        var model = new BetaManagedAgentsManualTriggerContext { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsManualTriggerContext>(
@@ -53,19 +42,15 @@ public class BetaManagedAgentsManualTriggerContextTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsManualTriggerContextType> expectedType =
-            BetaManagedAgentsManualTriggerContextType.Manual;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("manual");
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsManualTriggerContext
-        {
-            Type = BetaManagedAgentsManualTriggerContextType.Manual,
-        };
+        var model = new BetaManagedAgentsManualTriggerContext { };
 
         model.Validate();
     }
@@ -73,65 +58,10 @@ public class BetaManagedAgentsManualTriggerContextTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsManualTriggerContext
-        {
-            Type = BetaManagedAgentsManualTriggerContextType.Manual,
-        };
+        var model = new BetaManagedAgentsManualTriggerContext { };
 
         BetaManagedAgentsManualTriggerContext copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsManualTriggerContextTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsManualTriggerContextType.Manual)]
-    public void Validation_Works(BetaManagedAgentsManualTriggerContextType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsManualTriggerContextType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsManualTriggerContextType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsManualTriggerContextType.Manual)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsManualTriggerContextType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsManualTriggerContextType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsManualTriggerContextType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsManualTriggerContextType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsManualTriggerContextType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

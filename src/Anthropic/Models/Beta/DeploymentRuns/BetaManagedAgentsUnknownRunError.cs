@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -34,14 +33,12 @@ public sealed record class BetaManagedAgentsUnknownRunError : JsonModel
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUnknownRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUnknownRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -50,10 +47,16 @@ public sealed record class BetaManagedAgentsUnknownRunError : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("unknown_error")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUnknownRunError() { }
+    public BetaManagedAgentsUnknownRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("unknown_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -66,6 +69,8 @@ public sealed record class BetaManagedAgentsUnknownRunError : JsonModel
     public BetaManagedAgentsUnknownRunError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("unknown_error");
     }
 
 #pragma warning disable CS8618
@@ -83,6 +88,13 @@ public sealed record class BetaManagedAgentsUnknownRunError : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsUnknownRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsUnknownRunErrorFromRaw : IFromRawJson<BetaManagedAgentsUnknownRunError>
@@ -91,46 +103,4 @@ class BetaManagedAgentsUnknownRunErrorFromRaw : IFromRawJson<BetaManagedAgentsUn
     public BetaManagedAgentsUnknownRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUnknownRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUnknownRunErrorTypeConverter))]
-public enum BetaManagedAgentsUnknownRunErrorType
-{
-    UnknownError,
-}
-
-sealed class BetaManagedAgentsUnknownRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsUnknownRunErrorType>
-{
-    public override BetaManagedAgentsUnknownRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "unknown_error" => BetaManagedAgentsUnknownRunErrorType.UnknownError,
-            _ => (BetaManagedAgentsUnknownRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUnknownRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUnknownRunErrorType.UnknownError => "unknown_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

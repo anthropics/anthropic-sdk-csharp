@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -17,14 +16,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsEffortMedium : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsEffortMediumType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEffortMediumType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -32,10 +29,16 @@ public sealed record class BetaManagedAgentsEffortMedium : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("medium")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEffortMedium() { }
+    public BetaManagedAgentsEffortMedium()
+    {
+        this.Type = JsonSerializer.SerializeToElement("medium");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -48,6 +51,8 @@ public sealed record class BetaManagedAgentsEffortMedium : JsonModel
     public BetaManagedAgentsEffortMedium(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("medium");
     }
 
 #pragma warning disable CS8618
@@ -65,13 +70,6 @@ public sealed record class BetaManagedAgentsEffortMedium : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsEffortMedium(ApiEnum<string, BetaManagedAgentsEffortMediumType> type)
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsEffortMediumFromRaw : IFromRawJson<BetaManagedAgentsEffortMedium>
@@ -80,46 +78,4 @@ class BetaManagedAgentsEffortMediumFromRaw : IFromRawJson<BetaManagedAgentsEffor
     public BetaManagedAgentsEffortMedium FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEffortMedium.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsEffortMediumTypeConverter))]
-public enum BetaManagedAgentsEffortMediumType
-{
-    Medium,
-}
-
-sealed class BetaManagedAgentsEffortMediumTypeConverter
-    : JsonConverter<BetaManagedAgentsEffortMediumType>
-{
-    public override BetaManagedAgentsEffortMediumType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "medium" => BetaManagedAgentsEffortMediumType.Medium,
-            _ => (BetaManagedAgentsEffortMediumType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEffortMediumType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEffortMediumType.Medium => "medium",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

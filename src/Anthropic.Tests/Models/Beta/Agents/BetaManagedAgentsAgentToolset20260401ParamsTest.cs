@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -13,49 +12,39 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
-        ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> expectedType =
-            BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent_toolset_20260401");
         List<BetaManagedAgentsAgentToolConfigParams> expectedConfigs =
         [
             new BetaManagedAgentsBashToolConfigParams()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
-                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                Type = Type.Bash,
             },
         ];
         BetaManagedAgentsAgentToolsetDefaultConfigParams expectedDefaultConfig = new()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.NotNull(model.Configs);
         Assert.Equal(expectedConfigs.Count, model.Configs.Count);
         for (int i = 0; i < expectedConfigs.Count; i++)
@@ -70,24 +59,19 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -105,24 +89,19 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -133,28 +112,23 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> expectedType =
-            BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent_toolset_20260401");
         List<BetaManagedAgentsAgentToolConfigParams> expectedConfigs =
         [
             new BetaManagedAgentsBashToolConfigParams()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
-                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                Type = Type.Bash,
             },
         ];
         BetaManagedAgentsAgentToolsetDefaultConfigParams expectedDefaultConfig = new()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.NotNull(deserialized.Configs);
         Assert.Equal(expectedConfigs.Count, deserialized.Configs.Count);
         for (int i = 0; i < expectedConfigs.Count; i++)
@@ -169,24 +143,19 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -198,13 +167,10 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -217,13 +183,10 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -235,13 +198,10 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
 
             // Null should be interpreted as omitted for these properties
@@ -257,24 +217,19 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         } with
         {
@@ -291,13 +246,10 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
 
             // Null should be interpreted as omitted for these properties
@@ -312,16 +264,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
         };
@@ -335,16 +284,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
         };
@@ -357,16 +303,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
 
@@ -382,16 +325,13 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
 
@@ -406,83 +346,24 @@ public class BetaManagedAgentsAgentToolset20260401ParamsTest : TestBase
     {
         var model = new BetaManagedAgentsAgentToolset20260401Params
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
         BetaManagedAgentsAgentToolset20260401Params copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsAgentToolset20260401ParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401)]
-    public void Validation_Works(BetaManagedAgentsAgentToolset20260401ParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsAgentToolset20260401ParamsType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

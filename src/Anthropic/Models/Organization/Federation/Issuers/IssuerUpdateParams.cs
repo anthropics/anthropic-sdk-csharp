@@ -281,16 +281,18 @@ public record class IssuerUpdateParamsJwks : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, IssuerUpdateParamsJwksType> Type
     {
         get
         {
             return this.Value switch
             {
-                JwksDiscovery x => x.Type,
-                JwksExplicitUrl x => x.Type,
-                JwksInline x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                JwksDiscovery _ => IssuerUpdateParamsJwksType.Discovery,
+                JwksExplicitUrl _ => IssuerUpdateParamsJwksType.ExplicitUrl,
+                JwksInline _ => IssuerUpdateParamsJwksType.Inline,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, IssuerUpdateParamsJwksType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -630,5 +632,52 @@ sealed class IssuerUpdateParamsJwksConverter : JsonConverter<IssuerUpdateParamsJ
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(IssuerUpdateParamsJwksTypeConverter))]
+public enum IssuerUpdateParamsJwksType
+{
+    Discovery,
+    ExplicitUrl,
+    Inline,
+}
+
+sealed class IssuerUpdateParamsJwksTypeConverter : JsonConverter<IssuerUpdateParamsJwksType>
+{
+    public override IssuerUpdateParamsJwksType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "discovery" => IssuerUpdateParamsJwksType.Discovery,
+            "explicit_url" => IssuerUpdateParamsJwksType.ExplicitUrl,
+            "inline" => IssuerUpdateParamsJwksType.Inline,
+            _ => (IssuerUpdateParamsJwksType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        IssuerUpdateParamsJwksType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                IssuerUpdateParamsJwksType.Discovery => "discovery",
+                IssuerUpdateParamsJwksType.ExplicitUrl => "explicit_url",
+                IssuerUpdateParamsJwksType.Inline => "inline",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

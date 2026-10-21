@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -19,7 +20,6 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
                 AccessToken = "x",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
@@ -28,8 +28,6 @@ public class CredentialUpdateParamsTest : TestBase
                     Scope = "scope",
                     TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                     {
-                        Type =
-                            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                         ClientSecret = "x",
                     },
                 },
@@ -44,7 +42,6 @@ public class CredentialUpdateParamsTest : TestBase
         string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         CredentialUpdateParamsAuth expectedAuth = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
             AccessToken = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -53,7 +50,6 @@ public class CredentialUpdateParamsTest : TestBase
                 Scope = "scope",
                 TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                 {
-                    Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                     ClientSecret = "x",
                 },
             },
@@ -139,7 +135,6 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
                 AccessToken = "x",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
@@ -148,8 +143,6 @@ public class CredentialUpdateParamsTest : TestBase
                     Scope = "scope",
                     TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                     {
-                        Type =
-                            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                         ClientSecret = "x",
                     },
                 },
@@ -183,7 +176,6 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
                 AccessToken = "x",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
@@ -192,8 +184,6 @@ public class CredentialUpdateParamsTest : TestBase
                     Scope = "scope",
                     TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                     {
-                        Type =
-                            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                         ClientSecret = "x",
                     },
                 },
@@ -217,7 +207,6 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
                 AccessToken = "x",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
@@ -226,8 +215,6 @@ public class CredentialUpdateParamsTest : TestBase
                     Scope = "scope",
                     TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                     {
-                        Type =
-                            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                         ClientSecret = "x",
                     },
                 },
@@ -299,7 +286,6 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
                 AccessToken = "x",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
@@ -308,8 +294,6 @@ public class CredentialUpdateParamsTest : TestBase
                     Scope = "scope",
                     TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                     {
-                        Type =
-                            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                         ClientSecret = "x",
                     },
                 },
@@ -333,7 +317,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
             AccessToken = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -342,7 +325,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
                 Scope = "scope",
                 TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                 {
-                    Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                     ClientSecret = "x",
                 },
             },
@@ -355,7 +337,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
         {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
             Token = "x",
         };
         value.Validate();
@@ -366,11 +347,8 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
         value.Validate();
@@ -381,7 +359,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            Type = BetaManagedAgentsMcpOAuthUpdateParamsType.McpOAuth,
             AccessToken = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -390,7 +367,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
                 Scope = "scope",
                 TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
                 {
-                    Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
                     ClientSecret = "x",
                 },
             },
@@ -409,7 +385,6 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
         {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
             Token = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -426,11 +401,8 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -438,6 +410,130 @@ public class CredentialUpdateParamsAuthTest : TestBase
             element,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpOAuthUpdateParamsTypeWorks()
+    {
+        CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
+        {
+            AccessToken = "x",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Refresh = new()
+            {
+                RefreshToken = "x",
+                Scope = "scope",
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam()
+                {
+                    ClientSecret = "x",
+                },
+            },
+        };
+        Assert.Equal(CredentialUpdateParamsAuthType.McpOAuth, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsStaticBearerUpdateParamsTypeWorks()
+    {
+        CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
+        {
+            Token = "x",
+        };
+        Assert.Equal(CredentialUpdateParamsAuthType.StaticBearer, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableUpdateParamsTypeWorks()
+    {
+        CredentialUpdateParamsAuth value = new BetaManagedAgentsEnvironmentVariableUpdateParams()
+        {
+            InjectionLocation = new() { Body = true, Header = true },
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
+            SecretValue = "x",
+        };
+        Assert.Equal(CredentialUpdateParamsAuthType.EnvironmentVariable, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        CredentialUpdateParamsAuth value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "mcp_oauth"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, CredentialUpdateParamsAuthType> expectedType =
+            CredentialUpdateParamsAuthType.McpOAuth;
+
+        Assert.Equal(expectedType, value.Type);
+
+        CredentialUpdateParamsAuth emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class CredentialUpdateParamsAuthTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CredentialUpdateParamsAuthType.McpOAuth)]
+    [InlineData(CredentialUpdateParamsAuthType.StaticBearer)]
+    [InlineData(CredentialUpdateParamsAuthType.EnvironmentVariable)]
+    public void Validation_Works(CredentialUpdateParamsAuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CredentialUpdateParamsAuthType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CredentialUpdateParamsAuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CredentialUpdateParamsAuthType.McpOAuth)]
+    [InlineData(CredentialUpdateParamsAuthType.StaticBearer)]
+    [InlineData(CredentialUpdateParamsAuthType.EnvironmentVariable)]
+    public void SerializationRoundtrip_Works(CredentialUpdateParamsAuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CredentialUpdateParamsAuthType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, CredentialUpdateParamsAuthType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CredentialUpdateParamsAuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, CredentialUpdateParamsAuthType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

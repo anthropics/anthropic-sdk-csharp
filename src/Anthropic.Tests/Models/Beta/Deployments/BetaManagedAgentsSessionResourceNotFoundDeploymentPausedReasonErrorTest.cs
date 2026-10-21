@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Deployments;
 
 namespace Anthropic.Tests.Models.Beta.Deployments;
@@ -10,29 +9,19 @@ public class BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
-        {
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError { };
 
-        ApiEnum<
-            string,
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType
-        > expectedType =
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "session_resource_not_found_error"
+        );
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
-        {
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -47,11 +36,7 @@ public class BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
-        {
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -61,23 +46,17 @@ public class BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
             );
         Assert.NotNull(deserialized);
 
-        ApiEnum<
-            string,
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType
-        > expectedType =
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "session_resource_not_found_error"
+        );
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
-        {
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError { };
 
         model.Validate();
     }
@@ -85,80 +64,10 @@ public class BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError
-        {
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError { };
 
         BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(
-        BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError
-    )]
-    public void Validation_Works(
-        BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<
-            string,
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType
-        > value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(
-        BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError
-    )]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<
-            string,
-            BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType
-        > value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

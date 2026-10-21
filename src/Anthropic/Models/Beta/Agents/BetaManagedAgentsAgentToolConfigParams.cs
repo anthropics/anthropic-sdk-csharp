@@ -67,6 +67,35 @@ public record class BetaManagedAgentsAgentToolConfigParams : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBashToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Bash,
+                BetaManagedAgentsEditToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Edit,
+                BetaManagedAgentsReadToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Read,
+                BetaManagedAgentsWriteToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Write,
+                BetaManagedAgentsGlobToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Glob,
+                BetaManagedAgentsGrepToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.Grep,
+                BetaManagedAgentsWebFetchToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.WebFetch,
+                BetaManagedAgentsWebSearchToolConfigParams _ =>
+                    BetaManagedAgentsAgentToolConfigParamsType.WebSearch,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public IReadOnlyList<string>? AllowedDomains
     {
         get
@@ -783,5 +812,68 @@ sealed class BetaManagedAgentsAgentToolConfigParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsAgentToolConfigParamsTypeConverter))]
+public enum BetaManagedAgentsAgentToolConfigParamsType
+{
+    Bash,
+    Edit,
+    Read,
+    Write,
+    Glob,
+    Grep,
+    WebFetch,
+    WebSearch,
+}
+
+sealed class BetaManagedAgentsAgentToolConfigParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentToolConfigParamsType>
+{
+    public override BetaManagedAgentsAgentToolConfigParamsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "bash" => BetaManagedAgentsAgentToolConfigParamsType.Bash,
+            "edit" => BetaManagedAgentsAgentToolConfigParamsType.Edit,
+            "read" => BetaManagedAgentsAgentToolConfigParamsType.Read,
+            "write" => BetaManagedAgentsAgentToolConfigParamsType.Write,
+            "glob" => BetaManagedAgentsAgentToolConfigParamsType.Glob,
+            "grep" => BetaManagedAgentsAgentToolConfigParamsType.Grep,
+            "web_fetch" => BetaManagedAgentsAgentToolConfigParamsType.WebFetch,
+            "web_search" => BetaManagedAgentsAgentToolConfigParamsType.WebSearch,
+            _ => (BetaManagedAgentsAgentToolConfigParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsAgentToolConfigParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsAgentToolConfigParamsType.Bash => "bash",
+                BetaManagedAgentsAgentToolConfigParamsType.Edit => "edit",
+                BetaManagedAgentsAgentToolConfigParamsType.Read => "read",
+                BetaManagedAgentsAgentToolConfigParamsType.Write => "write",
+                BetaManagedAgentsAgentToolConfigParamsType.Glob => "glob",
+                BetaManagedAgentsAgentToolConfigParamsType.Grep => "grep",
+                BetaManagedAgentsAgentToolConfigParamsType.WebFetch => "web_fetch",
+                BetaManagedAgentsAgentToolConfigParamsType.WebSearch => "web_search",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -314,16 +314,18 @@ public record class BetaFederationIssuerJwks : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaFederationIssuerJwksType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaJwksDiscovery x => x.Type,
-                BetaJwksExplicitUrl x => x.Type,
-                BetaJwksInline x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaJwksDiscovery _ => BetaFederationIssuerJwksType.Discovery,
+                BetaJwksExplicitUrl _ => BetaFederationIssuerJwksType.ExplicitUrl,
+                BetaJwksInline _ => BetaFederationIssuerJwksType.Inline,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaFederationIssuerJwksType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -667,5 +669,52 @@ sealed class BetaFederationIssuerJwksConverter : JsonConverter<BetaFederationIss
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaFederationIssuerJwksTypeConverter))]
+public enum BetaFederationIssuerJwksType
+{
+    Discovery,
+    ExplicitUrl,
+    Inline,
+}
+
+sealed class BetaFederationIssuerJwksTypeConverter : JsonConverter<BetaFederationIssuerJwksType>
+{
+    public override BetaFederationIssuerJwksType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "discovery" => BetaFederationIssuerJwksType.Discovery,
+            "explicit_url" => BetaFederationIssuerJwksType.ExplicitUrl,
+            "inline" => BetaFederationIssuerJwksType.Inline,
+            _ => (BetaFederationIssuerJwksType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaFederationIssuerJwksType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaFederationIssuerJwksType.Discovery => "discovery",
+                BetaFederationIssuerJwksType.ExplicitUrl => "explicit_url",
+                BetaFederationIssuerJwksType.Inline => "inline",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

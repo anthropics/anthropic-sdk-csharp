@@ -30,6 +30,23 @@ public record class BetaManagedAgentsMultiagentPredefinedAgentParams : ModelBase
         }
     }
 
+    public JsonElement? Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                string _ => null,
+                BetaManagedAgentsAgentParams x => x.Type,
+                BetaManagedAgentsMultiagentSelfParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public BetaManagedAgentsMultiagentPredefinedAgentParams(
         string value,
         JsonElement? element = null

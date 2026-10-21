@@ -19,11 +19,7 @@ public class MemoryUpdateParamsTest : TestBase
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
             Path = "xx",
-            Precondition = new()
-            {
-                Type = BetaManagedAgentsPreconditionType.ContentSha256,
-                ContentSha256 = "content_sha256",
-            },
+            Precondition = new() { ContentSha256 = "content_sha256" },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -36,7 +32,6 @@ public class MemoryUpdateParamsTest : TestBase
         string expectedPath = "xx";
         BetaManagedAgentsPrecondition expectedPrecondition = new()
         {
-            Type = BetaManagedAgentsPreconditionType.ContentSha256,
             ContentSha256 = "content_sha256",
         };
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
@@ -118,11 +113,7 @@ public class MemoryUpdateParamsTest : TestBase
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
             Path = "xx",
-            Precondition = new()
-            {
-                Type = BetaManagedAgentsPreconditionType.ContentSha256,
-                ContentSha256 = "content_sha256",
-            },
+            Precondition = new() { ContentSha256 = "content_sha256" },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -152,11 +143,7 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Precondition = new()
-            {
-                Type = BetaManagedAgentsPreconditionType.ContentSha256,
-                ContentSha256 = "content_sha256",
-            },
+            Precondition = new() { ContentSha256 = "content_sha256" },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -175,11 +162,7 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Precondition = new()
-            {
-                Type = BetaManagedAgentsPreconditionType.ContentSha256,
-                ContentSha256 = "content_sha256",
-            },
+            Precondition = new() { ContentSha256 = "content_sha256" },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
@@ -249,11 +232,7 @@ public class MemoryUpdateParamsTest : TestBase
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
             Path = "xx",
-            Precondition = new()
-            {
-                Type = BetaManagedAgentsPreconditionType.ContentSha256,
-                ContentSha256 = "content_sha256",
-            },
+            Precondition = new() { ContentSha256 = "content_sha256" },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

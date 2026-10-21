@@ -416,6 +416,29 @@ public class BetaToolUseBlockParamCallerTest : TestBase
     }
 
     [Fact]
+    public void BetaDirectTypeWorks()
+    {
+        BetaToolUseBlockParamCaller value = new BetaDirectCaller();
+        Assert.Equal(BetaToolUseBlockParamCallerType.Direct, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaServerToolTypeWorks()
+    {
+        BetaToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(BetaToolUseBlockParamCallerType.CodeExecution20250825, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaServerToolCaller20260120TypeWorks()
+    {
+        BetaToolUseBlockParamCaller value = new BetaServerToolCaller20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        Assert.Equal(BetaToolUseBlockParamCallerType.CodeExecution20260120, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaToolUseBlockParamCaller value = new(
@@ -430,10 +453,11 @@ public class BetaToolUseBlockParamCallerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        ApiEnum<string, BetaToolUseBlockParamCallerType> expectedType =
+            BetaToolUseBlockParamCallerType.Direct;
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
 
         BetaToolUseBlockParamCaller emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -454,5 +478,63 @@ public class BetaToolUseBlockParamCallerTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ToolID);
+    }
+}
+
+public class BetaToolUseBlockParamCallerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaToolUseBlockParamCallerType.Direct)]
+    [InlineData(BetaToolUseBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(BetaToolUseBlockParamCallerType.CodeExecution20260120)]
+    public void Validation_Works(BetaToolUseBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaToolUseBlockParamCallerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolUseBlockParamCallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaToolUseBlockParamCallerType.Direct)]
+    [InlineData(BetaToolUseBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(BetaToolUseBlockParamCallerType.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(BetaToolUseBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaToolUseBlockParamCallerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaToolUseBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaToolUseBlockParamCallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaToolUseBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

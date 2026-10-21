@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
-using Anthropic.Models.Beta.Agents;
-using Sessions = Anthropic.Models.Beta.Sessions;
+using Anthropic.Models.Beta.Sessions;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -14,39 +15,34 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "role_arn"
+            ),
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            },
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            ),
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -54,26 +50,21 @@ public class AgentCreateParamsTest : TestBase
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -81,66 +72,50 @@ public class AgentCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        Model expectedModel = BetaManagedAgentsModel.ClaudeOpus5_5;
+        Agents::Model expectedModel = Agents::BetaManagedAgentsModel.ClaudeOpus5_5;
         string expectedName = "My First Agent";
         string expectedDescription = "A general-purpose starter agent.";
-        BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
-            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
-        List<BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
+        Agents::BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
+            new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+        List<Agents::BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
             {
                 Name = "example-mcp",
-                Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
-        Sessions::BetaManagedAgentsMultiagentParams expectedMultiagent =
-            new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+        BetaManagedAgentsMultiagentParams expectedMultiagent =
+            new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            };
-        List<BetaManagedAgentsSkillParams> expectedSkills =
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            );
+        List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
         [
-            new BetaManagedAgentsAnthropicSkillParams()
-            {
-                SkillID = "xlsx",
-                Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
-                Version = "1",
-            },
+            new Agents::BetaManagedAgentsAnthropicSkillParams() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem =
             "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.";
-        List<Tool> expectedTools =
+        List<Agents::Tool> expectedTools =
         [
-            new BetaManagedAgentsAgentToolset20260401Params()
+            new Agents::BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
-                    new BetaManagedAgentsBashToolConfigParams()
+                    new Agents::BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Agents::Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ];
@@ -194,23 +169,20 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
-            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+            ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "role_arn"
+            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            },
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            ),
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
         };
@@ -232,23 +204,20 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullAreNotSet_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
-            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+            ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "role_arn"
+            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            },
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            ),
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
 
@@ -278,39 +247,34 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void OptionalNonNullableParamsSetToNullInWithAreUnset_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "role_arn"
+            ),
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            },
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            ),
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -318,26 +282,21 @@ public class AgentCreateParamsTest : TestBase
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -371,51 +330,44 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -436,51 +388,44 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsSetToNullAreSetToNull_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -506,9 +451,9 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        AgentCreateParams parameters = new()
+        Agents::AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
         };
 
@@ -523,9 +468,9 @@ public class AgentCreateParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        AgentCreateParams parameters = new()
+        Agents::AgentCreateParams parameters = new()
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -546,39 +491,34 @@ public class AgentCreateParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var parameters = new AgentCreateParams
+        var parameters = new Agents::AgentCreateParams
         {
-            Model = BetaManagedAgentsModel.ClaudeOpus5_5,
+            Model = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
-            ExecutionIdentity = new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn"),
+            ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "role_arn"
+            ),
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new BetaManagedAgentsMultiagentCoordinatorParams()
-            {
-                Agents =
+            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
                     "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new BetaManagedAgentsMultiagentSelfParams(
-                        BetaManagedAgentsMultiagentSelfParamsType.Self
-                    ),
-                ],
-                Type = BetaManagedAgentsMultiagentCoordinatorParamsType.Coordinator,
-            },
+                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
+                ]
+            ),
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkillParams()
+                new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -586,26 +526,21 @@ public class AgentCreateParamsTest : TestBase
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -613,7 +548,7 @@ public class AgentCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        AgentCreateParams copied = new(parameters);
+        Agents::AgentCreateParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
     }
@@ -624,19 +559,19 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsValidationWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
+        Agents::Model value = Agents::BetaManagedAgentsModel.ClaudeHaiku5_5;
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsModelConfigParamsValidationWorks()
     {
-        Model value = new BetaManagedAgentsModelConfigParams()
+        Agents::Model value = new Agents::BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = BetaManagedAgentsEffortLevel.Low,
+            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
-            Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         value.Validate();
     }
@@ -644,9 +579,12 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsSerializationRoundtripWorks()
     {
-        Model value = BetaManagedAgentsModel.ClaudeHaiku5_5;
+        Agents::Model value = Agents::BetaManagedAgentsModel.ClaudeHaiku5_5;
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agents::Model>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -654,15 +592,18 @@ public class ModelTest : TestBase
     [Fact]
     public void BetaManagedAgentsModelConfigParamsSerializationRoundtripWorks()
     {
-        Model value = new BetaManagedAgentsModelConfigParams()
+        Agents::Model value = new Agents::BetaManagedAgentsModelConfigParams()
         {
-            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = BetaManagedAgentsEffortLevel.Low,
+            ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
+            Effort = Agents::BetaManagedAgentsEffortLevel.Low,
             InferenceGeo = "inference_geo",
-            Speed = BetaManagedAgentsModelConfigParamsSpeed.Standard,
+            Speed = Agents::BetaManagedAgentsModelConfigParamsSpeed.Standard,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Model>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agents::Model>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -673,26 +614,21 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentToolset20260401ParamsValidationWorks()
     {
-        Tool value = new BetaManagedAgentsAgentToolset20260401Params()
+        Agents::Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new BetaManagedAgentsBashToolConfigParams()
+                new Agents::BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         value.Validate();
@@ -701,27 +637,22 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpToolsetParamsValidationWorks()
     {
-        Tool value = new BetaManagedAgentsMcpToolsetParams()
+        Agents::Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         value.Validate();
@@ -730,7 +661,7 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsCustomToolParamsValidationWorks()
     {
-        Tool value = new BetaManagedAgentsCustomToolParams()
+        Agents::Tool value = new Agents::BetaManagedAgentsCustomToolParams()
         {
             Description = "x",
             InputSchema = new()
@@ -742,7 +673,6 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = BetaManagedAgentsCustomToolParamsType.Custom,
         };
         value.Validate();
     }
@@ -750,30 +680,28 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentToolset20260401ParamsSerializationRoundtripWorks()
     {
-        Tool value = new BetaManagedAgentsAgentToolset20260401Params()
+        Agents::Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
         {
-            Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
-                new BetaManagedAgentsBashToolConfigParams()
+                new Agents::BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agents::Tool>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -781,31 +709,29 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpToolsetParamsSerializationRoundtripWorks()
     {
-        Tool value = new BetaManagedAgentsMcpToolsetParams()
+        Agents::Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agents::Tool>(
+            element,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -813,7 +739,7 @@ public class ToolTest : TestBase
     [Fact]
     public void BetaManagedAgentsCustomToolParamsSerializationRoundtripWorks()
     {
-        Tool value = new BetaManagedAgentsCustomToolParams()
+        Agents::Tool value = new Agents::BetaManagedAgentsCustomToolParams()
         {
             Description = "x",
             InputSchema = new()
@@ -825,10 +751,161 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = BetaManagedAgentsCustomToolParamsType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Agents::Tool>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentToolset20260401ParamsTypeWorks()
+    {
+        Agents::Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
+        {
+            Configs =
+            [
+                new Agents::BetaManagedAgentsBashToolConfigParams()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(Agents::ToolType.AgentToolset20260401, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpToolsetParamsTypeWorks()
+    {
+        Agents::Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
+        {
+            McpServerName = "x",
+            Configs =
+            [
+                new()
+                {
+                    Name = "x",
+                    Enabled = true,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(Agents::ToolType.McpToolset, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomToolParamsTypeWorks()
+    {
+        Agents::Tool value = new Agents::BetaManagedAgentsCustomToolParams()
+        {
+            Description = "x",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["string"],
+            },
+            Name = "x",
+        };
+        Assert.Equal(Agents::ToolType.Custom, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Agents::Tool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent_toolset_20260401"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, Agents::ToolType> expectedType = Agents::ToolType.AgentToolset20260401;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Agents::Tool emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(Agents::ToolType.AgentToolset20260401)]
+    [InlineData(Agents::ToolType.McpToolset)]
+    [InlineData(Agents::ToolType.Custom)]
+    public void Validation_Works(Agents::ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Agents::ToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Agents::ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Agents::ToolType.AgentToolset20260401)]
+    [InlineData(Agents::ToolType.McpToolset)]
+    [InlineData(Agents::ToolType.Custom)]
+    public void SerializationRoundtrip_Works(Agents::ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Agents::ToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Agents::ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Agents::ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Agents::ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

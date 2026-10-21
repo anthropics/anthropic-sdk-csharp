@@ -25,15 +25,17 @@ public record class MessageBetaContentBlockSourceContent : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, MessageBetaContentBlockSourceContentType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTextBlockParam x => x.Type,
-                BetaImageBlockParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTextBlockParam _ => MessageBetaContentBlockSourceContentType.Text,
+                BetaImageBlockParam _ => MessageBetaContentBlockSourceContentType.Image,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, MessageBetaContentBlockSourceContentType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -330,5 +332,50 @@ sealed class MessageBetaContentBlockSourceContentConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(MessageBetaContentBlockSourceContentTypeConverter))]
+public enum MessageBetaContentBlockSourceContentType
+{
+    Text,
+    Image,
+}
+
+sealed class MessageBetaContentBlockSourceContentTypeConverter
+    : JsonConverter<MessageBetaContentBlockSourceContentType>
+{
+    public override MessageBetaContentBlockSourceContentType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => MessageBetaContentBlockSourceContentType.Text,
+            "image" => MessageBetaContentBlockSourceContentType.Image,
+            _ => (MessageBetaContentBlockSourceContentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageBetaContentBlockSourceContentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                MessageBetaContentBlockSourceContentType.Text => "text",
+                MessageBetaContentBlockSourceContentType.Image => "image",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

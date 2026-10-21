@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsSessionCreationRejectedRunError : Js
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionCreationRejectedRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionCreationRejectedRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsSessionCreationRejectedRunError : Js
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session_creation_rejected_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionCreationRejectedRunError() { }
+    public BetaManagedAgentsSessionCreationRejectedRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_creation_rejected_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -67,6 +75,8 @@ public sealed record class BetaManagedAgentsSessionCreationRejectedRunError : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_creation_rejected_error");
     }
 
 #pragma warning disable CS8618
@@ -84,6 +94,13 @@ public sealed record class BetaManagedAgentsSessionCreationRejectedRunError : Js
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionCreationRejectedRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsSessionCreationRejectedRunErrorFromRaw
@@ -93,48 +110,4 @@ class BetaManagedAgentsSessionCreationRejectedRunErrorFromRaw
     public BetaManagedAgentsSessionCreationRejectedRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionCreationRejectedRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionCreationRejectedRunErrorTypeConverter))]
-public enum BetaManagedAgentsSessionCreationRejectedRunErrorType
-{
-    SessionCreationRejectedError,
-}
-
-sealed class BetaManagedAgentsSessionCreationRejectedRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionCreationRejectedRunErrorType>
-{
-    public override BetaManagedAgentsSessionCreationRejectedRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session_creation_rejected_error" =>
-                BetaManagedAgentsSessionCreationRejectedRunErrorType.SessionCreationRejectedError,
-            _ => (BetaManagedAgentsSessionCreationRejectedRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionCreationRejectedRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionCreationRejectedRunErrorType.SessionCreationRejectedError =>
-                    "session_creation_rejected_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

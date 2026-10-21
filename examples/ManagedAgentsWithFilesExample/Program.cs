@@ -25,14 +25,10 @@ var agent = await client.Beta.Agents.Create(
         [
             new BetaManagedAgentsAgentToolset20260401Params
             {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 DefaultConfig = new BetaManagedAgentsAgentToolsetDefaultConfigParams
                 {
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy
-                    {
-                        Type = BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow,
-                    },
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ],
@@ -63,12 +59,7 @@ var session = await client.Beta.Sessions.Create(
         EnvironmentID = environment.ID,
         Resources =
         [
-            new BetaManagedAgentsFileResourceParams
-            {
-                Type = BetaManagedAgentsFileResourceParamsType.File,
-                FileID = file.ID,
-                MountPath = "data.csv",
-            },
+            new BetaManagedAgentsFileResourceParams { FileID = file.ID, MountPath = "data.csv" },
         ],
     }
 );
@@ -88,12 +79,10 @@ await client.Beta.Sessions.Events.Send(
         [
             new BetaManagedAgentsUserMessageEventParams
             {
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
                 Content =
                 [
                     new BetaManagedAgentsTextBlock
                     {
-                        Type = BetaManagedAgentsTextBlockType.Text,
                         Text = "Read /uploads/data.csv and tell me the column names.",
                     },
                 ],

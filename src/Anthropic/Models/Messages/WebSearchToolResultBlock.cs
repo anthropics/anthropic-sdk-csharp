@@ -132,16 +132,19 @@ public record class WebSearchToolResultBlockCaller : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, WebSearchToolResultBlockCallerType> Type
     {
         get
         {
             return this.Value switch
             {
-                DirectCaller x => x.Type,
-                ServerToolCaller x => x.Type,
-                ServerToolCaller20260120 x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                DirectCaller _ => WebSearchToolResultBlockCallerType.Direct,
+                ServerToolCaller _ => WebSearchToolResultBlockCallerType.CodeExecution20250825,
+                ServerToolCaller20260120 _ =>
+                    WebSearchToolResultBlockCallerType.CodeExecution20260120,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, WebSearchToolResultBlockCallerType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -490,5 +493,55 @@ sealed class WebSearchToolResultBlockCallerConverter : JsonConverter<WebSearchTo
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(WebSearchToolResultBlockCallerTypeConverter))]
+public enum WebSearchToolResultBlockCallerType
+{
+    Direct,
+    CodeExecution20250825,
+    CodeExecution20260120,
+}
+
+sealed class WebSearchToolResultBlockCallerTypeConverter
+    : JsonConverter<WebSearchToolResultBlockCallerType>
+{
+    public override WebSearchToolResultBlockCallerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => WebSearchToolResultBlockCallerType.Direct,
+            "code_execution_20250825" => WebSearchToolResultBlockCallerType.CodeExecution20250825,
+            "code_execution_20260120" => WebSearchToolResultBlockCallerType.CodeExecution20260120,
+            _ => (WebSearchToolResultBlockCallerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        WebSearchToolResultBlockCallerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                WebSearchToolResultBlockCallerType.Direct => "direct",
+                WebSearchToolResultBlockCallerType.CodeExecution20250825 =>
+                    "code_execution_20250825",
+                WebSearchToolResultBlockCallerType.CodeExecution20260120 =>
+                    "code_execution_20260120",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

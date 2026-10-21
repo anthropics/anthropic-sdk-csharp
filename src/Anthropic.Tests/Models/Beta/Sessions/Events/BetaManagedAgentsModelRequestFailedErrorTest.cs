@@ -13,23 +13,17 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
         var model = new BetaManagedAgentsModelRequestFailedError
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string expectedMessage = "message";
         BetaManagedAgentsModelRequestFailedErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType> expectedType =
-            BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement("model_request_failed_error");
 
         Assert.Equal(expectedMessage, model.Message);
         Assert.Equal(expectedRetryStatus, model.RetryStatus);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -38,10 +32,7 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
         var model = new BetaManagedAgentsModelRequestFailedError
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,10 +50,7 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
         var model = new BetaManagedAgentsModelRequestFailedError
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -74,15 +62,12 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
 
         string expectedMessage = "message";
         BetaManagedAgentsModelRequestFailedErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType> expectedType =
-            BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement("model_request_failed_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.Equal(expectedRetryStatus, deserialized.RetryStatus);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -91,10 +76,7 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
         var model = new BetaManagedAgentsModelRequestFailedError
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         model.Validate();
@@ -106,10 +88,7 @@ public class BetaManagedAgentsModelRequestFailedErrorTest : TestBase
         var model = new BetaManagedAgentsModelRequestFailedError
         {
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         BetaManagedAgentsModelRequestFailedError copied = new(model);
@@ -124,9 +103,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingValidationWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         value.Validate();
     }
 
@@ -134,9 +111,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedValidationWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         value.Validate();
     }
 
@@ -144,9 +119,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalValidationWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         value.Validate();
     }
 
@@ -154,9 +127,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingSerializationRoundtripWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsModelRequestFailedErrorRetryStatus>(
@@ -171,9 +142,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedSerializationRoundtripWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsModelRequestFailedErrorRetryStatus>(
@@ -188,9 +157,7 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalSerializationRoundtripWorks()
     {
         BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsModelRequestFailedErrorRetryStatus>(
@@ -200,16 +167,77 @@ public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusRetryingTypeWorks()
+    {
+        BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusRetrying();
+        Assert.Equal(
+            BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Retrying,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusExhaustedTypeWorks()
+    {
+        BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusExhausted();
+        Assert.Equal(
+            BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Exhausted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusTerminalTypeWorks()
+    {
+        BetaManagedAgentsModelRequestFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusTerminal();
+        Assert.Equal(
+            BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Terminal,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsModelRequestFailedErrorRetryStatus value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "retrying"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType> expectedType =
+            BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Retrying;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsModelRequestFailedErrorRetryStatus emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsModelRequestFailedErrorTypeTest : TestBase
+public class BetaManagedAgentsModelRequestFailedErrorRetryStatusTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError)]
-    public void Validation_Works(BetaManagedAgentsModelRequestFailedErrorType rawValue)
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Terminal)]
+    public void Validation_Works(BetaManagedAgentsModelRequestFailedErrorRetryStatusType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType> value = rawValue;
         value.Validate();
     }
 
@@ -217,7 +245,7 @@ public class BetaManagedAgentsModelRequestFailedErrorTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -225,15 +253,19 @@ public class BetaManagedAgentsModelRequestFailedErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsModelRequestFailedErrorType.ModelRequestFailedError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsModelRequestFailedErrorType rawValue)
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsModelRequestFailedErrorRetryStatusType.Terminal)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsModelRequestFailedErrorRetryStatusType rawValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -243,11 +275,11 @@ public class BetaManagedAgentsModelRequestFailedErrorTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsModelRequestFailedErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

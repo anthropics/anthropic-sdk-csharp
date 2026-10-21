@@ -286,7 +286,7 @@ public class BetaAbstractMemoryToolTest
         var parameters = new MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "What's in memory?", Role = Role.User }],
+            Messages = [new BetaUserMessageParam { Content = "What's in memory?" }],
             Model = Messages::Model.ClaudeOpus4_6,
         };
 

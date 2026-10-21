@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -13,9 +14,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
@@ -23,9 +22,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         string expectedClientID = "client_id";
         string expectedTokenEndpoint = "token_endpoint";
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth expectedTokenEndpointAuth =
-            new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneResponse();
         string expectedResource = "resource";
         string expectedScope = "scope";
 
@@ -43,9 +40,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
@@ -66,9 +61,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
@@ -83,9 +76,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         string expectedClientID = "client_id";
         string expectedTokenEndpoint = "token_endpoint";
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth expectedTokenEndpointAuth =
-            new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneResponse();
         string expectedResource = "resource";
         string expectedScope = "scope";
 
@@ -103,9 +94,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
@@ -120,9 +109,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
         };
 
         Assert.Null(model.Resource);
@@ -138,9 +125,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
         };
 
         model.Validate();
@@ -153,9 +138,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
 
             Resource = null,
             Scope = null,
@@ -174,9 +157,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
 
             Resource = null,
             Scope = null,
@@ -192,9 +173,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTest : TestBase
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
@@ -211,9 +190,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthNoneResponseValidationWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneResponse();
         value.Validate();
     }
 
@@ -221,9 +198,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthBasicResponseValidationWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthBasicResponse(
-                BetaManagedAgentsTokenEndpointAuthBasicResponseType.ClientSecretBasic
-            );
+            new BetaManagedAgentsTokenEndpointAuthBasicResponse();
         value.Validate();
     }
 
@@ -231,9 +206,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthPostResponseValidationWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthPostResponse(
-                BetaManagedAgentsTokenEndpointAuthPostResponseType.ClientSecretPost
-            );
+            new BetaManagedAgentsTokenEndpointAuthPostResponse();
         value.Validate();
     }
 
@@ -241,9 +214,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthNoneResponseSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneResponse();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth>(
@@ -258,9 +229,7 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthBasicResponseSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthBasicResponse(
-                BetaManagedAgentsTokenEndpointAuthBasicResponseType.ClientSecretBasic
-            );
+            new BetaManagedAgentsTokenEndpointAuthBasicResponse();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth>(
@@ -275,15 +244,136 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTest : Tes
     public void BetaManagedAgentsTokenEndpointAuthPostResponseSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
-            new BetaManagedAgentsTokenEndpointAuthPostResponse(
-                BetaManagedAgentsTokenEndpointAuthPostResponseType.ClientSecretPost
-            );
+            new BetaManagedAgentsTokenEndpointAuthPostResponse();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth>(
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthNoneResponseTypeWorks()
+    {
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
+            new BetaManagedAgentsTokenEndpointAuthNoneResponse();
+        Assert.Equal(
+            BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthBasicResponseTypeWorks()
+    {
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
+            new BetaManagedAgentsTokenEndpointAuthBasicResponse();
+        Assert.Equal(
+            BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthPostResponseTypeWorks()
+    {
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value =
+            new BetaManagedAgentsTokenEndpointAuthPostResponse();
+        Assert.Equal(
+            BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "none"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<
+            string,
+            BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType
+        > expectedType = BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuth emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None)]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic)]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost)]
+    public void Validation_Works(
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType> value =
+            rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None)]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic)]
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType> value =
+            rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

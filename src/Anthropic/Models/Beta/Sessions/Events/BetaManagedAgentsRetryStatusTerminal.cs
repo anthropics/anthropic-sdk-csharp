@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 )]
 public sealed record class BetaManagedAgentsRetryStatusTerminal : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsRetryStatusTerminalType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsRetryStatusTerminalType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -35,10 +32,16 @@ public sealed record class BetaManagedAgentsRetryStatusTerminal : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("terminal")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsRetryStatusTerminal() { }
+    public BetaManagedAgentsRetryStatusTerminal()
+    {
+        this.Type = JsonSerializer.SerializeToElement("terminal");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -51,6 +54,8 @@ public sealed record class BetaManagedAgentsRetryStatusTerminal : JsonModel
     public BetaManagedAgentsRetryStatusTerminal(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("terminal");
     }
 
 #pragma warning disable CS8618
@@ -68,15 +73,6 @@ public sealed record class BetaManagedAgentsRetryStatusTerminal : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsRetryStatusTerminal(
-        ApiEnum<string, BetaManagedAgentsRetryStatusTerminalType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsRetryStatusTerminalFromRaw
@@ -86,46 +82,4 @@ class BetaManagedAgentsRetryStatusTerminalFromRaw
     public BetaManagedAgentsRetryStatusTerminal FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsRetryStatusTerminal.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsRetryStatusTerminalTypeConverter))]
-public enum BetaManagedAgentsRetryStatusTerminalType
-{
-    Terminal,
-}
-
-sealed class BetaManagedAgentsRetryStatusTerminalTypeConverter
-    : JsonConverter<BetaManagedAgentsRetryStatusTerminalType>
-{
-    public override BetaManagedAgentsRetryStatusTerminalType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "terminal" => BetaManagedAgentsRetryStatusTerminalType.Terminal,
-            _ => (BetaManagedAgentsRetryStatusTerminalType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsRetryStatusTerminalType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsRetryStatusTerminalType.Terminal => "terminal",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

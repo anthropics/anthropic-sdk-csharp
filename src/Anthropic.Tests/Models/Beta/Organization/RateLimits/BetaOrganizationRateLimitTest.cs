@@ -19,7 +19,6 @@ public class BetaOrganizationRateLimitTest : TestBase
                 ID = "id",
                 DisplayName = "display_name",
             },
-            GroupType = BetaOrganizationRateLimitGroupType.Batch,
             Limits = [new() { Type = "type", Value = 0 }],
             Models = ["string"],
         };
@@ -30,15 +29,12 @@ public class BetaOrganizationRateLimitTest : TestBase
             ID = "id",
             DisplayName = "display_name",
         };
-        ApiEnum<string, BetaOrganizationRateLimitGroupType> expectedGroupType =
-            BetaOrganizationRateLimitGroupType.Batch;
         List<BetaOrganizationRateLimitValue> expectedLimits = [new() { Type = "type", Value = 0 }];
         List<string> expectedModels = ["string"];
         JsonElement expectedType = JsonSerializer.SerializeToElement("rate_limit");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedGroup, model.Group);
-        Assert.Equal(expectedGroupType, model.GroupType);
         Assert.Equal(expectedLimits.Count, model.Limits.Count);
         for (int i = 0; i < expectedLimits.Count; i++)
         {
@@ -64,7 +60,6 @@ public class BetaOrganizationRateLimitTest : TestBase
                 ID = "id",
                 DisplayName = "display_name",
             },
-            GroupType = BetaOrganizationRateLimitGroupType.Batch,
             Limits = [new() { Type = "type", Value = 0 }],
             Models = ["string"],
         };
@@ -89,7 +84,6 @@ public class BetaOrganizationRateLimitTest : TestBase
                 ID = "id",
                 DisplayName = "display_name",
             },
-            GroupType = BetaOrganizationRateLimitGroupType.Batch,
             Limits = [new() { Type = "type", Value = 0 }],
             Models = ["string"],
         };
@@ -107,15 +101,12 @@ public class BetaOrganizationRateLimitTest : TestBase
             ID = "id",
             DisplayName = "display_name",
         };
-        ApiEnum<string, BetaOrganizationRateLimitGroupType> expectedGroupType =
-            BetaOrganizationRateLimitGroupType.Batch;
         List<BetaOrganizationRateLimitValue> expectedLimits = [new() { Type = "type", Value = 0 }];
         List<string> expectedModels = ["string"];
         JsonElement expectedType = JsonSerializer.SerializeToElement("rate_limit");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedGroup, deserialized.Group);
-        Assert.Equal(expectedGroupType, deserialized.GroupType);
         Assert.Equal(expectedLimits.Count, deserialized.Limits.Count);
         for (int i = 0; i < expectedLimits.Count; i++)
         {
@@ -141,7 +132,6 @@ public class BetaOrganizationRateLimitTest : TestBase
                 ID = "id",
                 DisplayName = "display_name",
             },
-            GroupType = BetaOrganizationRateLimitGroupType.Batch,
             Limits = [new() { Type = "type", Value = 0 }],
             Models = ["string"],
         };
@@ -160,7 +150,6 @@ public class BetaOrganizationRateLimitTest : TestBase
                 ID = "id",
                 DisplayName = "display_name",
             },
-            GroupType = BetaOrganizationRateLimitGroupType.Batch,
             Limits = [new() { Type = "type", Value = 0 }],
             Models = ["string"],
         };
@@ -284,6 +273,52 @@ public class GroupTest : TestBase
     }
 
     [Fact]
+    public void BetaOrganizationRateLimitModelTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitModelGroup()
+        {
+            ID = "id",
+            DisplayName = "display_name",
+        };
+        Assert.Equal(GroupTypeValue.ModelGroup, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationRateLimitBatchTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitBatchGroup("id");
+        Assert.Equal(GroupTypeValue.Batch, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationRateLimitTokenCountTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitTokenCountGroup("id");
+        Assert.Equal(GroupTypeValue.TokenCount, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationRateLimitFilesTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitFilesGroup("id");
+        Assert.Equal(GroupTypeValue.Files, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationRateLimitSkillsTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitSkillsGroup("id");
+        Assert.Equal(GroupTypeValue.Skills, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationRateLimitWebSearchTypeWorks()
+    {
+        Group value = new BetaOrganizationRateLimitWebSearchGroup("id");
+        Assert.Equal(GroupTypeValue.WebSearch, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Group value = new(
@@ -299,10 +334,10 @@ public class GroupTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedID = "id";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("model_group");
+        ApiEnum<string, GroupTypeValue> expectedType = GroupTypeValue.ModelGroup;
 
         Assert.Equal(expectedID, value.ID);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Group emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -325,26 +360,26 @@ public class GroupTest : TestBase
     }
 }
 
-public class BetaOrganizationRateLimitGroupTypeTest : TestBase
+public class GroupTypeValueTest : TestBase
 {
     [Theory]
-    [InlineData(BetaOrganizationRateLimitGroupType.Batch)]
-    [InlineData(BetaOrganizationRateLimitGroupType.Files)]
-    [InlineData(BetaOrganizationRateLimitGroupType.ModelGroup)]
-    [InlineData(BetaOrganizationRateLimitGroupType.Skills)]
-    [InlineData(BetaOrganizationRateLimitGroupType.TokenCount)]
-    [InlineData(BetaOrganizationRateLimitGroupType.WebSearch)]
-    public void Validation_Works(BetaOrganizationRateLimitGroupType rawValue)
+    [InlineData(GroupTypeValue.ModelGroup)]
+    [InlineData(GroupTypeValue.Batch)]
+    [InlineData(GroupTypeValue.TokenCount)]
+    [InlineData(GroupTypeValue.Files)]
+    [InlineData(GroupTypeValue.Skills)]
+    [InlineData(GroupTypeValue.WebSearch)]
+    public void Validation_Works(GroupTypeValue rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaOrganizationRateLimitGroupType> value = rawValue;
+        ApiEnum<string, GroupTypeValue> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaOrganizationRateLimitGroupType>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, GroupTypeValue>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -354,21 +389,22 @@ public class BetaOrganizationRateLimitGroupTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaOrganizationRateLimitGroupType.Batch)]
-    [InlineData(BetaOrganizationRateLimitGroupType.Files)]
-    [InlineData(BetaOrganizationRateLimitGroupType.ModelGroup)]
-    [InlineData(BetaOrganizationRateLimitGroupType.Skills)]
-    [InlineData(BetaOrganizationRateLimitGroupType.TokenCount)]
-    [InlineData(BetaOrganizationRateLimitGroupType.WebSearch)]
-    public void SerializationRoundtrip_Works(BetaOrganizationRateLimitGroupType rawValue)
+    [InlineData(GroupTypeValue.ModelGroup)]
+    [InlineData(GroupTypeValue.Batch)]
+    [InlineData(GroupTypeValue.TokenCount)]
+    [InlineData(GroupTypeValue.Files)]
+    [InlineData(GroupTypeValue.Skills)]
+    [InlineData(GroupTypeValue.WebSearch)]
+    public void SerializationRoundtrip_Works(GroupTypeValue rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaOrganizationRateLimitGroupType> value = rawValue;
+        ApiEnum<string, GroupTypeValue> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaOrganizationRateLimitGroupType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -376,14 +412,15 @@ public class BetaOrganizationRateLimitGroupTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaOrganizationRateLimitGroupType>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, GroupTypeValue>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaOrganizationRateLimitGroupType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

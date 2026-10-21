@@ -25,15 +25,17 @@ public record class ComplianceSettingsStateParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ComplianceSettingsStateParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                ComplianceSettingsStateEnabledParam x => x.Type,
-                ComplianceSettingsStateDisabledParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                ComplianceSettingsStateEnabledParam _ => ComplianceSettingsStateParamType.Enabled,
+                ComplianceSettingsStateDisabledParam _ => ComplianceSettingsStateParamType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ComplianceSettingsStateParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -312,5 +314,50 @@ sealed class ComplianceSettingsStateParamConverter : JsonConverter<ComplianceSet
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ComplianceSettingsStateParamTypeConverter))]
+public enum ComplianceSettingsStateParamType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class ComplianceSettingsStateParamTypeConverter
+    : JsonConverter<ComplianceSettingsStateParamType>
+{
+    public override ComplianceSettingsStateParamType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => ComplianceSettingsStateParamType.Enabled,
+            "disabled" => ComplianceSettingsStateParamType.Disabled,
+            _ => (ComplianceSettingsStateParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ComplianceSettingsStateParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ComplianceSettingsStateParamType.Enabled => "enabled",
+                ComplianceSettingsStateParamType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

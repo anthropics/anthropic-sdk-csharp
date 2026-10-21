@@ -88,6 +88,34 @@ public class ToolChoiceTest : TestBase
     }
 
     [Fact]
+    public void AutoTypeWorks()
+    {
+        ToolChoice value = new ToolChoiceAuto() { DisableParallelToolUse = true };
+        Assert.Equal(ToolChoiceType.Auto, value.Type.Value());
+    }
+
+    [Fact]
+    public void AnyTypeWorks()
+    {
+        ToolChoice value = new ToolChoiceAny() { DisableParallelToolUse = true };
+        Assert.Equal(ToolChoiceType.Any, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolTypeWorks()
+    {
+        ToolChoice value = new ToolChoiceTool() { Name = "name", DisableParallelToolUse = true };
+        Assert.Equal(ToolChoiceType.Tool, value.Type.Value());
+    }
+
+    [Fact]
+    public void NoneTypeWorks()
+    {
+        ToolChoice value = new ToolChoiceNone();
+        Assert.Equal(ToolChoiceType.None, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ToolChoice value = new(
@@ -102,10 +130,10 @@ public class ToolChoiceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("auto");
+        ApiEnum<string, ToolChoiceType> expectedType = ToolChoiceType.Auto;
         bool expectedDisableParallelToolUse = true;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedDisableParallelToolUse, value.DisableParallelToolUse);
 
         ToolChoice emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -126,5 +154,67 @@ public class ToolChoiceTest : TestBase
         );
 
         Assert.Null(mismatchedValue.DisableParallelToolUse);
+    }
+}
+
+public class ToolChoiceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolChoiceType.Auto)]
+    [InlineData(ToolChoiceType.Any)]
+    [InlineData(ToolChoiceType.Tool)]
+    [InlineData(ToolChoiceType.None)]
+    public void Validation_Works(ToolChoiceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolChoiceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolChoiceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolChoiceType.Auto)]
+    [InlineData(ToolChoiceType.Any)]
+    [InlineData(ToolChoiceType.Tool)]
+    [InlineData(ToolChoiceType.None)]
+    public void SerializationRoundtrip_Works(ToolChoiceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolChoiceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChoiceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolChoiceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChoiceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

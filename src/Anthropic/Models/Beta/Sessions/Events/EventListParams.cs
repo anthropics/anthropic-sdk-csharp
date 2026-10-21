@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,7 +9,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services.Beta.Sessions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -27,12 +27,12 @@ public record class EventListParams : ParamsBase
     /// Return events created after this time (exclusive). Compared against the event's
     /// `processed_at` value.
     /// </summary>
-    public System::DateTimeOffset? CreatedAtGt
+    public DateTimeOffset? CreatedAtGt
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gt]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[gt]");
         }
         init
         {
@@ -50,12 +50,12 @@ public record class EventListParams : ParamsBase
     /// Return events created at or after this time (inclusive). Compared against
     /// the event's `processed_at` value.
     /// </summary>
-    public System::DateTimeOffset? CreatedAtGte
+    public DateTimeOffset? CreatedAtGte
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gte]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[gte]");
         }
         init
         {
@@ -73,12 +73,12 @@ public record class EventListParams : ParamsBase
     /// Return events created before this time (exclusive). Compared against the
     /// event's `processed_at` value.
     /// </summary>
-    public System::DateTimeOffset? CreatedAtLt
+    public DateTimeOffset? CreatedAtLt
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lt]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[lt]");
         }
         init
         {
@@ -96,12 +96,12 @@ public record class EventListParams : ParamsBase
     /// Return events created at or before this time (inclusive). Compared against
     /// the event's `processed_at` value.
     /// </summary>
-    public System::DateTimeOffset? CreatedAtLte
+    public DateTimeOffset? CreatedAtLte
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lte]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[lte]");
         }
         init
         {
@@ -337,10 +337,10 @@ public record class EventListParams : ParamsBase
             && this._rawQueryData.Equals(other._rawQueryData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/sessions/{0}/events",
@@ -397,7 +397,7 @@ sealed class OrderConverter : JsonConverter<Order>
 {
     public override Order Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

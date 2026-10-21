@@ -185,45 +185,35 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortLowValidationWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortLow(
-            BetaManagedAgentsEffortLowType.Low
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortLow();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEffortMediumValidationWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMedium(
-            BetaManagedAgentsEffortMediumType.Medium
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMedium();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEffortHighValidationWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortHigh(
-            BetaManagedAgentsEffortHighType.High
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortHigh();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEffortXhighValidationWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortXhigh(
-            BetaManagedAgentsEffortXhighType.Xhigh
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortXhigh();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEffortMaxValidationWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMax(
-            BetaManagedAgentsEffortMaxType.Max
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMax();
         value.Validate();
     }
 
@@ -243,9 +233,7 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortLowSerializationRoundtripWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortLow(
-            BetaManagedAgentsEffortLowType.Low
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortLow();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParamsEffort>(
             element,
@@ -258,9 +246,7 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortMediumSerializationRoundtripWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMedium(
-            BetaManagedAgentsEffortMediumType.Medium
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMedium();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParamsEffort>(
             element,
@@ -273,9 +259,7 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortHighSerializationRoundtripWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortHigh(
-            BetaManagedAgentsEffortHighType.High
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortHigh();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParamsEffort>(
             element,
@@ -288,9 +272,7 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortXhighSerializationRoundtripWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortXhigh(
-            BetaManagedAgentsEffortXhighType.Xhigh
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortXhigh();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParamsEffort>(
             element,
@@ -303,9 +285,7 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
     [Fact]
     public void BetaManagedAgentsEffortMaxSerializationRoundtripWorks()
     {
-        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMax(
-            BetaManagedAgentsEffortMaxType.Max
-        );
+        BetaManagedAgentsModelConfigParamsEffort value = new BetaManagedAgentsEffortMax();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParamsEffort>(
             element,
@@ -313,6 +293,32 @@ public class BetaManagedAgentsModelConfigParamsEffortTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsModelConfigParamsEffort value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "low"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("low");
+
+        Assert.NotNull(value.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type.Value));
+
+        BetaManagedAgentsModelConfigParamsEffort emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.Type);
     }
 }
 

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 )]
 public sealed record class BetaManagedAgentsSessionEndTurn : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsSessionEndTurnType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionEndTurnType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -35,10 +32,16 @@ public sealed record class BetaManagedAgentsSessionEndTurn : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("end_turn")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionEndTurn() { }
+    public BetaManagedAgentsSessionEndTurn()
+    {
+        this.Type = JsonSerializer.SerializeToElement("end_turn");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -51,6 +54,8 @@ public sealed record class BetaManagedAgentsSessionEndTurn : JsonModel
     public BetaManagedAgentsSessionEndTurn(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("end_turn");
     }
 
 #pragma warning disable CS8618
@@ -68,15 +73,6 @@ public sealed record class BetaManagedAgentsSessionEndTurn : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsSessionEndTurn(
-        ApiEnum<string, BetaManagedAgentsSessionEndTurnType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsSessionEndTurnFromRaw : IFromRawJson<BetaManagedAgentsSessionEndTurn>
@@ -85,46 +81,4 @@ class BetaManagedAgentsSessionEndTurnFromRaw : IFromRawJson<BetaManagedAgentsSes
     public BetaManagedAgentsSessionEndTurn FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionEndTurn.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionEndTurnTypeConverter))]
-public enum BetaManagedAgentsSessionEndTurnType
-{
-    EndTurn,
-}
-
-sealed class BetaManagedAgentsSessionEndTurnTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionEndTurnType>
-{
-    public override BetaManagedAgentsSessionEndTurnType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "end_turn" => BetaManagedAgentsSessionEndTurnType.EndTurn,
-            _ => (BetaManagedAgentsSessionEndTurnType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionEndTurnType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionEndTurnType.EndTurn => "end_turn",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

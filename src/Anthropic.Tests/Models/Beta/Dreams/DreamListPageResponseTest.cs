@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Dreams = Anthropic.Models.Beta.Dreams;
+using Anthropic.Models.Beta.Dreams;
 
 namespace Anthropic.Tests.Models.Beta.Dreams;
 
@@ -11,7 +11,7 @@ public class DreamListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Dreams::DreamListPageResponse
+        var model = new DreamListPageResponse
         {
             Data =
             [
@@ -22,30 +22,13 @@ public class DreamListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Error = new() { Message = "message", Type = "type" },
-                    Inputs =
-                    [
-                        new Dreams::BetaDreamMemoryStoreInput()
-                        {
-                            MemoryStoreID = "x",
-                            Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                        },
-                    ],
+                    Inputs = [new BetaDreamMemoryStoreInput("x")],
                     Instructions = "instructions",
-                    Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                    OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                        Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                    ),
-                    Outputs =
-                    [
-                        new()
-                        {
-                            MemoryStoreID = "memory_store_id",
-                            Type = Dreams::BetaDreamOutputType.MemoryStore,
-                        },
-                    ],
+                    Model = new() { ID = "x", Speed = Speed.Standard },
+                    OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                    Outputs = [new("memory_store_id")],
                     SessionID = "session_id",
-                    Status = Dreams::BetaDreamStatus.Pending,
-                    Type = Dreams::Type.Dream,
+                    Status = BetaDreamStatus.Pending,
                     Usage = new()
                     {
                         CacheCreationInputTokens = 0,
@@ -58,7 +41,7 @@ public class DreamListPageResponseTest : TestBase
             NextPage = "next_page",
         };
 
-        List<Dreams::BetaDream> expectedData =
+        List<BetaDream> expectedData =
         [
             new()
             {
@@ -67,30 +50,13 @@ public class DreamListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Error = new() { Message = "message", Type = "type" },
-                Inputs =
-                [
-                    new Dreams::BetaDreamMemoryStoreInput()
-                    {
-                        MemoryStoreID = "x",
-                        Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                    },
-                ],
+                Inputs = [new BetaDreamMemoryStoreInput("x")],
                 Instructions = "instructions",
-                Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                    Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                ),
-                Outputs =
-                [
-                    new()
-                    {
-                        MemoryStoreID = "memory_store_id",
-                        Type = Dreams::BetaDreamOutputType.MemoryStore,
-                    },
-                ],
+                Model = new() { ID = "x", Speed = Speed.Standard },
+                OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                Outputs = [new("memory_store_id")],
                 SessionID = "session_id",
-                Status = Dreams::BetaDreamStatus.Pending,
-                Type = Dreams::Type.Dream,
+                Status = BetaDreamStatus.Pending,
                 Usage = new()
                 {
                     CacheCreationInputTokens = 0,
@@ -113,7 +79,7 @@ public class DreamListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Dreams::DreamListPageResponse
+        var model = new DreamListPageResponse
         {
             Data =
             [
@@ -124,30 +90,13 @@ public class DreamListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Error = new() { Message = "message", Type = "type" },
-                    Inputs =
-                    [
-                        new Dreams::BetaDreamMemoryStoreInput()
-                        {
-                            MemoryStoreID = "x",
-                            Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                        },
-                    ],
+                    Inputs = [new BetaDreamMemoryStoreInput("x")],
                     Instructions = "instructions",
-                    Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                    OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                        Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                    ),
-                    Outputs =
-                    [
-                        new()
-                        {
-                            MemoryStoreID = "memory_store_id",
-                            Type = Dreams::BetaDreamOutputType.MemoryStore,
-                        },
-                    ],
+                    Model = new() { ID = "x", Speed = Speed.Standard },
+                    OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                    Outputs = [new("memory_store_id")],
                     SessionID = "session_id",
-                    Status = Dreams::BetaDreamStatus.Pending,
-                    Type = Dreams::Type.Dream,
+                    Status = BetaDreamStatus.Pending,
                     Usage = new()
                     {
                         CacheCreationInputTokens = 0,
@@ -161,7 +110,7 @@ public class DreamListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Dreams::DreamListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<DreamListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -172,7 +121,7 @@ public class DreamListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Dreams::DreamListPageResponse
+        var model = new DreamListPageResponse
         {
             Data =
             [
@@ -183,30 +132,13 @@ public class DreamListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Error = new() { Message = "message", Type = "type" },
-                    Inputs =
-                    [
-                        new Dreams::BetaDreamMemoryStoreInput()
-                        {
-                            MemoryStoreID = "x",
-                            Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                        },
-                    ],
+                    Inputs = [new BetaDreamMemoryStoreInput("x")],
                     Instructions = "instructions",
-                    Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                    OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                        Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                    ),
-                    Outputs =
-                    [
-                        new()
-                        {
-                            MemoryStoreID = "memory_store_id",
-                            Type = Dreams::BetaDreamOutputType.MemoryStore,
-                        },
-                    ],
+                    Model = new() { ID = "x", Speed = Speed.Standard },
+                    OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                    Outputs = [new("memory_store_id")],
                     SessionID = "session_id",
-                    Status = Dreams::BetaDreamStatus.Pending,
-                    Type = Dreams::Type.Dream,
+                    Status = BetaDreamStatus.Pending,
                     Usage = new()
                     {
                         CacheCreationInputTokens = 0,
@@ -220,13 +152,13 @@ public class DreamListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Dreams::DreamListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<DreamListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<Dreams::BetaDream> expectedData =
+        List<BetaDream> expectedData =
         [
             new()
             {
@@ -235,30 +167,13 @@ public class DreamListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Error = new() { Message = "message", Type = "type" },
-                Inputs =
-                [
-                    new Dreams::BetaDreamMemoryStoreInput()
-                    {
-                        MemoryStoreID = "x",
-                        Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                    },
-                ],
+                Inputs = [new BetaDreamMemoryStoreInput("x")],
                 Instructions = "instructions",
-                Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                    Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                ),
-                Outputs =
-                [
-                    new()
-                    {
-                        MemoryStoreID = "memory_store_id",
-                        Type = Dreams::BetaDreamOutputType.MemoryStore,
-                    },
-                ],
+                Model = new() { ID = "x", Speed = Speed.Standard },
+                OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                Outputs = [new("memory_store_id")],
                 SessionID = "session_id",
-                Status = Dreams::BetaDreamStatus.Pending,
-                Type = Dreams::Type.Dream,
+                Status = BetaDreamStatus.Pending,
                 Usage = new()
                 {
                     CacheCreationInputTokens = 0,
@@ -281,7 +196,7 @@ public class DreamListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Dreams::DreamListPageResponse
+        var model = new DreamListPageResponse
         {
             Data =
             [
@@ -292,30 +207,13 @@ public class DreamListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Error = new() { Message = "message", Type = "type" },
-                    Inputs =
-                    [
-                        new Dreams::BetaDreamMemoryStoreInput()
-                        {
-                            MemoryStoreID = "x",
-                            Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                        },
-                    ],
+                    Inputs = [new BetaDreamMemoryStoreInput("x")],
                     Instructions = "instructions",
-                    Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                    OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                        Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                    ),
-                    Outputs =
-                    [
-                        new()
-                        {
-                            MemoryStoreID = "memory_store_id",
-                            Type = Dreams::BetaDreamOutputType.MemoryStore,
-                        },
-                    ],
+                    Model = new() { ID = "x", Speed = Speed.Standard },
+                    OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                    Outputs = [new("memory_store_id")],
                     SessionID = "session_id",
-                    Status = Dreams::BetaDreamStatus.Pending,
-                    Type = Dreams::Type.Dream,
+                    Status = BetaDreamStatus.Pending,
                     Usage = new()
                     {
                         CacheCreationInputTokens = 0,
@@ -334,7 +232,7 @@ public class DreamListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Dreams::DreamListPageResponse
+        var model = new DreamListPageResponse
         {
             Data =
             [
@@ -345,30 +243,13 @@ public class DreamListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Error = new() { Message = "message", Type = "type" },
-                    Inputs =
-                    [
-                        new Dreams::BetaDreamMemoryStoreInput()
-                        {
-                            MemoryStoreID = "x",
-                            Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                        },
-                    ],
+                    Inputs = [new BetaDreamMemoryStoreInput("x")],
                     Instructions = "instructions",
-                    Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-                    OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                        Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-                    ),
-                    Outputs =
-                    [
-                        new()
-                        {
-                            MemoryStoreID = "memory_store_id",
-                            Type = Dreams::BetaDreamOutputType.MemoryStore,
-                        },
-                    ],
+                    Model = new() { ID = "x", Speed = Speed.Standard },
+                    OutputBehavior = new BetaOutputBehaviorCreateNew(),
+                    Outputs = [new("memory_store_id")],
                     SessionID = "session_id",
-                    Status = Dreams::BetaDreamStatus.Pending,
-                    Type = Dreams::Type.Dream,
+                    Status = BetaDreamStatus.Pending,
                     Usage = new()
                     {
                         CacheCreationInputTokens = 0,
@@ -381,7 +262,7 @@ public class DreamListPageResponseTest : TestBase
             NextPage = "next_page",
         };
 
-        Dreams::DreamListPageResponse copied = new(model);
+        DreamListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

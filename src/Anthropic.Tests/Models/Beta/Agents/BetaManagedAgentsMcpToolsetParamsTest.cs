@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -14,51 +13,41 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
         string expectedMcpServerName = "x";
-        ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType> expectedType =
-            BetaManagedAgentsMcpToolsetParamsType.McpToolset;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_toolset");
         List<BetaManagedAgentsMcpToolConfigParams> expectedConfigs =
         [
             new()
             {
                 Name = "x",
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         ];
         BetaManagedAgentsMcpToolsetDefaultConfigParams expectedDefaultConfig = new()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         Assert.Equal(expectedMcpServerName, model.McpServerName);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.NotNull(model.Configs);
         Assert.Equal(expectedConfigs.Count, model.Configs.Count);
         for (int i = 0; i < expectedConfigs.Count; i++)
@@ -74,24 +63,19 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -110,24 +94,19 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -139,29 +118,24 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMcpServerName = "x";
-        ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType> expectedType =
-            BetaManagedAgentsMcpToolsetParamsType.McpToolset;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_toolset");
         List<BetaManagedAgentsMcpToolConfigParams> expectedConfigs =
         [
             new()
             {
                 Name = "x",
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         ];
         BetaManagedAgentsMcpToolsetDefaultConfigParams expectedDefaultConfig = new()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         Assert.Equal(expectedMcpServerName, deserialized.McpServerName);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.NotNull(deserialized.Configs);
         Assert.Equal(expectedConfigs.Count, deserialized.Configs.Count);
         for (int i = 0; i < expectedConfigs.Count; i++)
@@ -177,24 +151,19 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -207,13 +176,10 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -227,13 +193,10 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
@@ -246,13 +209,10 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
 
             // Null should be interpreted as omitted for these properties
@@ -269,24 +229,19 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         } with
         {
@@ -304,13 +259,10 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
 
             // Null should be interpreted as omitted for these properties
@@ -326,16 +278,13 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
         };
@@ -350,16 +299,13 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
         };
@@ -373,16 +319,13 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
 
@@ -399,16 +342,13 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
 
@@ -424,81 +364,24 @@ public class BetaManagedAgentsMcpToolsetParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetParams
         {
             McpServerName = "x",
-            Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
 
         BetaManagedAgentsMcpToolsetParams copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMcpToolsetParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMcpToolsetParamsType.McpToolset)]
-    public void Validation_Works(BetaManagedAgentsMcpToolsetParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMcpToolsetParamsType.McpToolset)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMcpToolsetParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpToolsetParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

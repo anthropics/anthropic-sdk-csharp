@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -23,12 +23,12 @@ public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonMode
     /// <summary>
     /// When the outcome reached a terminal result. Null while `pending`/`running`/`evaluating`.
     /// </summary>
-    public required System::DateTimeOffset? CompletedAt
+    public required DateTimeOffset? CompletedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("completed_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("completed_at");
         }
         init { this._rawData.Set("completed_at", value); }
     }
@@ -102,14 +102,12 @@ public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonMode
         init { this._rawData.Set("result", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsOutcomeEvaluationResourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsOutcomeEvaluationResourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -123,10 +121,21 @@ public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonMode
         _ = this.Iteration;
         _ = this.OutcomeID;
         _ = this.Result;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("outcome_evaluation")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsOutcomeEvaluationResource() { }
+    public BetaManagedAgentsOutcomeEvaluationResource()
+    {
+        this.Type = JsonSerializer.SerializeToElement("outcome_evaluation");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -141,6 +150,8 @@ public sealed record class BetaManagedAgentsOutcomeEvaluationResource : JsonMode
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("outcome_evaluation");
     }
 
 #pragma warning disable CS8618
@@ -167,48 +178,4 @@ class BetaManagedAgentsOutcomeEvaluationResourceFromRaw
     public BetaManagedAgentsOutcomeEvaluationResource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsOutcomeEvaluationResource.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsOutcomeEvaluationResourceTypeConverter))]
-public enum BetaManagedAgentsOutcomeEvaluationResourceType
-{
-    OutcomeEvaluation,
-}
-
-sealed class BetaManagedAgentsOutcomeEvaluationResourceTypeConverter
-    : JsonConverter<BetaManagedAgentsOutcomeEvaluationResourceType>
-{
-    public override BetaManagedAgentsOutcomeEvaluationResourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "outcome_evaluation" =>
-                BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
-            _ => (BetaManagedAgentsOutcomeEvaluationResourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsOutcomeEvaluationResourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation =>
-                    "outcome_evaluation",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

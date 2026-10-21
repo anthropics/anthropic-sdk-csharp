@@ -13,18 +13,14 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("write");
         bool expectedEnabled = true;
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsType> expectedType =
             BetaManagedAgentsWriteToolConfigParamsType.Write;
 
@@ -40,9 +36,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
 
@@ -61,9 +55,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
 
@@ -77,9 +69,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         JsonElement expectedName = JsonSerializer.SerializeToElement("write");
         bool expectedEnabled = true;
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsType> expectedType =
             BetaManagedAgentsWriteToolConfigParamsType.Write;
 
@@ -95,9 +85,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
 
@@ -110,9 +98,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         Assert.Null(model.Type);
@@ -125,9 +111,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         model.Validate();
@@ -139,9 +123,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -157,9 +139,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         } with
         {
@@ -177,9 +157,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -250,9 +228,7 @@ public class BetaManagedAgentsWriteToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsWriteToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
 
@@ -268,9 +244,7 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTest : TestBa
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -278,7 +252,7 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTest : TestBa
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -294,9 +268,7 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTest : TestBa
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWriteToolConfigParamsPermissionPolicy>(
@@ -311,7 +283,7 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTest : TestBa
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWriteToolConfigParamsPermissionPolicy>(
@@ -333,6 +305,127 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTest : TestBa
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType> expectedType =
+            BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.Auto)]
+    public void Validation_Works(
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType> value =
+            rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType> value =
+            rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

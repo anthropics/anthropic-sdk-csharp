@@ -406,6 +406,38 @@ public class ConfigTest : TestBase
     }
 
     [Fact]
+    public void BetaCloudConfigParamsTypeWorks()
+    {
+        Config value = new BetaCloudConfigParams()
+        {
+            Networking = new BetaLimitedNetworkParams()
+            {
+                AllowMcpServers = true,
+                AllowPackageManagers = true,
+                AllowedHosts = ["api.example.com"],
+            },
+            Packages = new()
+            {
+                Apt = ["string"],
+                Cargo = ["string"],
+                Gem = ["string"],
+                Go = ["string"],
+                Npm = ["string"],
+                Pip = ["pandas", "numpy"],
+                Type = BetaPackagesParamsType.Packages,
+            },
+        };
+        Assert.Equal(ConfigType.Cloud, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSelfHostedConfigParamsTypeWorks()
+    {
+        Config value = new BetaSelfHostedConfigParams();
+        Assert.Equal(ConfigType.SelfHosted, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Config value = new(
@@ -419,13 +451,71 @@ public class ConfigTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+        ApiEnum<string, ConfigType> expectedType = ConfigType.Cloud;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Config emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ConfigTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ConfigType.Cloud)]
+    [InlineData(ConfigType.SelfHosted)]
+    public void Validation_Works(ConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ConfigType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ConfigType.Cloud)]
+    [InlineData(ConfigType.SelfHosted)]
+    public void SerializationRoundtrip_Works(ConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ConfigType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

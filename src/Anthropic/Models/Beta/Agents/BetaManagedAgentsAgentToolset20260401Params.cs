@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -22,14 +21,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -79,7 +76,15 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent_toolset_20260401")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         foreach (var item in this.Configs ?? [])
         {
             item.Validate();
@@ -87,7 +92,10 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
         this.DefaultConfig?.Validate();
     }
 
-    public BetaManagedAgentsAgentToolset20260401Params() { }
+    public BetaManagedAgentsAgentToolset20260401Params()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent_toolset_20260401");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -102,6 +110,8 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent_toolset_20260401");
     }
 
 #pragma warning disable CS8618
@@ -119,15 +129,6 @@ public sealed record class BetaManagedAgentsAgentToolset20260401Params : JsonMod
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsAgentToolset20260401Params(
-        ApiEnum<string, BetaManagedAgentsAgentToolset20260401ParamsType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsAgentToolset20260401ParamsFromRaw
@@ -137,48 +138,4 @@ class BetaManagedAgentsAgentToolset20260401ParamsFromRaw
     public BetaManagedAgentsAgentToolset20260401Params FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentToolset20260401Params.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentToolset20260401ParamsTypeConverter))]
-public enum BetaManagedAgentsAgentToolset20260401ParamsType
-{
-    AgentToolset20260401,
-}
-
-sealed class BetaManagedAgentsAgentToolset20260401ParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentToolset20260401ParamsType>
-{
-    public override BetaManagedAgentsAgentToolset20260401ParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent_toolset_20260401" =>
-                BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
-            _ => (BetaManagedAgentsAgentToolset20260401ParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentToolset20260401ParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401 =>
-                    "agent_toolset_20260401",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

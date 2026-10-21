@@ -477,6 +477,35 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     }
 
     [Fact]
+    public void DirectTypeWorks()
+    {
+        WebSearchToolResultBlockParamCaller value = new DirectCaller();
+        Assert.Equal(WebSearchToolResultBlockParamCallerType.Direct, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolTypeWorks()
+    {
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(
+            WebSearchToolResultBlockParamCallerType.CodeExecution20250825,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void ServerToolCaller20260120TypeWorks()
+    {
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        Assert.Equal(
+            WebSearchToolResultBlockParamCallerType.CodeExecution20260120,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         WebSearchToolResultBlockParamCaller value = new(
@@ -491,10 +520,11 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        ApiEnum<string, WebSearchToolResultBlockParamCallerType> expectedType =
+            WebSearchToolResultBlockParamCallerType.Direct;
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
 
         WebSearchToolResultBlockParamCaller emptyValue = new(
@@ -517,5 +547,61 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ToolID);
+    }
+}
+
+public class WebSearchToolResultBlockParamCallerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(WebSearchToolResultBlockParamCallerType.Direct)]
+    [InlineData(WebSearchToolResultBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(WebSearchToolResultBlockParamCallerType.CodeExecution20260120)]
+    public void Validation_Works(WebSearchToolResultBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WebSearchToolResultBlockParamCallerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchToolResultBlockParamCallerType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(WebSearchToolResultBlockParamCallerType.Direct)]
+    [InlineData(WebSearchToolResultBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(WebSearchToolResultBlockParamCallerType.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(WebSearchToolResultBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, WebSearchToolResultBlockParamCallerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchToolResultBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchToolResultBlockParamCallerType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, WebSearchToolResultBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

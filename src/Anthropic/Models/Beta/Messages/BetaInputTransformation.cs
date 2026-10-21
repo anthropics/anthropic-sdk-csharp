@@ -43,15 +43,19 @@ public record class BetaInputTransformation : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaInputTransformationType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaThinkingDroppedInputTransformation x => x.Type,
-                BetaThinkingMismatchAllowedInputTransformation x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaThinkingDroppedInputTransformation _ =>
+                    BetaInputTransformationType.ThinkingDropped,
+                BetaThinkingMismatchAllowedInputTransformation _ =>
+                    BetaInputTransformationType.ThinkingMismatchAllowed,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaInputTransformationType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -337,5 +341,49 @@ sealed class BetaInputTransformationConverter : JsonConverter<BetaInputTransform
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaInputTransformationTypeConverter))]
+public enum BetaInputTransformationType
+{
+    ThinkingDropped,
+    ThinkingMismatchAllowed,
+}
+
+sealed class BetaInputTransformationTypeConverter : JsonConverter<BetaInputTransformationType>
+{
+    public override BetaInputTransformationType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "thinking_dropped" => BetaInputTransformationType.ThinkingDropped,
+            "thinking_mismatch_allowed" => BetaInputTransformationType.ThinkingMismatchAllowed,
+            _ => (BetaInputTransformationType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaInputTransformationType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaInputTransformationType.ThinkingDropped => "thinking_dropped",
+                BetaInputTransformationType.ThinkingMismatchAllowed => "thinking_mismatch_allowed",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

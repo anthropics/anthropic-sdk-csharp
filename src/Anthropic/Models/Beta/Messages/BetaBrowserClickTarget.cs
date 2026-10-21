@@ -28,15 +28,17 @@ public record class BetaBrowserClickTarget : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaBrowserClickTargetType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaBrowserCoordinateTarget x => x.Type,
-                BetaBrowserRefTarget x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaBrowserCoordinateTarget _ => BetaBrowserClickTargetType.Coordinate,
+                BetaBrowserRefTarget _ => BetaBrowserClickTargetType.Ref,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaBrowserClickTargetType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -305,5 +307,49 @@ sealed class BetaBrowserClickTargetConverter : JsonConverter<BetaBrowserClickTar
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaBrowserClickTargetTypeConverter))]
+public enum BetaBrowserClickTargetType
+{
+    Coordinate,
+    Ref,
+}
+
+sealed class BetaBrowserClickTargetTypeConverter : JsonConverter<BetaBrowserClickTargetType>
+{
+    public override BetaBrowserClickTargetType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "coordinate" => BetaBrowserClickTargetType.Coordinate,
+            "ref" => BetaBrowserClickTargetType.Ref,
+            _ => (BetaBrowserClickTargetType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaBrowserClickTargetType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaBrowserClickTargetType.Coordinate => "coordinate",
+                BetaBrowserClickTargetType.Ref => "ref",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

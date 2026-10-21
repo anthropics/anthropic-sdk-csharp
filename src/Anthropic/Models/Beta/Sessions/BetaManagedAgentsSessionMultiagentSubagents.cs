@@ -1,10 +1,10 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -29,15 +29,19 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsSessionMultiagentSubagentsEnabled x => x.Type,
-                BetaManagedAgentsMultiagentSubagentsDisabled x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsSessionMultiagentSubagentsEnabled _ =>
+                    BetaManagedAgentsSessionMultiagentSubagentsType.Enabled,
+                Agents::BetaManagedAgentsMultiagentSubagentsDisabled _ =>
+                    BetaManagedAgentsSessionMultiagentSubagentsType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -52,7 +56,7 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
     }
 
     public BetaManagedAgentsSessionMultiagentSubagents(
-        BetaManagedAgentsMultiagentSubagentsDisabled value,
+        Agents::BetaManagedAgentsMultiagentSubagentsDisabled value,
         JsonElement? element = null
     )
     {
@@ -90,24 +94,24 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMultiagentSubagentsDisabled"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMultiagentSubagentsDisabled"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickMultiagentSubagentsDisabled(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMultiagentSubagentsDisabled`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMultiagentSubagentsDisabled`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickMultiagentSubagentsDisabled(
-        [NotNullWhen(true)] out BetaManagedAgentsMultiagentSubagentsDisabled? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMultiagentSubagentsDisabled? value
     )
     {
-        value = this.Value as BetaManagedAgentsMultiagentSubagentsDisabled;
+        value = this.Value as Agents::BetaManagedAgentsMultiagentSubagentsDisabled;
         return value != null;
     }
 
@@ -126,14 +130,14 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
     /// <code>
     /// instance.Switch(
     ///     (BetaManagedAgentsSessionMultiagentSubagentsEnabled value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSubagentsDisabled value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsMultiagentSubagentsDisabled value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionMultiagentSubagentsEnabled> enabled,
-        System::Action<BetaManagedAgentsMultiagentSubagentsDisabled> multiagentSubagentsDisabled
+        Action<BetaManagedAgentsSessionMultiagentSubagentsEnabled> enabled,
+        Action<Agents::BetaManagedAgentsMultiagentSubagentsDisabled> multiagentSubagentsDisabled
     )
     {
         switch (this.Value)
@@ -141,7 +145,7 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
             case BetaManagedAgentsSessionMultiagentSubagentsEnabled value:
                 enabled(value);
                 break;
-            case BetaManagedAgentsMultiagentSubagentsDisabled value:
+            case Agents::BetaManagedAgentsMultiagentSubagentsDisabled value:
                 multiagentSubagentsDisabled(value);
                 break;
             default:
@@ -167,22 +171,21 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
     /// <code>
     /// var result = instance.Match(
     ///     (BetaManagedAgentsSessionMultiagentSubagentsEnabled value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSubagentsDisabled value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsMultiagentSubagentsDisabled value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionMultiagentSubagentsEnabled, T> enabled,
-        System::Func<BetaManagedAgentsMultiagentSubagentsDisabled, T> multiagentSubagentsDisabled
+        Func<BetaManagedAgentsSessionMultiagentSubagentsEnabled, T> enabled,
+        Func<Agents::BetaManagedAgentsMultiagentSubagentsDisabled, T> multiagentSubagentsDisabled
     )
     {
         return this.Value switch
         {
             BetaManagedAgentsSessionMultiagentSubagentsEnabled value => enabled(value),
-            BetaManagedAgentsMultiagentSubagentsDisabled value => multiagentSubagentsDisabled(
-                value
-            ),
+            Agents::BetaManagedAgentsMultiagentSubagentsDisabled value =>
+                multiagentSubagentsDisabled(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionMultiagentSubagents"
             ),
@@ -194,7 +197,7 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionMultiagentSubagents(
-        BetaManagedAgentsMultiagentSubagentsDisabled value
+        Agents::BetaManagedAgentsMultiagentSubagentsDisabled value
     ) => new(value);
 
     /// <summary>
@@ -242,7 +245,7 @@ public record class BetaManagedAgentsSessionMultiagentSubagents : ModelBase
         return this.Value switch
         {
             BetaManagedAgentsSessionMultiagentSubagentsEnabled _ => 0,
-            BetaManagedAgentsMultiagentSubagentsDisabled _ => 1,
+            Agents::BetaManagedAgentsMultiagentSubagentsDisabled _ => 1,
             _ => -1,
         };
     }
@@ -253,7 +256,7 @@ sealed class BetaManagedAgentsSessionMultiagentSubagentsConverter
 {
     public override BetaManagedAgentsSessionMultiagentSubagents? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -296,7 +299,7 @@ sealed class BetaManagedAgentsSessionMultiagentSubagentsConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsMultiagentSubagentsDisabled>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMultiagentSubagentsDisabled>(
                             element,
                             options
                         );
@@ -326,5 +329,50 @@ sealed class BetaManagedAgentsSessionMultiagentSubagentsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSessionMultiagentSubagentsTypeConverter))]
+public enum BetaManagedAgentsSessionMultiagentSubagentsType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaManagedAgentsSessionMultiagentSubagentsTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionMultiagentSubagentsType>
+{
+    public override BetaManagedAgentsSessionMultiagentSubagentsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaManagedAgentsSessionMultiagentSubagentsType.Enabled,
+            "disabled" => BetaManagedAgentsSessionMultiagentSubagentsType.Disabled,
+            _ => (BetaManagedAgentsSessionMultiagentSubagentsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionMultiagentSubagentsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionMultiagentSubagentsType.Enabled => "enabled",
+                BetaManagedAgentsSessionMultiagentSubagentsType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

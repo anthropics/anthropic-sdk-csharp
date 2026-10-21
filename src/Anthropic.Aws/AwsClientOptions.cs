@@ -9,7 +9,7 @@ namespace Anthropic.Aws;
 /// <para>
 /// Auth precedence (first match wins):
 /// <list type="number">
-///   <item><description><see cref="ApiKey"/> — Anthropic API key (<c>x-api-key</c> header)</description></item>
+///   <item><description><see cref="ApiKey"/> — Anthropic API key (<c>Authorization: Bearer</c> header)</description></item>
 ///   <item><description><see cref="AwsAccessKey"/> + <see cref="AwsSecretAccessKey"/> — explicit AWS SigV4 credentials</description></item>
 ///   <item><description><see cref="AwsProfile"/> — named AWS profile from credential store</description></item>
 ///   <item><description><c>ANTHROPIC_AWS_API_KEY</c> env var — Anthropic API key</description></item>
@@ -42,7 +42,7 @@ namespace Anthropic.Aws;
 public sealed class AwsClientOptions
 {
     /// <summary>
-    /// Anthropic API key. When set, bypasses SigV4 and uses the <c>x-api-key</c> header.
+    /// Anthropic API key. When set, bypasses SigV4 and uses the <c>Authorization: Bearer</c> header.
     /// Takes precedence over <see cref="ClientOptions"/>.<see cref="Core.ClientOptions.ApiKey"/>.
     /// </summary>
     public string? ApiKey { get; init; }

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -13,17 +14,13 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string expectedMessage = "The repository host refused access to the repository.";
         string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         JsonElement expectedType = JsonSerializer.SerializeToElement("repository_forbidden_error");
 
         Assert.Equal(expectedMessage, model.Message);
@@ -39,9 +36,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,9 +55,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -75,9 +68,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         string expectedMessage = "The repository host refused access to the repository.";
         string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         JsonElement expectedType = JsonSerializer.SerializeToElement("repository_forbidden_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
@@ -93,9 +84,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         model.Validate();
@@ -108,9 +97,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorTest : TestBase
         {
             Message = "The repository host refused access to the repository.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         BetaManagedAgentsRepositoryForbiddenError copied = new(model);
@@ -125,9 +112,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingValidationWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         value.Validate();
     }
 
@@ -135,9 +120,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedValidationWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         value.Validate();
     }
 
@@ -145,9 +128,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalValidationWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         value.Validate();
     }
 
@@ -155,9 +136,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryForbiddenErrorRetryStatus>(
@@ -172,9 +151,7 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryForbiddenErrorRetryStatus>(
@@ -189,15 +166,130 @@ public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryForbiddenErrorRetryStatus>(
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusRetryingTypeWorks()
+    {
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusRetrying();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusExhaustedTypeWorks()
+    {
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusExhausted();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusTerminalTypeWorks()
+    {
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusTerminal();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatus value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "retrying"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType> expectedType =
+            BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatus emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal)]
+    public void Validation_Works(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

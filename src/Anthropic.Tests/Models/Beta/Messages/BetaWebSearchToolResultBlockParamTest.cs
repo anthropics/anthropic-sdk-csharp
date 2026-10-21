@@ -481,6 +481,37 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     }
 
     [Fact]
+    public void BetaDirectTypeWorks()
+    {
+        BetaWebSearchToolResultBlockParamCaller value = new BetaDirectCaller();
+        Assert.Equal(BetaWebSearchToolResultBlockParamCallerType.Direct, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaServerToolTypeWorks()
+    {
+        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        Assert.Equal(
+            BetaWebSearchToolResultBlockParamCallerType.CodeExecution20250825,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaServerToolCaller20260120TypeWorks()
+    {
+        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
+            "srvtoolu_SQfNkl1n_JR_"
+        );
+        Assert.Equal(
+            BetaWebSearchToolResultBlockParamCallerType.CodeExecution20260120,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaWebSearchToolResultBlockParamCaller value = new(
@@ -495,10 +526,11 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType> expectedType =
+            BetaWebSearchToolResultBlockParamCallerType.Direct;
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
 
         BetaWebSearchToolResultBlockParamCaller emptyValue = new(
@@ -521,5 +553,61 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ToolID);
+    }
+}
+
+public class BetaWebSearchToolResultBlockParamCallerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.Direct)]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.CodeExecution20260120)]
+    public void Validation_Works(BetaWebSearchToolResultBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.Direct)]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.CodeExecution20250825)]
+    [InlineData(BetaWebSearchToolResultBlockParamCallerType.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(BetaWebSearchToolResultBlockParamCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

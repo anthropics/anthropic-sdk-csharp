@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -13,9 +14,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -30,9 +29,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         bool expectedEnabled = true;
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
@@ -69,9 +66,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -98,9 +93,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -122,9 +115,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         bool expectedEnabled = true;
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_search");
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search");
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
@@ -161,9 +152,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -184,9 +173,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UserLocation = new()
             {
                 City = "x",
@@ -208,9 +195,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UserLocation = new()
             {
                 City = "x",
@@ -229,9 +214,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UserLocation = new()
             {
                 City = "x",
@@ -257,9 +240,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -288,9 +269,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UserLocation = new()
             {
                 City = "x",
@@ -313,9 +292,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
         };
@@ -330,9 +307,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
         };
@@ -346,9 +321,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
 
@@ -365,9 +338,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
 
@@ -383,9 +354,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebSearchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             AllowedDomains = ["string"],
             BlockedDomains = ["string"],
             UserLocation = new()
@@ -409,9 +378,7 @@ public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -419,7 +386,7 @@ public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -435,9 +402,7 @@ public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebSearchToolConfigPermissionPolicy>(
@@ -452,7 +417,7 @@ public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebSearchToolConfigPermissionPolicy>(
@@ -474,6 +439,123 @@ public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTest : TestBase
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType> expectedType =
+            BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsWebSearchToolConfigPermissionPolicyTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.Auto)]
+    public void Validation_Works(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWebSearchToolConfigPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsWebSearchToolConfigPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebSearchToolConfigPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

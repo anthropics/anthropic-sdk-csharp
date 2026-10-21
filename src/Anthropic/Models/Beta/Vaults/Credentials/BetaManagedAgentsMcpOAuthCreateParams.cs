@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -46,14 +46,12 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
         init { this._rawData.Set("mcp_server_url", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMcpOAuthCreateParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMcpOAuthCreateParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,12 +61,12 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     ///
     /// <para>Must be in the future.</para>
     /// </summary>
-    public System::DateTimeOffset? ExpiresAt
+    public DateTimeOffset? ExpiresAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("expires_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("expires_at");
         }
         init { this._rawData.Set("expires_at", value); }
     }
@@ -93,12 +91,18 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     {
         _ = this.AccessToken;
         _ = this.McpServerUrl;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_oauth")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ExpiresAt;
         this.Refresh?.Validate();
     }
 
-    public BetaManagedAgentsMcpOAuthCreateParams() { }
+    public BetaManagedAgentsMcpOAuthCreateParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_oauth");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -111,6 +115,8 @@ public sealed record class BetaManagedAgentsMcpOAuthCreateParams : JsonModel
     public BetaManagedAgentsMcpOAuthCreateParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_oauth");
     }
 
 #pragma warning disable CS8618
@@ -137,46 +143,4 @@ class BetaManagedAgentsMcpOAuthCreateParamsFromRaw
     public BetaManagedAgentsMcpOAuthCreateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMcpOAuthCreateParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMcpOAuthCreateParamsTypeConverter))]
-public enum BetaManagedAgentsMcpOAuthCreateParamsType
-{
-    McpOAuth,
-}
-
-sealed class BetaManagedAgentsMcpOAuthCreateParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpOAuthCreateParamsType>
-{
-    public override BetaManagedAgentsMcpOAuthCreateParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "mcp_oauth" => BetaManagedAgentsMcpOAuthCreateParamsType.McpOAuth,
-            _ => (BetaManagedAgentsMcpOAuthCreateParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMcpOAuthCreateParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMcpOAuthCreateParamsType.McpOAuth => "mcp_oauth",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

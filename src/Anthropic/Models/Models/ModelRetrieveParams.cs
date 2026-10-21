@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Models;
 
@@ -23,36 +21,6 @@ namespace Anthropic.Models.Models;
 public record class ModelRetrieveParams : ParamsBase
 {
     public string? ModelID { get; init; }
-
-    /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
-    /// </summary>
-    [Obsolete(
-        "Deprecated. This parameter will be removed from this method in a future release. To use beta features, call the beta models methods (`client.beta.models`) instead."
-    )]
-    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
-    {
-        get
-        {
-            this._rawHeaderData.Freeze();
-            return this._rawHeaderData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, AnthropicBeta>>
-            >("anthropic-beta");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawHeaderData.Remove("anthropic-beta");
-                return;
-            }
-
-            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
-                "anthropic-beta",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
-        }
-    }
 
     /// <summary>
     /// Optional header to select the Workspace for this request. The value is a Workspace

@@ -1096,6 +1096,457 @@ public class BrowserToolUseBlockTest : TestBase
     }
 
     [Fact]
+    public void NavigateNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserNavigateToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Url = "url", TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Navigate, value.Name.Value());
+    }
+
+    [Fact]
+    public void ListTabsNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserListTabsToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(BrowserToolUseBlockName.ListTabs, value.Name.Value());
+    }
+
+    [Fact]
+    public void NewTabNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserNewTabToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(BrowserToolUseBlockName.NewTab, value.Name.Value());
+    }
+
+    [Fact]
+    public void SwitchTabNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserSwitchTabToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new("tab_id"),
+        };
+        Assert.Equal(BrowserToolUseBlockName.SwitchTab, value.Name.Value());
+    }
+
+    [Fact]
+    public void CloseTabNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserCloseTabToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new("tab_id"),
+        };
+        Assert.Equal(BrowserToolUseBlockName.CloseTab, value.Name.Value());
+    }
+
+    [Fact]
+    public void ReadPageNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserReadPageToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Depth = 1,
+                Filter = BrowserReadPageFilter.All,
+                Ref = "ref",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.ReadPage, value.Name.Value());
+    }
+
+    [Fact]
+    public void GetPageTextNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserGetPageTextToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.GetPageText, value.Name.Value());
+    }
+
+    [Fact]
+    public void ReadConsoleNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserReadConsoleToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.ReadConsole, value.Name.Value());
+    }
+
+    [Fact]
+    public void ReadNetworkNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserReadNetworkToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.ReadNetwork, value.Name.Value());
+    }
+
+    [Fact]
+    public void FindNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserFindToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Query = "query", TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Find, value.Name.Value());
+    }
+
+    [Fact]
+    public void FormInputNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserFormInputToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new("ref"),
+                Value = "string",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.FormInput, value.Name.Value());
+    }
+
+    [Fact]
+    public void FileUploadNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserFileUploadToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new("ref"),
+                DocumentIds = ["string"],
+                Paths = ["string"],
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.FileUpload, value.Name.Value());
+    }
+
+    [Fact]
+    public void ScrollToNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserScrollToToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Target = new("ref"), TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.ScrollTo, value.Name.Value());
+    }
+
+    [Fact]
+    public void ScreenshotNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserScreenshotToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Screenshot, value.Name.Value());
+    }
+
+    [Fact]
+    public void ZoomNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserZoomToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Region = [0, 0, 0, 0], TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Zoom, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftClickNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserLeftClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                Modifiers = "modifiers",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.LeftClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void RightClickNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserRightClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                Modifiers = "modifiers",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.RightClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void MiddleClickNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserMiddleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                Modifiers = "modifiers",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.MiddleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void DoubleClickNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserDoubleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                Modifiers = "modifiers",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.DoubleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void TripleClickNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserTripleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                Modifiers = "modifiers",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.TripleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void HoverNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserHoverToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new BrowserCoordinateTarget() { X = 0, Y = 0 },
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Hover, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftClickDragNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserLeftClickDragToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                From = new() { X = 0, Y = 0 },
+                Target = new() { X = 0, Y = 0 },
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.LeftClickDrag, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftMouseDownNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserLeftMouseDownToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new() { X = 0, Y = 0 },
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.LeftMouseDown, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftMouseUpNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserLeftMouseUpToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new() { X = 0, Y = 0 },
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.LeftMouseUp, value.Name.Value());
+    }
+
+    [Fact]
+    public void MouseMoveNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserMouseMoveToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Target = new() { X = 0, Y = 0 },
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.MouseMove, value.Name.Value());
+    }
+
+    [Fact]
+    public void ScrollNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserScrollToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                ScrollDirection = BrowserScrollDirection.Up,
+                Target = new() { X = 0, Y = 0 },
+                ScrollAmount = 1,
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Scroll, value.Name.Value());
+    }
+
+    [Fact]
+    public void TypeNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserTypeToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Text = "text", TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Type, value.Name.Value());
+    }
+
+    [Fact]
+    public void KeyNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserKeyToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Text = "text",
+                Repeat = 1,
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Key, value.Name.Value());
+    }
+
+    [Fact]
+    public void HoldKeyNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserHoldKeyToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Duration = 0,
+                Text = "text",
+                TabID = "tab_id",
+            },
+        };
+        Assert.Equal(BrowserToolUseBlockName.HoldKey, value.Name.Value());
+    }
+
+    [Fact]
+    public void WaitNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserWaitToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Duration = 0, TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.Wait, value.Name.Value());
+    }
+
+    [Fact]
+    public void JavascriptExecNameWorks()
+    {
+        BrowserToolUseBlock value = new BrowserJavascriptExecToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Text = "text", TabID = "tab_id" },
+        };
+        Assert.Equal(BrowserToolUseBlockName.JavascriptExec, value.Name.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BrowserToolUseBlock value = new(
@@ -1117,13 +1568,13 @@ public class BrowserToolUseBlockTest : TestBase
 
         string expectedID = "id";
         ToolUseCaller expectedCaller = new DirectCaller();
-        JsonElement expectedName = JsonSerializer.SerializeToElement("navigate");
+        ApiEnum<string, BrowserToolUseBlockName> expectedName = BrowserToolUseBlockName.Navigate;
         JsonElement expectedToolsetName = JsonSerializer.SerializeToElement("browser");
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedCaller, value.Caller);
-        Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
+        Assert.Equal(expectedName, value.Name);
         Assert.True(JsonElement.DeepEquals(expectedToolsetName, value.ToolsetName));
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
 
@@ -1148,5 +1599,121 @@ public class BrowserToolUseBlockTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ID);
+    }
+}
+
+public class BrowserToolUseBlockNameTest : TestBase
+{
+    [Theory]
+    [InlineData(BrowserToolUseBlockName.Navigate)]
+    [InlineData(BrowserToolUseBlockName.ListTabs)]
+    [InlineData(BrowserToolUseBlockName.NewTab)]
+    [InlineData(BrowserToolUseBlockName.SwitchTab)]
+    [InlineData(BrowserToolUseBlockName.CloseTab)]
+    [InlineData(BrowserToolUseBlockName.ReadPage)]
+    [InlineData(BrowserToolUseBlockName.GetPageText)]
+    [InlineData(BrowserToolUseBlockName.ReadConsole)]
+    [InlineData(BrowserToolUseBlockName.ReadNetwork)]
+    [InlineData(BrowserToolUseBlockName.Find)]
+    [InlineData(BrowserToolUseBlockName.FormInput)]
+    [InlineData(BrowserToolUseBlockName.FileUpload)]
+    [InlineData(BrowserToolUseBlockName.ScrollTo)]
+    [InlineData(BrowserToolUseBlockName.Screenshot)]
+    [InlineData(BrowserToolUseBlockName.Zoom)]
+    [InlineData(BrowserToolUseBlockName.LeftClick)]
+    [InlineData(BrowserToolUseBlockName.RightClick)]
+    [InlineData(BrowserToolUseBlockName.MiddleClick)]
+    [InlineData(BrowserToolUseBlockName.DoubleClick)]
+    [InlineData(BrowserToolUseBlockName.TripleClick)]
+    [InlineData(BrowserToolUseBlockName.Hover)]
+    [InlineData(BrowserToolUseBlockName.LeftClickDrag)]
+    [InlineData(BrowserToolUseBlockName.LeftMouseDown)]
+    [InlineData(BrowserToolUseBlockName.LeftMouseUp)]
+    [InlineData(BrowserToolUseBlockName.MouseMove)]
+    [InlineData(BrowserToolUseBlockName.Scroll)]
+    [InlineData(BrowserToolUseBlockName.Type)]
+    [InlineData(BrowserToolUseBlockName.Key)]
+    [InlineData(BrowserToolUseBlockName.HoldKey)]
+    [InlineData(BrowserToolUseBlockName.Wait)]
+    [InlineData(BrowserToolUseBlockName.JavascriptExec)]
+    public void Validation_Works(BrowserToolUseBlockName rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserToolUseBlockName> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserToolUseBlockName>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BrowserToolUseBlockName.Navigate)]
+    [InlineData(BrowserToolUseBlockName.ListTabs)]
+    [InlineData(BrowserToolUseBlockName.NewTab)]
+    [InlineData(BrowserToolUseBlockName.SwitchTab)]
+    [InlineData(BrowserToolUseBlockName.CloseTab)]
+    [InlineData(BrowserToolUseBlockName.ReadPage)]
+    [InlineData(BrowserToolUseBlockName.GetPageText)]
+    [InlineData(BrowserToolUseBlockName.ReadConsole)]
+    [InlineData(BrowserToolUseBlockName.ReadNetwork)]
+    [InlineData(BrowserToolUseBlockName.Find)]
+    [InlineData(BrowserToolUseBlockName.FormInput)]
+    [InlineData(BrowserToolUseBlockName.FileUpload)]
+    [InlineData(BrowserToolUseBlockName.ScrollTo)]
+    [InlineData(BrowserToolUseBlockName.Screenshot)]
+    [InlineData(BrowserToolUseBlockName.Zoom)]
+    [InlineData(BrowserToolUseBlockName.LeftClick)]
+    [InlineData(BrowserToolUseBlockName.RightClick)]
+    [InlineData(BrowserToolUseBlockName.MiddleClick)]
+    [InlineData(BrowserToolUseBlockName.DoubleClick)]
+    [InlineData(BrowserToolUseBlockName.TripleClick)]
+    [InlineData(BrowserToolUseBlockName.Hover)]
+    [InlineData(BrowserToolUseBlockName.LeftClickDrag)]
+    [InlineData(BrowserToolUseBlockName.LeftMouseDown)]
+    [InlineData(BrowserToolUseBlockName.LeftMouseUp)]
+    [InlineData(BrowserToolUseBlockName.MouseMove)]
+    [InlineData(BrowserToolUseBlockName.Scroll)]
+    [InlineData(BrowserToolUseBlockName.Type)]
+    [InlineData(BrowserToolUseBlockName.Key)]
+    [InlineData(BrowserToolUseBlockName.HoldKey)]
+    [InlineData(BrowserToolUseBlockName.Wait)]
+    [InlineData(BrowserToolUseBlockName.JavascriptExec)]
+    public void SerializationRoundtrip_Works(BrowserToolUseBlockName rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserToolUseBlockName> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserToolUseBlockName>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserToolUseBlockName>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserToolUseBlockName>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

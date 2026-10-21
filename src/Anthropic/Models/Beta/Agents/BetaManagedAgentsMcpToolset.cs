@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -58,14 +57,12 @@ public sealed record class BetaManagedAgentsMcpToolset : JsonModel
         init { this._rawData.Set("mcp_server_name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMcpToolsetType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsMcpToolsetType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -79,10 +76,16 @@ public sealed record class BetaManagedAgentsMcpToolset : JsonModel
         }
         this.DefaultConfig.Validate();
         _ = this.McpServerName;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_toolset")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsMcpToolset() { }
+    public BetaManagedAgentsMcpToolset()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -93,6 +96,8 @@ public sealed record class BetaManagedAgentsMcpToolset : JsonModel
     public BetaManagedAgentsMcpToolset(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_toolset");
     }
 
 #pragma warning disable CS8618
@@ -118,46 +123,4 @@ class BetaManagedAgentsMcpToolsetFromRaw : IFromRawJson<BetaManagedAgentsMcpTool
     public BetaManagedAgentsMcpToolset FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMcpToolset.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMcpToolsetTypeConverter))]
-public enum BetaManagedAgentsMcpToolsetType
-{
-    McpToolset,
-}
-
-sealed class BetaManagedAgentsMcpToolsetTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpToolsetType>
-{
-    public override BetaManagedAgentsMcpToolsetType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "mcp_toolset" => BetaManagedAgentsMcpToolsetType.McpToolset,
-            _ => (BetaManagedAgentsMcpToolsetType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMcpToolsetType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMcpToolsetType.McpToolset => "mcp_toolset",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

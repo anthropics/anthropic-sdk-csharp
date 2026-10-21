@@ -167,15 +167,18 @@ public record class ToolChange : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ToolChangeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaResponseToolAdditionBlock x => x.Type,
-                BetaResponseToolRemovalBlock x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaResponseToolAdditionBlock _ => ToolChangeType.ToolAddition,
+                BetaResponseToolRemovalBlock _ => ToolChangeType.ToolRemoval,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ToolChangeType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -447,5 +450,49 @@ sealed class ToolChangeConverter : JsonConverter<ToolChange>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolChangeTypeConverter))]
+public enum ToolChangeType
+{
+    ToolAddition,
+    ToolRemoval,
+}
+
+sealed class ToolChangeTypeConverter : JsonConverter<ToolChangeType>
+{
+    public override ToolChangeType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tool_addition" => ToolChangeType.ToolAddition,
+            "tool_removal" => ToolChangeType.ToolRemoval,
+            _ => (ToolChangeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolChangeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolChangeType.ToolAddition => "tool_addition",
+                ToolChangeType.ToolRemoval => "tool_removal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

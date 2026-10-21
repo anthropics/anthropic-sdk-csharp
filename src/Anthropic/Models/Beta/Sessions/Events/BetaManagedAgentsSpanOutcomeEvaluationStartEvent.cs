@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -63,24 +63,22 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationStartEvent : Js
     /// <summary>
     /// Timestamp when outcome evaluation started.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationStartEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSpanOutcomeEvaluationStartEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -92,10 +90,21 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationStartEvent : Js
         _ = this.Iteration;
         _ = this.OutcomeID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("span.outcome_evaluation_start")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSpanOutcomeEvaluationStartEvent() { }
+    public BetaManagedAgentsSpanOutcomeEvaluationStartEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("span.outcome_evaluation_start");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -110,6 +119,8 @@ public sealed record class BetaManagedAgentsSpanOutcomeEvaluationStartEvent : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("span.outcome_evaluation_start");
     }
 
 #pragma warning disable CS8618
@@ -136,48 +147,4 @@ class BetaManagedAgentsSpanOutcomeEvaluationStartEventFromRaw
     public BetaManagedAgentsSpanOutcomeEvaluationStartEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSpanOutcomeEvaluationStartEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSpanOutcomeEvaluationStartEventTypeConverter))]
-public enum BetaManagedAgentsSpanOutcomeEvaluationStartEventType
-{
-    SpanOutcomeEvaluationStart,
-}
-
-sealed class BetaManagedAgentsSpanOutcomeEvaluationStartEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSpanOutcomeEvaluationStartEventType>
-{
-    public override BetaManagedAgentsSpanOutcomeEvaluationStartEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "span.outcome_evaluation_start" =>
-                BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart,
-            _ => (BetaManagedAgentsSpanOutcomeEvaluationStartEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSpanOutcomeEvaluationStartEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSpanOutcomeEvaluationStartEventType.SpanOutcomeEvaluationStart =>
-                    "span.outcome_evaluation_start",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

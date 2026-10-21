@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores;
 
@@ -44,12 +44,12 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     /// <para>See the [memory guide](https://platform.claude.com/docs/en/managed-agents/memory#archive-a-store)
     /// to learn more about archiving.</para>
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -57,12 +57,12 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     /// <summary>
     /// When the memory store was created, in RFC 3339.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -118,14 +118,12 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMemoryStoreType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsMemoryStoreType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -136,12 +134,12 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     /// <para>Changing its `name`, `description`, or `metadata` updates it. Archiving
     /// the store does too. Changes to the store's memories don't.</para>
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -155,11 +153,17 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
         _ = this.Description;
         _ = this.Metadata;
         _ = this.Name;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory_store")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
     }
 
-    public BetaManagedAgentsMemoryStore() { }
+    public BetaManagedAgentsMemoryStore()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -170,6 +174,8 @@ public sealed record class BetaManagedAgentsMemoryStore : JsonModel
     public BetaManagedAgentsMemoryStore(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
     }
 
 #pragma warning disable CS8618
@@ -195,46 +201,4 @@ class BetaManagedAgentsMemoryStoreFromRaw : IFromRawJson<BetaManagedAgentsMemory
     public BetaManagedAgentsMemoryStore FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMemoryStore.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMemoryStoreTypeConverter))]
-public enum BetaManagedAgentsMemoryStoreType
-{
-    MemoryStore,
-}
-
-sealed class BetaManagedAgentsMemoryStoreTypeConverter
-    : JsonConverter<BetaManagedAgentsMemoryStoreType>
-{
-    public override BetaManagedAgentsMemoryStoreType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory_store" => BetaManagedAgentsMemoryStoreType.MemoryStore,
-            _ => (BetaManagedAgentsMemoryStoreType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMemoryStoreType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMemoryStoreType.MemoryStore => "memory_store",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

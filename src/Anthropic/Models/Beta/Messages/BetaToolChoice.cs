@@ -29,17 +29,19 @@ public record class BetaToolChoice : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaToolChoiceType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaToolChoiceAuto x => x.Type,
-                BetaToolChoiceAny x => x.Type,
-                BetaToolChoiceTool x => x.Type,
-                BetaToolChoiceNone x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaToolChoiceAuto _ => BetaToolChoiceType.Auto,
+                BetaToolChoiceAny _ => BetaToolChoiceType.Any,
+                BetaToolChoiceTool _ => BetaToolChoiceType.Tool,
+                BetaToolChoiceNone _ => BetaToolChoiceType.None,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaToolChoiceType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -445,5 +447,55 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaToolChoiceTypeConverter))]
+public enum BetaToolChoiceType
+{
+    Auto,
+    Any,
+    Tool,
+    None,
+}
+
+sealed class BetaToolChoiceTypeConverter : JsonConverter<BetaToolChoiceType>
+{
+    public override BetaToolChoiceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "auto" => BetaToolChoiceType.Auto,
+            "any" => BetaToolChoiceType.Any,
+            "tool" => BetaToolChoiceType.Tool,
+            "none" => BetaToolChoiceType.None,
+            _ => (BetaToolChoiceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolChoiceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaToolChoiceType.Auto => "auto",
+                BetaToolChoiceType.Any => "any",
+                BetaToolChoiceType.Tool => "tool",
+                BetaToolChoiceType.None => "none",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

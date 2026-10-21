@@ -16,7 +16,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
@@ -69,7 +69,6 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ]
             ),
-            Temperature = 1,
             Thinking = new Messages::ThinkingConfigAdaptive()
             {
                 Display = Messages::Display.Summarized,
@@ -105,8 +104,6 @@ public class MessageCreateParamsTest : TestBase
                     Type = Messages::Type.Custom,
                 },
             ],
-            TopK = 5,
-            TopP = 0.7,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -114,7 +111,7 @@ public class MessageCreateParamsTest : TestBase
         long expectedMaxTokens = 1024;
         List<Messages::MessageParam> expectedMessages =
         [
-            new() { Content = "Hello, world", Role = Messages::Role.User },
+            new Messages::UserMessageParam("Hello, world"),
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
@@ -174,7 +171,6 @@ public class MessageCreateParamsTest : TestBase
                 },
             ]
         );
-        double expectedTemperature = 1;
         Messages::ThinkingConfigParam expectedThinking = new Messages::ThinkingConfigAdaptive()
         {
             Display = Messages::Display.Summarized,
@@ -213,8 +209,6 @@ public class MessageCreateParamsTest : TestBase
                 Type = Messages::Type.Custom,
             },
         ];
-        long expectedTopK = 5;
-        double expectedTopP = 0.7;
         string expectedUserProfileID = "anthropic-user-profile-id";
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
@@ -240,7 +234,6 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedStopSequences[i], parameters.StopSequences[i]);
         }
         Assert.Equal(expectedSystem, parameters.System);
-        Assert.Equal(expectedTemperature, parameters.Temperature);
         Assert.Equal(expectedThinking, parameters.Thinking);
         Assert.Equal(expectedToolChoice, parameters.ToolChoice);
         Assert.NotNull(parameters.Tools);
@@ -249,8 +242,6 @@ public class MessageCreateParamsTest : TestBase
         {
             Assert.Equal(expectedTools[i], parameters.Tools[i]);
         }
-        Assert.Equal(expectedTopK, parameters.TopK);
-        Assert.Equal(expectedTopP, parameters.TopP);
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
@@ -261,7 +252,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
@@ -292,18 +283,12 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
-        Assert.Null(parameters.Temperature);
-        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
         Assert.Null(parameters.Thinking);
         Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
         Assert.Null(parameters.ToolChoice);
         Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
         Assert.Null(parameters.Tools);
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
-        Assert.Null(parameters.TopK);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
-        Assert.Null(parameters.TopP);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
         Assert.Null(parameters.WorkspaceID);
@@ -316,7 +301,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
@@ -342,12 +327,9 @@ public class MessageCreateParamsTest : TestBase
             ServiceTier = null,
             StopSequences = null,
             System = null,
-            Temperature = null,
             Thinking = null,
             ToolChoice = null,
             Tools = null,
-            TopK = null,
-            TopP = null,
             UserProfileID = null,
             WorkspaceID = null,
         };
@@ -362,18 +344,12 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
-        Assert.Null(parameters.Temperature);
-        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
         Assert.Null(parameters.Thinking);
         Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
         Assert.Null(parameters.ToolChoice);
         Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
         Assert.Null(parameters.Tools);
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
-        Assert.Null(parameters.TopK);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
-        Assert.Null(parameters.TopP);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
         Assert.Null(parameters.WorkspaceID);
@@ -386,7 +362,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
@@ -439,7 +415,6 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ]
             ),
-            Temperature = 1,
             Thinking = new Messages::ThinkingConfigAdaptive()
             {
                 Display = Messages::Display.Summarized,
@@ -475,8 +450,6 @@ public class MessageCreateParamsTest : TestBase
                     Type = Messages::Type.Custom,
                 },
             ],
-            TopK = 5,
-            TopP = 0.7,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -487,12 +460,9 @@ public class MessageCreateParamsTest : TestBase
             ServiceTier = null,
             StopSequences = null,
             System = null,
-            Temperature = null,
             Thinking = null,
             ToolChoice = null,
             Tools = null,
-            TopK = null,
-            TopP = null,
             UserProfileID = null,
             WorkspaceID = null,
         };
@@ -507,18 +477,12 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("stop_sequences"));
         Assert.Null(parameters.System);
         Assert.False(parameters.RawBodyData.ContainsKey("system"));
-        Assert.Null(parameters.Temperature);
-        Assert.False(parameters.RawBodyData.ContainsKey("temperature"));
         Assert.Null(parameters.Thinking);
         Assert.False(parameters.RawBodyData.ContainsKey("thinking"));
         Assert.Null(parameters.ToolChoice);
         Assert.False(parameters.RawBodyData.ContainsKey("tool_choice"));
         Assert.Null(parameters.Tools);
         Assert.False(parameters.RawBodyData.ContainsKey("tools"));
-        Assert.Null(parameters.TopK);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_k"));
-        Assert.Null(parameters.TopP);
-        Assert.False(parameters.RawBodyData.ContainsKey("top_p"));
         Assert.Null(parameters.UserProfileID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-user-profile-id"));
         Assert.Null(parameters.WorkspaceID);
@@ -531,7 +495,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -567,7 +531,6 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ]
             ),
-            Temperature = 1,
             Thinking = new Messages::ThinkingConfigAdaptive()
             {
                 Display = Messages::Display.Summarized,
@@ -603,8 +566,6 @@ public class MessageCreateParamsTest : TestBase
                     Type = Messages::Type.Custom,
                 },
             ],
-            TopK = 5,
-            TopP = 0.7,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -627,7 +588,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
             OutputConfig = new()
@@ -663,7 +624,6 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ]
             ),
-            Temperature = 1,
             Thinking = new Messages::ThinkingConfigAdaptive()
             {
                 Display = Messages::Display.Summarized,
@@ -699,8 +659,6 @@ public class MessageCreateParamsTest : TestBase
                     Type = Messages::Type.Custom,
                 },
             ],
-            TopK = 5,
-            TopP = 0.7,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
@@ -729,7 +687,7 @@ public class MessageCreateParamsTest : TestBase
         Messages::MessageCreateParams parameters = new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
         };
 
@@ -745,7 +703,7 @@ public class MessageCreateParamsTest : TestBase
         Messages::MessageCreateParams parameters = new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -769,7 +727,7 @@ public class MessageCreateParamsTest : TestBase
         var parameters = new Messages::MessageCreateParams
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Container = new Messages::ContainerParams()
@@ -822,7 +780,6 @@ public class MessageCreateParamsTest : TestBase
                     },
                 ]
             ),
-            Temperature = 1,
             Thinking = new Messages::ThinkingConfigAdaptive()
             {
                 Display = Messages::Display.Summarized,
@@ -858,8 +815,6 @@ public class MessageCreateParamsTest : TestBase
                     Type = Messages::Type.Custom,
                 },
             ],
-            TopK = 5,
-            TopP = 0.7,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

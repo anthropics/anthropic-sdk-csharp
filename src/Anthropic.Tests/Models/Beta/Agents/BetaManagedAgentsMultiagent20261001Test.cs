@@ -15,28 +15,12 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
         };
 
@@ -46,30 +30,14 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             };
         JsonElement expectedType = JsonSerializer.SerializeToElement("multiagent_20261001");
         BetaManagedAgentsMultiagentWorkflows expectedWorkflows =
             new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             };
 
         Assert.Equal(expectedAdvisor, model.Advisor);
@@ -87,28 +55,12 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
         };
 
@@ -130,28 +82,12 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
         };
 
@@ -168,30 +104,14 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             };
         JsonElement expectedType = JsonSerializer.SerializeToElement("multiagent_20261001");
         BetaManagedAgentsMultiagentWorkflows expectedWorkflows =
             new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             };
 
         Assert.Equal(expectedAdvisor, deserialized.Advisor);
@@ -209,28 +129,12 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
         };
 
@@ -246,28 +150,12 @@ public class BetaManagedAgentsMultiagent20261001Test : TestBase
             Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents =
-                [
-                    new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
-                ],
+                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
             },
         };
 

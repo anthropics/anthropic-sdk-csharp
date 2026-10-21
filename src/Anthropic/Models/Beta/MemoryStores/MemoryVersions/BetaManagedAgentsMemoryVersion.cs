@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
@@ -48,12 +48,12 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
     /// <summary>
     /// When this version was written, in RFC 3339 format.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -104,14 +104,12 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
         init { this._rawData.Set("operation", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMemoryVersionType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMemoryVersionType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -213,12 +211,12 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
     /// <para>See the [memory guide](https://platform.claude.com/docs/en/managed-agents/memory#redact-a-version)
     /// to learn more about redaction.</para>
     /// </summary>
-    public System::DateTimeOffset? RedactedAt
+    public DateTimeOffset? RedactedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("redacted_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("redacted_at");
         }
         init { this._rawData.Set("redacted_at", value); }
     }
@@ -255,7 +253,10 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
         _ = this.MemoryID;
         _ = this.MemoryStoreID;
         this.Operation.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory_version")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Content;
         _ = this.ContentSha256;
         _ = this.ContentSizeBytes;
@@ -265,7 +266,10 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
         this.RedactedBy?.Validate();
     }
 
-    public BetaManagedAgentsMemoryVersion() { }
+    public BetaManagedAgentsMemoryVersion()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory_version");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -278,6 +282,8 @@ public sealed record class BetaManagedAgentsMemoryVersion : JsonModel
     public BetaManagedAgentsMemoryVersion(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory_version");
     }
 
 #pragma warning disable CS8618
@@ -303,46 +309,4 @@ class BetaManagedAgentsMemoryVersionFromRaw : IFromRawJson<BetaManagedAgentsMemo
     public BetaManagedAgentsMemoryVersion FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMemoryVersion.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMemoryVersionTypeConverter))]
-public enum BetaManagedAgentsMemoryVersionType
-{
-    MemoryVersion,
-}
-
-sealed class BetaManagedAgentsMemoryVersionTypeConverter
-    : JsonConverter<BetaManagedAgentsMemoryVersionType>
-{
-    public override BetaManagedAgentsMemoryVersionType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory_version" => BetaManagedAgentsMemoryVersionType.MemoryVersion,
-            _ => (BetaManagedAgentsMemoryVersionType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMemoryVersionType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMemoryVersionType.MemoryVersion => "memory_version",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

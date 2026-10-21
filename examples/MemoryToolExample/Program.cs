@@ -42,7 +42,7 @@ static async Task Converse(string userMessage, string memoryRoot)
             Model = Anthropic.Models.Messages.Model.ClaudeSonnet5_5,
             MaxTokens = 2048,
             Betas = ["context-management-2025-06-27"],
-            Messages = [new() { Role = Role.User, Content = userMessage }],
+            Messages = [new BetaUserMessageParam { Content = userMessage }],
         },
         [memory],
         maxIterations: 50

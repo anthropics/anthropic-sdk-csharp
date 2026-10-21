@@ -69,7 +69,7 @@ public sealed class ToolRunnerGuardsTest : IDisposable
         new()
         {
             MaxTokens = 64,
-            Messages = [new() { Role = Beta.Role.User, Content = "Weather?" }],
+            Messages = [new Beta.BetaUserMessageParam { Content = "Weather?" }],
             Model = "claude-test",
         };
 

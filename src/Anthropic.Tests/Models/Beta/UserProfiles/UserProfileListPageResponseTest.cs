@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using UserProfiles = Anthropic.Models.Beta.UserProfiles;
+using Anthropic.Models.Beta.UserProfiles;
 
 namespace Anthropic.Tests.Models.Beta.UserProfiles;
 
@@ -11,7 +11,7 @@ public class UserProfileListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new UserProfiles::UserProfileListPageResponse
+        var model = new UserProfileListPageResponse
         {
             Data =
             [
@@ -21,20 +21,19 @@ public class UserProfileListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
                     Name = "Example User",
-                    TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                    TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                     {
-                        { "cyber", new(UserProfiles::Status.Active) },
+                        { "cyber", new(Status.Active) },
                     },
-                    Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                    AccessType = BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     ExternalUserDetails = new()
                     {
-                        AccountStatus = UserProfiles::AccountStatus.Active,
+                        AccountStatus = AccountStatus.Active,
                         Country = "US",
                         EmailHash = null,
-                        EntityType = UserProfiles::EntityType.Business,
+                        EntityType = EntityType.Business,
                         NameHash = null,
                         OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                         ReferenceID = "user_12345",
@@ -45,7 +44,7 @@ public class UserProfileListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        List<UserProfiles::BetaUserProfile> expectedData =
+        List<BetaUserProfile> expectedData =
         [
             new()
             {
@@ -53,20 +52,19 @@ public class UserProfileListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
                 Name = "Example User",
-                TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                 {
-                    { "cyber", new(UserProfiles::Status.Active) },
+                    { "cyber", new(Status.Active) },
                 },
-                Type = UserProfiles::Type.UserProfile,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                AccessType = BetaUserProfileAccessType.Application,
                 ExternalID = "user_12345",
                 ExternalUserDetails = new()
                 {
-                    AccountStatus = UserProfiles::AccountStatus.Active,
+                    AccountStatus = AccountStatus.Active,
                     Country = "US",
                     EmailHash = null,
-                    EntityType = UserProfiles::EntityType.Business,
+                    EntityType = EntityType.Business,
                     NameHash = null,
                     OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     ReferenceID = "user_12345",
@@ -87,7 +85,7 @@ public class UserProfileListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new UserProfiles::UserProfileListPageResponse
+        var model = new UserProfileListPageResponse
         {
             Data =
             [
@@ -97,20 +95,19 @@ public class UserProfileListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
                     Name = "Example User",
-                    TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                    TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                     {
-                        { "cyber", new(UserProfiles::Status.Active) },
+                        { "cyber", new(Status.Active) },
                     },
-                    Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                    AccessType = BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     ExternalUserDetails = new()
                     {
-                        AccountStatus = UserProfiles::AccountStatus.Active,
+                        AccountStatus = AccountStatus.Active,
                         Country = "US",
                         EmailHash = null,
-                        EntityType = UserProfiles::EntityType.Business,
+                        EntityType = EntityType.Business,
                         NameHash = null,
                         OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                         ReferenceID = "user_12345",
@@ -122,7 +119,7 @@ public class UserProfileListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfiles::UserProfileListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<UserProfileListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -133,7 +130,7 @@ public class UserProfileListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new UserProfiles::UserProfileListPageResponse
+        var model = new UserProfileListPageResponse
         {
             Data =
             [
@@ -143,20 +140,19 @@ public class UserProfileListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
                     Name = "Example User",
-                    TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                    TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                     {
-                        { "cyber", new(UserProfiles::Status.Active) },
+                        { "cyber", new(Status.Active) },
                     },
-                    Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                    AccessType = BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     ExternalUserDetails = new()
                     {
-                        AccountStatus = UserProfiles::AccountStatus.Active,
+                        AccountStatus = AccountStatus.Active,
                         Country = "US",
                         EmailHash = null,
-                        EntityType = UserProfiles::EntityType.Business,
+                        EntityType = EntityType.Business,
                         NameHash = null,
                         OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                         ReferenceID = "user_12345",
@@ -168,13 +164,13 @@ public class UserProfileListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfiles::UserProfileListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<UserProfileListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<UserProfiles::BetaUserProfile> expectedData =
+        List<BetaUserProfile> expectedData =
         [
             new()
             {
@@ -182,20 +178,19 @@ public class UserProfileListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>(),
                 Name = "Example User",
-                TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                 {
-                    { "cyber", new(UserProfiles::Status.Active) },
+                    { "cyber", new(Status.Active) },
                 },
-                Type = UserProfiles::Type.UserProfile,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                AccessType = BetaUserProfileAccessType.Application,
                 ExternalID = "user_12345",
                 ExternalUserDetails = new()
                 {
-                    AccountStatus = UserProfiles::AccountStatus.Active,
+                    AccountStatus = AccountStatus.Active,
                     Country = "US",
                     EmailHash = null,
-                    EntityType = UserProfiles::EntityType.Business,
+                    EntityType = EntityType.Business,
                     NameHash = null,
                     OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                     ReferenceID = "user_12345",
@@ -216,7 +211,7 @@ public class UserProfileListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new UserProfiles::UserProfileListPageResponse
+        var model = new UserProfileListPageResponse
         {
             Data =
             [
@@ -226,20 +221,19 @@ public class UserProfileListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
                     Name = "Example User",
-                    TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                    TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                     {
-                        { "cyber", new(UserProfiles::Status.Active) },
+                        { "cyber", new(Status.Active) },
                     },
-                    Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                    AccessType = BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     ExternalUserDetails = new()
                     {
-                        AccountStatus = UserProfiles::AccountStatus.Active,
+                        AccountStatus = AccountStatus.Active,
                         Country = "US",
                         EmailHash = null,
-                        EntityType = UserProfiles::EntityType.Business,
+                        EntityType = EntityType.Business,
                         NameHash = null,
                         OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                         ReferenceID = "user_12345",
@@ -256,7 +250,7 @@ public class UserProfileListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new UserProfiles::UserProfileListPageResponse
+        var model = new UserProfileListPageResponse
         {
             Data =
             [
@@ -266,20 +260,19 @@ public class UserProfileListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>(),
                     Name = "Example User",
-                    TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+                    TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
                     {
-                        { "cyber", new(UserProfiles::Status.Active) },
+                        { "cyber", new(Status.Active) },
                     },
-                    Type = UserProfiles::Type.UserProfile,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-                    AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+                    AccessType = BetaUserProfileAccessType.Application,
                     ExternalID = "user_12345",
                     ExternalUserDetails = new()
                     {
-                        AccountStatus = UserProfiles::AccountStatus.Active,
+                        AccountStatus = AccountStatus.Active,
                         Country = "US",
                         EmailHash = null,
-                        EntityType = UserProfiles::EntityType.Business,
+                        EntityType = EntityType.Business,
                         NameHash = null,
                         OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                         ReferenceID = "user_12345",
@@ -290,7 +283,7 @@ public class UserProfileListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        UserProfiles::UserProfileListPageResponse copied = new(model);
+        UserProfileListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

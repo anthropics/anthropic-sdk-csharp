@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -56,14 +56,12 @@ public sealed record class BetaManagedAgentsSystemMessageEvent : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSystemMessageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSystemMessageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -71,12 +69,12 @@ public sealed record class BetaManagedAgentsSystemMessageEvent : JsonModel
     /// <summary>
     /// Timestamp when this system message was processed.
     /// </summary>
-    public System::DateTimeOffset? ProcessedAt
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -89,11 +87,17 @@ public sealed record class BetaManagedAgentsSystemMessageEvent : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("system.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ProcessedAt;
     }
 
-    public BetaManagedAgentsSystemMessageEvent() { }
+    public BetaManagedAgentsSystemMessageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("system.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -106,6 +110,8 @@ public sealed record class BetaManagedAgentsSystemMessageEvent : JsonModel
     public BetaManagedAgentsSystemMessageEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("system.message");
     }
 
 #pragma warning disable CS8618
@@ -131,46 +137,4 @@ class BetaManagedAgentsSystemMessageEventFromRaw : IFromRawJson<BetaManagedAgent
     public BetaManagedAgentsSystemMessageEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSystemMessageEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSystemMessageEventTypeConverter))]
-public enum BetaManagedAgentsSystemMessageEventType
-{
-    SystemMessage,
-}
-
-sealed class BetaManagedAgentsSystemMessageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSystemMessageEventType>
-{
-    public override BetaManagedAgentsSystemMessageEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "system.message" => BetaManagedAgentsSystemMessageEventType.SystemMessage,
-            _ => (BetaManagedAgentsSystemMessageEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSystemMessageEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSystemMessageEventType.SystemMessage => "system.message",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

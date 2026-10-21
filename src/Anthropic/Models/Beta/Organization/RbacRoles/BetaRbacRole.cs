@@ -54,21 +54,6 @@ public sealed record class BetaRbacRole : JsonModel
     }
 
     /// <summary>
-    /// Deprecated: use `display_name` instead. Name of the RBAC Role; always the
-    /// same value as `display_name`.
-    /// </summary>
-    [Obsolete("Use `display_name` instead; `name` always has the same value.")]
-    public required string Name
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<string>("name");
-        }
-        init { this._rawData.Set("name", value); }
-    }
-
-    /// <summary>
     /// Object type.
     ///
     /// <para>For RBAC Roles, this is always `"rbac_role"`.</para>
@@ -102,7 +87,6 @@ public sealed record class BetaRbacRole : JsonModel
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
-        _ = this.Name;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("rbac_role")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
@@ -110,7 +94,6 @@ public sealed record class BetaRbacRole : JsonModel
         _ = this.UpdatedAt;
     }
 
-    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole()
     {
         this.Type = JsonSerializer.SerializeToElement("rbac_role");
@@ -118,12 +101,10 @@ public sealed record class BetaRbacRole : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole(BetaRbacRole betaRbacRole)
         : base(betaRbacRole) { }
 #pragma warning restore CS8618
 
-    [Obsolete("Required properties are deprecated: name")]
     public BetaRbacRole(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
@@ -132,7 +113,6 @@ public sealed record class BetaRbacRole : JsonModel
     }
 
 #pragma warning disable CS8618
-    [Obsolete("Required properties are deprecated: name")]
     [SetsRequiredMembers]
     BetaRbacRole(FrozenDictionary<string, JsonElement> rawData)
     {

@@ -13,18 +13,14 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("grep");
         bool expectedEnabled = true;
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsType> expectedType =
             BetaManagedAgentsGrepToolConfigParamsType.Grep;
 
@@ -40,9 +36,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
 
@@ -61,9 +55,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
 
@@ -77,9 +69,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         JsonElement expectedName = JsonSerializer.SerializeToElement("grep");
         bool expectedEnabled = true;
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsType> expectedType =
             BetaManagedAgentsGrepToolConfigParamsType.Grep;
 
@@ -95,9 +85,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
 
@@ -110,9 +98,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         Assert.Null(model.Type);
@@ -125,9 +111,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         model.Validate();
@@ -139,9 +123,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -157,9 +139,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         } with
         {
@@ -177,9 +157,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -250,9 +228,7 @@ public class BetaManagedAgentsGrepToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsGrepToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
 
@@ -268,9 +244,7 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -278,7 +252,7 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -294,9 +268,7 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsGrepToolConfigParamsPermissionPolicy>(
@@ -311,7 +283,7 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsGrepToolConfigParamsPermissionPolicy>(
@@ -333,6 +305,123 @@ public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTest : TestBas
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType> expectedType =
+            BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.Auto)]
+    public void Validation_Works(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

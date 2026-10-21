@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsAlwaysAllowPolicy : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsAlwaysAllowPolicyType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAlwaysAllowPolicyType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -35,10 +32,16 @@ public sealed record class BetaManagedAgentsAlwaysAllowPolicy : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("always_allow")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAlwaysAllowPolicy() { }
+    public BetaManagedAgentsAlwaysAllowPolicy()
+    {
+        this.Type = JsonSerializer.SerializeToElement("always_allow");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -51,6 +54,8 @@ public sealed record class BetaManagedAgentsAlwaysAllowPolicy : JsonModel
     public BetaManagedAgentsAlwaysAllowPolicy(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("always_allow");
     }
 
 #pragma warning disable CS8618
@@ -68,15 +73,6 @@ public sealed record class BetaManagedAgentsAlwaysAllowPolicy : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsAlwaysAllowPolicy(
-        ApiEnum<string, BetaManagedAgentsAlwaysAllowPolicyType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsAlwaysAllowPolicyFromRaw : IFromRawJson<BetaManagedAgentsAlwaysAllowPolicy>
@@ -85,46 +81,4 @@ class BetaManagedAgentsAlwaysAllowPolicyFromRaw : IFromRawJson<BetaManagedAgents
     public BetaManagedAgentsAlwaysAllowPolicy FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAlwaysAllowPolicy.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAlwaysAllowPolicyTypeConverter))]
-public enum BetaManagedAgentsAlwaysAllowPolicyType
-{
-    AlwaysAllow,
-}
-
-sealed class BetaManagedAgentsAlwaysAllowPolicyTypeConverter
-    : JsonConverter<BetaManagedAgentsAlwaysAllowPolicyType>
-{
-    public override BetaManagedAgentsAlwaysAllowPolicyType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "always_allow" => BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow,
-            _ => (BetaManagedAgentsAlwaysAllowPolicyType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAlwaysAllowPolicyType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow => "always_allow",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -25,7 +24,6 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
                 Speed = Speed.Standard,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
         };
 
         string expectedID = "id";
@@ -40,15 +38,14 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
             Speed = Speed.Standard,
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType> expectedType =
-            BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("span.model_request_end");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedIsError, model.IsError);
         Assert.Equal(expectedModelRequestStartID, model.ModelRequestStartID);
         Assert.Equal(expectedModelUsage, model.ModelUsage);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -68,7 +65,6 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
                 Speed = Speed.Standard,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -97,7 +93,6 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
                 Speed = Speed.Standard,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -119,15 +114,14 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
             Speed = Speed.Standard,
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType> expectedType =
-            BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("span.model_request_end");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedIsError, deserialized.IsError);
         Assert.Equal(expectedModelRequestStartID, deserialized.ModelRequestStartID);
         Assert.Equal(expectedModelUsage, deserialized.ModelUsage);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -147,7 +141,6 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
                 Speed = Speed.Standard,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
         };
 
         model.Validate();
@@ -170,63 +163,10 @@ public class BetaManagedAgentsSpanModelRequestEndEventTest : TestBase
                 Speed = Speed.Standard,
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
         };
 
         BetaManagedAgentsSpanModelRequestEndEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSpanModelRequestEndEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd)]
-    public void Validation_Works(BetaManagedAgentsSpanModelRequestEndEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSpanModelRequestEndEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

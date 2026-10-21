@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -45,14 +44,12 @@ public sealed record class BetaManagedAgentsDeploymentSystemMessageEvent : JsonM
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeploymentSystemMessageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeploymentSystemMessageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -64,10 +61,16 @@ public sealed record class BetaManagedAgentsDeploymentSystemMessageEvent : JsonM
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("system.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsDeploymentSystemMessageEvent() { }
+    public BetaManagedAgentsDeploymentSystemMessageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("system.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -82,6 +85,8 @@ public sealed record class BetaManagedAgentsDeploymentSystemMessageEvent : JsonM
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("system.message");
     }
 
 #pragma warning disable CS8618
@@ -99,6 +104,15 @@ public sealed record class BetaManagedAgentsDeploymentSystemMessageEvent : JsonM
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDeploymentSystemMessageEvent(
+        IReadOnlyList<BetaManagedAgentsSystemContentBlock> content
+    )
+        : this()
+    {
+        this.Content = content;
+    }
 }
 
 class BetaManagedAgentsDeploymentSystemMessageEventFromRaw
@@ -108,46 +122,4 @@ class BetaManagedAgentsDeploymentSystemMessageEventFromRaw
     public BetaManagedAgentsDeploymentSystemMessageEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsDeploymentSystemMessageEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsDeploymentSystemMessageEventTypeConverter))]
-public enum BetaManagedAgentsDeploymentSystemMessageEventType
-{
-    SystemMessage,
-}
-
-sealed class BetaManagedAgentsDeploymentSystemMessageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsDeploymentSystemMessageEventType>
-{
-    public override BetaManagedAgentsDeploymentSystemMessageEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "system.message" => BetaManagedAgentsDeploymentSystemMessageEventType.SystemMessage,
-            _ => (BetaManagedAgentsDeploymentSystemMessageEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsDeploymentSystemMessageEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsDeploymentSystemMessageEventType.SystemMessage => "system.message",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

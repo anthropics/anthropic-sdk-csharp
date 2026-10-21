@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -30,14 +29,12 @@ public sealed record class BetaManagedAgentsAgentReference : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentReferenceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentReferenceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -56,11 +53,17 @@ public sealed record class BetaManagedAgentsAgentReference : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Version;
     }
 
-    public BetaManagedAgentsAgentReference() { }
+    public BetaManagedAgentsAgentReference()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -73,6 +76,8 @@ public sealed record class BetaManagedAgentsAgentReference : JsonModel
     public BetaManagedAgentsAgentReference(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent");
     }
 
 #pragma warning disable CS8618
@@ -98,46 +103,4 @@ class BetaManagedAgentsAgentReferenceFromRaw : IFromRawJson<BetaManagedAgentsAge
     public BetaManagedAgentsAgentReference FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentReference.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentReferenceTypeConverter))]
-public enum BetaManagedAgentsAgentReferenceType
-{
-    Agent,
-}
-
-sealed class BetaManagedAgentsAgentReferenceTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentReferenceType>
-{
-    public override BetaManagedAgentsAgentReferenceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent" => BetaManagedAgentsAgentReferenceType.Agent,
-            _ => (BetaManagedAgentsAgentReferenceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentReferenceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentReferenceType.Agent => "agent",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

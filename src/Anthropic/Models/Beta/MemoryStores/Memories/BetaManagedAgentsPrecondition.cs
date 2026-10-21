@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.MemoryStores.Memories;
 )]
 public sealed record class BetaManagedAgentsPrecondition : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsPreconditionType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsPreconditionType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -60,11 +57,17 @@ public sealed record class BetaManagedAgentsPrecondition : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content_sha256")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ContentSha256;
     }
 
-    public BetaManagedAgentsPrecondition() { }
+    public BetaManagedAgentsPrecondition()
+    {
+        this.Type = JsonSerializer.SerializeToElement("content_sha256");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -77,6 +80,8 @@ public sealed record class BetaManagedAgentsPrecondition : JsonModel
     public BetaManagedAgentsPrecondition(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("content_sha256");
     }
 
 #pragma warning disable CS8618
@@ -94,13 +99,6 @@ public sealed record class BetaManagedAgentsPrecondition : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsPrecondition(ApiEnum<string, BetaManagedAgentsPreconditionType> type)
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsPreconditionFromRaw : IFromRawJson<BetaManagedAgentsPrecondition>
@@ -109,46 +107,4 @@ class BetaManagedAgentsPreconditionFromRaw : IFromRawJson<BetaManagedAgentsPreco
     public BetaManagedAgentsPrecondition FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsPrecondition.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsPreconditionTypeConverter))]
-public enum BetaManagedAgentsPreconditionType
-{
-    ContentSha256,
-}
-
-sealed class BetaManagedAgentsPreconditionTypeConverter
-    : JsonConverter<BetaManagedAgentsPreconditionType>
-{
-    public override BetaManagedAgentsPreconditionType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "content_sha256" => BetaManagedAgentsPreconditionType.ContentSha256,
-            _ => (BetaManagedAgentsPreconditionType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsPreconditionType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsPreconditionType.ContentSha256 => "content_sha256",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

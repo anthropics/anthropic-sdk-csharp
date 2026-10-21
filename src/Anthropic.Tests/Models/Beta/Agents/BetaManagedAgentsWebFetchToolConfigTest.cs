@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -13,9 +14,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -30,9 +29,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         bool expectedEnabled = true;
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch");
         BetaManagedAgentsWebFetchUrlSources expectedUrlSources = new()
         {
@@ -70,9 +67,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -99,9 +94,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -123,9 +116,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         bool expectedEnabled = true;
         JsonElement expectedName = JsonSerializer.SerializeToElement("web_fetch");
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch");
         BetaManagedAgentsWebFetchUrlSources expectedUrlSources = new()
         {
@@ -163,9 +154,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -186,9 +175,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -210,9 +197,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -231,9 +216,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -259,9 +242,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -290,9 +271,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -315,9 +294,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -338,9 +315,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -360,9 +335,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -385,9 +358,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -409,9 +380,7 @@ public class BetaManagedAgentsWebFetchToolConfigTest : TestBase
         var model = new BetaManagedAgentsWebFetchToolConfig
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             UrlSources = new()
             {
                 ClientToolResults = new BetaManagedAgentsWebFetchUrlSourceAll(),
@@ -435,9 +404,7 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -445,7 +412,7 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -461,9 +428,7 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebFetchToolConfigPermissionPolicy>(
@@ -478,7 +443,7 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsWebFetchToolConfigPermissionPolicy>(
@@ -500,6 +465,123 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTest : TestBase
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType> expectedType =
+            BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto)]
+    public void Validation_Works(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

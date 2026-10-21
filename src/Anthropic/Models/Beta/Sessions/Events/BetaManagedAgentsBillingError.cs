@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -45,14 +45,12 @@ public sealed record class BetaManagedAgentsBillingError : JsonModel
         init { this._rawData.Set("retry_status", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsBillingErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsBillingErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -62,10 +60,16 @@ public sealed record class BetaManagedAgentsBillingError : JsonModel
     {
         _ = this.Message;
         this.RetryStatus.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("billing_error")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsBillingError() { }
+    public BetaManagedAgentsBillingError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -78,6 +82,8 @@ public sealed record class BetaManagedAgentsBillingError : JsonModel
     public BetaManagedAgentsBillingError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("billing_error");
     }
 
 #pragma warning disable CS8618
@@ -123,6 +129,22 @@ public record class RetryStatus : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, RetryStatusType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsRetryStatusRetrying _ => RetryStatusType.Retrying,
+                BetaManagedAgentsRetryStatusExhausted _ => RetryStatusType.Exhausted,
+                BetaManagedAgentsRetryStatusTerminal _ => RetryStatusType.Terminal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, RetryStatusType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -240,9 +262,9 @@ public record class RetryStatus : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
-        System::Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
-        System::Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
+        Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
+        Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
+        Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
     )
     {
         switch (this.Value)
@@ -286,12 +308,9 @@ public record class RetryStatus : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
-        System::Func<
-            BetaManagedAgentsRetryStatusExhausted,
-            T
-        > betaManagedAgentsRetryStatusExhausted,
-        System::Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
+        Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
+        Func<BetaManagedAgentsRetryStatusExhausted, T> betaManagedAgentsRetryStatusExhausted,
+        Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
     )
     {
         return this.Value switch
@@ -380,7 +399,7 @@ sealed class RetryStatusConverter : JsonConverter<RetryStatus>
 {
     public override RetryStatus? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -477,31 +496,34 @@ sealed class RetryStatusConverter : JsonConverter<RetryStatus>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsBillingErrorTypeConverter))]
-public enum BetaManagedAgentsBillingErrorType
+[JsonConverter(typeof(RetryStatusTypeConverter))]
+public enum RetryStatusType
 {
-    BillingError,
+    Retrying,
+    Exhausted,
+    Terminal,
 }
 
-sealed class BetaManagedAgentsBillingErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsBillingErrorType>
+sealed class RetryStatusTypeConverter : JsonConverter<RetryStatusType>
 {
-    public override BetaManagedAgentsBillingErrorType Read(
+    public override RetryStatusType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "billing_error" => BetaManagedAgentsBillingErrorType.BillingError,
-            _ => (BetaManagedAgentsBillingErrorType)(-1),
+            "retrying" => RetryStatusType.Retrying,
+            "exhausted" => RetryStatusType.Exhausted,
+            "terminal" => RetryStatusType.Terminal,
+            _ => (RetryStatusType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsBillingErrorType value,
+        RetryStatusType value,
         JsonSerializerOptions options
     )
     {
@@ -509,7 +531,9 @@ sealed class BetaManagedAgentsBillingErrorTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsBillingErrorType.BillingError => "billing_error",
+                RetryStatusType.Retrying => "retrying",
+                RetryStatusType.Exhausted => "exhausted",
+                RetryStatusType.Terminal => "terminal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

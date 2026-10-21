@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -13,17 +14,13 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string expectedMessage = "The repository could not be cloned.";
         string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
         BetaManagedAgentsRepositoryCloneErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         JsonElement expectedType = JsonSerializer.SerializeToElement("repository_clone_error");
 
         Assert.Equal(expectedMessage, model.Message);
@@ -39,9 +36,7 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,9 +55,7 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -75,9 +68,7 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         string expectedMessage = "The repository could not be cloned.";
         string expectedRepositoryUrl = "https://github.com/example-org/example-repo";
         BetaManagedAgentsRepositoryCloneErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         JsonElement expectedType = JsonSerializer.SerializeToElement("repository_clone_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
@@ -93,9 +84,7 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         model.Validate();
@@ -108,9 +97,7 @@ public class BetaManagedAgentsRepositoryCloneErrorTest : TestBase
         {
             Message = "The repository could not be cloned.",
             RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         BetaManagedAgentsRepositoryCloneError copied = new(model);
@@ -125,9 +112,7 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingValidationWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         value.Validate();
     }
 
@@ -135,9 +120,7 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedValidationWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         value.Validate();
     }
 
@@ -145,9 +128,7 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalValidationWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         value.Validate();
     }
 
@@ -155,9 +136,7 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryCloneErrorRetryStatus>(
@@ -172,9 +151,7 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryCloneErrorRetryStatus>(
@@ -189,15 +166,130 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalSerializationRoundtripWorks()
     {
         BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsRepositoryCloneErrorRetryStatus>(
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusRetryingTypeWorks()
+    {
+        BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusRetrying();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusExhaustedTypeWorks()
+    {
+        BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusExhausted();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Exhausted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusTerminalTypeWorks()
+    {
+        BetaManagedAgentsRepositoryCloneErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusTerminal();
+        Assert.Equal(
+            BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Terminal,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsRepositoryCloneErrorRetryStatus value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "retrying"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType> expectedType =
+            BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsRepositoryCloneErrorRetryStatus emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Terminal)]
+    public void Validation_Works(BetaManagedAgentsRepositoryCloneErrorRetryStatusType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Terminal)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsRepositoryCloneErrorRetryStatusType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

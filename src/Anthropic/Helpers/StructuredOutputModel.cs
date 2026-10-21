@@ -58,7 +58,7 @@ namespace Anthropic.Helpers;
 /// var message = await client.Messages.Create&lt;Output&gt;(new MessageCreateParams
 /// {
 ///     MaxTokens = 1024,
-///     Messages = [new MessageParam { Role = "user", Content = "Give me some famous numbers" }],
+///     Messages = [new UserMessageParam { Content = "Give me some famous numbers" }],
 ///     Model = "claude-sonnet-5-5",
 /// });
 ///

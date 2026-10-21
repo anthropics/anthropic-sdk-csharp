@@ -25,17 +25,19 @@ public record class BrowserStateChange : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BrowserStateChangeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BrowserStateChangeTabOpened x => x.Type,
-                BrowserStateChangeDownloadStarted x => x.Type,
-                BrowserStateChangeDownloadCompleted x => x.Type,
-                BrowserStateChangeDownloadFailed x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BrowserStateChangeTabOpened _ => BrowserStateChangeType.TabOpened,
+                BrowserStateChangeDownloadStarted _ => BrowserStateChangeType.DownloadStarted,
+                BrowserStateChangeDownloadCompleted _ => BrowserStateChangeType.DownloadCompleted,
+                BrowserStateChangeDownloadFailed _ => BrowserStateChangeType.DownloadFailed,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BrowserStateChangeType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -471,5 +473,55 @@ sealed class BrowserStateChangeConverter : JsonConverter<BrowserStateChange>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BrowserStateChangeTypeConverter))]
+public enum BrowserStateChangeType
+{
+    TabOpened,
+    DownloadStarted,
+    DownloadCompleted,
+    DownloadFailed,
+}
+
+sealed class BrowserStateChangeTypeConverter : JsonConverter<BrowserStateChangeType>
+{
+    public override BrowserStateChangeType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tab_opened" => BrowserStateChangeType.TabOpened,
+            "download_started" => BrowserStateChangeType.DownloadStarted,
+            "download_completed" => BrowserStateChangeType.DownloadCompleted,
+            "download_failed" => BrowserStateChangeType.DownloadFailed,
+            _ => (BrowserStateChangeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BrowserStateChangeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BrowserStateChangeType.TabOpened => "tab_opened",
+                BrowserStateChangeType.DownloadStarted => "download_started",
+                BrowserStateChangeType.DownloadCompleted => "download_completed",
+                BrowserStateChangeType.DownloadFailed => "download_failed",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -48,6 +48,20 @@ public class BrowserClickTargetTest : TestBase
     }
 
     [Fact]
+    public void CoordinateTypeWorks()
+    {
+        BrowserClickTarget value = new BrowserCoordinateTarget() { X = 0, Y = 0 };
+        Assert.Equal(BrowserClickTargetType.Coordinate, value.Type.Value());
+    }
+
+    [Fact]
+    public void RefTypeWorks()
+    {
+        BrowserClickTarget value = new BrowserRefTarget("ref");
+        Assert.Equal(BrowserClickTargetType.Ref, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BrowserClickTarget value = new(
@@ -61,12 +75,70 @@ public class BrowserClickTargetTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("coordinate");
+        ApiEnum<string, BrowserClickTargetType> expectedType = BrowserClickTargetType.Coordinate;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BrowserClickTarget emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BrowserClickTargetTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BrowserClickTargetType.Coordinate)]
+    [InlineData(BrowserClickTargetType.Ref)]
+    public void Validation_Works(BrowserClickTargetType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserClickTargetType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserClickTargetType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BrowserClickTargetType.Coordinate)]
+    [InlineData(BrowserClickTargetType.Ref)]
+    public void SerializationRoundtrip_Works(BrowserClickTargetType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserClickTargetType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserClickTargetType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserClickTargetType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserClickTargetType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

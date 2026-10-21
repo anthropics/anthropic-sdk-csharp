@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -71,12 +71,12 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
     /// <summary>
     /// When this memory was created, in RFC 3339 format.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -128,14 +128,12 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
         init { this._rawData.Set("path", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMemoryType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsMemoryType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -146,12 +144,12 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
     /// <para>To find out who made the change, look at `created_by` on the memory
     /// version that `memory_version_id` references.</para>
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -181,12 +179,18 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
         _ = this.MemoryStoreID;
         _ = this.MemoryVersionID;
         _ = this.Path;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         _ = this.Content;
     }
 
-    public BetaManagedAgentsMemory() { }
+    public BetaManagedAgentsMemory()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -197,6 +201,8 @@ public sealed record class BetaManagedAgentsMemory : JsonModel
     public BetaManagedAgentsMemory(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory");
     }
 
 #pragma warning disable CS8618
@@ -222,45 +228,4 @@ class BetaManagedAgentsMemoryFromRaw : IFromRawJson<BetaManagedAgentsMemory>
     public BetaManagedAgentsMemory FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMemory.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMemoryTypeConverter))]
-public enum BetaManagedAgentsMemoryType
-{
-    Memory,
-}
-
-sealed class BetaManagedAgentsMemoryTypeConverter : JsonConverter<BetaManagedAgentsMemoryType>
-{
-    public override BetaManagedAgentsMemoryType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory" => BetaManagedAgentsMemoryType.Memory,
-            _ => (BetaManagedAgentsMemoryType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMemoryType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMemoryType.Memory => "memory",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

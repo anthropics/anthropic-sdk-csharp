@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -36,24 +35,22 @@ public sealed record class BetaManagedAgentsPlainTextDocumentSource : JsonModel
     /// <summary>
     /// MIME type of the text content. Must be "text/plain".
     /// </summary>
-    public required ApiEnum<string, MediaType> MediaType
+    public JsonElement MediaType
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, MediaType>>("media_type");
+            return this._rawData.GetNotNullStruct<JsonElement>("media_type");
         }
         init { this._rawData.Set("media_type", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsPlainTextDocumentSourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -62,11 +59,23 @@ public sealed record class BetaManagedAgentsPlainTextDocumentSource : JsonModel
     public override void Validate()
     {
         _ = this.Data;
-        this.MediaType.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.MediaType, JsonSerializer.SerializeToElement("text/plain"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsPlainTextDocumentSource() { }
+    public BetaManagedAgentsPlainTextDocumentSource()
+    {
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -81,6 +90,9 @@ public sealed record class BetaManagedAgentsPlainTextDocumentSource : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.MediaType = JsonSerializer.SerializeToElement("text/plain");
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
@@ -98,6 +110,13 @@ public sealed record class BetaManagedAgentsPlainTextDocumentSource : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsPlainTextDocumentSource(string data)
+        : this()
+    {
+        this.Data = data;
+    }
 }
 
 class BetaManagedAgentsPlainTextDocumentSourceFromRaw
@@ -107,90 +126,4 @@ class BetaManagedAgentsPlainTextDocumentSourceFromRaw
     public BetaManagedAgentsPlainTextDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsPlainTextDocumentSource.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// MIME type of the text content. Must be "text/plain".
-/// </summary>
-[JsonConverter(typeof(MediaTypeConverter))]
-public enum MediaType
-{
-    TextPlain,
-}
-
-sealed class MediaTypeConverter : JsonConverter<MediaType>
-{
-    public override MediaType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "text/plain" => MediaType.TextPlain,
-            _ => (MediaType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        MediaType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                MediaType.TextPlain => "text/plain",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-[JsonConverter(typeof(BetaManagedAgentsPlainTextDocumentSourceTypeConverter))]
-public enum BetaManagedAgentsPlainTextDocumentSourceType
-{
-    Text,
-}
-
-sealed class BetaManagedAgentsPlainTextDocumentSourceTypeConverter
-    : JsonConverter<BetaManagedAgentsPlainTextDocumentSourceType>
-{
-    public override BetaManagedAgentsPlainTextDocumentSourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "text" => BetaManagedAgentsPlainTextDocumentSourceType.Text,
-            _ => (BetaManagedAgentsPlainTextDocumentSourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsPlainTextDocumentSourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsPlainTextDocumentSourceType.Text => "text",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -48,14 +48,12 @@ public sealed record class BetaManagedAgentsModelOverloadedError : JsonModel
         init { this._rawData.Set("retry_status", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsModelOverloadedErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsModelOverloadedErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -65,10 +63,21 @@ public sealed record class BetaManagedAgentsModelOverloadedError : JsonModel
     {
         _ = this.Message;
         this.RetryStatus.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("model_overloaded_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsModelOverloadedError() { }
+    public BetaManagedAgentsModelOverloadedError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("model_overloaded_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -81,6 +90,8 @@ public sealed record class BetaManagedAgentsModelOverloadedError : JsonModel
     public BetaManagedAgentsModelOverloadedError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("model_overloaded_error");
     }
 
 #pragma warning disable CS8618
@@ -127,6 +138,25 @@ public record class BetaManagedAgentsModelOverloadedErrorRetryStatus : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsModelOverloadedErrorRetryStatusType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsRetryStatusRetrying _ =>
+                    BetaManagedAgentsModelOverloadedErrorRetryStatusType.Retrying,
+                BetaManagedAgentsRetryStatusExhausted _ =>
+                    BetaManagedAgentsModelOverloadedErrorRetryStatusType.Exhausted,
+                BetaManagedAgentsRetryStatusTerminal _ =>
+                    BetaManagedAgentsModelOverloadedErrorRetryStatusType.Terminal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsModelOverloadedErrorRetryStatusType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -253,9 +283,9 @@ public record class BetaManagedAgentsModelOverloadedErrorRetryStatus : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
-        System::Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
-        System::Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
+        Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
+        Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
+        Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
     )
     {
         switch (this.Value)
@@ -299,12 +329,9 @@ public record class BetaManagedAgentsModelOverloadedErrorRetryStatus : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
-        System::Func<
-            BetaManagedAgentsRetryStatusExhausted,
-            T
-        > betaManagedAgentsRetryStatusExhausted,
-        System::Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
+        Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
+        Func<BetaManagedAgentsRetryStatusExhausted, T> betaManagedAgentsRetryStatusExhausted,
+        Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
     )
     {
         return this.Value switch
@@ -397,7 +424,7 @@ sealed class BetaManagedAgentsModelOverloadedErrorRetryStatusConverter
 {
     public override BetaManagedAgentsModelOverloadedErrorRetryStatus? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -494,32 +521,35 @@ sealed class BetaManagedAgentsModelOverloadedErrorRetryStatusConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsModelOverloadedErrorTypeConverter))]
-public enum BetaManagedAgentsModelOverloadedErrorType
+[JsonConverter(typeof(BetaManagedAgentsModelOverloadedErrorRetryStatusTypeConverter))]
+public enum BetaManagedAgentsModelOverloadedErrorRetryStatusType
 {
-    ModelOverloadedError,
+    Retrying,
+    Exhausted,
+    Terminal,
 }
 
-sealed class BetaManagedAgentsModelOverloadedErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsModelOverloadedErrorType>
+sealed class BetaManagedAgentsModelOverloadedErrorRetryStatusTypeConverter
+    : JsonConverter<BetaManagedAgentsModelOverloadedErrorRetryStatusType>
 {
-    public override BetaManagedAgentsModelOverloadedErrorType Read(
+    public override BetaManagedAgentsModelOverloadedErrorRetryStatusType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "model_overloaded_error" =>
-                BetaManagedAgentsModelOverloadedErrorType.ModelOverloadedError,
-            _ => (BetaManagedAgentsModelOverloadedErrorType)(-1),
+            "retrying" => BetaManagedAgentsModelOverloadedErrorRetryStatusType.Retrying,
+            "exhausted" => BetaManagedAgentsModelOverloadedErrorRetryStatusType.Exhausted,
+            "terminal" => BetaManagedAgentsModelOverloadedErrorRetryStatusType.Terminal,
+            _ => (BetaManagedAgentsModelOverloadedErrorRetryStatusType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsModelOverloadedErrorType value,
+        BetaManagedAgentsModelOverloadedErrorRetryStatusType value,
         JsonSerializerOptions options
     )
     {
@@ -527,8 +557,9 @@ sealed class BetaManagedAgentsModelOverloadedErrorTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsModelOverloadedErrorType.ModelOverloadedError =>
-                    "model_overloaded_error",
+                BetaManagedAgentsModelOverloadedErrorRetryStatusType.Retrying => "retrying",
+                BetaManagedAgentsModelOverloadedErrorRetryStatusType.Exhausted => "exhausted",
+                BetaManagedAgentsModelOverloadedErrorRetryStatusType.Terminal => "terminal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

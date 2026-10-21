@@ -28,15 +28,19 @@ public record class BetaTelemetryDestinationTestResult : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTelemetryDestinationTestResultType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTelemetryDestinationTestSuccess x => x.Type,
-                BetaTelemetryDestinationTestFailure x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTelemetryDestinationTestSuccess _ =>
+                    BetaTelemetryDestinationTestResultType.Success,
+                BetaTelemetryDestinationTestFailure _ =>
+                    BetaTelemetryDestinationTestResultType.Failure,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTelemetryDestinationTestResultType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -316,5 +320,50 @@ sealed class BetaTelemetryDestinationTestResultConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTelemetryDestinationTestResultTypeConverter))]
+public enum BetaTelemetryDestinationTestResultType
+{
+    Success,
+    Failure,
+}
+
+sealed class BetaTelemetryDestinationTestResultTypeConverter
+    : JsonConverter<BetaTelemetryDestinationTestResultType>
+{
+    public override BetaTelemetryDestinationTestResultType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "success" => BetaTelemetryDestinationTestResultType.Success,
+            "failure" => BetaTelemetryDestinationTestResultType.Failure,
+            _ => (BetaTelemetryDestinationTestResultType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTelemetryDestinationTestResultType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTelemetryDestinationTestResultType.Success => "success",
+                BetaTelemetryDestinationTestResultType.Failure => "failure",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

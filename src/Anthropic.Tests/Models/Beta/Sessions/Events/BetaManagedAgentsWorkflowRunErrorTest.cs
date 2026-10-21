@@ -130,6 +130,55 @@ public class BetaManagedAgentsWorkflowRunErrorTest : TestBase
     }
 
     [Fact]
+    public void TimeoutTypeWorks()
+    {
+        BetaManagedAgentsWorkflowRunError value = new BetaManagedAgentsTimeoutWorkflowRunError(
+            "The workflow run reached its time limit."
+        );
+        Assert.Equal(BetaManagedAgentsWorkflowRunErrorType.TimeoutError, value.Type.Value());
+    }
+
+    [Fact]
+    public void ProgramTypeWorks()
+    {
+        BetaManagedAgentsWorkflowRunError value = new BetaManagedAgentsProgramWorkflowRunError(
+            "The workflow run's plan failed."
+        );
+        Assert.Equal(BetaManagedAgentsWorkflowRunErrorType.ProgramError, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownTypeWorks()
+    {
+        BetaManagedAgentsWorkflowRunError value = new BetaManagedAgentsUnknownWorkflowRunError(
+            "The workflow run failed."
+        );
+        Assert.Equal(BetaManagedAgentsWorkflowRunErrorType.UnknownError, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThreadLimitTypeWorks()
+    {
+        BetaManagedAgentsWorkflowRunError value = new BetaManagedAgentsThreadLimitWorkflowRunError(
+            "The workflow run exceeded its limit of threads."
+        );
+        Assert.Equal(BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError, value.Type.Value());
+    }
+
+    [Fact]
+    public void MaxWorkflowRunsTypeWorks()
+    {
+        BetaManagedAgentsWorkflowRunError value =
+            new BetaManagedAgentsMaxWorkflowRunsWorkflowRunError(
+                "The session is at its limit of open workflow runs."
+            );
+        Assert.Equal(
+            BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsWorkflowRunError value = new(
@@ -145,10 +194,11 @@ public class BetaManagedAgentsWorkflowRunErrorTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMessage = "The workflow run reached its time limit.";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("timeout_error");
+        ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType> expectedType =
+            BetaManagedAgentsWorkflowRunErrorType.TimeoutError;
 
         Assert.Equal(expectedMessage, value.Message);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaManagedAgentsWorkflowRunError emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
@@ -170,5 +220,65 @@ public class BetaManagedAgentsWorkflowRunErrorTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
+    }
+}
+
+public class BetaManagedAgentsWorkflowRunErrorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.TimeoutError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ProgramError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.UnknownError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError)]
+    public void Validation_Works(BetaManagedAgentsWorkflowRunErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.TimeoutError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ProgramError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.UnknownError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError)]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsWorkflowRunErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

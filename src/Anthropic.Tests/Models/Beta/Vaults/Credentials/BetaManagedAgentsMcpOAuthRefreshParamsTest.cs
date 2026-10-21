@@ -15,9 +15,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
             Resource = "x",
             Scope = "x",
         };
@@ -26,9 +24,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
         string expectedRefreshToken = "x";
         string expectedTokenEndpoint = "x";
         TokenEndpointAuth expectedTokenEndpointAuth =
-            new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneParam();
         string expectedResource = "x";
         string expectedScope = "x";
 
@@ -48,9 +44,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
             Resource = "x",
             Scope = "x",
         };
@@ -72,9 +66,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
             Resource = "x",
             Scope = "x",
         };
@@ -90,9 +82,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
         string expectedRefreshToken = "x";
         string expectedTokenEndpoint = "x";
         TokenEndpointAuth expectedTokenEndpointAuth =
-            new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            );
+            new BetaManagedAgentsTokenEndpointAuthNoneParam();
         string expectedResource = "x";
         string expectedScope = "x";
 
@@ -112,9 +102,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
             Resource = "x",
             Scope = "x",
         };
@@ -130,9 +118,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
         };
 
         Assert.Null(model.Resource);
@@ -149,9 +135,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
         };
 
         model.Validate();
@@ -165,9 +149,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
 
             Resource = null,
             Scope = null,
@@ -187,9 +169,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
 
             Resource = null,
             Scope = null,
@@ -206,9 +186,7 @@ public class BetaManagedAgentsMcpOAuthRefreshParamsTest : TestBase
             ClientID = "x",
             RefreshToken = "x",
             TokenEndpoint = "x",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
             Resource = "x",
             Scope = "x",
         };
@@ -224,40 +202,28 @@ public class TokenEndpointAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthNoneParamValidationWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-            BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-        );
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthNoneParam();
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthBasicParamValidationWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthBasicParam()
-        {
-            ClientSecret = "x",
-            Type = BetaManagedAgentsTokenEndpointAuthBasicParamType.ClientSecretBasic,
-        };
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthBasicParam("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthPostParamValidationWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthPostParam()
-        {
-            ClientSecret = "x",
-            Type = BetaManagedAgentsTokenEndpointAuthPostParamType.ClientSecretPost,
-        };
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthPostParam("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthNoneParamSerializationRoundtripWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-            BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-        );
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthNoneParam();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<TokenEndpointAuth>(
             element,
@@ -270,11 +236,7 @@ public class TokenEndpointAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthBasicParamSerializationRoundtripWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthBasicParam()
-        {
-            ClientSecret = "x",
-            Type = BetaManagedAgentsTokenEndpointAuthBasicParamType.ClientSecretBasic,
-        };
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthBasicParam("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<TokenEndpointAuth>(
             element,
@@ -287,11 +249,7 @@ public class TokenEndpointAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsTokenEndpointAuthPostParamSerializationRoundtripWorks()
     {
-        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthPostParam()
-        {
-            ClientSecret = "x",
-            Type = BetaManagedAgentsTokenEndpointAuthPostParamType.ClientSecretPost,
-        };
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthPostParam("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<TokenEndpointAuth>(
             element,
@@ -302,12 +260,34 @@ public class TokenEndpointAuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthNoneParamTypeWorks()
+    {
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthNoneParam();
+        Assert.Equal(TokenEndpointAuthType.None, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthBasicParamTypeWorks()
+    {
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthBasicParam("x");
+        Assert.Equal(TokenEndpointAuthType.ClientSecretBasic, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTokenEndpointAuthPostParamTypeWorks()
+    {
+        TokenEndpointAuth value = new BetaManagedAgentsTokenEndpointAuthPostParam("x");
+        Assert.Equal(TokenEndpointAuthType.ClientSecretPost, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         TokenEndpointAuth value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
+                  "type": "none",
                   "client_secret": "x"
                 }
                 """
@@ -315,12 +295,15 @@ public class TokenEndpointAuthTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
+        ApiEnum<string, TokenEndpointAuthType> expectedType = TokenEndpointAuthType.None;
         string expectedClientSecret = "x";
 
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedClientSecret, value.ClientSecret);
 
         TokenEndpointAuth emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.ClientSecret);
 
         TokenEndpointAuth mismatchedValue = new(
@@ -336,5 +319,65 @@ public class TokenEndpointAuthTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ClientSecret);
+    }
+}
+
+public class TokenEndpointAuthTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(TokenEndpointAuthType.None)]
+    [InlineData(TokenEndpointAuthType.ClientSecretBasic)]
+    [InlineData(TokenEndpointAuthType.ClientSecretPost)]
+    public void Validation_Works(TokenEndpointAuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, TokenEndpointAuthType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, TokenEndpointAuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(TokenEndpointAuthType.None)]
+    [InlineData(TokenEndpointAuthType.ClientSecretBasic)]
+    [InlineData(TokenEndpointAuthType.ClientSecretPost)]
+    public void SerializationRoundtrip_Works(TokenEndpointAuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, TokenEndpointAuthType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TokenEndpointAuthType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, TokenEndpointAuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TokenEndpointAuthType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

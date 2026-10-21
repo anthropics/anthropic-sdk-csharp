@@ -25,19 +25,21 @@ public record class RawMessageStreamEvent : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, RawMessageStreamEventType> Type
     {
         get
         {
             return this.Value switch
             {
-                RawMessageStartEvent x => x.Type,
-                RawMessageDeltaEvent x => x.Type,
-                RawMessageStopEvent x => x.Type,
-                RawContentBlockStartEvent x => x.Type,
-                RawContentBlockDeltaEvent x => x.Type,
-                RawContentBlockStopEvent x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                RawMessageStartEvent _ => RawMessageStreamEventType.MessageStart,
+                RawMessageDeltaEvent _ => RawMessageStreamEventType.MessageDelta,
+                RawMessageStopEvent _ => RawMessageStreamEventType.MessageStop,
+                RawContentBlockStartEvent _ => RawMessageStreamEventType.ContentBlockStart,
+                RawContentBlockDeltaEvent _ => RawMessageStreamEventType.ContentBlockDelta,
+                RawContentBlockStopEvent _ => RawMessageStreamEventType.ContentBlockStop,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, RawMessageStreamEventType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -563,5 +565,61 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(RawMessageStreamEventTypeConverter))]
+public enum RawMessageStreamEventType
+{
+    MessageStart,
+    MessageDelta,
+    MessageStop,
+    ContentBlockStart,
+    ContentBlockDelta,
+    ContentBlockStop,
+}
+
+sealed class RawMessageStreamEventTypeConverter : JsonConverter<RawMessageStreamEventType>
+{
+    public override RawMessageStreamEventType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "message_start" => RawMessageStreamEventType.MessageStart,
+            "message_delta" => RawMessageStreamEventType.MessageDelta,
+            "message_stop" => RawMessageStreamEventType.MessageStop,
+            "content_block_start" => RawMessageStreamEventType.ContentBlockStart,
+            "content_block_delta" => RawMessageStreamEventType.ContentBlockDelta,
+            "content_block_stop" => RawMessageStreamEventType.ContentBlockStop,
+            _ => (RawMessageStreamEventType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        RawMessageStreamEventType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                RawMessageStreamEventType.MessageStart => "message_start",
+                RawMessageStreamEventType.MessageDelta => "message_delta",
+                RawMessageStreamEventType.MessageStop => "message_stop",
+                RawMessageStreamEventType.ContentBlockStart => "content_block_start",
+                RawMessageStreamEventType.ContentBlockDelta => "content_block_delta",
+                RawMessageStreamEventType.ContentBlockStop => "content_block_stop",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

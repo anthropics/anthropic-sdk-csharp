@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -26,6 +26,21 @@ public record class BetaOutputBehavior : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaOutputBehaviorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaOutputBehaviorCreateNew _ => BetaOutputBehaviorType.CreateNew,
+                BetaOutputBehaviorUpdateExisting _ => BetaOutputBehaviorType.UpdateExisting,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaOutputBehaviorType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -111,8 +126,8 @@ public record class BetaOutputBehavior : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaOutputBehaviorCreateNew> createNew,
-        System::Action<BetaOutputBehaviorUpdateExisting> updateExisting
+        Action<BetaOutputBehaviorCreateNew> createNew,
+        Action<BetaOutputBehaviorUpdateExisting> updateExisting
     )
     {
         switch (this.Value)
@@ -152,8 +167,8 @@ public record class BetaOutputBehavior : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaOutputBehaviorCreateNew, T> createNew,
-        System::Func<BetaOutputBehaviorUpdateExisting, T> updateExisting
+        Func<BetaOutputBehaviorCreateNew, T> createNew,
+        Func<BetaOutputBehaviorUpdateExisting, T> updateExisting
     )
     {
         return this.Value switch
@@ -227,7 +242,7 @@ sealed class BetaOutputBehaviorConverter : JsonConverter<BetaOutputBehavior>
 {
     public override BetaOutputBehavior? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -298,5 +313,49 @@ sealed class BetaOutputBehaviorConverter : JsonConverter<BetaOutputBehavior>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaOutputBehaviorTypeConverter))]
+public enum BetaOutputBehaviorType
+{
+    CreateNew,
+    UpdateExisting,
+}
+
+sealed class BetaOutputBehaviorTypeConverter : JsonConverter<BetaOutputBehaviorType>
+{
+    public override BetaOutputBehaviorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "create_new" => BetaOutputBehaviorType.CreateNew,
+            "update_existing" => BetaOutputBehaviorType.UpdateExisting,
+            _ => (BetaOutputBehaviorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaOutputBehaviorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaOutputBehaviorType.CreateNew => "create_new",
+                BetaOutputBehaviorType.UpdateExisting => "update_existing",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

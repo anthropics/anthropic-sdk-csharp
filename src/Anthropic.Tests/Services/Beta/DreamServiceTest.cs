@@ -9,18 +9,7 @@ public class DreamServiceTest : TestBase
     public async Task Create_Works()
     {
         var betaDream = await this.client.Beta.Dreams.Create(
-            new()
-            {
-                Inputs =
-                [
-                    new BetaDreamMemoryStoreInput()
-                    {
-                        MemoryStoreID = "x",
-                        Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                    },
-                ],
-                Model = "string",
-            },
+            new() { Inputs = [new BetaDreamMemoryStoreInput("x")], Model = "string" },
             TestContext.Current.CancellationToken
         );
         betaDream.Validate();

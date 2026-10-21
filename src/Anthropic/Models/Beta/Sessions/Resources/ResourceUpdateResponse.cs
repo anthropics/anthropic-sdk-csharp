@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Resources;
 
@@ -42,7 +42,7 @@ public record class ResourceUpdateResponse : ModelBase
         }
     }
 
-    public System::DateTimeOffset? CreatedAt
+    public DateTimeOffset? CreatedAt
     {
         get
         {
@@ -51,7 +51,7 @@ public record class ResourceUpdateResponse : ModelBase
                 BetaManagedAgentsGitHubRepositoryResource x => x.CreatedAt,
                 BetaManagedAgentsFileResource x => x.CreatedAt,
                 BetaManagedAgentsMemoryStoreResource _ => null,
-                _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
+                _ => WrappedJsonSerializer.GetNullableStructProperty<DateTimeOffset>(
                     this.Json,
                     "created_at"
                 ),
@@ -76,7 +76,24 @@ public record class ResourceUpdateResponse : ModelBase
         }
     }
 
-    public System::DateTimeOffset? UpdatedAt
+    public ApiEnum<string, ResourceUpdateResponseType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResource _ =>
+                    ResourceUpdateResponseType.GitHubRepository,
+                BetaManagedAgentsFileResource _ => ResourceUpdateResponseType.File,
+                BetaManagedAgentsMemoryStoreResource _ => ResourceUpdateResponseType.MemoryStore,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ResourceUpdateResponseType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
+    public DateTimeOffset? UpdatedAt
     {
         get
         {
@@ -85,7 +102,7 @@ public record class ResourceUpdateResponse : ModelBase
                 BetaManagedAgentsGitHubRepositoryResource x => x.UpdatedAt,
                 BetaManagedAgentsFileResource x => x.UpdatedAt,
                 BetaManagedAgentsMemoryStoreResource _ => null,
-                _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
+                _ => WrappedJsonSerializer.GetNullableStructProperty<DateTimeOffset>(
                     this.Json,
                     "updated_at"
                 ),
@@ -213,9 +230,9 @@ public record class ResourceUpdateResponse : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsGitHubRepositoryResource> betaManagedAgentsGitHubRepositoryResource,
-        System::Action<BetaManagedAgentsFileResource> betaManagedAgentsFileResource,
-        System::Action<BetaManagedAgentsMemoryStoreResource> betaManagedAgentsMemoryStoreResource
+        Action<BetaManagedAgentsGitHubRepositoryResource> betaManagedAgentsGitHubRepositoryResource,
+        Action<BetaManagedAgentsFileResource> betaManagedAgentsFileResource,
+        Action<BetaManagedAgentsMemoryStoreResource> betaManagedAgentsMemoryStoreResource
     )
     {
         switch (this.Value)
@@ -259,12 +276,12 @@ public record class ResourceUpdateResponse : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsGitHubRepositoryResource,
             T
         > betaManagedAgentsGitHubRepositoryResource,
-        System::Func<BetaManagedAgentsFileResource, T> betaManagedAgentsFileResource,
-        System::Func<BetaManagedAgentsMemoryStoreResource, T> betaManagedAgentsMemoryStoreResource
+        Func<BetaManagedAgentsFileResource, T> betaManagedAgentsFileResource,
+        Func<BetaManagedAgentsMemoryStoreResource, T> betaManagedAgentsMemoryStoreResource
     )
     {
         return this.Value switch
@@ -351,7 +368,7 @@ sealed class ResourceUpdateResponseConverter : JsonConverter<ResourceUpdateRespo
 {
     public override ResourceUpdateResponse? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -444,5 +461,52 @@ sealed class ResourceUpdateResponseConverter : JsonConverter<ResourceUpdateRespo
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ResourceUpdateResponseTypeConverter))]
+public enum ResourceUpdateResponseType
+{
+    GitHubRepository,
+    File,
+    MemoryStore,
+}
+
+sealed class ResourceUpdateResponseTypeConverter : JsonConverter<ResourceUpdateResponseType>
+{
+    public override ResourceUpdateResponseType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "github_repository" => ResourceUpdateResponseType.GitHubRepository,
+            "file" => ResourceUpdateResponseType.File,
+            "memory_store" => ResourceUpdateResponseType.MemoryStore,
+            _ => (ResourceUpdateResponseType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ResourceUpdateResponseType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ResourceUpdateResponseType.GitHubRepository => "github_repository",
+                ResourceUpdateResponseType.File => "file",
+                ResourceUpdateResponseType.MemoryStore => "memory_store",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -36,24 +36,22 @@ public sealed record class BetaManagedAgentsSessionStatusRescheduledEvent : Json
     /// <summary>
     /// Timestamp of status change.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionStatusRescheduledEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionStatusRescheduledEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,10 +61,21 @@ public sealed record class BetaManagedAgentsSessionStatusRescheduledEvent : Json
     {
         _ = this.ID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session.status_rescheduled")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionStatusRescheduledEvent() { }
+    public BetaManagedAgentsSessionStatusRescheduledEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.status_rescheduled");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -81,6 +90,8 @@ public sealed record class BetaManagedAgentsSessionStatusRescheduledEvent : Json
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.status_rescheduled");
     }
 
 #pragma warning disable CS8618
@@ -107,48 +118,4 @@ class BetaManagedAgentsSessionStatusRescheduledEventFromRaw
     public BetaManagedAgentsSessionStatusRescheduledEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionStatusRescheduledEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionStatusRescheduledEventTypeConverter))]
-public enum BetaManagedAgentsSessionStatusRescheduledEventType
-{
-    SessionStatusRescheduled,
-}
-
-sealed class BetaManagedAgentsSessionStatusRescheduledEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionStatusRescheduledEventType>
-{
-    public override BetaManagedAgentsSessionStatusRescheduledEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.status_rescheduled" =>
-                BetaManagedAgentsSessionStatusRescheduledEventType.SessionStatusRescheduled,
-            _ => (BetaManagedAgentsSessionStatusRescheduledEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionStatusRescheduledEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionStatusRescheduledEventType.SessionStatusRescheduled =>
-                    "session.status_rescheduled",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

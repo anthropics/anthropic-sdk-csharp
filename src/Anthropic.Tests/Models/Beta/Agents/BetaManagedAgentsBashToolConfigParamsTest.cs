@@ -13,20 +13,15 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         bool expectedEnabled = true;
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
-        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType> expectedType =
-            BetaManagedAgentsBashToolConfigParamsType.Bash;
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        ApiEnum<string, Type> expectedType = Type.Bash;
 
         Assert.True(JsonElement.DeepEquals(expectedName, model.Name));
         Assert.Equal(expectedEnabled, model.Enabled);
@@ -40,10 +35,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -61,10 +54,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -77,11 +68,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         bool expectedEnabled = true;
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
-        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType> expectedType =
-            BetaManagedAgentsBashToolConfigParamsType.Bash;
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        ApiEnum<string, Type> expectedType = Type.Bash;
 
         Assert.True(JsonElement.DeepEquals(expectedName, deserialized.Name));
         Assert.Equal(expectedEnabled, deserialized.Enabled);
@@ -95,10 +83,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
 
         model.Validate();
@@ -110,9 +96,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         Assert.Null(model.Type);
@@ -125,9 +109,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         model.Validate();
@@ -139,9 +121,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -157,10 +137,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -177,9 +155,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
 
             // Null should be interpreted as omitted for these properties
             Type = null,
@@ -191,10 +167,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsBashToolConfigParams
-        {
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
-        };
+        var model = new BetaManagedAgentsBashToolConfigParams { Type = Type.Bash };
 
         Assert.Null(model.Enabled);
         Assert.False(model.RawData.ContainsKey("enabled"));
@@ -205,10 +178,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsBashToolConfigParams
-        {
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
-        };
+        var model = new BetaManagedAgentsBashToolConfigParams { Type = Type.Bash };
 
         model.Validate();
     }
@@ -218,7 +188,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsBashToolConfigParams
         {
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            Type = Type.Bash,
 
             Enabled = null,
             PermissionPolicy = null,
@@ -235,7 +205,7 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
     {
         var model = new BetaManagedAgentsBashToolConfigParams
         {
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            Type = Type.Bash,
 
             Enabled = null,
             PermissionPolicy = null,
@@ -250,10 +220,8 @@ public class BetaManagedAgentsBashToolConfigParamsTest : TestBase
         var model = new BetaManagedAgentsBashToolConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
 
         BetaManagedAgentsBashToolConfigParams copied = new(model);
@@ -268,9 +236,7 @@ public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -278,7 +244,7 @@ public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -294,9 +260,7 @@ public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsBashToolConfigParamsPermissionPolicy>(
@@ -311,7 +275,7 @@ public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTest : TestBas
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsBashToolConfigParamsPermissionPolicy>(
@@ -336,16 +300,77 @@ public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTest : TestBas
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType> expectedType =
+            BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsBashToolConfigParamsTypeTest : TestBase
+public class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsBashToolConfigParamsType.Bash)]
-    public void Validation_Works(BetaManagedAgentsBashToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto)]
+    public void Validation_Works(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType> value = rawValue;
         value.Validate();
     }
 
@@ -353,7 +378,7 @@ public class BetaManagedAgentsBashToolConfigParamsTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>
+            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -361,15 +386,19 @@ public class BetaManagedAgentsBashToolConfigParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsBashToolConfigParamsType.Bash)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsBashToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicyType rawValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>
+            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -379,12 +408,68 @@ public class BetaManagedAgentsBashToolConfigParamsTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>
+            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>
+            ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
         >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
+public class TypeTest : TestBase
+{
+    [Theory]
+    [InlineData(Type.Bash)]
+    public void Validation_Works(Type rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Type> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(Type.Bash)]
+    public void SerializationRoundtrip_Works(Type rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, Type> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

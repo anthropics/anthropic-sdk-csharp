@@ -25,25 +25,28 @@ public record class ContentBlock : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ContentBlockType> Type
     {
         get
         {
             return this.Value switch
             {
-                TextBlock x => x.Type,
-                ThinkingBlock x => x.Type,
-                RedactedThinkingBlock x => x.Type,
-                ToolUseBlock x => x.Type,
-                ServerToolUseBlock x => x.Type,
-                WebSearchToolResultBlock x => x.Type,
-                WebFetchToolResultBlock x => x.Type,
-                CodeExecutionToolResultBlock x => x.Type,
-                BashCodeExecutionToolResultBlock x => x.Type,
-                TextEditorCodeExecutionToolResultBlock x => x.Type,
-                ToolSearchToolResultBlock x => x.Type,
-                ContainerUploadBlock x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                TextBlock _ => ContentBlockType.Text,
+                ThinkingBlock _ => ContentBlockType.Thinking,
+                RedactedThinkingBlock _ => ContentBlockType.RedactedThinking,
+                ToolUseBlock _ => ContentBlockType.ToolUse,
+                ServerToolUseBlock _ => ContentBlockType.ServerToolUse,
+                WebSearchToolResultBlock _ => ContentBlockType.WebSearchToolResult,
+                WebFetchToolResultBlock _ => ContentBlockType.WebFetchToolResult,
+                CodeExecutionToolResultBlock _ => ContentBlockType.CodeExecutionToolResult,
+                BashCodeExecutionToolResultBlock _ => ContentBlockType.BashCodeExecutionToolResult,
+                TextEditorCodeExecutionToolResultBlock _ =>
+                    ContentBlockType.TextEditorCodeExecutionToolResult,
+                ToolSearchToolResultBlock _ => ContentBlockType.ToolSearchToolResult,
+                ContainerUploadBlock _ => ContentBlockType.ContainerUpload,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ContentBlockType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -956,5 +959,81 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ContentBlockTypeConverter))]
+public enum ContentBlockType
+{
+    Text,
+    Thinking,
+    RedactedThinking,
+    ToolUse,
+    ServerToolUse,
+    WebSearchToolResult,
+    WebFetchToolResult,
+    CodeExecutionToolResult,
+    BashCodeExecutionToolResult,
+    TextEditorCodeExecutionToolResult,
+    ToolSearchToolResult,
+    ContainerUpload,
+}
+
+sealed class ContentBlockTypeConverter : JsonConverter<ContentBlockType>
+{
+    public override ContentBlockType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => ContentBlockType.Text,
+            "thinking" => ContentBlockType.Thinking,
+            "redacted_thinking" => ContentBlockType.RedactedThinking,
+            "tool_use" => ContentBlockType.ToolUse,
+            "server_tool_use" => ContentBlockType.ServerToolUse,
+            "web_search_tool_result" => ContentBlockType.WebSearchToolResult,
+            "web_fetch_tool_result" => ContentBlockType.WebFetchToolResult,
+            "code_execution_tool_result" => ContentBlockType.CodeExecutionToolResult,
+            "bash_code_execution_tool_result" => ContentBlockType.BashCodeExecutionToolResult,
+            "text_editor_code_execution_tool_result" =>
+                ContentBlockType.TextEditorCodeExecutionToolResult,
+            "tool_search_tool_result" => ContentBlockType.ToolSearchToolResult,
+            "container_upload" => ContentBlockType.ContainerUpload,
+            _ => (ContentBlockType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContentBlockType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContentBlockType.Text => "text",
+                ContentBlockType.Thinking => "thinking",
+                ContentBlockType.RedactedThinking => "redacted_thinking",
+                ContentBlockType.ToolUse => "tool_use",
+                ContentBlockType.ServerToolUse => "server_tool_use",
+                ContentBlockType.WebSearchToolResult => "web_search_tool_result",
+                ContentBlockType.WebFetchToolResult => "web_fetch_tool_result",
+                ContentBlockType.CodeExecutionToolResult => "code_execution_tool_result",
+                ContentBlockType.BashCodeExecutionToolResult => "bash_code_execution_tool_result",
+                ContentBlockType.TextEditorCodeExecutionToolResult =>
+                    "text_editor_code_execution_tool_result",
+                ContentBlockType.ToolSearchToolResult => "tool_search_tool_result",
+                ContentBlockType.ContainerUpload => "container_upload",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

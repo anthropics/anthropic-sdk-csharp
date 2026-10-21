@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -15,17 +14,15 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated,
         };
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType> expectedType =
-            BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_terminated");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -35,7 +32,6 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -55,7 +51,6 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -68,12 +63,11 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
 
         string expectedID = "id";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType> expectedType =
-            BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session.status_terminated");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -83,7 +77,6 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated,
         };
 
         model.Validate();
@@ -96,65 +89,10 @@ public class BetaManagedAgentsSessionStatusTerminatedEventTest : TestBase
         {
             ID = "id",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated,
         };
 
         BetaManagedAgentsSessionStatusTerminatedEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSessionStatusTerminatedEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated)]
-    public void Validation_Works(BetaManagedAgentsSessionStatusTerminatedEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionStatusTerminatedEventType.SessionStatusTerminated)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsSessionStatusTerminatedEventType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionStatusTerminatedEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

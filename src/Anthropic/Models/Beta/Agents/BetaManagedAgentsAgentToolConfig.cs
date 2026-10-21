@@ -67,21 +67,25 @@ public record class BetaManagedAgentsAgentToolConfig : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsAgentToolConfigType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsBashToolConfig x => x.Type,
-                BetaManagedAgentsEditToolConfig x => x.Type,
-                BetaManagedAgentsReadToolConfig x => x.Type,
-                BetaManagedAgentsWriteToolConfig x => x.Type,
-                BetaManagedAgentsGlobToolConfig x => x.Type,
-                BetaManagedAgentsGrepToolConfig x => x.Type,
-                BetaManagedAgentsWebFetchToolConfig x => x.Type,
-                BetaManagedAgentsWebSearchToolConfig x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsBashToolConfig _ => BetaManagedAgentsAgentToolConfigType.Bash,
+                BetaManagedAgentsEditToolConfig _ => BetaManagedAgentsAgentToolConfigType.Edit,
+                BetaManagedAgentsReadToolConfig _ => BetaManagedAgentsAgentToolConfigType.Read,
+                BetaManagedAgentsWriteToolConfig _ => BetaManagedAgentsAgentToolConfigType.Write,
+                BetaManagedAgentsGlobToolConfig _ => BetaManagedAgentsAgentToolConfigType.Glob,
+                BetaManagedAgentsGrepToolConfig _ => BetaManagedAgentsAgentToolConfigType.Grep,
+                BetaManagedAgentsWebFetchToolConfig _ =>
+                    BetaManagedAgentsAgentToolConfigType.WebFetch,
+                BetaManagedAgentsWebSearchToolConfig _ =>
+                    BetaManagedAgentsAgentToolConfigType.WebSearch,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentToolConfigType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -794,5 +798,68 @@ sealed class BetaManagedAgentsAgentToolConfigConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsAgentToolConfigTypeConverter))]
+public enum BetaManagedAgentsAgentToolConfigType
+{
+    Bash,
+    Edit,
+    Read,
+    Write,
+    Glob,
+    Grep,
+    WebFetch,
+    WebSearch,
+}
+
+sealed class BetaManagedAgentsAgentToolConfigTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentToolConfigType>
+{
+    public override BetaManagedAgentsAgentToolConfigType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "bash" => BetaManagedAgentsAgentToolConfigType.Bash,
+            "edit" => BetaManagedAgentsAgentToolConfigType.Edit,
+            "read" => BetaManagedAgentsAgentToolConfigType.Read,
+            "write" => BetaManagedAgentsAgentToolConfigType.Write,
+            "glob" => BetaManagedAgentsAgentToolConfigType.Glob,
+            "grep" => BetaManagedAgentsAgentToolConfigType.Grep,
+            "web_fetch" => BetaManagedAgentsAgentToolConfigType.WebFetch,
+            "web_search" => BetaManagedAgentsAgentToolConfigType.WebSearch,
+            _ => (BetaManagedAgentsAgentToolConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsAgentToolConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsAgentToolConfigType.Bash => "bash",
+                BetaManagedAgentsAgentToolConfigType.Edit => "edit",
+                BetaManagedAgentsAgentToolConfigType.Read => "read",
+                BetaManagedAgentsAgentToolConfigType.Write => "write",
+                BetaManagedAgentsAgentToolConfigType.Glob => "glob",
+                BetaManagedAgentsAgentToolConfigType.Grep => "grep",
+                BetaManagedAgentsAgentToolConfigType.WebFetch => "web_fetch",
+                BetaManagedAgentsAgentToolConfigType.WebSearch => "web_search",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

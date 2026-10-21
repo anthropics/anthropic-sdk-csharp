@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -46,24 +46,22 @@ public sealed record class BetaManagedAgentsSessionErrorEvent : JsonModel
     /// <summary>
     /// Timestamp when the error occurred.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionErrorEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionErrorEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -74,10 +72,16 @@ public sealed record class BetaManagedAgentsSessionErrorEvent : JsonModel
         _ = this.ID;
         this.Error.Validate();
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session.error")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionErrorEvent() { }
+    public BetaManagedAgentsSessionErrorEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -90,6 +94,8 @@ public sealed record class BetaManagedAgentsSessionErrorEvent : JsonModel
     public BetaManagedAgentsSessionErrorEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.error");
     }
 
 #pragma warning disable CS8618
@@ -155,6 +161,36 @@ public record class Error : ModelBase
                 BetaManagedAgentsRepositoryCheckoutError x => x.Message,
                 BetaManagedAgentsRepositoryCloneError x => x.Message,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "message"),
+            };
+        }
+    }
+
+    public ApiEnum<string, ErrorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUnknownError _ => ErrorType.UnknownError,
+                BetaManagedAgentsModelOverloadedError _ => ErrorType.ModelOverloadedError,
+                BetaManagedAgentsModelRateLimitedError _ => ErrorType.ModelRateLimitedError,
+                BetaManagedAgentsModelRequestFailedError _ => ErrorType.ModelRequestFailedError,
+                BetaManagedAgentsMcpConnectionFailedError _ => ErrorType.McpConnectionFailedError,
+                BetaManagedAgentsMcpAuthenticationFailedError _ =>
+                    ErrorType.McpAuthenticationFailedError,
+                BetaManagedAgentsBillingError _ => ErrorType.BillingError,
+                BetaManagedAgentsCredentialHostUnreachableError _ =>
+                    ErrorType.CredentialHostUnreachableError,
+                BetaManagedAgentsRepositoryAuthenticationError _ =>
+                    ErrorType.RepositoryAuthenticationError,
+                BetaManagedAgentsRepositoryForbiddenError _ => ErrorType.RepositoryForbiddenError,
+                BetaManagedAgentsRepositoryNotFoundError _ => ErrorType.RepositoryNotFoundError,
+                BetaManagedAgentsRepositoryCheckoutError _ => ErrorType.RepositoryCheckoutError,
+                BetaManagedAgentsRepositoryCloneError _ => ErrorType.RepositoryCloneError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ErrorType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -627,19 +663,19 @@ public record class Error : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUnknownError> betaManagedAgentsUnknown,
-        System::Action<BetaManagedAgentsModelOverloadedError> betaManagedAgentsModelOverloaded,
-        System::Action<BetaManagedAgentsModelRateLimitedError> betaManagedAgentsModelRateLimited,
-        System::Action<BetaManagedAgentsModelRequestFailedError> betaManagedAgentsModelRequestFailed,
-        System::Action<BetaManagedAgentsMcpConnectionFailedError> betaManagedAgentsMcpConnectionFailed,
-        System::Action<BetaManagedAgentsMcpAuthenticationFailedError> betaManagedAgentsMcpAuthenticationFailed,
-        System::Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling,
-        System::Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable,
-        System::Action<BetaManagedAgentsRepositoryAuthenticationError> betaManagedAgentsRepositoryAuthentication,
-        System::Action<BetaManagedAgentsRepositoryForbiddenError> betaManagedAgentsRepositoryForbidden,
-        System::Action<BetaManagedAgentsRepositoryNotFoundError> betaManagedAgentsRepositoryNotFound,
-        System::Action<BetaManagedAgentsRepositoryCheckoutError> betaManagedAgentsRepositoryCheckout,
-        System::Action<BetaManagedAgentsRepositoryCloneError> betaManagedAgentsRepositoryClone
+        Action<BetaManagedAgentsUnknownError> betaManagedAgentsUnknown,
+        Action<BetaManagedAgentsModelOverloadedError> betaManagedAgentsModelOverloaded,
+        Action<BetaManagedAgentsModelRateLimitedError> betaManagedAgentsModelRateLimited,
+        Action<BetaManagedAgentsModelRequestFailedError> betaManagedAgentsModelRequestFailed,
+        Action<BetaManagedAgentsMcpConnectionFailedError> betaManagedAgentsMcpConnectionFailed,
+        Action<BetaManagedAgentsMcpAuthenticationFailedError> betaManagedAgentsMcpAuthenticationFailed,
+        Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling,
+        Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable,
+        Action<BetaManagedAgentsRepositoryAuthenticationError> betaManagedAgentsRepositoryAuthentication,
+        Action<BetaManagedAgentsRepositoryForbiddenError> betaManagedAgentsRepositoryForbidden,
+        Action<BetaManagedAgentsRepositoryNotFoundError> betaManagedAgentsRepositoryNotFound,
+        Action<BetaManagedAgentsRepositoryCheckoutError> betaManagedAgentsRepositoryCheckout,
+        Action<BetaManagedAgentsRepositoryCloneError> betaManagedAgentsRepositoryClone
     )
     {
         switch (this.Value)
@@ -721,43 +757,28 @@ public record class Error : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsUnknownError, T> betaManagedAgentsUnknown,
-        System::Func<BetaManagedAgentsModelOverloadedError, T> betaManagedAgentsModelOverloaded,
-        System::Func<BetaManagedAgentsModelRateLimitedError, T> betaManagedAgentsModelRateLimited,
-        System::Func<
-            BetaManagedAgentsModelRequestFailedError,
-            T
-        > betaManagedAgentsModelRequestFailed,
-        System::Func<
-            BetaManagedAgentsMcpConnectionFailedError,
-            T
-        > betaManagedAgentsMcpConnectionFailed,
-        System::Func<
+        Func<BetaManagedAgentsUnknownError, T> betaManagedAgentsUnknown,
+        Func<BetaManagedAgentsModelOverloadedError, T> betaManagedAgentsModelOverloaded,
+        Func<BetaManagedAgentsModelRateLimitedError, T> betaManagedAgentsModelRateLimited,
+        Func<BetaManagedAgentsModelRequestFailedError, T> betaManagedAgentsModelRequestFailed,
+        Func<BetaManagedAgentsMcpConnectionFailedError, T> betaManagedAgentsMcpConnectionFailed,
+        Func<
             BetaManagedAgentsMcpAuthenticationFailedError,
             T
         > betaManagedAgentsMcpAuthenticationFailed,
-        System::Func<BetaManagedAgentsBillingError, T> betaManagedAgentsBilling,
-        System::Func<
+        Func<BetaManagedAgentsBillingError, T> betaManagedAgentsBilling,
+        Func<
             BetaManagedAgentsCredentialHostUnreachableError,
             T
         > betaManagedAgentsCredentialHostUnreachable,
-        System::Func<
+        Func<
             BetaManagedAgentsRepositoryAuthenticationError,
             T
         > betaManagedAgentsRepositoryAuthentication,
-        System::Func<
-            BetaManagedAgentsRepositoryForbiddenError,
-            T
-        > betaManagedAgentsRepositoryForbidden,
-        System::Func<
-            BetaManagedAgentsRepositoryNotFoundError,
-            T
-        > betaManagedAgentsRepositoryNotFound,
-        System::Func<
-            BetaManagedAgentsRepositoryCheckoutError,
-            T
-        > betaManagedAgentsRepositoryCheckout,
-        System::Func<BetaManagedAgentsRepositoryCloneError, T> betaManagedAgentsRepositoryClone
+        Func<BetaManagedAgentsRepositoryForbiddenError, T> betaManagedAgentsRepositoryForbidden,
+        Func<BetaManagedAgentsRepositoryNotFoundError, T> betaManagedAgentsRepositoryNotFound,
+        Func<BetaManagedAgentsRepositoryCheckoutError, T> betaManagedAgentsRepositoryCheckout,
+        Func<BetaManagedAgentsRepositoryCloneError, T> betaManagedAgentsRepositoryClone
     )
     {
         return this.Value switch
@@ -911,7 +932,7 @@ sealed class ErrorConverter : JsonConverter<Error>
 {
     public override Error? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1212,31 +1233,54 @@ sealed class ErrorConverter : JsonConverter<Error>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionErrorEventTypeConverter))]
-public enum BetaManagedAgentsSessionErrorEventType
+[JsonConverter(typeof(ErrorTypeConverter))]
+public enum ErrorType
 {
-    SessionError,
+    UnknownError,
+    ModelOverloadedError,
+    ModelRateLimitedError,
+    ModelRequestFailedError,
+    McpConnectionFailedError,
+    McpAuthenticationFailedError,
+    BillingError,
+    CredentialHostUnreachableError,
+    RepositoryAuthenticationError,
+    RepositoryForbiddenError,
+    RepositoryNotFoundError,
+    RepositoryCheckoutError,
+    RepositoryCloneError,
 }
 
-sealed class BetaManagedAgentsSessionErrorEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionErrorEventType>
+sealed class ErrorTypeConverter : JsonConverter<ErrorType>
 {
-    public override BetaManagedAgentsSessionErrorEventType Read(
+    public override ErrorType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "session.error" => BetaManagedAgentsSessionErrorEventType.SessionError,
-            _ => (BetaManagedAgentsSessionErrorEventType)(-1),
+            "unknown_error" => ErrorType.UnknownError,
+            "model_overloaded_error" => ErrorType.ModelOverloadedError,
+            "model_rate_limited_error" => ErrorType.ModelRateLimitedError,
+            "model_request_failed_error" => ErrorType.ModelRequestFailedError,
+            "mcp_connection_failed_error" => ErrorType.McpConnectionFailedError,
+            "mcp_authentication_failed_error" => ErrorType.McpAuthenticationFailedError,
+            "billing_error" => ErrorType.BillingError,
+            "credential_host_unreachable_error" => ErrorType.CredentialHostUnreachableError,
+            "repository_authentication_error" => ErrorType.RepositoryAuthenticationError,
+            "repository_forbidden_error" => ErrorType.RepositoryForbiddenError,
+            "repository_not_found_error" => ErrorType.RepositoryNotFoundError,
+            "repository_checkout_error" => ErrorType.RepositoryCheckoutError,
+            "repository_clone_error" => ErrorType.RepositoryCloneError,
+            _ => (ErrorType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionErrorEventType value,
+        ErrorType value,
         JsonSerializerOptions options
     )
     {
@@ -1244,7 +1288,19 @@ sealed class BetaManagedAgentsSessionErrorEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionErrorEventType.SessionError => "session.error",
+                ErrorType.UnknownError => "unknown_error",
+                ErrorType.ModelOverloadedError => "model_overloaded_error",
+                ErrorType.ModelRateLimitedError => "model_rate_limited_error",
+                ErrorType.ModelRequestFailedError => "model_request_failed_error",
+                ErrorType.McpConnectionFailedError => "mcp_connection_failed_error",
+                ErrorType.McpAuthenticationFailedError => "mcp_authentication_failed_error",
+                ErrorType.BillingError => "billing_error",
+                ErrorType.CredentialHostUnreachableError => "credential_host_unreachable_error",
+                ErrorType.RepositoryAuthenticationError => "repository_authentication_error",
+                ErrorType.RepositoryForbiddenError => "repository_forbidden_error",
+                ErrorType.RepositoryNotFoundError => "repository_not_found_error",
+                ErrorType.RepositoryCheckoutError => "repository_checkout_error",
+                ErrorType.RepositoryCloneError => "repository_clone_error",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

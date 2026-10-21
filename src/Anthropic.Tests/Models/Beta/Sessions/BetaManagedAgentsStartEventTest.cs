@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
@@ -12,25 +11,16 @@ public class BetaManagedAgentsStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsStartEvent
         {
-            Event = new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            },
-            Type = BetaManagedAgentsStartEventType.EventStart,
+            Event = new BetaManagedAgentsAgentMessagePreview("id"),
         };
 
-        BetaManagedAgentsStartEventPreview expectedEvent =
-            new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            };
-        ApiEnum<string, BetaManagedAgentsStartEventType> expectedType =
-            BetaManagedAgentsStartEventType.EventStart;
+        BetaManagedAgentsStartEventPreview expectedEvent = new BetaManagedAgentsAgentMessagePreview(
+            "id"
+        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("event_start");
 
         Assert.Equal(expectedEvent, model.Event);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -38,12 +28,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsStartEvent
         {
-            Event = new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            },
-            Type = BetaManagedAgentsStartEventType.EventStart,
+            Event = new BetaManagedAgentsAgentMessagePreview("id"),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,12 +45,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsStartEvent
         {
-            Event = new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            },
-            Type = BetaManagedAgentsStartEventType.EventStart,
+            Event = new BetaManagedAgentsAgentMessagePreview("id"),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -75,17 +55,13 @@ public class BetaManagedAgentsStartEventTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaManagedAgentsStartEventPreview expectedEvent =
-            new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            };
-        ApiEnum<string, BetaManagedAgentsStartEventType> expectedType =
-            BetaManagedAgentsStartEventType.EventStart;
+        BetaManagedAgentsStartEventPreview expectedEvent = new BetaManagedAgentsAgentMessagePreview(
+            "id"
+        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("event_start");
 
         Assert.Equal(expectedEvent, deserialized.Event);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -93,12 +69,7 @@ public class BetaManagedAgentsStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsStartEvent
         {
-            Event = new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            },
-            Type = BetaManagedAgentsStartEventType.EventStart,
+            Event = new BetaManagedAgentsAgentMessagePreview("id"),
         };
 
         model.Validate();
@@ -109,70 +80,11 @@ public class BetaManagedAgentsStartEventTest : TestBase
     {
         var model = new BetaManagedAgentsStartEvent
         {
-            Event = new BetaManagedAgentsAgentMessagePreview()
-            {
-                ID = "id",
-                Type = BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            },
-            Type = BetaManagedAgentsStartEventType.EventStart,
+            Event = new BetaManagedAgentsAgentMessagePreview("id"),
         };
 
         BetaManagedAgentsStartEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsStartEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsStartEventType.EventStart)]
-    public void Validation_Works(BetaManagedAgentsStartEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsStartEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsStartEventType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsStartEventType.EventStart)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsStartEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsStartEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStartEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsStartEventType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStartEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

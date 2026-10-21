@@ -191,18 +191,20 @@ public record class DocumentBlockParamSource : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, DocumentBlockParamSourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                Base64PdfSource x => x.Type,
-                PlainTextSource x => x.Type,
-                ContentBlockSource x => x.Type,
-                UrlPdfSource x => x.Type,
-                FileDocumentSource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                Base64PdfSource _ => DocumentBlockParamSourceType.Base64,
+                PlainTextSource _ => DocumentBlockParamSourceType.Text,
+                ContentBlockSource _ => DocumentBlockParamSourceType.Content,
+                UrlPdfSource _ => DocumentBlockParamSourceType.Url,
+                FileDocumentSource _ => DocumentBlockParamSourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, DocumentBlockParamSourceType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -648,5 +650,58 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(DocumentBlockParamSourceTypeConverter))]
+public enum DocumentBlockParamSourceType
+{
+    Base64,
+    Text,
+    Content,
+    Url,
+    File,
+}
+
+sealed class DocumentBlockParamSourceTypeConverter : JsonConverter<DocumentBlockParamSourceType>
+{
+    public override DocumentBlockParamSourceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "base64" => DocumentBlockParamSourceType.Base64,
+            "text" => DocumentBlockParamSourceType.Text,
+            "content" => DocumentBlockParamSourceType.Content,
+            "url" => DocumentBlockParamSourceType.Url,
+            "file" => DocumentBlockParamSourceType.File,
+            _ => (DocumentBlockParamSourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        DocumentBlockParamSourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                DocumentBlockParamSourceType.Base64 => "base64",
+                DocumentBlockParamSourceType.Text => "text",
+                DocumentBlockParamSourceType.Content => "content",
+                DocumentBlockParamSourceType.Url => "url",
+                DocumentBlockParamSourceType.File => "file",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

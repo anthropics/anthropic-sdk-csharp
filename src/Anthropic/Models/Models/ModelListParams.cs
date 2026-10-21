@@ -8,7 +8,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta;
 
 namespace Anthropic.Models.Models;
 
@@ -121,36 +120,6 @@ public record class ModelListParams : ParamsBase
             }
 
             this._rawQueryData.Set("limit", value);
-        }
-    }
-
-    /// <summary>
-    /// Optional header to specify the beta version(s) you want to use.
-    /// </summary>
-    [Obsolete(
-        "Deprecated. This parameter will be removed from this method in a future release. To use beta features, call the beta models methods (`client.beta.models`) instead."
-    )]
-    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
-    {
-        get
-        {
-            this._rawHeaderData.Freeze();
-            return this._rawHeaderData.GetNullableStruct<
-                ImmutableArray<ApiEnum<string, AnthropicBeta>>
-            >("anthropic-beta");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawHeaderData.Remove("anthropic-beta");
-                return;
-            }
-
-            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
-                "anthropic-beta",
-                value == null ? null : ImmutableArray.ToImmutableArray(value)
-            );
         }
     }
 

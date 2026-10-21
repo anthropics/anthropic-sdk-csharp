@@ -20,15 +20,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -39,15 +31,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             new BetaManagedAgentsUserMessageEvent()
             {
                 ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
         ];
@@ -70,15 +54,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -103,15 +79,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -129,15 +97,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
             new BetaManagedAgentsUserMessageEvent()
             {
                 ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
         ];
@@ -160,15 +120,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -217,15 +169,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -261,15 +205,7 @@ public class BetaManagedAgentsSendSessionEventsTest : TestBase
                 new BetaManagedAgentsUserMessageEvent()
                 {
                     ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+                    Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
                     ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
             ],
@@ -289,15 +225,7 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsUserMessageEvent()
         {
             ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
         value.Validate();
@@ -309,7 +237,6 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsUserInterruptEvent()
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -324,7 +251,6 @@ public class DataTest : TestBase
             ID = "id",
             Result = Result.Allow,
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -339,15 +265,7 @@ public class DataTest : TestBase
         {
             ID = "id",
             CustomToolUseID = "custom_tool_use_id",
-            Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -365,12 +283,9 @@ public class DataTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
         value.Validate();
     }
@@ -382,15 +297,7 @@ public class DataTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -404,15 +311,7 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsSystemMessageEvent()
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
         value.Validate();
@@ -424,15 +323,7 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsUserMessageEvent()
         {
             ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsUserMessageEventType.UserMessage,
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -447,7 +338,6 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsUserInterruptEvent()
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -465,7 +355,6 @@ public class DataTest : TestBase
             ID = "id",
             Result = Result.Allow,
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
             DenyMessage = "deny_message",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -483,15 +372,7 @@ public class DataTest : TestBase
         {
             ID = "id",
             CustomToolUseID = "custom_tool_use_id",
-            Type = BetaManagedAgentsUserCustomToolResultEventType.UserCustomToolResult,
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -512,12 +393,9 @@ public class DataTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
@@ -532,15 +410,7 @@ public class DataTest : TestBase
         {
             ID = "id",
             ToolUseID = "tool_use_id",
-            Type = BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
             IsError = true,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
@@ -557,21 +427,111 @@ public class DataTest : TestBase
         Data value = new BetaManagedAgentsSystemMessageEvent()
         {
             ID = "id",
-            Content =
-            [
-                new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsSystemContentBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsSystemMessageEventType.SystemMessage,
+            Content = [new("Where is my order #1234?")],
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Data>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserMessageEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserMessageEvent()
+        {
+            ID = "sevt_011CZkZGPp1iBcp4kaQSihUm",
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
+            ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+        };
+        Assert.Equal(DataType.UserMessage, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserInterruptEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserInterruptEvent()
+        {
+            ID = "id",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        Assert.Equal(DataType.UserInterrupt, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserToolConfirmationEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserToolConfirmationEvent()
+        {
+            ID = "id",
+            Result = Result.Allow,
+            ToolUseID = "tool_use_id",
+            DenyMessage = "deny_message",
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        Assert.Equal(DataType.UserToolConfirmation, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserCustomToolResultEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserCustomToolResultEvent()
+        {
+            ID = "id",
+            CustomToolUseID = "custom_tool_use_id",
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
+            IsError = true,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        Assert.Equal(DataType.UserCustomToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserDefineOutcomeEvent()
+        {
+            ID = "sevt_011CZkZSTx3mFgt7odUWmkyq",
+            Description = "Produce a 2-page summary as summary.md",
+            MaxIterations = 3,
+            OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
+            ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
+        };
+        Assert.Equal(DataType.UserDefineOutcome, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserToolResultEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsUserToolResultEvent()
+        {
+            ID = "id",
+            ToolUseID = "tool_use_id",
+            Content = [new BetaManagedAgentsTextBlock("Where is my order #1234?")],
+            IsError = true,
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            SessionThreadID = "session_thread_id",
+        };
+        Assert.Equal(DataType.UserToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSystemMessageEventTypeWorks()
+    {
+        Data value = new BetaManagedAgentsSystemMessageEvent()
+        {
+            ID = "id",
+            Content = [new("Where is my order #1234?")],
+            ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+        };
+        Assert.Equal(DataType.SystemMessage, value.Type.Value());
     }
 
     [Fact]
@@ -582,6 +542,7 @@ public class DataTest : TestBase
                 """
                 {
                   "id": "sevt_011CZkZGPp1iBcp4kaQSihUm",
+                  "type": "user.message",
                   "processed_at": "2026-03-15T10:00:00Z",
                   "session_thread_id": "session_thread_id",
                   "tool_use_id": "tool_use_id",
@@ -593,12 +554,14 @@ public class DataTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedID = "sevt_011CZkZGPp1iBcp4kaQSihUm";
+        ApiEnum<string, DataType> expectedType = DataType.UserMessage;
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "session_thread_id";
         string expectedToolUseID = "tool_use_id";
         bool expectedIsError = true;
 
         Assert.Equal(expectedID, value.ID);
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedProcessedAt, value.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
         Assert.Equal(expectedToolUseID, value.ToolUseID);
@@ -607,6 +570,7 @@ public class DataTest : TestBase
         Data emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.ID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.ProcessedAt);
         Assert.Null(emptyValue.SessionThreadID);
         Assert.Null(emptyValue.ToolUseID);
@@ -641,5 +605,73 @@ public class DataTest : TestBase
         Assert.Null(mismatchedValue.SessionThreadID);
         Assert.Null(mismatchedValue.ToolUseID);
         Assert.Null(mismatchedValue.IsError);
+    }
+}
+
+public class DataTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(DataType.UserMessage)]
+    [InlineData(DataType.UserInterrupt)]
+    [InlineData(DataType.UserToolConfirmation)]
+    [InlineData(DataType.UserCustomToolResult)]
+    [InlineData(DataType.UserDefineOutcome)]
+    [InlineData(DataType.UserToolResult)]
+    [InlineData(DataType.SystemMessage)]
+    public void Validation_Works(DataType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DataType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DataType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(DataType.UserMessage)]
+    [InlineData(DataType.UserInterrupt)]
+    [InlineData(DataType.UserToolConfirmation)]
+    [InlineData(DataType.UserCustomToolResult)]
+    [InlineData(DataType.UserDefineOutcome)]
+    [InlineData(DataType.UserToolResult)]
+    [InlineData(DataType.SystemMessage)]
+    public void SerializationRoundtrip_Works(DataType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DataType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DataType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DataType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DataType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -32,17 +32,19 @@ public record class BetaMessageBatchResult : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaMessageBatchResultType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaMessageBatchSucceededResult x => x.Type,
-                BetaMessageBatchErroredResult x => x.Type,
-                BetaMessageBatchCanceledResult x => x.Type,
-                BetaMessageBatchExpiredResult x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaMessageBatchSucceededResult _ => BetaMessageBatchResultType.Succeeded,
+                BetaMessageBatchErroredResult _ => BetaMessageBatchResultType.Errored,
+                BetaMessageBatchCanceledResult _ => BetaMessageBatchResultType.Canceled,
+                BetaMessageBatchExpiredResult _ => BetaMessageBatchResultType.Expired,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaMessageBatchResultType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -437,5 +439,55 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaMessageBatchResultTypeConverter))]
+public enum BetaMessageBatchResultType
+{
+    Succeeded,
+    Errored,
+    Canceled,
+    Expired,
+}
+
+sealed class BetaMessageBatchResultTypeConverter : JsonConverter<BetaMessageBatchResultType>
+{
+    public override BetaMessageBatchResultType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "succeeded" => BetaMessageBatchResultType.Succeeded,
+            "errored" => BetaMessageBatchResultType.Errored,
+            "canceled" => BetaMessageBatchResultType.Canceled,
+            "expired" => BetaMessageBatchResultType.Expired,
+            _ => (BetaMessageBatchResultType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMessageBatchResultType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaMessageBatchResultType.Succeeded => "succeeded",
+                BetaMessageBatchResultType.Errored => "errored",
+                BetaMessageBatchResultType.Canceled => "canceled",
+                BetaMessageBatchResultType.Expired => "expired",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

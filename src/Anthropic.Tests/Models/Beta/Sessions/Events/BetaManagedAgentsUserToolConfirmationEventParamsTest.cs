@@ -14,20 +14,18 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
             DenyMessage = "deny_message",
         };
 
         ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult> expectedResult =
             BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow;
         string expectedToolUseID = "x";
-        ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType> expectedType =
-            BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.tool_confirmation");
         string expectedDenyMessage = "deny_message";
 
         Assert.Equal(expectedResult, model.Result);
         Assert.Equal(expectedToolUseID, model.ToolUseID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedDenyMessage, model.DenyMessage);
     }
 
@@ -38,7 +36,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
             DenyMessage = "deny_message",
         };
 
@@ -59,7 +56,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
             DenyMessage = "deny_message",
         };
 
@@ -74,13 +70,12 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult> expectedResult =
             BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow;
         string expectedToolUseID = "x";
-        ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType> expectedType =
-            BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.tool_confirmation");
         string expectedDenyMessage = "deny_message";
 
         Assert.Equal(expectedResult, deserialized.Result);
         Assert.Equal(expectedToolUseID, deserialized.ToolUseID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedDenyMessage, deserialized.DenyMessage);
     }
 
@@ -91,7 +86,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
             DenyMessage = "deny_message",
         };
 
@@ -105,7 +99,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
         };
 
         Assert.Null(model.DenyMessage);
@@ -119,7 +112,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
         };
 
         model.Validate();
@@ -132,7 +124,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
 
             DenyMessage = null,
         };
@@ -148,7 +139,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
 
             DenyMessage = null,
         };
@@ -163,7 +153,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsTest : TestBase
         {
             Result = BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow,
             ToolUseID = "x",
-            Type = BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
             DenyMessage = "deny_message",
         };
 
@@ -223,60 +212,6 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsResultTest : TestBa
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class BetaManagedAgentsUserToolConfirmationEventParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation)]
-    public void Validation_Works(BetaManagedAgentsUserToolConfirmationEventParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserToolConfirmationEventParamsType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

@@ -83,7 +83,7 @@ public class BetaMessageStreamingAggregationTest
         new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = new(""), Role = Role.User }],
+            Messages = [new BetaUserMessageParam { Content = new("") }],
             Model = Messages::Model.ClaudeOpus4_6,
         };
 

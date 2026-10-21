@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsUrlMcpServerParams : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUrlMcpServerParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUrlMcpServerParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -62,11 +59,17 @@ public sealed record class BetaManagedAgentsUrlMcpServerParams : JsonModel
     public override void Validate()
     {
         _ = this.Name;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("url")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Url;
     }
 
-    public BetaManagedAgentsUrlMcpServerParams() { }
+    public BetaManagedAgentsUrlMcpServerParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("url");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -79,6 +82,8 @@ public sealed record class BetaManagedAgentsUrlMcpServerParams : JsonModel
     public BetaManagedAgentsUrlMcpServerParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("url");
     }
 
 #pragma warning disable CS8618
@@ -104,46 +109,4 @@ class BetaManagedAgentsUrlMcpServerParamsFromRaw : IFromRawJson<BetaManagedAgent
     public BetaManagedAgentsUrlMcpServerParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUrlMcpServerParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUrlMcpServerParamsTypeConverter))]
-public enum BetaManagedAgentsUrlMcpServerParamsType
-{
-    Url,
-}
-
-sealed class BetaManagedAgentsUrlMcpServerParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsUrlMcpServerParamsType>
-{
-    public override BetaManagedAgentsUrlMcpServerParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "url" => BetaManagedAgentsUrlMcpServerParamsType.Url,
-            _ => (BetaManagedAgentsUrlMcpServerParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUrlMcpServerParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUrlMcpServerParamsType.Url => "url",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

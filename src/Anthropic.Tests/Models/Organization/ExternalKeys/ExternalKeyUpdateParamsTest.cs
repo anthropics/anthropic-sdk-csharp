@@ -252,6 +252,39 @@ public class ExternalKeyUpdateParamsProviderConfigTest : TestBase
     }
 
     [Fact]
+    public void AwsExternalKeyTypeWorks()
+    {
+        ExternalKeyUpdateParamsProviderConfig value = new AwsExternalKeyConfig()
+        {
+            KmsArn = "arn:aws:kms:us-east-1:111122223333:key/abcd1234-5678-90ab-cdef-000011112222",
+            Region = "us-east-1",
+        };
+        Assert.Equal(ExternalKeyUpdateParamsProviderConfigType.Aws, value.Type.Value());
+    }
+
+    [Fact]
+    public void GcpExternalKeyTypeWorks()
+    {
+        ExternalKeyUpdateParamsProviderConfig value = new GcpExternalKeyConfig(
+            "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key"
+        );
+        Assert.Equal(ExternalKeyUpdateParamsProviderConfigType.Gcp, value.Type.Value());
+    }
+
+    [Fact]
+    public void AzureExternalKeyConfigParamTypeWorks()
+    {
+        ExternalKeyUpdateParamsProviderConfig value = new AzureExternalKeyConfigParam()
+        {
+            KeyName = "key_name",
+            TenantID = "tenant_id",
+            VaultUri = "https://my-vault.vault.azure.net/",
+            ClientID = "client_id",
+        };
+        Assert.Equal(ExternalKeyUpdateParamsProviderConfigType.Azure, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ExternalKeyUpdateParamsProviderConfig value = new(
@@ -266,10 +299,11 @@ public class ExternalKeyUpdateParamsProviderConfigTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("aws");
+        ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType> expectedType =
+            ExternalKeyUpdateParamsProviderConfigType.Aws;
         string expectedKeyName = "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedKeyName, value.KeyName);
 
         ExternalKeyUpdateParamsProviderConfig emptyValue = new(
@@ -292,5 +326,61 @@ public class ExternalKeyUpdateParamsProviderConfigTest : TestBase
         );
 
         Assert.Null(mismatchedValue.KeyName);
+    }
+}
+
+public class ExternalKeyUpdateParamsProviderConfigTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Aws)]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Gcp)]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Azure)]
+    public void Validation_Works(ExternalKeyUpdateParamsProviderConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Aws)]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Gcp)]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Azure)]
+    public void SerializationRoundtrip_Works(ExternalKeyUpdateParamsProviderConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

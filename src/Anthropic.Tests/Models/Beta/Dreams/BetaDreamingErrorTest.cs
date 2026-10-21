@@ -209,6 +209,76 @@ public class BetaDreamingErrorTest : TestBase
     }
 
     [Fact]
+    public void InvalidRequestTypeWorks()
+    {
+        BetaDreamingError value = new BetaInvalidRequestError("message");
+        Assert.Equal(BetaDreamingErrorType.InvalidRequestError, value.Type.Value());
+    }
+
+    [Fact]
+    public void AuthenticationTypeWorks()
+    {
+        BetaDreamingError value = new BetaAuthenticationError("message");
+        Assert.Equal(BetaDreamingErrorType.AuthenticationError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BillingTypeWorks()
+    {
+        BetaDreamingError value = new BetaBillingError("message");
+        Assert.Equal(BetaDreamingErrorType.BillingError, value.Type.Value());
+    }
+
+    [Fact]
+    public void PermissionTypeWorks()
+    {
+        BetaDreamingError value = new BetaPermissionError("message");
+        Assert.Equal(BetaDreamingErrorType.PermissionError, value.Type.Value());
+    }
+
+    [Fact]
+    public void NotFoundTypeWorks()
+    {
+        BetaDreamingError value = new BetaNotFoundError("message");
+        Assert.Equal(BetaDreamingErrorType.NotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void RateLimitTypeWorks()
+    {
+        BetaDreamingError value = new BetaRateLimitError("message");
+        Assert.Equal(BetaDreamingErrorType.RateLimitError, value.Type.Value());
+    }
+
+    [Fact]
+    public void GatewayTimeoutTypeWorks()
+    {
+        BetaDreamingError value = new BetaGatewayTimeoutError("message");
+        Assert.Equal(BetaDreamingErrorType.TimeoutError, value.Type.Value());
+    }
+
+    [Fact]
+    public void ApiTypeWorks()
+    {
+        BetaDreamingError value = new BetaApiError("message");
+        Assert.Equal(BetaDreamingErrorType.ApiError, value.Type.Value());
+    }
+
+    [Fact]
+    public void OverloadedTypeWorks()
+    {
+        BetaDreamingError value = new BetaOverloadedError("message");
+        Assert.Equal(BetaDreamingErrorType.OverloadedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void TargetStoreHeldTypeWorks()
+    {
+        BetaDreamingError value = new BetaTargetStoreHeldError() { Message = "message" };
+        Assert.Equal(BetaDreamingErrorType.ConflictError, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaDreamingError value = new(
@@ -224,10 +294,11 @@ public class BetaDreamingErrorTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("invalid_request_error");
+        ApiEnum<string, BetaDreamingErrorType> expectedType =
+            BetaDreamingErrorType.InvalidRequestError;
 
         Assert.Equal(expectedMessage, value.Message);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaDreamingError emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -247,5 +318,79 @@ public class BetaDreamingErrorTest : TestBase
         );
 
         Assert.Null(mismatchedValue.Message);
+    }
+}
+
+public class BetaDreamingErrorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaDreamingErrorType.InvalidRequestError)]
+    [InlineData(BetaDreamingErrorType.AuthenticationError)]
+    [InlineData(BetaDreamingErrorType.BillingError)]
+    [InlineData(BetaDreamingErrorType.PermissionError)]
+    [InlineData(BetaDreamingErrorType.NotFoundError)]
+    [InlineData(BetaDreamingErrorType.RateLimitError)]
+    [InlineData(BetaDreamingErrorType.TimeoutError)]
+    [InlineData(BetaDreamingErrorType.ApiError)]
+    [InlineData(BetaDreamingErrorType.OverloadedError)]
+    [InlineData(BetaDreamingErrorType.ConflictError)]
+    public void Validation_Works(BetaDreamingErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaDreamingErrorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamingErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaDreamingErrorType.InvalidRequestError)]
+    [InlineData(BetaDreamingErrorType.AuthenticationError)]
+    [InlineData(BetaDreamingErrorType.BillingError)]
+    [InlineData(BetaDreamingErrorType.PermissionError)]
+    [InlineData(BetaDreamingErrorType.NotFoundError)]
+    [InlineData(BetaDreamingErrorType.RateLimitError)]
+    [InlineData(BetaDreamingErrorType.TimeoutError)]
+    [InlineData(BetaDreamingErrorType.ApiError)]
+    [InlineData(BetaDreamingErrorType.OverloadedError)]
+    [InlineData(BetaDreamingErrorType.ConflictError)]
+    public void SerializationRoundtrip_Works(BetaDreamingErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaDreamingErrorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamingErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamingErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamingErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -4,7 +4,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Agents;
-using Threads = Anthropic.Models.Beta.Sessions.Threads;
+using Anthropic.Models.Beta.Sessions.Threads;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Threads;
 
@@ -13,7 +13,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -30,16 +30,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -49,7 +46,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -64,23 +60,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -93,8 +82,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -116,7 +104,7 @@ public class ThreadListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        List<Threads::BetaManagedAgentsSessionThread> expectedData =
+        List<BetaManagedAgentsSessionThread> expectedData =
         [
             new()
             {
@@ -131,26 +119,20 @@ public class ThreadListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -163,22 +145,16 @@ public class ThreadListPageResponseTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
                 ArchivedAt = null,
@@ -191,8 +167,7 @@ public class ThreadListPageResponseTest : TestBase
                     DurationSeconds = 0,
                     StartupSeconds = 0,
                 },
-                Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                Type = Threads::Type.SessionThread,
+                Status = BetaManagedAgentsSessionThreadStatus.Idle,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
@@ -225,7 +200,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -242,16 +217,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -261,7 +233,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -276,23 +247,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -305,8 +269,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -329,7 +292,7 @@ public class ThreadListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::ThreadListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<ThreadListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -340,7 +303,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -357,16 +320,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -376,7 +336,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -391,23 +350,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -420,8 +372,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -444,13 +395,13 @@ public class ThreadListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::ThreadListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<ThreadListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<Threads::BetaManagedAgentsSessionThread> expectedData =
+        List<BetaManagedAgentsSessionThread> expectedData =
         [
             new()
             {
@@ -465,26 +416,20 @@ public class ThreadListPageResponseTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -497,22 +442,16 @@ public class ThreadListPageResponseTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
                 ArchivedAt = null,
@@ -525,8 +464,7 @@ public class ThreadListPageResponseTest : TestBase
                     DurationSeconds = 0,
                     StartupSeconds = 0,
                 },
-                Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                Type = Threads::Type.SessionThread,
+                Status = BetaManagedAgentsSessionThreadStatus.Idle,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Usage = new()
                 {
@@ -559,7 +497,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -576,16 +514,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -595,7 +530,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -610,23 +544,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -639,8 +566,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -668,10 +594,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Threads::ThreadListPageResponse
-        {
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
-        };
+        var model = new ThreadListPageResponse { NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=" };
 
         Assert.Null(model.Data);
         Assert.False(model.RawData.ContainsKey("data"));
@@ -680,10 +603,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Threads::ThreadListPageResponse
-        {
-            NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
-        };
+        var model = new ThreadListPageResponse { NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=" };
 
         model.Validate();
     }
@@ -691,7 +611,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
@@ -706,7 +626,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -723,16 +643,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -742,7 +659,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -757,23 +673,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -786,8 +695,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -820,7 +728,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
@@ -834,7 +742,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -851,16 +759,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -870,7 +775,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -885,23 +789,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -914,8 +811,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -943,7 +839,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -960,16 +856,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -979,7 +872,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -994,23 +886,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -1023,8 +908,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -1051,7 +935,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -1068,16 +952,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -1087,7 +968,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -1102,23 +982,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -1131,8 +1004,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -1162,7 +1034,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -1179,16 +1051,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -1198,7 +1067,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -1213,23 +1081,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -1242,8 +1103,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -1272,7 +1132,7 @@ public class ThreadListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Threads::ThreadListPageResponse
+        var model = new ThreadListPageResponse
         {
             Data =
             [
@@ -1289,16 +1149,13 @@ public class ThreadListPageResponseTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -1308,7 +1165,6 @@ public class ThreadListPageResponseTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -1323,23 +1179,16 @@ public class ThreadListPageResponseTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                     ArchivedAt = null,
@@ -1352,8 +1201,7 @@ public class ThreadListPageResponseTest : TestBase
                         DurationSeconds = 0,
                         StartupSeconds = 0,
                     },
-                    Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-                    Type = Threads::Type.SessionThread,
+                    Status = BetaManagedAgentsSessionThreadStatus.Idle,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Usage = new()
                     {
@@ -1375,7 +1223,7 @@ public class ThreadListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        Threads::ThreadListPageResponse copied = new(model);
+        ThreadListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

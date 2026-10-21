@@ -145,7 +145,7 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicBedrockMantleClient(_awsOptions, modifier(_options));
+        return new AnthropicBedrockMantleClient(_awsOptions, _options.Apply(modifier));
     }
 
     /// <summary>

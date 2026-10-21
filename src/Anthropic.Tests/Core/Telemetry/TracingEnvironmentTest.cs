@@ -46,7 +46,7 @@ public sealed class TracingEnvironmentTest : IDisposable
         new()
         {
             MaxTokens = 8,
-            Messages = [new() { Role = Role.User, Content = "Hi" }],
+            Messages = [new UserMessageParam { Content = "Hi" }],
             Model = "claude-test",
         };
 
@@ -403,7 +403,7 @@ public sealed class TracingEnvironmentTest : IDisposable
                 new()
                 {
                     MaxTokens = 8,
-                    Messages = [new() { Role = Beta.Role.User, Content = "Hi" }],
+                    Messages = [new Beta.BetaUserMessageParam { Content = "Hi" }],
                     Model = "claude-test",
                     System = "Be brief.",
                 },
@@ -413,7 +413,7 @@ public sealed class TracingEnvironmentTest : IDisposable
         await client.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Role = Role.User, Content = "Hi" }],
+                Messages = [new UserMessageParam { Content = "Hi" }],
                 Model = "claude-test",
                 System = "Be brief.",
             },
@@ -515,7 +515,7 @@ public sealed class TracingEnvironmentTest : IDisposable
             new()
             {
                 MaxTokens = 8,
-                Messages = [new() { Role = Beta.Role.User, Content = "Weather?" }],
+                Messages = [new Beta.BetaUserMessageParam { Content = "Weather?" }],
                 Model = "claude-test",
                 System = "Be brief.",
             },
@@ -658,7 +658,7 @@ public sealed class TracingEnvironmentTest : IDisposable
             new()
             {
                 MaxTokens = 8,
-                Messages = [new() { Role = Beta.Role.User, Content = "Weather?" }],
+                Messages = [new Beta.BetaUserMessageParam { Content = "Weather?" }],
                 Model = "claude-test",
             },
             [

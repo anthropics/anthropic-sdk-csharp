@@ -22,7 +22,6 @@ public class RateLimitListPageResponseTest : TestBase
                         ID = "id",
                         DisplayName = "display_name",
                     },
-                    GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
@@ -50,7 +49,6 @@ public class RateLimitListPageResponseTest : TestBase
                     ID = "id",
                     DisplayName = "display_name",
                 },
-                GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                 Limits =
                 [
                     new()
@@ -90,7 +88,6 @@ public class RateLimitListPageResponseTest : TestBase
                         ID = "id",
                         DisplayName = "display_name",
                     },
-                    GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
@@ -132,7 +129,6 @@ public class RateLimitListPageResponseTest : TestBase
                         ID = "id",
                         DisplayName = "display_name",
                     },
-                    GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
@@ -167,7 +163,6 @@ public class RateLimitListPageResponseTest : TestBase
                     ID = "id",
                     DisplayName = "display_name",
                 },
-                GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                 Limits =
                 [
                     new()
@@ -207,7 +202,6 @@ public class RateLimitListPageResponseTest : TestBase
                         ID = "id",
                         DisplayName = "display_name",
                     },
-                    GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()
@@ -243,7 +237,6 @@ public class RateLimitListPageResponseTest : TestBase
                         ID = "id",
                         DisplayName = "display_name",
                     },
-                    GroupType = BetaWorkspaceRateLimitGroupType.Batch,
                     Limits =
                     [
                         new()

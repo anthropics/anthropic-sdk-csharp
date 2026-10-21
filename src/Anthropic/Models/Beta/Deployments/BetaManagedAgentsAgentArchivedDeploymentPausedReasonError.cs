@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsAgentArchivedDeploymentPausedReasonError : JsonModel
 {
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Deployments.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Deployments.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -35,10 +32,21 @@ public sealed record class BetaManagedAgentsAgentArchivedDeploymentPausedReasonE
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent_archived_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAgentArchivedDeploymentPausedReasonError() { }
+    public BetaManagedAgentsAgentArchivedDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent_archived_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -53,6 +61,8 @@ public sealed record class BetaManagedAgentsAgentArchivedDeploymentPausedReasonE
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent_archived_error");
     }
 
 #pragma warning disable CS8618
@@ -72,15 +82,6 @@ public sealed record class BetaManagedAgentsAgentArchivedDeploymentPausedReasonE
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsAgentArchivedDeploymentPausedReasonError(
-        ApiEnum<string, global::Anthropic.Models.Beta.Deployments.Type> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsAgentArchivedDeploymentPausedReasonErrorFromRaw
@@ -90,51 +91,4 @@ class BetaManagedAgentsAgentArchivedDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsAgentArchivedDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentArchivedDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    AgentArchivedError,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Deployments.Type>
-{
-    public override global::Anthropic.Models.Beta.Deployments.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent_archived_error" => global::Anthropic
-                .Models
-                .Beta
-                .Deployments
-                .Type
-                .AgentArchivedError,
-            _ => (global::Anthropic.Models.Beta.Deployments.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Deployments.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.Deployments.Type.AgentArchivedError =>
-                    "agent_archived_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -540,6 +540,221 @@ public class ComputerToolUseBlockTest : TestBase
     }
 
     [Fact]
+    public void KeyNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerKeyToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Text = "text", Repeat = 1 },
+        };
+        Assert.Equal(ComputerToolUseBlockName.Key, value.Name.Value());
+    }
+
+    [Fact]
+    public void HoldKeyNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerHoldKeyToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Duration = 300, Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.HoldKey, value.Name.Value());
+    }
+
+    [Fact]
+    public void TypeNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerTypeToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new("text"),
+        };
+        Assert.Equal(ComputerToolUseBlockName.Type, value.Name.Value());
+    }
+
+    [Fact]
+    public void CursorPositionNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerCursorPositionToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(ComputerToolUseBlockName.CursorPosition, value.Name.Value());
+    }
+
+    [Fact]
+    public void MouseMoveNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerMouseMoveToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new([0, 0]),
+        };
+        Assert.Equal(ComputerToolUseBlockName.MouseMove, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftMouseDownNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerLeftMouseDownToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(ComputerToolUseBlockName.LeftMouseDown, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftMouseUpNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerLeftMouseUpToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(ComputerToolUseBlockName.LeftMouseUp, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftClickNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerLeftClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Coordinate = [0, 0], Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.LeftClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void LeftClickDragNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerLeftClickDragToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                Coordinate = [0, 0],
+                StartCoordinate = [0, 0],
+                Text = "text",
+            },
+        };
+        Assert.Equal(ComputerToolUseBlockName.LeftClickDrag, value.Name.Value());
+    }
+
+    [Fact]
+    public void RightClickNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerRightClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Coordinate = [0, 0], Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.RightClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void MiddleClickNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerMiddleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Coordinate = [0, 0], Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.MiddleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void DoubleClickNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerDoubleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Coordinate = [0, 0], Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.DoubleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void TripleClickNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerTripleClickToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new() { Coordinate = [0, 0], Text = "text" },
+        };
+        Assert.Equal(ComputerToolUseBlockName.TripleClick, value.Name.Value());
+    }
+
+    [Fact]
+    public void ScrollNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerScrollToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new()
+            {
+                ScrollAmount = 0,
+                ScrollDirection = ComputerScrollDirection.Up,
+                Coordinate = [0, 0],
+                Text = "text",
+            },
+        };
+        Assert.Equal(ComputerToolUseBlockName.Scroll, value.Name.Value());
+    }
+
+    [Fact]
+    public void WaitNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerWaitToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(300),
+        };
+        Assert.Equal(ComputerToolUseBlockName.Wait, value.Name.Value());
+    }
+
+    [Fact]
+    public void ScreenshotNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerScreenshotToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new(),
+        };
+        Assert.Equal(ComputerToolUseBlockName.Screenshot, value.Name.Value());
+    }
+
+    [Fact]
+    public void ZoomNameWorks()
+    {
+        ComputerToolUseBlock value = new ComputerZoomToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new([0, 0, 0, 0]),
+        };
+        Assert.Equal(ComputerToolUseBlockName.Zoom, value.Name.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ComputerToolUseBlock value = new(
@@ -561,13 +776,13 @@ public class ComputerToolUseBlockTest : TestBase
 
         string expectedID = "id";
         ToolUseCaller expectedCaller = new DirectCaller();
-        JsonElement expectedName = JsonSerializer.SerializeToElement("key");
+        ApiEnum<string, ComputerToolUseBlockName> expectedName = ComputerToolUseBlockName.Key;
         JsonElement expectedToolsetName = JsonSerializer.SerializeToElement("computer");
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_use");
 
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedCaller, value.Caller);
-        Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
+        Assert.Equal(expectedName, value.Name);
         Assert.True(JsonElement.DeepEquals(expectedToolsetName, value.ToolsetName));
         Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
 
@@ -592,5 +807,93 @@ public class ComputerToolUseBlockTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ID);
+    }
+}
+
+public class ComputerToolUseBlockNameTest : TestBase
+{
+    [Theory]
+    [InlineData(ComputerToolUseBlockName.Key)]
+    [InlineData(ComputerToolUseBlockName.HoldKey)]
+    [InlineData(ComputerToolUseBlockName.Type)]
+    [InlineData(ComputerToolUseBlockName.CursorPosition)]
+    [InlineData(ComputerToolUseBlockName.MouseMove)]
+    [InlineData(ComputerToolUseBlockName.LeftMouseDown)]
+    [InlineData(ComputerToolUseBlockName.LeftMouseUp)]
+    [InlineData(ComputerToolUseBlockName.LeftClick)]
+    [InlineData(ComputerToolUseBlockName.LeftClickDrag)]
+    [InlineData(ComputerToolUseBlockName.RightClick)]
+    [InlineData(ComputerToolUseBlockName.MiddleClick)]
+    [InlineData(ComputerToolUseBlockName.DoubleClick)]
+    [InlineData(ComputerToolUseBlockName.TripleClick)]
+    [InlineData(ComputerToolUseBlockName.Scroll)]
+    [InlineData(ComputerToolUseBlockName.Wait)]
+    [InlineData(ComputerToolUseBlockName.Screenshot)]
+    [InlineData(ComputerToolUseBlockName.Zoom)]
+    public void Validation_Works(ComputerToolUseBlockName rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ComputerToolUseBlockName> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ComputerToolUseBlockName>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ComputerToolUseBlockName.Key)]
+    [InlineData(ComputerToolUseBlockName.HoldKey)]
+    [InlineData(ComputerToolUseBlockName.Type)]
+    [InlineData(ComputerToolUseBlockName.CursorPosition)]
+    [InlineData(ComputerToolUseBlockName.MouseMove)]
+    [InlineData(ComputerToolUseBlockName.LeftMouseDown)]
+    [InlineData(ComputerToolUseBlockName.LeftMouseUp)]
+    [InlineData(ComputerToolUseBlockName.LeftClick)]
+    [InlineData(ComputerToolUseBlockName.LeftClickDrag)]
+    [InlineData(ComputerToolUseBlockName.RightClick)]
+    [InlineData(ComputerToolUseBlockName.MiddleClick)]
+    [InlineData(ComputerToolUseBlockName.DoubleClick)]
+    [InlineData(ComputerToolUseBlockName.TripleClick)]
+    [InlineData(ComputerToolUseBlockName.Scroll)]
+    [InlineData(ComputerToolUseBlockName.Wait)]
+    [InlineData(ComputerToolUseBlockName.Screenshot)]
+    [InlineData(ComputerToolUseBlockName.Zoom)]
+    public void SerializationRoundtrip_Works(ComputerToolUseBlockName rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ComputerToolUseBlockName> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ComputerToolUseBlockName>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ComputerToolUseBlockName>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ComputerToolUseBlockName>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

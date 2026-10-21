@@ -38,15 +38,7 @@ await client.Beta.Sessions.Events.Send(
         [
             new BetaManagedAgentsUserMessageEventParams
             {
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock
-                    {
-                        Text = "Hello Claude!",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
+                Content = [new BetaManagedAgentsTextBlock { Text = "Hello Claude!" }],
             },
         ],
     }

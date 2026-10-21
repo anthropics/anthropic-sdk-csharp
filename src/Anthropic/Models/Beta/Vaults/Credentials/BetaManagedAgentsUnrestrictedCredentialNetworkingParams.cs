@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -22,17 +21,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 )]
 public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingParams : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -40,10 +34,16 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingPara
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("unrestricted")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUnrestrictedCredentialNetworkingParams() { }
+    public BetaManagedAgentsUnrestrictedCredentialNetworkingParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("unrestricted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -58,6 +58,8 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingPara
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("unrestricted");
     }
 
 #pragma warning disable CS8618
@@ -77,15 +79,6 @@ public sealed record class BetaManagedAgentsUnrestrictedCredentialNetworkingPara
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-        ApiEnum<string, BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsUnrestrictedCredentialNetworkingParamsFromRaw
@@ -95,48 +88,4 @@ class BetaManagedAgentsUnrestrictedCredentialNetworkingParamsFromRaw
     public BetaManagedAgentsUnrestrictedCredentialNetworkingParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUnrestrictedCredentialNetworkingParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUnrestrictedCredentialNetworkingParamsTypeConverter))]
-public enum BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType
-{
-    Unrestricted,
-}
-
-sealed class BetaManagedAgentsUnrestrictedCredentialNetworkingParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType>
-{
-    public override BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "unrestricted" =>
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted,
-            _ => (BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted =>
-                    "unrestricted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

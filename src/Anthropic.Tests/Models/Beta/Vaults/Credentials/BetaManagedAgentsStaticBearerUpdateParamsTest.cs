@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -10,28 +9,19 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            Token = "x",
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
 
-        ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> expectedType =
-            BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("static_bearer");
         string expectedToken = "x";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedToken, model.Token);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            Token = "x",
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerUpdateParams>(
@@ -45,11 +35,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            Token = "x",
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerUpdateParams>(
@@ -58,22 +44,17 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> expectedType =
-            BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("static_bearer");
         string expectedToken = "x";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedToken, deserialized.Token);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            Token = "x",
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
 
         model.Validate();
     }
@@ -81,10 +62,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { };
 
         Assert.Null(model.Token);
         Assert.False(model.RawData.ContainsKey("token"));
@@ -93,10 +71,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { };
 
         model.Validate();
     }
@@ -104,12 +79,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-
-            Token = null,
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = null };
 
         Assert.Null(model.Token);
         Assert.True(model.RawData.ContainsKey("token"));
@@ -118,12 +88,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-
-            Token = null,
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = null };
 
         model.Validate();
     }
@@ -131,66 +96,10 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams
-        {
-            Type = BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer,
-            Token = "x",
-        };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
 
         BetaManagedAgentsStaticBearerUpdateParams copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsStaticBearerUpdateParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer)]
-    public void Validation_Works(BetaManagedAgentsStaticBearerUpdateParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsStaticBearerUpdateParamsType.StaticBearer)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsStaticBearerUpdateParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsStaticBearerUpdateParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

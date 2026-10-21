@@ -123,31 +123,35 @@ public record class ContentBlock : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ContentBlockType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTextBlock x => x.Type,
-                BetaThinkingBlock x => x.Type,
-                BetaRedactedThinkingBlock x => x.Type,
-                BetaToolUseBlock x => x.Type,
-                BetaServerToolUseBlock x => x.Type,
-                BetaWebSearchToolResultBlock x => x.Type,
-                BetaWebFetchToolResultBlock x => x.Type,
-                BetaAdvisorToolResultBlock x => x.Type,
-                BetaCodeExecutionToolResultBlock x => x.Type,
-                BetaBashCodeExecutionToolResultBlock x => x.Type,
-                BetaTextEditorCodeExecutionToolResultBlock x => x.Type,
-                BetaToolSearchToolResultBlock x => x.Type,
-                BetaMcpToolUseBlock x => x.Type,
-                BetaMcpToolResultBlock x => x.Type,
-                BetaContainerUploadBlock x => x.Type,
-                BetaCompactionBlock x => x.Type,
-                BetaFallbackBlock x => x.Type,
-                BetaMcpToolListingBlock x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTextBlock _ => ContentBlockType.Text,
+                BetaThinkingBlock _ => ContentBlockType.Thinking,
+                BetaRedactedThinkingBlock _ => ContentBlockType.RedactedThinking,
+                BetaToolUseBlock _ => ContentBlockType.ToolUse,
+                BetaServerToolUseBlock _ => ContentBlockType.ServerToolUse,
+                BetaWebSearchToolResultBlock _ => ContentBlockType.WebSearchToolResult,
+                BetaWebFetchToolResultBlock _ => ContentBlockType.WebFetchToolResult,
+                BetaAdvisorToolResultBlock _ => ContentBlockType.AdvisorToolResult,
+                BetaCodeExecutionToolResultBlock _ => ContentBlockType.CodeExecutionToolResult,
+                BetaBashCodeExecutionToolResultBlock _ =>
+                    ContentBlockType.BashCodeExecutionToolResult,
+                BetaTextEditorCodeExecutionToolResultBlock _ =>
+                    ContentBlockType.TextEditorCodeExecutionToolResult,
+                BetaToolSearchToolResultBlock _ => ContentBlockType.ToolSearchToolResult,
+                BetaMcpToolUseBlock _ => ContentBlockType.McpToolUse,
+                BetaMcpToolResultBlock _ => ContentBlockType.McpToolResult,
+                BetaContainerUploadBlock _ => ContentBlockType.ContainerUpload,
+                BetaCompactionBlock _ => ContentBlockType.Compaction,
+                BetaFallbackBlock _ => ContentBlockType.Fallback,
+                BetaMcpToolListingBlock _ => ContentBlockType.McpToolListing,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ContentBlockType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -1478,5 +1482,99 @@ sealed class ContentBlockConverter : JsonConverter<ContentBlock>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ContentBlockTypeConverter))]
+public enum ContentBlockType
+{
+    Text,
+    Thinking,
+    RedactedThinking,
+    ToolUse,
+    ServerToolUse,
+    WebSearchToolResult,
+    WebFetchToolResult,
+    AdvisorToolResult,
+    CodeExecutionToolResult,
+    BashCodeExecutionToolResult,
+    TextEditorCodeExecutionToolResult,
+    ToolSearchToolResult,
+    McpToolUse,
+    McpToolResult,
+    ContainerUpload,
+    Compaction,
+    Fallback,
+    McpToolListing,
+}
+
+sealed class ContentBlockTypeConverter : JsonConverter<ContentBlockType>
+{
+    public override ContentBlockType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => ContentBlockType.Text,
+            "thinking" => ContentBlockType.Thinking,
+            "redacted_thinking" => ContentBlockType.RedactedThinking,
+            "tool_use" => ContentBlockType.ToolUse,
+            "server_tool_use" => ContentBlockType.ServerToolUse,
+            "web_search_tool_result" => ContentBlockType.WebSearchToolResult,
+            "web_fetch_tool_result" => ContentBlockType.WebFetchToolResult,
+            "advisor_tool_result" => ContentBlockType.AdvisorToolResult,
+            "code_execution_tool_result" => ContentBlockType.CodeExecutionToolResult,
+            "bash_code_execution_tool_result" => ContentBlockType.BashCodeExecutionToolResult,
+            "text_editor_code_execution_tool_result" =>
+                ContentBlockType.TextEditorCodeExecutionToolResult,
+            "tool_search_tool_result" => ContentBlockType.ToolSearchToolResult,
+            "mcp_tool_use" => ContentBlockType.McpToolUse,
+            "mcp_tool_result" => ContentBlockType.McpToolResult,
+            "container_upload" => ContentBlockType.ContainerUpload,
+            "compaction" => ContentBlockType.Compaction,
+            "fallback" => ContentBlockType.Fallback,
+            "mcp_tool_listing" => ContentBlockType.McpToolListing,
+            _ => (ContentBlockType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContentBlockType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContentBlockType.Text => "text",
+                ContentBlockType.Thinking => "thinking",
+                ContentBlockType.RedactedThinking => "redacted_thinking",
+                ContentBlockType.ToolUse => "tool_use",
+                ContentBlockType.ServerToolUse => "server_tool_use",
+                ContentBlockType.WebSearchToolResult => "web_search_tool_result",
+                ContentBlockType.WebFetchToolResult => "web_fetch_tool_result",
+                ContentBlockType.AdvisorToolResult => "advisor_tool_result",
+                ContentBlockType.CodeExecutionToolResult => "code_execution_tool_result",
+                ContentBlockType.BashCodeExecutionToolResult => "bash_code_execution_tool_result",
+                ContentBlockType.TextEditorCodeExecutionToolResult =>
+                    "text_editor_code_execution_tool_result",
+                ContentBlockType.ToolSearchToolResult => "tool_search_tool_result",
+                ContentBlockType.McpToolUse => "mcp_tool_use",
+                ContentBlockType.McpToolResult => "mcp_tool_result",
+                ContentBlockType.ContainerUpload => "container_upload",
+                ContentBlockType.Compaction => "compaction",
+                ContentBlockType.Fallback => "fallback",
+                ContentBlockType.McpToolListing => "mcp_tool_listing",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -28,13 +28,13 @@ public sealed record class BetaManagedAgentsSessionAgentUpdate : JsonModel
     /// Replacement MCP server list. Full replacement: the provided array becomes
     /// the new value. Send an empty array to clear; omit to preserve.
     /// </summary>
-    public IReadOnlyList<BetaManagedAgentsUrlMcpServerParams>? McpServers
+    public IReadOnlyList<Agents::BetaManagedAgentsUrlMcpServerParams>? McpServers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<BetaManagedAgentsUrlMcpServerParams>
+                ImmutableArray<Agents::BetaManagedAgentsUrlMcpServerParams>
             >("mcp_servers");
         }
         init
@@ -45,7 +45,7 @@ public sealed record class BetaManagedAgentsSessionAgentUpdate : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<BetaManagedAgentsUrlMcpServerParams>?>(
+            this._rawData.Set<ImmutableArray<Agents::BetaManagedAgentsUrlMcpServerParams>?>(
                 "mcp_servers",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -154,8 +154,27 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsAgentToolset20260401Params _ =>
+                    BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401,
+                Agents::BetaManagedAgentsMcpToolsetParams _ =>
+                    BetaManagedAgentsSessionAgentUpdateToolType.McpToolset,
+                Agents::BetaManagedAgentsCustomToolParams _ =>
+                    BetaManagedAgentsSessionAgentUpdateToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsAgentToolset20260401Params value,
+        Agents::BetaManagedAgentsAgentToolset20260401Params value,
         JsonElement? element = null
     )
     {
@@ -164,7 +183,7 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     }
 
     public BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsMcpToolsetParams value,
+        Agents::BetaManagedAgentsMcpToolsetParams value,
         JsonElement? element = null
     )
     {
@@ -173,7 +192,7 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     }
 
     public BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsCustomToolParams value,
+        Agents::BetaManagedAgentsCustomToolParams value,
         JsonElement? element = null
     )
     {
@@ -188,70 +207,70 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAgentToolset20260401Params"/>.
+    /// type <see cref="Agents::BetaManagedAgentsAgentToolset20260401Params"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsAgentToolset20260401Params(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAgentToolset20260401Params`
+    ///     // `value` is of type `Agents::BetaManagedAgentsAgentToolset20260401Params`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsAgentToolset20260401Params(
-        [NotNullWhen(true)] out BetaManagedAgentsAgentToolset20260401Params? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsAgentToolset20260401Params? value
     )
     {
-        value = this.Value as BetaManagedAgentsAgentToolset20260401Params;
+        value = this.Value as Agents::BetaManagedAgentsAgentToolset20260401Params;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMcpToolsetParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMcpToolsetParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsMcpToolsetParams(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMcpToolsetParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMcpToolsetParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsMcpToolsetParams(
-        [NotNullWhen(true)] out BetaManagedAgentsMcpToolsetParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMcpToolsetParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsMcpToolsetParams;
+        value = this.Value as Agents::BetaManagedAgentsMcpToolsetParams;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsCustomToolParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsCustomToolParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsCustomToolParams(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsCustomToolParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsCustomToolParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsCustomToolParams(
-        [NotNullWhen(true)] out BetaManagedAgentsCustomToolParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsCustomToolParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsCustomToolParams;
+        value = this.Value as Agents::BetaManagedAgentsCustomToolParams;
         return value != null;
     }
 
@@ -269,28 +288,28 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomToolParams value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomToolParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentToolset20260401Params> betaManagedAgentsAgentToolset20260401Params,
-        System::Action<BetaManagedAgentsMcpToolsetParams> betaManagedAgentsMcpToolsetParams,
-        System::Action<BetaManagedAgentsCustomToolParams> betaManagedAgentsCustomToolParams
+        Action<Agents::BetaManagedAgentsAgentToolset20260401Params> betaManagedAgentsAgentToolset20260401Params,
+        Action<Agents::BetaManagedAgentsMcpToolsetParams> betaManagedAgentsMcpToolsetParams,
+        Action<Agents::BetaManagedAgentsCustomToolParams> betaManagedAgentsCustomToolParams
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsAgentToolset20260401Params value:
+            case Agents::BetaManagedAgentsAgentToolset20260401Params value:
                 betaManagedAgentsAgentToolset20260401Params(value);
                 break;
-            case BetaManagedAgentsMcpToolsetParams value:
+            case Agents::BetaManagedAgentsMcpToolsetParams value:
                 betaManagedAgentsMcpToolsetParams(value);
                 break;
-            case BetaManagedAgentsCustomToolParams value:
+            case Agents::BetaManagedAgentsCustomToolParams value:
                 betaManagedAgentsCustomToolParams(value);
                 break;
             default:
@@ -315,28 +334,32 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomToolParams value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomToolParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsAgentToolset20260401Params,
+        Func<
+            Agents::BetaManagedAgentsAgentToolset20260401Params,
             T
         > betaManagedAgentsAgentToolset20260401Params,
-        System::Func<BetaManagedAgentsMcpToolsetParams, T> betaManagedAgentsMcpToolsetParams,
-        System::Func<BetaManagedAgentsCustomToolParams, T> betaManagedAgentsCustomToolParams
+        Func<Agents::BetaManagedAgentsMcpToolsetParams, T> betaManagedAgentsMcpToolsetParams,
+        Func<Agents::BetaManagedAgentsCustomToolParams, T> betaManagedAgentsCustomToolParams
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401Params value =>
+            Agents::BetaManagedAgentsAgentToolset20260401Params value =>
                 betaManagedAgentsAgentToolset20260401Params(value),
-            BetaManagedAgentsMcpToolsetParams value => betaManagedAgentsMcpToolsetParams(value),
-            BetaManagedAgentsCustomToolParams value => betaManagedAgentsCustomToolParams(value),
+            Agents::BetaManagedAgentsMcpToolsetParams value => betaManagedAgentsMcpToolsetParams(
+                value
+            ),
+            Agents::BetaManagedAgentsCustomToolParams value => betaManagedAgentsCustomToolParams(
+                value
+            ),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionAgentUpdateTool"
             ),
@@ -344,15 +367,15 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     }
 
     public static implicit operator BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsAgentToolset20260401Params value
+        Agents::BetaManagedAgentsAgentToolset20260401Params value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsMcpToolsetParams value
+        Agents::BetaManagedAgentsMcpToolsetParams value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionAgentUpdateTool(
-        BetaManagedAgentsCustomToolParams value
+        Agents::BetaManagedAgentsCustomToolParams value
     ) => new(value);
 
     /// <summary>
@@ -401,9 +424,9 @@ public record class BetaManagedAgentsSessionAgentUpdateTool : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401Params _ => 0,
-            BetaManagedAgentsMcpToolsetParams _ => 1,
-            BetaManagedAgentsCustomToolParams _ => 2,
+            Agents::BetaManagedAgentsAgentToolset20260401Params _ => 0,
+            Agents::BetaManagedAgentsMcpToolsetParams _ => 1,
+            Agents::BetaManagedAgentsCustomToolParams _ => 2,
             _ => -1,
         };
     }
@@ -414,7 +437,7 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
 {
     public override BetaManagedAgentsSessionAgentUpdateTool? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -436,7 +459,7 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsAgentToolset20260401Params>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsAgentToolset20260401Params>(
                             element,
                             options
                         );
@@ -457,7 +480,7 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetParams>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMcpToolsetParams>(
                             element,
                             options
                         );
@@ -478,7 +501,7 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsCustomToolParams>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsCustomToolParams>(
                             element,
                             options
                         );
@@ -508,5 +531,55 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSessionAgentUpdateToolTypeConverter))]
+public enum BetaManagedAgentsSessionAgentUpdateToolType
+{
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
+}
+
+sealed class BetaManagedAgentsSessionAgentUpdateToolTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionAgentUpdateToolType>
+{
+    public override BetaManagedAgentsSessionAgentUpdateToolType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "agent_toolset_20260401" =>
+                BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401,
+            "mcp_toolset" => BetaManagedAgentsSessionAgentUpdateToolType.McpToolset,
+            "custom" => BetaManagedAgentsSessionAgentUpdateToolType.Custom,
+            _ => (BetaManagedAgentsSessionAgentUpdateToolType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionAgentUpdateToolType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401 =>
+                    "agent_toolset_20260401",
+                BetaManagedAgentsSessionAgentUpdateToolType.McpToolset => "mcp_toolset",
+                BetaManagedAgentsSessionAgentUpdateToolType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -25,6 +25,33 @@ public record class BetaManagedAgentsEventParams : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsEventParamsType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserMessage,
+                BetaManagedAgentsUserInterruptEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserInterrupt,
+                BetaManagedAgentsUserToolConfirmationEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserToolConfirmation,
+                BetaManagedAgentsUserCustomToolResultEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserCustomToolResult,
+                BetaManagedAgentsUserDefineOutcomeEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserDefineOutcome,
+                BetaManagedAgentsUserToolResultEventParams _ =>
+                    BetaManagedAgentsEventParamsType.UserToolResult,
+                BetaManagedAgentsSystemMessageEventParams _ =>
+                    BetaManagedAgentsEventParamsType.SystemMessage,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsEventParamsType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -322,13 +349,13 @@ public record class BetaManagedAgentsEventParams : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUserMessageEventParams> userMessage,
-        System::Action<BetaManagedAgentsUserInterruptEventParams> userInterrupt,
-        System::Action<BetaManagedAgentsUserToolConfirmationEventParams> userToolConfirmation,
-        System::Action<BetaManagedAgentsUserCustomToolResultEventParams> userCustomToolResult,
-        System::Action<BetaManagedAgentsUserDefineOutcomeEventParams> userDefineOutcome,
-        System::Action<BetaManagedAgentsUserToolResultEventParams> userToolResult,
-        System::Action<BetaManagedAgentsSystemMessageEventParams> systemMessage
+        Action<BetaManagedAgentsUserMessageEventParams> userMessage,
+        Action<BetaManagedAgentsUserInterruptEventParams> userInterrupt,
+        Action<BetaManagedAgentsUserToolConfirmationEventParams> userToolConfirmation,
+        Action<BetaManagedAgentsUserCustomToolResultEventParams> userCustomToolResult,
+        Action<BetaManagedAgentsUserDefineOutcomeEventParams> userDefineOutcome,
+        Action<BetaManagedAgentsUserToolResultEventParams> userToolResult,
+        Action<BetaManagedAgentsSystemMessageEventParams> systemMessage
     )
     {
         switch (this.Value)
@@ -388,13 +415,13 @@ public record class BetaManagedAgentsEventParams : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsUserMessageEventParams, T> userMessage,
-        System::Func<BetaManagedAgentsUserInterruptEventParams, T> userInterrupt,
-        System::Func<BetaManagedAgentsUserToolConfirmationEventParams, T> userToolConfirmation,
-        System::Func<BetaManagedAgentsUserCustomToolResultEventParams, T> userCustomToolResult,
-        System::Func<BetaManagedAgentsUserDefineOutcomeEventParams, T> userDefineOutcome,
-        System::Func<BetaManagedAgentsUserToolResultEventParams, T> userToolResult,
-        System::Func<BetaManagedAgentsSystemMessageEventParams, T> systemMessage
+        Func<BetaManagedAgentsUserMessageEventParams, T> userMessage,
+        Func<BetaManagedAgentsUserInterruptEventParams, T> userInterrupt,
+        Func<BetaManagedAgentsUserToolConfirmationEventParams, T> userToolConfirmation,
+        Func<BetaManagedAgentsUserCustomToolResultEventParams, T> userCustomToolResult,
+        Func<BetaManagedAgentsUserDefineOutcomeEventParams, T> userDefineOutcome,
+        Func<BetaManagedAgentsUserToolResultEventParams, T> userToolResult,
+        Func<BetaManagedAgentsSystemMessageEventParams, T> systemMessage
     )
     {
         return this.Value switch
@@ -505,7 +532,7 @@ sealed class BetaManagedAgentsEventParamsConverter : JsonConverter<BetaManagedAg
 {
     public override BetaManagedAgentsEventParams? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -683,5 +710,65 @@ sealed class BetaManagedAgentsEventParamsConverter : JsonConverter<BetaManagedAg
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsEventParamsTypeConverter))]
+public enum BetaManagedAgentsEventParamsType
+{
+    UserMessage,
+    UserInterrupt,
+    UserToolConfirmation,
+    UserCustomToolResult,
+    UserDefineOutcome,
+    UserToolResult,
+    SystemMessage,
+}
+
+sealed class BetaManagedAgentsEventParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsEventParamsType>
+{
+    public override BetaManagedAgentsEventParamsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user.message" => BetaManagedAgentsEventParamsType.UserMessage,
+            "user.interrupt" => BetaManagedAgentsEventParamsType.UserInterrupt,
+            "user.tool_confirmation" => BetaManagedAgentsEventParamsType.UserToolConfirmation,
+            "user.custom_tool_result" => BetaManagedAgentsEventParamsType.UserCustomToolResult,
+            "user.define_outcome" => BetaManagedAgentsEventParamsType.UserDefineOutcome,
+            "user.tool_result" => BetaManagedAgentsEventParamsType.UserToolResult,
+            "system.message" => BetaManagedAgentsEventParamsType.SystemMessage,
+            _ => (BetaManagedAgentsEventParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsEventParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsEventParamsType.UserMessage => "user.message",
+                BetaManagedAgentsEventParamsType.UserInterrupt => "user.interrupt",
+                BetaManagedAgentsEventParamsType.UserToolConfirmation => "user.tool_confirmation",
+                BetaManagedAgentsEventParamsType.UserCustomToolResult => "user.custom_tool_result",
+                BetaManagedAgentsEventParamsType.UserDefineOutcome => "user.define_outcome",
+                BetaManagedAgentsEventParamsType.UserToolResult => "user.tool_result",
+                BetaManagedAgentsEventParamsType.SystemMessage => "system.message",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

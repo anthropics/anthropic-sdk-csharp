@@ -162,6 +162,26 @@ public record class BetaManagedAgentsModelConfigParamsEffort : ModelBase
         }
     }
 
+    public JsonElement? Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                ApiEnum<string, BetaManagedAgentsEffortLevel> _ => null,
+                BetaManagedAgentsEffortLow x => x.Type,
+                BetaManagedAgentsEffortMedium x => x.Type,
+                BetaManagedAgentsEffortHigh x => x.Type,
+                BetaManagedAgentsEffortXhigh x => x.Type,
+                BetaManagedAgentsEffortMax x => x.Type,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public BetaManagedAgentsModelConfigParamsEffort(
         ApiEnum<string, BetaManagedAgentsEffortLevel> value,
         JsonElement? element = null

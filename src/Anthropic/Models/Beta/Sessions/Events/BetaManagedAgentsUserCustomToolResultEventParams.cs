@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -36,14 +36,12 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
         init { this._rawData.Set("custom_tool_use_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -92,7 +90,15 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
     public override void Validate()
     {
         _ = this.CustomToolUseID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("user.custom_tool_result")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         foreach (var item in this.Content ?? [])
         {
             item.Validate();
@@ -100,7 +106,10 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
         _ = this.IsError;
     }
 
-    public BetaManagedAgentsUserCustomToolResultEventParams() { }
+    public BetaManagedAgentsUserCustomToolResultEventParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.custom_tool_result");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -115,6 +124,8 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.custom_tool_result");
     }
 
 #pragma warning disable CS8618
@@ -132,6 +143,13 @@ public sealed record class BetaManagedAgentsUserCustomToolResultEventParams : Js
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsUserCustomToolResultEventParams(string customToolUseID)
+        : this()
+    {
+        this.CustomToolUseID = customToolUseID;
+    }
 }
 
 class BetaManagedAgentsUserCustomToolResultEventParamsFromRaw
@@ -141,50 +159,6 @@ class BetaManagedAgentsUserCustomToolResultEventParamsFromRaw
     public BetaManagedAgentsUserCustomToolResultEventParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUserCustomToolResultEventParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUserCustomToolResultEventParamsTypeConverter))]
-public enum BetaManagedAgentsUserCustomToolResultEventParamsType
-{
-    UserCustomToolResult,
-}
-
-sealed class BetaManagedAgentsUserCustomToolResultEventParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsUserCustomToolResultEventParamsType>
-{
-    public override BetaManagedAgentsUserCustomToolResultEventParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user.custom_tool_result" =>
-                BetaManagedAgentsUserCustomToolResultEventParamsType.UserCustomToolResult,
-            _ => (BetaManagedAgentsUserCustomToolResultEventParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUserCustomToolResultEventParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUserCustomToolResultEventParamsType.UserCustomToolResult =>
-                    "user.custom_tool_result",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }
 
 /// <summary>
@@ -205,6 +179,27 @@ public record class BetaManagedAgentsUserCustomToolResultEventParamsContent : Mo
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ =>
+                    BetaManagedAgentsUserCustomToolResultEventParamsContentType.Text,
+                BetaManagedAgentsImageBlock _ =>
+                    BetaManagedAgentsUserCustomToolResultEventParamsContentType.Image,
+                BetaManagedAgentsDocumentBlock _ =>
+                    BetaManagedAgentsUserCustomToolResultEventParamsContentType.Document,
+                BetaManagedAgentsSearchResultBlock _ =>
+                    BetaManagedAgentsUserCustomToolResultEventParamsContentType.SearchResult,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsContentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -379,10 +374,10 @@ public record class BetaManagedAgentsUserCustomToolResultEventParamsContent : Mo
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<BetaManagedAgentsSearchResultBlock> betaManagedAgentsSearchResultBlock
+        Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<BetaManagedAgentsSearchResultBlock> betaManagedAgentsSearchResultBlock
     )
     {
         switch (this.Value)
@@ -430,10 +425,10 @@ public record class BetaManagedAgentsUserCustomToolResultEventParamsContent : Mo
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<BetaManagedAgentsSearchResultBlock, T> betaManagedAgentsSearchResultBlock
+        Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<BetaManagedAgentsSearchResultBlock, T> betaManagedAgentsSearchResultBlock
     )
     {
         return this.Value switch
@@ -524,7 +519,7 @@ sealed class BetaManagedAgentsUserCustomToolResultEventParamsContentConverter
 {
     public override BetaManagedAgentsUserCustomToolResultEventParamsContent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -636,5 +631,58 @@ sealed class BetaManagedAgentsUserCustomToolResultEventParamsContentConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsUserCustomToolResultEventParamsContentTypeConverter))]
+public enum BetaManagedAgentsUserCustomToolResultEventParamsContentType
+{
+    Text,
+    Image,
+    Document,
+    SearchResult,
+}
+
+sealed class BetaManagedAgentsUserCustomToolResultEventParamsContentTypeConverter
+    : JsonConverter<BetaManagedAgentsUserCustomToolResultEventParamsContentType>
+{
+    public override BetaManagedAgentsUserCustomToolResultEventParamsContentType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => BetaManagedAgentsUserCustomToolResultEventParamsContentType.Text,
+            "image" => BetaManagedAgentsUserCustomToolResultEventParamsContentType.Image,
+            "document" => BetaManagedAgentsUserCustomToolResultEventParamsContentType.Document,
+            "search_result" =>
+                BetaManagedAgentsUserCustomToolResultEventParamsContentType.SearchResult,
+            _ => (BetaManagedAgentsUserCustomToolResultEventParamsContentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsUserCustomToolResultEventParamsContentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsUserCustomToolResultEventParamsContentType.Text => "text",
+                BetaManagedAgentsUserCustomToolResultEventParamsContentType.Image => "image",
+                BetaManagedAgentsUserCustomToolResultEventParamsContentType.Document => "document",
+                BetaManagedAgentsUserCustomToolResultEventParamsContentType.SearchResult =>
+                    "search_result",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

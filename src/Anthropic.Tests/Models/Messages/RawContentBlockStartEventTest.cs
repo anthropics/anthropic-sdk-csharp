@@ -600,6 +600,189 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
     }
 
     [Fact]
+    public void TextTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new TextBlock()
+        {
+            Citations =
+            [
+                new CitationCharLocation()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "My Document",
+                    EndCharIndex = 0,
+                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
+        Assert.Equal(RawContentBlockStartEventContentBlockType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThinkingTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        Assert.Equal(RawContentBlockStartEventContentBlockType.Thinking, value.Type.Value());
+    }
+
+    [Fact]
+    public void RedactedThinkingTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new RedactedThinkingBlock("data");
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.RedactedThinking,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void ToolUseTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ToolUseBlock()
+        {
+            ID = "id",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            ToolsetName = "toolset_name",
+        };
+        Assert.Equal(RawContentBlockStartEventContentBlockType.ToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolUseTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new DirectCaller(),
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.WebSearch,
+        };
+        Assert.Equal(RawContentBlockStartEventContentBlockType.ServerToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebSearchToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new WebSearchToolResultBlock()
+        {
+            Caller = new DirectCaller(),
+            Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.WebSearchToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void WebFetchToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new WebFetchToolResultBlock()
+        {
+            Caller = new DirectCaller(),
+            Content = new WebFetchToolResultErrorBlock(
+                WebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.WebFetchToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void CodeExecutionToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new CodeExecutionToolResultBlock()
+        {
+            Content = new CodeExecutionToolResultError(
+                CodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.CodeExecutionToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BashCodeExecutionToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new BashCodeExecutionToolResultBlock()
+        {
+            Content = new BashCodeExecutionToolResultError(
+                BashCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void TextEditorCodeExecutionToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new TextEditorCodeExecutionToolResultBlock()
+        {
+            Content = new TextEditorCodeExecutionToolResultError()
+            {
+                ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void ToolSearchToolResultTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ToolSearchToolResultBlock()
+        {
+            Content = new ToolSearchToolResultError()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(
+            RawContentBlockStartEventContentBlockType.ToolSearchToolResult,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void ContainerUploadTypeWorks()
+    {
+        RawContentBlockStartEventContentBlock value = new ContainerUploadBlock("file_id");
+        Assert.Equal(RawContentBlockStartEventContentBlockType.ContainerUpload, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         RawContentBlockStartEventContentBlock value = new(
@@ -615,11 +798,12 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        ApiEnum<string, RawContentBlockStartEventContentBlockType> expectedType =
+            RawContentBlockStartEventContentBlockType.Text;
         string expectedID = "id";
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedToolUseID, value.ToolUseID);
 
@@ -648,5 +832,79 @@ public class RawContentBlockStartEventContentBlockTest : TestBase
 
         Assert.Null(mismatchedValue.ID);
         Assert.Null(mismatchedValue.ToolUseID);
+    }
+}
+
+public class RawContentBlockStartEventContentBlockTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(RawContentBlockStartEventContentBlockType.Text)]
+    [InlineData(RawContentBlockStartEventContentBlockType.Thinking)]
+    [InlineData(RawContentBlockStartEventContentBlockType.RedactedThinking)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ToolUse)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ServerToolUse)]
+    [InlineData(RawContentBlockStartEventContentBlockType.WebSearchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.WebFetchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.CodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ToolSearchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ContainerUpload)]
+    public void Validation_Works(RawContentBlockStartEventContentBlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, RawContentBlockStartEventContentBlockType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, RawContentBlockStartEventContentBlockType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(RawContentBlockStartEventContentBlockType.Text)]
+    [InlineData(RawContentBlockStartEventContentBlockType.Thinking)]
+    [InlineData(RawContentBlockStartEventContentBlockType.RedactedThinking)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ToolUse)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ServerToolUse)]
+    [InlineData(RawContentBlockStartEventContentBlockType.WebSearchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.WebFetchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.CodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ToolSearchToolResult)]
+    [InlineData(RawContentBlockStartEventContentBlockType.ContainerUpload)]
+    public void SerializationRoundtrip_Works(RawContentBlockStartEventContentBlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, RawContentBlockStartEventContentBlockType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, RawContentBlockStartEventContentBlockType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, RawContentBlockStartEventContentBlockType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, RawContentBlockStartEventContentBlockType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

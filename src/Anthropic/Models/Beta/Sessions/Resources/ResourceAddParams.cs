@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -5,11 +6,8 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Services.Beta.Sessions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Resources;
 
@@ -43,14 +41,12 @@ public record class ResourceAddParams : ParamsBase
         init { this._rawBodyData.Set("file_id", value); }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Resources.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Resources.Type>
-            >("type");
+            return this._rawBodyData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawBodyData.Set("type", value); }
     }
@@ -123,7 +119,10 @@ public record class ResourceAddParams : ParamsBase
         }
     }
 
-    public ResourceAddParams() { }
+    public ResourceAddParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("file");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -209,10 +208,10 @@ public record class ResourceAddParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/sessions/{0}/resources",
@@ -248,46 +247,5 @@ public record class ResourceAddParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
-    }
-}
-
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    File,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Resources.Type>
-{
-    public override global::Anthropic.Models.Beta.Sessions.Resources.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "file" => global::Anthropic.Models.Beta.Sessions.Resources.Type.File,
-            _ => (global::Anthropic.Models.Beta.Sessions.Resources.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Resources.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.Sessions.Resources.Type.File => "file",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }

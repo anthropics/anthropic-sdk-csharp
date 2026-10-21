@@ -273,6 +273,42 @@ public class AnthropicCredentialsResolveTests : IDisposable
     }
 
     [Fact]
+    public async Task Resolve_ProfileArgument_IgnoresApiKeyAndAuthTokenEnvVars()
+    {
+        Directory.CreateDirectory(Path.Combine(_tempConfigDir, "configs"));
+        Directory.CreateDirectory(Path.Combine(_tempConfigDir, "credentials"));
+        File.WriteAllText(
+            Path.Combine(_tempConfigDir, "configs", "named.json"),
+            "{\"authentication\":{\"type\":\"user_oauth\"}}"
+        );
+        var credentialsPath = Path.Combine(_tempConfigDir, "credentials", "named.json");
+        File.WriteAllText(
+            credentialsPath,
+            "{\"type\":\"oauth_token\",\"access_token\":\"named-tok\",\"expires_at\":9999999999}"
+        );
+#if NET
+        if (OperatingSystem.IsLinux() || OperatingSystem.IsMacOS())
+        {
+            File.SetUnixFileMode(credentialsPath, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        }
+#endif
+
+        SetEnv(CredentialsConstants.EnvApiKey, "sk-env");
+        SetEnv(CredentialsConstants.EnvAuthToken, "env-token");
+        SetEnv(CredentialsConstants.EnvProfile, null);
+        SetEnv(CredentialsConstants.EnvConfigDir, _tempConfigDir);
+
+        var result = AnthropicCredentials.Resolve(profile: "named");
+
+        Assert.NotNull(result);
+        using var credentials = result.Credentials;
+        var token = await credentials.GetTokenAsync(
+            cancellationToken: TestContext.Current.CancellationToken
+        );
+        Assert.Equal("named-tok", token.Token);
+    }
+
+    [Fact]
     public async Task Resolve_OidcFederation_DoesNotSetWorkspaceIdHeader()
     {
         Directory.CreateDirectory(Path.Combine(_tempConfigDir, "configs"));

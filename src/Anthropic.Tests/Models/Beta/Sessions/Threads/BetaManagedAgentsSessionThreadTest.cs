@@ -4,8 +4,8 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Sessions.Threads;
 using Agents = Anthropic.Models.Beta.Agents;
-using Threads = Anthropic.Models.Beta.Sessions.Threads;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Threads;
 
@@ -14,7 +14,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Threads::BetaManagedAgentsSessionThread
+        var model = new BetaManagedAgentsSessionThread
         {
             ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
@@ -27,16 +27,13 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
+                    Effort = new Agents::BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
@@ -46,7 +43,6 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new Agents::BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
                 ],
@@ -61,23 +57,16 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                             new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -90,8 +79,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 DurationSeconds = 0,
                 StartupSeconds = 0,
             },
-            Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-            Type = Threads::Type.SessionThread,
+            Status = BetaManagedAgentsSessionThreadStatus.Idle,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -107,7 +95,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         };
 
         string expectedID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
-        Threads::Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
+        Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -117,28 +105,20 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "Researcher",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -151,37 +131,31 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
-        Threads::BetaManagedAgentsSessionThreadStats expectedStats = new()
+        BetaManagedAgentsSessionThreadStats expectedStats = new()
         {
             ActiveSeconds = 0,
             DurationSeconds = 0,
             StartupSeconds = 0,
         };
-        ApiEnum<string, Threads::BetaManagedAgentsSessionThreadStatus> expectedStatus =
-            Threads::BetaManagedAgentsSessionThreadStatus.Idle;
-        ApiEnum<string, Threads::Type> expectedType = Threads::Type.SessionThread;
+        ApiEnum<string, BetaManagedAgentsSessionThreadStatus> expectedStatus =
+            BetaManagedAgentsSessionThreadStatus.Idle;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session_thread");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        Threads::BetaManagedAgentsSessionThreadUsage expectedUsage = new()
+        BetaManagedAgentsSessionThreadUsage expectedUsage = new()
         {
             ActiveSeconds = 0,
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -200,7 +174,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         Assert.Equal(expectedSessionID, model.SessionID);
         Assert.Equal(expectedStats, model.Stats);
         Assert.Equal(expectedStatus, model.Status);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedUsage, model.Usage);
         Assert.Null(model.WorkflowRunID);
@@ -209,7 +183,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Threads::BetaManagedAgentsSessionThread
+        var model = new BetaManagedAgentsSessionThread
         {
             ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
@@ -222,16 +196,13 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
+                    Effort = new Agents::BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
@@ -241,7 +212,6 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new Agents::BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
                 ],
@@ -256,23 +226,16 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                             new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -285,8 +248,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 DurationSeconds = 0,
                 StartupSeconds = 0,
             },
-            Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-            Type = Threads::Type.SessionThread,
+            Status = BetaManagedAgentsSessionThreadStatus.Idle,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -302,7 +264,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::BetaManagedAgentsSessionThread>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionThread>(
             json,
             ModelBase.SerializerOptions
         );
@@ -313,7 +275,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Threads::BetaManagedAgentsSessionThread
+        var model = new BetaManagedAgentsSessionThread
         {
             ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
@@ -326,16 +288,13 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
+                    Effort = new Agents::BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
@@ -345,7 +304,6 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new Agents::BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
                 ],
@@ -360,23 +318,16 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                             new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -389,8 +340,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 DurationSeconds = 0,
                 StartupSeconds = 0,
             },
-            Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-            Type = Threads::Type.SessionThread,
+            Status = BetaManagedAgentsSessionThreadStatus.Idle,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -406,14 +356,14 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::BetaManagedAgentsSessionThread>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionThread>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         string expectedID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
-        Threads::Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
+        Agent expectedAgent = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -423,28 +373,20 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "Researcher",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -457,37 +399,31 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
-        Threads::BetaManagedAgentsSessionThreadStats expectedStats = new()
+        BetaManagedAgentsSessionThreadStats expectedStats = new()
         {
             ActiveSeconds = 0,
             DurationSeconds = 0,
             StartupSeconds = 0,
         };
-        ApiEnum<string, Threads::BetaManagedAgentsSessionThreadStatus> expectedStatus =
-            Threads::BetaManagedAgentsSessionThreadStatus.Idle;
-        ApiEnum<string, Threads::Type> expectedType = Threads::Type.SessionThread;
+        ApiEnum<string, BetaManagedAgentsSessionThreadStatus> expectedStatus =
+            BetaManagedAgentsSessionThreadStatus.Idle;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session_thread");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        Threads::BetaManagedAgentsSessionThreadUsage expectedUsage = new()
+        BetaManagedAgentsSessionThreadUsage expectedUsage = new()
         {
             ActiveSeconds = 0,
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -506,7 +442,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
         Assert.Equal(expectedSessionID, deserialized.SessionID);
         Assert.Equal(expectedStats, deserialized.Stats);
         Assert.Equal(expectedStatus, deserialized.Status);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedUsage, deserialized.Usage);
         Assert.Null(deserialized.WorkflowRunID);
@@ -515,7 +451,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Threads::BetaManagedAgentsSessionThread
+        var model = new BetaManagedAgentsSessionThread
         {
             ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
@@ -528,16 +464,13 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
+                    Effort = new Agents::BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
@@ -547,7 +480,6 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new Agents::BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
                 ],
@@ -562,23 +494,16 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                             new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -591,8 +516,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 DurationSeconds = 0,
                 StartupSeconds = 0,
             },
-            Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-            Type = Threads::Type.SessionThread,
+            Status = BetaManagedAgentsSessionThreadStatus.Idle,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -613,7 +537,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Threads::BetaManagedAgentsSessionThread
+        var model = new BetaManagedAgentsSessionThread
         {
             ID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
             Agent = new Agents::BetaManagedAgentsSessionThreadAgent()
@@ -626,16 +550,13 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new Agents::BetaManagedAgentsEffortLow(
-                        Agents::BetaManagedAgentsEffortLowType.Low
-                    ),
+                    Effort = new Agents::BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
@@ -645,7 +566,6 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                     new Agents::BetaManagedAgentsAnthropicSkill()
                     {
                         SkillID = "xlsx",
-                        Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
                         Version = "1",
                     },
                 ],
@@ -660,23 +580,16 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                             new Agents::BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                                Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type =
-                            Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
@@ -689,8 +602,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
                 DurationSeconds = 0,
                 StartupSeconds = 0,
             },
-            Status = Threads::BetaManagedAgentsSessionThreadStatus.Idle,
-            Type = Threads::Type.SessionThread,
+            Status = BetaManagedAgentsSessionThreadStatus.Idle,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -705,7 +617,7 @@ public class BetaManagedAgentsSessionThreadTest : TestBase
             WorkflowRunID = null,
         };
 
-        Threads::BetaManagedAgentsSessionThread copied = new(model);
+        BetaManagedAgentsSessionThread copied = new(model);
 
         Assert.Equal(model, copied);
     }
@@ -716,7 +628,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsSessionThreadValidationWorks()
     {
-        Threads::Agent value = new Agents::BetaManagedAgentsSessionThreadAgent()
+        Agent value = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -726,28 +638,20 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "Researcher",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -760,22 +664,16 @@ public class AgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         value.Validate();
@@ -784,18 +682,14 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAdvisorValidationWorks()
     {
-        Threads::Agent value = new Agents::BetaManagedAgentsAdvisor()
-        {
-            Model = "model",
-            Type = Agents::Type.Advisor,
-        };
+        Agent value = new Agents::BetaManagedAgentsAdvisor("model");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsInlineValidationWorks()
     {
-        Threads::Agent value = new Threads::BetaManagedAgentsInlineAgent()
+        Agent value = new BetaManagedAgentsInlineAgent()
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
@@ -804,28 +698,20 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -837,19 +723,14 @@ public class AgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -859,7 +740,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsSessionThreadSerializationRoundtripWorks()
     {
-        Threads::Agent value = new Agents::BetaManagedAgentsSessionThreadAgent()
+        Agent value = new Agents::BetaManagedAgentsSessionThreadAgent()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
             Description = "A focused research subagent.",
@@ -869,28 +750,20 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "Researcher",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System =
                 "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -903,29 +776,20 @@ public class AgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(
-                            Agents::BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = Agents::BetaManagedAgentsSessionThreadAgentType.Agent,
             Version = 1,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::Agent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -933,16 +797,9 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAdvisorSerializationRoundtripWorks()
     {
-        Threads::Agent value = new Agents::BetaManagedAgentsAdvisor()
-        {
-            Model = "model",
-            Type = Agents::Type.Advisor,
-        };
+        Agent value = new Agents::BetaManagedAgentsAdvisor("model");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::Agent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -950,7 +807,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsInlineSerializationRoundtripWorks()
     {
-        Threads::Agent value = new Threads::BetaManagedAgentsInlineAgent()
+        Agent value = new BetaManagedAgentsInlineAgent()
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
@@ -959,28 +816,20 @@ public class AgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -992,35 +841,139 @@ public class AgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Threads::Agent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
+    public void BetaManagedAgentsSessionThreadTypeWorks()
+    {
+        Agent value = new Agents::BetaManagedAgentsSessionThreadAgent()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Description = "A focused research subagent.",
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new()
+            {
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
+                InferenceGeo = "inference_geo",
+                Speed = Agents::Speed.Standard,
+            },
+            Name = "Researcher",
+            Skills =
+            [
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
+            ],
+            System =
+                "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+            Tools =
+            [
+                new Agents::BetaManagedAgentsAgentToolset20260401()
+                {
+                    Configs =
+                    [
+                        new Agents::BetaManagedAgentsBashToolConfig()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAskPolicy(),
+                    },
+                },
+            ],
+            Version = 1,
+        };
+        Assert.Equal(AgentType.Agent, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorTypeWorks()
+    {
+        Agent value = new Agents::BetaManagedAgentsAdvisor("model");
+        Assert.Equal(AgentType.Advisor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsInlineTypeWorks()
+    {
+        Agent value = new BetaManagedAgentsInlineAgent()
+        {
+            Description = null,
+            ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
+            McpServers =
+            [
+                new()
+                {
+                    Name = "example-mcp",
+                    Url = "https://example-server.modelcontextprotocol.io/sse",
+                },
+            ],
+            Model = new()
+            {
+                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
+                InferenceGeo = "inference_geo",
+                Speed = Agents::Speed.Standard,
+            },
+            Name = "pdf-reader-3",
+            Skills =
+            [
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
+            ],
+            System = "You extract tables precisely. Output CSV only.",
+            Tools =
+            [
+                new Agents::BetaManagedAgentsAgentToolset20260401()
+                {
+                    Configs =
+                    [
+                        new Agents::BetaManagedAgentsBashToolConfig()
+                        {
+                            Enabled = true,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                        },
+                    ],
+                    DefaultConfig = new()
+                    {
+                        Enabled = true,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    },
+                },
+            ],
+        };
+        Assert.Equal(AgentType.Inline, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
-        Threads::Agent value = new(
+        Agent value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
@@ -1036,7 +989,8 @@ public class AgentTest : TestBase
                     }
                   ],
                   "name": "Researcher",
-                  "system": "You are a research subagent that gathers and summarises sources for the coordinating agent."
+                  "system": "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                  "type": "agent"
                 }
                 """
             )
@@ -1051,13 +1005,13 @@ public class AgentTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         string expectedName = "Researcher";
         string expectedSystem =
             "You are a research subagent that gathers and summarises sources for the coordinating agent.";
+        ApiEnum<string, AgentType> expectedType = AgentType.Agent;
 
         Assert.Equal(expectedDescription, value.Description);
         Assert.Equal(expectedExecutionIdentity, value.ExecutionIdentity);
@@ -1069,16 +1023,18 @@ public class AgentTest : TestBase
         }
         Assert.Equal(expectedName, value.Name);
         Assert.Equal(expectedSystem, value.System);
+        Assert.Equal(expectedType, value.Type);
 
-        Threads::Agent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+        Agent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Null(emptyValue.Description);
         Assert.Null(emptyValue.ExecutionIdentity);
         Assert.Null(emptyValue.McpServers);
         Assert.Null(emptyValue.Name);
         Assert.Null(emptyValue.System);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
 
-        Threads::Agent mismatchedValue = new(
+        Agent mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
@@ -1102,21 +1058,23 @@ public class AgentTest : TestBase
     }
 }
 
-public class TypeTest : TestBase
+public class AgentTypeTest : TestBase
 {
     [Theory]
-    [InlineData(Threads::Type.SessionThread)]
-    public void Validation_Works(Threads::Type rawValue)
+    [InlineData(AgentType.Agent)]
+    [InlineData(AgentType.Advisor)]
+    [InlineData(AgentType.Inline)]
+    public void Validation_Works(AgentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Threads::Type> value = rawValue;
+        ApiEnum<string, AgentType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Threads::Type>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -1126,14 +1084,16 @@ public class TypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Threads::Type.SessionThread)]
-    public void SerializationRoundtrip_Works(Threads::Type rawValue)
+    [InlineData(AgentType.Agent)]
+    [InlineData(AgentType.Advisor)]
+    [InlineData(AgentType.Inline)]
+    public void SerializationRoundtrip_Works(AgentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Threads::Type> value = rawValue;
+        ApiEnum<string, AgentType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Threads::Type>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
             json,
             ModelBase.SerializerOptions
         );
@@ -1144,12 +1104,12 @@ public class TypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Threads::Type>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Threads::Type>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
             json,
             ModelBase.SerializerOptions
         );

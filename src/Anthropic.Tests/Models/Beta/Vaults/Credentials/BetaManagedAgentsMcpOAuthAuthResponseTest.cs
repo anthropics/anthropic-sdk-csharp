@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -14,37 +13,31 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "client_id",
                 TokenEndpoint = "token_endpoint",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                    BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
                 Resource = "resource",
                 Scope = "scope",
             },
         };
 
         string expectedMcpServerUrl = "mcp_server_url";
-        ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType> expectedType =
-            BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_oauth");
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         BetaManagedAgentsMcpOAuthRefreshResponse expectedRefresh = new()
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
 
         Assert.Equal(expectedMcpServerUrl, model.McpServerUrl);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedExpiresAt, model.ExpiresAt);
         Assert.Equal(expectedRefresh, model.Refresh);
     }
@@ -55,15 +48,12 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "client_id",
                 TokenEndpoint = "token_endpoint",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                    BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
                 Resource = "resource",
                 Scope = "scope",
             },
@@ -84,15 +74,12 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "client_id",
                 TokenEndpoint = "token_endpoint",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                    BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
                 Resource = "resource",
                 Scope = "scope",
             },
@@ -106,22 +93,19 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMcpServerUrl = "mcp_server_url";
-        ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType> expectedType =
-            BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_oauth");
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         BetaManagedAgentsMcpOAuthRefreshResponse expectedRefresh = new()
         {
             ClientID = "client_id",
             TokenEndpoint = "token_endpoint",
-            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-            ),
+            TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
             Resource = "resource",
             Scope = "scope",
         };
 
         Assert.Equal(expectedMcpServerUrl, deserialized.McpServerUrl);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedExpiresAt, deserialized.ExpiresAt);
         Assert.Equal(expectedRefresh, deserialized.Refresh);
     }
@@ -132,15 +116,12 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "client_id",
                 TokenEndpoint = "token_endpoint",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                    BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
                 Resource = "resource",
                 Scope = "scope",
             },
@@ -152,11 +133,7 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsMcpOAuthAuthResponse
-        {
-            McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
-        };
+        var model = new BetaManagedAgentsMcpOAuthAuthResponse { McpServerUrl = "mcp_server_url" };
 
         Assert.Null(model.ExpiresAt);
         Assert.False(model.RawData.ContainsKey("expires_at"));
@@ -167,11 +144,7 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsMcpOAuthAuthResponse
-        {
-            McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
-        };
+        var model = new BetaManagedAgentsMcpOAuthAuthResponse { McpServerUrl = "mcp_server_url" };
 
         model.Validate();
     }
@@ -182,7 +155,6 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
 
             ExpiresAt = null,
             Refresh = null,
@@ -200,7 +172,6 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
 
             ExpiresAt = null,
             Refresh = null,
@@ -215,15 +186,12 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         var model = new BetaManagedAgentsMcpOAuthAuthResponse
         {
             McpServerUrl = "mcp_server_url",
-            Type = BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "client_id",
                 TokenEndpoint = "token_endpoint",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                    BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
                 Resource = "resource",
                 Scope = "scope",
             },
@@ -232,57 +200,5 @@ public class BetaManagedAgentsMcpOAuthAuthResponseTest : TestBase
         BetaManagedAgentsMcpOAuthAuthResponse copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMcpOAuthAuthResponseTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth)]
-    public void Validation_Works(BetaManagedAgentsMcpOAuthAuthResponseType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMcpOAuthAuthResponseType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

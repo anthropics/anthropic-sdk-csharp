@@ -67,44 +67,47 @@ public record class BetaBrowserToolUseBlock : ModelBase
         }
     }
 
-    public JsonElement Name
+    public ApiEnum<string, BetaBrowserToolUseBlockName> Name
     {
         get
         {
             return this.Value switch
             {
-                BetaBrowserNavigateToolUseBlock x => x.Name,
-                BetaBrowserListTabsToolUseBlock x => x.Name,
-                BetaBrowserNewTabToolUseBlock x => x.Name,
-                BetaBrowserSwitchTabToolUseBlock x => x.Name,
-                BetaBrowserCloseTabToolUseBlock x => x.Name,
-                BetaBrowserReadPageToolUseBlock x => x.Name,
-                BetaBrowserGetPageTextToolUseBlock x => x.Name,
-                BetaBrowserReadConsoleToolUseBlock x => x.Name,
-                BetaBrowserReadNetworkToolUseBlock x => x.Name,
-                BetaBrowserFindToolUseBlock x => x.Name,
-                BetaBrowserFormInputToolUseBlock x => x.Name,
-                BetaBrowserFileUploadToolUseBlock x => x.Name,
-                BetaBrowserScrollToToolUseBlock x => x.Name,
-                BetaBrowserScreenshotToolUseBlock x => x.Name,
-                BetaBrowserZoomToolUseBlock x => x.Name,
-                BetaBrowserLeftClickToolUseBlock x => x.Name,
-                BetaBrowserRightClickToolUseBlock x => x.Name,
-                BetaBrowserMiddleClickToolUseBlock x => x.Name,
-                BetaBrowserDoubleClickToolUseBlock x => x.Name,
-                BetaBrowserTripleClickToolUseBlock x => x.Name,
-                BetaBrowserHoverToolUseBlock x => x.Name,
-                BetaBrowserLeftClickDragToolUseBlock x => x.Name,
-                BetaBrowserLeftMouseDownToolUseBlock x => x.Name,
-                BetaBrowserLeftMouseUpToolUseBlock x => x.Name,
-                BetaBrowserMouseMoveToolUseBlock x => x.Name,
-                BetaBrowserScrollToolUseBlock x => x.Name,
-                BetaBrowserTypeToolUseBlock x => x.Name,
-                BetaBrowserKeyToolUseBlock x => x.Name,
-                BetaBrowserHoldKeyToolUseBlock x => x.Name,
-                BetaBrowserWaitToolUseBlock x => x.Name,
-                BetaBrowserJavascriptExecToolUseBlock x => x.Name,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "name"),
+                BetaBrowserNavigateToolUseBlock _ => BetaBrowserToolUseBlockName.Navigate,
+                BetaBrowserListTabsToolUseBlock _ => BetaBrowserToolUseBlockName.ListTabs,
+                BetaBrowserNewTabToolUseBlock _ => BetaBrowserToolUseBlockName.NewTab,
+                BetaBrowserSwitchTabToolUseBlock _ => BetaBrowserToolUseBlockName.SwitchTab,
+                BetaBrowserCloseTabToolUseBlock _ => BetaBrowserToolUseBlockName.CloseTab,
+                BetaBrowserReadPageToolUseBlock _ => BetaBrowserToolUseBlockName.ReadPage,
+                BetaBrowserGetPageTextToolUseBlock _ => BetaBrowserToolUseBlockName.GetPageText,
+                BetaBrowserReadConsoleToolUseBlock _ => BetaBrowserToolUseBlockName.ReadConsole,
+                BetaBrowserReadNetworkToolUseBlock _ => BetaBrowserToolUseBlockName.ReadNetwork,
+                BetaBrowserFindToolUseBlock _ => BetaBrowserToolUseBlockName.Find,
+                BetaBrowserFormInputToolUseBlock _ => BetaBrowserToolUseBlockName.FormInput,
+                BetaBrowserFileUploadToolUseBlock _ => BetaBrowserToolUseBlockName.FileUpload,
+                BetaBrowserScrollToToolUseBlock _ => BetaBrowserToolUseBlockName.ScrollTo,
+                BetaBrowserScreenshotToolUseBlock _ => BetaBrowserToolUseBlockName.Screenshot,
+                BetaBrowserZoomToolUseBlock _ => BetaBrowserToolUseBlockName.Zoom,
+                BetaBrowserLeftClickToolUseBlock _ => BetaBrowserToolUseBlockName.LeftClick,
+                BetaBrowserRightClickToolUseBlock _ => BetaBrowserToolUseBlockName.RightClick,
+                BetaBrowserMiddleClickToolUseBlock _ => BetaBrowserToolUseBlockName.MiddleClick,
+                BetaBrowserDoubleClickToolUseBlock _ => BetaBrowserToolUseBlockName.DoubleClick,
+                BetaBrowserTripleClickToolUseBlock _ => BetaBrowserToolUseBlockName.TripleClick,
+                BetaBrowserHoverToolUseBlock _ => BetaBrowserToolUseBlockName.Hover,
+                BetaBrowserLeftClickDragToolUseBlock _ => BetaBrowserToolUseBlockName.LeftClickDrag,
+                BetaBrowserLeftMouseDownToolUseBlock _ => BetaBrowserToolUseBlockName.LeftMouseDown,
+                BetaBrowserLeftMouseUpToolUseBlock _ => BetaBrowserToolUseBlockName.LeftMouseUp,
+                BetaBrowserMouseMoveToolUseBlock _ => BetaBrowserToolUseBlockName.MouseMove,
+                BetaBrowserScrollToolUseBlock _ => BetaBrowserToolUseBlockName.Scroll,
+                BetaBrowserTypeToolUseBlock _ => BetaBrowserToolUseBlockName.Type,
+                BetaBrowserKeyToolUseBlock _ => BetaBrowserToolUseBlockName.Key,
+                BetaBrowserHoldKeyToolUseBlock _ => BetaBrowserToolUseBlockName.HoldKey,
+                BetaBrowserWaitToolUseBlock _ => BetaBrowserToolUseBlockName.Wait,
+                BetaBrowserJavascriptExecToolUseBlock _ =>
+                    BetaBrowserToolUseBlockName.JavascriptExec,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaBrowserToolUseBlockName>
+                >(this.Json, "name"),
             };
         }
     }
@@ -2372,5 +2375,136 @@ sealed class BetaBrowserToolUseBlockConverter : JsonConverter<BetaBrowserToolUse
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaBrowserToolUseBlockNameConverter))]
+public enum BetaBrowserToolUseBlockName
+{
+    Navigate,
+    ListTabs,
+    NewTab,
+    SwitchTab,
+    CloseTab,
+    ReadPage,
+    GetPageText,
+    ReadConsole,
+    ReadNetwork,
+    Find,
+    FormInput,
+    FileUpload,
+    ScrollTo,
+    Screenshot,
+    Zoom,
+    LeftClick,
+    RightClick,
+    MiddleClick,
+    DoubleClick,
+    TripleClick,
+    Hover,
+    LeftClickDrag,
+    LeftMouseDown,
+    LeftMouseUp,
+    MouseMove,
+    Scroll,
+    Type,
+    Key,
+    HoldKey,
+    Wait,
+    JavascriptExec,
+}
+
+sealed class BetaBrowserToolUseBlockNameConverter : JsonConverter<BetaBrowserToolUseBlockName>
+{
+    public override BetaBrowserToolUseBlockName Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "navigate" => BetaBrowserToolUseBlockName.Navigate,
+            "list_tabs" => BetaBrowserToolUseBlockName.ListTabs,
+            "new_tab" => BetaBrowserToolUseBlockName.NewTab,
+            "switch_tab" => BetaBrowserToolUseBlockName.SwitchTab,
+            "close_tab" => BetaBrowserToolUseBlockName.CloseTab,
+            "read_page" => BetaBrowserToolUseBlockName.ReadPage,
+            "get_page_text" => BetaBrowserToolUseBlockName.GetPageText,
+            "read_console" => BetaBrowserToolUseBlockName.ReadConsole,
+            "read_network" => BetaBrowserToolUseBlockName.ReadNetwork,
+            "find" => BetaBrowserToolUseBlockName.Find,
+            "form_input" => BetaBrowserToolUseBlockName.FormInput,
+            "file_upload" => BetaBrowserToolUseBlockName.FileUpload,
+            "scroll_to" => BetaBrowserToolUseBlockName.ScrollTo,
+            "screenshot" => BetaBrowserToolUseBlockName.Screenshot,
+            "zoom" => BetaBrowserToolUseBlockName.Zoom,
+            "left_click" => BetaBrowserToolUseBlockName.LeftClick,
+            "right_click" => BetaBrowserToolUseBlockName.RightClick,
+            "middle_click" => BetaBrowserToolUseBlockName.MiddleClick,
+            "double_click" => BetaBrowserToolUseBlockName.DoubleClick,
+            "triple_click" => BetaBrowserToolUseBlockName.TripleClick,
+            "hover" => BetaBrowserToolUseBlockName.Hover,
+            "left_click_drag" => BetaBrowserToolUseBlockName.LeftClickDrag,
+            "left_mouse_down" => BetaBrowserToolUseBlockName.LeftMouseDown,
+            "left_mouse_up" => BetaBrowserToolUseBlockName.LeftMouseUp,
+            "mouse_move" => BetaBrowserToolUseBlockName.MouseMove,
+            "scroll" => BetaBrowserToolUseBlockName.Scroll,
+            "type" => BetaBrowserToolUseBlockName.Type,
+            "key" => BetaBrowserToolUseBlockName.Key,
+            "hold_key" => BetaBrowserToolUseBlockName.HoldKey,
+            "wait" => BetaBrowserToolUseBlockName.Wait,
+            "javascript_exec" => BetaBrowserToolUseBlockName.JavascriptExec,
+            _ => (BetaBrowserToolUseBlockName)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaBrowserToolUseBlockName value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaBrowserToolUseBlockName.Navigate => "navigate",
+                BetaBrowserToolUseBlockName.ListTabs => "list_tabs",
+                BetaBrowserToolUseBlockName.NewTab => "new_tab",
+                BetaBrowserToolUseBlockName.SwitchTab => "switch_tab",
+                BetaBrowserToolUseBlockName.CloseTab => "close_tab",
+                BetaBrowserToolUseBlockName.ReadPage => "read_page",
+                BetaBrowserToolUseBlockName.GetPageText => "get_page_text",
+                BetaBrowserToolUseBlockName.ReadConsole => "read_console",
+                BetaBrowserToolUseBlockName.ReadNetwork => "read_network",
+                BetaBrowserToolUseBlockName.Find => "find",
+                BetaBrowserToolUseBlockName.FormInput => "form_input",
+                BetaBrowserToolUseBlockName.FileUpload => "file_upload",
+                BetaBrowserToolUseBlockName.ScrollTo => "scroll_to",
+                BetaBrowserToolUseBlockName.Screenshot => "screenshot",
+                BetaBrowserToolUseBlockName.Zoom => "zoom",
+                BetaBrowserToolUseBlockName.LeftClick => "left_click",
+                BetaBrowserToolUseBlockName.RightClick => "right_click",
+                BetaBrowserToolUseBlockName.MiddleClick => "middle_click",
+                BetaBrowserToolUseBlockName.DoubleClick => "double_click",
+                BetaBrowserToolUseBlockName.TripleClick => "triple_click",
+                BetaBrowserToolUseBlockName.Hover => "hover",
+                BetaBrowserToolUseBlockName.LeftClickDrag => "left_click_drag",
+                BetaBrowserToolUseBlockName.LeftMouseDown => "left_mouse_down",
+                BetaBrowserToolUseBlockName.LeftMouseUp => "left_mouse_up",
+                BetaBrowserToolUseBlockName.MouseMove => "mouse_move",
+                BetaBrowserToolUseBlockName.Scroll => "scroll",
+                BetaBrowserToolUseBlockName.Type => "type",
+                BetaBrowserToolUseBlockName.Key => "key",
+                BetaBrowserToolUseBlockName.HoldKey => "hold_key",
+                BetaBrowserToolUseBlockName.Wait => "wait",
+                BetaBrowserToolUseBlockName.JavascriptExec => "javascript_exec",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

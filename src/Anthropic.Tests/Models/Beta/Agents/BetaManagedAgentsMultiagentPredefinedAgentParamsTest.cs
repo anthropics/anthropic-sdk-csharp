@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
 
@@ -20,7 +21,6 @@ public class BetaManagedAgentsMultiagentPredefinedAgentParamsTest : TestBase
         BetaManagedAgentsMultiagentPredefinedAgentParams value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         value.Validate();
@@ -30,9 +30,7 @@ public class BetaManagedAgentsMultiagentPredefinedAgentParamsTest : TestBase
     public void SelfValidationWorks()
     {
         BetaManagedAgentsMultiagentPredefinedAgentParams value =
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
-            );
+            new BetaManagedAgentsMultiagentSelfParams();
         value.Validate();
     }
 
@@ -56,7 +54,6 @@ public class BetaManagedAgentsMultiagentPredefinedAgentParamsTest : TestBase
         BetaManagedAgentsMultiagentPredefinedAgentParams value = new BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -73,9 +70,7 @@ public class BetaManagedAgentsMultiagentPredefinedAgentParamsTest : TestBase
     public void SelfSerializationRoundtripWorks()
     {
         BetaManagedAgentsMultiagentPredefinedAgentParams value =
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
-            );
+            new BetaManagedAgentsMultiagentSelfParams();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMultiagentPredefinedAgentParams>(
@@ -84,5 +79,31 @@ public class BetaManagedAgentsMultiagentPredefinedAgentParamsTest : TestBase
             );
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsMultiagentPredefinedAgentParams value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
+
+        Assert.NotNull(value.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type.Value));
+
+        BetaManagedAgentsMultiagentPredefinedAgentParams emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Null(emptyValue.Type);
     }
 }

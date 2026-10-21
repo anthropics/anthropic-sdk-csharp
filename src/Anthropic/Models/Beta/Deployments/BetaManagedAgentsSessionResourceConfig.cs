@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -25,6 +25,25 @@ public record class BetaManagedAgentsSessionResourceConfig : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsSessionResourceConfigType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceConfig _ =>
+                    BetaManagedAgentsSessionResourceConfigType.GitHubRepository,
+                BetaManagedAgentsFileResourceConfig _ =>
+                    BetaManagedAgentsSessionResourceConfigType.File,
+                BetaManagedAgentsMemoryStoreResourceConfig _ =>
+                    BetaManagedAgentsSessionResourceConfigType.MemoryStore,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionResourceConfigType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -166,9 +185,9 @@ public record class BetaManagedAgentsSessionResourceConfig : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsGitHubRepositoryResourceConfig> githubRepository,
-        System::Action<BetaManagedAgentsFileResourceConfig> file,
-        System::Action<BetaManagedAgentsMemoryStoreResourceConfig> memoryStore
+        Action<BetaManagedAgentsGitHubRepositoryResourceConfig> githubRepository,
+        Action<BetaManagedAgentsFileResourceConfig> file,
+        Action<BetaManagedAgentsMemoryStoreResourceConfig> memoryStore
     )
     {
         switch (this.Value)
@@ -212,9 +231,9 @@ public record class BetaManagedAgentsSessionResourceConfig : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsGitHubRepositoryResourceConfig, T> githubRepository,
-        System::Func<BetaManagedAgentsFileResourceConfig, T> file,
-        System::Func<BetaManagedAgentsMemoryStoreResourceConfig, T> memoryStore
+        Func<BetaManagedAgentsGitHubRepositoryResourceConfig, T> githubRepository,
+        Func<BetaManagedAgentsFileResourceConfig, T> file,
+        Func<BetaManagedAgentsMemoryStoreResourceConfig, T> memoryStore
     )
     {
         return this.Value switch
@@ -298,7 +317,7 @@ sealed class BetaManagedAgentsSessionResourceConfigConverter
 {
     public override BetaManagedAgentsSessionResourceConfig? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -392,5 +411,53 @@ sealed class BetaManagedAgentsSessionResourceConfigConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSessionResourceConfigTypeConverter))]
+public enum BetaManagedAgentsSessionResourceConfigType
+{
+    GitHubRepository,
+    File,
+    MemoryStore,
+}
+
+sealed class BetaManagedAgentsSessionResourceConfigTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionResourceConfigType>
+{
+    public override BetaManagedAgentsSessionResourceConfigType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "github_repository" => BetaManagedAgentsSessionResourceConfigType.GitHubRepository,
+            "file" => BetaManagedAgentsSessionResourceConfigType.File,
+            "memory_store" => BetaManagedAgentsSessionResourceConfigType.MemoryStore,
+            _ => (BetaManagedAgentsSessionResourceConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionResourceConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionResourceConfigType.GitHubRepository => "github_repository",
+                BetaManagedAgentsSessionResourceConfigType.File => "file",
+                BetaManagedAgentsSessionResourceConfigType.MemoryStore => "memory_store",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

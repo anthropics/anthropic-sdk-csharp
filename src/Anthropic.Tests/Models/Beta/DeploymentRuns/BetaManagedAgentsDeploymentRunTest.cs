@@ -3,7 +3,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
-using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
+using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
 
@@ -12,57 +12,34 @@ public class BetaManagedAgentsDeploymentRunTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new DeploymentRuns::BetaManagedAgentsDeploymentRun
+        var model = new BetaManagedAgentsDeploymentRun
         {
             ID = "id",
-            Agent = new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DeploymentID = "deployment_id",
-            Error = new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            },
+            Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
             SessionID = "session_id",
-            TriggerContext = new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            },
-            Type = DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun,
+            TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            ),
         };
 
         string expectedID = "id";
         BetaManagedAgentsAgentReference expectedAgent = new()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = BetaManagedAgentsAgentReferenceType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDeploymentID = "deployment_id";
-        DeploymentRuns::Error expectedError =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            };
+        Error expectedError = new BetaManagedAgentsEnvironmentArchivedRunError("message");
         string expectedSessionID = "session_id";
-        DeploymentRuns::BetaManagedAgentsTriggerContext expectedTriggerContext =
-            new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            };
-        ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType> expectedType =
-            DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun;
+        BetaManagedAgentsTriggerContext expectedTriggerContext =
+            new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("deployment_run");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedAgent, model.Agent);
@@ -71,44 +48,30 @@ public class BetaManagedAgentsDeploymentRunTest : TestBase
         Assert.Equal(expectedError, model.Error);
         Assert.Equal(expectedSessionID, model.SessionID);
         Assert.Equal(expectedTriggerContext, model.TriggerContext);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new DeploymentRuns::BetaManagedAgentsDeploymentRun
+        var model = new BetaManagedAgentsDeploymentRun
         {
             ID = "id",
-            Agent = new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DeploymentID = "deployment_id",
-            Error = new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            },
+            Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
             SessionID = "session_id",
-            TriggerContext = new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            },
-            Type = DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun,
+            TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            ),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<DeploymentRuns::BetaManagedAgentsDeploymentRun>(
-                json,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentRun>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -116,65 +79,41 @@ public class BetaManagedAgentsDeploymentRunTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new DeploymentRuns::BetaManagedAgentsDeploymentRun
+        var model = new BetaManagedAgentsDeploymentRun
         {
             ID = "id",
-            Agent = new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DeploymentID = "deployment_id",
-            Error = new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            },
+            Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
             SessionID = "session_id",
-            TriggerContext = new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            },
-            Type = DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun,
+            TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            ),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<DeploymentRuns::BetaManagedAgentsDeploymentRun>(
-                element,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentRun>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
         BetaManagedAgentsAgentReference expectedAgent = new()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = BetaManagedAgentsAgentReferenceType.Agent,
             Version = 1,
         };
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDeploymentID = "deployment_id";
-        DeploymentRuns::Error expectedError =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            };
+        Error expectedError = new BetaManagedAgentsEnvironmentArchivedRunError("message");
         string expectedSessionID = "session_id";
-        DeploymentRuns::BetaManagedAgentsTriggerContext expectedTriggerContext =
-            new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            };
-        ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType> expectedType =
-            DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun;
+        BetaManagedAgentsTriggerContext expectedTriggerContext =
+            new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("deployment_run");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedAgent, deserialized.Agent);
@@ -183,36 +122,23 @@ public class BetaManagedAgentsDeploymentRunTest : TestBase
         Assert.Equal(expectedError, deserialized.Error);
         Assert.Equal(expectedSessionID, deserialized.SessionID);
         Assert.Equal(expectedTriggerContext, deserialized.TriggerContext);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new DeploymentRuns::BetaManagedAgentsDeploymentRun
+        var model = new BetaManagedAgentsDeploymentRun
         {
             ID = "id",
-            Agent = new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DeploymentID = "deployment_id",
-            Error = new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            },
+            Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
             SessionID = "session_id",
-            TriggerContext = new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            },
-            Type = DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun,
+            TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            ),
         };
 
         model.Validate();
@@ -221,33 +147,20 @@ public class BetaManagedAgentsDeploymentRunTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new DeploymentRuns::BetaManagedAgentsDeploymentRun
+        var model = new BetaManagedAgentsDeploymentRun
         {
             ID = "id",
-            Agent = new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DeploymentID = "deployment_id",
-            Error = new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            },
+            Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
             SessionID = "session_id",
-            TriggerContext = new DeploymentRuns::BetaManagedAgentsScheduleTriggerContext()
-            {
-                ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Type = DeploymentRuns::BetaManagedAgentsScheduleTriggerContextType.Schedule,
-            },
-            Type = DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun,
+            TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+            ),
         };
 
-        DeploymentRuns::BetaManagedAgentsDeploymentRun copied = new(model);
+        BetaManagedAgentsDeploymentRun copied = new(model);
 
         Assert.Equal(model, copied);
     }
@@ -258,214 +171,121 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsEnvironmentArchivedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            };
+        Error value = new BetaManagedAgentsEnvironmentArchivedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsAgentArchivedRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsAgentArchivedRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::Type.AgentArchivedError,
-        };
+        Error value = new BetaManagedAgentsAgentArchivedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEnvironmentNotFoundRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentNotFoundRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentNotFoundRunErrorType.EnvironmentNotFoundError,
-            };
+        Error value = new BetaManagedAgentsEnvironmentNotFoundRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsVaultNotFoundRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsVaultNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsVaultNotFoundRunErrorType.VaultNotFoundError,
-        };
+        Error value = new BetaManagedAgentsVaultNotFoundRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsVaultArchivedRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsVaultArchivedRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsVaultArchivedRunErrorType.VaultArchivedError,
-        };
+        Error value = new BetaManagedAgentsVaultArchivedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsFileNotFoundRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsFileNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsFileNotFoundRunErrorType.FileNotFoundError,
-        };
+        Error value = new BetaManagedAgentsFileNotFoundRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsMemoryStoreArchivedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsMemoryStoreArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsMemoryStoreArchivedRunErrorType.MemoryStoreArchivedError,
-            };
+        Error value = new BetaManagedAgentsMemoryStoreArchivedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsSkillNotFoundRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsSkillNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        Error value = new BetaManagedAgentsSkillNotFoundRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsSessionResourceNotFoundRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionResourceNotFoundRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-            };
+        Error value = new BetaManagedAgentsSessionResourceNotFoundRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsWorkspaceArchivedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsWorkspaceArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsWorkspaceArchivedRunErrorType.WorkspaceArchivedError,
-            };
+        Error value = new BetaManagedAgentsWorkspaceArchivedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsOrganizationDisabledRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsOrganizationDisabledRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsOrganizationDisabledRunErrorType.OrganizationDisabledError,
-            };
+        Error value = new BetaManagedAgentsOrganizationDisabledRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsSessionRateLimitedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionRateLimitedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionRateLimitedRunErrorType.SessionRateLimitedError,
-            };
+        Error value = new BetaManagedAgentsSessionRateLimitedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsSessionCreationRejectedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionCreationRejectedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionCreationRejectedRunErrorType.SessionCreationRejectedError,
-            };
+        Error value = new BetaManagedAgentsSessionCreationRejectedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsUnknownRunValidationWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsUnknownRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        Error value = new BetaManagedAgentsUnknownRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsSelfHostedResourcesUnsupportedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSelfHostedResourcesUnsupportedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSelfHostedResourcesUnsupportedRunErrorType.SelfHostedResourcesUnsupportedError,
-            };
+        Error value = new BetaManagedAgentsSelfHostedResourcesUnsupportedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsMcpEgressBlockedRunValidationWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsMcpEgressBlockedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsMcpEgressBlockedRunErrorType.McpEgressBlockedError,
-            };
+        Error value = new BetaManagedAgentsMcpEgressBlockedRunError("message");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEnvironmentArchivedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            };
+        Error value = new BetaManagedAgentsEnvironmentArchivedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -473,16 +293,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentArchivedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsAgentArchivedRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::Type.AgentArchivedError,
-        };
+        Error value = new BetaManagedAgentsAgentArchivedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -490,18 +303,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsEnvironmentNotFoundRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsEnvironmentNotFoundRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsEnvironmentNotFoundRunErrorType.EnvironmentNotFoundError,
-            };
+        Error value = new BetaManagedAgentsEnvironmentNotFoundRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -509,16 +313,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsVaultNotFoundRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsVaultNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsVaultNotFoundRunErrorType.VaultNotFoundError,
-        };
+        Error value = new BetaManagedAgentsVaultNotFoundRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -526,16 +323,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsVaultArchivedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsVaultArchivedRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsVaultArchivedRunErrorType.VaultArchivedError,
-        };
+        Error value = new BetaManagedAgentsVaultArchivedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -543,16 +333,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileNotFoundRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsFileNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsFileNotFoundRunErrorType.FileNotFoundError,
-        };
+        Error value = new BetaManagedAgentsFileNotFoundRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -560,18 +343,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsMemoryStoreArchivedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsMemoryStoreArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsMemoryStoreArchivedRunErrorType.MemoryStoreArchivedError,
-            };
+        Error value = new BetaManagedAgentsMemoryStoreArchivedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -579,16 +353,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsSkillNotFoundRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsSkillNotFoundRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsSkillNotFoundRunErrorType.SkillNotFoundError,
-        };
+        Error value = new BetaManagedAgentsSkillNotFoundRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -596,18 +363,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsSessionResourceNotFoundRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionResourceNotFoundRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-            };
+        Error value = new BetaManagedAgentsSessionResourceNotFoundRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -615,18 +373,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsWorkspaceArchivedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsWorkspaceArchivedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsWorkspaceArchivedRunErrorType.WorkspaceArchivedError,
-            };
+        Error value = new BetaManagedAgentsWorkspaceArchivedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -634,18 +383,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsOrganizationDisabledRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsOrganizationDisabledRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsOrganizationDisabledRunErrorType.OrganizationDisabledError,
-            };
+        Error value = new BetaManagedAgentsOrganizationDisabledRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -653,18 +393,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsSessionRateLimitedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionRateLimitedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionRateLimitedRunErrorType.SessionRateLimitedError,
-            };
+        Error value = new BetaManagedAgentsSessionRateLimitedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -672,18 +403,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsSessionCreationRejectedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSessionCreationRejectedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSessionCreationRejectedRunErrorType.SessionCreationRejectedError,
-            };
+        Error value = new BetaManagedAgentsSessionCreationRejectedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -691,16 +413,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsUnknownRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value = new DeploymentRuns::BetaManagedAgentsUnknownRunError()
-        {
-            Message = "message",
-            Type = DeploymentRuns::BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        Error value = new BetaManagedAgentsUnknownRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -708,18 +423,9 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsSelfHostedResourcesUnsupportedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsSelfHostedResourcesUnsupportedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsSelfHostedResourcesUnsupportedRunErrorType.SelfHostedResourcesUnsupportedError,
-            };
+        Error value = new BetaManagedAgentsSelfHostedResourcesUnsupportedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -727,30 +433,134 @@ public class ErrorTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpEgressBlockedRunSerializationRoundtripWorks()
     {
-        DeploymentRuns::Error value =
-            new DeploymentRuns::BetaManagedAgentsMcpEgressBlockedRunError()
-            {
-                Message = "message",
-                Type =
-                    DeploymentRuns::BetaManagedAgentsMcpEgressBlockedRunErrorType.McpEgressBlockedError,
-            };
+        Error value = new BetaManagedAgentsMcpEgressBlockedRunError("message");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<DeploymentRuns::Error>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
 
     [Fact]
+    public void BetaManagedAgentsEnvironmentArchivedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsEnvironmentArchivedRunError("message");
+        Assert.Equal(ErrorType.EnvironmentArchivedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentArchivedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsAgentArchivedRunError("message");
+        Assert.Equal(ErrorType.AgentArchivedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentNotFoundRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsEnvironmentNotFoundRunError("message");
+        Assert.Equal(ErrorType.EnvironmentNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsVaultNotFoundRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsVaultNotFoundRunError("message");
+        Assert.Equal(ErrorType.VaultNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsVaultArchivedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsVaultArchivedRunError("message");
+        Assert.Equal(ErrorType.VaultArchivedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsFileNotFoundRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsFileNotFoundRunError("message");
+        Assert.Equal(ErrorType.FileNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMemoryStoreArchivedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsMemoryStoreArchivedRunError("message");
+        Assert.Equal(ErrorType.MemoryStoreArchivedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSkillNotFoundRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsSkillNotFoundRunError("message");
+        Assert.Equal(ErrorType.SkillNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionResourceNotFoundRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsSessionResourceNotFoundRunError("message");
+        Assert.Equal(ErrorType.SessionResourceNotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsWorkspaceArchivedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsWorkspaceArchivedRunError("message");
+        Assert.Equal(ErrorType.WorkspaceArchivedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsOrganizationDisabledRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsOrganizationDisabledRunError("message");
+        Assert.Equal(ErrorType.OrganizationDisabledError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionRateLimitedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsSessionRateLimitedRunError("message");
+        Assert.Equal(ErrorType.SessionRateLimitedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSessionCreationRejectedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsSessionCreationRejectedRunError("message");
+        Assert.Equal(ErrorType.SessionCreationRejectedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUnknownRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsUnknownRunError("message");
+        Assert.Equal(ErrorType.UnknownError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsSelfHostedResourcesUnsupportedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsSelfHostedResourcesUnsupportedRunError("message");
+        Assert.Equal(ErrorType.SelfHostedResourcesUnsupportedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpEgressBlockedRunTypeWorks()
+    {
+        Error value = new BetaManagedAgentsMcpEgressBlockedRunError("message");
+        Assert.Equal(ErrorType.McpEgressBlockedError, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
-        DeploymentRuns::Error value = new(
+        Error value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "message": "message"
+                  "message": "message",
+                  "type": "environment_archived_error"
                 }
                 """
             )
@@ -758,14 +568,17 @@ public class ErrorTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMessage = "message";
+        ApiEnum<string, ErrorType> expectedType = ErrorType.EnvironmentArchivedError;
 
         Assert.Equal(expectedMessage, value.Message);
+        Assert.Equal(expectedType, value.Type);
 
-        DeploymentRuns::Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+        Error emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Message);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
 
-        DeploymentRuns::Error mismatchedValue = new(
+        Error mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
@@ -781,41 +594,71 @@ public class ErrorTest : TestBase
     }
 }
 
-public class BetaManagedAgentsDeploymentRunTypeTest : TestBase
+public class ErrorTypeTest : TestBase
 {
     [Theory]
-    [InlineData(DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun)]
-    public void Validation_Works(DeploymentRuns::BetaManagedAgentsDeploymentRunType rawValue)
+    [InlineData(ErrorType.EnvironmentArchivedError)]
+    [InlineData(ErrorType.AgentArchivedError)]
+    [InlineData(ErrorType.EnvironmentNotFoundError)]
+    [InlineData(ErrorType.VaultNotFoundError)]
+    [InlineData(ErrorType.VaultArchivedError)]
+    [InlineData(ErrorType.FileNotFoundError)]
+    [InlineData(ErrorType.MemoryStoreArchivedError)]
+    [InlineData(ErrorType.SkillNotFoundError)]
+    [InlineData(ErrorType.SessionResourceNotFoundError)]
+    [InlineData(ErrorType.WorkspaceArchivedError)]
+    [InlineData(ErrorType.OrganizationDisabledError)]
+    [InlineData(ErrorType.SessionRateLimitedError)]
+    [InlineData(ErrorType.SessionCreationRejectedError)]
+    [InlineData(ErrorType.UnknownError)]
+    [InlineData(ErrorType.SelfHostedResourcesUnsupportedError)]
+    [InlineData(ErrorType.McpEgressBlockedError)]
+    public void Validation_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType> value = rawValue;
+        ApiEnum<string, ErrorType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(DeploymentRuns::BetaManagedAgentsDeploymentRunType.DeploymentRun)]
-    public void SerializationRoundtrip_Works(
-        DeploymentRuns::BetaManagedAgentsDeploymentRunType rawValue
-    )
+    [InlineData(ErrorType.EnvironmentArchivedError)]
+    [InlineData(ErrorType.AgentArchivedError)]
+    [InlineData(ErrorType.EnvironmentNotFoundError)]
+    [InlineData(ErrorType.VaultNotFoundError)]
+    [InlineData(ErrorType.VaultArchivedError)]
+    [InlineData(ErrorType.FileNotFoundError)]
+    [InlineData(ErrorType.MemoryStoreArchivedError)]
+    [InlineData(ErrorType.SkillNotFoundError)]
+    [InlineData(ErrorType.SessionResourceNotFoundError)]
+    [InlineData(ErrorType.WorkspaceArchivedError)]
+    [InlineData(ErrorType.OrganizationDisabledError)]
+    [InlineData(ErrorType.SessionRateLimitedError)]
+    [InlineData(ErrorType.SessionCreationRejectedError)]
+    [InlineData(ErrorType.UnknownError)]
+    [InlineData(ErrorType.SelfHostedResourcesUnsupportedError)]
+    [InlineData(ErrorType.McpEgressBlockedError)]
+    public void SerializationRoundtrip_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType> value = rawValue;
+        ApiEnum<string, ErrorType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -823,13 +666,15 @@ public class BetaManagedAgentsDeploymentRunTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, DeploymentRuns::BetaManagedAgentsDeploymentRunType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

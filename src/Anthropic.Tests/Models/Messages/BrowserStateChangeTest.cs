@@ -118,6 +118,49 @@ public class BrowserStateChangeTest : TestBase
     }
 
     [Fact]
+    public void TabOpenedTypeWorks()
+    {
+        BrowserStateChange value = new BrowserStateChangeTabOpened("tab_id");
+        Assert.Equal(BrowserStateChangeType.TabOpened, value.Type.Value());
+    }
+
+    [Fact]
+    public void DownloadStartedTypeWorks()
+    {
+        BrowserStateChange value = new BrowserStateChangeDownloadStarted()
+        {
+            DownloadID = "download_id",
+            Url = "url",
+        };
+        Assert.Equal(BrowserStateChangeType.DownloadStarted, value.Type.Value());
+    }
+
+    [Fact]
+    public void DownloadCompletedTypeWorks()
+    {
+        BrowserStateChange value = new BrowserStateChangeDownloadCompleted()
+        {
+            DownloadID = "download_id",
+            Url = "url",
+            Path = "path",
+            SizeBytes = 0,
+        };
+        Assert.Equal(BrowserStateChangeType.DownloadCompleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void DownloadFailedTypeWorks()
+    {
+        BrowserStateChange value = new BrowserStateChangeDownloadFailed()
+        {
+            DownloadID = "download_id",
+            Url = "url",
+            Error = "error",
+        };
+        Assert.Equal(BrowserStateChangeType.DownloadFailed, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BrowserStateChange value = new(
@@ -133,11 +176,11 @@ public class BrowserStateChangeTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("tab_opened");
+        ApiEnum<string, BrowserStateChangeType> expectedType = BrowserStateChangeType.TabOpened;
         string expectedDownloadID = "download_id";
         string expectedUrl = "url";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedDownloadID, value.DownloadID);
         Assert.Equal(expectedUrl, value.Url);
 
@@ -164,5 +207,67 @@ public class BrowserStateChangeTest : TestBase
 
         Assert.Null(mismatchedValue.DownloadID);
         Assert.Null(mismatchedValue.Url);
+    }
+}
+
+public class BrowserStateChangeTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BrowserStateChangeType.TabOpened)]
+    [InlineData(BrowserStateChangeType.DownloadStarted)]
+    [InlineData(BrowserStateChangeType.DownloadCompleted)]
+    [InlineData(BrowserStateChangeType.DownloadFailed)]
+    public void Validation_Works(BrowserStateChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserStateChangeType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserStateChangeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BrowserStateChangeType.TabOpened)]
+    [InlineData(BrowserStateChangeType.DownloadStarted)]
+    [InlineData(BrowserStateChangeType.DownloadCompleted)]
+    [InlineData(BrowserStateChangeType.DownloadFailed)]
+    public void SerializationRoundtrip_Works(BrowserStateChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BrowserStateChangeType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserStateChangeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BrowserStateChangeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserStateChangeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

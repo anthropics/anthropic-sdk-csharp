@@ -185,7 +185,7 @@ public class PlatformUserProfilesTest
                 new MessageCreateParams
                 {
                     MaxTokens = 16,
-                    Messages = [new() { Content = "hello", Role = Role.User }],
+                    Messages = [new UserMessageParam { Content = "hello" }],
                     Model = "claude-sonnet-4-5",
                     UserProfileID = ProfileID,
                 },

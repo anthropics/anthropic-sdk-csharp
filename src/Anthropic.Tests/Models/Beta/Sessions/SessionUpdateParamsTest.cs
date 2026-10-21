@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Sessions;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -23,41 +23,31 @@ public class SessionUpdateParamsTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Tools =
                 [
-                    new BetaManagedAgentsAgentToolset20260401Params()
+                    new Agents::BetaManagedAgentsAgentToolset20260401Params()
                     {
-                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                         Configs =
                         [
-                            new BetaManagedAgentsBashToolConfigParams()
+                            new Agents::BetaManagedAgentsBashToolConfigParams()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
-                                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                                Type = Agents::Type.Bash,
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     },
                 ],
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
@@ -73,41 +63,33 @@ public class SessionUpdateParamsTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Tools =
             [
-                new BetaManagedAgentsAgentToolset20260401Params()
+                new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
-                        new BetaManagedAgentsBashToolConfigParams()
+                        new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
         };
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         string expectedTitle = "Order #1234 inquiry";
         List<string> expectedVaultIds = ["string"];
@@ -150,11 +132,7 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
         };
@@ -175,11 +153,7 @@ public class SessionUpdateParamsTest : TestBase
         var parameters = new SessionUpdateParams
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
 
@@ -213,41 +187,31 @@ public class SessionUpdateParamsTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Tools =
                 [
-                    new BetaManagedAgentsAgentToolset20260401Params()
+                    new Agents::BetaManagedAgentsAgentToolset20260401Params()
                     {
-                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                         Configs =
                         [
-                            new BetaManagedAgentsBashToolConfigParams()
+                            new Agents::BetaManagedAgentsBashToolConfigParams()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
-                                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                                Type = Agents::Type.Bash,
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     },
                 ],
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],
@@ -285,32 +249,26 @@ public class SessionUpdateParamsTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Tools =
                 [
-                    new BetaManagedAgentsAgentToolset20260401Params()
+                    new Agents::BetaManagedAgentsAgentToolset20260401Params()
                     {
-                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                         Configs =
                         [
-                            new BetaManagedAgentsBashToolConfigParams()
+                            new Agents::BetaManagedAgentsBashToolConfigParams()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
-                                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                                Type = Agents::Type.Bash,
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     },
                 ],
@@ -341,32 +299,26 @@ public class SessionUpdateParamsTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Tools =
                 [
-                    new BetaManagedAgentsAgentToolset20260401Params()
+                    new Agents::BetaManagedAgentsAgentToolset20260401Params()
                     {
-                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                         Configs =
                         [
-                            new BetaManagedAgentsBashToolConfigParams()
+                            new Agents::BetaManagedAgentsBashToolConfigParams()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
-                                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                                Type = Agents::Type.Bash,
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     },
                 ],
@@ -441,41 +393,31 @@ public class SessionUpdateParamsTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Tools =
                 [
-                    new BetaManagedAgentsAgentToolset20260401Params()
+                    new Agents::BetaManagedAgentsAgentToolset20260401Params()
                     {
-                        Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                         Configs =
                         [
-                            new BetaManagedAgentsBashToolConfigParams()
+                            new Agents::BetaManagedAgentsBashToolConfigParams()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
-                                Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                                Type = Agents::Type.Bash,
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     },
                 ],
             },
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Title = "Order #1234 inquiry",
             VaultIds = ["string"],

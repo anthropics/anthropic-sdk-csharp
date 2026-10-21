@@ -15,13 +15,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -37,7 +35,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -46,25 +43,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -72,14 +63,12 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         };
 
         string expectedID = "x";
-        ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType> expectedType =
-            BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent_with_overrides");
         List<Agents::BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
             {
                 Name = "example-mcp",
-                Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
@@ -92,43 +81,33 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
         [
-            new Agents::BetaManagedAgentsAnthropicSkillParams()
-            {
-                SkillID = "xlsx",
-                Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
-                Version = "1",
-            },
+            new Agents::BetaManagedAgentsAnthropicSkillParams() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem = "system";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new Agents::BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Agents::Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ];
         int expectedVersion = 0;
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.NotNull(model.McpServers);
         Assert.Equal(expectedMcpServers.Count, model.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -158,13 +137,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -180,7 +157,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -189,25 +165,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -229,13 +199,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -251,7 +219,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -260,25 +227,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -293,14 +254,12 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "x";
-        ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType> expectedType =
-            BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent_with_overrides");
         List<Agents::BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
             {
                 Name = "example-mcp",
-                Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
@@ -313,43 +272,33 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
         [
-            new Agents::BetaManagedAgentsAnthropicSkillParams()
-            {
-                SkillID = "xlsx",
-                Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
-                Version = "1",
-            },
+            new Agents::BetaManagedAgentsAnthropicSkillParams() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem = "system";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401Params()
             {
-                Type = Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                 Configs =
                 [
                     new Agents::BetaManagedAgentsBashToolConfigParams()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
-                        Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                        Type = Agents::Type.Bash,
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             },
         ];
         int expectedVersion = 0;
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.NotNull(deserialized.McpServers);
         Assert.Equal(expectedMcpServers.Count, deserialized.McpServers.Count);
         for (int i = 0; i < expectedMcpServers.Count; i++)
@@ -379,13 +328,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -401,7 +348,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -410,25 +356,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -441,12 +381,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsAgentWithOverridesParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
-            System = "system",
-        };
+        var model = new BetaManagedAgentsAgentWithOverridesParams { ID = "x", System = "system" };
 
         Assert.Null(model.McpServers);
         Assert.False(model.RawData.ContainsKey("mcp_servers"));
@@ -463,12 +398,7 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsAgentWithOverridesParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
-            System = "system",
-        };
+        var model = new BetaManagedAgentsAgentWithOverridesParams { ID = "x", System = "system" };
 
         model.Validate();
     }
@@ -479,7 +409,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             System = "system",
 
             // Null should be interpreted as omitted for these properties
@@ -508,13 +437,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -530,7 +457,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -539,25 +465,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -590,7 +510,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             System = "system",
 
             // Null should be interpreted as omitted for these properties
@@ -610,13 +529,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -632,7 +549,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -640,25 +556,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -675,13 +585,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -697,7 +605,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -705,25 +612,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -739,13 +640,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -761,7 +660,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -769,25 +667,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -806,13 +698,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -828,7 +718,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -836,25 +725,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -872,13 +755,11 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         var model = new BetaManagedAgentsAgentWithOverridesParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -894,7 +775,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -903,25 +783,19 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -931,58 +805,6 @@ public class BetaManagedAgentsAgentWithOverridesParamsTest : TestBase
         BetaManagedAgentsAgentWithOverridesParams copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsAgentWithOverridesParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides)]
-    public void Validation_Works(BetaManagedAgentsAgentWithOverridesParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentWithOverridesParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }
 
@@ -1042,24 +864,19 @@ public class ToolTest : TestBase
     {
         Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
         {
-            Type = Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new Agents::BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         value.Validate();
@@ -1071,24 +888,19 @@ public class ToolTest : TestBase
         Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = Agents::BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         value.Validate();
@@ -1109,7 +921,6 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = Agents::BetaManagedAgentsCustomToolParamsType.Custom,
         };
         value.Validate();
     }
@@ -1119,24 +930,19 @@ public class ToolTest : TestBase
     {
         Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
         {
-            Type = Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
             Configs =
             [
                 new Agents::BetaManagedAgentsBashToolConfigParams()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
-                    Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1151,24 +957,19 @@ public class ToolTest : TestBase
         Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
         {
             McpServerName = "x",
-            Type = Agents::BetaManagedAgentsMcpToolsetParamsType.McpToolset,
             Configs =
             [
                 new()
                 {
                     Name = "x",
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1192,10 +993,158 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "x",
-            Type = Agents::BetaManagedAgentsCustomToolParamsType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentToolset20260401ParamsTypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsAgentToolset20260401Params()
+        {
+            Configs =
+            [
+                new Agents::BetaManagedAgentsBashToolConfigParams()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                    Type = Agents::Type.Bash,
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(ToolType.AgentToolset20260401, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpToolsetParamsTypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsMcpToolsetParams()
+        {
+            McpServerName = "x",
+            Configs =
+            [
+                new()
+                {
+                    Name = "x",
+                    Enabled = true,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(ToolType.McpToolset, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomToolParamsTypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsCustomToolParams()
+        {
+            Description = "x",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["string"],
+            },
+            Name = "x",
+        };
+        Assert.Equal(ToolType.Custom, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Tool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent_toolset_20260401"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, ToolType> expectedType = ToolType.AgentToolset20260401;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Tool emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolType.AgentToolset20260401)]
+    [InlineData(ToolType.McpToolset)]
+    [InlineData(ToolType.Custom)]
+    public void Validation_Works(ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolType.AgentToolset20260401)]
+    [InlineData(ToolType.McpToolset)]
+    [InlineData(ToolType.Custom)]
+    public void SerializationRoundtrip_Works(ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

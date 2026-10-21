@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
 namespace Anthropic.Tests.Models.Beta.MemoryStores.MemoryVersions;
@@ -18,22 +17,13 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         string expectedID = "id";
@@ -42,30 +32,21 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
         string expectedMemoryStoreID = "memory_store_id";
         ApiEnum<string, BetaManagedAgentsMemoryVersionOperation> expectedOperation =
             BetaManagedAgentsMemoryVersionOperation.Created;
-        ApiEnum<string, BetaManagedAgentsMemoryVersionType> expectedType =
-            BetaManagedAgentsMemoryVersionType.MemoryVersion;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_version");
         string expectedContent = "content";
         string expectedContentSha256 = "content_sha256";
         int expectedContentSizeBytes = 0;
-        BetaManagedAgentsActor expectedCreatedBy = new BetaManagedAgentsSessionActor()
-        {
-            SessionID = "x",
-            Type = BetaManagedAgentsSessionActorType.SessionActor,
-        };
+        BetaManagedAgentsActor expectedCreatedBy = new BetaManagedAgentsSessionActor("x");
         string expectedPath = "path";
         DateTimeOffset expectedRedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        BetaManagedAgentsActor expectedRedactedBy = new BetaManagedAgentsSessionActor()
-        {
-            SessionID = "x",
-            Type = BetaManagedAgentsSessionActorType.SessionActor,
-        };
+        BetaManagedAgentsActor expectedRedactedBy = new BetaManagedAgentsSessionActor("x");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedMemoryID, model.MemoryID);
         Assert.Equal(expectedMemoryStoreID, model.MemoryStoreID);
         Assert.Equal(expectedOperation, model.Operation);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedContent, model.Content);
         Assert.Equal(expectedContentSha256, model.ContentSha256);
         Assert.Equal(expectedContentSizeBytes, model.ContentSizeBytes);
@@ -85,22 +66,13 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -122,22 +94,13 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -153,30 +116,21 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
         string expectedMemoryStoreID = "memory_store_id";
         ApiEnum<string, BetaManagedAgentsMemoryVersionOperation> expectedOperation =
             BetaManagedAgentsMemoryVersionOperation.Created;
-        ApiEnum<string, BetaManagedAgentsMemoryVersionType> expectedType =
-            BetaManagedAgentsMemoryVersionType.MemoryVersion;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_version");
         string expectedContent = "content";
         string expectedContentSha256 = "content_sha256";
         int expectedContentSizeBytes = 0;
-        BetaManagedAgentsActor expectedCreatedBy = new BetaManagedAgentsSessionActor()
-        {
-            SessionID = "x",
-            Type = BetaManagedAgentsSessionActorType.SessionActor,
-        };
+        BetaManagedAgentsActor expectedCreatedBy = new BetaManagedAgentsSessionActor("x");
         string expectedPath = "path";
         DateTimeOffset expectedRedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        BetaManagedAgentsActor expectedRedactedBy = new BetaManagedAgentsSessionActor()
-        {
-            SessionID = "x",
-            Type = BetaManagedAgentsSessionActorType.SessionActor,
-        };
+        BetaManagedAgentsActor expectedRedactedBy = new BetaManagedAgentsSessionActor("x");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedMemoryID, deserialized.MemoryID);
         Assert.Equal(expectedMemoryStoreID, deserialized.MemoryStoreID);
         Assert.Equal(expectedOperation, deserialized.Operation);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedContent, deserialized.Content);
         Assert.Equal(expectedContentSha256, deserialized.ContentSha256);
         Assert.Equal(expectedContentSizeBytes, deserialized.ContentSizeBytes);
@@ -196,22 +150,13 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         model.Validate();
@@ -227,7 +172,6 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
@@ -251,7 +195,6 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
@@ -272,7 +215,6 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
@@ -300,22 +242,13 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -339,7 +272,6 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
@@ -364,17 +296,8 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         Assert.Null(model.Content);
@@ -399,17 +322,8 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         model.Validate();
@@ -425,17 +339,8 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
 
             Content = null,
             ContentSha256 = null,
@@ -466,17 +371,8 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
 
             Content = null,
             ContentSha256 = null,
@@ -498,80 +394,17 @@ public class BetaManagedAgentsMemoryVersionTest : TestBase
             MemoryID = "memory_id",
             MemoryStoreID = "memory_store_id",
             Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-            Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
             Content = "content",
             ContentSha256 = "content_sha256",
             ContentSizeBytes = 0,
-            CreatedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            CreatedBy = new BetaManagedAgentsSessionActor("x"),
             Path = "path",
             RedactedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            RedactedBy = new BetaManagedAgentsSessionActor()
-            {
-                SessionID = "x",
-                Type = BetaManagedAgentsSessionActorType.SessionActor,
-            },
+            RedactedBy = new BetaManagedAgentsSessionActor("x"),
         };
 
         BetaManagedAgentsMemoryVersion copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryVersionTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryVersionType.MemoryVersion)]
-    public void Validation_Works(BetaManagedAgentsMemoryVersionType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryVersionType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryVersionType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryVersionType.MemoryVersion)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryVersionType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryVersionType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryVersionType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryVersionType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryVersionType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

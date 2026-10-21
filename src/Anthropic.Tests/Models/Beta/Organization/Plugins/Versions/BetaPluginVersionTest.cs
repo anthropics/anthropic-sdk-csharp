@@ -359,6 +359,24 @@ public class CreatedByTest : TestBase
     }
 
     [Fact]
+    public void BetaPluginUserActorTypeWorks()
+    {
+        CreatedBy value = new Plugins::BetaPluginUserActor()
+        {
+            EmailAddress = "user@example.com",
+            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+        };
+        Assert.Equal(CreatedByType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPluginApiActorTypeWorks()
+    {
+        CreatedBy value = new Plugins::BetaPluginApiActor("apikey_01Rj2N8SVvo6BePZj99NhmiT");
+        Assert.Equal(CreatedByType.ApiActor, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         CreatedBy value = new(
@@ -372,13 +390,71 @@ public class CreatedByTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+        ApiEnum<string, CreatedByType> expectedType = CreatedByType.UserActor;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         CreatedBy emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class CreatedByTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CreatedByType.UserActor)]
+    [InlineData(CreatedByType.ApiActor)]
+    public void Validation_Works(CreatedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CreatedByType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CreatedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CreatedByType.UserActor)]
+    [InlineData(CreatedByType.ApiActor)]
+    public void SerializationRoundtrip_Works(CreatedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CreatedByType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CreatedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CreatedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CreatedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

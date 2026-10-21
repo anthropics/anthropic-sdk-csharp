@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -30,14 +29,12 @@ public sealed record class BetaManagedAgentsDeletedSession : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeletedSessionType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeletedSessionType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -46,10 +43,18 @@ public sealed record class BetaManagedAgentsDeletedSession : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session_deleted"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsDeletedSession() { }
+    public BetaManagedAgentsDeletedSession()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_deleted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -62,6 +67,8 @@ public sealed record class BetaManagedAgentsDeletedSession : JsonModel
     public BetaManagedAgentsDeletedSession(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_deleted");
     }
 
 #pragma warning disable CS8618
@@ -79,6 +86,13 @@ public sealed record class BetaManagedAgentsDeletedSession : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDeletedSession(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
 class BetaManagedAgentsDeletedSessionFromRaw : IFromRawJson<BetaManagedAgentsDeletedSession>
@@ -87,46 +101,4 @@ class BetaManagedAgentsDeletedSessionFromRaw : IFromRawJson<BetaManagedAgentsDel
     public BetaManagedAgentsDeletedSession FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsDeletedSession.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsDeletedSessionTypeConverter))]
-public enum BetaManagedAgentsDeletedSessionType
-{
-    SessionDeleted,
-}
-
-sealed class BetaManagedAgentsDeletedSessionTypeConverter
-    : JsonConverter<BetaManagedAgentsDeletedSessionType>
-{
-    public override BetaManagedAgentsDeletedSessionType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session_deleted" => BetaManagedAgentsDeletedSessionType.SessionDeleted,
-            _ => (BetaManagedAgentsDeletedSessionType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsDeletedSessionType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsDeletedSessionType.SessionDeleted => "session_deleted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

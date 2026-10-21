@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -159,6 +159,25 @@ public record class BetaManagedAgentsRepositoryForbiddenErrorRetryStatus : Model
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsRetryStatusRetrying _ =>
+                    BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying,
+                BetaManagedAgentsRetryStatusExhausted _ =>
+                    BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted,
+                BetaManagedAgentsRetryStatusTerminal _ =>
+                    BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsRepositoryForbiddenErrorRetryStatus(
         BetaManagedAgentsRetryStatusRetrying value,
         JsonElement? element = null
@@ -282,9 +301,9 @@ public record class BetaManagedAgentsRepositoryForbiddenErrorRetryStatus : Model
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
-        System::Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
-        System::Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
+        Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
+        Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
+        Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
     )
     {
         switch (this.Value)
@@ -328,12 +347,9 @@ public record class BetaManagedAgentsRepositoryForbiddenErrorRetryStatus : Model
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
-        System::Func<
-            BetaManagedAgentsRetryStatusExhausted,
-            T
-        > betaManagedAgentsRetryStatusExhausted,
-        System::Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
+        Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
+        Func<BetaManagedAgentsRetryStatusExhausted, T> betaManagedAgentsRetryStatusExhausted,
+        Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
     )
     {
         return this.Value switch
@@ -426,7 +442,7 @@ sealed class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusConverter
 {
     public override BetaManagedAgentsRepositoryForbiddenErrorRetryStatus? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -520,5 +536,53 @@ sealed class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTypeConverter))]
+public enum BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType
+{
+    Retrying,
+    Exhausted,
+    Terminal,
+}
+
+sealed class BetaManagedAgentsRepositoryForbiddenErrorRetryStatusTypeConverter
+    : JsonConverter<BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType>
+{
+    public override BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "retrying" => BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying,
+            "exhausted" => BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted,
+            "terminal" => BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal,
+            _ => (BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Retrying => "retrying",
+                BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Exhausted => "exhausted",
+                BetaManagedAgentsRepositoryForbiddenErrorRetryStatusType.Terminal => "terminal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -22,6 +22,23 @@ public record class BetaManagedAgentsCredentialNetworkingParams : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsCredentialNetworkingParamsType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUnrestrictedCredentialNetworkingParams _ =>
+                    BetaManagedAgentsCredentialNetworkingParamsType.Unrestricted,
+                BetaManagedAgentsLimitedCredentialNetworkingParams _ =>
+                    BetaManagedAgentsCredentialNetworkingParamsType.Limited,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsCredentialNetworkingParamsType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -115,8 +132,8 @@ public record class BetaManagedAgentsCredentialNetworkingParams : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUnrestrictedCredentialNetworkingParams> unrestricted,
-        System::Action<BetaManagedAgentsLimitedCredentialNetworkingParams> limited
+        Action<BetaManagedAgentsUnrestrictedCredentialNetworkingParams> unrestricted,
+        Action<BetaManagedAgentsLimitedCredentialNetworkingParams> limited
     )
     {
         switch (this.Value)
@@ -156,8 +173,8 @@ public record class BetaManagedAgentsCredentialNetworkingParams : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsUnrestrictedCredentialNetworkingParams, T> unrestricted,
-        System::Func<BetaManagedAgentsLimitedCredentialNetworkingParams, T> limited
+        Func<BetaManagedAgentsUnrestrictedCredentialNetworkingParams, T> unrestricted,
+        Func<BetaManagedAgentsLimitedCredentialNetworkingParams, T> limited
     )
     {
         return this.Value switch
@@ -231,7 +248,7 @@ sealed class BetaManagedAgentsCredentialNetworkingParamsConverter
 {
     public override BetaManagedAgentsCredentialNetworkingParams? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -304,5 +321,50 @@ sealed class BetaManagedAgentsCredentialNetworkingParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsCredentialNetworkingParamsTypeConverter))]
+public enum BetaManagedAgentsCredentialNetworkingParamsType
+{
+    Unrestricted,
+    Limited,
+}
+
+sealed class BetaManagedAgentsCredentialNetworkingParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsCredentialNetworkingParamsType>
+{
+    public override BetaManagedAgentsCredentialNetworkingParamsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "unrestricted" => BetaManagedAgentsCredentialNetworkingParamsType.Unrestricted,
+            "limited" => BetaManagedAgentsCredentialNetworkingParamsType.Limited,
+            _ => (BetaManagedAgentsCredentialNetworkingParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsCredentialNetworkingParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsCredentialNetworkingParamsType.Unrestricted => "unrestricted",
+                BetaManagedAgentsCredentialNetworkingParamsType.Limited => "limited",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

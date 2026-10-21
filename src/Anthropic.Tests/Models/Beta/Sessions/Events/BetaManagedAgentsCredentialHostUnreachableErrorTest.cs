@@ -14,28 +14,23 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
 
         string expectedCredentialID = "credential_id";
         string expectedMessage = "message";
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType> expectedType =
-            BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "credential_host_unreachable_error"
+        );
         string expectedVaultID = "vault_id";
 
         Assert.Equal(expectedCredentialID, model.CredentialID);
         Assert.Equal(expectedMessage, model.Message);
         Assert.Equal(expectedRetryStatus, model.RetryStatus);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedVaultID, model.VaultID);
     }
 
@@ -46,11 +41,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
 
@@ -71,11 +62,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
 
@@ -90,17 +77,16 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         string expectedCredentialID = "credential_id";
         string expectedMessage = "message";
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType> expectedType =
-            BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "credential_host_unreachable_error"
+        );
         string expectedVaultID = "vault_id";
 
         Assert.Equal(expectedCredentialID, deserialized.CredentialID);
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.Equal(expectedRetryStatus, deserialized.RetryStatus);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedVaultID, deserialized.VaultID);
     }
 
@@ -111,11 +97,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
 
@@ -129,11 +111,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTest : TestBase
         {
             CredentialID = "credential_id",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type =
-                BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
         };
 
@@ -149,9 +127,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusRetryingValidationWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         value.Validate();
     }
 
@@ -159,9 +135,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusExhaustedValidationWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         value.Validate();
     }
 
@@ -169,9 +143,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusTerminalValidationWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         value.Validate();
     }
 
@@ -179,9 +151,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusRetryingSerializationRoundtripWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus>(
@@ -196,9 +166,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusExhaustedSerializationRoundtripWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus>(
@@ -213,9 +181,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
     public void BetaManagedAgentsRetryStatusTerminalSerializationRoundtripWorks()
     {
         BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus>(
@@ -225,16 +191,82 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTest : Te
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusRetryingTypeWorks()
+    {
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusRetrying();
+        Assert.Equal(
+            BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Retrying,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusExhaustedTypeWorks()
+    {
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusExhausted();
+        Assert.Equal(
+            BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Exhausted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusTerminalTypeWorks()
+    {
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusTerminal();
+        Assert.Equal(
+            BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Terminal,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "retrying"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<
+            string,
+            BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType
+        > expectedType = BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Retrying;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatus emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsCredentialHostUnreachableErrorTypeTest : TestBase
+public class BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError)]
-    public void Validation_Works(BetaManagedAgentsCredentialHostUnreachableErrorType rawValue)
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Terminal)]
+    public void Validation_Works(
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType rawValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType> value =
+            rawValue;
         value.Validate();
     }
 
@@ -242,7 +274,7 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType>
+            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -250,17 +282,20 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorType.CredentialHostUnreachableError)]
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType.Terminal)]
     public void SerializationRoundtrip_Works(
-        BetaManagedAgentsCredentialHostUnreachableErrorType rawValue
+        BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType rawValue
     )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType> value =
+            rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType>
+            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -270,11 +305,11 @@ public class BetaManagedAgentsCredentialHostUnreachableErrorTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType>
+            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorType>
+            ApiEnum<string, BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

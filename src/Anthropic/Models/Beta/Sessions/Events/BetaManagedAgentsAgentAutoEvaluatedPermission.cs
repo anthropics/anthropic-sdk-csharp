@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -30,16 +30,21 @@ public record class BetaManagedAgentsAgentAutoEvaluatedPermission : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsAgentAutoEvaluatedPermissionType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsAgentAutoEvaluatedPermissionAllow x => x.Type,
-                BetaManagedAgentsAgentAutoEvaluatedPermissionAsk x => x.Type,
-                BetaManagedAgentsAgentAutoEvaluatedPermissionDeny x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsAgentAutoEvaluatedPermissionAllow _ =>
+                    BetaManagedAgentsAgentAutoEvaluatedPermissionType.Allow,
+                BetaManagedAgentsAgentAutoEvaluatedPermissionAsk _ =>
+                    BetaManagedAgentsAgentAutoEvaluatedPermissionType.Ask,
+                BetaManagedAgentsAgentAutoEvaluatedPermissionDeny _ =>
+                    BetaManagedAgentsAgentAutoEvaluatedPermissionType.Deny,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentAutoEvaluatedPermissionType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -184,9 +189,9 @@ public record class BetaManagedAgentsAgentAutoEvaluatedPermission : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentAutoEvaluatedPermissionAllow> allow,
-        System::Action<BetaManagedAgentsAgentAutoEvaluatedPermissionAsk> ask,
-        System::Action<BetaManagedAgentsAgentAutoEvaluatedPermissionDeny> deny
+        Action<BetaManagedAgentsAgentAutoEvaluatedPermissionAllow> allow,
+        Action<BetaManagedAgentsAgentAutoEvaluatedPermissionAsk> ask,
+        Action<BetaManagedAgentsAgentAutoEvaluatedPermissionDeny> deny
     )
     {
         switch (this.Value)
@@ -230,9 +235,9 @@ public record class BetaManagedAgentsAgentAutoEvaluatedPermission : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsAgentAutoEvaluatedPermissionAllow, T> allow,
-        System::Func<BetaManagedAgentsAgentAutoEvaluatedPermissionAsk, T> ask,
-        System::Func<BetaManagedAgentsAgentAutoEvaluatedPermissionDeny, T> deny
+        Func<BetaManagedAgentsAgentAutoEvaluatedPermissionAllow, T> allow,
+        Func<BetaManagedAgentsAgentAutoEvaluatedPermissionAsk, T> ask,
+        Func<BetaManagedAgentsAgentAutoEvaluatedPermissionDeny, T> deny
     )
     {
         return this.Value switch
@@ -316,7 +321,7 @@ sealed class BetaManagedAgentsAgentAutoEvaluatedPermissionConverter
 {
     public override BetaManagedAgentsAgentAutoEvaluatedPermission? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -410,5 +415,53 @@ sealed class BetaManagedAgentsAgentAutoEvaluatedPermissionConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsAgentAutoEvaluatedPermissionTypeConverter))]
+public enum BetaManagedAgentsAgentAutoEvaluatedPermissionType
+{
+    Allow,
+    Ask,
+    Deny,
+}
+
+sealed class BetaManagedAgentsAgentAutoEvaluatedPermissionTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentAutoEvaluatedPermissionType>
+{
+    public override BetaManagedAgentsAgentAutoEvaluatedPermissionType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "allow" => BetaManagedAgentsAgentAutoEvaluatedPermissionType.Allow,
+            "ask" => BetaManagedAgentsAgentAutoEvaluatedPermissionType.Ask,
+            "deny" => BetaManagedAgentsAgentAutoEvaluatedPermissionType.Deny,
+            _ => (BetaManagedAgentsAgentAutoEvaluatedPermissionType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsAgentAutoEvaluatedPermissionType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsAgentAutoEvaluatedPermissionType.Allow => "allow",
+                BetaManagedAgentsAgentAutoEvaluatedPermissionType.Ask => "ask",
+                BetaManagedAgentsAgentAutoEvaluatedPermissionType.Deny => "deny",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

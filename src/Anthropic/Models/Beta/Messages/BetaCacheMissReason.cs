@@ -45,19 +45,22 @@ public record class BetaCacheMissReason : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaCacheMissReasonType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaCacheMissModelChanged x => x.Type,
-                BetaCacheMissSystemChanged x => x.Type,
-                BetaCacheMissToolsChanged x => x.Type,
-                BetaCacheMissMessagesChanged x => x.Type,
-                BetaCacheMissPreviousMessageNotFound x => x.Type,
-                BetaCacheMissUnavailable x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaCacheMissModelChanged _ => BetaCacheMissReasonType.ModelChanged,
+                BetaCacheMissSystemChanged _ => BetaCacheMissReasonType.SystemChanged,
+                BetaCacheMissToolsChanged _ => BetaCacheMissReasonType.ToolsChanged,
+                BetaCacheMissMessagesChanged _ => BetaCacheMissReasonType.MessagesChanged,
+                BetaCacheMissPreviousMessageNotFound _ =>
+                    BetaCacheMissReasonType.PreviousMessageNotFound,
+                BetaCacheMissUnavailable _ => BetaCacheMissReasonType.Unavailable,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaCacheMissReasonType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -576,5 +579,61 @@ sealed class BetaCacheMissReasonConverter : JsonConverter<BetaCacheMissReason>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaCacheMissReasonTypeConverter))]
+public enum BetaCacheMissReasonType
+{
+    ModelChanged,
+    SystemChanged,
+    ToolsChanged,
+    MessagesChanged,
+    PreviousMessageNotFound,
+    Unavailable,
+}
+
+sealed class BetaCacheMissReasonTypeConverter : JsonConverter<BetaCacheMissReasonType>
+{
+    public override BetaCacheMissReasonType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "model_changed" => BetaCacheMissReasonType.ModelChanged,
+            "system_changed" => BetaCacheMissReasonType.SystemChanged,
+            "tools_changed" => BetaCacheMissReasonType.ToolsChanged,
+            "messages_changed" => BetaCacheMissReasonType.MessagesChanged,
+            "previous_message_not_found" => BetaCacheMissReasonType.PreviousMessageNotFound,
+            "unavailable" => BetaCacheMissReasonType.Unavailable,
+            _ => (BetaCacheMissReasonType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaCacheMissReasonType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaCacheMissReasonType.ModelChanged => "model_changed",
+                BetaCacheMissReasonType.SystemChanged => "system_changed",
+                BetaCacheMissReasonType.ToolsChanged => "tools_changed",
+                BetaCacheMissReasonType.MessagesChanged => "messages_changed",
+                BetaCacheMissReasonType.PreviousMessageNotFound => "previous_message_not_found",
+                BetaCacheMissReasonType.Unavailable => "unavailable",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

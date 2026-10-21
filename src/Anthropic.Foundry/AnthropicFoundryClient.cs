@@ -86,6 +86,6 @@ public class AnthropicFoundryClient : AnthropicClient
 
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicFoundryClient(_azureCredentials, modifier(_options));
+        return new AnthropicFoundryClient(_azureCredentials, _options.Apply(modifier));
     }
 }

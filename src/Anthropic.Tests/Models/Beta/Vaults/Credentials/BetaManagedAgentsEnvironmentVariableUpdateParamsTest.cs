@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -12,28 +11,22 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> expectedType =
-            BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
         BetaManagedAgentsInjectionLocationUpdateParams expectedInjectionLocation = new()
         {
             Body = true,
             Header = true,
         };
         BetaManagedAgentsCredentialNetworkingParams expectedNetworking =
-            new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            );
+            new BetaManagedAgentsUnrestrictedCredentialNetworkingParams();
         string expectedSecretValue = "x";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedInjectionLocation, model.InjectionLocation);
         Assert.Equal(expectedNetworking, model.Networking);
         Assert.Equal(expectedSecretValue, model.SecretValue);
@@ -44,11 +37,8 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
@@ -67,11 +57,8 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
@@ -83,20 +70,17 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> expectedType =
-            BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
         BetaManagedAgentsInjectionLocationUpdateParams expectedInjectionLocation = new()
         {
             Body = true,
             Header = true,
         };
         BetaManagedAgentsCredentialNetworkingParams expectedNetworking =
-            new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            );
+            new BetaManagedAgentsUnrestrictedCredentialNetworkingParams();
         string expectedSecretValue = "x";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedInjectionLocation, deserialized.InjectionLocation);
         Assert.Equal(expectedNetworking, deserialized.Networking);
         Assert.Equal(expectedSecretValue, deserialized.SecretValue);
@@ -107,11 +91,8 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
@@ -123,10 +104,7 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
@@ -139,10 +117,7 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
@@ -154,10 +129,7 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
 
             // Null should be interpreted as omitted for these properties
@@ -173,11 +145,8 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         } with
         {
@@ -194,10 +163,7 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
 
             // Null should be interpreted as omitted for these properties
@@ -212,7 +178,6 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
         };
 
@@ -227,7 +192,6 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
         };
 
@@ -239,7 +203,6 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
 
             Networking = null,
@@ -257,7 +220,6 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
 
             Networking = null,
@@ -272,70 +234,13 @@ public class BetaManagedAgentsEnvironmentVariableUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsEnvironmentVariableUpdateParams
         {
-            Type = BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretValue = "x",
         };
 
         BetaManagedAgentsEnvironmentVariableUpdateParams copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsEnvironmentVariableUpdateParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable)]
-    public void Validation_Works(BetaManagedAgentsEnvironmentVariableUpdateParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsEnvironmentVariableUpdateParamsType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

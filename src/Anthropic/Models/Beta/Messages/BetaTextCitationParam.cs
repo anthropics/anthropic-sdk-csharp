@@ -79,18 +79,23 @@ public record class BetaTextCitationParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTextCitationParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaCitationCharLocationParam x => x.Type,
-                BetaCitationPageLocationParam x => x.Type,
-                BetaCitationContentBlockLocationParam x => x.Type,
-                BetaCitationWebSearchResultLocationParam x => x.Type,
-                BetaCitationSearchResultLocationParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaCitationCharLocationParam _ => BetaTextCitationParamType.CharLocation,
+                BetaCitationPageLocationParam _ => BetaTextCitationParamType.PageLocation,
+                BetaCitationContentBlockLocationParam _ =>
+                    BetaTextCitationParamType.ContentBlockLocation,
+                BetaCitationWebSearchResultLocationParam _ =>
+                    BetaTextCitationParamType.WebSearchResultLocation,
+                BetaCitationSearchResultLocationParam _ =>
+                    BetaTextCitationParamType.SearchResultLocation,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTextCitationParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -623,5 +628,58 @@ sealed class BetaTextCitationParamConverter : JsonConverter<BetaTextCitationPara
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTextCitationParamTypeConverter))]
+public enum BetaTextCitationParamType
+{
+    CharLocation,
+    PageLocation,
+    ContentBlockLocation,
+    WebSearchResultLocation,
+    SearchResultLocation,
+}
+
+sealed class BetaTextCitationParamTypeConverter : JsonConverter<BetaTextCitationParamType>
+{
+    public override BetaTextCitationParamType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "char_location" => BetaTextCitationParamType.CharLocation,
+            "page_location" => BetaTextCitationParamType.PageLocation,
+            "content_block_location" => BetaTextCitationParamType.ContentBlockLocation,
+            "web_search_result_location" => BetaTextCitationParamType.WebSearchResultLocation,
+            "search_result_location" => BetaTextCitationParamType.SearchResultLocation,
+            _ => (BetaTextCitationParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTextCitationParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTextCitationParamType.CharLocation => "char_location",
+                BetaTextCitationParamType.PageLocation => "page_location",
+                BetaTextCitationParamType.ContentBlockLocation => "content_block_location",
+                BetaTextCitationParamType.WebSearchResultLocation => "web_search_result_location",
+                BetaTextCitationParamType.SearchResultLocation => "search_result_location",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

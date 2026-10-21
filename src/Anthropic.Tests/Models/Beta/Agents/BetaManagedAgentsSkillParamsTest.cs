@@ -13,7 +13,6 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsAnthropicSkillParams()
         {
             SkillID = "xlsx",
-            Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
             Version = "1",
         };
         value.Validate();
@@ -25,7 +24,6 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsCustomSkillParams()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
         value.Validate();
@@ -37,7 +35,6 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsAnthropicSkillParams()
         {
             SkillID = "xlsx",
-            Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
             Version = "1",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -55,7 +52,6 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         BetaManagedAgentsSkillParams value = new BetaManagedAgentsCustomSkillParams()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = BetaManagedAgentsCustomSkillParamsType.Custom,
             Version = "2",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -68,6 +64,28 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
     }
 
     [Fact]
+    public void AnthropicTypeWorks()
+    {
+        BetaManagedAgentsSkillParams value = new BetaManagedAgentsAnthropicSkillParams()
+        {
+            SkillID = "xlsx",
+            Version = "1",
+        };
+        Assert.Equal(BetaManagedAgentsSkillParamsType.Anthropic, value.Type.Value());
+    }
+
+    [Fact]
+    public void CustomTypeWorks()
+    {
+        BetaManagedAgentsSkillParams value = new BetaManagedAgentsCustomSkillParams()
+        {
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
+            Version = "2",
+        };
+        Assert.Equal(BetaManagedAgentsSkillParamsType.Custom, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsSkillParams value = new(
@@ -75,6 +93,7 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
                 """
                 {
                   "skill_id": "xlsx",
+                  "type": "anthropic",
                   "version": "1"
                 }
                 """
@@ -83,9 +102,12 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedSkillID = "xlsx";
+        ApiEnum<string, BetaManagedAgentsSkillParamsType> expectedType =
+            BetaManagedAgentsSkillParamsType.Anthropic;
         string expectedVersion = "1";
 
         Assert.Equal(expectedSkillID, value.SkillID);
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedVersion, value.Version);
 
         BetaManagedAgentsSkillParams emptyValue = new(
@@ -93,6 +115,7 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.Version);
 
         BetaManagedAgentsSkillParams mismatchedValue = new(
@@ -112,5 +135,61 @@ public class BetaManagedAgentsSkillParamsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.SkillID);
         Assert.Null(mismatchedValue.Version);
+    }
+}
+
+public class BetaManagedAgentsSkillParamsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsSkillParamsType.Anthropic)]
+    [InlineData(BetaManagedAgentsSkillParamsType.Custom)]
+    public void Validation_Works(BetaManagedAgentsSkillParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSkillParamsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsSkillParamsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsSkillParamsType.Anthropic)]
+    [InlineData(BetaManagedAgentsSkillParamsType.Custom)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsSkillParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSkillParamsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSkillParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsSkillParamsType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSkillParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

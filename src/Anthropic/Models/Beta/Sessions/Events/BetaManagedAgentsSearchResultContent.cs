@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsSearchResultContent : JsonModel
         init { this._rawData.Set("text", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSearchResultContentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSearchResultContentType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,16 @@ public sealed record class BetaManagedAgentsSearchResultContent : JsonModel
     public override void Validate()
     {
         _ = this.Text;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSearchResultContent() { }
+    public BetaManagedAgentsSearchResultContent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("text");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +68,8 @@ public sealed record class BetaManagedAgentsSearchResultContent : JsonModel
     public BetaManagedAgentsSearchResultContent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +87,13 @@ public sealed record class BetaManagedAgentsSearchResultContent : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSearchResultContent(string text)
+        : this()
+    {
+        this.Text = text;
+    }
 }
 
 class BetaManagedAgentsSearchResultContentFromRaw
@@ -91,46 +103,4 @@ class BetaManagedAgentsSearchResultContentFromRaw
     public BetaManagedAgentsSearchResultContent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSearchResultContent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSearchResultContentTypeConverter))]
-public enum BetaManagedAgentsSearchResultContentType
-{
-    Text,
-}
-
-sealed class BetaManagedAgentsSearchResultContentTypeConverter
-    : JsonConverter<BetaManagedAgentsSearchResultContentType>
-{
-    public override BetaManagedAgentsSearchResultContentType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "text" => BetaManagedAgentsSearchResultContentType.Text,
-            _ => (BetaManagedAgentsSearchResultContentType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSearchResultContentType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSearchResultContentType.Text => "text",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

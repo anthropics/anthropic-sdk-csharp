@@ -41,6 +41,22 @@ public record class BetaManagedAgentsSkillParams : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsSkillParamsType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkillParams _ =>
+                    BetaManagedAgentsSkillParamsType.Anthropic,
+                BetaManagedAgentsCustomSkillParams _ => BetaManagedAgentsSkillParamsType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSkillParamsType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public string? Version
     {
         get
@@ -330,5 +346,50 @@ sealed class BetaManagedAgentsSkillParamsConverter : JsonConverter<BetaManagedAg
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSkillParamsTypeConverter))]
+public enum BetaManagedAgentsSkillParamsType
+{
+    Anthropic,
+    Custom,
+}
+
+sealed class BetaManagedAgentsSkillParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsSkillParamsType>
+{
+    public override BetaManagedAgentsSkillParamsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "anthropic" => BetaManagedAgentsSkillParamsType.Anthropic,
+            "custom" => BetaManagedAgentsSkillParamsType.Custom,
+            _ => (BetaManagedAgentsSkillParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSkillParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSkillParamsType.Anthropic => "anthropic",
+                BetaManagedAgentsSkillParamsType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

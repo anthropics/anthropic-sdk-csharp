@@ -13,19 +13,17 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
 
         string expectedMemoryStoreID = "memory_store_id";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType> expectedType =
-            BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedInstructions = "instructions";
 
         Assert.Equal(expectedMemoryStoreID, model.MemoryStoreID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedAccess, model.Access);
         Assert.Equal(expectedInstructions, model.Instructions);
     }
@@ -36,7 +34,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -56,7 +53,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -69,13 +65,12 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMemoryStoreID = "memory_store_id";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType> expectedType =
-            BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedInstructions = "instructions";
 
         Assert.Equal(expectedMemoryStoreID, deserialized.MemoryStoreID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedAccess, deserialized.Access);
         Assert.Equal(expectedInstructions, deserialized.Instructions);
     }
@@ -86,7 +81,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -100,7 +94,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
         };
 
         Assert.Null(model.Access);
@@ -115,7 +108,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
         };
 
         model.Validate();
@@ -127,7 +119,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
 
             Access = null,
             Instructions = null,
@@ -145,7 +136,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
 
             Access = null,
             Instructions = null,
@@ -160,7 +150,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -168,58 +157,6 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         BetaManagedAgentsMemoryStoreResourceParam copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryStoreResourceParamTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore)]
-    public void Validation_Works(BetaManagedAgentsMemoryStoreResourceParamType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryStoreResourceParamType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }
 

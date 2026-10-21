@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -134,7 +134,28 @@ public record class Data : ModelBase
         }
     }
 
-    public System::DateTimeOffset? ProcessedAt
+    public ApiEnum<string, DataType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ => DataType.UserMessage,
+                BetaManagedAgentsUserInterruptEvent _ => DataType.UserInterrupt,
+                BetaManagedAgentsUserToolConfirmationEvent _ => DataType.UserToolConfirmation,
+                BetaManagedAgentsUserCustomToolResultEvent _ => DataType.UserCustomToolResult,
+                BetaManagedAgentsUserDefineOutcomeEvent _ => DataType.UserDefineOutcome,
+                BetaManagedAgentsUserToolResultEvent _ => DataType.UserToolResult,
+                BetaManagedAgentsSystemMessageEvent _ => DataType.SystemMessage,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, DataType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
@@ -147,7 +168,7 @@ public record class Data : ModelBase
                 BetaManagedAgentsUserDefineOutcomeEvent x => x.ProcessedAt,
                 BetaManagedAgentsUserToolResultEvent x => x.ProcessedAt,
                 BetaManagedAgentsSystemMessageEvent x => x.ProcessedAt,
-                _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
+                _ => WrappedJsonSerializer.GetNullableStructProperty<DateTimeOffset>(
                     this.Json,
                     "processed_at"
                 ),
@@ -449,13 +470,13 @@ public record class Data : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUserMessageEvent> betaManagedAgentsUserMessageEvent,
-        System::Action<BetaManagedAgentsUserInterruptEvent> betaManagedAgentsUserInterruptEvent,
-        System::Action<BetaManagedAgentsUserToolConfirmationEvent> betaManagedAgentsUserToolConfirmationEvent,
-        System::Action<BetaManagedAgentsUserCustomToolResultEvent> betaManagedAgentsUserCustomToolResultEvent,
-        System::Action<BetaManagedAgentsUserDefineOutcomeEvent> betaManagedAgentsUserDefineOutcomeEvent,
-        System::Action<BetaManagedAgentsUserToolResultEvent> betaManagedAgentsUserToolResultEvent,
-        System::Action<BetaManagedAgentsSystemMessageEvent> betaManagedAgentsSystemMessageEvent
+        Action<BetaManagedAgentsUserMessageEvent> betaManagedAgentsUserMessageEvent,
+        Action<BetaManagedAgentsUserInterruptEvent> betaManagedAgentsUserInterruptEvent,
+        Action<BetaManagedAgentsUserToolConfirmationEvent> betaManagedAgentsUserToolConfirmationEvent,
+        Action<BetaManagedAgentsUserCustomToolResultEvent> betaManagedAgentsUserCustomToolResultEvent,
+        Action<BetaManagedAgentsUserDefineOutcomeEvent> betaManagedAgentsUserDefineOutcomeEvent,
+        Action<BetaManagedAgentsUserToolResultEvent> betaManagedAgentsUserToolResultEvent,
+        Action<BetaManagedAgentsSystemMessageEvent> betaManagedAgentsSystemMessageEvent
     )
     {
         switch (this.Value)
@@ -513,22 +534,19 @@ public record class Data : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsUserMessageEvent, T> betaManagedAgentsUserMessageEvent,
-        System::Func<BetaManagedAgentsUserInterruptEvent, T> betaManagedAgentsUserInterruptEvent,
-        System::Func<
+        Func<BetaManagedAgentsUserMessageEvent, T> betaManagedAgentsUserMessageEvent,
+        Func<BetaManagedAgentsUserInterruptEvent, T> betaManagedAgentsUserInterruptEvent,
+        Func<
             BetaManagedAgentsUserToolConfirmationEvent,
             T
         > betaManagedAgentsUserToolConfirmationEvent,
-        System::Func<
+        Func<
             BetaManagedAgentsUserCustomToolResultEvent,
             T
         > betaManagedAgentsUserCustomToolResultEvent,
-        System::Func<
-            BetaManagedAgentsUserDefineOutcomeEvent,
-            T
-        > betaManagedAgentsUserDefineOutcomeEvent,
-        System::Func<BetaManagedAgentsUserToolResultEvent, T> betaManagedAgentsUserToolResultEvent,
-        System::Func<BetaManagedAgentsSystemMessageEvent, T> betaManagedAgentsSystemMessageEvent
+        Func<BetaManagedAgentsUserDefineOutcomeEvent, T> betaManagedAgentsUserDefineOutcomeEvent,
+        Func<BetaManagedAgentsUserToolResultEvent, T> betaManagedAgentsUserToolResultEvent,
+        Func<BetaManagedAgentsSystemMessageEvent, T> betaManagedAgentsSystemMessageEvent
     )
     {
         return this.Value switch
@@ -633,7 +651,7 @@ sealed class DataConverter : JsonConverter<Data>
 {
     public override Data? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -807,5 +825,60 @@ sealed class DataConverter : JsonConverter<Data>
     public override void Write(Utf8JsonWriter writer, Data value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(DataTypeConverter))]
+public enum DataType
+{
+    UserMessage,
+    UserInterrupt,
+    UserToolConfirmation,
+    UserCustomToolResult,
+    UserDefineOutcome,
+    UserToolResult,
+    SystemMessage,
+}
+
+sealed class DataTypeConverter : JsonConverter<DataType>
+{
+    public override DataType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user.message" => DataType.UserMessage,
+            "user.interrupt" => DataType.UserInterrupt,
+            "user.tool_confirmation" => DataType.UserToolConfirmation,
+            "user.custom_tool_result" => DataType.UserCustomToolResult,
+            "user.define_outcome" => DataType.UserDefineOutcome,
+            "user.tool_result" => DataType.UserToolResult,
+            "system.message" => DataType.SystemMessage,
+            _ => (DataType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, DataType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                DataType.UserMessage => "user.message",
+                DataType.UserInterrupt => "user.interrupt",
+                DataType.UserToolConfirmation => "user.tool_confirmation",
+                DataType.UserCustomToolResult => "user.custom_tool_result",
+                DataType.UserDefineOutcome => "user.define_outcome",
+                DataType.UserToolResult => "user.tool_result",
+                DataType.SystemMessage => "system.message",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

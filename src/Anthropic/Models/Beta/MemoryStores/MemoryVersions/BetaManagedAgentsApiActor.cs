@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
@@ -31,17 +30,12 @@ public sealed record class BetaManagedAgentsApiActor : JsonModel
         init { this._rawData.Set("api_key_id", value); }
     }
 
-    public required ApiEnum<
-        string,
-        global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -50,10 +44,16 @@ public sealed record class BetaManagedAgentsApiActor : JsonModel
     public override void Validate()
     {
         _ = this.ApiKeyID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("api_actor")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsApiActor() { }
+    public BetaManagedAgentsApiActor()
+    {
+        this.Type = JsonSerializer.SerializeToElement("api_actor");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -64,6 +64,8 @@ public sealed record class BetaManagedAgentsApiActor : JsonModel
     public BetaManagedAgentsApiActor(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("api_actor");
     }
 
 #pragma warning disable CS8618
@@ -81,6 +83,13 @@ public sealed record class BetaManagedAgentsApiActor : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsApiActor(string apiKeyID)
+        : this()
+    {
+        this.ApiKeyID = apiKeyID;
+    }
 }
 
 class BetaManagedAgentsApiActorFromRaw : IFromRawJson<BetaManagedAgentsApiActor>
@@ -89,47 +98,4 @@ class BetaManagedAgentsApiActorFromRaw : IFromRawJson<BetaManagedAgentsApiActor>
     public BetaManagedAgentsApiActor FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsApiActor.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    ApiActor,
-}
-
-sealed class TypeConverter
-    : JsonConverter<global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type>
-{
-    public override global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "api_actor" => global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type.ApiActor,
-            _ => (global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.MemoryStores.MemoryVersions.Type.ApiActor =>
-                    "api_actor",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Vaults.Credentials;
 )]
 public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -87,13 +84,24 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("environment_variable")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.InjectionLocation?.Validate();
         this.Networking?.Validate();
         _ = this.SecretValue;
     }
 
-    public BetaManagedAgentsEnvironmentVariableUpdateParams() { }
+    public BetaManagedAgentsEnvironmentVariableUpdateParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("environment_variable");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -108,6 +116,8 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("environment_variable");
     }
 
 #pragma warning disable CS8618
@@ -125,15 +135,6 @@ public sealed record class BetaManagedAgentsEnvironmentVariableUpdateParams : Js
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsEnvironmentVariableUpdateParams(
-        ApiEnum<string, BetaManagedAgentsEnvironmentVariableUpdateParamsType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsEnvironmentVariableUpdateParamsFromRaw
@@ -143,48 +144,4 @@ class BetaManagedAgentsEnvironmentVariableUpdateParamsFromRaw
     public BetaManagedAgentsEnvironmentVariableUpdateParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEnvironmentVariableUpdateParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsEnvironmentVariableUpdateParamsTypeConverter))]
-public enum BetaManagedAgentsEnvironmentVariableUpdateParamsType
-{
-    EnvironmentVariable,
-}
-
-sealed class BetaManagedAgentsEnvironmentVariableUpdateParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsEnvironmentVariableUpdateParamsType>
-{
-    public override BetaManagedAgentsEnvironmentVariableUpdateParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "environment_variable" =>
-                BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable,
-            _ => (BetaManagedAgentsEnvironmentVariableUpdateParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEnvironmentVariableUpdateParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEnvironmentVariableUpdateParamsType.EnvironmentVariable =>
-                    "environment_variable",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

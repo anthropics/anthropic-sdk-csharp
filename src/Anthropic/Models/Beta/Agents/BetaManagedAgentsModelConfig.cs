@@ -181,6 +181,25 @@ public record class Effort : ModelBase
         }
     }
 
+    public ApiEnum<string, EffortType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsEffortLow _ => EffortType.Low,
+                BetaManagedAgentsEffortMedium _ => EffortType.Medium,
+                BetaManagedAgentsEffortHigh _ => EffortType.High,
+                BetaManagedAgentsEffortXhigh _ => EffortType.Xhigh,
+                BetaManagedAgentsEffortMax _ => EffortType.Max,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, EffortType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public Effort(BetaManagedAgentsEffortLow value, JsonElement? element = null)
     {
         this.Value = value;
@@ -625,6 +644,59 @@ sealed class EffortConverter : JsonConverter<Effort>
     public override void Write(Utf8JsonWriter writer, Effort value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(EffortTypeConverter))]
+public enum EffortType
+{
+    Low,
+    Medium,
+    High,
+    Xhigh,
+    Max,
+}
+
+sealed class EffortTypeConverter : JsonConverter<EffortType>
+{
+    public override EffortType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "low" => EffortType.Low,
+            "medium" => EffortType.Medium,
+            "high" => EffortType.High,
+            "xhigh" => EffortType.Xhigh,
+            "max" => EffortType.Max,
+            _ => (EffortType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        EffortType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                EffortType.Low => "low",
+                EffortType.Medium => "medium",
+                EffortType.High => "high",
+                EffortType.Xhigh => "xhigh",
+                EffortType.Max => "max",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

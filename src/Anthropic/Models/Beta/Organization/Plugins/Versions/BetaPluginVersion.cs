@@ -270,15 +270,18 @@ public record class CreatedBy : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, CreatedByType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaPluginUserActor x => x.Type,
-                BetaPluginApiActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaPluginUserActor _ => CreatedByType.UserActor,
+                BetaPluginApiActor _ => CreatedByType.ApiActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, CreatedByType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -546,6 +549,50 @@ sealed class CreatedByConverter : JsonConverter<CreatedBy?>
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(CreatedByTypeConverter))]
+public enum CreatedByType
+{
+    UserActor,
+    ApiActor,
+}
+
+sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
+{
+    public override CreatedByType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => CreatedByType.UserActor,
+            "api_actor" => CreatedByType.ApiActor,
+            _ => (CreatedByType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        CreatedByType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                CreatedByType.UserActor => "user_actor",
+                CreatedByType.ApiActor => "api_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

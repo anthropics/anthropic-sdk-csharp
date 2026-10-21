@@ -1,7 +1,7 @@
+using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -18,7 +18,7 @@ sealed class BetaManagedAgentsAgentEvaluatedPermissionConverter
 {
     public override BetaManagedAgentsAgentEvaluatedPermission Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

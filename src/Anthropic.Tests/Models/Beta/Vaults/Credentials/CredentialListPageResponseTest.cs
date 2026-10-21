@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
+using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
 
@@ -11,7 +11,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -19,15 +19,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -36,20 +32,17 @@ public class CredentialListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        List<Credentials::BetaManagedAgentsCredential> expectedData =
+        List<BetaManagedAgentsCredential> expectedData =
         [
             new()
             {
                 ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 ArchivedAt = null,
-                Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                {
-                    McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                    Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                },
+                Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                    "https://example-server.modelcontextprotocol.io/sse"
+                ),
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                Type = Credentials::Type.VaultCredential,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                 DisplayName = "Example credential",
@@ -69,7 +62,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -77,15 +70,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -95,7 +84,7 @@ public class CredentialListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::CredentialListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<CredentialListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -106,7 +95,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -114,15 +103,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -132,26 +117,23 @@ public class CredentialListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::CredentialListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<CredentialListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<Credentials::BetaManagedAgentsCredential> expectedData =
+        List<BetaManagedAgentsCredential> expectedData =
         [
             new()
             {
                 ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 ArchivedAt = null,
-                Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                {
-                    McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                    Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                },
+                Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                    "https://example-server.modelcontextprotocol.io/sse"
+                ),
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                Type = Credentials::Type.VaultCredential,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                 DisplayName = "Example credential",
@@ -171,7 +153,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -179,15 +161,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -202,7 +180,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
@@ -214,7 +192,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
@@ -225,7 +203,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
@@ -240,7 +218,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -248,15 +226,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -276,7 +250,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
 
@@ -290,7 +264,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -298,15 +272,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -321,7 +291,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -329,15 +299,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -351,7 +317,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -359,15 +325,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -384,7 +346,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -392,15 +354,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -416,7 +374,7 @@ public class CredentialListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Credentials::CredentialListPageResponse
+        var model = new CredentialListPageResponse
         {
             Data =
             [
@@ -424,15 +382,11 @@ public class CredentialListPageResponseTest : TestBase
                 {
                     ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                     ArchivedAt = null,
-                    Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-                    {
-                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                        Type =
-                            Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-                    },
+                    Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                        "https://example-server.modelcontextprotocol.io/sse"
+                    ),
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-                    Type = Credentials::Type.VaultCredential,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
                     DisplayName = "Example credential",
@@ -441,7 +395,7 @@ public class CredentialListPageResponseTest : TestBase
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
         };
 
-        Credentials::CredentialListPageResponse copied = new(model);
+        CredentialListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

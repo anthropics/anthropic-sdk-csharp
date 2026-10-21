@@ -178,6 +178,76 @@ public class BetaTextCitationParamTest : TestBase
     }
 
     [Fact]
+    public void CitationCharLocationTypeWorks()
+    {
+        BetaTextCitationParam value = new BetaCitationCharLocationParam()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndCharIndex = 0,
+            StartCharIndex = 0,
+        };
+        Assert.Equal(BetaTextCitationParamType.CharLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void CitationPageLocationTypeWorks()
+    {
+        BetaTextCitationParam value = new BetaCitationPageLocationParam()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndPageNumber = 0,
+            StartPageNumber = 1,
+        };
+        Assert.Equal(BetaTextCitationParamType.PageLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void CitationContentBlockLocationTypeWorks()
+    {
+        BetaTextCitationParam value = new BetaCitationContentBlockLocationParam()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "x",
+            EndBlockIndex = 0,
+            StartBlockIndex = 0,
+        };
+        Assert.Equal(BetaTextCitationParamType.ContentBlockLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void CitationWebSearchResultLocationTypeWorks()
+    {
+        BetaTextCitationParam value = new BetaCitationWebSearchResultLocationParam()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            EncryptedIndex = "encrypted_index",
+            Title = "x",
+            Url = "x",
+        };
+        Assert.Equal(BetaTextCitationParamType.WebSearchResultLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void CitationSearchResultLocationTypeWorks()
+    {
+        BetaTextCitationParam value = new BetaCitationSearchResultLocationParam()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
+        Assert.Equal(BetaTextCitationParamType.SearchResultLocation, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaTextCitationParam value = new(
@@ -200,7 +270,8 @@ public class BetaTextCitationParamTest : TestBase
         string expectedCitedText = "The grass is green. The sky is blue.";
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "x";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
+        ApiEnum<string, BetaTextCitationParamType> expectedType =
+            BetaTextCitationParamType.CharLocation;
         long expectedEndBlockIndex = 0;
         long expectedStartBlockIndex = 0;
         string expectedTitle = "x";
@@ -208,7 +279,7 @@ public class BetaTextCitationParamTest : TestBase
         Assert.Equal(expectedCitedText, value.CitedText);
         Assert.Equal(expectedDocumentIndex, value.DocumentIndex);
         Assert.Equal(expectedDocumentTitle, value.DocumentTitle);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedEndBlockIndex, value.EndBlockIndex);
         Assert.Equal(expectedStartBlockIndex, value.StartBlockIndex);
         Assert.Equal(expectedTitle, value.Title);
@@ -256,5 +327,69 @@ public class BetaTextCitationParamTest : TestBase
         Assert.Null(mismatchedValue.EndBlockIndex);
         Assert.Null(mismatchedValue.StartBlockIndex);
         Assert.Null(mismatchedValue.Title);
+    }
+}
+
+public class BetaTextCitationParamTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaTextCitationParamType.CharLocation)]
+    [InlineData(BetaTextCitationParamType.PageLocation)]
+    [InlineData(BetaTextCitationParamType.ContentBlockLocation)]
+    [InlineData(BetaTextCitationParamType.WebSearchResultLocation)]
+    [InlineData(BetaTextCitationParamType.SearchResultLocation)]
+    public void Validation_Works(BetaTextCitationParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTextCitationParamType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaTextCitationParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaTextCitationParamType.CharLocation)]
+    [InlineData(BetaTextCitationParamType.PageLocation)]
+    [InlineData(BetaTextCitationParamType.ContentBlockLocation)]
+    [InlineData(BetaTextCitationParamType.WebSearchResultLocation)]
+    [InlineData(BetaTextCitationParamType.SearchResultLocation)]
+    public void SerializationRoundtrip_Works(BetaTextCitationParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTextCitationParamType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaTextCitationParamType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaTextCitationParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaTextCitationParamType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

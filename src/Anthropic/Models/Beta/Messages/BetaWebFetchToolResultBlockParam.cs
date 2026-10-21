@@ -455,16 +455,20 @@ public record class BetaWebFetchToolResultBlockParamCaller : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaWebFetchToolResultBlockParamCallerType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaDirectCaller x => x.Type,
-                BetaServerToolCaller x => x.Type,
-                BetaServerToolCaller20260120 x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaDirectCaller _ => BetaWebFetchToolResultBlockParamCallerType.Direct,
+                BetaServerToolCaller _ =>
+                    BetaWebFetchToolResultBlockParamCallerType.CodeExecution20250825,
+                BetaServerToolCaller20260120 _ =>
+                    BetaWebFetchToolResultBlockParamCallerType.CodeExecution20260120,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaWebFetchToolResultBlockParamCallerType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -825,5 +829,57 @@ sealed class BetaWebFetchToolResultBlockParamCallerConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaWebFetchToolResultBlockParamCallerTypeConverter))]
+public enum BetaWebFetchToolResultBlockParamCallerType
+{
+    Direct,
+    CodeExecution20250825,
+    CodeExecution20260120,
+}
+
+sealed class BetaWebFetchToolResultBlockParamCallerTypeConverter
+    : JsonConverter<BetaWebFetchToolResultBlockParamCallerType>
+{
+    public override BetaWebFetchToolResultBlockParamCallerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => BetaWebFetchToolResultBlockParamCallerType.Direct,
+            "code_execution_20250825" =>
+                BetaWebFetchToolResultBlockParamCallerType.CodeExecution20250825,
+            "code_execution_20260120" =>
+                BetaWebFetchToolResultBlockParamCallerType.CodeExecution20260120,
+            _ => (BetaWebFetchToolResultBlockParamCallerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaWebFetchToolResultBlockParamCallerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaWebFetchToolResultBlockParamCallerType.Direct => "direct",
+                BetaWebFetchToolResultBlockParamCallerType.CodeExecution20250825 =>
+                    "code_execution_20250825",
+                BetaWebFetchToolResultBlockParamCallerType.CodeExecution20260120 =>
+                    "code_execution_20260120",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

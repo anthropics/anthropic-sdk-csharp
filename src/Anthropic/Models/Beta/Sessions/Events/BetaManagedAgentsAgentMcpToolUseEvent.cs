@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -81,24 +81,22 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     /// <summary>
     /// Timestamp when this event was processed.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -180,13 +178,24 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
         _ = this.McpServerName;
         _ = this.Name;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent.mcp_tool_use")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.EvaluatedPermission?.Validate();
         this.Evaluation?.Validate();
         _ = this.SessionThreadID;
     }
 
-    public BetaManagedAgentsAgentMcpToolUseEvent() { }
+    public BetaManagedAgentsAgentMcpToolUseEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.mcp_tool_use");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -199,6 +208,8 @@ public sealed record class BetaManagedAgentsAgentMcpToolUseEvent : JsonModel
     public BetaManagedAgentsAgentMcpToolUseEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.mcp_tool_use");
     }
 
 #pragma warning disable CS8618
@@ -225,46 +236,4 @@ class BetaManagedAgentsAgentMcpToolUseEventFromRaw
     public BetaManagedAgentsAgentMcpToolUseEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentMcpToolUseEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentMcpToolUseEventTypeConverter))]
-public enum BetaManagedAgentsAgentMcpToolUseEventType
-{
-    AgentMcpToolUse,
-}
-
-sealed class BetaManagedAgentsAgentMcpToolUseEventTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentMcpToolUseEventType>
-{
-    public override BetaManagedAgentsAgentMcpToolUseEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent.mcp_tool_use" => BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
-            _ => (BetaManagedAgentsAgentMcpToolUseEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentMcpToolUseEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse => "agent.mcp_tool_use",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
@@ -10,32 +9,21 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 };
 
         string expectedID = "x";
-        ApiEnum<string, BetaManagedAgentsAgentParamsType> expectedType =
-            BetaManagedAgentsAgentParamsType.Agent;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
         int expectedVersion = 0;
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedVersion, model.Version);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentParams>(
@@ -49,12 +37,7 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentParams>(
@@ -64,24 +47,18 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "x";
-        ApiEnum<string, BetaManagedAgentsAgentParamsType> expectedType =
-            BetaManagedAgentsAgentParamsType.Agent;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
         int expectedVersion = 0;
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedVersion, deserialized.Version);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 };
 
         model.Validate();
     }
@@ -89,11 +66,7 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x" };
 
         Assert.Null(model.Version);
         Assert.False(model.RawData.ContainsKey("version"));
@@ -102,11 +75,7 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x" };
 
         model.Validate();
     }
@@ -117,7 +86,6 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
         var model = new BetaManagedAgentsAgentParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
 
             // Null should be interpreted as omitted for these properties
             Version = null,
@@ -130,12 +98,7 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        } with
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 } with
         {
             // Null should be interpreted as omitted for these properties
             Version = null,
@@ -151,7 +114,6 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
         var model = new BetaManagedAgentsAgentParams
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
 
             // Null should be interpreted as omitted for these properties
             Version = null,
@@ -163,69 +125,10 @@ public class BetaManagedAgentsAgentParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsAgentParams
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        var model = new BetaManagedAgentsAgentParams { ID = "x", Version = 0 };
 
         BetaManagedAgentsAgentParams copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsAgentParamsTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentParamsType.Agent)]
-    public void Validation_Works(BetaManagedAgentsAgentParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentParamsType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsAgentParamsType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentParamsType.Agent)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentParamsType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentParamsType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsAgentParamsType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentParamsType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

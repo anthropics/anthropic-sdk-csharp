@@ -42,7 +42,7 @@ public class ResponseLifetimeTest
         new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello, world", Role = Role.User }],
+            Messages = [new UserMessageParam { Content = "Hello, world" }],
             Model = Model.ClaudeOpus4_6,
         };
 

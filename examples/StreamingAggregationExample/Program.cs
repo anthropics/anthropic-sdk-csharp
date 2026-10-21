@@ -11,11 +11,10 @@ MessageCreateParams parameters = new()
     MaxTokens = 16000,
     Messages =
     [
-        new()
+        new UserMessageParam
         {
             Content =
                 "Create a haiku about Anthropic. Think carefully about syllable counts before answering.",
-            Role = Role.User,
         },
     ],
     Model = Model.ClaudeSonnet5_5,

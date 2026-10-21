@@ -13,27 +13,17 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
             MountPath = "mount_path",
         };
 
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType> expectedType =
-            BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("github_repository");
         string expectedUrl = "url";
-        Checkout expectedCheckout = new Sessions::BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout expectedCheckout = new Sessions::BetaManagedAgentsBranchCheckout("main");
         string expectedMountPath = "mount_path";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUrl, model.Url);
         Assert.Equal(expectedCheckout, model.Checkout);
         Assert.Equal(expectedMountPath, model.MountPath);
@@ -44,13 +34,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
             MountPath = "mount_path",
         };
 
@@ -69,13 +54,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
             MountPath = "mount_path",
         };
 
@@ -87,17 +67,12 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType> expectedType =
-            BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("github_repository");
         string expectedUrl = "url";
-        Checkout expectedCheckout = new Sessions::BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout expectedCheckout = new Sessions::BetaManagedAgentsBranchCheckout("main");
         string expectedMountPath = "mount_path";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUrl, deserialized.Url);
         Assert.Equal(expectedCheckout, deserialized.Checkout);
         Assert.Equal(expectedMountPath, deserialized.MountPath);
@@ -108,13 +83,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
             MountPath = "mount_path",
         };
 
@@ -124,11 +94,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
-        {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
-            Url = "url",
-        };
+        var model = new BetaManagedAgentsGitHubRepositoryResourceConfig { Url = "url" };
 
         Assert.Null(model.Checkout);
         Assert.False(model.RawData.ContainsKey("checkout"));
@@ -139,11 +105,7 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
-        {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
-            Url = "url",
-        };
+        var model = new BetaManagedAgentsGitHubRepositoryResourceConfig { Url = "url" };
 
         model.Validate();
     }
@@ -153,7 +115,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
 
             Checkout = null,
@@ -171,7 +132,6 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
 
             Checkout = null,
@@ -186,13 +146,8 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     {
         var model = new BetaManagedAgentsGitHubRepositoryResourceConfig
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
             Url = "url",
-            Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
             MountPath = "mount_path",
         };
 
@@ -202,92 +157,26 @@ public class BetaManagedAgentsGitHubRepositoryResourceConfigTest : TestBase
     }
 }
 
-public class BetaManagedAgentsGitHubRepositoryResourceConfigTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository)]
-    public void Validation_Works(BetaManagedAgentsGitHubRepositoryResourceConfigType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsGitHubRepositoryResourceConfigType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
 public class CheckoutTest : TestBase
 {
     [Fact]
     public void BetaManagedAgentsBranchValidationWorks()
     {
-        Checkout value = new Sessions::BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout value = new Sessions::BetaManagedAgentsBranchCheckout("main");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsCommitValidationWorks()
     {
-        Checkout value = new Sessions::BetaManagedAgentsCommitCheckout()
-        {
-            Sha = "xxxxxxx",
-            Type = Sessions::BetaManagedAgentsCommitCheckoutType.Commit,
-        };
+        Checkout value = new Sessions::BetaManagedAgentsCommitCheckout("xxxxxxx");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsBranchSerializationRoundtripWorks()
     {
-        Checkout value = new Sessions::BetaManagedAgentsBranchCheckout()
-        {
-            Name = "main",
-            Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-        };
+        Checkout value = new Sessions::BetaManagedAgentsBranchCheckout("main");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Checkout>(
             element,
@@ -300,14 +189,105 @@ public class CheckoutTest : TestBase
     [Fact]
     public void BetaManagedAgentsCommitSerializationRoundtripWorks()
     {
-        Checkout value = new Sessions::BetaManagedAgentsCommitCheckout()
-        {
-            Sha = "xxxxxxx",
-            Type = Sessions::BetaManagedAgentsCommitCheckoutType.Commit,
-        };
+        Checkout value = new Sessions::BetaManagedAgentsCommitCheckout("xxxxxxx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Checkout>(
             element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsBranchTypeWorks()
+    {
+        Checkout value = new Sessions::BetaManagedAgentsBranchCheckout("main");
+        Assert.Equal(CheckoutType.Branch, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCommitTypeWorks()
+    {
+        Checkout value = new Sessions::BetaManagedAgentsCommitCheckout("xxxxxxx");
+        Assert.Equal(CheckoutType.Commit, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Checkout value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "branch"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, CheckoutType> expectedType = CheckoutType.Branch;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Checkout emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class CheckoutTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CheckoutType.Branch)]
+    [InlineData(CheckoutType.Commit)]
+    public void Validation_Works(CheckoutType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CheckoutType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CheckoutType.Branch)]
+    [InlineData(CheckoutType.Commit)]
+    public void SerializationRoundtrip_Works(CheckoutType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CheckoutType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
+            json,
             ModelBase.SerializerOptions
         );
 

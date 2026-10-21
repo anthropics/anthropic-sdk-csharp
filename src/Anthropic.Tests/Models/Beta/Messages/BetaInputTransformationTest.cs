@@ -64,6 +64,28 @@ public class BetaInputTransformationTest : TestBase
     }
 
     [Fact]
+    public void ThinkingDroppedTypeWorks()
+    {
+        BetaInputTransformation value = new BetaThinkingDroppedInputTransformation()
+        {
+            Path = "path",
+            Reason = BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+        };
+        Assert.Equal(BetaInputTransformationType.ThinkingDropped, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThinkingMismatchAllowedTypeWorks()
+    {
+        BetaInputTransformation value = new BetaThinkingMismatchAllowedInputTransformation()
+        {
+            Path = "path",
+            Reason = BetaThinkingMismatchAllowedInputTransformationReason.ModelBindingMismatch,
+        };
+        Assert.Equal(BetaInputTransformationType.ThinkingMismatchAllowed, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaInputTransformation value = new(
@@ -79,10 +101,11 @@ public class BetaInputTransformationTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedPath = "path";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("thinking_dropped");
+        ApiEnum<string, BetaInputTransformationType> expectedType =
+            BetaInputTransformationType.ThinkingDropped;
 
         Assert.Equal(expectedPath, value.Path);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaInputTransformation emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -102,5 +125,63 @@ public class BetaInputTransformationTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Path);
+    }
+}
+
+public class BetaInputTransformationTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaInputTransformationType.ThinkingDropped)]
+    [InlineData(BetaInputTransformationType.ThinkingMismatchAllowed)]
+    public void Validation_Works(BetaInputTransformationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaInputTransformationType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaInputTransformationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaInputTransformationType.ThinkingDropped)]
+    [InlineData(BetaInputTransformationType.ThinkingMismatchAllowed)]
+    public void SerializationRoundtrip_Works(BetaInputTransformationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaInputTransformationType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaInputTransformationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaInputTransformationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaInputTransformationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

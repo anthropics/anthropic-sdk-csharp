@@ -267,6 +267,39 @@ public class ProviderConfigTest : TestBase
     }
 
     [Fact]
+    public void AwsExternalKeyTypeWorks()
+    {
+        ProviderConfig value = new AwsExternalKeyConfig()
+        {
+            KmsArn = "arn:aws:kms:us-east-1:111122223333:key/abcd1234-5678-90ab-cdef-000011112222",
+            Region = "us-east-1",
+        };
+        Assert.Equal(ProviderConfigType.Aws, value.Type.Value());
+    }
+
+    [Fact]
+    public void GcpExternalKeyTypeWorks()
+    {
+        ProviderConfig value = new GcpExternalKeyConfig(
+            "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key"
+        );
+        Assert.Equal(ProviderConfigType.Gcp, value.Type.Value());
+    }
+
+    [Fact]
+    public void AzureExternalKeyConfigParamTypeWorks()
+    {
+        ProviderConfig value = new AzureExternalKeyConfigParam()
+        {
+            KeyName = "key_name",
+            TenantID = "tenant_id",
+            VaultUri = "https://my-vault.vault.azure.net/",
+            ClientID = "client_id",
+        };
+        Assert.Equal(ProviderConfigType.Azure, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ProviderConfig value = new(
@@ -281,10 +314,10 @@ public class ProviderConfigTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("aws");
+        ApiEnum<string, ProviderConfigType> expectedType = ProviderConfigType.Aws;
         string expectedKeyName = "projects/my-proj/locations/us/keyRings/my-ring/cryptoKeys/my-key";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedKeyName, value.KeyName);
 
         ProviderConfig emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -305,6 +338,66 @@ public class ProviderConfigTest : TestBase
         );
 
         Assert.Null(mismatchedValue.KeyName);
+    }
+}
+
+public class ProviderConfigTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ProviderConfigType.Aws)]
+    [InlineData(ProviderConfigType.Gcp)]
+    [InlineData(ProviderConfigType.Azure)]
+    public void Validation_Works(ProviderConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ProviderConfigType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ProviderConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ProviderConfigType.Aws)]
+    [InlineData(ProviderConfigType.Gcp)]
+    [InlineData(ProviderConfigType.Azure)]
+    public void SerializationRoundtrip_Works(ProviderConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ProviderConfigType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ProviderConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ProviderConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ProviderConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

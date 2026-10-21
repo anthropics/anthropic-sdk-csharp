@@ -26,7 +26,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
 
@@ -44,7 +44,7 @@ public class BetaCloudConfigTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["pandas", "numpy"],
-            Type = BetaPackagesType.Packages,
+            Type = Type.Packages,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
 
@@ -72,7 +72,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
 
@@ -104,7 +104,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
 
@@ -129,7 +129,7 @@ public class BetaCloudConfigTest : TestBase
             Go = ["string"],
             Npm = ["string"],
             Pip = ["pandas", "numpy"],
-            Type = BetaPackagesType.Packages,
+            Type = Type.Packages,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
 
@@ -157,7 +157,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
 
@@ -183,7 +183,7 @@ public class BetaCloudConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
 
@@ -246,25 +246,102 @@ public class NetworkingTest : TestBase
     }
 
     [Fact]
+    public void BetaUnrestrictedNetworkTypeWorks()
+    {
+        Networking value = new BetaUnrestrictedNetwork();
+        Assert.Equal(NetworkingType.Unrestricted, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaLimitedNetworkTypeWorks()
+    {
+        Networking value = new BetaLimitedNetwork()
+        {
+            AllowMcpServers = true,
+            AllowPackageManagers = true,
+            AllowedHosts = ["string"],
+        };
+        Assert.Equal(NetworkingType.Limited, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Networking value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "unrestricted"
+                  "type": "limited"
                 }
                 """
             )
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("unrestricted");
+        ApiEnum<string, NetworkingType> expectedType = NetworkingType.Limited;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Networking emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class NetworkingTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(NetworkingType.Unrestricted)]
+    [InlineData(NetworkingType.Limited)]
+    public void Validation_Works(NetworkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, NetworkingType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(NetworkingType.Unrestricted)]
+    [InlineData(NetworkingType.Limited)]
+    public void SerializationRoundtrip_Works(NetworkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, NetworkingType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -20,27 +20,14 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             EnvironmentID = "environment_id",
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Name = "name",
@@ -49,16 +36,10 @@ public class DeploymentUpdateParamsTest : TestBase
                 new Sessions::BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
-            Schedule = new()
-            {
-                Expression = "0 9 * * 1-5",
-                Timezone = "America/Los_Angeles",
-                Type = BetaManagedAgentsScheduleParamsType.Cron,
-            },
+            Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -66,27 +47,16 @@ public class DeploymentUpdateParamsTest : TestBase
 
         string expectedDeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai";
         DeploymentUpdateParamsAgent expectedAgent = "string";
-        Sessions::BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        Sessions::BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
         string expectedDescription = "description";
         string expectedEnvironmentID = "environment_id";
         List<BetaManagedAgentsDeploymentInitialEventParams> expectedInitialEvents =
         [
-            new BetaManagedAgentsUserMessageEventParams()
-            {
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-            },
+            new BetaManagedAgentsUserMessageEventParams(
+                [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+            ),
         ];
         Dictionary<string, string?> expectedMetadata = new() { { "foo", "string" } };
         string expectedName = "name";
@@ -95,7 +65,6 @@ public class DeploymentUpdateParamsTest : TestBase
             new Sessions::BetaManagedAgentsFileResourceParams()
             {
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                 MountPath = "/uploads/receipt.pdf",
             },
         ];
@@ -103,7 +72,6 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             Expression = "0 9 * * 1-5",
             Timezone = "America/Los_Angeles",
-            Type = BetaManagedAgentsScheduleParamsType.Cron,
         };
         List<string> expectedVaultIds = ["string"];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
@@ -160,11 +128,7 @@ public class DeploymentUpdateParamsTest : TestBase
         var parameters = new DeploymentUpdateParams
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -172,16 +136,10 @@ public class DeploymentUpdateParamsTest : TestBase
                 new Sessions::BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
-            Schedule = new()
-            {
-                Expression = "0 9 * * 1-5",
-                Timezone = "America/Los_Angeles",
-                Type = BetaManagedAgentsScheduleParamsType.Cron,
-            },
+            Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
             VaultIds = ["string"],
         };
 
@@ -205,11 +163,7 @@ public class DeploymentUpdateParamsTest : TestBase
         var parameters = new DeploymentUpdateParams
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Resources =
@@ -217,16 +171,10 @@ public class DeploymentUpdateParamsTest : TestBase
                 new Sessions::BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
-            Schedule = new()
-            {
-                Expression = "0 9 * * 1-5",
-                Timezone = "America/Los_Angeles",
-                Type = BetaManagedAgentsScheduleParamsType.Cron,
-            },
+            Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
             VaultIds = ["string"],
 
             // Null should be interpreted as omitted for these properties
@@ -259,27 +207,14 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             EnvironmentID = "environment_id",
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Name = "name",
@@ -288,16 +223,10 @@ public class DeploymentUpdateParamsTest : TestBase
                 new Sessions::BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
-            Schedule = new()
-            {
-                Expression = "0 9 * * 1-5",
-                Timezone = "America/Los_Angeles",
-                Type = BetaManagedAgentsScheduleParamsType.Cron,
-            },
+            Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -336,18 +265,9 @@ public class DeploymentUpdateParamsTest : TestBase
             EnvironmentID = "environment_id",
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Name = "name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -378,18 +298,9 @@ public class DeploymentUpdateParamsTest : TestBase
             EnvironmentID = "environment_id",
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Name = "name",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -467,27 +378,14 @@ public class DeploymentUpdateParamsTest : TestBase
         {
             DeploymentID = "depl_011CZkZcDH3vPqd7xnEfwTai",
             Agent = "string",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = Sessions::BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             EnvironmentID = "environment_id",
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string?>() { { "foo", "string" } },
             Name = "name",
@@ -496,16 +394,10 @@ public class DeploymentUpdateParamsTest : TestBase
                 new Sessions::BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
-            Schedule = new()
-            {
-                Expression = "0 9 * * 1-5",
-                Timezone = "America/Los_Angeles",
-                Type = BetaManagedAgentsScheduleParamsType.Cron,
-            },
+            Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
             VaultIds = ["string"],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -532,7 +424,6 @@ public class DeploymentUpdateParamsAgentTest : TestBase
         DeploymentUpdateParamsAgent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         value.Validate();
@@ -557,7 +448,6 @@ public class DeploymentUpdateParamsAgentTest : TestBase
         DeploymentUpdateParamsAgent value = new Sessions::BetaManagedAgentsAgentParams()
         {
             ID = "x",
-            Type = Sessions::BetaManagedAgentsAgentParamsType.Agent,
             Version = 0,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -578,15 +468,9 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value =
             new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
             {
-                Type =
-                    Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
                 Url = "https://github.com/example-org/example-repo",
                 AuthorizationToken = "ghp_exampletoken",
-                Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
                 MountPath = "x",
             };
         value.Validate();
@@ -598,7 +482,6 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value = new Sessions::BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         value.Validate();
@@ -611,7 +494,6 @@ public class DeploymentUpdateParamsResourceTest : TestBase
             new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
             {
                 MemoryStoreID = "memory_store_id",
-                Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
                 Access = Sessions::Access.ReadWrite,
                 Instructions = "instructions",
             };
@@ -624,15 +506,9 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value =
             new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
             {
-                Type =
-                    Sessions::BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
                 Url = "https://github.com/example-org/example-repo",
                 AuthorizationToken = "ghp_exampletoken",
-                Checkout = new Sessions::BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = Sessions::BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
                 MountPath = "x",
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -650,7 +526,6 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value = new Sessions::BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = Sessions::BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -669,7 +544,6 @@ public class DeploymentUpdateParamsResourceTest : TestBase
             new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
             {
                 MemoryStoreID = "memory_store_id",
-                Type = Sessions::BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
                 Access = Sessions::Access.ReadWrite,
                 Instructions = "instructions",
             };
@@ -683,12 +557,51 @@ public class DeploymentUpdateParamsResourceTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsGitHubRepositoryResourceParamsTypeWorks()
+    {
+        DeploymentUpdateParamsResource value =
+            new Sessions::BetaManagedAgentsGitHubRepositoryResourceParams()
+            {
+                Url = "https://github.com/example-org/example-repo",
+                AuthorizationToken = "ghp_exampletoken",
+                Checkout = new Sessions::BetaManagedAgentsBranchCheckout("main"),
+                MountPath = "x",
+            };
+        Assert.Equal(DeploymentUpdateParamsResourceType.GitHubRepository, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsFileResourceParamsTypeWorks()
+    {
+        DeploymentUpdateParamsResource value = new Sessions::BetaManagedAgentsFileResourceParams()
+        {
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            MountPath = "/uploads/receipt.pdf",
+        };
+        Assert.Equal(DeploymentUpdateParamsResourceType.File, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceParamTypeWorks()
+    {
+        DeploymentUpdateParamsResource value =
+            new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
+            {
+                MemoryStoreID = "memory_store_id",
+                Access = Sessions::Access.ReadWrite,
+                Instructions = "instructions",
+            };
+        Assert.Equal(DeploymentUpdateParamsResourceType.MemoryStore, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         DeploymentUpdateParamsResource value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
+                  "type": "file",
                   "mount_path": "x"
                 }
                 """
@@ -696,14 +609,18 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
+        ApiEnum<string, DeploymentUpdateParamsResourceType> expectedType =
+            DeploymentUpdateParamsResourceType.File;
         string expectedMountPath = "x";
 
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedMountPath, value.MountPath);
 
         DeploymentUpdateParamsResource emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.MountPath);
 
         DeploymentUpdateParamsResource mismatchedValue = new(
@@ -719,5 +636,63 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         );
 
         Assert.Null(mismatchedValue.MountPath);
+    }
+}
+
+public class DeploymentUpdateParamsResourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(DeploymentUpdateParamsResourceType.GitHubRepository)]
+    [InlineData(DeploymentUpdateParamsResourceType.File)]
+    [InlineData(DeploymentUpdateParamsResourceType.MemoryStore)]
+    public void Validation_Works(DeploymentUpdateParamsResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DeploymentUpdateParamsResourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DeploymentUpdateParamsResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(DeploymentUpdateParamsResourceType.GitHubRepository)]
+    [InlineData(DeploymentUpdateParamsResourceType.File)]
+    [InlineData(DeploymentUpdateParamsResourceType.MemoryStore)]
+    public void SerializationRoundtrip_Works(DeploymentUpdateParamsResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DeploymentUpdateParamsResourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, DeploymentUpdateParamsResourceType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DeploymentUpdateParamsResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, DeploymentUpdateParamsResourceType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

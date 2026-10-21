@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -34,14 +34,12 @@ public sealed record class BetaManagedAgentsMemoryStoreResourceParam : JsonModel
         init { this._rawData.Set("memory_store_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMemoryStoreResourceParamType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -78,12 +76,18 @@ public sealed record class BetaManagedAgentsMemoryStoreResourceParam : JsonModel
     public override void Validate()
     {
         _ = this.MemoryStoreID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory_store")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Access?.Validate();
         _ = this.Instructions;
     }
 
-    public BetaManagedAgentsMemoryStoreResourceParam() { }
+    public BetaManagedAgentsMemoryStoreResourceParam()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -98,6 +102,8 @@ public sealed record class BetaManagedAgentsMemoryStoreResourceParam : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
     }
 
 #pragma warning disable CS8618
@@ -115,6 +121,13 @@ public sealed record class BetaManagedAgentsMemoryStoreResourceParam : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsMemoryStoreResourceParam(string memoryStoreID)
+        : this()
+    {
+        this.MemoryStoreID = memoryStoreID;
+    }
 }
 
 class BetaManagedAgentsMemoryStoreResourceParamFromRaw
@@ -124,48 +137,6 @@ class BetaManagedAgentsMemoryStoreResourceParamFromRaw
     public BetaManagedAgentsMemoryStoreResourceParam FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMemoryStoreResourceParam.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMemoryStoreResourceParamTypeConverter))]
-public enum BetaManagedAgentsMemoryStoreResourceParamType
-{
-    MemoryStore,
-}
-
-sealed class BetaManagedAgentsMemoryStoreResourceParamTypeConverter
-    : JsonConverter<BetaManagedAgentsMemoryStoreResourceParamType>
-{
-    public override BetaManagedAgentsMemoryStoreResourceParamType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory_store" => BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
-            _ => (BetaManagedAgentsMemoryStoreResourceParamType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMemoryStoreResourceParamType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore => "memory_store",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }
 
 /// <summary>
@@ -183,7 +154,7 @@ sealed class AccessConverter : JsonConverter<Access>
 {
     public override Access Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -58,24 +58,22 @@ public sealed record class BetaManagedAgentsAgentMessageEvent : JsonModel
     /// <summary>
     /// Timestamp when this response was generated.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentMessageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentMessageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -89,10 +87,16 @@ public sealed record class BetaManagedAgentsAgentMessageEvent : JsonModel
             item.Validate();
         }
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAgentMessageEvent() { }
+    public BetaManagedAgentsAgentMessageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -105,6 +109,8 @@ public sealed record class BetaManagedAgentsAgentMessageEvent : JsonModel
     public BetaManagedAgentsAgentMessageEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.message");
     }
 
 #pragma warning disable CS8618
@@ -150,6 +156,22 @@ public record class BetaManagedAgentsAgentMessageEventContent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ => BetaManagedAgentsAgentMessageEventContentType.Text,
+                BetaManagedAgentsRedactedBlock _ =>
+                    BetaManagedAgentsAgentMessageEventContentType.Redacted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentMessageEventContentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -243,8 +265,8 @@ public record class BetaManagedAgentsAgentMessageEventContent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
+        Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -284,8 +306,8 @@ public record class BetaManagedAgentsAgentMessageEventContent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
+        Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -362,7 +384,7 @@ sealed class BetaManagedAgentsAgentMessageEventContentConverter
 {
     public override BetaManagedAgentsAgentMessageEventContent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -436,31 +458,33 @@ sealed class BetaManagedAgentsAgentMessageEventContentConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsAgentMessageEventTypeConverter))]
-public enum BetaManagedAgentsAgentMessageEventType
+[JsonConverter(typeof(BetaManagedAgentsAgentMessageEventContentTypeConverter))]
+public enum BetaManagedAgentsAgentMessageEventContentType
 {
-    AgentMessage,
+    Text,
+    Redacted,
 }
 
-sealed class BetaManagedAgentsAgentMessageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentMessageEventType>
+sealed class BetaManagedAgentsAgentMessageEventContentTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentMessageEventContentType>
 {
-    public override BetaManagedAgentsAgentMessageEventType Read(
+    public override BetaManagedAgentsAgentMessageEventContentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent.message" => BetaManagedAgentsAgentMessageEventType.AgentMessage,
-            _ => (BetaManagedAgentsAgentMessageEventType)(-1),
+            "text" => BetaManagedAgentsAgentMessageEventContentType.Text,
+            "redacted" => BetaManagedAgentsAgentMessageEventContentType.Redacted,
+            _ => (BetaManagedAgentsAgentMessageEventContentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsAgentMessageEventType value,
+        BetaManagedAgentsAgentMessageEventContentType value,
         JsonSerializerOptions options
     )
     {
@@ -468,7 +492,8 @@ sealed class BetaManagedAgentsAgentMessageEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsAgentMessageEventType.AgentMessage => "agent.message",
+                BetaManagedAgentsAgentMessageEventContentType.Text => "text",
+                BetaManagedAgentsAgentMessageEventContentType.Redacted => "redacted",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
