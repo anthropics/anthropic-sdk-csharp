@@ -1,5 +1,11 @@
 # Changelog
 
+## [13.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.0.0...Anthropic-v13.1.0) (2026-10-21)
+
+### Features
+
+* **api:** add enforcement status, actions and filter to user profiles
+
 ## [13.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.60.0...Anthropic-v13.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES

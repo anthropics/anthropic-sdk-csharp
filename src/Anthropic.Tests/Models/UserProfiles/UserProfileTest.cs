@@ -16,6 +16,18 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            EnforcementActions =
+            [
+                new UserProfileEnforcementActionRestriction()
+                {
+                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                    Action = UserProfileEnforcementActionNextStep.Verify,
+                    ExpiresAt = null,
+                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+                },
+            ],
+            EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -59,6 +71,19 @@ public class UserProfileTest : TestBase
         ApiEnum<string, UserProfileAccessType> expectedAccessType =
             UserProfileAccessType.Application;
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        List<UserProfileEnforcementAction> expectedEnforcementActions =
+        [
+            new UserProfileEnforcementActionRestriction()
+            {
+                ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                Action = UserProfileEnforcementActionNextStep.Verify,
+                ExpiresAt = null,
+                OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+            },
+        ];
+        ApiEnum<string, UserProfileEnforcementStatus> expectedEnforcementStatus =
+            UserProfileEnforcementStatus.Unrestricted;
         UserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -101,6 +126,12 @@ public class UserProfileTest : TestBase
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedAccessType, model.AccessType);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
+        Assert.Equal(expectedEnforcementActions.Count, model.EnforcementActions.Count);
+        for (int i = 0; i < expectedEnforcementActions.Count; i++)
+        {
+            Assert.Equal(expectedEnforcementActions[i], model.EnforcementActions[i]);
+        }
+        Assert.Equal(expectedEnforcementStatus, model.EnforcementStatus);
         Assert.Equal(expectedExternalUserDetails, model.ExternalUserDetails);
         Assert.Equal(expectedMetadata.Count, model.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -123,6 +154,18 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            EnforcementActions =
+            [
+                new UserProfileEnforcementActionRestriction()
+                {
+                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                    Action = UserProfileEnforcementActionNextStep.Verify,
+                    ExpiresAt = null,
+                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+                },
+            ],
+            EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -179,6 +222,18 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            EnforcementActions =
+            [
+                new UserProfileEnforcementActionRestriction()
+                {
+                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                    Action = UserProfileEnforcementActionNextStep.Verify,
+                    ExpiresAt = null,
+                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+                },
+            ],
+            EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -229,6 +284,19 @@ public class UserProfileTest : TestBase
         ApiEnum<string, UserProfileAccessType> expectedAccessType =
             UserProfileAccessType.Application;
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        List<UserProfileEnforcementAction> expectedEnforcementActions =
+        [
+            new UserProfileEnforcementActionRestriction()
+            {
+                ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                Action = UserProfileEnforcementActionNextStep.Verify,
+                ExpiresAt = null,
+                OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+            },
+        ];
+        ApiEnum<string, UserProfileEnforcementStatus> expectedEnforcementStatus =
+            UserProfileEnforcementStatus.Unrestricted;
         UserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -271,6 +339,12 @@ public class UserProfileTest : TestBase
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedAccessType, deserialized.AccessType);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
+        Assert.Equal(expectedEnforcementActions.Count, deserialized.EnforcementActions.Count);
+        for (int i = 0; i < expectedEnforcementActions.Count; i++)
+        {
+            Assert.Equal(expectedEnforcementActions[i], deserialized.EnforcementActions[i]);
+        }
+        Assert.Equal(expectedEnforcementStatus, deserialized.EnforcementStatus);
         Assert.Equal(expectedExternalUserDetails, deserialized.ExternalUserDetails);
         Assert.Equal(expectedMetadata.Count, deserialized.Metadata.Count);
         foreach (var item in expectedMetadata)
@@ -293,6 +367,18 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            EnforcementActions =
+            [
+                new UserProfileEnforcementActionRestriction()
+                {
+                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                    Action = UserProfileEnforcementActionNextStep.Verify,
+                    ExpiresAt = null,
+                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+                },
+            ],
+            EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfileExternalUserAccountStatus.Active,
@@ -343,6 +429,18 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
+            EnforcementActions =
+            [
+                new UserProfileEnforcementActionRestriction()
+                {
+                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
+                    Action = UserProfileEnforcementActionNextStep.Verify,
+                    ExpiresAt = null,
+                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
+                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
+                },
+            ],
+            EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
                 AccountStatus = UserProfileExternalUserAccountStatus.Active,
