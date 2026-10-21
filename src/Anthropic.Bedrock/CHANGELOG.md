@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.15.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.1...Bedrock-v0.15.0) (2026-10-21)
+## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.1...Bedrock-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES
 

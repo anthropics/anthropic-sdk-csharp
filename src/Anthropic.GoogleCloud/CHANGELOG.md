@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/GoogleCloud-v0.3.0...GoogleCloud-v0.4.0) (2026-10-21)
+## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/GoogleCloud-v0.3.0...GoogleCloud-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES
 

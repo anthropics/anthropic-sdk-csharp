@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.9.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.8.0...Foundry-v0.9.0) (2026-10-21)
+## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Foundry-v0.8.0...Foundry-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES
 

@@ -1,6 +1,6 @@
 # Changelog
 
-## [0.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.7.0...Aws-v0.8.0) (2026-10-21)
+## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.7.0...Aws-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES
 
