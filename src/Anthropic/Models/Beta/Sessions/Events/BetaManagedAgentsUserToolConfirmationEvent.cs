@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -61,14 +61,12 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
         init { this._rawData.Set("tool_use_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -90,12 +88,12 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     /// <summary>
     /// Timestamp when the confirmation was processed.
     /// </summary>
-    public System::DateTimeOffset? ProcessedAt
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -120,13 +118,24 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
         _ = this.ID;
         this.Result.Validate();
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("user.tool_confirmation")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.DenyMessage;
         _ = this.ProcessedAt;
         _ = this.SessionThreadID;
     }
 
-    public BetaManagedAgentsUserToolConfirmationEvent() { }
+    public BetaManagedAgentsUserToolConfirmationEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.tool_confirmation");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -141,6 +150,8 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEvent : JsonMode
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.tool_confirmation");
     }
 
 #pragma warning disable CS8618
@@ -183,7 +194,7 @@ sealed class ResultConverter : JsonConverter<Result>
 {
     public override Result Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -203,50 +214,6 @@ sealed class ResultConverter : JsonConverter<Result>
             {
                 Result.Allow => "allow",
                 Result.Deny => "deny",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUserToolConfirmationEventTypeConverter))]
-public enum BetaManagedAgentsUserToolConfirmationEventType
-{
-    UserToolConfirmation,
-}
-
-sealed class BetaManagedAgentsUserToolConfirmationEventTypeConverter
-    : JsonConverter<BetaManagedAgentsUserToolConfirmationEventType>
-{
-    public override BetaManagedAgentsUserToolConfirmationEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user.tool_confirmation" =>
-                BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation,
-            _ => (BetaManagedAgentsUserToolConfirmationEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUserToolConfirmationEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUserToolConfirmationEventType.UserToolConfirmation =>
-                    "user.tool_confirmation",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

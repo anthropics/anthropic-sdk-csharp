@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -35,12 +35,12 @@ public sealed record class BetaUserProfile : JsonModel
     /// <summary>
     /// When this user profile was created, in RFC 3339 format.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -105,14 +105,12 @@ public sealed record class BetaUserProfile : JsonModel
     /// <summary>
     /// Object type. Always `user_profile`.
     /// </summary>
-    public required ApiEnum<string, global::Anthropic.Models.Beta.UserProfiles.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.UserProfiles.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -123,12 +121,12 @@ public sealed record class BetaUserProfile : JsonModel
     /// one. Other changes to the statuses that Anthropic reports do not always update
     /// it, so read the status itself rather than watching this timestamp.
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -207,14 +205,12 @@ public sealed record class BetaUserProfile : JsonModel
     /// supplies one. Legacy field, present only under the `user-profiles-2026-08-18`
     /// beta header; without a legacy header, the value is `external_user_details.onboarded_at`.
     /// </summary>
-    public System::DateTimeOffset? ExternalUserOnboardedAt
+    public DateTimeOffset? ExternalUserOnboardedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>(
-                "external_user_onboarded_at"
-            );
+            return this._rawData.GetNullableStruct<DateTimeOffset>("external_user_onboarded_at");
         }
         init { this._rawData.Set("external_user_onboarded_at", value); }
     }
@@ -230,7 +226,10 @@ public sealed record class BetaUserProfile : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("user_profile")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         this.AccessType?.Validate();
         _ = this.ExternalID;
@@ -238,7 +237,10 @@ public sealed record class BetaUserProfile : JsonModel
         _ = this.ExternalUserOnboardedAt;
     }
 
-    public BetaUserProfile() { }
+    public BetaUserProfile()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user_profile");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -249,6 +251,8 @@ public sealed record class BetaUserProfile : JsonModel
     public BetaUserProfile(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user_profile");
     }
 
 #pragma warning disable CS8618
@@ -274,50 +278,6 @@ class BetaUserProfileFromRaw : IFromRawJson<BetaUserProfile>
 }
 
 /// <summary>
-/// Object type. Always `user_profile`.
-/// </summary>
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    UserProfile,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.UserProfiles.Type>
-{
-    public override global::Anthropic.Models.Beta.UserProfiles.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user_profile" => global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile,
-            _ => (global::Anthropic.Models.Beta.UserProfiles.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.UserProfiles.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.UserProfiles.Type.UserProfile => "user_profile",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
 /// How the platform uses the API for this entity: `application` (default) or `passthrough`.
 /// Absent under the legacy `user-profiles-2026-03-24` beta header.
 /// </summary>
@@ -340,7 +300,7 @@ sealed class BetaUserProfileAccessTypeConverter : JsonConverter<BetaUserProfileA
 {
     public override BetaUserProfileAccessType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

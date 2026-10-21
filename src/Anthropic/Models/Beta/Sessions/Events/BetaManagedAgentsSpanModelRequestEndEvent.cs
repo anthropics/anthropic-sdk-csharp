@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -75,24 +75,22 @@ public sealed record class BetaManagedAgentsSpanModelRequestEndEvent : JsonModel
     /// <summary>
     /// Timestamp when the model request completed.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSpanModelRequestEndEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -105,10 +103,21 @@ public sealed record class BetaManagedAgentsSpanModelRequestEndEvent : JsonModel
         _ = this.ModelRequestStartID;
         this.ModelUsage.Validate();
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("span.model_request_end")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSpanModelRequestEndEvent() { }
+    public BetaManagedAgentsSpanModelRequestEndEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("span.model_request_end");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -123,6 +132,8 @@ public sealed record class BetaManagedAgentsSpanModelRequestEndEvent : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("span.model_request_end");
     }
 
 #pragma warning disable CS8618
@@ -149,48 +160,4 @@ class BetaManagedAgentsSpanModelRequestEndEventFromRaw
     public BetaManagedAgentsSpanModelRequestEndEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSpanModelRequestEndEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSpanModelRequestEndEventTypeConverter))]
-public enum BetaManagedAgentsSpanModelRequestEndEventType
-{
-    SpanModelRequestEnd,
-}
-
-sealed class BetaManagedAgentsSpanModelRequestEndEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSpanModelRequestEndEventType>
-{
-    public override BetaManagedAgentsSpanModelRequestEndEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "span.model_request_end" =>
-                BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd,
-            _ => (BetaManagedAgentsSpanModelRequestEndEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSpanModelRequestEndEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSpanModelRequestEndEventType.SpanModelRequestEnd =>
-                    "span.model_request_end",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

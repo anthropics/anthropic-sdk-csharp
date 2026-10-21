@@ -15,36 +15,18 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Instructions = "x",
-            OutputBehavior = new BetaOutputBehaviorCreateNew(
-                BetaOutputBehaviorCreateNewType.CreateNew
-            ),
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        List<BetaDreamInput> expectedInputs =
-        [
-            new BetaDreamMemoryStoreInput()
-            {
-                MemoryStoreID = "x",
-                Type = BetaDreamMemoryStoreInputType.MemoryStore,
-            },
-        ];
+        List<BetaDreamInput> expectedInputs = [new BetaDreamMemoryStoreInput("x")];
         Model expectedModel = "string";
         string expectedInstructions = "x";
-        BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew(
-            BetaOutputBehaviorCreateNewType.CreateNew
-        );
+        BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew();
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -73,14 +55,7 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Instructions = "x",
         };
@@ -98,14 +73,7 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Instructions = "x",
 
@@ -128,19 +96,10 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Instructions = "x",
-            OutputBehavior = new BetaOutputBehaviorCreateNew(
-                BetaOutputBehaviorCreateNewType.CreateNew
-            ),
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -164,18 +123,9 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
-            OutputBehavior = new BetaOutputBehaviorCreateNew(
-                BetaOutputBehaviorCreateNewType.CreateNew
-            ),
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -189,18 +139,9 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
-            OutputBehavior = new BetaOutputBehaviorCreateNew(
-                BetaOutputBehaviorCreateNewType.CreateNew
-            ),
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
@@ -216,14 +157,7 @@ public class DreamCreateParamsTest : TestBase
     {
         DreamCreateParams parameters = new()
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
         };
 
@@ -240,14 +174,7 @@ public class DreamCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DreamCreateParams parameters = new()
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -270,19 +197,10 @@ public class DreamCreateParamsTest : TestBase
     {
         var parameters = new DreamCreateParams
         {
-            Inputs =
-            [
-                new BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             Instructions = "x",
-            OutputBehavior = new BetaOutputBehaviorCreateNew(
-                BetaOutputBehaviorCreateNewType.CreateNew
-            ),
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

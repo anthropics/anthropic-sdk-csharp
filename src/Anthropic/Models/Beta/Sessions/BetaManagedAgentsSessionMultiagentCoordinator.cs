@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -43,14 +43,12 @@ public sealed record class BetaManagedAgentsSessionMultiagentCoordinator : JsonM
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -62,10 +60,16 @@ public sealed record class BetaManagedAgentsSessionMultiagentCoordinator : JsonM
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("coordinator")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionMultiagentCoordinator() { }
+    public BetaManagedAgentsSessionMultiagentCoordinator()
+    {
+        this.Type = JsonSerializer.SerializeToElement("coordinator");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -80,6 +84,8 @@ public sealed record class BetaManagedAgentsSessionMultiagentCoordinator : JsonM
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("coordinator");
     }
 
 #pragma warning disable CS8618
@@ -96,6 +102,15 @@ public sealed record class BetaManagedAgentsSessionMultiagentCoordinator : JsonM
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionMultiagentCoordinator(
+        IReadOnlyList<BetaManagedAgentsSessionMultiagentCoordinatorAgent> agents
+    )
+        : this()
+    {
+        this.Agents = agents;
     }
 }
 
@@ -129,8 +144,25 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorAgentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent _ =>
+                    BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Agent,
+                Agents::BetaManagedAgentsAdvisor _ =>
+                    BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Advisor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorAgentType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsSessionMultiagentCoordinatorAgent(
-        BetaManagedAgentsSessionThreadAgent value,
+        Agents::BetaManagedAgentsSessionThreadAgent value,
         JsonElement? element = null
     )
     {
@@ -139,7 +171,7 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
     }
 
     public BetaManagedAgentsSessionMultiagentCoordinatorAgent(
-        BetaManagedAgentsAdvisor value,
+        Agents::BetaManagedAgentsAdvisor value,
         JsonElement? element = null
     )
     {
@@ -154,47 +186,47 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsSessionThreadAgent"/>.
+    /// type <see cref="Agents::BetaManagedAgentsSessionThreadAgent"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsSessionThread(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsSessionThreadAgent`
+    ///     // `value` is of type `Agents::BetaManagedAgentsSessionThreadAgent`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsSessionThread(
-        [NotNullWhen(true)] out BetaManagedAgentsSessionThreadAgent? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsSessionThreadAgent? value
     )
     {
-        value = this.Value as BetaManagedAgentsSessionThreadAgent;
+        value = this.Value as Agents::BetaManagedAgentsSessionThreadAgent;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAdvisor"/>.
+    /// type <see cref="Agents::BetaManagedAgentsAdvisor"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsAdvisor(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAdvisor`
+    ///     // `value` is of type `Agents::BetaManagedAgentsAdvisor`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsAdvisor(
-        [NotNullWhen(true)] out BetaManagedAgentsAdvisor? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsAdvisor? value
     )
     {
-        value = this.Value as BetaManagedAgentsAdvisor;
+        value = this.Value as Agents::BetaManagedAgentsAdvisor;
         return value != null;
     }
 
@@ -212,23 +244,23 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
-    ///     (BetaManagedAgentsAdvisor value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionThreadAgent> betaManagedAgentsSessionThread,
-        System::Action<BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor
+        Action<Agents::BetaManagedAgentsSessionThreadAgent> betaManagedAgentsSessionThread,
+        Action<Agents::BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsSessionThreadAgent value:
+            case Agents::BetaManagedAgentsSessionThreadAgent value:
                 betaManagedAgentsSessionThread(value);
                 break;
-            case BetaManagedAgentsAdvisor value:
+            case Agents::BetaManagedAgentsAdvisor value:
                 betaManagedAgentsAdvisor(value);
                 break;
             default:
@@ -253,21 +285,23 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
-    ///     (BetaManagedAgentsAdvisor value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsSessionThreadAgent value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsAdvisor value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionThreadAgent, T> betaManagedAgentsSessionThread,
-        System::Func<BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor
+        Func<Agents::BetaManagedAgentsSessionThreadAgent, T> betaManagedAgentsSessionThread,
+        Func<Agents::BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsSessionThreadAgent value => betaManagedAgentsSessionThread(value),
-            BetaManagedAgentsAdvisor value => betaManagedAgentsAdvisor(value),
+            Agents::BetaManagedAgentsSessionThreadAgent value => betaManagedAgentsSessionThread(
+                value
+            ),
+            Agents::BetaManagedAgentsAdvisor value => betaManagedAgentsAdvisor(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionMultiagentCoordinatorAgent"
             ),
@@ -275,11 +309,11 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
     }
 
     public static implicit operator BetaManagedAgentsSessionMultiagentCoordinatorAgent(
-        BetaManagedAgentsSessionThreadAgent value
+        Agents::BetaManagedAgentsSessionThreadAgent value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionMultiagentCoordinatorAgent(
-        BetaManagedAgentsAdvisor value
+        Agents::BetaManagedAgentsAdvisor value
     ) => new(value);
 
     /// <summary>
@@ -326,8 +360,8 @@ public record class BetaManagedAgentsSessionMultiagentCoordinatorAgent : ModelBa
     {
         return this.Value switch
         {
-            BetaManagedAgentsSessionThreadAgent _ => 0,
-            BetaManagedAgentsAdvisor _ => 1,
+            Agents::BetaManagedAgentsSessionThreadAgent _ => 0,
+            Agents::BetaManagedAgentsAdvisor _ => 1,
             _ => -1,
         };
     }
@@ -338,7 +372,7 @@ sealed class BetaManagedAgentsSessionMultiagentCoordinatorAgentConverter
 {
     public override BetaManagedAgentsSessionMultiagentCoordinatorAgent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -360,7 +394,7 @@ sealed class BetaManagedAgentsSessionMultiagentCoordinatorAgentConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsSessionThreadAgent>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsSessionThreadAgent>(
                             element,
                             options
                         );
@@ -380,7 +414,7 @@ sealed class BetaManagedAgentsSessionMultiagentCoordinatorAgentConverter
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAdvisor>(
+                    var deserialized = JsonSerializer.Deserialize<Agents::BetaManagedAgentsAdvisor>(
                         element,
                         options
                     );
@@ -413,31 +447,33 @@ sealed class BetaManagedAgentsSessionMultiagentCoordinatorAgentConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionMultiagentCoordinatorTypeConverter))]
-public enum BetaManagedAgentsSessionMultiagentCoordinatorType
+[JsonConverter(typeof(BetaManagedAgentsSessionMultiagentCoordinatorAgentTypeConverter))]
+public enum BetaManagedAgentsSessionMultiagentCoordinatorAgentType
 {
-    Coordinator,
+    Agent,
+    Advisor,
 }
 
-sealed class BetaManagedAgentsSessionMultiagentCoordinatorTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionMultiagentCoordinatorType>
+sealed class BetaManagedAgentsSessionMultiagentCoordinatorAgentTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionMultiagentCoordinatorAgentType>
 {
-    public override BetaManagedAgentsSessionMultiagentCoordinatorType Read(
+    public override BetaManagedAgentsSessionMultiagentCoordinatorAgentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "coordinator" => BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-            _ => (BetaManagedAgentsSessionMultiagentCoordinatorType)(-1),
+            "agent" => BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Agent,
+            "advisor" => BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Advisor,
+            _ => (BetaManagedAgentsSessionMultiagentCoordinatorAgentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionMultiagentCoordinatorType value,
+        BetaManagedAgentsSessionMultiagentCoordinatorAgentType value,
         JsonSerializerOptions options
     )
     {
@@ -445,7 +481,8 @@ sealed class BetaManagedAgentsSessionMultiagentCoordinatorTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator => "coordinator",
+                BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Agent => "agent",
+                BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Advisor => "advisor",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

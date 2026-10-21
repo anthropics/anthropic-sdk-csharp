@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -38,24 +38,22 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     /// <summary>
     /// Timestamp when the update was applied.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionUpdatedEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionUpdatedEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -134,14 +132,22 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     {
         _ = this.ID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session.updated"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Agent?.Validate();
         this.Budget?.Validate();
         _ = this.Metadata;
         _ = this.Title;
     }
 
-    public BetaManagedAgentsSessionUpdatedEvent() { }
+    public BetaManagedAgentsSessionUpdatedEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.updated");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -154,6 +160,8 @@ public sealed record class BetaManagedAgentsSessionUpdatedEvent : JsonModel
     public BetaManagedAgentsSessionUpdatedEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.updated");
     }
 
 #pragma warning disable CS8618
@@ -180,46 +188,4 @@ class BetaManagedAgentsSessionUpdatedEventFromRaw
     public BetaManagedAgentsSessionUpdatedEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionUpdatedEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionUpdatedEventTypeConverter))]
-public enum BetaManagedAgentsSessionUpdatedEventType
-{
-    SessionUpdated,
-}
-
-sealed class BetaManagedAgentsSessionUpdatedEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionUpdatedEventType>
-{
-    public override BetaManagedAgentsSessionUpdatedEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.updated" => BetaManagedAgentsSessionUpdatedEventType.SessionUpdated,
-            _ => (BetaManagedAgentsSessionUpdatedEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionUpdatedEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionUpdatedEventType.SessionUpdated => "session.updated",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

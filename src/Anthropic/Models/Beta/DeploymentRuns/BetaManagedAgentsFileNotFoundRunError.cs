@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsFileNotFoundRunError : JsonModel
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsFileNotFoundRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsFileNotFoundRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsFileNotFoundRunError : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("file_not_found_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsFileNotFoundRunError() { }
+    public BetaManagedAgentsFileNotFoundRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("file_not_found_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +73,8 @@ public sealed record class BetaManagedAgentsFileNotFoundRunError : JsonModel
     public BetaManagedAgentsFileNotFoundRunError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("file_not_found_error");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +92,13 @@ public sealed record class BetaManagedAgentsFileNotFoundRunError : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsFileNotFoundRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsFileNotFoundRunErrorFromRaw
@@ -91,47 +108,4 @@ class BetaManagedAgentsFileNotFoundRunErrorFromRaw
     public BetaManagedAgentsFileNotFoundRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsFileNotFoundRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsFileNotFoundRunErrorTypeConverter))]
-public enum BetaManagedAgentsFileNotFoundRunErrorType
-{
-    FileNotFoundError,
-}
-
-sealed class BetaManagedAgentsFileNotFoundRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsFileNotFoundRunErrorType>
-{
-    public override BetaManagedAgentsFileNotFoundRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "file_not_found_error" => BetaManagedAgentsFileNotFoundRunErrorType.FileNotFoundError,
-            _ => (BetaManagedAgentsFileNotFoundRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsFileNotFoundRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsFileNotFoundRunErrorType.FileNotFoundError =>
-                    "file_not_found_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

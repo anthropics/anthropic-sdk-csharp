@@ -8,11 +8,10 @@ namespace Anthropic.Tests.Models.Messages;
 public class MessageParamTest : TestBase
 {
     [Fact]
-    public void FieldRoundtrip_Works()
+    public void UserValidationWorks()
     {
-        var model = new MessageParam
-        {
-            Content = new(
+        MessageParam value = new UserMessageParam(
+            new MessageContentParam(
                 [
                     new ContentBlockParam(
                         new TextBlockParam()
@@ -33,254 +32,77 @@ public class MessageParamTest : TestBase
                         }
                     ),
                 ]
-            ),
-            Role = Role.User,
-        };
-
-        MessageParamContent expectedContent = new(
-            [
-                new ContentBlockParam(
-                    new TextBlockParam()
-                    {
-                        Text = "What is a quaternion?",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    }
-                ),
-            ]
-        );
-        ApiEnum<string, Role> expectedRole = Role.User;
-
-        Assert.Equal(expectedContent, model.Content);
-        Assert.Equal(expectedRole, model.Role);
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new MessageParam
-        {
-            Content = new(
-                [
-                    new ContentBlockParam(
-                        new TextBlockParam()
-                        {
-                            Text = "What is a quaternion?",
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Citations =
-                            [
-                                new CitationCharLocationParam()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "x",
-                                    EndCharIndex = 0,
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                        }
-                    ),
-                ]
-            ),
-            Role = Role.User,
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MessageParam>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new MessageParam
-        {
-            Content = new(
-                [
-                    new ContentBlockParam(
-                        new TextBlockParam()
-                        {
-                            Text = "What is a quaternion?",
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Citations =
-                            [
-                                new CitationCharLocationParam()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "x",
-                                    EndCharIndex = 0,
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                        }
-                    ),
-                ]
-            ),
-            Role = Role.User,
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MessageParam>(
-            element,
-            ModelBase.SerializerOptions
-        );
-        Assert.NotNull(deserialized);
-
-        MessageParamContent expectedContent = new(
-            [
-                new ContentBlockParam(
-                    new TextBlockParam()
-                    {
-                        Text = "What is a quaternion?",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    }
-                ),
-            ]
-        );
-        ApiEnum<string, Role> expectedRole = Role.User;
-
-        Assert.Equal(expectedContent, deserialized.Content);
-        Assert.Equal(expectedRole, deserialized.Role);
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new MessageParam
-        {
-            Content = new(
-                [
-                    new ContentBlockParam(
-                        new TextBlockParam()
-                        {
-                            Text = "What is a quaternion?",
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Citations =
-                            [
-                                new CitationCharLocationParam()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "x",
-                                    EndCharIndex = 0,
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                        }
-                    ),
-                ]
-            ),
-            Role = Role.User,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new MessageParam
-        {
-            Content = new(
-                [
-                    new ContentBlockParam(
-                        new TextBlockParam()
-                        {
-                            Text = "What is a quaternion?",
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Citations =
-                            [
-                                new CitationCharLocationParam()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "x",
-                                    EndCharIndex = 0,
-                                    StartCharIndex = 0,
-                                },
-                            ],
-                        }
-                    ),
-                ]
-            ),
-            Role = Role.User,
-        };
-
-        MessageParam copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class MessageParamContentTest : TestBase
-{
-    [Fact]
-    public void StringValidationWorks()
-    {
-        MessageParamContent value = "string";
-        value.Validate();
-    }
-
-    [Fact]
-    public void ContentBlockParamsValidationWorks()
-    {
-        MessageParamContent value = new(
-            [
-                new ContentBlockParam(
-                    new TextBlockParam()
-                    {
-                        Text = "What is a quaternion?",
-                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                        Citations =
-                        [
-                            new CitationCharLocationParam()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "x",
-                                EndCharIndex = 0,
-                                StartCharIndex = 0,
-                            },
-                        ],
-                    }
-                ),
-            ]
+            )
         );
         value.Validate();
     }
 
     [Fact]
-    public void StringSerializationRoundtripWorks()
+    public void AssistantValidationWorks()
     {
-        MessageParamContent value = "string";
+        MessageParam value = new AssistantMessageParam(
+            new MessageContentParam(
+                [
+                    new ContentBlockParam(
+                        new TextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new CitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            )
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void SystemValidationWorks()
+    {
+        MessageParam value = new SystemMessageParam("string");
+        value.Validate();
+    }
+
+    [Fact]
+    public void UserSerializationRoundtripWorks()
+    {
+        MessageParam value = new UserMessageParam(
+            new MessageContentParam(
+                [
+                    new ContentBlockParam(
+                        new TextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new CitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            )
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(
+        var deserialized = JsonSerializer.Deserialize<MessageParam>(
             element,
             ModelBase.SerializerOptions
         );
@@ -289,9 +111,156 @@ public class MessageParamContentTest : TestBase
     }
 
     [Fact]
-    public void ContentBlockParamsSerializationRoundtripWorks()
+    public void AssistantSerializationRoundtripWorks()
     {
-        MessageParamContent value = new(
+        MessageParam value = new AssistantMessageParam(
+            new MessageContentParam(
+                [
+                    new ContentBlockParam(
+                        new TextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new CitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            )
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SystemSerializationRoundtripWorks()
+    {
+        MessageParam value = new SystemMessageParam("string");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<MessageParam>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserRoleWorks()
+    {
+        MessageParam value = new UserMessageParam(
+            new MessageContentParam(
+                [
+                    new ContentBlockParam(
+                        new TextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new CitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            )
+        );
+        Assert.Equal(MessageParamRole.User, value.Role.Value());
+    }
+
+    [Fact]
+    public void AssistantRoleWorks()
+    {
+        MessageParam value = new AssistantMessageParam(
+            new MessageContentParam(
+                [
+                    new ContentBlockParam(
+                        new TextBlockParam()
+                        {
+                            Text = "What is a quaternion?",
+                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                            Citations =
+                            [
+                                new CitationCharLocationParam()
+                                {
+                                    CitedText = "The grass is green. The sky is blue.",
+                                    DocumentIndex = 0,
+                                    DocumentTitle = "x",
+                                    EndCharIndex = 0,
+                                    StartCharIndex = 0,
+                                },
+                            ],
+                        }
+                    ),
+                ]
+            )
+        );
+        Assert.Equal(MessageParamRole.Assistant, value.Role.Value());
+    }
+
+    [Fact]
+    public void SystemRoleWorks()
+    {
+        MessageParam value = new SystemMessageParam("string");
+        Assert.Equal(MessageParamRole.System, value.Role.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        MessageParam value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "content": [
+                    {
+                      "text": "What is a quaternion?",
+                      "type": "text",
+                      "cache_control": {
+                        "type": "ephemeral",
+                        "ttl": "5m"
+                      },
+                      "citations": [
+                        {
+                          "cited_text": "The grass is green. The sky is blue.",
+                          "document_index": 0,
+                          "document_title": "x",
+                          "end_char_index": 0,
+                          "start_char_index": 0,
+                          "type": "char_location"
+                        }
+                      ]
+                    }
+                  ],
+                  "role": "user"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        MessageContentParam expectedContent = new(
             [
                 new ContentBlockParam(
                     new TextBlockParam()
@@ -313,33 +282,35 @@ public class MessageParamContentTest : TestBase
                 ),
             ]
         );
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MessageParamContent>(
-            element,
-            ModelBase.SerializerOptions
-        );
+        ApiEnum<string, MessageParamRole> expectedRole = MessageParamRole.User;
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(expectedContent, value.Content);
+        Assert.Equal(expectedRole, value.Role);
+
+        MessageParam emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Content);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Role);
     }
 }
 
-public class RoleTest : TestBase
+public class MessageParamRoleTest : TestBase
 {
     [Theory]
-    [InlineData(Role.User)]
-    [InlineData(Role.Assistant)]
-    [InlineData(Role.System)]
-    public void Validation_Works(Role rawValue)
+    [InlineData(MessageParamRole.User)]
+    [InlineData(MessageParamRole.Assistant)]
+    [InlineData(MessageParamRole.System)]
+    public void Validation_Works(MessageParamRole rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Role> value = rawValue;
+        ApiEnum<string, MessageParamRole> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, MessageParamRole>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -349,16 +320,16 @@ public class RoleTest : TestBase
     }
 
     [Theory]
-    [InlineData(Role.User)]
-    [InlineData(Role.Assistant)]
-    [InlineData(Role.System)]
-    public void SerializationRoundtrip_Works(Role rawValue)
+    [InlineData(MessageParamRole.User)]
+    [InlineData(MessageParamRole.Assistant)]
+    [InlineData(MessageParamRole.System)]
+    public void SerializationRoundtrip_Works(MessageParamRole rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Role> value = rawValue;
+        ApiEnum<string, MessageParamRole> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, MessageParamRole>>(
             json,
             ModelBase.SerializerOptions
         );
@@ -369,12 +340,12 @@ public class RoleTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, MessageParamRole>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, MessageParamRole>>(
             json,
             ModelBase.SerializerOptions
         );

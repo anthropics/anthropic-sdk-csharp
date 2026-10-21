@@ -18,7 +18,7 @@ BetaMessage served = await client.Beta.Messages.Create(
     {
         Model = Messages::Model.ClaudeFable5,
         MaxTokens = 1024,
-        Messages = [new() { Content = "Some prompt that triggers a refusal", Role = Role.User }],
+        Messages = [new BetaUserMessageParam { Content = "Some prompt that triggers a refusal" }],
         Fallbacks = new([new(Messages::Model.ClaudeOpus4_8)]),
         Betas = [AnthropicBeta.ServerSideFallback2026_07_01],
     }
@@ -51,7 +51,7 @@ using (fallbackState.Use())
             MaxTokens = 1024,
             Messages =
             [
-                new() { Content = "Some prompt that triggers a refusal", Role = Role.User },
+                new BetaUserMessageParam { Content = "Some prompt that triggers a refusal" },
             ],
         }
     );
@@ -91,7 +91,7 @@ using (fallbackState.Use())
             MaxTokens = 1024,
             Messages =
             [
-                new() { Content = "Some prompt that triggers a refusal", Role = Role.User },
+                new BetaUserMessageParam { Content = "Some prompt that triggers a refusal" },
             ],
         }
     );

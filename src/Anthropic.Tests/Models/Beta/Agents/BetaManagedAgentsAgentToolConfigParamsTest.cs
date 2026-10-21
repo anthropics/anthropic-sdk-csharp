@@ -14,10 +14,8 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsBashToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
         value.Validate();
     }
@@ -28,9 +26,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsEditToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsEditToolConfigParamsType.Edit,
         };
         value.Validate();
@@ -42,9 +38,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsReadToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsReadToolConfigParamsType.Read,
         };
         value.Validate();
@@ -56,9 +50,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsWriteToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
         value.Validate();
@@ -70,9 +62,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGlobToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGlobToolConfigParamsType.Glob,
         };
         value.Validate();
@@ -84,9 +74,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGrepToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
         value.Validate();
@@ -102,9 +90,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 BlockedDomains = ["string"],
                 Enabled = true,
                 MaxContentTokens = 0,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
                 UrlSources = new()
                 {
@@ -125,9 +111,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 Type = BetaManagedAgentsWebSearchToolConfigParamsType.WebSearch,
                 UserLocation = new()
                 {
@@ -146,10 +130,8 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsBashToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
-            Type = BetaManagedAgentsBashToolConfigParamsType.Bash,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentToolConfigParams>(
@@ -166,9 +148,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsEditToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsEditToolConfigParamsType.Edit,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -186,9 +166,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsReadToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsReadToolConfigParamsType.Read,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -206,9 +184,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsWriteToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -226,9 +202,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGlobToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGlobToolConfigParamsType.Glob,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -246,9 +220,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGrepToolConfigParams()
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
             Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -270,9 +242,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 BlockedDomains = ["string"],
                 Enabled = true,
                 MaxContentTokens = 0,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
                 UrlSources = new()
                 {
@@ -299,9 +269,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 AllowedDomains = ["string"],
                 BlockedDomains = ["string"],
                 Enabled = true,
-                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                 Type = BetaManagedAgentsWebSearchToolConfigParamsType.WebSearch,
                 UserLocation = new()
                 {
@@ -321,6 +289,122 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
     }
 
     [Fact]
+    public void BashTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsBashToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = Type.Bash,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Bash, value.Type.Value());
+    }
+
+    [Fact]
+    public void EditTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsEditToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = BetaManagedAgentsEditToolConfigParamsType.Edit,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Edit, value.Type.Value());
+    }
+
+    [Fact]
+    public void ReadTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsReadToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = BetaManagedAgentsReadToolConfigParamsType.Read,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Read, value.Type.Value());
+    }
+
+    [Fact]
+    public void WriteTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsWriteToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = BetaManagedAgentsWriteToolConfigParamsType.Write,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Write, value.Type.Value());
+    }
+
+    [Fact]
+    public void GlobTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGlobToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = BetaManagedAgentsGlobToolConfigParamsType.Glob,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Glob, value.Type.Value());
+    }
+
+    [Fact]
+    public void GrepTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value = new BetaManagedAgentsGrepToolConfigParams()
+        {
+            Enabled = true,
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+            Type = BetaManagedAgentsGrepToolConfigParamsType.Grep,
+        };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.Grep, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value =
+            new BetaManagedAgentsWebFetchToolConfigParams()
+            {
+                AllowedDomains = ["string"],
+                BlockedDomains = ["string"],
+                Enabled = true,
+                MaxContentTokens = 0,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                Type = BetaManagedAgentsWebFetchToolConfigParamsType.WebFetch,
+                UrlSources = new()
+                {
+                    ClientToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    ServerToolResults = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                    UserInput = BetaManagedAgentsWebFetchUrlSourceShorthand.All,
+                },
+            };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.WebFetch, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebSearchTypeWorks()
+    {
+        BetaManagedAgentsAgentToolConfigParams value =
+            new BetaManagedAgentsWebSearchToolConfigParams()
+            {
+                AllowedDomains = ["string"],
+                BlockedDomains = ["string"],
+                Enabled = true,
+                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                Type = BetaManagedAgentsWebSearchToolConfigParamsType.WebSearch,
+                UserLocation = new()
+                {
+                    City = "x",
+                    Country = "country",
+                    Region = "x",
+                    Timezone = "x",
+                },
+            };
+        Assert.Equal(BetaManagedAgentsAgentToolConfigParamsType.WebSearch, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsAgentToolConfigParams value = new(
@@ -329,6 +413,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 {
                   "name": "bash",
                   "enabled": true,
+                  "type": "bash",
                   "allowed_domains": [
                     "string"
                   ],
@@ -343,11 +428,14 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
 
         JsonElement expectedName = JsonSerializer.SerializeToElement("bash");
         bool expectedEnabled = true;
+        ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType> expectedType =
+            BetaManagedAgentsAgentToolConfigParamsType.Bash;
         List<string> expectedAllowedDomains = ["string"];
         List<string> expectedBlockedDomains = ["string"];
 
         Assert.True(JsonElement.DeepEquals(expectedName, value.Name));
         Assert.Equal(expectedEnabled, value.Enabled);
+        Assert.Equal(expectedType, value.Type);
         Assert.NotNull(value.AllowedDomains);
         Assert.Equal(expectedAllowedDomains.Count, value.AllowedDomains.Count);
         for (int i = 0; i < expectedAllowedDomains.Count; i++)
@@ -367,6 +455,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Name);
         Assert.Null(emptyValue.Enabled);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.AllowedDomains);
         Assert.Null(emptyValue.BlockedDomains);
 
@@ -383,5 +472,71 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
         );
 
         Assert.Null(mismatchedValue.Enabled);
+    }
+}
+
+public class BetaManagedAgentsAgentToolConfigParamsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Bash)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Edit)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Read)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Write)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Glob)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Grep)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebFetch)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebSearch)]
+    public void Validation_Works(BetaManagedAgentsAgentToolConfigParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Bash)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Edit)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Read)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Write)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Glob)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Grep)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebFetch)]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebSearch)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentToolConfigParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

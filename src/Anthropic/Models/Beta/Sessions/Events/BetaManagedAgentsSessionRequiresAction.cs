@@ -6,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -43,14 +42,12 @@ public sealed record class BetaManagedAgentsSessionRequiresAction : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionRequiresActionType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionRequiresActionType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -59,10 +56,18 @@ public sealed record class BetaManagedAgentsSessionRequiresAction : JsonModel
     public override void Validate()
     {
         _ = this.EventIds;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("requires_action"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionRequiresAction() { }
+    public BetaManagedAgentsSessionRequiresAction()
+    {
+        this.Type = JsonSerializer.SerializeToElement("requires_action");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -75,6 +80,8 @@ public sealed record class BetaManagedAgentsSessionRequiresAction : JsonModel
     public BetaManagedAgentsSessionRequiresAction(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("requires_action");
     }
 
 #pragma warning disable CS8618
@@ -92,6 +99,13 @@ public sealed record class BetaManagedAgentsSessionRequiresAction : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionRequiresAction(IReadOnlyList<string> eventIds)
+        : this()
+    {
+        this.EventIds = eventIds;
+    }
 }
 
 class BetaManagedAgentsSessionRequiresActionFromRaw
@@ -101,46 +115,4 @@ class BetaManagedAgentsSessionRequiresActionFromRaw
     public BetaManagedAgentsSessionRequiresAction FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionRequiresAction.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionRequiresActionTypeConverter))]
-public enum BetaManagedAgentsSessionRequiresActionType
-{
-    RequiresAction,
-}
-
-sealed class BetaManagedAgentsSessionRequiresActionTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionRequiresActionType>
-{
-    public override BetaManagedAgentsSessionRequiresActionType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "requires_action" => BetaManagedAgentsSessionRequiresActionType.RequiresAction,
-            _ => (BetaManagedAgentsSessionRequiresActionType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionRequiresActionType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionRequiresActionType.RequiresAction => "requires_action",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

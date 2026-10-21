@@ -140,16 +140,18 @@ public record class BetaImageBlockParamSource : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaImageBlockParamSourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaBase64ImageSource x => x.Type,
-                BetaUrlImageSource x => x.Type,
-                BetaFileImageSource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaBase64ImageSource _ => BetaImageBlockParamSourceType.Base64,
+                BetaUrlImageSource _ => BetaImageBlockParamSourceType.Url,
+                BetaFileImageSource _ => BetaImageBlockParamSourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaImageBlockParamSourceType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -481,5 +483,52 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaImageBlockParamSourceTypeConverter))]
+public enum BetaImageBlockParamSourceType
+{
+    Base64,
+    Url,
+    File,
+}
+
+sealed class BetaImageBlockParamSourceTypeConverter : JsonConverter<BetaImageBlockParamSourceType>
+{
+    public override BetaImageBlockParamSourceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "base64" => BetaImageBlockParamSourceType.Base64,
+            "url" => BetaImageBlockParamSourceType.Url,
+            "file" => BetaImageBlockParamSourceType.File,
+            _ => (BetaImageBlockParamSourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaImageBlockParamSourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaImageBlockParamSourceType.Base64 => "base64",
+                BetaImageBlockParamSourceType.Url => "url",
+                BetaImageBlockParamSourceType.File => "file",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -32,7 +32,6 @@ public class ApiKeyListPageResponseTest : TestBase
                         "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
-                    WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 },
             ],
             FirstID = "first_id",
@@ -57,7 +56,6 @@ public class ApiKeyListPageResponseTest : TestBase
                 Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
                 Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
                 Status = ApiKeys::BetaApiKeyStatus.Active,
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
         ];
         string expectedFirstID = "first_id";
@@ -98,7 +96,6 @@ public class ApiKeyListPageResponseTest : TestBase
                         "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
-                    WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 },
             ],
             FirstID = "first_id",
@@ -139,7 +136,6 @@ public class ApiKeyListPageResponseTest : TestBase
                         "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
-                    WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 },
             ],
             FirstID = "first_id",
@@ -171,7 +167,6 @@ public class ApiKeyListPageResponseTest : TestBase
                 Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
                 Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
                 Status = ApiKeys::BetaApiKeyStatus.Active,
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
         ];
         string expectedFirstID = "first_id";
@@ -212,7 +207,6 @@ public class ApiKeyListPageResponseTest : TestBase
                         "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
-                    WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 },
             ],
             FirstID = "first_id",
@@ -247,7 +241,6 @@ public class ApiKeyListPageResponseTest : TestBase
                         "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
-                    WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
                 },
             ],
             FirstID = "first_id",

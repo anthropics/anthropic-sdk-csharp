@@ -141,6 +141,20 @@ public class SourceTest : TestBase
     }
 
     [Fact]
+    public void BetaBase64PdfTypeWorks()
+    {
+        Source value = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        Assert.Equal(SourceType.Base64, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaPlainTextTypeWorks()
+    {
+        Source value = new BetaPlainTextSource("data");
+        Assert.Equal(SourceType.Text, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Source value = new(
@@ -158,11 +172,11 @@ public class SourceTest : TestBase
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
         JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
+        ApiEnum<string, SourceType> expectedType = SourceType.Base64;
 
         Assert.Equal(expectedData, value.Data);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, value.MediaType));
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Source emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -183,5 +197,63 @@ public class SourceTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Data);
+    }
+}
+
+public class SourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(SourceType.Base64)]
+    [InlineData(SourceType.Text)]
+    public void Validation_Works(SourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(SourceType.Base64)]
+    [InlineData(SourceType.Text)]
+    public void SerializationRoundtrip_Works(SourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -52,6 +52,22 @@ public class BetaManagedAgentsWebFetchUrlSourceUserInputTest : TestBase
     }
 
     [Fact]
+    public void AllTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceUserInput value =
+            new BetaManagedAgentsWebFetchUrlSourceAll();
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceUserInputType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void NoneTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceUserInput value =
+            new BetaManagedAgentsWebFetchUrlSourceNone();
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceUserInputType.None, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsWebFetchUrlSourceUserInput value = new(
@@ -65,14 +81,71 @@ public class BetaManagedAgentsWebFetchUrlSourceUserInputTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType> expectedType =
+            BetaManagedAgentsWebFetchUrlSourceUserInputType.All;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaManagedAgentsWebFetchUrlSourceUserInput emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsWebFetchUrlSourceUserInputTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.All)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.None)]
+    public void Validation_Works(BetaManagedAgentsWebFetchUrlSourceUserInputType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.All)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.None)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsWebFetchUrlSourceUserInputType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

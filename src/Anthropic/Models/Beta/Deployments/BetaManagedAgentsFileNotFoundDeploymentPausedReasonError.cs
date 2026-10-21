@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -20,17 +19,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsFileNotFoundDeploymentPausedReasonError : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -38,10 +32,21 @@ public sealed record class BetaManagedAgentsFileNotFoundDeploymentPausedReasonEr
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("file_not_found_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsFileNotFoundDeploymentPausedReasonError() { }
+    public BetaManagedAgentsFileNotFoundDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("file_not_found_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -56,6 +61,8 @@ public sealed record class BetaManagedAgentsFileNotFoundDeploymentPausedReasonEr
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("file_not_found_error");
     }
 
 #pragma warning disable CS8618
@@ -75,15 +82,6 @@ public sealed record class BetaManagedAgentsFileNotFoundDeploymentPausedReasonEr
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsFileNotFoundDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorFromRaw
@@ -93,48 +91,4 @@ class BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsFileNotFoundDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsFileNotFoundDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorTypeConverter))]
-public enum BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType
-{
-    FileNotFoundError,
-}
-
-sealed class BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "file_not_found_error" =>
-                BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType.FileNotFoundError,
-            _ => (BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType.FileNotFoundError =>
-                    "file_not_found_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

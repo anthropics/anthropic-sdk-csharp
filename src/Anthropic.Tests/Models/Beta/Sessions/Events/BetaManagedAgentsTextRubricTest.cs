@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -10,28 +9,19 @@ public class BetaManagedAgentsTextRubricTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsTextRubric
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        var model = new BetaManagedAgentsTextRubric { Content = "content" };
 
         string expectedContent = "content";
-        ApiEnum<string, BetaManagedAgentsTextRubricType> expectedType =
-            BetaManagedAgentsTextRubricType.Text;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedContent, model.Content);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsTextRubric
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        var model = new BetaManagedAgentsTextRubric { Content = "content" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsTextRubric>(
@@ -45,11 +35,7 @@ public class BetaManagedAgentsTextRubricTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsTextRubric
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        var model = new BetaManagedAgentsTextRubric { Content = "content" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsTextRubric>(
@@ -59,21 +45,16 @@ public class BetaManagedAgentsTextRubricTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedContent = "content";
-        ApiEnum<string, BetaManagedAgentsTextRubricType> expectedType =
-            BetaManagedAgentsTextRubricType.Text;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
 
         Assert.Equal(expectedContent, deserialized.Content);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsTextRubric
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        var model = new BetaManagedAgentsTextRubric { Content = "content" };
 
         model.Validate();
     }
@@ -81,68 +62,10 @@ public class BetaManagedAgentsTextRubricTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsTextRubric
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        var model = new BetaManagedAgentsTextRubric { Content = "content" };
 
         BetaManagedAgentsTextRubric copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsTextRubricTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsTextRubricType.Text)]
-    public void Validation_Works(BetaManagedAgentsTextRubricType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsTextRubricType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsTextRubricType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsTextRubricType.Text)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsTextRubricType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsTextRubricType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTextRubricType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsTextRubricType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTextRubricType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

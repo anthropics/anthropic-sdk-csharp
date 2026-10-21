@@ -153,16 +153,18 @@ public record class ToolUseBlockCaller : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ToolUseBlockCallerType> Type
     {
         get
         {
             return this.Value switch
             {
-                DirectCaller x => x.Type,
-                ServerToolCaller x => x.Type,
-                ServerToolCaller20260120 x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                DirectCaller _ => ToolUseBlockCallerType.Direct,
+                ServerToolCaller _ => ToolUseBlockCallerType.CodeExecution20250825,
+                ServerToolCaller20260120 _ => ToolUseBlockCallerType.CodeExecution20260120,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ToolUseBlockCallerType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -505,5 +507,52 @@ sealed class ToolUseBlockCallerConverter : JsonConverter<ToolUseBlockCaller>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolUseBlockCallerTypeConverter))]
+public enum ToolUseBlockCallerType
+{
+    Direct,
+    CodeExecution20250825,
+    CodeExecution20260120,
+}
+
+sealed class ToolUseBlockCallerTypeConverter : JsonConverter<ToolUseBlockCallerType>
+{
+    public override ToolUseBlockCallerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => ToolUseBlockCallerType.Direct,
+            "code_execution_20250825" => ToolUseBlockCallerType.CodeExecution20250825,
+            "code_execution_20260120" => ToolUseBlockCallerType.CodeExecution20260120,
+            _ => (ToolUseBlockCallerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolUseBlockCallerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolUseBlockCallerType.Direct => "direct",
+                ToolUseBlockCallerType.CodeExecution20250825 => "code_execution_20250825",
+                ToolUseBlockCallerType.CodeExecution20260120 => "code_execution_20260120",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1247,10 +1247,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 Model = "claude-haiku-4-5",
                 Messages =
                 [
-                    new BetaMessageParam()
+                    new BetaUserMessageParam()
                     {
-                        Role = Role.User,
-                        Content = new BetaMessageParamContent(
+                        Content = new BetaMessageContentParam(
                             [new BetaTextBlockParam() { Text = "Preconfigured message" }]
                         ),
                     },
@@ -2251,10 +2250,9 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 Model = "claude-haiku-4-5",
                 Messages =
                 [
-                    new BetaMessageParam()
+                    new BetaUserMessageParam()
                     {
-                        Role = Role.User,
-                        Content = new BetaMessageParamContent(
+                        Content = new BetaMessageContentParam(
                             [new BetaTextBlockParam() { Text = "Preconfigured message" }]
                         ),
                     },

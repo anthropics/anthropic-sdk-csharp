@@ -293,6 +293,27 @@ public class ToolUseBlockCallerTest : TestBase
     }
 
     [Fact]
+    public void DirectTypeWorks()
+    {
+        ToolUseBlockCaller value = new DirectCaller();
+        Assert.Equal(ToolUseBlockCallerType.Direct, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolTypeWorks()
+    {
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(ToolUseBlockCallerType.CodeExecution20250825, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolCaller20260120TypeWorks()
+    {
+        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Assert.Equal(ToolUseBlockCallerType.CodeExecution20260120, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ToolUseBlockCaller value = new(
@@ -307,10 +328,10 @@ public class ToolUseBlockCallerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("direct");
+        ApiEnum<string, ToolUseBlockCallerType> expectedType = ToolUseBlockCallerType.Direct;
         string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
 
         ToolUseBlockCaller emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -331,5 +352,65 @@ public class ToolUseBlockCallerTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ToolID);
+    }
+}
+
+public class ToolUseBlockCallerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolUseBlockCallerType.Direct)]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20250825)]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20260120)]
+    public void Validation_Works(ToolUseBlockCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolUseBlockCallerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolUseBlockCallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolUseBlockCallerType.Direct)]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20250825)]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20260120)]
+    public void SerializationRoundtrip_Works(ToolUseBlockCallerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolUseBlockCallerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolUseBlockCallerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolUseBlockCallerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolUseBlockCallerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

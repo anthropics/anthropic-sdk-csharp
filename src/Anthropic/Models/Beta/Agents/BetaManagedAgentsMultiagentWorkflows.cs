@@ -28,15 +28,19 @@ public record class BetaManagedAgentsMultiagentWorkflows : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsMultiagentWorkflowsEnabled x => x.Type,
-                BetaManagedAgentsMultiagentWorkflowsDisabled x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsMultiagentWorkflowsEnabled _ =>
+                    BetaManagedAgentsMultiagentWorkflowsType.Enabled,
+                BetaManagedAgentsMultiagentWorkflowsDisabled _ =>
+                    BetaManagedAgentsMultiagentWorkflowsType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -320,5 +324,50 @@ sealed class BetaManagedAgentsMultiagentWorkflowsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMultiagentWorkflowsTypeConverter))]
+public enum BetaManagedAgentsMultiagentWorkflowsType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaManagedAgentsMultiagentWorkflowsTypeConverter
+    : JsonConverter<BetaManagedAgentsMultiagentWorkflowsType>
+{
+    public override BetaManagedAgentsMultiagentWorkflowsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaManagedAgentsMultiagentWorkflowsType.Enabled,
+            "disabled" => BetaManagedAgentsMultiagentWorkflowsType.Disabled,
+            _ => (BetaManagedAgentsMultiagentWorkflowsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMultiagentWorkflowsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMultiagentWorkflowsType.Enabled => "enabled",
+                BetaManagedAgentsMultiagentWorkflowsType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

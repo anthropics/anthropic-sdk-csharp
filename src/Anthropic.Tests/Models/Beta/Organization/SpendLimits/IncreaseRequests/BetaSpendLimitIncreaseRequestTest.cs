@@ -404,6 +404,26 @@ public class ActorTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUserTypeWorks()
+    {
+        Actor value = new SpendLimits::BetaSpendLimitUserActor()
+        {
+            Deleted = true,
+            EmailAddress = "email_address",
+            Name = "name",
+            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+        };
+        Assert.Equal(ActorType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSpendLimitScopedApiKeyTypeWorks()
+    {
+        Actor value = new SpendLimits::BetaSpendLimitScopedApiKeyActor("scoped_api_key_id");
+        Assert.Equal(ActorType.ScopedApiKeyActor, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Actor value = new(
@@ -417,13 +437,71 @@ public class ActorTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+        ApiEnum<string, ActorType> expectedType = ActorType.UserActor;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Actor emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ActorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ActorType.UserActor)]
+    [InlineData(ActorType.ScopedApiKeyActor)]
+    public void Validation_Works(ActorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ActorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ActorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ActorType.UserActor)]
+    [InlineData(ActorType.ScopedApiKeyActor)]
+    public void SerializationRoundtrip_Works(ActorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ActorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ActorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ActorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ActorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -482,6 +560,26 @@ public class ResolvedByTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUserActorTypeWorks()
+    {
+        ResolvedBy value = new SpendLimits::BetaSpendLimitUserActor()
+        {
+            Deleted = true,
+            EmailAddress = "email_address",
+            Name = "name",
+            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+        };
+        Assert.Equal(ResolvedByType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSpendLimitScopedApiKeyActorTypeWorks()
+    {
+        ResolvedBy value = new SpendLimits::BetaSpendLimitScopedApiKeyActor("scoped_api_key_id");
+        Assert.Equal(ResolvedByType.ScopedApiKeyActor, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ResolvedBy value = new(
@@ -495,12 +593,70 @@ public class ResolvedByTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+        ApiEnum<string, ResolvedByType> expectedType = ResolvedByType.UserActor;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ResolvedBy emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ResolvedByTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ResolvedByType.UserActor)]
+    [InlineData(ResolvedByType.ScopedApiKeyActor)]
+    public void Validation_Works(ResolvedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResolvedByType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResolvedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ResolvedByType.UserActor)]
+    [InlineData(ResolvedByType.ScopedApiKeyActor)]
+    public void SerializationRoundtrip_Works(ResolvedByType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResolvedByType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResolvedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResolvedByType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResolvedByType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

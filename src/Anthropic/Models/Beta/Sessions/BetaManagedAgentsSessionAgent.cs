@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -44,30 +44,30 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     /// Execution principal snapshotted from the agent at session creation. Always
     /// present; `{"type": "service_account"}` when runs carry no customer-named principal.
     /// </summary>
-    public required BetaManagedAgentsExecutionIdentity ExecutionIdentity
+    public required Agents::BetaManagedAgentsExecutionIdentity ExecutionIdentity
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaManagedAgentsExecutionIdentity>(
+            return this._rawData.GetNotNullClass<Agents::BetaManagedAgentsExecutionIdentity>(
                 "execution_identity"
             );
         }
         init { this._rawData.Set("execution_identity", value); }
     }
 
-    public required IReadOnlyList<BetaManagedAgentsMcpServerUrlDefinition> McpServers
+    public required IReadOnlyList<Agents::BetaManagedAgentsMcpServerUrlDefinition> McpServers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNotNullStruct<
-                ImmutableArray<BetaManagedAgentsMcpServerUrlDefinition>
+                ImmutableArray<Agents::BetaManagedAgentsMcpServerUrlDefinition>
             >("mcp_servers");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<BetaManagedAgentsMcpServerUrlDefinition>>(
+            this._rawData.Set<ImmutableArray<Agents::BetaManagedAgentsMcpServerUrlDefinition>>(
                 "mcp_servers",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -77,12 +77,12 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     /// <summary>
     /// Model identifier and configuration.
     /// </summary>
-    public required BetaManagedAgentsModelConfig Model
+    public required Agents::BetaManagedAgentsModelConfig Model
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaManagedAgentsModelConfig>("model");
+            return this._rawData.GetNotNullClass<Agents::BetaManagedAgentsModelConfig>("model");
         }
         init { this._rawData.Set("model", value); }
     }
@@ -110,18 +110,16 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         init { this._rawData.Set("name", value); }
     }
 
-    public required IReadOnlyList<global::Anthropic.Models.Beta.Sessions.Skill> Skills
+    public required IReadOnlyList<Skill> Skills
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<
-                ImmutableArray<global::Anthropic.Models.Beta.Sessions.Skill>
-            >("skills");
+            return this._rawData.GetNotNullStruct<ImmutableArray<Skill>>("skills");
         }
         init
         {
-            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Sessions.Skill>>(
+            this._rawData.Set<ImmutableArray<Skill>>(
                 "skills",
                 ImmutableArray.ToImmutableArray(value)
             );
@@ -156,14 +154,12 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionAgentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionAgentType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -200,11 +196,17 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Version;
     }
 
-    public BetaManagedAgentsSessionAgent() { }
+    public BetaManagedAgentsSessionAgent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -217,6 +219,8 @@ public sealed record class BetaManagedAgentsSessionAgent : JsonModel
     public BetaManagedAgentsSessionAgent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent");
     }
 
 #pragma warning disable CS8618
@@ -247,7 +251,7 @@ class BetaManagedAgentsSessionAgentFromRaw : IFromRawJson<BetaManagedAgentsSessi
 /// <summary>
 /// Resolved skill as returned in API responses.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.SkillConverter))]
+[JsonConverter(typeof(SkillConverter))]
 public record class Skill : ModelBase
 {
     public object? Value { get; } = null;
@@ -271,9 +275,25 @@ public record class Skill : ModelBase
         {
             return this.Value switch
             {
-                BetaManagedAgentsAnthropicSkill x => x.SkillID,
-                BetaManagedAgentsCustomSkill x => x.SkillID,
+                Agents::BetaManagedAgentsAnthropicSkill x => x.SkillID,
+                Agents::BetaManagedAgentsCustomSkill x => x.SkillID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "skill_id"),
+            };
+        }
+    }
+
+    public ApiEnum<string, SkillType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsAnthropicSkill _ => SkillType.Anthropic,
+                Agents::BetaManagedAgentsCustomSkill _ => SkillType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, SkillType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -284,20 +304,20 @@ public record class Skill : ModelBase
         {
             return this.Value switch
             {
-                BetaManagedAgentsAnthropicSkill x => x.Version,
-                BetaManagedAgentsCustomSkill x => x.Version,
+                Agents::BetaManagedAgentsAnthropicSkill x => x.Version,
+                Agents::BetaManagedAgentsCustomSkill x => x.Version,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "version"),
             };
         }
     }
 
-    public Skill(BetaManagedAgentsAnthropicSkill value, JsonElement? element = null)
+    public Skill(Agents::BetaManagedAgentsAnthropicSkill value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Skill(BetaManagedAgentsCustomSkill value, JsonElement? element = null)
+    public Skill(Agents::BetaManagedAgentsCustomSkill value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -310,47 +330,47 @@ public record class Skill : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAnthropicSkill"/>.
+    /// type <see cref="Agents::BetaManagedAgentsAnthropicSkill"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsAnthropic(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAnthropicSkill`
+    ///     // `value` is of type `Agents::BetaManagedAgentsAnthropicSkill`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsAnthropic(
-        [NotNullWhen(true)] out BetaManagedAgentsAnthropicSkill? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsAnthropicSkill? value
     )
     {
-        value = this.Value as BetaManagedAgentsAnthropicSkill;
+        value = this.Value as Agents::BetaManagedAgentsAnthropicSkill;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsCustomSkill"/>.
+    /// type <see cref="Agents::BetaManagedAgentsCustomSkill"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsCustom(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsCustomSkill`
+    ///     // `value` is of type `Agents::BetaManagedAgentsCustomSkill`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsCustom(
-        [NotNullWhen(true)] out BetaManagedAgentsCustomSkill? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsCustomSkill? value
     )
     {
-        value = this.Value as BetaManagedAgentsCustomSkill;
+        value = this.Value as Agents::BetaManagedAgentsCustomSkill;
         return value != null;
     }
 
@@ -368,23 +388,23 @@ public record class Skill : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsAnthropicSkill value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomSkill value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAnthropicSkill value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomSkill value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAnthropicSkill> betaManagedAgentsAnthropic,
-        System::Action<BetaManagedAgentsCustomSkill> betaManagedAgentsCustom
+        Action<Agents::BetaManagedAgentsAnthropicSkill> betaManagedAgentsAnthropic,
+        Action<Agents::BetaManagedAgentsCustomSkill> betaManagedAgentsCustom
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsAnthropicSkill value:
+            case Agents::BetaManagedAgentsAnthropicSkill value:
                 betaManagedAgentsAnthropic(value);
                 break;
-            case BetaManagedAgentsCustomSkill value:
+            case Agents::BetaManagedAgentsCustomSkill value:
                 betaManagedAgentsCustom(value);
                 break;
             default:
@@ -407,32 +427,29 @@ public record class Skill : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsAnthropicSkill value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomSkill value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAnthropicSkill value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomSkill value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsAnthropicSkill, T> betaManagedAgentsAnthropic,
-        System::Func<BetaManagedAgentsCustomSkill, T> betaManagedAgentsCustom
+        Func<Agents::BetaManagedAgentsAnthropicSkill, T> betaManagedAgentsAnthropic,
+        Func<Agents::BetaManagedAgentsCustomSkill, T> betaManagedAgentsCustom
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsAnthropicSkill value => betaManagedAgentsAnthropic(value),
-            BetaManagedAgentsCustomSkill value => betaManagedAgentsCustom(value),
+            Agents::BetaManagedAgentsAnthropicSkill value => betaManagedAgentsAnthropic(value),
+            Agents::BetaManagedAgentsCustomSkill value => betaManagedAgentsCustom(value),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Skill"),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Skill(
-        BetaManagedAgentsAnthropicSkill value
-    ) => new(value);
+    public static implicit operator Skill(Agents::BetaManagedAgentsAnthropicSkill value) =>
+        new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Skill(
-        BetaManagedAgentsCustomSkill value
-    ) => new(value);
+    public static implicit operator Skill(Agents::BetaManagedAgentsCustomSkill value) => new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -456,7 +473,7 @@ public record class Skill : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Skill? other) =>
+    public virtual bool Equals(Skill? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -476,18 +493,18 @@ public record class Skill : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsAnthropicSkill _ => 0,
-            BetaManagedAgentsCustomSkill _ => 1,
+            Agents::BetaManagedAgentsAnthropicSkill _ => 0,
+            Agents::BetaManagedAgentsCustomSkill _ => 1,
             _ => -1,
         };
     }
 }
 
-sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Skill>
+sealed class SkillConverter : JsonConverter<Skill>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Skill? Read(
+    public override Skill? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -508,10 +525,11 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAnthropicSkill>(
-                        element,
-                        options
-                    );
+                    var deserialized =
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsAnthropicSkill>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -528,10 +546,11 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCustomSkill>(
-                        element,
-                        options
-                    );
+                    var deserialized =
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsCustomSkill>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -546,18 +565,58 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
             }
             default:
             {
-                return new global::Anthropic.Models.Beta.Sessions.Skill(element);
+                return new Skill(element);
             }
         }
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Skill value,
+    public override void Write(Utf8JsonWriter writer, Skill value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(SkillTypeConverter))]
+public enum SkillType
+{
+    Anthropic,
+    Custom,
+}
+
+sealed class SkillTypeConverter : JsonConverter<SkillType>
+{
+    public override SkillType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
-        JsonSerializer.Serialize(writer, value.Json, options);
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "anthropic" => SkillType.Anthropic,
+            "custom" => SkillType.Custom,
+            _ => (SkillType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        SkillType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                SkillType.Anthropic => "anthropic",
+                SkillType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 
@@ -582,8 +641,27 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsSessionAgentToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsAgentToolset20260401 _ =>
+                    BetaManagedAgentsSessionAgentToolType.AgentToolset20260401,
+                Agents::BetaManagedAgentsMcpToolset _ =>
+                    BetaManagedAgentsSessionAgentToolType.McpToolset,
+                Agents::BetaManagedAgentsCustomTool _ =>
+                    BetaManagedAgentsSessionAgentToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionAgentToolType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsAgentToolset20260401 value,
+        Agents::BetaManagedAgentsAgentToolset20260401 value,
         JsonElement? element = null
     )
     {
@@ -592,7 +670,7 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     }
 
     public BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsMcpToolset value,
+        Agents::BetaManagedAgentsMcpToolset value,
         JsonElement? element = null
     )
     {
@@ -601,7 +679,7 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     }
 
     public BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsCustomTool value,
+        Agents::BetaManagedAgentsCustomTool value,
         JsonElement? element = null
     )
     {
@@ -616,70 +694,70 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAgentToolset20260401"/>.
+    /// type <see cref="Agents::BetaManagedAgentsAgentToolset20260401"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsAgentToolset20260401(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAgentToolset20260401`
+    ///     // `value` is of type `Agents::BetaManagedAgentsAgentToolset20260401`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsAgentToolset20260401(
-        [NotNullWhen(true)] out BetaManagedAgentsAgentToolset20260401? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsAgentToolset20260401? value
     )
     {
-        value = this.Value as BetaManagedAgentsAgentToolset20260401;
+        value = this.Value as Agents::BetaManagedAgentsAgentToolset20260401;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMcpToolset"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMcpToolset"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsMcpToolset(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMcpToolset`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMcpToolset`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsMcpToolset(
-        [NotNullWhen(true)] out BetaManagedAgentsMcpToolset? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMcpToolset? value
     )
     {
-        value = this.Value as BetaManagedAgentsMcpToolset;
+        value = this.Value as Agents::BetaManagedAgentsMcpToolset;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsCustomTool"/>.
+    /// type <see cref="Agents::BetaManagedAgentsCustomTool"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsCustom(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsCustomTool`
+    ///     // `value` is of type `Agents::BetaManagedAgentsCustomTool`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsCustom(
-        [NotNullWhen(true)] out BetaManagedAgentsCustomTool? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsCustomTool? value
     )
     {
-        value = this.Value as BetaManagedAgentsCustomTool;
+        value = this.Value as Agents::BetaManagedAgentsCustomTool;
         return value != null;
     }
 
@@ -697,28 +775,28 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsAgentToolset20260401 value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolset value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomTool value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401 value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolset value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomTool value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentToolset20260401> betaManagedAgentsAgentToolset20260401,
-        System::Action<BetaManagedAgentsMcpToolset> betaManagedAgentsMcpToolset,
-        System::Action<BetaManagedAgentsCustomTool> betaManagedAgentsCustom
+        Action<Agents::BetaManagedAgentsAgentToolset20260401> betaManagedAgentsAgentToolset20260401,
+        Action<Agents::BetaManagedAgentsMcpToolset> betaManagedAgentsMcpToolset,
+        Action<Agents::BetaManagedAgentsCustomTool> betaManagedAgentsCustom
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsAgentToolset20260401 value:
+            case Agents::BetaManagedAgentsAgentToolset20260401 value:
                 betaManagedAgentsAgentToolset20260401(value);
                 break;
-            case BetaManagedAgentsMcpToolset value:
+            case Agents::BetaManagedAgentsMcpToolset value:
                 betaManagedAgentsMcpToolset(value);
                 break;
-            case BetaManagedAgentsCustomTool value:
+            case Agents::BetaManagedAgentsCustomTool value:
                 betaManagedAgentsCustom(value);
                 break;
             default:
@@ -743,29 +821,28 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsAgentToolset20260401 value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolset value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomTool value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401 value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolset value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomTool value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsAgentToolset20260401,
+        Func<
+            Agents::BetaManagedAgentsAgentToolset20260401,
             T
         > betaManagedAgentsAgentToolset20260401,
-        System::Func<BetaManagedAgentsMcpToolset, T> betaManagedAgentsMcpToolset,
-        System::Func<BetaManagedAgentsCustomTool, T> betaManagedAgentsCustom
+        Func<Agents::BetaManagedAgentsMcpToolset, T> betaManagedAgentsMcpToolset,
+        Func<Agents::BetaManagedAgentsCustomTool, T> betaManagedAgentsCustom
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401 value => betaManagedAgentsAgentToolset20260401(
-                value
-            ),
-            BetaManagedAgentsMcpToolset value => betaManagedAgentsMcpToolset(value),
-            BetaManagedAgentsCustomTool value => betaManagedAgentsCustom(value),
+            Agents::BetaManagedAgentsAgentToolset20260401 value =>
+                betaManagedAgentsAgentToolset20260401(value),
+            Agents::BetaManagedAgentsMcpToolset value => betaManagedAgentsMcpToolset(value),
+            Agents::BetaManagedAgentsCustomTool value => betaManagedAgentsCustom(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsSessionAgentTool"
             ),
@@ -773,15 +850,15 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     }
 
     public static implicit operator BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsAgentToolset20260401 value
+        Agents::BetaManagedAgentsAgentToolset20260401 value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsMcpToolset value
+        Agents::BetaManagedAgentsMcpToolset value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsSessionAgentTool(
-        BetaManagedAgentsCustomTool value
+        Agents::BetaManagedAgentsCustomTool value
     ) => new(value);
 
     /// <summary>
@@ -830,9 +907,9 @@ public record class BetaManagedAgentsSessionAgentTool : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401 _ => 0,
-            BetaManagedAgentsMcpToolset _ => 1,
-            BetaManagedAgentsCustomTool _ => 2,
+            Agents::BetaManagedAgentsAgentToolset20260401 _ => 0,
+            Agents::BetaManagedAgentsMcpToolset _ => 1,
+            Agents::BetaManagedAgentsCustomTool _ => 2,
             _ => -1,
         };
     }
@@ -843,7 +920,7 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
 {
     public override BetaManagedAgentsSessionAgentTool? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -865,7 +942,7 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsAgentToolset20260401>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsAgentToolset20260401>(
                             element,
                             options
                         );
@@ -885,10 +962,11 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMcpToolset>(
-                        element,
-                        options
-                    );
+                    var deserialized =
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMcpToolset>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -905,10 +983,11 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
             {
                 try
                 {
-                    var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCustomTool>(
-                        element,
-                        options
-                    );
+                    var deserialized =
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsCustomTool>(
+                            element,
+                            options
+                        );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -938,31 +1017,35 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionAgentTypeConverter))]
-public enum BetaManagedAgentsSessionAgentType
+[JsonConverter(typeof(BetaManagedAgentsSessionAgentToolTypeConverter))]
+public enum BetaManagedAgentsSessionAgentToolType
 {
-    Agent,
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
 }
 
-sealed class BetaManagedAgentsSessionAgentTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionAgentType>
+sealed class BetaManagedAgentsSessionAgentToolTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionAgentToolType>
 {
-    public override BetaManagedAgentsSessionAgentType Read(
+    public override BetaManagedAgentsSessionAgentToolType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent" => BetaManagedAgentsSessionAgentType.Agent,
-            _ => (BetaManagedAgentsSessionAgentType)(-1),
+            "agent_toolset_20260401" => BetaManagedAgentsSessionAgentToolType.AgentToolset20260401,
+            "mcp_toolset" => BetaManagedAgentsSessionAgentToolType.McpToolset,
+            "custom" => BetaManagedAgentsSessionAgentToolType.Custom,
+            _ => (BetaManagedAgentsSessionAgentToolType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionAgentType value,
+        BetaManagedAgentsSessionAgentToolType value,
         JsonSerializerOptions options
     )
     {
@@ -970,7 +1053,10 @@ sealed class BetaManagedAgentsSessionAgentTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionAgentType.Agent => "agent",
+                BetaManagedAgentsSessionAgentToolType.AgentToolset20260401 =>
+                    "agent_toolset_20260401",
+                BetaManagedAgentsSessionAgentToolType.McpToolset => "mcp_toolset",
+                BetaManagedAgentsSessionAgentToolType.Custom => "custom",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

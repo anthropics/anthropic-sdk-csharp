@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -26,6 +26,25 @@ public record class BetaManagedAgentsDeploymentInitialEvent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsDeploymentInitialEventType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsDeploymentUserMessageEvent _ =>
+                    BetaManagedAgentsDeploymentInitialEventType.UserMessage,
+                BetaManagedAgentsDeploymentUserDefineOutcomeEvent _ =>
+                    BetaManagedAgentsDeploymentInitialEventType.UserDefineOutcome,
+                BetaManagedAgentsDeploymentSystemMessageEvent _ =>
+                    BetaManagedAgentsDeploymentInitialEventType.SystemMessage,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsDeploymentInitialEventType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -152,9 +171,9 @@ public record class BetaManagedAgentsDeploymentInitialEvent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsDeploymentUserMessageEvent> userMessage,
-        System::Action<BetaManagedAgentsDeploymentUserDefineOutcomeEvent> userDefineOutcome,
-        System::Action<BetaManagedAgentsDeploymentSystemMessageEvent> systemMessage
+        Action<BetaManagedAgentsDeploymentUserMessageEvent> userMessage,
+        Action<BetaManagedAgentsDeploymentUserDefineOutcomeEvent> userDefineOutcome,
+        Action<BetaManagedAgentsDeploymentSystemMessageEvent> systemMessage
     )
     {
         switch (this.Value)
@@ -198,9 +217,9 @@ public record class BetaManagedAgentsDeploymentInitialEvent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsDeploymentUserMessageEvent, T> userMessage,
-        System::Func<BetaManagedAgentsDeploymentUserDefineOutcomeEvent, T> userDefineOutcome,
-        System::Func<BetaManagedAgentsDeploymentSystemMessageEvent, T> systemMessage
+        Func<BetaManagedAgentsDeploymentUserMessageEvent, T> userMessage,
+        Func<BetaManagedAgentsDeploymentUserDefineOutcomeEvent, T> userDefineOutcome,
+        Func<BetaManagedAgentsDeploymentSystemMessageEvent, T> systemMessage
     )
     {
         return this.Value switch
@@ -284,7 +303,7 @@ sealed class BetaManagedAgentsDeploymentInitialEventConverter
 {
     public override BetaManagedAgentsDeploymentInitialEvent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -378,5 +397,54 @@ sealed class BetaManagedAgentsDeploymentInitialEventConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsDeploymentInitialEventTypeConverter))]
+public enum BetaManagedAgentsDeploymentInitialEventType
+{
+    UserMessage,
+    UserDefineOutcome,
+    SystemMessage,
+}
+
+sealed class BetaManagedAgentsDeploymentInitialEventTypeConverter
+    : JsonConverter<BetaManagedAgentsDeploymentInitialEventType>
+{
+    public override BetaManagedAgentsDeploymentInitialEventType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user.message" => BetaManagedAgentsDeploymentInitialEventType.UserMessage,
+            "user.define_outcome" => BetaManagedAgentsDeploymentInitialEventType.UserDefineOutcome,
+            "system.message" => BetaManagedAgentsDeploymentInitialEventType.SystemMessage,
+            _ => (BetaManagedAgentsDeploymentInitialEventType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsDeploymentInitialEventType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsDeploymentInitialEventType.UserMessage => "user.message",
+                BetaManagedAgentsDeploymentInitialEventType.UserDefineOutcome =>
+                    "user.define_outcome",
+                BetaManagedAgentsDeploymentInitialEventType.SystemMessage => "system.message",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

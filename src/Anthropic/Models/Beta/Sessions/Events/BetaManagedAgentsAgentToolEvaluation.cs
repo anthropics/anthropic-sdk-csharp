@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -29,16 +29,21 @@ public record class BetaManagedAgentsAgentToolEvaluation : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsAgentToolEvaluationType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsAgentToolEvaluationAlwaysAllow x => x.Type,
-                BetaManagedAgentsAgentToolEvaluationAlwaysAsk x => x.Type,
-                BetaManagedAgentsAgentToolEvaluationAuto x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsAgentToolEvaluationAlwaysAllow _ =>
+                    BetaManagedAgentsAgentToolEvaluationType.AlwaysAllow,
+                BetaManagedAgentsAgentToolEvaluationAlwaysAsk _ =>
+                    BetaManagedAgentsAgentToolEvaluationType.AlwaysAsk,
+                BetaManagedAgentsAgentToolEvaluationAuto _ =>
+                    BetaManagedAgentsAgentToolEvaluationType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentToolEvaluationType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -164,9 +169,9 @@ public record class BetaManagedAgentsAgentToolEvaluation : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentToolEvaluationAlwaysAllow> alwaysAllow,
-        System::Action<BetaManagedAgentsAgentToolEvaluationAlwaysAsk> alwaysAsk,
-        System::Action<BetaManagedAgentsAgentToolEvaluationAuto> auto
+        Action<BetaManagedAgentsAgentToolEvaluationAlwaysAllow> alwaysAllow,
+        Action<BetaManagedAgentsAgentToolEvaluationAlwaysAsk> alwaysAsk,
+        Action<BetaManagedAgentsAgentToolEvaluationAuto> auto
     )
     {
         switch (this.Value)
@@ -210,9 +215,9 @@ public record class BetaManagedAgentsAgentToolEvaluation : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsAgentToolEvaluationAlwaysAllow, T> alwaysAllow,
-        System::Func<BetaManagedAgentsAgentToolEvaluationAlwaysAsk, T> alwaysAsk,
-        System::Func<BetaManagedAgentsAgentToolEvaluationAuto, T> auto
+        Func<BetaManagedAgentsAgentToolEvaluationAlwaysAllow, T> alwaysAllow,
+        Func<BetaManagedAgentsAgentToolEvaluationAlwaysAsk, T> alwaysAsk,
+        Func<BetaManagedAgentsAgentToolEvaluationAuto, T> auto
     )
     {
         return this.Value switch
@@ -296,7 +301,7 @@ sealed class BetaManagedAgentsAgentToolEvaluationConverter
 {
     public override BetaManagedAgentsAgentToolEvaluation? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -390,5 +395,53 @@ sealed class BetaManagedAgentsAgentToolEvaluationConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsAgentToolEvaluationTypeConverter))]
+public enum BetaManagedAgentsAgentToolEvaluationType
+{
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
+}
+
+sealed class BetaManagedAgentsAgentToolEvaluationTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentToolEvaluationType>
+{
+    public override BetaManagedAgentsAgentToolEvaluationType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "always_allow" => BetaManagedAgentsAgentToolEvaluationType.AlwaysAllow,
+            "always_ask" => BetaManagedAgentsAgentToolEvaluationType.AlwaysAsk,
+            "auto" => BetaManagedAgentsAgentToolEvaluationType.Auto,
+            _ => (BetaManagedAgentsAgentToolEvaluationType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsAgentToolEvaluationType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsAgentToolEvaluationType.AlwaysAllow => "always_allow",
+                BetaManagedAgentsAgentToolEvaluationType.AlwaysAsk => "always_ask",
+                BetaManagedAgentsAgentToolEvaluationType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

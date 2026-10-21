@@ -740,6 +740,23 @@ public record class AgentUpdateParamsTool : ModelBase
         }
     }
 
+    public ApiEnum<string, AgentUpdateParamsToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentToolset20260401Params _ =>
+                    AgentUpdateParamsToolType.AgentToolset20260401,
+                BetaManagedAgentsMcpToolsetParams _ => AgentUpdateParamsToolType.McpToolset,
+                BetaManagedAgentsCustomToolParams _ => AgentUpdateParamsToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, AgentUpdateParamsToolType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public AgentUpdateParamsTool(
         BetaManagedAgentsAgentToolset20260401Params value,
         JsonElement? element = null
@@ -1093,5 +1110,52 @@ sealed class AgentUpdateParamsToolConverter : JsonConverter<AgentUpdateParamsToo
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(AgentUpdateParamsToolTypeConverter))]
+public enum AgentUpdateParamsToolType
+{
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
+}
+
+sealed class AgentUpdateParamsToolTypeConverter : JsonConverter<AgentUpdateParamsToolType>
+{
+    public override AgentUpdateParamsToolType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "agent_toolset_20260401" => AgentUpdateParamsToolType.AgentToolset20260401,
+            "mcp_toolset" => AgentUpdateParamsToolType.McpToolset,
+            "custom" => AgentUpdateParamsToolType.Custom,
+            _ => (AgentUpdateParamsToolType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        AgentUpdateParamsToolType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AgentUpdateParamsToolType.AgentToolset20260401 => "agent_toolset_20260401",
+                AgentUpdateParamsToolType.McpToolset => "mcp_toolset",
+                AgentUpdateParamsToolType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

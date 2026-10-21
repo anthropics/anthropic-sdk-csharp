@@ -13,29 +13,23 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
 
         string expectedDescription = "Produce a 2-page summary as summary.md";
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric expectedRubric =
-            new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            };
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType> expectedType =
-            BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome;
+            new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.define_outcome");
         int expectedMaxIterations = 3;
 
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedRubric, model.Rubric);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedMaxIterations, model.MaxIterations);
     }
 
@@ -45,12 +39,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
 
@@ -70,12 +61,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
 
@@ -89,18 +77,15 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
 
         string expectedDescription = "Produce a 2-page summary as summary.md";
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric expectedRubric =
-            new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            };
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType> expectedType =
-            BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome;
+            new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.define_outcome");
         int expectedMaxIterations = 3;
 
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedRubric, deserialized.Rubric);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedMaxIterations, deserialized.MaxIterations);
     }
 
@@ -110,12 +95,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
 
@@ -128,12 +110,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         Assert.Null(model.MaxIterations);
@@ -146,12 +125,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         model.Validate();
@@ -163,12 +139,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
 
             MaxIterations = null,
         };
@@ -183,12 +156,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
 
             MaxIterations = null,
         };
@@ -202,12 +172,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTest : TestBase
         var model = new BetaManagedAgentsUserDefineOutcomeEventParams
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
 
@@ -223,11 +190,7 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTest : TestBase
     public void BetaManagedAgentsFileRubricParamsValidationWorks()
     {
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
-            new BetaManagedAgentsFileRubricParams()
-            {
-                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = BetaManagedAgentsFileRubricParamsType.File,
-            };
+            new BetaManagedAgentsFileRubricParams("file_011CNha8iCJcU1wXNR6q4V8w");
         value.Validate();
     }
 
@@ -235,11 +198,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTest : TestBase
     public void BetaManagedAgentsTextRubricParamsValidationWorks()
     {
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
-            new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            };
+            new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            );
         value.Validate();
     }
 
@@ -247,11 +208,7 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTest : TestBase
     public void BetaManagedAgentsFileRubricParamsSerializationRoundtripWorks()
     {
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
-            new BetaManagedAgentsFileRubricParams()
-            {
-                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = BetaManagedAgentsFileRubricParamsType.File,
-            };
+            new BetaManagedAgentsFileRubricParams("file_011CNha8iCJcU1wXNR6q4V8w");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsUserDefineOutcomeEventParamsRubric>(
@@ -266,11 +223,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTest : TestBase
     public void BetaManagedAgentsTextRubricParamsSerializationRoundtripWorks()
     {
         BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
-            new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            };
+            new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsUserDefineOutcomeEventParamsRubric>(
@@ -280,16 +235,67 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsFileRubricParamsTypeWorks()
+    {
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
+            new BetaManagedAgentsFileRubricParams("file_011CNha8iCJcU1wXNR6q4V8w");
+        Assert.Equal(
+            BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.File,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTextRubricParamsTypeWorks()
+    {
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubric value =
+            new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            );
+        Assert.Equal(
+            BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubric value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType> expectedType =
+            BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubric emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsUserDefineOutcomeEventParamsTypeTest : TestBase
+public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome)]
-    public void Validation_Works(BetaManagedAgentsUserDefineOutcomeEventParamsType rawValue)
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.File)]
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text)]
+    public void Validation_Works(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType> value = rawValue;
         value.Validate();
     }
 
@@ -297,7 +303,7 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType>
+            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -305,17 +311,18 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome)]
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.File)]
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text)]
     public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserDefineOutcomeEventParamsType rawValue
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubricType rawValue
     )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType>
+            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -325,11 +332,11 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType>
+            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsType>
+            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

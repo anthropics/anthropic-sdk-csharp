@@ -1402,6 +1402,571 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void SessionCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionPendingTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionPendingEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionPending, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionRunningTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionRunningEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionRunning, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionIdledTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionIdledEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionIdled, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionRequiresActionTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionRequiresActionEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionRequiresAction, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionStatusRescheduledTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionStatusRescheduledEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionStatusRescheduled, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionStatusRunStartedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionStatusRunStartedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionStatusRunStarted, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionStatusIdledTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionStatusIdledEventData()
+        {
+            ID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            OrganizationID = "org_011CZkZZAe0sMna4vkBdtrfx",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionStatusIdled, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionStatusTerminatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionStatusTerminatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionStatusTerminated, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionThreadCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionThreadCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionThreadCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionThreadIdledTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionThreadIdledEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionThreadIdled, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionThreadTerminatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionThreadTerminatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            SessionThreadID = "session_thread_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionThreadTerminated, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionOutcomeEvaluationEndedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionOutcomeEvaluationEndedEventData()
+        {
+            ID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+            OrganizationID = "org_011CZkZZAe0sMna4vkBdtrfx",
+            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionOutcomeEvaluationEnded, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultCredentialCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultCredentialCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            VaultID = "vault_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultCredentialCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultCredentialArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultCredentialArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            VaultID = "vault_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultCredentialArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultCredentialDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultCredentialDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            VaultID = "vault_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultCredentialDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void VaultCredentialRefreshFailedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookVaultCredentialRefreshFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            VaultID = "vault_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.VaultCredentialRefreshFailed, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionUpdatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionUpdated, value.Type.Value());
+    }
+
+    [Fact]
+    public void AgentCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.AgentCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void AgentArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.AgentArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void AgentDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.AgentDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentPausedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentPausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentPaused, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentRunFailedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentRunFailed, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentUpdatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentUpdated, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentUnpausedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentUnpausedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentUnpaused, value.Type.Value());
+    }
+
+    [Fact]
+    public void AgentUpdatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookAgentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.AgentUpdated, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentRunStartedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunStartedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentRunStarted, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void DeploymentRunSucceededTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookDeploymentRunSucceededEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.DeploymentRunSucceeded, value.Type.Value());
+    }
+
+    [Fact]
+    public void EnvironmentCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.EnvironmentCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void EnvironmentUpdatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.EnvironmentUpdated, value.Type.Value());
+    }
+
+    [Fact]
+    public void EnvironmentArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.EnvironmentArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void EnvironmentDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookEnvironmentDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.EnvironmentDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void MemoryStoreCreatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreCreatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.MemoryStoreCreated, value.Type.Value());
+    }
+
+    [Fact]
+    public void MemoryStoreArchivedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreArchivedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.MemoryStoreArchived, value.Type.Value());
+    }
+
+    [Fact]
+    public void MemoryStoreDeletedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookMemoryStoreDeletedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.MemoryStoreDeleted, value.Type.Value());
+    }
+
+    [Fact]
+    public void SessionBudgetReachedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookSessionBudgetReachedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+            WorkspaceID = "workspace_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.SessionBudgetReached, value.Type.Value());
+    }
+
+    [Fact]
+    public void UserProfileEnforcementActionOpenedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionOpenedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        Assert.Equal(
+            BetaWebhookEventDataType.UserProfileEnforcementActionOpened,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UserProfileEnforcementActionResolvedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileEnforcementActionResolvedEventData()
+        {
+            ID = "id",
+            EnforcementActionID = "enforcement_action_id",
+            OrganizationID = "organization_id",
+        };
+        Assert.Equal(
+            BetaWebhookEventDataType.UserProfileEnforcementActionResolved,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaWebhookEventData value = new(
@@ -1423,7 +1988,8 @@ public class BetaWebhookEventDataTest : TestBase
 
         string expectedID = "id";
         string expectedOrganizationID = "organization_id";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("session.created");
+        ApiEnum<string, BetaWebhookEventDataType> expectedType =
+            BetaWebhookEventDataType.SessionCreated;
         string expectedWorkspaceID = "workspace_id";
         string expectedSessionThreadID = "session_thread_id";
         string expectedVaultID = "vault_id";
@@ -1431,7 +1997,7 @@ public class BetaWebhookEventDataTest : TestBase
 
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedOrganizationID, value.OrganizationID);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedWorkspaceID, value.WorkspaceID);
         Assert.Equal(expectedSessionThreadID, value.SessionThreadID);
         Assert.Equal(expectedVaultID, value.VaultID);
@@ -1480,5 +2046,151 @@ public class BetaWebhookEventDataTest : TestBase
         Assert.Null(mismatchedValue.SessionThreadID);
         Assert.Null(mismatchedValue.VaultID);
         Assert.Null(mismatchedValue.EnforcementActionID);
+    }
+}
+
+public class BetaWebhookEventDataTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaWebhookEventDataType.SessionCreated)]
+    [InlineData(BetaWebhookEventDataType.SessionPending)]
+    [InlineData(BetaWebhookEventDataType.SessionRunning)]
+    [InlineData(BetaWebhookEventDataType.SessionIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionRequiresAction)]
+    [InlineData(BetaWebhookEventDataType.SessionArchived)]
+    [InlineData(BetaWebhookEventDataType.SessionDeleted)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRescheduled)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRunStarted)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusTerminated)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadCreated)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadTerminated)]
+    [InlineData(BetaWebhookEventDataType.SessionOutcomeEvaluationEnded)]
+    [InlineData(BetaWebhookEventDataType.VaultCreated)]
+    [InlineData(BetaWebhookEventDataType.VaultArchived)]
+    [InlineData(BetaWebhookEventDataType.VaultDeleted)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialCreated)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialArchived)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialDeleted)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialRefreshFailed)]
+    [InlineData(BetaWebhookEventDataType.SessionUpdated)]
+    [InlineData(BetaWebhookEventDataType.AgentCreated)]
+    [InlineData(BetaWebhookEventDataType.AgentArchived)]
+    [InlineData(BetaWebhookEventDataType.AgentDeleted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentPaused)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunFailed)]
+    [InlineData(BetaWebhookEventDataType.DeploymentCreated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentUpdated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentUnpaused)]
+    [InlineData(BetaWebhookEventDataType.AgentUpdated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentArchived)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunStarted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentDeleted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunSucceeded)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentCreated)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentUpdated)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentArchived)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentDeleted)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreCreated)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreArchived)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreDeleted)]
+    [InlineData(BetaWebhookEventDataType.SessionBudgetReached)]
+    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionOpened)]
+    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionResolved)]
+    public void Validation_Works(BetaWebhookEventDataType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaWebhookEventDataType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaWebhookEventDataType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaWebhookEventDataType.SessionCreated)]
+    [InlineData(BetaWebhookEventDataType.SessionPending)]
+    [InlineData(BetaWebhookEventDataType.SessionRunning)]
+    [InlineData(BetaWebhookEventDataType.SessionIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionRequiresAction)]
+    [InlineData(BetaWebhookEventDataType.SessionArchived)]
+    [InlineData(BetaWebhookEventDataType.SessionDeleted)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRescheduled)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRunStarted)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionStatusTerminated)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadCreated)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadIdled)]
+    [InlineData(BetaWebhookEventDataType.SessionThreadTerminated)]
+    [InlineData(BetaWebhookEventDataType.SessionOutcomeEvaluationEnded)]
+    [InlineData(BetaWebhookEventDataType.VaultCreated)]
+    [InlineData(BetaWebhookEventDataType.VaultArchived)]
+    [InlineData(BetaWebhookEventDataType.VaultDeleted)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialCreated)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialArchived)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialDeleted)]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialRefreshFailed)]
+    [InlineData(BetaWebhookEventDataType.SessionUpdated)]
+    [InlineData(BetaWebhookEventDataType.AgentCreated)]
+    [InlineData(BetaWebhookEventDataType.AgentArchived)]
+    [InlineData(BetaWebhookEventDataType.AgentDeleted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentPaused)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunFailed)]
+    [InlineData(BetaWebhookEventDataType.DeploymentCreated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentUpdated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentUnpaused)]
+    [InlineData(BetaWebhookEventDataType.AgentUpdated)]
+    [InlineData(BetaWebhookEventDataType.DeploymentArchived)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunStarted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentDeleted)]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunSucceeded)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentCreated)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentUpdated)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentArchived)]
+    [InlineData(BetaWebhookEventDataType.EnvironmentDeleted)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreCreated)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreArchived)]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreDeleted)]
+    [InlineData(BetaWebhookEventDataType.SessionBudgetReached)]
+    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionOpened)]
+    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionResolved)]
+    public void SerializationRoundtrip_Works(BetaWebhookEventDataType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaWebhookEventDataType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaWebhookEventDataType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaWebhookEventDataType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaWebhookEventDataType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

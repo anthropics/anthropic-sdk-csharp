@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 
 namespace Anthropic.Tests.Models.Beta.MemoryStores.Memories;
@@ -12,19 +11,17 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
         };
 
-        ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType> expectedType =
-            BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_path_conflict_error");
         string expectedConflictingMemoryID = "conflicting_memory_id";
         string expectedConflictingPath = "conflicting_path";
         string expectedMessage = "message";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedConflictingMemoryID, model.ConflictingMemoryID);
         Assert.Equal(expectedConflictingPath, model.ConflictingPath);
         Assert.Equal(expectedMessage, model.Message);
@@ -35,7 +32,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
@@ -55,7 +51,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
@@ -68,13 +63,12 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType> expectedType =
-            BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_path_conflict_error");
         string expectedConflictingMemoryID = "conflicting_memory_id";
         string expectedConflictingPath = "conflicting_path";
         string expectedMessage = "message";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedConflictingMemoryID, deserialized.ConflictingMemoryID);
         Assert.Equal(expectedConflictingPath, deserialized.ConflictingPath);
         Assert.Equal(expectedMessage, deserialized.Message);
@@ -85,7 +79,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
@@ -97,10 +90,7 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsMemoryPathConflictError
-        {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
-        };
+        var model = new BetaManagedAgentsMemoryPathConflictError { };
 
         Assert.Null(model.ConflictingMemoryID);
         Assert.False(model.RawData.ContainsKey("conflicting_memory_id"));
@@ -113,10 +103,7 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsMemoryPathConflictError
-        {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
-        };
+        var model = new BetaManagedAgentsMemoryPathConflictError { };
 
         model.Validate();
     }
@@ -126,8 +113,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
-
             // Null should be interpreted as omitted for these properties
             ConflictingMemoryID = null,
             ConflictingPath = null,
@@ -147,7 +132,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
@@ -172,8 +156,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
-
             // Null should be interpreted as omitted for these properties
             ConflictingMemoryID = null,
             ConflictingPath = null,
@@ -188,7 +170,6 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryPathConflictError
         {
-            Type = BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError,
             ConflictingMemoryID = "conflicting_memory_id",
             ConflictingPath = "conflicting_path",
             Message = "message",
@@ -197,57 +178,5 @@ public class BetaManagedAgentsMemoryPathConflictErrorTest : TestBase
         BetaManagedAgentsMemoryPathConflictError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryPathConflictErrorTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError)]
-    public void Validation_Works(BetaManagedAgentsMemoryPathConflictErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryPathConflictErrorType.MemoryPathConflictError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryPathConflictErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryPathConflictErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

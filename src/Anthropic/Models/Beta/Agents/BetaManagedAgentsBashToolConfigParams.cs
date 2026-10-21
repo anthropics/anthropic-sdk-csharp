@@ -62,13 +62,13 @@ public sealed record class BetaManagedAgentsBashToolConfigParams : JsonModel
         init { this._rawData.Set("permission_policy", value); }
     }
 
-    public ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>? Type
+    public ApiEnum<string, global::Anthropic.Models.Beta.Agents.Type>? Type
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableClass<
-                ApiEnum<string, BetaManagedAgentsBashToolConfigParamsType>
+                ApiEnum<string, global::Anthropic.Models.Beta.Agents.Type>
             >("type");
         }
         init
@@ -160,6 +160,25 @@ public record class BetaManagedAgentsBashToolConfigParamsPermissionPolicy : Mode
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAlwaysAllowPolicy _ =>
+                    BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow,
+                BetaManagedAgentsAlwaysAskPolicy _ =>
+                    BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk,
+                BetaManagedAgentsAutoPolicy _ =>
+                    BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -513,16 +532,18 @@ sealed class BetaManagedAgentsBashToolConfigParamsPermissionPolicyConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsBashToolConfigParamsTypeConverter))]
-public enum BetaManagedAgentsBashToolConfigParamsType
+[JsonConverter(typeof(BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeConverter))]
+public enum BetaManagedAgentsBashToolConfigParamsPermissionPolicyType
 {
-    Bash,
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
 }
 
-sealed class BetaManagedAgentsBashToolConfigParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsBashToolConfigParamsType>
+sealed class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeConverter
+    : JsonConverter<BetaManagedAgentsBashToolConfigParamsPermissionPolicyType>
 {
-    public override BetaManagedAgentsBashToolConfigParamsType Read(
+    public override BetaManagedAgentsBashToolConfigParamsPermissionPolicyType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -530,14 +551,16 @@ sealed class BetaManagedAgentsBashToolConfigParamsTypeConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "bash" => BetaManagedAgentsBashToolConfigParamsType.Bash,
-            _ => (BetaManagedAgentsBashToolConfigParamsType)(-1),
+            "always_allow" => BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow,
+            "always_ask" => BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk,
+            "auto" => BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto,
+            _ => (BetaManagedAgentsBashToolConfigParamsPermissionPolicyType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsBashToolConfigParamsType value,
+        BetaManagedAgentsBashToolConfigParamsPermissionPolicyType value,
         JsonSerializerOptions options
     )
     {
@@ -545,7 +568,51 @@ sealed class BetaManagedAgentsBashToolConfigParamsTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsBashToolConfigParamsType.Bash => "bash",
+                BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAllow =>
+                    "always_allow",
+                BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.AlwaysAsk => "always_ask",
+                BetaManagedAgentsBashToolConfigParamsPermissionPolicyType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
+[JsonConverter(typeof(TypeConverter))]
+public enum Type
+{
+    Bash,
+}
+
+sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.Type>
+{
+    public override global::Anthropic.Models.Beta.Agents.Type Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "bash" => global::Anthropic.Models.Beta.Agents.Type.Bash,
+            _ => (global::Anthropic.Models.Beta.Agents.Type)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        global::Anthropic.Models.Beta.Agents.Type value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                global::Anthropic.Models.Beta.Agents.Type.Bash => "bash",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -36,17 +36,19 @@ public record class ThinkingConfigParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ThinkingConfigParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                ThinkingConfigEnabled x => x.Type,
-                ThinkingConfigDisabled x => x.Type,
-                ThinkingConfigBetweenTools x => x.Type,
-                ThinkingConfigAdaptive x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                ThinkingConfigEnabled _ => ThinkingConfigParamType.Enabled,
+                ThinkingConfigDisabled _ => ThinkingConfigParamType.Disabled,
+                ThinkingConfigBetweenTools _ => ThinkingConfigParamType.BetweenTools,
+                ThinkingConfigAdaptive _ => ThinkingConfigParamType.Adaptive,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ThinkingConfigParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -435,5 +437,55 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ThinkingConfigParamTypeConverter))]
+public enum ThinkingConfigParamType
+{
+    Enabled,
+    Disabled,
+    BetweenTools,
+    Adaptive,
+}
+
+sealed class ThinkingConfigParamTypeConverter : JsonConverter<ThinkingConfigParamType>
+{
+    public override ThinkingConfigParamType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => ThinkingConfigParamType.Enabled,
+            "disabled" => ThinkingConfigParamType.Disabled,
+            "between_tools" => ThinkingConfigParamType.BetweenTools,
+            "adaptive" => ThinkingConfigParamType.Adaptive,
+            _ => (ThinkingConfigParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ThinkingConfigParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ThinkingConfigParamType.Enabled => "enabled",
+                ThinkingConfigParamType.Disabled => "disabled",
+                ThinkingConfigParamType.BetweenTools => "between_tools",
+                ThinkingConfigParamType.Adaptive => "adaptive",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -21,17 +20,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -39,10 +33,21 @@ public sealed record class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReas
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("mcp_egress_blocked_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError() { }
+    public BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_egress_blocked_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -57,6 +62,8 @@ public sealed record class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReas
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_egress_blocked_error");
     }
 
 #pragma warning disable CS8618
@@ -76,15 +83,6 @@ public sealed record class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReas
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorFromRaw
@@ -94,48 +92,4 @@ class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorTypeConverter))]
-public enum BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType
-{
-    McpEgressBlockedError,
-}
-
-sealed class BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "mcp_egress_blocked_error" =>
-                BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType.McpEgressBlockedError,
-            _ => (BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType.McpEgressBlockedError =>
-                    "mcp_egress_blocked_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

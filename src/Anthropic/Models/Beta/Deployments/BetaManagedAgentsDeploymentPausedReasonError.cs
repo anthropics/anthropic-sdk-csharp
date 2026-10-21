@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -25,6 +25,47 @@ public record class BetaManagedAgentsDeploymentPausedReasonError : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError,
+                BetaManagedAgentsAgentArchivedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError,
+                BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError,
+                BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError,
+                BetaManagedAgentsFileNotFoundDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError,
+                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
+                BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError,
+                BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError,
+                BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError,
+                BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError,
+                BetaManagedAgentsVaultArchivedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError,
+                BetaManagedAgentsUnknownDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError,
+                BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError,
+                BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError _ =>
+                    BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -522,20 +563,20 @@ public record class BetaManagedAgentsDeploymentPausedReasonError : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError> environmentArchived,
-        System::Action<BetaManagedAgentsAgentArchivedDeploymentPausedReasonError> agentArchived,
-        System::Action<BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError> environmentNotFound,
-        System::Action<BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError> vaultNotFound,
-        System::Action<BetaManagedAgentsFileNotFoundDeploymentPausedReasonError> fileNotFound,
-        System::Action<BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError> sessionResourceNotFound,
-        System::Action<BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError> workspaceArchived,
-        System::Action<BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError> organizationDisabled,
-        System::Action<BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError> memoryStoreArchived,
-        System::Action<BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError> skillNotFound,
-        System::Action<BetaManagedAgentsVaultArchivedDeploymentPausedReasonError> vaultArchived,
-        System::Action<BetaManagedAgentsUnknownDeploymentPausedReasonError> unknown,
-        System::Action<BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError> selfHostedResourcesUnsupported,
-        System::Action<BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError> mcpEgressBlocked
+        Action<BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError> environmentArchived,
+        Action<BetaManagedAgentsAgentArchivedDeploymentPausedReasonError> agentArchived,
+        Action<BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError> environmentNotFound,
+        Action<BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError> vaultNotFound,
+        Action<BetaManagedAgentsFileNotFoundDeploymentPausedReasonError> fileNotFound,
+        Action<BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError> sessionResourceNotFound,
+        Action<BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError> workspaceArchived,
+        Action<BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError> organizationDisabled,
+        Action<BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError> memoryStoreArchived,
+        Action<BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError> skillNotFound,
+        Action<BetaManagedAgentsVaultArchivedDeploymentPausedReasonError> vaultArchived,
+        Action<BetaManagedAgentsUnknownDeploymentPausedReasonError> unknown,
+        Action<BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError> selfHostedResourcesUnsupported,
+        Action<BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError> mcpEgressBlocked
     )
     {
         switch (this.Value)
@@ -623,44 +664,38 @@ public record class BetaManagedAgentsDeploymentPausedReasonError : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError,
             T
         > environmentArchived,
-        System::Func<BetaManagedAgentsAgentArchivedDeploymentPausedReasonError, T> agentArchived,
-        System::Func<
+        Func<BetaManagedAgentsAgentArchivedDeploymentPausedReasonError, T> agentArchived,
+        Func<
             BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError,
             T
         > environmentNotFound,
-        System::Func<BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError, T> vaultNotFound,
-        System::Func<BetaManagedAgentsFileNotFoundDeploymentPausedReasonError, T> fileNotFound,
-        System::Func<
+        Func<BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError, T> vaultNotFound,
+        Func<BetaManagedAgentsFileNotFoundDeploymentPausedReasonError, T> fileNotFound,
+        Func<
             BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError,
             T
         > sessionResourceNotFound,
-        System::Func<
-            BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError,
-            T
-        > workspaceArchived,
-        System::Func<
+        Func<BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError, T> workspaceArchived,
+        Func<
             BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError,
             T
         > organizationDisabled,
-        System::Func<
+        Func<
             BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError,
             T
         > memoryStoreArchived,
-        System::Func<BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError, T> skillNotFound,
-        System::Func<BetaManagedAgentsVaultArchivedDeploymentPausedReasonError, T> vaultArchived,
-        System::Func<BetaManagedAgentsUnknownDeploymentPausedReasonError, T> unknown,
-        System::Func<
+        Func<BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError, T> skillNotFound,
+        Func<BetaManagedAgentsVaultArchivedDeploymentPausedReasonError, T> vaultArchived,
+        Func<BetaManagedAgentsUnknownDeploymentPausedReasonError, T> unknown,
+        Func<
             BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError,
             T
         > selfHostedResourcesUnsupported,
-        System::Func<
-            BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError,
-            T
-        > mcpEgressBlocked
+        Func<BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError, T> mcpEgressBlocked
     )
     {
         return this.Value switch
@@ -830,7 +865,7 @@ sealed class BetaManagedAgentsDeploymentPausedReasonErrorConverter
 {
     public override BetaManagedAgentsDeploymentPausedReasonError? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1155,5 +1190,112 @@ sealed class BetaManagedAgentsDeploymentPausedReasonErrorConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsDeploymentPausedReasonErrorTypeConverter))]
+public enum BetaManagedAgentsDeploymentPausedReasonErrorType
+{
+    EnvironmentArchivedError,
+    AgentArchivedError,
+    EnvironmentNotFoundError,
+    VaultNotFoundError,
+    FileNotFoundError,
+    SessionResourceNotFoundError,
+    WorkspaceArchivedError,
+    OrganizationDisabledError,
+    MemoryStoreArchivedError,
+    SkillNotFoundError,
+    VaultArchivedError,
+    UnknownError,
+    SelfHostedResourcesUnsupportedError,
+    McpEgressBlockedError,
+}
+
+sealed class BetaManagedAgentsDeploymentPausedReasonErrorTypeConverter
+    : JsonConverter<BetaManagedAgentsDeploymentPausedReasonErrorType>
+{
+    public override BetaManagedAgentsDeploymentPausedReasonErrorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "environment_archived_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError,
+            "agent_archived_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError,
+            "environment_not_found_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError,
+            "vault_not_found_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError,
+            "file_not_found_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError,
+            "session_resource_not_found_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
+            "workspace_archived_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError,
+            "organization_disabled_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError,
+            "memory_store_archived_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError,
+            "skill_not_found_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError,
+            "vault_archived_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError,
+            "unknown_error" => BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError,
+            "self_hosted_resources_unsupported_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError,
+            "mcp_egress_blocked_error" =>
+                BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError,
+            _ => (BetaManagedAgentsDeploymentPausedReasonErrorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsDeploymentPausedReasonErrorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError =>
+                    "environment_archived_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError =>
+                    "agent_archived_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError =>
+                    "environment_not_found_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError =>
+                    "vault_not_found_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError =>
+                    "file_not_found_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError =>
+                    "session_resource_not_found_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError =>
+                    "workspace_archived_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError =>
+                    "organization_disabled_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError =>
+                    "memory_store_archived_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError =>
+                    "skill_not_found_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError =>
+                    "vault_archived_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError => "unknown_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError =>
+                    "self_hosted_resources_unsupported_error",
+                BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError =>
+                    "mcp_egress_blocked_error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

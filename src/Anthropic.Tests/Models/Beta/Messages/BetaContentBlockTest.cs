@@ -624,6 +624,259 @@ public class BetaContentBlockTest : TestBase
     }
 
     [Fact]
+    public void TextTypeWorks()
+    {
+        BetaContentBlock value = new BetaTextBlock()
+        {
+            Citations =
+            [
+                new BetaCitationCharLocation()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "My Document",
+                    EndCharIndex = 0,
+                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    StartCharIndex = 0,
+                },
+            ],
+            Text = "text",
+        };
+        Assert.Equal(BetaContentBlockType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThinkingTypeWorks()
+    {
+        BetaContentBlock value = new BetaThinkingBlock()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        Assert.Equal(BetaContentBlockType.Thinking, value.Type.Value());
+    }
+
+    [Fact]
+    public void RedactedThinkingTypeWorks()
+    {
+        BetaContentBlock value = new BetaRedactedThinkingBlock("data");
+        Assert.Equal(BetaContentBlockType.RedactedThinking, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolUseTypeWorks()
+    {
+        BetaContentBlock value = new BetaToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            Caller = new BetaDirectCaller(),
+            ToolsetName = "toolset_name",
+        };
+        Assert.Equal(BetaContentBlockType.ToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolUseTypeWorks()
+    {
+        BetaContentBlock value = new BetaServerToolUseBlock()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = Name.Advisor,
+            Caller = new BetaDirectCaller(),
+        };
+        Assert.Equal(BetaContentBlockType.ServerToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebSearchToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaWebSearchToolResultBlock()
+        {
+            Content = new BetaWebSearchToolResultError(
+                BetaWebSearchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
+        };
+        Assert.Equal(BetaContentBlockType.WebSearchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaWebFetchToolResultBlock()
+        {
+            Content = new BetaWebFetchToolResultErrorBlock(
+                BetaWebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            Caller = new BetaDirectCaller(),
+        };
+        Assert.Equal(BetaContentBlockType.WebFetchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void AdvisorToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaAdvisorToolResultBlock()
+        {
+            Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(BetaContentBlockType.AdvisorToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void CodeExecutionToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaCodeExecutionToolResultBlock()
+        {
+            Content = new BetaCodeExecutionToolResultError(
+                BetaCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(BetaContentBlockType.CodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void BashCodeExecutionToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaBashCodeExecutionToolResultBlock()
+        {
+            Content = new BetaBashCodeExecutionToolResultError(
+                BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(BetaContentBlockType.BashCodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void TextEditorCodeExecutionToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaTextEditorCodeExecutionToolResultBlock()
+        {
+            Content = new BetaTextEditorCodeExecutionToolResultError()
+            {
+                ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(BetaContentBlockType.TextEditorCodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolSearchToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaToolSearchToolResultBlock()
+        {
+            Content = new BetaToolSearchToolResultError()
+            {
+                ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+        };
+        Assert.Equal(BetaContentBlockType.ToolSearchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void McpToolUseTypeWorks()
+    {
+        BetaContentBlock value = new BetaMcpToolUseBlock()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "name",
+            ServerName = "server_name",
+        };
+        Assert.Equal(BetaContentBlockType.McpToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void McpToolResultTypeWorks()
+    {
+        BetaContentBlock value = new BetaMcpToolResultBlock()
+        {
+            Content = "string",
+            IsError = true,
+            ToolUseID = "tool_use_id",
+        };
+        Assert.Equal(BetaContentBlockType.McpToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ContainerUploadTypeWorks()
+    {
+        BetaContentBlock value = new BetaContainerUploadBlock("file_id");
+        Assert.Equal(BetaContentBlockType.ContainerUpload, value.Type.Value());
+    }
+
+    [Fact]
+    public void CompactionTypeWorks()
+    {
+        BetaContentBlock value = new BetaCompactionBlock()
+        {
+            Content = "content",
+            EncryptedContent = "encrypted_content",
+            Signature = "signature",
+            ToolChanges =
+            [
+                new BetaResponseToolAdditionBlock(new BetaResponseToolChangeToolReference("name")),
+            ],
+        };
+        Assert.Equal(BetaContentBlockType.Compaction, value.Type.Value());
+    }
+
+    [Fact]
+    public void FallbackTypeWorks()
+    {
+        BetaContentBlock value = new BetaFallbackBlock()
+        {
+            From = new(Messages::Model.ClaudeHaiku5_5),
+            To = new(Messages::Model.ClaudeHaiku5_5),
+            Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
+        };
+        Assert.Equal(BetaContentBlockType.Fallback, value.Type.Value());
+    }
+
+    [Fact]
+    public void McpToolListingTypeWorks()
+    {
+        BetaContentBlock value = new BetaMcpToolListingBlock()
+        {
+            McpServerName = "mcp_server_name",
+            Tools =
+            [
+                new()
+                {
+                    InputSchema = new Dictionary<string, JsonElement>()
+                    {
+                        { "foo", JsonSerializer.SerializeToElement("bar") },
+                    },
+                    Name = "name",
+                    Description = "description",
+                },
+            ],
+        };
+        Assert.Equal(BetaContentBlockType.McpToolListing, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaContentBlock value = new(
@@ -640,12 +893,12 @@ public class BetaContentBlockTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        ApiEnum<string, BetaContentBlockType> expectedType = BetaContentBlockType.Text;
         string expectedSignature = "signature";
         string expectedID = "id";
         string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedSignature, value.Signature);
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedToolUseID, value.ToolUseID);
@@ -678,5 +931,95 @@ public class BetaContentBlockTest : TestBase
         Assert.Null(mismatchedValue.Signature);
         Assert.Null(mismatchedValue.ID);
         Assert.Null(mismatchedValue.ToolUseID);
+    }
+}
+
+public class BetaContentBlockTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaContentBlockType.Text)]
+    [InlineData(BetaContentBlockType.Thinking)]
+    [InlineData(BetaContentBlockType.RedactedThinking)]
+    [InlineData(BetaContentBlockType.ToolUse)]
+    [InlineData(BetaContentBlockType.ServerToolUse)]
+    [InlineData(BetaContentBlockType.WebSearchToolResult)]
+    [InlineData(BetaContentBlockType.WebFetchToolResult)]
+    [InlineData(BetaContentBlockType.AdvisorToolResult)]
+    [InlineData(BetaContentBlockType.CodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.BashCodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.TextEditorCodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.ToolSearchToolResult)]
+    [InlineData(BetaContentBlockType.McpToolUse)]
+    [InlineData(BetaContentBlockType.McpToolResult)]
+    [InlineData(BetaContentBlockType.ContainerUpload)]
+    [InlineData(BetaContentBlockType.Compaction)]
+    [InlineData(BetaContentBlockType.Fallback)]
+    [InlineData(BetaContentBlockType.McpToolListing)]
+    public void Validation_Works(BetaContentBlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaContentBlockType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaContentBlockType.Text)]
+    [InlineData(BetaContentBlockType.Thinking)]
+    [InlineData(BetaContentBlockType.RedactedThinking)]
+    [InlineData(BetaContentBlockType.ToolUse)]
+    [InlineData(BetaContentBlockType.ServerToolUse)]
+    [InlineData(BetaContentBlockType.WebSearchToolResult)]
+    [InlineData(BetaContentBlockType.WebFetchToolResult)]
+    [InlineData(BetaContentBlockType.AdvisorToolResult)]
+    [InlineData(BetaContentBlockType.CodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.BashCodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.TextEditorCodeExecutionToolResult)]
+    [InlineData(BetaContentBlockType.ToolSearchToolResult)]
+    [InlineData(BetaContentBlockType.McpToolUse)]
+    [InlineData(BetaContentBlockType.McpToolResult)]
+    [InlineData(BetaContentBlockType.ContainerUpload)]
+    [InlineData(BetaContentBlockType.Compaction)]
+    [InlineData(BetaContentBlockType.Fallback)]
+    [InlineData(BetaContentBlockType.McpToolListing)]
+    public void SerializationRoundtrip_Works(BetaContentBlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaContentBlockType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

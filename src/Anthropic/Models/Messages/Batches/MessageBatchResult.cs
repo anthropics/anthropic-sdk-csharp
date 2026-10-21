@@ -32,17 +32,19 @@ public record class MessageBatchResult : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, MessageBatchResultType> Type
     {
         get
         {
             return this.Value switch
             {
-                MessageBatchSucceededResult x => x.Type,
-                MessageBatchErroredResult x => x.Type,
-                MessageBatchCanceledResult x => x.Type,
-                MessageBatchExpiredResult x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                MessageBatchSucceededResult _ => MessageBatchResultType.Succeeded,
+                MessageBatchErroredResult _ => MessageBatchResultType.Errored,
+                MessageBatchCanceledResult _ => MessageBatchResultType.Canceled,
+                MessageBatchExpiredResult _ => MessageBatchResultType.Expired,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, MessageBatchResultType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -434,5 +436,55 @@ sealed class MessageBatchResultConverter : JsonConverter<MessageBatchResult>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(MessageBatchResultTypeConverter))]
+public enum MessageBatchResultType
+{
+    Succeeded,
+    Errored,
+    Canceled,
+    Expired,
+}
+
+sealed class MessageBatchResultTypeConverter : JsonConverter<MessageBatchResultType>
+{
+    public override MessageBatchResultType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "succeeded" => MessageBatchResultType.Succeeded,
+            "errored" => MessageBatchResultType.Errored,
+            "canceled" => MessageBatchResultType.Canceled,
+            "expired" => MessageBatchResultType.Expired,
+            _ => (MessageBatchResultType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageBatchResultType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                MessageBatchResultType.Succeeded => "succeeded",
+                MessageBatchResultType.Errored => "errored",
+                MessageBatchResultType.Canceled => "canceled",
+                MessageBatchResultType.Expired => "expired",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

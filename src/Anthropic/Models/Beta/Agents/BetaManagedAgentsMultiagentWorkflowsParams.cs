@@ -28,15 +28,19 @@ public record class BetaManagedAgentsMultiagentWorkflowsParams : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsParamsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsMultiagentWorkflowsEnabledParams x => x.Type,
-                BetaManagedAgentsMultiagentWorkflowsDisabledParams x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsMultiagentWorkflowsEnabledParams _ =>
+                    BetaManagedAgentsMultiagentWorkflowsParamsType.Enabled,
+                BetaManagedAgentsMultiagentWorkflowsDisabledParams _ =>
+                    BetaManagedAgentsMultiagentWorkflowsParamsType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsParamsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -320,5 +324,50 @@ sealed class BetaManagedAgentsMultiagentWorkflowsParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMultiagentWorkflowsParamsTypeConverter))]
+public enum BetaManagedAgentsMultiagentWorkflowsParamsType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaManagedAgentsMultiagentWorkflowsParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsMultiagentWorkflowsParamsType>
+{
+    public override BetaManagedAgentsMultiagentWorkflowsParamsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaManagedAgentsMultiagentWorkflowsParamsType.Enabled,
+            "disabled" => BetaManagedAgentsMultiagentWorkflowsParamsType.Disabled,
+            _ => (BetaManagedAgentsMultiagentWorkflowsParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMultiagentWorkflowsParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMultiagentWorkflowsParamsType.Enabled => "enabled",
+                BetaManagedAgentsMultiagentWorkflowsParamsType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

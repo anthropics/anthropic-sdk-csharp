@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
+using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
 
@@ -12,33 +12,28 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             DisplayName = "Example credential",
         };
 
         string expectedID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
-        Credentials::BetaManagedAgentsCredentialAuth expectedAuth =
-            new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            };
+        BetaManagedAgentsCredentialAuth expectedAuth =
+            new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            );
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new() { { "environment", "production" } };
-        ApiEnum<string, Credentials::Type> expectedType = Credentials::Type.VaultCredential;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
         string expectedDisplayName = "Example credential";
@@ -54,7 +49,7 @@ public class BetaManagedAgentsCredentialTest : TestBase
 
             Assert.Equal(value, model.Metadata[item.Key]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedVaultID, model.VaultID);
         Assert.Equal(expectedDisplayName, model.DisplayName);
@@ -63,25 +58,22 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             DisplayName = "Example credential",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredential>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCredential>(
             json,
             ModelBase.SerializerOptions
         );
@@ -92,40 +84,35 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             DisplayName = "Example credential",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredential>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCredential>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         string expectedID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
-        Credentials::BetaManagedAgentsCredentialAuth expectedAuth =
-            new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            };
+        BetaManagedAgentsCredentialAuth expectedAuth =
+            new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            );
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new() { { "environment", "production" } };
-        ApiEnum<string, Credentials::Type> expectedType = Credentials::Type.VaultCredential;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedVaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv";
         string expectedDisplayName = "Example credential";
@@ -141,7 +128,7 @@ public class BetaManagedAgentsCredentialTest : TestBase
 
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedVaultID, deserialized.VaultID);
         Assert.Equal(expectedDisplayName, deserialized.DisplayName);
@@ -150,18 +137,15 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             DisplayName = "Example credential",
@@ -173,18 +157,15 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -196,18 +177,15 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
         };
@@ -218,18 +196,15 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
 
@@ -243,18 +218,15 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
 
@@ -267,24 +239,21 @@ public class BetaManagedAgentsCredentialTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Credentials::BetaManagedAgentsCredential
+        var model = new BetaManagedAgentsCredential
         {
             ID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             ArchivedAt = null,
-            Auth = new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            },
+            Auth = new BetaManagedAgentsStaticBearerAuthResponse(
+                "https://example-server.modelcontextprotocol.io/sse"
+            ),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = Credentials::Type.VaultCredential,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
             DisplayName = "Example credential",
         };
 
-        Credentials::BetaManagedAgentsCredential copied = new(model);
+        BetaManagedAgentsCredential copied = new(model);
 
         Assert.Equal(model, copied);
     }
@@ -295,53 +264,40 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpOAuthAuthResponseValidationWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsMcpOAuthAuthResponse()
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsMcpOAuthAuthResponse()
+        {
+            McpServerUrl = "mcp_server_url",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Refresh = new()
             {
-                McpServerUrl = "mcp_server_url",
-                Type = Credentials::BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
-                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Refresh = new()
-                {
-                    ClientID = "client_id",
-                    TokenEndpoint = "token_endpoint",
-                    TokenEndpointAuth =
-                        new Credentials::BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                            Credentials::BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                        ),
-                    Resource = "resource",
-                    Scope = "scope",
-                },
-            };
+                ClientID = "client_id",
+                TokenEndpoint = "token_endpoint",
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
+                Resource = "resource",
+                Scope = "scope",
+            },
+        };
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsStaticBearerAuthResponseValidationWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            };
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsStaticBearerAuthResponse(
+            "https://example-server.modelcontextprotocol.io/sse"
+        );
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsEnvironmentVariableAuthResponseValidationWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
+        BetaManagedAgentsCredentialAuth value =
+            new BetaManagedAgentsEnvironmentVariableAuthResponse()
             {
                 InjectionLocation = new() { Body = true, Header = true },
-                Networking =
-                    new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                        Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-                    ),
+                Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
                 SecretName = "secret_name",
-                Type =
-                    Credentials::BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
             };
         value.Validate();
     }
@@ -349,26 +305,21 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsMcpOAuthAuthResponseSerializationRoundtripWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsMcpOAuthAuthResponse()
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsMcpOAuthAuthResponse()
+        {
+            McpServerUrl = "mcp_server_url",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Refresh = new()
             {
-                McpServerUrl = "mcp_server_url",
-                Type = Credentials::BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
-                ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                Refresh = new()
-                {
-                    ClientID = "client_id",
-                    TokenEndpoint = "token_endpoint",
-                    TokenEndpointAuth =
-                        new Credentials::BetaManagedAgentsTokenEndpointAuthNoneResponse(
-                            Credentials::BetaManagedAgentsTokenEndpointAuthNoneResponseType.None
-                        ),
-                    Resource = "resource",
-                    Scope = "scope",
-                },
-            };
+                ClientID = "client_id",
+                TokenEndpoint = "token_endpoint",
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
+                Resource = "resource",
+                Scope = "scope",
+            },
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredentialAuth>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCredentialAuth>(
             element,
             ModelBase.SerializerOptions
         );
@@ -379,14 +330,11 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsStaticBearerAuthResponseSerializationRoundtripWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsStaticBearerAuthResponse()
-            {
-                McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = Credentials::BetaManagedAgentsStaticBearerAuthResponseType.StaticBearer,
-            };
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsStaticBearerAuthResponse(
+            "https://example-server.modelcontextprotocol.io/sse"
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredentialAuth>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCredentialAuth>(
             element,
             ModelBase.SerializerOptions
         );
@@ -397,20 +345,15 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     [Fact]
     public void BetaManagedAgentsEnvironmentVariableAuthResponseSerializationRoundtripWorks()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value =
-            new Credentials::BetaManagedAgentsEnvironmentVariableAuthResponse()
+        BetaManagedAgentsCredentialAuth value =
+            new BetaManagedAgentsEnvironmentVariableAuthResponse()
             {
                 InjectionLocation = new() { Body = true, Header = true },
-                Networking =
-                    new Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(
-                        Credentials::BetaManagedAgentsUnrestrictedCredentialNetworkingResponseType.Unrestricted
-                    ),
+                Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
                 SecretName = "secret_name",
-                Type =
-                    Credentials::BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Credentials::BetaManagedAgentsCredentialAuth>(
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCredentialAuth>(
             element,
             ModelBase.SerializerOptions
         );
@@ -419,13 +362,55 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsMcpOAuthAuthResponseTypeWorks()
+    {
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsMcpOAuthAuthResponse()
+        {
+            McpServerUrl = "mcp_server_url",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Refresh = new()
+            {
+                ClientID = "client_id",
+                TokenEndpoint = "token_endpoint",
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneResponse(),
+                Resource = "resource",
+                Scope = "scope",
+            },
+        };
+        Assert.Equal(BetaManagedAgentsCredentialAuthType.McpOAuth, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsStaticBearerAuthResponseTypeWorks()
+    {
+        BetaManagedAgentsCredentialAuth value = new BetaManagedAgentsStaticBearerAuthResponse(
+            "https://example-server.modelcontextprotocol.io/sse"
+        );
+        Assert.Equal(BetaManagedAgentsCredentialAuthType.StaticBearer, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableAuthResponseTypeWorks()
+    {
+        BetaManagedAgentsCredentialAuth value =
+            new BetaManagedAgentsEnvironmentVariableAuthResponse()
+            {
+                InjectionLocation = new() { Body = true, Header = true },
+                Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingResponse(),
+                SecretName = "secret_name",
+            };
+        Assert.Equal(BetaManagedAgentsCredentialAuthType.EnvironmentVariable, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
-        Credentials::BetaManagedAgentsCredentialAuth value = new(
+        BetaManagedAgentsCredentialAuth value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "mcp_server_url": "mcp_server_url"
+                  "mcp_server_url": "mcp_server_url",
+                  "type": "static_bearer"
                 }
                 """
             )
@@ -433,16 +418,20 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMcpServerUrl = "mcp_server_url";
+        ApiEnum<string, BetaManagedAgentsCredentialAuthType> expectedType =
+            BetaManagedAgentsCredentialAuthType.StaticBearer;
 
         Assert.Equal(expectedMcpServerUrl, value.McpServerUrl);
+        Assert.Equal(expectedType, value.Type);
 
-        Credentials::BetaManagedAgentsCredentialAuth emptyValue = new(
+        BetaManagedAgentsCredentialAuth emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Null(emptyValue.McpServerUrl);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
 
-        Credentials::BetaManagedAgentsCredentialAuth mismatchedValue = new(
+        BetaManagedAgentsCredentialAuth mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
@@ -458,41 +447,43 @@ public class BetaManagedAgentsCredentialAuthTest : TestBase
     }
 }
 
-public class TypeTest : TestBase
+public class BetaManagedAgentsCredentialAuthTypeTest : TestBase
 {
     [Theory]
-    [InlineData(Credentials::Type.VaultCredential)]
-    public void Validation_Works(Credentials::Type rawValue)
+    [InlineData(BetaManagedAgentsCredentialAuthType.McpOAuth)]
+    [InlineData(BetaManagedAgentsCredentialAuthType.StaticBearer)]
+    [InlineData(BetaManagedAgentsCredentialAuthType.EnvironmentVariable)]
+    public void Validation_Works(BetaManagedAgentsCredentialAuthType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Credentials::Type> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsCredentialAuthType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Credentials::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsCredentialAuthType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(Credentials::Type.VaultCredential)]
-    public void SerializationRoundtrip_Works(Credentials::Type rawValue)
+    [InlineData(BetaManagedAgentsCredentialAuthType.McpOAuth)]
+    [InlineData(BetaManagedAgentsCredentialAuthType.StaticBearer)]
+    [InlineData(BetaManagedAgentsCredentialAuthType.EnvironmentVariable)]
+    public void SerializationRoundtrip_Works(BetaManagedAgentsCredentialAuthType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Credentials::Type> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsCredentialAuthType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Credentials::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsCredentialAuthType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
@@ -500,15 +491,13 @@ public class TypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Credentials::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsCredentialAuthType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Credentials::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsCredentialAuthType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

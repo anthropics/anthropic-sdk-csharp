@@ -12,13 +12,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
             Context = "context",
             Title = "title",
         };
@@ -27,15 +21,13 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
-        ApiEnum<string, BetaManagedAgentsDocumentBlockType> expectedType =
-            BetaManagedAgentsDocumentBlockType.Document;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         string expectedContext = "context";
         string expectedTitle = "title";
 
         Assert.Equal(expectedSource, model.Source);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedContext, model.Context);
         Assert.Equal(expectedTitle, model.Title);
     }
@@ -45,13 +37,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
             Context = "context",
             Title = "title",
         };
@@ -70,13 +56,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
             Context = "context",
             Title = "title",
         };
@@ -92,15 +72,13 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
         {
             Data = "x",
             MediaType = "x",
-            Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
         };
-        ApiEnum<string, BetaManagedAgentsDocumentBlockType> expectedType =
-            BetaManagedAgentsDocumentBlockType.Document;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("document");
         string expectedContext = "context";
         string expectedTitle = "title";
 
         Assert.Equal(expectedSource, deserialized.Source);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedContext, deserialized.Context);
         Assert.Equal(expectedTitle, deserialized.Title);
     }
@@ -110,13 +88,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
             Context = "context",
             Title = "title",
         };
@@ -129,13 +101,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
         };
 
         Assert.Null(model.Context);
@@ -149,13 +115,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
         };
 
         model.Validate();
@@ -166,13 +126,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
 
             Context = null,
             Title = null,
@@ -189,13 +143,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
 
             Context = null,
             Title = null,
@@ -209,13 +157,7 @@ public class BetaManagedAgentsDocumentBlockTest : TestBase
     {
         var model = new BetaManagedAgentsDocumentBlock
         {
-            Source = new BetaManagedAgentsBase64DocumentSource()
-            {
-                Data = "x",
-                MediaType = "x",
-                Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-            },
-            Type = BetaManagedAgentsDocumentBlockType.Document,
+            Source = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" },
             Context = "context",
             Title = "title",
         };
@@ -231,58 +173,35 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsBase64DocumentValidationWorks()
     {
-        Source value = new BetaManagedAgentsBase64DocumentSource()
-        {
-            Data = "x",
-            MediaType = "x",
-            Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-        };
+        Source value = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" };
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsPlainTextDocumentValidationWorks()
     {
-        Source value = new BetaManagedAgentsPlainTextDocumentSource()
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        Source value = new BetaManagedAgentsPlainTextDocumentSource("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsUrlDocumentValidationWorks()
     {
-        Source value = new BetaManagedAgentsUrlDocumentSource()
-        {
-            Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "x",
-        };
+        Source value = new BetaManagedAgentsUrlDocumentSource("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsFileDocumentValidationWorks()
     {
-        Source value = new BetaManagedAgentsFileDocumentSource()
-        {
-            FileID = "x",
-            Type = BetaManagedAgentsFileDocumentSourceType.File,
-        };
+        Source value = new BetaManagedAgentsFileDocumentSource("x");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsBase64DocumentSerializationRoundtripWorks()
     {
-        Source value = new BetaManagedAgentsBase64DocumentSource()
-        {
-            Data = "x",
-            MediaType = "x",
-            Type = BetaManagedAgentsBase64DocumentSourceType.Base64,
-        };
+        Source value = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -292,12 +211,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsPlainTextDocumentSerializationRoundtripWorks()
     {
-        Source value = new BetaManagedAgentsPlainTextDocumentSource()
-        {
-            Data = "x",
-            MediaType = MediaType.TextPlain,
-            Type = BetaManagedAgentsPlainTextDocumentSourceType.Text,
-        };
+        Source value = new BetaManagedAgentsPlainTextDocumentSource("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -307,11 +221,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsUrlDocumentSerializationRoundtripWorks()
     {
-        Source value = new BetaManagedAgentsUrlDocumentSource()
-        {
-            Type = BetaManagedAgentsUrlDocumentSourceType.Url,
-            Url = "x",
-        };
+        Source value = new BetaManagedAgentsUrlDocumentSource("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -321,15 +231,39 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileDocumentSerializationRoundtripWorks()
     {
-        Source value = new BetaManagedAgentsFileDocumentSource()
-        {
-            FileID = "x",
-            Type = BetaManagedAgentsFileDocumentSourceType.File,
-        };
+        Source value = new BetaManagedAgentsFileDocumentSource("x");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsBase64DocumentTypeWorks()
+    {
+        Source value = new BetaManagedAgentsBase64DocumentSource() { Data = "x", MediaType = "x" };
+        Assert.Equal(SourceType.Base64, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsPlainTextDocumentTypeWorks()
+    {
+        Source value = new BetaManagedAgentsPlainTextDocumentSource("x");
+        Assert.Equal(SourceType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUrlDocumentTypeWorks()
+    {
+        Source value = new BetaManagedAgentsUrlDocumentSource("x");
+        Assert.Equal(SourceType.Url, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsFileDocumentTypeWorks()
+    {
+        Source value = new BetaManagedAgentsFileDocumentSource("x");
+        Assert.Equal(SourceType.File, value.Type.Value());
     }
 
     [Fact]
@@ -339,7 +273,8 @@ public class SourceTest : TestBase
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "data": "x"
+                  "data": "x",
+                  "type": "base64"
                 }
                 """
             )
@@ -347,12 +282,15 @@ public class SourceTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedData = "x";
+        ApiEnum<string, SourceType> expectedType = SourceType.Base64;
 
         Assert.Equal(expectedData, value.Data);
+        Assert.Equal(expectedType, value.Type);
 
         Source emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Null(emptyValue.Data);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
 
         Source mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
@@ -370,21 +308,24 @@ public class SourceTest : TestBase
     }
 }
 
-public class BetaManagedAgentsDocumentBlockTypeTest : TestBase
+public class SourceTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsDocumentBlockType.Document)]
-    public void Validation_Works(BetaManagedAgentsDocumentBlockType rawValue)
+    [InlineData(SourceType.Base64)]
+    [InlineData(SourceType.Text)]
+    [InlineData(SourceType.Url)]
+    [InlineData(SourceType.File)]
+    public void Validation_Works(SourceType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDocumentBlockType> value = rawValue;
+        ApiEnum<string, SourceType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDocumentBlockType>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
@@ -394,16 +335,20 @@ public class BetaManagedAgentsDocumentBlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsDocumentBlockType.Document)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsDocumentBlockType rawValue)
+    [InlineData(SourceType.Base64)]
+    [InlineData(SourceType.Text)]
+    [InlineData(SourceType.Url)]
+    [InlineData(SourceType.File)]
+    public void SerializationRoundtrip_Works(SourceType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDocumentBlockType> value = rawValue;
+        ApiEnum<string, SourceType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDocumentBlockType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -411,14 +356,15 @@ public class BetaManagedAgentsDocumentBlockTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDocumentBlockType>>(
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
             JsonSerializer.SerializeToElement("invalid value"),
             ModelBase.SerializerOptions
         );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDocumentBlockType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

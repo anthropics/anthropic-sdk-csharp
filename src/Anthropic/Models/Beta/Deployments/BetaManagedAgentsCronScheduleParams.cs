@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -50,14 +49,12 @@ public sealed record class BetaManagedAgentsCronScheduleParams : JsonModel
         init { this._rawData.Set("timezone", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsCronScheduleParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsCronScheduleParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -67,10 +64,16 @@ public sealed record class BetaManagedAgentsCronScheduleParams : JsonModel
     {
         _ = this.Expression;
         _ = this.Timezone;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("cron")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsCronScheduleParams() { }
+    public BetaManagedAgentsCronScheduleParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("cron");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -83,6 +86,8 @@ public sealed record class BetaManagedAgentsCronScheduleParams : JsonModel
     public BetaManagedAgentsCronScheduleParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("cron");
     }
 
 #pragma warning disable CS8618
@@ -108,46 +113,4 @@ class BetaManagedAgentsCronScheduleParamsFromRaw : IFromRawJson<BetaManagedAgent
     public BetaManagedAgentsCronScheduleParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCronScheduleParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsCronScheduleParamsTypeConverter))]
-public enum BetaManagedAgentsCronScheduleParamsType
-{
-    Cron,
-}
-
-sealed class BetaManagedAgentsCronScheduleParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsCronScheduleParamsType>
-{
-    public override BetaManagedAgentsCronScheduleParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "cron" => BetaManagedAgentsCronScheduleParamsType.Cron,
-            _ => (BetaManagedAgentsCronScheduleParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCronScheduleParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCronScheduleParamsType.Cron => "cron",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

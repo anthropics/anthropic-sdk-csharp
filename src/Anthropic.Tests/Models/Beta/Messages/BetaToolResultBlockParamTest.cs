@@ -613,6 +613,122 @@ public class BlockTest : TestBase
     }
 
     [Fact]
+    public void BetaTextBlockParamTypeWorks()
+    {
+        Block value = new BetaTextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new BetaCitationCharLocationParam()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
+        Assert.Equal(BlockType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaImageBlockParamTypeWorks()
+    {
+        Block value = new BetaImageBlockParam()
+        {
+            Source = new BetaBase64ImageSource()
+            {
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
+        };
+        Assert.Equal(BlockType.Image, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSearchResultBlockParamTypeWorks()
+    {
+        Block value = new BetaSearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new BetaCitationCharLocationParam()
+                        {
+                            CitedText = "The grass is green. The sky is blue.",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
+        Assert.Equal(BlockType.SearchResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRequestDocumentTypeWorks()
+    {
+        Block value = new BetaRequestDocumentBlock()
+        {
+            Source = new BetaBase64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
+        Assert.Equal(BlockType.Document, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaToolReferenceBlockParamTypeWorks()
+    {
+        Block value = new BetaToolReferenceBlockParam()
+        {
+            ToolName = "tool_name",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(BlockType.ToolReference, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaBrowserStateBlockParamTypeWorks()
+    {
+        Block value = new BetaBrowserStateBlockParam()
+        {
+            Tabs =
+            [
+                new()
+                {
+                    TabID = "tab_id",
+                    Title = "title",
+                    Url = "url",
+                    Active = true,
+                },
+            ],
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            StateChanges = [new BetaBrowserStateChangeTabOpened("tab_id")],
+        };
+        Assert.Equal(BlockType.BrowserState, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Block value = new(
@@ -631,11 +747,11 @@ public class BlockTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        ApiEnum<string, BlockType> expectedType = BlockType.Text;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedTitle = "title";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCacheControl, value.CacheControl);
         Assert.Equal(expectedTitle, value.Title);
 
@@ -662,5 +778,71 @@ public class BlockTest : TestBase
 
         Assert.Null(mismatchedValue.CacheControl);
         Assert.Null(mismatchedValue.Title);
+    }
+}
+
+public class BlockTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BlockType.Text)]
+    [InlineData(BlockType.Image)]
+    [InlineData(BlockType.SearchResult)]
+    [InlineData(BlockType.Document)]
+    [InlineData(BlockType.ToolReference)]
+    [InlineData(BlockType.BrowserState)]
+    public void Validation_Works(BlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BlockType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BlockType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BlockType.Text)]
+    [InlineData(BlockType.Image)]
+    [InlineData(BlockType.SearchResult)]
+    [InlineData(BlockType.Document)]
+    [InlineData(BlockType.ToolReference)]
+    [InlineData(BlockType.BrowserState)]
+    public void SerializationRoundtrip_Works(BlockType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BlockType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BlockType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BlockType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BlockType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

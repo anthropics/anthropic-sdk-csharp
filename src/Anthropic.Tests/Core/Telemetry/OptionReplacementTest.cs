@@ -55,7 +55,7 @@ public sealed class OptionReplacementTest : IDisposable
         new()
         {
             MaxTokens = 8,
-            Messages = [new() { Role = Role.User, Content = "Hi" }],
+            Messages = [new UserMessageParam { Content = "Hi" }],
             Model = "claude-test",
         };
 
@@ -388,7 +388,7 @@ public sealed class OptionReplacementTest : IDisposable
                 new()
                 {
                     MaxTokens = 8,
-                    Messages = [new() { Role = Beta.Role.User, Content = "Weather?" }],
+                    Messages = [new Beta.BetaUserMessageParam { Content = "Weather?" }],
                     Model = "claude-test",
                 },
                 [

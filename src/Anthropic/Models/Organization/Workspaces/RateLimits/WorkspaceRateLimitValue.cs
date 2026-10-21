@@ -136,15 +136,18 @@ public record class Source : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, SourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                WorkspaceRateLimitWorkspaceSource x => x.Type,
-                WorkspaceRateLimitOrganizationSource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                WorkspaceRateLimitWorkspaceSource _ => SourceType.Workspace,
+                WorkspaceRateLimitOrganizationSource _ => SourceType.Organization,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, SourceType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -413,5 +416,49 @@ sealed class SourceConverter : JsonConverter<Source>
     public override void Write(Utf8JsonWriter writer, Source value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(SourceTypeConverter))]
+public enum SourceType
+{
+    Workspace,
+    Organization,
+}
+
+sealed class SourceTypeConverter : JsonConverter<SourceType>
+{
+    public override SourceType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "workspace" => SourceType.Workspace,
+            "organization" => SourceType.Organization,
+            _ => (SourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        SourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                SourceType.Workspace => "workspace",
+                SourceType.Organization => "organization",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

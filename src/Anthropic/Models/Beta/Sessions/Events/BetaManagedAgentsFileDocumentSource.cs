@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsFileDocumentSource : JsonModel
         init { this._rawData.Set("file_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsFileDocumentSourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsFileDocumentSourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,16 @@ public sealed record class BetaManagedAgentsFileDocumentSource : JsonModel
     public override void Validate()
     {
         _ = this.FileID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("file")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsFileDocumentSource() { }
+    public BetaManagedAgentsFileDocumentSource()
+    {
+        this.Type = JsonSerializer.SerializeToElement("file");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +68,8 @@ public sealed record class BetaManagedAgentsFileDocumentSource : JsonModel
     public BetaManagedAgentsFileDocumentSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +87,13 @@ public sealed record class BetaManagedAgentsFileDocumentSource : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsFileDocumentSource(string fileID)
+        : this()
+    {
+        this.FileID = fileID;
+    }
 }
 
 class BetaManagedAgentsFileDocumentSourceFromRaw : IFromRawJson<BetaManagedAgentsFileDocumentSource>
@@ -90,46 +102,4 @@ class BetaManagedAgentsFileDocumentSourceFromRaw : IFromRawJson<BetaManagedAgent
     public BetaManagedAgentsFileDocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsFileDocumentSource.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsFileDocumentSourceTypeConverter))]
-public enum BetaManagedAgentsFileDocumentSourceType
-{
-    File,
-}
-
-sealed class BetaManagedAgentsFileDocumentSourceTypeConverter
-    : JsonConverter<BetaManagedAgentsFileDocumentSourceType>
-{
-    public override BetaManagedAgentsFileDocumentSourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "file" => BetaManagedAgentsFileDocumentSourceType.File,
-            _ => (BetaManagedAgentsFileDocumentSourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsFileDocumentSourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsFileDocumentSourceType.File => "file",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

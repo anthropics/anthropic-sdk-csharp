@@ -178,16 +178,18 @@ public record class ToolUseBlockParamCaller : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ToolUseBlockParamCallerType> Type
     {
         get
         {
             return this.Value switch
             {
-                DirectCaller x => x.Type,
-                ServerToolCaller x => x.Type,
-                ServerToolCaller20260120 x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                DirectCaller _ => ToolUseBlockParamCallerType.Direct,
+                ServerToolCaller _ => ToolUseBlockParamCallerType.CodeExecution20250825,
+                ServerToolCaller20260120 _ => ToolUseBlockParamCallerType.CodeExecution20260120,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ToolUseBlockParamCallerType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -530,5 +532,52 @@ sealed class ToolUseBlockParamCallerConverter : JsonConverter<ToolUseBlockParamC
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolUseBlockParamCallerTypeConverter))]
+public enum ToolUseBlockParamCallerType
+{
+    Direct,
+    CodeExecution20250825,
+    CodeExecution20260120,
+}
+
+sealed class ToolUseBlockParamCallerTypeConverter : JsonConverter<ToolUseBlockParamCallerType>
+{
+    public override ToolUseBlockParamCallerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => ToolUseBlockParamCallerType.Direct,
+            "code_execution_20250825" => ToolUseBlockParamCallerType.CodeExecution20250825,
+            "code_execution_20260120" => ToolUseBlockParamCallerType.CodeExecution20260120,
+            _ => (ToolUseBlockParamCallerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ToolUseBlockParamCallerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolUseBlockParamCallerType.Direct => "direct",
+                ToolUseBlockParamCallerType.CodeExecution20250825 => "code_execution_20250825",
+                ToolUseBlockParamCallerType.CodeExecution20260120 => "code_execution_20260120",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

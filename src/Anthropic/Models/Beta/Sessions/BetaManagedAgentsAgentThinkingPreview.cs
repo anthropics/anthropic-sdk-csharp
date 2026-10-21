@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -31,14 +30,12 @@ public sealed record class BetaManagedAgentsAgentThinkingPreview : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentThinkingPreviewType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentThinkingPreviewType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -47,10 +44,16 @@ public sealed record class BetaManagedAgentsAgentThinkingPreview : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent.thinking")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAgentThinkingPreview() { }
+    public BetaManagedAgentsAgentThinkingPreview()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.thinking");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -63,6 +66,8 @@ public sealed record class BetaManagedAgentsAgentThinkingPreview : JsonModel
     public BetaManagedAgentsAgentThinkingPreview(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.thinking");
     }
 
 #pragma warning disable CS8618
@@ -80,6 +85,13 @@ public sealed record class BetaManagedAgentsAgentThinkingPreview : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsAgentThinkingPreview(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
 class BetaManagedAgentsAgentThinkingPreviewFromRaw
@@ -89,46 +101,4 @@ class BetaManagedAgentsAgentThinkingPreviewFromRaw
     public BetaManagedAgentsAgentThinkingPreview FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentThinkingPreview.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentThinkingPreviewTypeConverter))]
-public enum BetaManagedAgentsAgentThinkingPreviewType
-{
-    AgentThinking,
-}
-
-sealed class BetaManagedAgentsAgentThinkingPreviewTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentThinkingPreviewType>
-{
-    public override BetaManagedAgentsAgentThinkingPreviewType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent.thinking" => BetaManagedAgentsAgentThinkingPreviewType.AgentThinking,
-            _ => (BetaManagedAgentsAgentThinkingPreviewType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentThinkingPreviewType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentThinkingPreviewType.AgentThinking => "agent.thinking",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -1,10 +1,10 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -30,6 +30,24 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
         }
     }
 
+    public JsonElement? Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                string _ => null,
+                BetaManagedAgentsAgentParams x => x.Type,
+                Agents::BetaManagedAgentsMultiagentSelfParams x => x.Type,
+                BetaManagedAgentsAdvisorParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public BetaManagedAgentsMultiagentRosterEntryParams(string value, JsonElement? element = null)
     {
         this.Value = value;
@@ -46,7 +64,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     }
 
     public BetaManagedAgentsMultiagentRosterEntryParams(
-        BetaManagedAgentsMultiagentSelfParams value,
+        Agents::BetaManagedAgentsMultiagentSelfParams value,
         JsonElement? element = null
     )
     {
@@ -112,22 +130,24 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMultiagentSelfParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMultiagentSelfParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickSelf(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMultiagentSelfParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMultiagentSelfParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
-    public bool TryPickSelf([NotNullWhen(true)] out BetaManagedAgentsMultiagentSelfParams? value)
+    public bool TryPickSelf(
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMultiagentSelfParams? value
+    )
     {
-        value = this.Value as BetaManagedAgentsMultiagentSelfParams;
+        value = this.Value as Agents::BetaManagedAgentsMultiagentSelfParams;
         return value != null;
     }
 
@@ -168,17 +188,17 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     /// instance.Switch(
     ///     (string value) =&gt; {...},
     ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
     ///     (BetaManagedAgentsAdvisorParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<BetaManagedAgentsAgentParams> agent,
-        System::Action<BetaManagedAgentsMultiagentSelfParams> self,
-        System::Action<BetaManagedAgentsAdvisorParams> advisor
+        Action<string> @string,
+        Action<BetaManagedAgentsAgentParams> agent,
+        Action<Agents::BetaManagedAgentsMultiagentSelfParams> self,
+        Action<BetaManagedAgentsAdvisorParams> advisor
     )
     {
         switch (this.Value)
@@ -189,7 +209,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
             case BetaManagedAgentsAgentParams value:
                 agent(value);
                 break;
-            case BetaManagedAgentsMultiagentSelfParams value:
+            case Agents::BetaManagedAgentsMultiagentSelfParams value:
                 self(value);
                 break;
             case BetaManagedAgentsAdvisorParams value:
@@ -219,24 +239,24 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     /// var result = instance.Match(
     ///     (string value) =&gt; {...},
     ///     (BetaManagedAgentsAgentParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMultiagentSelfParams value) =&gt; {...},
     ///     (BetaManagedAgentsAdvisorParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<BetaManagedAgentsAgentParams, T> agent,
-        System::Func<BetaManagedAgentsMultiagentSelfParams, T> self,
-        System::Func<BetaManagedAgentsAdvisorParams, T> advisor
+        Func<string, T> @string,
+        Func<BetaManagedAgentsAgentParams, T> agent,
+        Func<Agents::BetaManagedAgentsMultiagentSelfParams, T> self,
+        Func<BetaManagedAgentsAdvisorParams, T> advisor
     )
     {
         return this.Value switch
         {
             string value => @string(value),
             BetaManagedAgentsAgentParams value => agent(value),
-            BetaManagedAgentsMultiagentSelfParams value => self(value),
+            Agents::BetaManagedAgentsMultiagentSelfParams value => self(value),
             BetaManagedAgentsAdvisorParams value => advisor(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsMultiagentRosterEntryParams"
@@ -252,7 +272,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsMultiagentRosterEntryParams(
-        BetaManagedAgentsMultiagentSelfParams value
+        Agents::BetaManagedAgentsMultiagentSelfParams value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsMultiagentRosterEntryParams(
@@ -307,7 +327,7 @@ public record class BetaManagedAgentsMultiagentRosterEntryParams : ModelBase
         {
             string _ => 0,
             BetaManagedAgentsAgentParams _ => 1,
-            BetaManagedAgentsMultiagentSelfParams _ => 2,
+            Agents::BetaManagedAgentsMultiagentSelfParams _ => 2,
             BetaManagedAgentsAdvisorParams _ => 3,
             _ => -1,
         };
@@ -319,7 +339,7 @@ sealed class BetaManagedAgentsMultiagentRosterEntryParamsConverter
 {
     public override BetaManagedAgentsMultiagentRosterEntryParams? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -336,24 +356,25 @@ sealed class BetaManagedAgentsMultiagentRosterEntryParamsConverter
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsMultiagentSelfParams>(
-                element,
-                options
-            );
+            var deserialized =
+                JsonSerializer.Deserialize<Agents::BetaManagedAgentsMultiagentSelfParams>(
+                    element,
+                    options
+                );
             if (deserialized != null)
             {
                 deserialized.Validate();
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -370,7 +391,7 @@ sealed class BetaManagedAgentsMultiagentRosterEntryParamsConverter
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -383,7 +404,7 @@ sealed class BetaManagedAgentsMultiagentRosterEntryParamsConverter
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -77,12 +77,12 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
     /// <summary>
     /// Timestamp when the outcome was accepted.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -101,14 +101,12 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
         init { this._rawData.Set("rubric", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -122,10 +120,21 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
         _ = this.OutcomeID;
         _ = this.ProcessedAt;
         this.Rubric.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("user.define_outcome")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUserDefineOutcomeEvent() { }
+    public BetaManagedAgentsUserDefineOutcomeEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.define_outcome");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -138,6 +147,8 @@ public sealed record class BetaManagedAgentsUserDefineOutcomeEvent : JsonModel
     public BetaManagedAgentsUserDefineOutcomeEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.define_outcome");
     }
 
 #pragma warning disable CS8618
@@ -185,6 +196,22 @@ public record class Rubric : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, RubricType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsFileRubric _ => RubricType.File,
+                BetaManagedAgentsTextRubric _ => RubricType.Text,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, RubricType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -272,8 +299,8 @@ public record class Rubric : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsFileRubric> betaManagedAgentsFile,
-        System::Action<BetaManagedAgentsTextRubric> betaManagedAgentsText
+        Action<BetaManagedAgentsFileRubric> betaManagedAgentsFile,
+        Action<BetaManagedAgentsTextRubric> betaManagedAgentsText
     )
     {
         switch (this.Value)
@@ -311,8 +338,8 @@ public record class Rubric : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsFileRubric, T> betaManagedAgentsFile,
-        System::Func<BetaManagedAgentsTextRubric, T> betaManagedAgentsText
+        Func<BetaManagedAgentsFileRubric, T> betaManagedAgentsFile,
+        Func<BetaManagedAgentsTextRubric, T> betaManagedAgentsText
     )
     {
         return this.Value switch
@@ -382,7 +409,7 @@ sealed class RubricConverter : JsonConverter<Rubric>
 {
     public override Rubric? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -452,31 +479,32 @@ sealed class RubricConverter : JsonConverter<Rubric>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsUserDefineOutcomeEventTypeConverter))]
-public enum BetaManagedAgentsUserDefineOutcomeEventType
+[JsonConverter(typeof(RubricTypeConverter))]
+public enum RubricType
 {
-    UserDefineOutcome,
+    File,
+    Text,
 }
 
-sealed class BetaManagedAgentsUserDefineOutcomeEventTypeConverter
-    : JsonConverter<BetaManagedAgentsUserDefineOutcomeEventType>
+sealed class RubricTypeConverter : JsonConverter<RubricType>
 {
-    public override BetaManagedAgentsUserDefineOutcomeEventType Read(
+    public override RubricType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user.define_outcome" => BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
-            _ => (BetaManagedAgentsUserDefineOutcomeEventType)(-1),
+            "file" => RubricType.File,
+            "text" => RubricType.Text,
+            _ => (RubricType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsUserDefineOutcomeEventType value,
+        RubricType value,
         JsonSerializerOptions options
     )
     {
@@ -484,8 +512,8 @@ sealed class BetaManagedAgentsUserDefineOutcomeEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome =>
-                    "user.define_outcome",
+                RubricType.File => "file",
+                RubricType.Text => "text",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

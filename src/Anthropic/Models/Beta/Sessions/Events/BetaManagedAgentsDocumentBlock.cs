@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -34,14 +34,12 @@ public sealed record class BetaManagedAgentsDocumentBlock : JsonModel
         init { this._rawData.Set("source", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDocumentBlockType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDocumentBlockType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -76,12 +74,18 @@ public sealed record class BetaManagedAgentsDocumentBlock : JsonModel
     public override void Validate()
     {
         this.Source.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("document")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Context;
         _ = this.Title;
     }
 
-    public BetaManagedAgentsDocumentBlock() { }
+    public BetaManagedAgentsDocumentBlock()
+    {
+        this.Type = JsonSerializer.SerializeToElement("document");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -94,6 +98,8 @@ public sealed record class BetaManagedAgentsDocumentBlock : JsonModel
     public BetaManagedAgentsDocumentBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("document");
     }
 
 #pragma warning disable CS8618
@@ -110,6 +116,13 @@ public sealed record class BetaManagedAgentsDocumentBlock : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDocumentBlock(Source source)
+        : this()
+    {
+        this.Source = source;
     }
 }
 
@@ -153,6 +166,24 @@ public record class Source : ModelBase
                 BetaManagedAgentsUrlDocumentSource _ => null,
                 BetaManagedAgentsFileDocumentSource _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "data"),
+            };
+        }
+    }
+
+    public ApiEnum<string, SourceType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBase64DocumentSource _ => SourceType.Base64,
+                BetaManagedAgentsPlainTextDocumentSource _ => SourceType.Text,
+                BetaManagedAgentsUrlDocumentSource _ => SourceType.Url,
+                BetaManagedAgentsFileDocumentSource _ => SourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, SourceType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -301,10 +332,10 @@ public record class Source : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsBase64DocumentSource> betaManagedAgentsBase64Document,
-        System::Action<BetaManagedAgentsPlainTextDocumentSource> betaManagedAgentsPlainTextDocument,
-        System::Action<BetaManagedAgentsUrlDocumentSource> betaManagedAgentsUrlDocument,
-        System::Action<BetaManagedAgentsFileDocumentSource> betaManagedAgentsFileDocument
+        Action<BetaManagedAgentsBase64DocumentSource> betaManagedAgentsBase64Document,
+        Action<BetaManagedAgentsPlainTextDocumentSource> betaManagedAgentsPlainTextDocument,
+        Action<BetaManagedAgentsUrlDocumentSource> betaManagedAgentsUrlDocument,
+        Action<BetaManagedAgentsFileDocumentSource> betaManagedAgentsFileDocument
     )
     {
         switch (this.Value)
@@ -350,13 +381,10 @@ public record class Source : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsBase64DocumentSource, T> betaManagedAgentsBase64Document,
-        System::Func<
-            BetaManagedAgentsPlainTextDocumentSource,
-            T
-        > betaManagedAgentsPlainTextDocument,
-        System::Func<BetaManagedAgentsUrlDocumentSource, T> betaManagedAgentsUrlDocument,
-        System::Func<BetaManagedAgentsFileDocumentSource, T> betaManagedAgentsFileDocument
+        Func<BetaManagedAgentsBase64DocumentSource, T> betaManagedAgentsBase64Document,
+        Func<BetaManagedAgentsPlainTextDocumentSource, T> betaManagedAgentsPlainTextDocument,
+        Func<BetaManagedAgentsUrlDocumentSource, T> betaManagedAgentsUrlDocument,
+        Func<BetaManagedAgentsFileDocumentSource, T> betaManagedAgentsFileDocument
     )
     {
         return this.Value switch
@@ -440,7 +468,7 @@ sealed class SourceConverter : JsonConverter<Source>
 {
     public override Source? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -554,31 +582,36 @@ sealed class SourceConverter : JsonConverter<Source>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsDocumentBlockTypeConverter))]
-public enum BetaManagedAgentsDocumentBlockType
+[JsonConverter(typeof(SourceTypeConverter))]
+public enum SourceType
 {
-    Document,
+    Base64,
+    Text,
+    Url,
+    File,
 }
 
-sealed class BetaManagedAgentsDocumentBlockTypeConverter
-    : JsonConverter<BetaManagedAgentsDocumentBlockType>
+sealed class SourceTypeConverter : JsonConverter<SourceType>
 {
-    public override BetaManagedAgentsDocumentBlockType Read(
+    public override SourceType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "document" => BetaManagedAgentsDocumentBlockType.Document,
-            _ => (BetaManagedAgentsDocumentBlockType)(-1),
+            "base64" => SourceType.Base64,
+            "text" => SourceType.Text,
+            "url" => SourceType.Url,
+            "file" => SourceType.File,
+            _ => (SourceType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsDocumentBlockType value,
+        SourceType value,
         JsonSerializerOptions options
     )
     {
@@ -586,7 +619,10 @@ sealed class BetaManagedAgentsDocumentBlockTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsDocumentBlockType.Document => "document",
+                SourceType.Base64 => "base64",
+                SourceType.Text => "text",
+                SourceType.Url => "url",
+                SourceType.File => "file",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

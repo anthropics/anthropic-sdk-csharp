@@ -30,16 +30,21 @@ public record class BetaTelemetryDestinationWorkspacesParams : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTelemetryDestinationWorkspacesAllParams x => x.Type,
-                BetaTelemetryDestinationWorkspacesIncludeParams x => x.Type,
-                BetaTelemetryDestinationWorkspacesExcludeParams x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTelemetryDestinationWorkspacesAllParams _ =>
+                    BetaTelemetryDestinationWorkspacesParamsType.All,
+                BetaTelemetryDestinationWorkspacesIncludeParams _ =>
+                    BetaTelemetryDestinationWorkspacesParamsType.Include,
+                BetaTelemetryDestinationWorkspacesExcludeParams _ =>
+                    BetaTelemetryDestinationWorkspacesParamsType.Exclude,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -410,5 +415,53 @@ sealed class BetaTelemetryDestinationWorkspacesParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTelemetryDestinationWorkspacesParamsTypeConverter))]
+public enum BetaTelemetryDestinationWorkspacesParamsType
+{
+    All,
+    Include,
+    Exclude,
+}
+
+sealed class BetaTelemetryDestinationWorkspacesParamsTypeConverter
+    : JsonConverter<BetaTelemetryDestinationWorkspacesParamsType>
+{
+    public override BetaTelemetryDestinationWorkspacesParamsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => BetaTelemetryDestinationWorkspacesParamsType.All,
+            "include" => BetaTelemetryDestinationWorkspacesParamsType.Include,
+            "exclude" => BetaTelemetryDestinationWorkspacesParamsType.Exclude,
+            _ => (BetaTelemetryDestinationWorkspacesParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTelemetryDestinationWorkspacesParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTelemetryDestinationWorkspacesParamsType.All => "all",
+                BetaTelemetryDestinationWorkspacesParamsType.Include => "include",
+                BetaTelemetryDestinationWorkspacesParamsType.Exclude => "exclude",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

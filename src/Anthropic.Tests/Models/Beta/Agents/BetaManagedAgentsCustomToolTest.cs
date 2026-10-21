@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -23,7 +22,6 @@ public class BetaManagedAgentsCustomToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
 
         string expectedDescription = "description";
@@ -36,13 +34,12 @@ public class BetaManagedAgentsCustomToolTest : TestBase
             Required = ["string"],
         };
         string expectedName = "name";
-        ApiEnum<string, BetaManagedAgentsCustomToolType> expectedType =
-            BetaManagedAgentsCustomToolType.Custom;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("custom");
 
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedInputSchema, model.InputSchema);
         Assert.Equal(expectedName, model.Name);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -60,7 +57,6 @@ public class BetaManagedAgentsCustomToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -87,7 +83,6 @@ public class BetaManagedAgentsCustomToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -107,13 +102,12 @@ public class BetaManagedAgentsCustomToolTest : TestBase
             Required = ["string"],
         };
         string expectedName = "name";
-        ApiEnum<string, BetaManagedAgentsCustomToolType> expectedType =
-            BetaManagedAgentsCustomToolType.Custom;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("custom");
 
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedInputSchema, deserialized.InputSchema);
         Assert.Equal(expectedName, deserialized.Name);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -131,7 +125,6 @@ public class BetaManagedAgentsCustomToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
 
         model.Validate();
@@ -152,65 +145,10 @@ public class BetaManagedAgentsCustomToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = BetaManagedAgentsCustomToolType.Custom,
         };
 
         BetaManagedAgentsCustomTool copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsCustomToolTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsCustomToolType.Custom)]
-    public void Validation_Works(BetaManagedAgentsCustomToolType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCustomToolType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsCustomToolType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsCustomToolType.Custom)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsCustomToolType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsCustomToolType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCustomToolType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsCustomToolType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsCustomToolType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

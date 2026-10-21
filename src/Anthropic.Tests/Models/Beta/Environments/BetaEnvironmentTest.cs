@@ -31,7 +31,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -59,7 +59,7 @@ public class BetaEnvironmentTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
         string expectedCreatedAt = "2026-03-15T10:00:00Z";
@@ -111,7 +111,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -154,7 +154,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -189,7 +189,7 @@ public class BetaEnvironmentTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
         string expectedCreatedAt = "2026-03-15T10:00:00Z";
@@ -241,7 +241,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -278,7 +278,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -315,7 +315,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -351,7 +351,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -391,7 +391,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -433,7 +433,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -472,7 +472,7 @@ public class BetaEnvironmentTest : TestBase
                     Go = ["string"],
                     Npm = ["string"],
                     Pip = ["pandas", "numpy"],
-                    Type = BetaPackagesType.Packages,
+                    Type = Type.Packages,
                 },
             },
             CreatedAt = "2026-03-15T10:00:00Z",
@@ -510,7 +510,7 @@ public class BetaEnvironmentConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
         value.Validate();
@@ -542,7 +542,7 @@ public class BetaEnvironmentConfigTest : TestBase
                 Go = ["string"],
                 Npm = ["string"],
                 Pip = ["pandas", "numpy"],
-                Type = BetaPackagesType.Packages,
+                Type = Type.Packages,
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -568,6 +568,38 @@ public class BetaEnvironmentConfigTest : TestBase
     }
 
     [Fact]
+    public void BetaCloudTypeWorks()
+    {
+        BetaEnvironmentConfig value = new BetaCloudConfig()
+        {
+            Networking = new BetaLimitedNetwork()
+            {
+                AllowMcpServers = false,
+                AllowPackageManagers = true,
+                AllowedHosts = ["api.example.com"],
+            },
+            Packages = new()
+            {
+                Apt = ["string"],
+                Cargo = ["string"],
+                Gem = ["string"],
+                Go = ["string"],
+                Npm = ["string"],
+                Pip = ["pandas", "numpy"],
+                Type = Type.Packages,
+            },
+        };
+        Assert.Equal(BetaEnvironmentConfigType.Cloud, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSelfHostedTypeWorks()
+    {
+        BetaEnvironmentConfig value = new BetaSelfHostedConfig();
+        Assert.Equal(BetaEnvironmentConfigType.SelfHosted, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaEnvironmentConfig value = new(
@@ -581,13 +613,71 @@ public class BetaEnvironmentConfigTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("cloud");
+        ApiEnum<string, BetaEnvironmentConfigType> expectedType = BetaEnvironmentConfigType.Cloud;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaEnvironmentConfig emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaEnvironmentConfigTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaEnvironmentConfigType.Cloud)]
+    [InlineData(BetaEnvironmentConfigType.SelfHosted)]
+    public void Validation_Works(BetaEnvironmentConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaEnvironmentConfigType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaEnvironmentConfigType.Cloud)]
+    [InlineData(BetaEnvironmentConfigType.SelfHosted)]
+    public void SerializationRoundtrip_Works(BetaEnvironmentConfigType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaEnvironmentConfigType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentConfigType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentConfigType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

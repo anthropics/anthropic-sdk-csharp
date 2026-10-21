@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -44,6 +44,33 @@ public record class BetaManagedAgentsError : ModelBase
                 BetaManagedAgentsMemoryPathConflictError x => x.Message,
                 BetaManagedAgentsConflictError x => x.Message,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "message"),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsErrorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaInvalidRequestError _ => BetaManagedAgentsErrorType.InvalidRequestError,
+                BetaAuthenticationError _ => BetaManagedAgentsErrorType.AuthenticationError,
+                BetaBillingError _ => BetaManagedAgentsErrorType.BillingError,
+                BetaPermissionError _ => BetaManagedAgentsErrorType.PermissionError,
+                BetaNotFoundError _ => BetaManagedAgentsErrorType.NotFoundError,
+                BetaRateLimitError _ => BetaManagedAgentsErrorType.RateLimitError,
+                BetaGatewayTimeoutError _ => BetaManagedAgentsErrorType.TimeoutError,
+                BetaApiError _ => BetaManagedAgentsErrorType.ApiError,
+                BetaOverloadedError _ => BetaManagedAgentsErrorType.OverloadedError,
+                BetaManagedAgentsMemoryPreconditionFailedError _ =>
+                    BetaManagedAgentsErrorType.MemoryPreconditionFailedError,
+                BetaManagedAgentsMemoryPathConflictError _ =>
+                    BetaManagedAgentsErrorType.MemoryPathConflictError,
+                BetaManagedAgentsConflictError _ => BetaManagedAgentsErrorType.ConflictError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsErrorType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -418,18 +445,18 @@ public record class BetaManagedAgentsError : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaInvalidRequestError> invalidRequest,
-        System::Action<BetaAuthenticationError> authentication,
-        System::Action<BetaBillingError> billing,
-        System::Action<BetaPermissionError> permission,
-        System::Action<BetaNotFoundError> notFound,
-        System::Action<BetaRateLimitError> rateLimit,
-        System::Action<BetaGatewayTimeoutError> gatewayTimeout,
-        System::Action<BetaApiError> api,
-        System::Action<BetaOverloadedError> overloaded,
-        System::Action<BetaManagedAgentsMemoryPreconditionFailedError> memoryPreconditionFailed,
-        System::Action<BetaManagedAgentsMemoryPathConflictError> memoryPathConflict,
-        System::Action<BetaManagedAgentsConflictError> conflict
+        Action<BetaInvalidRequestError> invalidRequest,
+        Action<BetaAuthenticationError> authentication,
+        Action<BetaBillingError> billing,
+        Action<BetaPermissionError> permission,
+        Action<BetaNotFoundError> notFound,
+        Action<BetaRateLimitError> rateLimit,
+        Action<BetaGatewayTimeoutError> gatewayTimeout,
+        Action<BetaApiError> api,
+        Action<BetaOverloadedError> overloaded,
+        Action<BetaManagedAgentsMemoryPreconditionFailedError> memoryPreconditionFailed,
+        Action<BetaManagedAgentsMemoryPathConflictError> memoryPathConflict,
+        Action<BetaManagedAgentsConflictError> conflict
     )
     {
         switch (this.Value)
@@ -509,18 +536,18 @@ public record class BetaManagedAgentsError : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaInvalidRequestError, T> invalidRequest,
-        System::Func<BetaAuthenticationError, T> authentication,
-        System::Func<BetaBillingError, T> billing,
-        System::Func<BetaPermissionError, T> permission,
-        System::Func<BetaNotFoundError, T> notFound,
-        System::Func<BetaRateLimitError, T> rateLimit,
-        System::Func<BetaGatewayTimeoutError, T> gatewayTimeout,
-        System::Func<BetaApiError, T> api,
-        System::Func<BetaOverloadedError, T> overloaded,
-        System::Func<BetaManagedAgentsMemoryPreconditionFailedError, T> memoryPreconditionFailed,
-        System::Func<BetaManagedAgentsMemoryPathConflictError, T> memoryPathConflict,
-        System::Func<BetaManagedAgentsConflictError, T> conflict
+        Func<BetaInvalidRequestError, T> invalidRequest,
+        Func<BetaAuthenticationError, T> authentication,
+        Func<BetaBillingError, T> billing,
+        Func<BetaPermissionError, T> permission,
+        Func<BetaNotFoundError, T> notFound,
+        Func<BetaRateLimitError, T> rateLimit,
+        Func<BetaGatewayTimeoutError, T> gatewayTimeout,
+        Func<BetaApiError, T> api,
+        Func<BetaOverloadedError, T> overloaded,
+        Func<BetaManagedAgentsMemoryPreconditionFailedError, T> memoryPreconditionFailed,
+        Func<BetaManagedAgentsMemoryPathConflictError, T> memoryPathConflict,
+        Func<BetaManagedAgentsConflictError, T> conflict
     )
     {
         return this.Value switch
@@ -650,7 +677,7 @@ sealed class BetaManagedAgentsErrorConverter : JsonConverter<BetaManagedAgentsEr
 {
     public override BetaManagedAgentsError? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -920,5 +947,81 @@ sealed class BetaManagedAgentsErrorConverter : JsonConverter<BetaManagedAgentsEr
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsErrorTypeConverter))]
+public enum BetaManagedAgentsErrorType
+{
+    InvalidRequestError,
+    AuthenticationError,
+    BillingError,
+    PermissionError,
+    NotFoundError,
+    RateLimitError,
+    TimeoutError,
+    ApiError,
+    OverloadedError,
+    MemoryPreconditionFailedError,
+    MemoryPathConflictError,
+    ConflictError,
+}
+
+sealed class BetaManagedAgentsErrorTypeConverter : JsonConverter<BetaManagedAgentsErrorType>
+{
+    public override BetaManagedAgentsErrorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "invalid_request_error" => BetaManagedAgentsErrorType.InvalidRequestError,
+            "authentication_error" => BetaManagedAgentsErrorType.AuthenticationError,
+            "billing_error" => BetaManagedAgentsErrorType.BillingError,
+            "permission_error" => BetaManagedAgentsErrorType.PermissionError,
+            "not_found_error" => BetaManagedAgentsErrorType.NotFoundError,
+            "rate_limit_error" => BetaManagedAgentsErrorType.RateLimitError,
+            "timeout_error" => BetaManagedAgentsErrorType.TimeoutError,
+            "api_error" => BetaManagedAgentsErrorType.ApiError,
+            "overloaded_error" => BetaManagedAgentsErrorType.OverloadedError,
+            "memory_precondition_failed_error" =>
+                BetaManagedAgentsErrorType.MemoryPreconditionFailedError,
+            "memory_path_conflict_error" => BetaManagedAgentsErrorType.MemoryPathConflictError,
+            "conflict_error" => BetaManagedAgentsErrorType.ConflictError,
+            _ => (BetaManagedAgentsErrorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsErrorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsErrorType.InvalidRequestError => "invalid_request_error",
+                BetaManagedAgentsErrorType.AuthenticationError => "authentication_error",
+                BetaManagedAgentsErrorType.BillingError => "billing_error",
+                BetaManagedAgentsErrorType.PermissionError => "permission_error",
+                BetaManagedAgentsErrorType.NotFoundError => "not_found_error",
+                BetaManagedAgentsErrorType.RateLimitError => "rate_limit_error",
+                BetaManagedAgentsErrorType.TimeoutError => "timeout_error",
+                BetaManagedAgentsErrorType.ApiError => "api_error",
+                BetaManagedAgentsErrorType.OverloadedError => "overloaded_error",
+                BetaManagedAgentsErrorType.MemoryPreconditionFailedError =>
+                    "memory_precondition_failed_error",
+                BetaManagedAgentsErrorType.MemoryPathConflictError => "memory_path_conflict_error",
+                BetaManagedAgentsErrorType.ConflictError => "conflict_error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

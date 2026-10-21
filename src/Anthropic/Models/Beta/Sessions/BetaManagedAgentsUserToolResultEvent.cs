@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +8,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Events = Anthropic.Models.Beta.Sessions.Events;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -52,14 +52,12 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
         init { this._rawData.Set("tool_use_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserToolResultEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserToolResultEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -105,12 +103,12 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
     /// <summary>
     /// Timestamp when this result was processed.
     /// </summary>
-    public System::DateTimeOffset? ProcessedAt
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -134,7 +132,15 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
     {
         _ = this.ID;
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("user.tool_result")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         foreach (var item in this.Content ?? [])
         {
             item.Validate();
@@ -144,7 +150,10 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
         _ = this.SessionThreadID;
     }
 
-    public BetaManagedAgentsUserToolResultEvent() { }
+    public BetaManagedAgentsUserToolResultEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.tool_result");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -157,6 +166,8 @@ public sealed record class BetaManagedAgentsUserToolResultEvent : JsonModel
     public BetaManagedAgentsUserToolResultEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.tool_result");
     }
 
 #pragma warning disable CS8618
@@ -185,48 +196,6 @@ class BetaManagedAgentsUserToolResultEventFromRaw
     ) => BetaManagedAgentsUserToolResultEvent.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(BetaManagedAgentsUserToolResultEventTypeConverter))]
-public enum BetaManagedAgentsUserToolResultEventType
-{
-    UserToolResult,
-}
-
-sealed class BetaManagedAgentsUserToolResultEventTypeConverter
-    : JsonConverter<BetaManagedAgentsUserToolResultEventType>
-{
-    public override BetaManagedAgentsUserToolResultEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user.tool_result" => BetaManagedAgentsUserToolResultEventType.UserToolResult,
-            _ => (BetaManagedAgentsUserToolResultEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUserToolResultEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUserToolResultEventType.UserToolResult => "user.tool_result",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
 /// <summary>
 /// Content block in a tool result. Can be `text`, `image`, `document`, or `search_result`.
 /// </summary>
@@ -245,6 +214,24 @@ public record class Content : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, ContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Events::BetaManagedAgentsTextBlock _ => ContentType.Text,
+                Events::BetaManagedAgentsImageBlock _ => ContentType.Image,
+                Events::BetaManagedAgentsDocumentBlock _ => ContentType.Document,
+                Events::BetaManagedAgentsSearchResultBlock _ => ContentType.SearchResult,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ContentType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -407,10 +394,10 @@ public record class Content : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Events::BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<Events::BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<Events::BetaManagedAgentsSearchResultBlock> betaManagedAgentsSearchResultBlock
+        Action<Events::BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<Events::BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<Events::BetaManagedAgentsSearchResultBlock> betaManagedAgentsSearchResultBlock
     )
     {
         switch (this.Value)
@@ -458,13 +445,10 @@ public record class Content : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Events::BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<Events::BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<
-            Events::BetaManagedAgentsSearchResultBlock,
-            T
-        > betaManagedAgentsSearchResultBlock
+        Func<Events::BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<Events::BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<Events::BetaManagedAgentsSearchResultBlock, T> betaManagedAgentsSearchResultBlock
     )
     {
         return this.Value switch
@@ -549,7 +533,7 @@ sealed class ContentConverter : JsonConverter<Content>
 {
     public override Content? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -660,5 +644,55 @@ sealed class ContentConverter : JsonConverter<Content>
     public override void Write(Utf8JsonWriter writer, Content value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ContentTypeConverter))]
+public enum ContentType
+{
+    Text,
+    Image,
+    Document,
+    SearchResult,
+}
+
+sealed class ContentTypeConverter : JsonConverter<ContentType>
+{
+    public override ContentType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => ContentType.Text,
+            "image" => ContentType.Image,
+            "document" => ContentType.Document,
+            "search_result" => ContentType.SearchResult,
+            _ => (ContentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContentType.Text => "text",
+                ContentType.Image => "image",
+                ContentType.Document => "document",
+                ContentType.SearchResult => "search_result",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

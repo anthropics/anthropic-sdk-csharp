@@ -357,6 +357,38 @@ public class FederationIssuerJwksTest : TestBase
     }
 
     [Fact]
+    public void DiscoveryTypeWorks()
+    {
+        FederationIssuerJwks value = new JwksDiscovery()
+        {
+            CACertPem = "ca_cert_pem",
+            DiscoveryBase = "discovery_base",
+        };
+        Assert.Equal(FederationIssuerJwksType.Discovery, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExplicitUrlTypeWorks()
+    {
+        FederationIssuerJwks value = new JwksExplicitUrl() { Url = "x", CACertPem = "ca_cert_pem" };
+        Assert.Equal(FederationIssuerJwksType.ExplicitUrl, value.Type.Value());
+    }
+
+    [Fact]
+    public void InlineTypeWorks()
+    {
+        FederationIssuerJwks value = new JwksInline(
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ]
+        );
+        Assert.Equal(FederationIssuerJwksType.Inline, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         FederationIssuerJwks value = new(
@@ -371,10 +403,10 @@ public class FederationIssuerJwksTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("discovery");
+        ApiEnum<string, FederationIssuerJwksType> expectedType = FederationIssuerJwksType.Discovery;
         string expectedCACertPem = "ca_cert_pem";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCACertPem, value.CACertPem);
 
         FederationIssuerJwks emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -395,5 +427,65 @@ public class FederationIssuerJwksTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CACertPem);
+    }
+}
+
+public class FederationIssuerJwksTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(FederationIssuerJwksType.Discovery)]
+    [InlineData(FederationIssuerJwksType.ExplicitUrl)]
+    [InlineData(FederationIssuerJwksType.Inline)]
+    public void Validation_Works(FederationIssuerJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, FederationIssuerJwksType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, FederationIssuerJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(FederationIssuerJwksType.Discovery)]
+    [InlineData(FederationIssuerJwksType.ExplicitUrl)]
+    [InlineData(FederationIssuerJwksType.Inline)]
+    public void SerializationRoundtrip_Works(FederationIssuerJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, FederationIssuerJwksType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FederationIssuerJwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, FederationIssuerJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FederationIssuerJwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

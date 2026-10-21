@@ -22,23 +22,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -53,22 +44,13 @@ public class MemoryVersionListPageResponseTest : TestBase
                 MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                 MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                 Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                 Content = null,
                 ContentSha256 = "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                 ContentSizeBytes = 28,
-                CreatedBy = new BetaManagedAgentsSessionActor()
-                {
-                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                    Type = BetaManagedAgentsSessionActorType.SessionActor,
-                },
+                CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                 Path = "/preferences/formatting.md",
                 RedactedAt = null,
-                RedactedBy = new BetaManagedAgentsSessionActor()
-                {
-                    SessionID = "x",
-                    Type = BetaManagedAgentsSessionActorType.SessionActor,
-                },
+                RedactedBy = new BetaManagedAgentsSessionActor("x"),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -96,23 +78,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -141,23 +114,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -179,22 +143,13 @@ public class MemoryVersionListPageResponseTest : TestBase
                 MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                 MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                 Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                 Content = null,
                 ContentSha256 = "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                 ContentSizeBytes = 28,
-                CreatedBy = new BetaManagedAgentsSessionActor()
-                {
-                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                    Type = BetaManagedAgentsSessionActorType.SessionActor,
-                },
+                CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                 Path = "/preferences/formatting.md",
                 RedactedAt = null,
-                RedactedBy = new BetaManagedAgentsSessionActor()
-                {
-                    SessionID = "x",
-                    Type = BetaManagedAgentsSessionActorType.SessionActor,
-                },
+                RedactedBy = new BetaManagedAgentsSessionActor("x"),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -222,23 +177,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -299,23 +245,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -357,23 +294,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
         };
@@ -396,23 +324,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
         };
@@ -434,23 +353,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
 
@@ -475,23 +385,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
 
@@ -515,23 +416,14 @@ public class MemoryVersionListPageResponseTest : TestBase
                     MemoryID = "mem_011CZkZ9X2dpNyB6YbtxvB6e",
                     MemoryStoreID = "memstore_01Wf3kQ8tZxB2mVr7HcJ4aNd",
                     Operation = BetaManagedAgentsMemoryVersionOperation.Created,
-                    Type = BetaManagedAgentsMemoryVersionType.MemoryVersion,
                     Content = null,
                     ContentSha256 =
                         "ba7936d94c84d948a2232088f78228f175df6a8353b2d5bc9228eee5794a0024",
                     ContentSizeBytes = 28,
-                    CreatedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    CreatedBy = new BetaManagedAgentsSessionActor("sesn_011CZkZAtmR3yMPDzynEDxu7"),
                     Path = "/preferences/formatting.md",
                     RedactedAt = null,
-                    RedactedBy = new BetaManagedAgentsSessionActor()
-                    {
-                        SessionID = "x",
-                        Type = BetaManagedAgentsSessionActorType.SessionActor,
-                    },
+                    RedactedBy = new BetaManagedAgentsSessionActor("x"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

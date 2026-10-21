@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Resources;
 
@@ -27,12 +27,12 @@ public sealed record class BetaManagedAgentsFileResource : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -57,14 +57,12 @@ public sealed record class BetaManagedAgentsFileResource : JsonModel
         init { this._rawData.Set("mount_path", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsFileResourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsFileResourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -72,12 +70,12 @@ public sealed record class BetaManagedAgentsFileResource : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -89,11 +87,17 @@ public sealed record class BetaManagedAgentsFileResource : JsonModel
         _ = this.CreatedAt;
         _ = this.FileID;
         _ = this.MountPath;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("file")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
     }
 
-    public BetaManagedAgentsFileResource() { }
+    public BetaManagedAgentsFileResource()
+    {
+        this.Type = JsonSerializer.SerializeToElement("file");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -106,6 +110,8 @@ public sealed record class BetaManagedAgentsFileResource : JsonModel
     public BetaManagedAgentsFileResource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("file");
     }
 
 #pragma warning disable CS8618
@@ -131,46 +137,4 @@ class BetaManagedAgentsFileResourceFromRaw : IFromRawJson<BetaManagedAgentsFileR
     public BetaManagedAgentsFileResource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsFileResource.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsFileResourceTypeConverter))]
-public enum BetaManagedAgentsFileResourceType
-{
-    File,
-}
-
-sealed class BetaManagedAgentsFileResourceTypeConverter
-    : JsonConverter<BetaManagedAgentsFileResourceType>
-{
-    public override BetaManagedAgentsFileResourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "file" => BetaManagedAgentsFileResourceType.File,
-            _ => (BetaManagedAgentsFileResourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsFileResourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsFileResourceType.File => "file",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

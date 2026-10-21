@@ -1,8 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
-using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions;
 
@@ -13,37 +11,21 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaEvent
         {
-            Delta = new()
-            {
-                Content = new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-                Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-                Index = 0,
-            },
+            Delta = new() { Content = new("Where is my order #1234?"), Index = 0 },
             EventID = "event_id",
-            Type = BetaManagedAgentsDeltaEventType.EventDelta,
         };
 
         BetaManagedAgentsDeltaContent expectedDelta = new()
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
         string expectedEventID = "event_id";
-        ApiEnum<string, BetaManagedAgentsDeltaEventType> expectedType =
-            BetaManagedAgentsDeltaEventType.EventDelta;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("event_delta");
 
         Assert.Equal(expectedDelta, model.Delta);
         Assert.Equal(expectedEventID, model.EventID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -51,18 +33,8 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaEvent
         {
-            Delta = new()
-            {
-                Content = new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-                Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-                Index = 0,
-            },
+            Delta = new() { Content = new("Where is my order #1234?"), Index = 0 },
             EventID = "event_id",
-            Type = BetaManagedAgentsDeltaEventType.EventDelta,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -79,18 +51,8 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaEvent
         {
-            Delta = new()
-            {
-                Content = new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-                Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-                Index = 0,
-            },
+            Delta = new() { Content = new("Where is my order #1234?"), Index = 0 },
             EventID = "event_id",
-            Type = BetaManagedAgentsDeltaEventType.EventDelta,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -102,21 +64,15 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
 
         BetaManagedAgentsDeltaContent expectedDelta = new()
         {
-            Content = new()
-            {
-                Text = "Where is my order #1234?",
-                Type = BetaManagedAgentsTextBlockType.Text,
-            },
-            Type = BetaManagedAgentsDeltaContentType.ContentDelta,
+            Content = new("Where is my order #1234?"),
             Index = 0,
         };
         string expectedEventID = "event_id";
-        ApiEnum<string, BetaManagedAgentsDeltaEventType> expectedType =
-            BetaManagedAgentsDeltaEventType.EventDelta;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("event_delta");
 
         Assert.Equal(expectedDelta, deserialized.Delta);
         Assert.Equal(expectedEventID, deserialized.EventID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -124,18 +80,8 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaEvent
         {
-            Delta = new()
-            {
-                Content = new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-                Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-                Index = 0,
-            },
+            Delta = new() { Content = new("Where is my order #1234?"), Index = 0 },
             EventID = "event_id",
-            Type = BetaManagedAgentsDeltaEventType.EventDelta,
         };
 
         model.Validate();
@@ -146,76 +92,12 @@ public class BetaManagedAgentsDeltaEventTest : TestBase
     {
         var model = new BetaManagedAgentsDeltaEvent
         {
-            Delta = new()
-            {
-                Content = new()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-                Type = BetaManagedAgentsDeltaContentType.ContentDelta,
-                Index = 0,
-            },
+            Delta = new() { Content = new("Where is my order #1234?"), Index = 0 },
             EventID = "event_id",
-            Type = BetaManagedAgentsDeltaEventType.EventDelta,
         };
 
         BetaManagedAgentsDeltaEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsDeltaEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsDeltaEventType.EventDelta)]
-    public void Validation_Works(BetaManagedAgentsDeltaEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDeltaEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDeltaEventType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsDeltaEventType.EventDelta)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsDeltaEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsDeltaEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDeltaEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDeltaEventType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsDeltaEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

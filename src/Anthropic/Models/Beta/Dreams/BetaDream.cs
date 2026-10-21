@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -43,12 +43,12 @@ public sealed record class BetaDream : JsonModel
     /// <summary>
     /// When the dream was archived, in RFC 3339, or `null` if it hasn't been archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -58,12 +58,12 @@ public sealed record class BetaDream : JsonModel
     ///
     /// <para>Lists of dreams are sorted by this time, newest first.</para>
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -72,12 +72,12 @@ public sealed record class BetaDream : JsonModel
     /// When the dream reached `completed`, `failed`, or `canceled`, in RFC 3339,
     /// or `null` if it is still `pending` or `running`.
     /// </summary>
-    public required System::DateTimeOffset? EndedAt
+    public required DateTimeOffset? EndedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("ended_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("ended_at");
         }
         init { this._rawData.Set("ended_at", value); }
     }
@@ -223,14 +223,12 @@ public sealed record class BetaDream : JsonModel
         init { this._rawData.Set("status", value); }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Dreams.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Dreams.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -270,11 +268,17 @@ public sealed record class BetaDream : JsonModel
         }
         _ = this.SessionID;
         this.Status.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("dream")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Usage.Validate();
     }
 
-    public BetaDream() { }
+    public BetaDream()
+    {
+        this.Type = JsonSerializer.SerializeToElement("dream");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -285,6 +289,8 @@ public sealed record class BetaDream : JsonModel
     public BetaDream(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("dream");
     }
 
 #pragma warning disable CS8618
@@ -307,45 +313,4 @@ class BetaDreamFromRaw : IFromRawJson<BetaDream>
     /// <inheritdoc/>
     public BetaDream FromRawUnchecked(IReadOnlyDictionary<string, JsonElement> rawData) =>
         BetaDream.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
-{
-    Dream,
-}
-
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Dreams.Type>
-{
-    public override global::Anthropic.Models.Beta.Dreams.Type Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "dream" => global::Anthropic.Models.Beta.Dreams.Type.Dream,
-            _ => (global::Anthropic.Models.Beta.Dreams.Type)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Dreams.Type value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                global::Anthropic.Models.Beta.Dreams.Type.Dream => "dream",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

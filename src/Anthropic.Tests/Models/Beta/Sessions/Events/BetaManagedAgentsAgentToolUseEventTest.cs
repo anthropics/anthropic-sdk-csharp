@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -21,7 +20,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -34,8 +32,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         };
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentToolUseEventType> expectedType =
-            BetaManagedAgentsAgentToolUseEventType.AgentToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.tool_use");
         ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission> expectedEvaluatedPermission =
             BetaManagedAgentsAgentEvaluatedPermission.Allow;
         BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
@@ -52,7 +49,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         }
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedEvaluatedPermission, model.EvaluatedPermission);
         Assert.Equal(expectedEvaluation, model.Evaluation);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
@@ -70,7 +67,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -97,7 +93,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -117,8 +112,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         };
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentToolUseEventType> expectedType =
-            BetaManagedAgentsAgentToolUseEventType.AgentToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.tool_use");
         ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission> expectedEvaluatedPermission =
             BetaManagedAgentsAgentEvaluatedPermission.Allow;
         BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
@@ -135,7 +129,7 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         }
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedEvaluatedPermission, deserialized.EvaluatedPermission);
         Assert.Equal(expectedEvaluation, deserialized.Evaluation);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
@@ -153,7 +147,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -174,7 +167,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -196,7 +188,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -215,7 +206,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
@@ -241,7 +231,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -270,7 +259,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
@@ -293,7 +281,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
         };
@@ -314,7 +301,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
         };
@@ -334,7 +320,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
 
@@ -357,7 +342,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
 
@@ -379,7 +363,6 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentToolUseEventType.AgentToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -388,57 +371,5 @@ public class BetaManagedAgentsAgentToolUseEventTest : TestBase
         BetaManagedAgentsAgentToolUseEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsAgentToolUseEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentToolUseEventType.AgentToolUse)]
-    public void Validation_Works(BetaManagedAgentsAgentToolUseEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentToolUseEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolUseEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentToolUseEventType.AgentToolUse)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentToolUseEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentToolUseEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolUseEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolUseEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentToolUseEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

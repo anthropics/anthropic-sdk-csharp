@@ -209,16 +209,18 @@ public record class ProviderConfig : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ProviderConfigType> Type
     {
         get
         {
             return this.Value switch
             {
-                AwsExternalKeyConfig x => x.Type,
-                GcpExternalKeyConfig x => x.Type,
-                AzureExternalKeyConfigParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                AwsExternalKeyConfig _ => ProviderConfigType.Aws,
+                GcpExternalKeyConfig _ => ProviderConfigType.Gcp,
+                AzureExternalKeyConfigParam _ => ProviderConfigType.Azure,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ProviderConfigType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -563,6 +565,53 @@ sealed class ProviderConfigConverter : JsonConverter<ProviderConfig>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ProviderConfigTypeConverter))]
+public enum ProviderConfigType
+{
+    Aws,
+    Gcp,
+    Azure,
+}
+
+sealed class ProviderConfigTypeConverter : JsonConverter<ProviderConfigType>
+{
+    public override ProviderConfigType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "aws" => ProviderConfigType.Aws,
+            "gcp" => ProviderConfigType.Gcp,
+            "azure" => ProviderConfigType.Azure,
+            _ => (ProviderConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ProviderConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ProviderConfigType.Aws => "aws",
+                ProviderConfigType.Gcp => "gcp",
+                ProviderConfigType.Azure => "azure",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

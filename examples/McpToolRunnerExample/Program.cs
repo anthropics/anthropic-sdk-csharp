@@ -52,9 +52,8 @@ var runner = anthropic.Beta.Messages.ToolRunner(
         MaxTokens = 1024,
         Messages =
         [
-            new BetaMessageParam
+            new BetaUserMessageParam
             {
-                Role = Role.User,
                 Content =
                     "List the 5 most recently opened issues in the github/github-mcp-server "
                     + "repository. For each, include the issue number, title, and who opened it.",

@@ -89,9 +89,8 @@ var runner = client.Beta.Messages.ToolRunner(
         MaxTokens = 1024,
         Messages =
         [
-            new()
+            new BetaUserMessageParam
             {
-                Role = Role.User,
                 Content =
                     "What's the current weather in Paris, and how much is €100 in USD? "
                     + "Please use both tools to answer.",

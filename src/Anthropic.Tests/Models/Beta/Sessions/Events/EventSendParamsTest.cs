@@ -17,18 +17,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -37,18 +28,9 @@ public class EventSendParamsTest : TestBase
         string expectedSessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7";
         List<BetaManagedAgentsEventParams> expectedEvents =
         [
-            new BetaManagedAgentsUserMessageEventParams()
-            {
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-            },
+            new BetaManagedAgentsUserMessageEventParams(
+                [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+            ),
         ];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -79,18 +61,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
         };
 
@@ -108,18 +81,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
 
             // Null should be interpreted as omitted for these properties
@@ -141,18 +105,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -177,18 +132,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
         };
 
@@ -213,18 +159,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -250,18 +187,9 @@ public class EventSendParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             Events =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",

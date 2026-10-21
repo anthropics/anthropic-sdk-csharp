@@ -20,25 +20,12 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -46,7 +33,6 @@ public class SessionCreateParamsTest : TestBase
                 new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -58,25 +44,14 @@ public class SessionCreateParamsTest : TestBase
 
         Agent expectedAgent = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
         List<InitialEvent> expectedInitialEvents =
         [
-            new BetaManagedAgentsUserMessageEventParams()
-            {
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock()
-                    {
-                        Text = "Where is my order #1234?",
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                    },
-                ],
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-            },
+            new BetaManagedAgentsUserMessageEventParams(
+                [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+            ),
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         List<Resource> expectedResources =
@@ -84,7 +59,6 @@ public class SessionCreateParamsTest : TestBase
             new BetaManagedAgentsFileResourceParams()
             {
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = BetaManagedAgentsFileResourceParamsType.File,
                 MountPath = "/uploads/receipt.pdf",
             },
         ];
@@ -203,25 +177,12 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -229,7 +190,6 @@ public class SessionCreateParamsTest : TestBase
                 new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -272,25 +232,12 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -298,7 +245,6 @@ public class SessionCreateParamsTest : TestBase
                 new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -318,25 +264,12 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -344,7 +277,6 @@ public class SessionCreateParamsTest : TestBase
                 new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -406,25 +338,12 @@ public class SessionCreateParamsTest : TestBase
         {
             Agent = "agent_011CZkYpogX7uDKUyvBTophP",
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             InitialEvents =
             [
-                new BetaManagedAgentsUserMessageEventParams()
-                {
-                    Content =
-                    [
-                        new BetaManagedAgentsTextBlock()
-                        {
-                            Text = "Where is my order #1234?",
-                            Type = BetaManagedAgentsTextBlockType.Text,
-                        },
-                    ],
-                    Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                },
+                new BetaManagedAgentsUserMessageEventParams(
+                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                ),
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
@@ -432,7 +351,6 @@ public class SessionCreateParamsTest : TestBase
                 new BetaManagedAgentsFileResourceParams()
                 {
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                    Type = BetaManagedAgentsFileResourceParamsType.File,
                     MountPath = "/uploads/receipt.pdf",
                 },
             ],
@@ -460,12 +378,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentParamsValidationWorks()
     {
-        Agent value = new BetaManagedAgentsAgentParams()
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        Agent value = new BetaManagedAgentsAgentParams() { ID = "x", Version = 0 };
         value.Validate();
     }
 
@@ -475,13 +388,11 @@ public class AgentTest : TestBase
         Agent value = new BetaManagedAgentsAgentWithOverridesParams()
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -497,7 +408,6 @@ public class AgentTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -506,25 +416,19 @@ public class AgentTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -546,12 +450,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAgentParamsSerializationRoundtripWorks()
     {
-        Agent value = new BetaManagedAgentsAgentParams()
-        {
-            ID = "x",
-            Type = BetaManagedAgentsAgentParamsType.Agent,
-            Version = 0,
-        };
+        Agent value = new BetaManagedAgentsAgentParams() { ID = "x", Version = 0 };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
@@ -564,13 +463,11 @@ public class AgentTest : TestBase
         Agent value = new BetaManagedAgentsAgentWithOverridesParams()
         {
             ID = "x",
-            Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
             McpServers =
             [
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsUrlMcpServerParamsType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
@@ -586,7 +483,6 @@ public class AgentTest : TestBase
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
                 {
                     SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
                     Version = "1",
                 },
             ],
@@ -595,25 +491,19 @@ public class AgentTest : TestBase
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401Params()
                 {
-                    Type =
-                        Agents::BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
                     Configs =
                     [
                         new Agents::BetaManagedAgentsBashToolConfigParams()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
-                            Type = Agents::BetaManagedAgentsBashToolConfigParamsType.Bash,
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                            Type = Agents::Type.Bash,
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 },
             ],
@@ -633,6 +523,7 @@ public class AgentTest : TestBase
                 """
                 {
                   "id": "x",
+                  "type": "agent",
                   "version": 0
                 }
                 """
@@ -641,14 +532,18 @@ public class AgentTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedID = "x";
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent");
         int expectedVersion = 0;
 
         Assert.Equal(expectedID, value.ID);
+        Assert.NotNull(value.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, value.Type.Value));
         Assert.Equal(expectedVersion, value.Version);
 
         Agent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Null(emptyValue.ID);
+        Assert.Null(emptyValue.Type);
         Assert.Null(emptyValue.Version);
 
         Agent mismatchedValue = new(
@@ -676,18 +571,9 @@ public class InitialEventTest : TestBase
     [Fact]
     public void BetaManagedAgentsUserMessageEventParamsValidationWorks()
     {
-        InitialEvent value = new BetaManagedAgentsUserMessageEventParams()
-        {
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-        };
+        InitialEvent value = new BetaManagedAgentsUserMessageEventParams(
+            [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+        );
         value.Validate();
     }
 
@@ -697,12 +583,9 @@ public class InitialEventTest : TestBase
         InitialEvent value = new BetaManagedAgentsUserDefineOutcomeEventParams()
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
         value.Validate();
@@ -711,18 +594,9 @@ public class InitialEventTest : TestBase
     [Fact]
     public void BetaManagedAgentsUserMessageEventParamsSerializationRoundtripWorks()
     {
-        InitialEvent value = new BetaManagedAgentsUserMessageEventParams()
-        {
-            Content =
-            [
-                new BetaManagedAgentsTextBlock()
-                {
-                    Text = "Where is my order #1234?",
-                    Type = BetaManagedAgentsTextBlockType.Text,
-                },
-            ],
-            Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-        };
+        InitialEvent value = new BetaManagedAgentsUserMessageEventParams(
+            [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<InitialEvent>(
             element,
@@ -738,17 +612,118 @@ public class InitialEventTest : TestBase
         InitialEvent value = new BetaManagedAgentsUserDefineOutcomeEventParams()
         {
             Description = "Produce a 2-page summary as summary.md",
-            Rubric = new BetaManagedAgentsTextRubricParams()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricParamsType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventParamsType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
             MaxIterations = 3,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<InitialEvent>(
             element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserMessageEventParamsTypeWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserMessageEventParams(
+            [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+        );
+        Assert.Equal(InitialEventType.UserMessage, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsUserDefineOutcomeEventParamsTypeWorks()
+    {
+        InitialEvent value = new BetaManagedAgentsUserDefineOutcomeEventParams()
+        {
+            Description = "Produce a 2-page summary as summary.md",
+            Rubric = new BetaManagedAgentsTextRubricParams(
+                "Must cover all five sections; cite sources inline."
+            ),
+            MaxIterations = 3,
+        };
+        Assert.Equal(InitialEventType.UserDefineOutcome, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        InitialEvent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "user.message"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, InitialEventType> expectedType = InitialEventType.UserMessage;
+
+        Assert.Equal(expectedType, value.Type);
+
+        InitialEvent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class InitialEventTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(InitialEventType.UserMessage)]
+    [InlineData(InitialEventType.UserDefineOutcome)]
+    public void Validation_Works(InitialEventType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, InitialEventType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, InitialEventType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(InitialEventType.UserMessage)]
+    [InlineData(InitialEventType.UserDefineOutcome)]
+    public void SerializationRoundtrip_Works(InitialEventType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, InitialEventType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, InitialEventType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, InitialEventType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, InitialEventType>>(
+            json,
             ModelBase.SerializerOptions
         );
 
@@ -763,14 +738,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
         value.Validate();
@@ -782,7 +752,6 @@ public class ResourceTest : TestBase
         Resource value = new BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         value.Validate();
@@ -794,7 +763,6 @@ public class ResourceTest : TestBase
         Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -806,14 +774,9 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
         {
-            Type = BetaManagedAgentsGitHubRepositoryResourceParamsType.GitHubRepository,
             Url = "https://github.com/example-org/example-repo",
             AuthorizationToken = "ghp_exampletoken",
-            Checkout = new BetaManagedAgentsBranchCheckout()
-            {
-                Name = "main",
-                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-            },
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
             MountPath = "x",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -831,7 +794,6 @@ public class ResourceTest : TestBase
         Resource value = new BetaManagedAgentsFileResourceParams()
         {
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Type = BetaManagedAgentsFileResourceParamsType.File,
             MountPath = "/uploads/receipt.pdf",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -849,7 +811,6 @@ public class ResourceTest : TestBase
         Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceParamType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -863,12 +824,49 @@ public class ResourceTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsGitHubRepositoryResourceParamsTypeWorks()
+    {
+        Resource value = new BetaManagedAgentsGitHubRepositoryResourceParams()
+        {
+            Url = "https://github.com/example-org/example-repo",
+            AuthorizationToken = "ghp_exampletoken",
+            Checkout = new BetaManagedAgentsBranchCheckout("main"),
+            MountPath = "x",
+        };
+        Assert.Equal(ResourceType.GitHubRepository, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsFileResourceParamsTypeWorks()
+    {
+        Resource value = new BetaManagedAgentsFileResourceParams()
+        {
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            MountPath = "/uploads/receipt.pdf",
+        };
+        Assert.Equal(ResourceType.File, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMemoryStoreResourceParamTypeWorks()
+    {
+        Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
+        {
+            MemoryStoreID = "memory_store_id",
+            Access = Access.ReadWrite,
+            Instructions = "instructions",
+        };
+        Assert.Equal(ResourceType.MemoryStore, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Resource value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
+                  "type": "file",
                   "mount_path": "x"
                 }
                 """
@@ -876,12 +874,15 @@ public class ResourceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
+        ApiEnum<string, ResourceType> expectedType = ResourceType.File;
         string expectedMountPath = "x";
 
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedMountPath, value.MountPath);
 
         Resource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.MountPath);
 
         Resource mismatchedValue = new(
@@ -897,5 +898,65 @@ public class ResourceTest : TestBase
         );
 
         Assert.Null(mismatchedValue.MountPath);
+    }
+}
+
+public class ResourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ResourceType.GitHubRepository)]
+    [InlineData(ResourceType.File)]
+    [InlineData(ResourceType.MemoryStore)]
+    public void Validation_Works(ResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ResourceType.GitHubRepository)]
+    [InlineData(ResourceType.File)]
+    [InlineData(ResourceType.MemoryStore)]
+    public void SerializationRoundtrip_Works(ResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

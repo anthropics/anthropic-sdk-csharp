@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -22,20 +21,12 @@ namespace Anthropic.Models.Beta.Deployments;
 public sealed record class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError
     : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<
-                    string,
-                    BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType
-                >
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -43,10 +34,21 @@ public sealed record class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploy
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("self_hosted_resources_unsupported_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError() { }
+    public BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("self_hosted_resources_unsupported_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -61,6 +63,8 @@ public sealed record class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploy
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("self_hosted_resources_unsupported_error");
     }
 
 #pragma warning disable CS8618
@@ -80,18 +84,6 @@ public sealed record class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploy
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError(
-        ApiEnum<
-            string,
-            BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType
-        > type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorFromRaw
@@ -104,52 +96,4 @@ class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError
         BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError.FromRawUnchecked(
             rawData
         );
-}
-
-[JsonConverter(
-    typeof(BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorTypeConverter)
-)]
-public enum BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType
-{
-    SelfHostedResourcesUnsupportedError,
-}
-
-sealed class BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "self_hosted_resources_unsupported_error" =>
-                BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError,
-            _ => (BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType)(
-                -1
-            ),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError =>
-                    "self_hosted_resources_unsupported_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

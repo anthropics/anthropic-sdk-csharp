@@ -15,18 +15,9 @@ public class DeploymentServiceTest : TestBase
                 EnvironmentID = "x",
                 InitialEvents =
                 [
-                    new BetaManagedAgentsUserMessageEventParams()
-                    {
-                        Content =
-                        [
-                            new BetaManagedAgentsTextBlock()
-                            {
-                                Text = "Where is my order #1234?",
-                                Type = BetaManagedAgentsTextBlockType.Text,
-                            },
-                        ],
-                        Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                    },
+                    new BetaManagedAgentsUserMessageEventParams(
+                        [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    ),
                 ],
                 Name = "x",
             },

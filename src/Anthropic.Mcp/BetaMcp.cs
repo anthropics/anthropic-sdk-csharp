@@ -11,7 +11,6 @@ using Anthropic.Helpers.Beta;
 using Anthropic.Models.Beta.Messages;
 using ModelContextProtocol.Client;
 using ModelContextProtocol.Protocol;
-using BetaRole = Anthropic.Models.Beta.Messages.Role;
 using McpContentBlock = ModelContextProtocol.Protocol.ContentBlock;
 using McpRole = ModelContextProtocol.Protocol.Role;
 using McpTool = ModelContextProtocol.Protocol.Tool;
@@ -154,18 +153,12 @@ public static class BetaMcp
         BetaCacheControlEphemeral? cacheControl = null
     )
     {
-        var role = message.Role switch
+        List<BetaContentBlockParam> content = [Content(message.Content, cacheControl)];
+        return message.Role switch
         {
-            McpRole.User => BetaRole.User,
-            McpRole.Assistant => BetaRole.Assistant,
+            McpRole.User => new BetaUserMessageParam { Content = content },
+            McpRole.Assistant => new BetaAssistantMessageParam { Content = content },
             _ => throw new AnthropicInvalidDataException($"Unsupported MCP role: {message.Role}"),
-        };
-        return new BetaMessageParam
-        {
-            Role = role,
-            Content = new BetaMessageParamContent(
-                new List<BetaContentBlockParam> { Content(message.Content, cacheControl) }
-            ),
         };
     }
 

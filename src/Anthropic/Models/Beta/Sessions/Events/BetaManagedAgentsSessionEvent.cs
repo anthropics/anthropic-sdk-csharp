@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -81,7 +81,104 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
         }
     }
 
-    public System::DateTimeOffset? ProcessedAt
+    public ApiEnum<string, BetaManagedAgentsSessionEventTypeValue> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserMessage,
+                BetaManagedAgentsUserInterruptEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserInterrupt,
+                BetaManagedAgentsUserToolConfirmationEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserToolConfirmation,
+                BetaManagedAgentsUserCustomToolResultEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserCustomToolResult,
+                BetaManagedAgentsAgentCustomToolUseEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentCustomToolUse,
+                BetaManagedAgentsAgentMessageEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentMessage,
+                BetaManagedAgentsAgentThinkingEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentThinking,
+                BetaManagedAgentsAgentMcpToolUseEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentMcpToolUse,
+                BetaManagedAgentsAgentMcpToolResultEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentMcpToolResult,
+                BetaManagedAgentsAgentToolUseEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentToolUse,
+                BetaManagedAgentsAgentToolResultEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentToolResult,
+                BetaManagedAgentsAgentThreadMessageReceivedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageReceived,
+                BetaManagedAgentsAgentThreadMessageSentEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageSent,
+                BetaManagedAgentsAgentThreadContextCompactedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.AgentThreadContextCompacted,
+                BetaManagedAgentsSessionErrorEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionError,
+                BetaManagedAgentsSessionStatusRescheduledEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionStatusRescheduled,
+                BetaManagedAgentsSessionStatusRunningEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionStatusRunning,
+                BetaManagedAgentsSessionStatusIdleEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionStatusIdle,
+                BetaManagedAgentsSessionStatusTerminatedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionStatusTerminated,
+                BetaManagedAgentsSessionThreadCreatedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionThreadCreated,
+                BetaManagedAgentsSpanOutcomeEvaluationStartEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationStart,
+                BetaManagedAgentsSpanOutcomeEvaluationEndEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationEnd,
+                BetaManagedAgentsSpanModelRequestStartEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SpanModelRequestStart,
+                BetaManagedAgentsSpanModelRequestEndEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SpanModelRequestEnd,
+                BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationOngoing,
+                BetaManagedAgentsUserDefineOutcomeEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserDefineOutcome,
+                BetaManagedAgentsSessionDeletedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionDeleted,
+                BetaManagedAgentsSessionThreadStatusRunningEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRunning,
+                BetaManagedAgentsSessionThreadStatusIdleEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusIdle,
+                BetaManagedAgentsSessionThreadStatusTerminatedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusTerminated,
+                BetaManagedAgentsUserToolResultEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.UserToolResult,
+                BetaManagedAgentsSessionThreadStatusRescheduledEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRescheduled,
+                BetaManagedAgentsSessionUpdatedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionUpdated,
+                BetaManagedAgentsSystemMessageEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SystemMessage,
+                BetaManagedAgentsSessionUsageEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.SessionUsage,
+                BetaManagedAgentsWorkflowRunCreatedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunCreated,
+                BetaManagedAgentsWorkflowRunStatusEndedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusEnded,
+                BetaManagedAgentsWorkflowRunPhaseStartedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseStarted,
+                BetaManagedAgentsWorkflowRunPhaseEndedEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseEnded,
+                BetaManagedAgentsWorkflowRunStatusRunningEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusRunning,
+                BetaManagedAgentsWorkflowRunStatusIdleEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusIdle,
+                BetaManagedAgentsWorkflowRunErrorEvent _ =>
+                    BetaManagedAgentsSessionEventTypeValue.WorkflowRunError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionEventTypeValue>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
@@ -129,7 +226,7 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
                 BetaManagedAgentsWorkflowRunStatusRunningEvent x => x.ProcessedAt,
                 BetaManagedAgentsWorkflowRunStatusIdleEvent x => x.ProcessedAt,
                 BetaManagedAgentsWorkflowRunErrorEvent x => x.ProcessedAt,
-                _ => WrappedJsonSerializer.GetNullableStructProperty<System::DateTimeOffset>(
+                _ => WrappedJsonSerializer.GetNullableStructProperty<DateTimeOffset>(
                     this.Json,
                     "processed_at"
                 ),
@@ -2313,48 +2410,48 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUserMessageEvent> userMessage,
-        System::Action<BetaManagedAgentsUserInterruptEvent> userInterrupt,
-        System::Action<BetaManagedAgentsUserToolConfirmationEvent> userToolConfirmation,
-        System::Action<BetaManagedAgentsUserCustomToolResultEvent> userCustomToolResult,
-        System::Action<BetaManagedAgentsAgentCustomToolUseEvent> agentCustomToolUse,
-        System::Action<BetaManagedAgentsAgentMessageEvent> agentMessage,
-        System::Action<BetaManagedAgentsAgentThinkingEvent> agentThinking,
-        System::Action<BetaManagedAgentsAgentMcpToolUseEvent> agentMcpToolUse,
-        System::Action<BetaManagedAgentsAgentMcpToolResultEvent> agentMcpToolResult,
-        System::Action<BetaManagedAgentsAgentToolUseEvent> agentToolUse,
-        System::Action<BetaManagedAgentsAgentToolResultEvent> agentToolResult,
-        System::Action<BetaManagedAgentsAgentThreadMessageReceivedEvent> agentThreadMessageReceived,
-        System::Action<BetaManagedAgentsAgentThreadMessageSentEvent> agentThreadMessageSent,
-        System::Action<BetaManagedAgentsAgentThreadContextCompactedEvent> agentThreadContextCompacted,
-        System::Action<BetaManagedAgentsSessionErrorEvent> error,
-        System::Action<BetaManagedAgentsSessionStatusRescheduledEvent> statusRescheduled,
-        System::Action<BetaManagedAgentsSessionStatusRunningEvent> statusRunning,
-        System::Action<BetaManagedAgentsSessionStatusIdleEvent> statusIdle,
-        System::Action<BetaManagedAgentsSessionStatusTerminatedEvent> statusTerminated,
-        System::Action<BetaManagedAgentsSessionThreadCreatedEvent> threadCreated,
-        System::Action<BetaManagedAgentsSpanOutcomeEvaluationStartEvent> spanOutcomeEvaluationStart,
-        System::Action<BetaManagedAgentsSpanOutcomeEvaluationEndEvent> spanOutcomeEvaluationEnd,
-        System::Action<BetaManagedAgentsSpanModelRequestStartEvent> spanModelRequestStart,
-        System::Action<BetaManagedAgentsSpanModelRequestEndEvent> spanModelRequestEnd,
-        System::Action<BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent> spanOutcomeEvaluationOngoing,
-        System::Action<BetaManagedAgentsUserDefineOutcomeEvent> userDefineOutcome,
-        System::Action<BetaManagedAgentsSessionDeletedEvent> deleted,
-        System::Action<BetaManagedAgentsSessionThreadStatusRunningEvent> threadStatusRunning,
-        System::Action<BetaManagedAgentsSessionThreadStatusIdleEvent> threadStatusIdle,
-        System::Action<BetaManagedAgentsSessionThreadStatusTerminatedEvent> threadStatusTerminated,
-        System::Action<BetaManagedAgentsUserToolResultEvent> userToolResult,
-        System::Action<BetaManagedAgentsSessionThreadStatusRescheduledEvent> threadStatusRescheduled,
-        System::Action<BetaManagedAgentsSessionUpdatedEvent> updated,
-        System::Action<BetaManagedAgentsSystemMessageEvent> systemMessage,
-        System::Action<BetaManagedAgentsSessionUsageEvent> usage,
-        System::Action<BetaManagedAgentsWorkflowRunCreatedEvent> workflowRunCreated,
-        System::Action<BetaManagedAgentsWorkflowRunStatusEndedEvent> workflowRunStatusEnded,
-        System::Action<BetaManagedAgentsWorkflowRunPhaseStartedEvent> workflowRunPhaseStarted,
-        System::Action<BetaManagedAgentsWorkflowRunPhaseEndedEvent> workflowRunPhaseEnded,
-        System::Action<BetaManagedAgentsWorkflowRunStatusRunningEvent> workflowRunStatusRunning,
-        System::Action<BetaManagedAgentsWorkflowRunStatusIdleEvent> workflowRunStatusIdle,
-        System::Action<BetaManagedAgentsWorkflowRunErrorEvent> workflowRunError
+        Action<BetaManagedAgentsUserMessageEvent> userMessage,
+        Action<BetaManagedAgentsUserInterruptEvent> userInterrupt,
+        Action<BetaManagedAgentsUserToolConfirmationEvent> userToolConfirmation,
+        Action<BetaManagedAgentsUserCustomToolResultEvent> userCustomToolResult,
+        Action<BetaManagedAgentsAgentCustomToolUseEvent> agentCustomToolUse,
+        Action<BetaManagedAgentsAgentMessageEvent> agentMessage,
+        Action<BetaManagedAgentsAgentThinkingEvent> agentThinking,
+        Action<BetaManagedAgentsAgentMcpToolUseEvent> agentMcpToolUse,
+        Action<BetaManagedAgentsAgentMcpToolResultEvent> agentMcpToolResult,
+        Action<BetaManagedAgentsAgentToolUseEvent> agentToolUse,
+        Action<BetaManagedAgentsAgentToolResultEvent> agentToolResult,
+        Action<BetaManagedAgentsAgentThreadMessageReceivedEvent> agentThreadMessageReceived,
+        Action<BetaManagedAgentsAgentThreadMessageSentEvent> agentThreadMessageSent,
+        Action<BetaManagedAgentsAgentThreadContextCompactedEvent> agentThreadContextCompacted,
+        Action<BetaManagedAgentsSessionErrorEvent> error,
+        Action<BetaManagedAgentsSessionStatusRescheduledEvent> statusRescheduled,
+        Action<BetaManagedAgentsSessionStatusRunningEvent> statusRunning,
+        Action<BetaManagedAgentsSessionStatusIdleEvent> statusIdle,
+        Action<BetaManagedAgentsSessionStatusTerminatedEvent> statusTerminated,
+        Action<BetaManagedAgentsSessionThreadCreatedEvent> threadCreated,
+        Action<BetaManagedAgentsSpanOutcomeEvaluationStartEvent> spanOutcomeEvaluationStart,
+        Action<BetaManagedAgentsSpanOutcomeEvaluationEndEvent> spanOutcomeEvaluationEnd,
+        Action<BetaManagedAgentsSpanModelRequestStartEvent> spanModelRequestStart,
+        Action<BetaManagedAgentsSpanModelRequestEndEvent> spanModelRequestEnd,
+        Action<BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent> spanOutcomeEvaluationOngoing,
+        Action<BetaManagedAgentsUserDefineOutcomeEvent> userDefineOutcome,
+        Action<BetaManagedAgentsSessionDeletedEvent> deleted,
+        Action<BetaManagedAgentsSessionThreadStatusRunningEvent> threadStatusRunning,
+        Action<BetaManagedAgentsSessionThreadStatusIdleEvent> threadStatusIdle,
+        Action<BetaManagedAgentsSessionThreadStatusTerminatedEvent> threadStatusTerminated,
+        Action<BetaManagedAgentsUserToolResultEvent> userToolResult,
+        Action<BetaManagedAgentsSessionThreadStatusRescheduledEvent> threadStatusRescheduled,
+        Action<BetaManagedAgentsSessionUpdatedEvent> updated,
+        Action<BetaManagedAgentsSystemMessageEvent> systemMessage,
+        Action<BetaManagedAgentsSessionUsageEvent> usage,
+        Action<BetaManagedAgentsWorkflowRunCreatedEvent> workflowRunCreated,
+        Action<BetaManagedAgentsWorkflowRunStatusEndedEvent> workflowRunStatusEnded,
+        Action<BetaManagedAgentsWorkflowRunPhaseStartedEvent> workflowRunPhaseStarted,
+        Action<BetaManagedAgentsWorkflowRunPhaseEndedEvent> workflowRunPhaseEnded,
+        Action<BetaManagedAgentsWorkflowRunStatusRunningEvent> workflowRunStatusRunning,
+        Action<BetaManagedAgentsWorkflowRunStatusIdleEvent> workflowRunStatusIdle,
+        Action<BetaManagedAgentsWorkflowRunErrorEvent> workflowRunError
     )
     {
         switch (this.Value)
@@ -2554,63 +2651,48 @@ public record class BetaManagedAgentsSessionEvent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsUserMessageEvent, T> userMessage,
-        System::Func<BetaManagedAgentsUserInterruptEvent, T> userInterrupt,
-        System::Func<BetaManagedAgentsUserToolConfirmationEvent, T> userToolConfirmation,
-        System::Func<BetaManagedAgentsUserCustomToolResultEvent, T> userCustomToolResult,
-        System::Func<BetaManagedAgentsAgentCustomToolUseEvent, T> agentCustomToolUse,
-        System::Func<BetaManagedAgentsAgentMessageEvent, T> agentMessage,
-        System::Func<BetaManagedAgentsAgentThinkingEvent, T> agentThinking,
-        System::Func<BetaManagedAgentsAgentMcpToolUseEvent, T> agentMcpToolUse,
-        System::Func<BetaManagedAgentsAgentMcpToolResultEvent, T> agentMcpToolResult,
-        System::Func<BetaManagedAgentsAgentToolUseEvent, T> agentToolUse,
-        System::Func<BetaManagedAgentsAgentToolResultEvent, T> agentToolResult,
-        System::Func<
-            BetaManagedAgentsAgentThreadMessageReceivedEvent,
-            T
-        > agentThreadMessageReceived,
-        System::Func<BetaManagedAgentsAgentThreadMessageSentEvent, T> agentThreadMessageSent,
-        System::Func<
-            BetaManagedAgentsAgentThreadContextCompactedEvent,
-            T
-        > agentThreadContextCompacted,
-        System::Func<BetaManagedAgentsSessionErrorEvent, T> error,
-        System::Func<BetaManagedAgentsSessionStatusRescheduledEvent, T> statusRescheduled,
-        System::Func<BetaManagedAgentsSessionStatusRunningEvent, T> statusRunning,
-        System::Func<BetaManagedAgentsSessionStatusIdleEvent, T> statusIdle,
-        System::Func<BetaManagedAgentsSessionStatusTerminatedEvent, T> statusTerminated,
-        System::Func<BetaManagedAgentsSessionThreadCreatedEvent, T> threadCreated,
-        System::Func<
-            BetaManagedAgentsSpanOutcomeEvaluationStartEvent,
-            T
-        > spanOutcomeEvaluationStart,
-        System::Func<BetaManagedAgentsSpanOutcomeEvaluationEndEvent, T> spanOutcomeEvaluationEnd,
-        System::Func<BetaManagedAgentsSpanModelRequestStartEvent, T> spanModelRequestStart,
-        System::Func<BetaManagedAgentsSpanModelRequestEndEvent, T> spanModelRequestEnd,
-        System::Func<
-            BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent,
-            T
-        > spanOutcomeEvaluationOngoing,
-        System::Func<BetaManagedAgentsUserDefineOutcomeEvent, T> userDefineOutcome,
-        System::Func<BetaManagedAgentsSessionDeletedEvent, T> deleted,
-        System::Func<BetaManagedAgentsSessionThreadStatusRunningEvent, T> threadStatusRunning,
-        System::Func<BetaManagedAgentsSessionThreadStatusIdleEvent, T> threadStatusIdle,
-        System::Func<BetaManagedAgentsSessionThreadStatusTerminatedEvent, T> threadStatusTerminated,
-        System::Func<BetaManagedAgentsUserToolResultEvent, T> userToolResult,
-        System::Func<
-            BetaManagedAgentsSessionThreadStatusRescheduledEvent,
-            T
-        > threadStatusRescheduled,
-        System::Func<BetaManagedAgentsSessionUpdatedEvent, T> updated,
-        System::Func<BetaManagedAgentsSystemMessageEvent, T> systemMessage,
-        System::Func<BetaManagedAgentsSessionUsageEvent, T> usage,
-        System::Func<BetaManagedAgentsWorkflowRunCreatedEvent, T> workflowRunCreated,
-        System::Func<BetaManagedAgentsWorkflowRunStatusEndedEvent, T> workflowRunStatusEnded,
-        System::Func<BetaManagedAgentsWorkflowRunPhaseStartedEvent, T> workflowRunPhaseStarted,
-        System::Func<BetaManagedAgentsWorkflowRunPhaseEndedEvent, T> workflowRunPhaseEnded,
-        System::Func<BetaManagedAgentsWorkflowRunStatusRunningEvent, T> workflowRunStatusRunning,
-        System::Func<BetaManagedAgentsWorkflowRunStatusIdleEvent, T> workflowRunStatusIdle,
-        System::Func<BetaManagedAgentsWorkflowRunErrorEvent, T> workflowRunError
+        Func<BetaManagedAgentsUserMessageEvent, T> userMessage,
+        Func<BetaManagedAgentsUserInterruptEvent, T> userInterrupt,
+        Func<BetaManagedAgentsUserToolConfirmationEvent, T> userToolConfirmation,
+        Func<BetaManagedAgentsUserCustomToolResultEvent, T> userCustomToolResult,
+        Func<BetaManagedAgentsAgentCustomToolUseEvent, T> agentCustomToolUse,
+        Func<BetaManagedAgentsAgentMessageEvent, T> agentMessage,
+        Func<BetaManagedAgentsAgentThinkingEvent, T> agentThinking,
+        Func<BetaManagedAgentsAgentMcpToolUseEvent, T> agentMcpToolUse,
+        Func<BetaManagedAgentsAgentMcpToolResultEvent, T> agentMcpToolResult,
+        Func<BetaManagedAgentsAgentToolUseEvent, T> agentToolUse,
+        Func<BetaManagedAgentsAgentToolResultEvent, T> agentToolResult,
+        Func<BetaManagedAgentsAgentThreadMessageReceivedEvent, T> agentThreadMessageReceived,
+        Func<BetaManagedAgentsAgentThreadMessageSentEvent, T> agentThreadMessageSent,
+        Func<BetaManagedAgentsAgentThreadContextCompactedEvent, T> agentThreadContextCompacted,
+        Func<BetaManagedAgentsSessionErrorEvent, T> error,
+        Func<BetaManagedAgentsSessionStatusRescheduledEvent, T> statusRescheduled,
+        Func<BetaManagedAgentsSessionStatusRunningEvent, T> statusRunning,
+        Func<BetaManagedAgentsSessionStatusIdleEvent, T> statusIdle,
+        Func<BetaManagedAgentsSessionStatusTerminatedEvent, T> statusTerminated,
+        Func<BetaManagedAgentsSessionThreadCreatedEvent, T> threadCreated,
+        Func<BetaManagedAgentsSpanOutcomeEvaluationStartEvent, T> spanOutcomeEvaluationStart,
+        Func<BetaManagedAgentsSpanOutcomeEvaluationEndEvent, T> spanOutcomeEvaluationEnd,
+        Func<BetaManagedAgentsSpanModelRequestStartEvent, T> spanModelRequestStart,
+        Func<BetaManagedAgentsSpanModelRequestEndEvent, T> spanModelRequestEnd,
+        Func<BetaManagedAgentsSpanOutcomeEvaluationOngoingEvent, T> spanOutcomeEvaluationOngoing,
+        Func<BetaManagedAgentsUserDefineOutcomeEvent, T> userDefineOutcome,
+        Func<BetaManagedAgentsSessionDeletedEvent, T> deleted,
+        Func<BetaManagedAgentsSessionThreadStatusRunningEvent, T> threadStatusRunning,
+        Func<BetaManagedAgentsSessionThreadStatusIdleEvent, T> threadStatusIdle,
+        Func<BetaManagedAgentsSessionThreadStatusTerminatedEvent, T> threadStatusTerminated,
+        Func<BetaManagedAgentsUserToolResultEvent, T> userToolResult,
+        Func<BetaManagedAgentsSessionThreadStatusRescheduledEvent, T> threadStatusRescheduled,
+        Func<BetaManagedAgentsSessionUpdatedEvent, T> updated,
+        Func<BetaManagedAgentsSystemMessageEvent, T> systemMessage,
+        Func<BetaManagedAgentsSessionUsageEvent, T> usage,
+        Func<BetaManagedAgentsWorkflowRunCreatedEvent, T> workflowRunCreated,
+        Func<BetaManagedAgentsWorkflowRunStatusEndedEvent, T> workflowRunStatusEnded,
+        Func<BetaManagedAgentsWorkflowRunPhaseStartedEvent, T> workflowRunPhaseStarted,
+        Func<BetaManagedAgentsWorkflowRunPhaseEndedEvent, T> workflowRunPhaseEnded,
+        Func<BetaManagedAgentsWorkflowRunStatusRunningEvent, T> workflowRunStatusRunning,
+        Func<BetaManagedAgentsWorkflowRunStatusIdleEvent, T> workflowRunStatusIdle,
+        Func<BetaManagedAgentsWorkflowRunErrorEvent, T> workflowRunError
     )
     {
         return this.Value switch
@@ -2977,7 +3059,7 @@ sealed class BetaManagedAgentsSessionEventConverter : JsonConverter<BetaManagedA
 {
     public override BetaManagedAgentsSessionEvent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -3890,5 +3972,214 @@ sealed class BetaManagedAgentsSessionEventConverter : JsonConverter<BetaManagedA
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSessionEventTypeValueConverter))]
+public enum BetaManagedAgentsSessionEventTypeValue
+{
+    UserMessage,
+    UserInterrupt,
+    UserToolConfirmation,
+    UserCustomToolResult,
+    AgentCustomToolUse,
+    AgentMessage,
+    AgentThinking,
+    AgentMcpToolUse,
+    AgentMcpToolResult,
+    AgentToolUse,
+    AgentToolResult,
+    AgentThreadMessageReceived,
+    AgentThreadMessageSent,
+    AgentThreadContextCompacted,
+    SessionError,
+    SessionStatusRescheduled,
+    SessionStatusRunning,
+    SessionStatusIdle,
+    SessionStatusTerminated,
+    SessionThreadCreated,
+    SpanOutcomeEvaluationStart,
+    SpanOutcomeEvaluationEnd,
+    SpanModelRequestStart,
+    SpanModelRequestEnd,
+    SpanOutcomeEvaluationOngoing,
+    UserDefineOutcome,
+    SessionDeleted,
+    SessionThreadStatusRunning,
+    SessionThreadStatusIdle,
+    SessionThreadStatusTerminated,
+    UserToolResult,
+    SessionThreadStatusRescheduled,
+    SessionUpdated,
+    SystemMessage,
+    SessionUsage,
+    WorkflowRunCreated,
+    WorkflowRunStatusEnded,
+    WorkflowRunPhaseStarted,
+    WorkflowRunPhaseEnded,
+    WorkflowRunStatusRunning,
+    WorkflowRunStatusIdle,
+    WorkflowRunError,
+}
+
+sealed class BetaManagedAgentsSessionEventTypeValueConverter
+    : JsonConverter<BetaManagedAgentsSessionEventTypeValue>
+{
+    public override BetaManagedAgentsSessionEventTypeValue Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user.message" => BetaManagedAgentsSessionEventTypeValue.UserMessage,
+            "user.interrupt" => BetaManagedAgentsSessionEventTypeValue.UserInterrupt,
+            "user.tool_confirmation" => BetaManagedAgentsSessionEventTypeValue.UserToolConfirmation,
+            "user.custom_tool_result" =>
+                BetaManagedAgentsSessionEventTypeValue.UserCustomToolResult,
+            "agent.custom_tool_use" => BetaManagedAgentsSessionEventTypeValue.AgentCustomToolUse,
+            "agent.message" => BetaManagedAgentsSessionEventTypeValue.AgentMessage,
+            "agent.thinking" => BetaManagedAgentsSessionEventTypeValue.AgentThinking,
+            "agent.mcp_tool_use" => BetaManagedAgentsSessionEventTypeValue.AgentMcpToolUse,
+            "agent.mcp_tool_result" => BetaManagedAgentsSessionEventTypeValue.AgentMcpToolResult,
+            "agent.tool_use" => BetaManagedAgentsSessionEventTypeValue.AgentToolUse,
+            "agent.tool_result" => BetaManagedAgentsSessionEventTypeValue.AgentToolResult,
+            "agent.thread_message_received" =>
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageReceived,
+            "agent.thread_message_sent" =>
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageSent,
+            "agent.thread_context_compacted" =>
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadContextCompacted,
+            "session.error" => BetaManagedAgentsSessionEventTypeValue.SessionError,
+            "session.status_rescheduled" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusRescheduled,
+            "session.status_running" => BetaManagedAgentsSessionEventTypeValue.SessionStatusRunning,
+            "session.status_idle" => BetaManagedAgentsSessionEventTypeValue.SessionStatusIdle,
+            "session.status_terminated" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusTerminated,
+            "session.thread_created" => BetaManagedAgentsSessionEventTypeValue.SessionThreadCreated,
+            "span.outcome_evaluation_start" =>
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationStart,
+            "span.outcome_evaluation_end" =>
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationEnd,
+            "span.model_request_start" =>
+                BetaManagedAgentsSessionEventTypeValue.SpanModelRequestStart,
+            "span.model_request_end" => BetaManagedAgentsSessionEventTypeValue.SpanModelRequestEnd,
+            "span.outcome_evaluation_ongoing" =>
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationOngoing,
+            "user.define_outcome" => BetaManagedAgentsSessionEventTypeValue.UserDefineOutcome,
+            "session.deleted" => BetaManagedAgentsSessionEventTypeValue.SessionDeleted,
+            "session.thread_status_running" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRunning,
+            "session.thread_status_idle" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusIdle,
+            "session.thread_status_terminated" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusTerminated,
+            "user.tool_result" => BetaManagedAgentsSessionEventTypeValue.UserToolResult,
+            "session.thread_status_rescheduled" =>
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRescheduled,
+            "session.updated" => BetaManagedAgentsSessionEventTypeValue.SessionUpdated,
+            "system.message" => BetaManagedAgentsSessionEventTypeValue.SystemMessage,
+            "session.usage" => BetaManagedAgentsSessionEventTypeValue.SessionUsage,
+            "workflow_run.created" => BetaManagedAgentsSessionEventTypeValue.WorkflowRunCreated,
+            "workflow_run.status_ended" =>
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusEnded,
+            "workflow_run.phase_started" =>
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseStarted,
+            "workflow_run.phase_ended" =>
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseEnded,
+            "workflow_run.status_running" =>
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusRunning,
+            "workflow_run.status_idle" =>
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusIdle,
+            "workflow_run.error" => BetaManagedAgentsSessionEventTypeValue.WorkflowRunError,
+            _ => (BetaManagedAgentsSessionEventTypeValue)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionEventTypeValue value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionEventTypeValue.UserMessage => "user.message",
+                BetaManagedAgentsSessionEventTypeValue.UserInterrupt => "user.interrupt",
+                BetaManagedAgentsSessionEventTypeValue.UserToolConfirmation =>
+                    "user.tool_confirmation",
+                BetaManagedAgentsSessionEventTypeValue.UserCustomToolResult =>
+                    "user.custom_tool_result",
+                BetaManagedAgentsSessionEventTypeValue.AgentCustomToolUse =>
+                    "agent.custom_tool_use",
+                BetaManagedAgentsSessionEventTypeValue.AgentMessage => "agent.message",
+                BetaManagedAgentsSessionEventTypeValue.AgentThinking => "agent.thinking",
+                BetaManagedAgentsSessionEventTypeValue.AgentMcpToolUse => "agent.mcp_tool_use",
+                BetaManagedAgentsSessionEventTypeValue.AgentMcpToolResult =>
+                    "agent.mcp_tool_result",
+                BetaManagedAgentsSessionEventTypeValue.AgentToolUse => "agent.tool_use",
+                BetaManagedAgentsSessionEventTypeValue.AgentToolResult => "agent.tool_result",
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageReceived =>
+                    "agent.thread_message_received",
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadMessageSent =>
+                    "agent.thread_message_sent",
+                BetaManagedAgentsSessionEventTypeValue.AgentThreadContextCompacted =>
+                    "agent.thread_context_compacted",
+                BetaManagedAgentsSessionEventTypeValue.SessionError => "session.error",
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusRescheduled =>
+                    "session.status_rescheduled",
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusRunning =>
+                    "session.status_running",
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusIdle => "session.status_idle",
+                BetaManagedAgentsSessionEventTypeValue.SessionStatusTerminated =>
+                    "session.status_terminated",
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadCreated =>
+                    "session.thread_created",
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationStart =>
+                    "span.outcome_evaluation_start",
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationEnd =>
+                    "span.outcome_evaluation_end",
+                BetaManagedAgentsSessionEventTypeValue.SpanModelRequestStart =>
+                    "span.model_request_start",
+                BetaManagedAgentsSessionEventTypeValue.SpanModelRequestEnd =>
+                    "span.model_request_end",
+                BetaManagedAgentsSessionEventTypeValue.SpanOutcomeEvaluationOngoing =>
+                    "span.outcome_evaluation_ongoing",
+                BetaManagedAgentsSessionEventTypeValue.UserDefineOutcome => "user.define_outcome",
+                BetaManagedAgentsSessionEventTypeValue.SessionDeleted => "session.deleted",
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRunning =>
+                    "session.thread_status_running",
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusIdle =>
+                    "session.thread_status_idle",
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusTerminated =>
+                    "session.thread_status_terminated",
+                BetaManagedAgentsSessionEventTypeValue.UserToolResult => "user.tool_result",
+                BetaManagedAgentsSessionEventTypeValue.SessionThreadStatusRescheduled =>
+                    "session.thread_status_rescheduled",
+                BetaManagedAgentsSessionEventTypeValue.SessionUpdated => "session.updated",
+                BetaManagedAgentsSessionEventTypeValue.SystemMessage => "system.message",
+                BetaManagedAgentsSessionEventTypeValue.SessionUsage => "session.usage",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunCreated => "workflow_run.created",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusEnded =>
+                    "workflow_run.status_ended",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseStarted =>
+                    "workflow_run.phase_started",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunPhaseEnded =>
+                    "workflow_run.phase_ended",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusRunning =>
+                    "workflow_run.status_running",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunStatusIdle =>
+                    "workflow_run.status_idle",
+                BetaManagedAgentsSessionEventTypeValue.WorkflowRunError => "workflow_run.error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

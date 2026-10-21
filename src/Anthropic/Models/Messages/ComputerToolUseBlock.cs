@@ -84,30 +84,32 @@ public record class ComputerToolUseBlock : ModelBase
         }
     }
 
-    public JsonElement Name
+    public ApiEnum<string, ComputerToolUseBlockName> Name
     {
         get
         {
             return this.Value switch
             {
-                ComputerKeyToolUseBlock x => x.Name,
-                ComputerHoldKeyToolUseBlock x => x.Name,
-                ComputerTypeToolUseBlock x => x.Name,
-                ComputerCursorPositionToolUseBlock x => x.Name,
-                ComputerMouseMoveToolUseBlock x => x.Name,
-                ComputerLeftMouseDownToolUseBlock x => x.Name,
-                ComputerLeftMouseUpToolUseBlock x => x.Name,
-                ComputerLeftClickToolUseBlock x => x.Name,
-                ComputerLeftClickDragToolUseBlock x => x.Name,
-                ComputerRightClickToolUseBlock x => x.Name,
-                ComputerMiddleClickToolUseBlock x => x.Name,
-                ComputerDoubleClickToolUseBlock x => x.Name,
-                ComputerTripleClickToolUseBlock x => x.Name,
-                ComputerScrollToolUseBlock x => x.Name,
-                ComputerWaitToolUseBlock x => x.Name,
-                ComputerScreenshotToolUseBlock x => x.Name,
-                ComputerZoomToolUseBlock x => x.Name,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "name"),
+                ComputerKeyToolUseBlock _ => ComputerToolUseBlockName.Key,
+                ComputerHoldKeyToolUseBlock _ => ComputerToolUseBlockName.HoldKey,
+                ComputerTypeToolUseBlock _ => ComputerToolUseBlockName.Type,
+                ComputerCursorPositionToolUseBlock _ => ComputerToolUseBlockName.CursorPosition,
+                ComputerMouseMoveToolUseBlock _ => ComputerToolUseBlockName.MouseMove,
+                ComputerLeftMouseDownToolUseBlock _ => ComputerToolUseBlockName.LeftMouseDown,
+                ComputerLeftMouseUpToolUseBlock _ => ComputerToolUseBlockName.LeftMouseUp,
+                ComputerLeftClickToolUseBlock _ => ComputerToolUseBlockName.LeftClick,
+                ComputerLeftClickDragToolUseBlock _ => ComputerToolUseBlockName.LeftClickDrag,
+                ComputerRightClickToolUseBlock _ => ComputerToolUseBlockName.RightClick,
+                ComputerMiddleClickToolUseBlock _ => ComputerToolUseBlockName.MiddleClick,
+                ComputerDoubleClickToolUseBlock _ => ComputerToolUseBlockName.DoubleClick,
+                ComputerTripleClickToolUseBlock _ => ComputerToolUseBlockName.TripleClick,
+                ComputerScrollToolUseBlock _ => ComputerToolUseBlockName.Scroll,
+                ComputerWaitToolUseBlock _ => ComputerToolUseBlockName.Wait,
+                ComputerScreenshotToolUseBlock _ => ComputerToolUseBlockName.Screenshot,
+                ComputerZoomToolUseBlock _ => ComputerToolUseBlockName.Zoom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ComputerToolUseBlockName>
+                >(this.Json, "name"),
             };
         }
     }
@@ -1357,5 +1359,94 @@ sealed class ComputerToolUseBlockConverter : JsonConverter<ComputerToolUseBlock>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ComputerToolUseBlockNameConverter))]
+public enum ComputerToolUseBlockName
+{
+    Key,
+    HoldKey,
+    Type,
+    CursorPosition,
+    MouseMove,
+    LeftMouseDown,
+    LeftMouseUp,
+    LeftClick,
+    LeftClickDrag,
+    RightClick,
+    MiddleClick,
+    DoubleClick,
+    TripleClick,
+    Scroll,
+    Wait,
+    Screenshot,
+    Zoom,
+}
+
+sealed class ComputerToolUseBlockNameConverter : JsonConverter<ComputerToolUseBlockName>
+{
+    public override ComputerToolUseBlockName Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "key" => ComputerToolUseBlockName.Key,
+            "hold_key" => ComputerToolUseBlockName.HoldKey,
+            "type" => ComputerToolUseBlockName.Type,
+            "cursor_position" => ComputerToolUseBlockName.CursorPosition,
+            "mouse_move" => ComputerToolUseBlockName.MouseMove,
+            "left_mouse_down" => ComputerToolUseBlockName.LeftMouseDown,
+            "left_mouse_up" => ComputerToolUseBlockName.LeftMouseUp,
+            "left_click" => ComputerToolUseBlockName.LeftClick,
+            "left_click_drag" => ComputerToolUseBlockName.LeftClickDrag,
+            "right_click" => ComputerToolUseBlockName.RightClick,
+            "middle_click" => ComputerToolUseBlockName.MiddleClick,
+            "double_click" => ComputerToolUseBlockName.DoubleClick,
+            "triple_click" => ComputerToolUseBlockName.TripleClick,
+            "scroll" => ComputerToolUseBlockName.Scroll,
+            "wait" => ComputerToolUseBlockName.Wait,
+            "screenshot" => ComputerToolUseBlockName.Screenshot,
+            "zoom" => ComputerToolUseBlockName.Zoom,
+            _ => (ComputerToolUseBlockName)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ComputerToolUseBlockName value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ComputerToolUseBlockName.Key => "key",
+                ComputerToolUseBlockName.HoldKey => "hold_key",
+                ComputerToolUseBlockName.Type => "type",
+                ComputerToolUseBlockName.CursorPosition => "cursor_position",
+                ComputerToolUseBlockName.MouseMove => "mouse_move",
+                ComputerToolUseBlockName.LeftMouseDown => "left_mouse_down",
+                ComputerToolUseBlockName.LeftMouseUp => "left_mouse_up",
+                ComputerToolUseBlockName.LeftClick => "left_click",
+                ComputerToolUseBlockName.LeftClickDrag => "left_click_drag",
+                ComputerToolUseBlockName.RightClick => "right_click",
+                ComputerToolUseBlockName.MiddleClick => "middle_click",
+                ComputerToolUseBlockName.DoubleClick => "double_click",
+                ComputerToolUseBlockName.TripleClick => "triple_click",
+                ComputerToolUseBlockName.Scroll => "scroll",
+                ComputerToolUseBlockName.Wait => "wait",
+                ComputerToolUseBlockName.Screenshot => "screenshot",
+                ComputerToolUseBlockName.Zoom => "zoom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

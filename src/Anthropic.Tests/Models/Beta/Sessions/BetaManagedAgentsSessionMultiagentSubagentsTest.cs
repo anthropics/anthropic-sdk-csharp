@@ -27,16 +27,13 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -46,7 +43,6 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -61,23 +57,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -112,16 +101,13 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -131,7 +117,6 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -146,23 +131,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
                 ],
@@ -191,6 +169,80 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
     }
 
     [Fact]
+    public void EnabledTypeWorks()
+    {
+        BetaManagedAgentsSessionMultiagentSubagents value =
+            new BetaManagedAgentsSessionMultiagentSubagentsEnabled()
+            {
+                InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
+                PredefinedAgents =
+                [
+                    new()
+                    {
+                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                        Description = "A focused research subagent.",
+                        ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
+                        McpServers =
+                        [
+                            new()
+                            {
+                                Name = "example-mcp",
+                                Url = "https://example-server.modelcontextprotocol.io/sse",
+                            },
+                        ],
+                        Model = new()
+                        {
+                            ID = BetaManagedAgentsModel.ClaudeOpus5_5,
+                            Effort = new BetaManagedAgentsEffortLow(),
+                            InferenceGeo = "inference_geo",
+                            Speed = Speed.Standard,
+                        },
+                        Name = "Researcher",
+                        Skills =
+                        [
+                            new BetaManagedAgentsAnthropicSkill()
+                            {
+                                SkillID = "xlsx",
+                                Version = "1",
+                            },
+                        ],
+                        System =
+                            "You are a research subagent that gathers and summarises sources for the coordinating agent.",
+                        Tools =
+                        [
+                            new BetaManagedAgentsAgentToolset20260401()
+                            {
+                                Configs =
+                                [
+                                    new BetaManagedAgentsBashToolConfig()
+                                    {
+                                        Enabled = true,
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
+                                    },
+                                ],
+                                DefaultConfig = new()
+                                {
+                                    Enabled = true,
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
+                                },
+                            },
+                        ],
+                        Version = 1,
+                    },
+                ],
+            };
+        Assert.Equal(BetaManagedAgentsSessionMultiagentSubagentsType.Enabled, value.Type.Value());
+    }
+
+    [Fact]
+    public void MultiagentSubagentsDisabledTypeWorks()
+    {
+        BetaManagedAgentsSessionMultiagentSubagents value =
+            new BetaManagedAgentsMultiagentSubagentsDisabled();
+        Assert.Equal(BetaManagedAgentsSessionMultiagentSubagentsType.Disabled, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsSessionMultiagentSubagents value = new(
@@ -204,14 +256,71 @@ public class BetaManagedAgentsSessionMultiagentSubagentsTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType> expectedType =
+            BetaManagedAgentsSessionMultiagentSubagentsType.Enabled;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaManagedAgentsSessionMultiagentSubagents emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsSessionMultiagentSubagentsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionMultiagentSubagentsType.Enabled)]
+    [InlineData(BetaManagedAgentsSessionMultiagentSubagentsType.Disabled)]
+    public void Validation_Works(BetaManagedAgentsSessionMultiagentSubagentsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsSessionMultiagentSubagentsType.Enabled)]
+    [InlineData(BetaManagedAgentsSessionMultiagentSubagentsType.Disabled)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsSessionMultiagentSubagentsType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsSessionMultiagentSubagentsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

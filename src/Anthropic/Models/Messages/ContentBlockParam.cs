@@ -25,29 +25,34 @@ public record class ContentBlockParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ContentBlockParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                TextBlockParam x => x.Type,
-                ImageBlockParam x => x.Type,
-                DocumentBlockParam x => x.Type,
-                SearchResultBlockParam x => x.Type,
-                ThinkingBlockParam x => x.Type,
-                RedactedThinkingBlockParam x => x.Type,
-                ToolUseBlockParam x => x.Type,
-                ToolResultBlockParam x => x.Type,
-                ServerToolUseBlockParam x => x.Type,
-                WebSearchToolResultBlockParam x => x.Type,
-                WebFetchToolResultBlockParam x => x.Type,
-                CodeExecutionToolResultBlockParam x => x.Type,
-                BashCodeExecutionToolResultBlockParam x => x.Type,
-                TextEditorCodeExecutionToolResultBlockParam x => x.Type,
-                ToolSearchToolResultBlockParam x => x.Type,
-                ContainerUploadBlockParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                TextBlockParam _ => ContentBlockParamType.Text,
+                ImageBlockParam _ => ContentBlockParamType.Image,
+                DocumentBlockParam _ => ContentBlockParamType.Document,
+                SearchResultBlockParam _ => ContentBlockParamType.SearchResult,
+                ThinkingBlockParam _ => ContentBlockParamType.Thinking,
+                RedactedThinkingBlockParam _ => ContentBlockParamType.RedactedThinking,
+                ToolUseBlockParam _ => ContentBlockParamType.ToolUse,
+                ToolResultBlockParam _ => ContentBlockParamType.ToolResult,
+                ServerToolUseBlockParam _ => ContentBlockParamType.ServerToolUse,
+                WebSearchToolResultBlockParam _ => ContentBlockParamType.WebSearchToolResult,
+                WebFetchToolResultBlockParam _ => ContentBlockParamType.WebFetchToolResult,
+                CodeExecutionToolResultBlockParam _ =>
+                    ContentBlockParamType.CodeExecutionToolResult,
+                BashCodeExecutionToolResultBlockParam _ =>
+                    ContentBlockParamType.BashCodeExecutionToolResult,
+                TextEditorCodeExecutionToolResultBlockParam _ =>
+                    ContentBlockParamType.TextEditorCodeExecutionToolResult,
+                ToolSearchToolResultBlockParam _ => ContentBlockParamType.ToolSearchToolResult,
+                ContainerUploadBlockParam _ => ContentBlockParamType.ContainerUpload,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ContentBlockParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -1320,5 +1325,94 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ContentBlockParamTypeConverter))]
+public enum ContentBlockParamType
+{
+    Text,
+    Image,
+    Document,
+    SearchResult,
+    Thinking,
+    RedactedThinking,
+    ToolUse,
+    ToolResult,
+    ServerToolUse,
+    WebSearchToolResult,
+    WebFetchToolResult,
+    CodeExecutionToolResult,
+    BashCodeExecutionToolResult,
+    TextEditorCodeExecutionToolResult,
+    ToolSearchToolResult,
+    ContainerUpload,
+}
+
+sealed class ContentBlockParamTypeConverter : JsonConverter<ContentBlockParamType>
+{
+    public override ContentBlockParamType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => ContentBlockParamType.Text,
+            "image" => ContentBlockParamType.Image,
+            "document" => ContentBlockParamType.Document,
+            "search_result" => ContentBlockParamType.SearchResult,
+            "thinking" => ContentBlockParamType.Thinking,
+            "redacted_thinking" => ContentBlockParamType.RedactedThinking,
+            "tool_use" => ContentBlockParamType.ToolUse,
+            "tool_result" => ContentBlockParamType.ToolResult,
+            "server_tool_use" => ContentBlockParamType.ServerToolUse,
+            "web_search_tool_result" => ContentBlockParamType.WebSearchToolResult,
+            "web_fetch_tool_result" => ContentBlockParamType.WebFetchToolResult,
+            "code_execution_tool_result" => ContentBlockParamType.CodeExecutionToolResult,
+            "bash_code_execution_tool_result" => ContentBlockParamType.BashCodeExecutionToolResult,
+            "text_editor_code_execution_tool_result" =>
+                ContentBlockParamType.TextEditorCodeExecutionToolResult,
+            "tool_search_tool_result" => ContentBlockParamType.ToolSearchToolResult,
+            "container_upload" => ContentBlockParamType.ContainerUpload,
+            _ => (ContentBlockParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ContentBlockParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ContentBlockParamType.Text => "text",
+                ContentBlockParamType.Image => "image",
+                ContentBlockParamType.Document => "document",
+                ContentBlockParamType.SearchResult => "search_result",
+                ContentBlockParamType.Thinking => "thinking",
+                ContentBlockParamType.RedactedThinking => "redacted_thinking",
+                ContentBlockParamType.ToolUse => "tool_use",
+                ContentBlockParamType.ToolResult => "tool_result",
+                ContentBlockParamType.ServerToolUse => "server_tool_use",
+                ContentBlockParamType.WebSearchToolResult => "web_search_tool_result",
+                ContentBlockParamType.WebFetchToolResult => "web_fetch_tool_result",
+                ContentBlockParamType.CodeExecutionToolResult => "code_execution_tool_result",
+                ContentBlockParamType.BashCodeExecutionToolResult =>
+                    "bash_code_execution_tool_result",
+                ContentBlockParamType.TextEditorCodeExecutionToolResult =>
+                    "text_editor_code_execution_tool_result",
+                ContentBlockParamType.ToolSearchToolResult => "tool_search_tool_result",
+                ContentBlockParamType.ContainerUpload => "container_upload",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

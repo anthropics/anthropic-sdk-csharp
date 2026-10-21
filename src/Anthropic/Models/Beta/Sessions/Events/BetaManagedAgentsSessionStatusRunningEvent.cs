@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -36,24 +36,22 @@ public sealed record class BetaManagedAgentsSessionStatusRunningEvent : JsonMode
     /// <summary>
     /// Timestamp of status change.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionStatusRunningEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionStatusRunningEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,10 +61,21 @@ public sealed record class BetaManagedAgentsSessionStatusRunningEvent : JsonMode
     {
         _ = this.ID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session.status_running")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionStatusRunningEvent() { }
+    public BetaManagedAgentsSessionStatusRunningEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.status_running");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -81,6 +90,8 @@ public sealed record class BetaManagedAgentsSessionStatusRunningEvent : JsonMode
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.status_running");
     }
 
 #pragma warning disable CS8618
@@ -107,48 +118,4 @@ class BetaManagedAgentsSessionStatusRunningEventFromRaw
     public BetaManagedAgentsSessionStatusRunningEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionStatusRunningEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionStatusRunningEventTypeConverter))]
-public enum BetaManagedAgentsSessionStatusRunningEventType
-{
-    SessionStatusRunning,
-}
-
-sealed class BetaManagedAgentsSessionStatusRunningEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionStatusRunningEventType>
-{
-    public override BetaManagedAgentsSessionStatusRunningEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.status_running" =>
-                BetaManagedAgentsSessionStatusRunningEventType.SessionStatusRunning,
-            _ => (BetaManagedAgentsSessionStatusRunningEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionStatusRunningEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionStatusRunningEventType.SessionStatusRunning =>
-                    "session.status_running",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

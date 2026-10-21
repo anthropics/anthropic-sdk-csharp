@@ -138,16 +138,18 @@ public record class ImageBlockParamSource : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ImageBlockParamSourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                Base64ImageSource x => x.Type,
-                UrlImageSource x => x.Type,
-                FileImageSource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                Base64ImageSource _ => ImageBlockParamSourceType.Base64,
+                UrlImageSource _ => ImageBlockParamSourceType.Url,
+                FileImageSource _ => ImageBlockParamSourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ImageBlockParamSourceType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -473,5 +475,52 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ImageBlockParamSourceTypeConverter))]
+public enum ImageBlockParamSourceType
+{
+    Base64,
+    Url,
+    File,
+}
+
+sealed class ImageBlockParamSourceTypeConverter : JsonConverter<ImageBlockParamSourceType>
+{
+    public override ImageBlockParamSourceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "base64" => ImageBlockParamSourceType.Base64,
+            "url" => ImageBlockParamSourceType.Url,
+            "file" => ImageBlockParamSourceType.File,
+            _ => (ImageBlockParamSourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ImageBlockParamSourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ImageBlockParamSourceType.Base64 => "base64",
+                ImageBlockParamSourceType.Url => "url",
+                ImageBlockParamSourceType.File => "file",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

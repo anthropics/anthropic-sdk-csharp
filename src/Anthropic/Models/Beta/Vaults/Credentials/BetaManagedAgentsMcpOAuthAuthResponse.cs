@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -33,14 +33,12 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
         init { this._rawData.Set("mcp_server_url", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMcpOAuthAuthResponseType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,12 +47,12 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     /// When the credential's access token expires, in RFC 3339. Absent if the expiry
     /// isn't known.
     /// </summary>
-    public System::DateTimeOffset? ExpiresAt
+    public DateTimeOffset? ExpiresAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("expires_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("expires_at");
         }
         init { this._rawData.Set("expires_at", value); }
     }
@@ -78,12 +76,18 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     public override void Validate()
     {
         _ = this.McpServerUrl;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("mcp_oauth")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ExpiresAt;
         this.Refresh?.Validate();
     }
 
-    public BetaManagedAgentsMcpOAuthAuthResponse() { }
+    public BetaManagedAgentsMcpOAuthAuthResponse()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_oauth");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -96,6 +100,8 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     public BetaManagedAgentsMcpOAuthAuthResponse(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_oauth");
     }
 
 #pragma warning disable CS8618
@@ -113,6 +119,13 @@ public sealed record class BetaManagedAgentsMcpOAuthAuthResponse : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsMcpOAuthAuthResponse(string mcpServerUrl)
+        : this()
+    {
+        this.McpServerUrl = mcpServerUrl;
+    }
 }
 
 class BetaManagedAgentsMcpOAuthAuthResponseFromRaw
@@ -122,46 +135,4 @@ class BetaManagedAgentsMcpOAuthAuthResponseFromRaw
     public BetaManagedAgentsMcpOAuthAuthResponse FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMcpOAuthAuthResponse.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMcpOAuthAuthResponseTypeConverter))]
-public enum BetaManagedAgentsMcpOAuthAuthResponseType
-{
-    McpOAuth,
-}
-
-sealed class BetaManagedAgentsMcpOAuthAuthResponseTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpOAuthAuthResponseType>
-{
-    public override BetaManagedAgentsMcpOAuthAuthResponseType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "mcp_oauth" => BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth,
-            _ => (BetaManagedAgentsMcpOAuthAuthResponseType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMcpOAuthAuthResponseType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMcpOAuthAuthResponseType.McpOAuth => "mcp_oauth",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

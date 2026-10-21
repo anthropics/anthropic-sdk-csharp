@@ -41,12 +41,6 @@ static class SemanticConventions
     /// <summary>Set, to true, when the response is streamed.</summary>
     internal const string AttributeGenAiRequestStream = "gen_ai.request.stream";
 
-    internal const string AttributeGenAiRequestTemperature = "gen_ai.request.temperature";
-
-    internal const string AttributeGenAiRequestTopK = "gen_ai.request.top_k";
-
-    internal const string AttributeGenAiRequestTopP = "gen_ai.request.top_p";
-
     /// <summary>The Message's <c>id</c>.</summary>
     internal const string AttributeGenAiResponseId = "gen_ai.response.id";
 

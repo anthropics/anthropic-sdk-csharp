@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -34,6 +34,23 @@ public record class BetaManagedAgentsStartEventPreview : ModelBase
                 BetaManagedAgentsAgentMessagePreview x => x.ID,
                 BetaManagedAgentsAgentThinkingPreview x => x.ID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "id"),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsStartEventPreviewType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentMessagePreview _ =>
+                    BetaManagedAgentsStartEventPreviewType.AgentMessage,
+                BetaManagedAgentsAgentThinkingPreview _ =>
+                    BetaManagedAgentsStartEventPreviewType.AgentThinking,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsStartEventPreviewType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -128,8 +145,8 @@ public record class BetaManagedAgentsStartEventPreview : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentMessagePreview> agentMessage,
-        System::Action<BetaManagedAgentsAgentThinkingPreview> agentThinking
+        Action<BetaManagedAgentsAgentMessagePreview> agentMessage,
+        Action<BetaManagedAgentsAgentThinkingPreview> agentThinking
     )
     {
         switch (this.Value)
@@ -169,8 +186,8 @@ public record class BetaManagedAgentsStartEventPreview : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsAgentMessagePreview, T> agentMessage,
-        System::Func<BetaManagedAgentsAgentThinkingPreview, T> agentThinking
+        Func<BetaManagedAgentsAgentMessagePreview, T> agentMessage,
+        Func<BetaManagedAgentsAgentThinkingPreview, T> agentThinking
     )
     {
         return this.Value switch
@@ -247,7 +264,7 @@ sealed class BetaManagedAgentsStartEventPreviewConverter
 {
     public override BetaManagedAgentsStartEventPreview? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -320,5 +337,50 @@ sealed class BetaManagedAgentsStartEventPreviewConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsStartEventPreviewTypeConverter))]
+public enum BetaManagedAgentsStartEventPreviewType
+{
+    AgentMessage,
+    AgentThinking,
+}
+
+sealed class BetaManagedAgentsStartEventPreviewTypeConverter
+    : JsonConverter<BetaManagedAgentsStartEventPreviewType>
+{
+    public override BetaManagedAgentsStartEventPreviewType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "agent.message" => BetaManagedAgentsStartEventPreviewType.AgentMessage,
+            "agent.thinking" => BetaManagedAgentsStartEventPreviewType.AgentThinking,
+            _ => (BetaManagedAgentsStartEventPreviewType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsStartEventPreviewType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsStartEventPreviewType.AgentMessage => "agent.message",
+                BetaManagedAgentsStartEventPreviewType.AgentThinking => "agent.thinking",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

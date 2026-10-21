@@ -25,17 +25,21 @@ public record class BetaBrowserStateChange : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaBrowserStateChangeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaBrowserStateChangeTabOpened x => x.Type,
-                BetaBrowserStateChangeDownloadStarted x => x.Type,
-                BetaBrowserStateChangeDownloadCompleted x => x.Type,
-                BetaBrowserStateChangeDownloadFailed x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaBrowserStateChangeTabOpened _ => BetaBrowserStateChangeType.TabOpened,
+                BetaBrowserStateChangeDownloadStarted _ =>
+                    BetaBrowserStateChangeType.DownloadStarted,
+                BetaBrowserStateChangeDownloadCompleted _ =>
+                    BetaBrowserStateChangeType.DownloadCompleted,
+                BetaBrowserStateChangeDownloadFailed _ => BetaBrowserStateChangeType.DownloadFailed,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaBrowserStateChangeType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -484,5 +488,55 @@ sealed class BetaBrowserStateChangeConverter : JsonConverter<BetaBrowserStateCha
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaBrowserStateChangeTypeConverter))]
+public enum BetaBrowserStateChangeType
+{
+    TabOpened,
+    DownloadStarted,
+    DownloadCompleted,
+    DownloadFailed,
+}
+
+sealed class BetaBrowserStateChangeTypeConverter : JsonConverter<BetaBrowserStateChangeType>
+{
+    public override BetaBrowserStateChangeType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tab_opened" => BetaBrowserStateChangeType.TabOpened,
+            "download_started" => BetaBrowserStateChangeType.DownloadStarted,
+            "download_completed" => BetaBrowserStateChangeType.DownloadCompleted,
+            "download_failed" => BetaBrowserStateChangeType.DownloadFailed,
+            _ => (BetaBrowserStateChangeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaBrowserStateChangeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaBrowserStateChangeType.TabOpened => "tab_opened",
+                BetaBrowserStateChangeType.DownloadStarted => "download_started",
+                BetaBrowserStateChangeType.DownloadCompleted => "download_completed",
+                BetaBrowserStateChangeType.DownloadFailed => "download_failed",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

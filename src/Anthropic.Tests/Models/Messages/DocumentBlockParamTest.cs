@@ -287,6 +287,41 @@ public class DocumentBlockParamSourceTest : TestBase
     }
 
     [Fact]
+    public void Base64PdfTypeWorks()
+    {
+        DocumentBlockParamSource value = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz");
+        Assert.Equal(DocumentBlockParamSourceType.Base64, value.Type.Value());
+    }
+
+    [Fact]
+    public void PlainTextTypeWorks()
+    {
+        DocumentBlockParamSource value = new PlainTextSource("data");
+        Assert.Equal(DocumentBlockParamSourceType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void ContentBlockTypeWorks()
+    {
+        DocumentBlockParamSource value = new ContentBlockSource("string");
+        Assert.Equal(DocumentBlockParamSourceType.Content, value.Type.Value());
+    }
+
+    [Fact]
+    public void UrlPdfTypeWorks()
+    {
+        DocumentBlockParamSource value = new UrlPdfSource("url");
+        Assert.Equal(DocumentBlockParamSourceType.Url, value.Type.Value());
+    }
+
+    [Fact]
+    public void FileDocumentTypeWorks()
+    {
+        DocumentBlockParamSource value = new FileDocumentSource("file_id");
+        Assert.Equal(DocumentBlockParamSourceType.File, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         DocumentBlockParamSource value = new(
@@ -304,12 +339,13 @@ public class DocumentBlockParamSourceTest : TestBase
 
         string expectedData = "U3RhaW5sZXNzIHJvY2tz";
         JsonElement expectedMediaType = JsonSerializer.SerializeToElement("application/pdf");
-        JsonElement expectedType = JsonSerializer.SerializeToElement("base64");
+        ApiEnum<string, DocumentBlockParamSourceType> expectedType =
+            DocumentBlockParamSourceType.Base64;
 
         Assert.Equal(expectedData, value.Data);
         Assert.NotNull(value.MediaType);
         Assert.True(JsonElement.DeepEquals(expectedMediaType, value.MediaType.Value));
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         DocumentBlockParamSource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -330,5 +366,67 @@ public class DocumentBlockParamSourceTest : TestBase
         );
 
         Assert.Null(mismatchedValue.Data);
+    }
+}
+
+public class DocumentBlockParamSourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(DocumentBlockParamSourceType.Base64)]
+    [InlineData(DocumentBlockParamSourceType.Text)]
+    [InlineData(DocumentBlockParamSourceType.Content)]
+    [InlineData(DocumentBlockParamSourceType.Url)]
+    [InlineData(DocumentBlockParamSourceType.File)]
+    public void Validation_Works(DocumentBlockParamSourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DocumentBlockParamSourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DocumentBlockParamSourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(DocumentBlockParamSourceType.Base64)]
+    [InlineData(DocumentBlockParamSourceType.Text)]
+    [InlineData(DocumentBlockParamSourceType.Content)]
+    [InlineData(DocumentBlockParamSourceType.Url)]
+    [InlineData(DocumentBlockParamSourceType.File)]
+    public void SerializationRoundtrip_Works(DocumentBlockParamSourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, DocumentBlockParamSourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, DocumentBlockParamSourceType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, DocumentBlockParamSourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, DocumentBlockParamSourceType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

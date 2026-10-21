@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -25,6 +25,21 @@ public record class BetaDreamInput : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaDreamInputType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaDreamMemoryStoreInput _ => BetaDreamInputType.MemoryStore,
+                BetaDreamSessionsInput _ => BetaDreamInputType.Sessions,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaDreamInputType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -108,8 +123,8 @@ public record class BetaDreamInput : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaDreamMemoryStoreInput> memoryStore,
-        System::Action<BetaDreamSessionsInput> sessions
+        Action<BetaDreamMemoryStoreInput> memoryStore,
+        Action<BetaDreamSessionsInput> sessions
     )
     {
         switch (this.Value)
@@ -149,8 +164,8 @@ public record class BetaDreamInput : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaDreamMemoryStoreInput, T> memoryStore,
-        System::Func<BetaDreamSessionsInput, T> sessions
+        Func<BetaDreamMemoryStoreInput, T> memoryStore,
+        Func<BetaDreamSessionsInput, T> sessions
     )
     {
         return this.Value switch
@@ -219,7 +234,7 @@ sealed class BetaDreamInputConverter : JsonConverter<BetaDreamInput>
 {
     public override BetaDreamInput? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -290,5 +305,49 @@ sealed class BetaDreamInputConverter : JsonConverter<BetaDreamInput>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaDreamInputTypeConverter))]
+public enum BetaDreamInputType
+{
+    MemoryStore,
+    Sessions,
+}
+
+sealed class BetaDreamInputTypeConverter : JsonConverter<BetaDreamInputType>
+{
+    public override BetaDreamInputType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "memory_store" => BetaDreamInputType.MemoryStore,
+            "sessions" => BetaDreamInputType.Sessions,
+            _ => (BetaDreamInputType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaDreamInputType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaDreamInputType.MemoryStore => "memory_store",
+                BetaDreamInputType.Sessions => "sessions",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

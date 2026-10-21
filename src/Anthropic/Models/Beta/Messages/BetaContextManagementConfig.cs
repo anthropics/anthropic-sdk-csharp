@@ -105,16 +105,19 @@ public record class Edit : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, EditType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaClearToolUses20250919Edit x => x.Type,
-                BetaClearThinking20251015Edit x => x.Type,
-                BetaCompact20260112Edit x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaClearToolUses20250919Edit _ => EditType.ClearToolUses20250919,
+                BetaClearThinking20251015Edit _ => EditType.ClearThinking20251015,
+                BetaCompact20260112Edit _ => EditType.Compact20260112,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, EditType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -437,5 +440,48 @@ sealed class EditConverter : JsonConverter<Edit>
     public override void Write(Utf8JsonWriter writer, Edit value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(EditTypeConverter))]
+public enum EditType
+{
+    ClearToolUses20250919,
+    ClearThinking20251015,
+    Compact20260112,
+}
+
+sealed class EditTypeConverter : JsonConverter<EditType>
+{
+    public override EditType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "clear_tool_uses_20250919" => EditType.ClearToolUses20250919,
+            "clear_thinking_20251015" => EditType.ClearThinking20251015,
+            "compact_20260112" => EditType.Compact20260112,
+            _ => (EditType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, EditType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                EditType.ClearToolUses20250919 => "clear_tool_uses_20250919",
+                EditType.ClearThinking20251015 => "clear_thinking_20251015",
+                EditType.Compact20260112 => "compact_20260112",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

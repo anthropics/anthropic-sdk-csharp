@@ -248,16 +248,20 @@ public record class BetaPluginInstallationSettingTarget : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaPluginInstallationSettingTargetType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaPluginTargetOrganization x => x.Type,
-                BetaPluginTargetRbacGroup x => x.Type,
-                BetaPluginTargetOrganizationMember x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaPluginTargetOrganization _ =>
+                    BetaPluginInstallationSettingTargetType.Organization,
+                BetaPluginTargetRbacGroup _ => BetaPluginInstallationSettingTargetType.RbacGroup,
+                BetaPluginTargetOrganizationMember _ =>
+                    BetaPluginInstallationSettingTargetType.OrganizationMember,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaPluginInstallationSettingTargetType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -609,5 +613,53 @@ sealed class BetaPluginInstallationSettingTargetConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaPluginInstallationSettingTargetTypeConverter))]
+public enum BetaPluginInstallationSettingTargetType
+{
+    Organization,
+    RbacGroup,
+    OrganizationMember,
+}
+
+sealed class BetaPluginInstallationSettingTargetTypeConverter
+    : JsonConverter<BetaPluginInstallationSettingTargetType>
+{
+    public override BetaPluginInstallationSettingTargetType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => BetaPluginInstallationSettingTargetType.Organization,
+            "rbac_group" => BetaPluginInstallationSettingTargetType.RbacGroup,
+            "organization_member" => BetaPluginInstallationSettingTargetType.OrganizationMember,
+            _ => (BetaPluginInstallationSettingTargetType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaPluginInstallationSettingTargetType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaPluginInstallationSettingTargetType.Organization => "organization",
+                BetaPluginInstallationSettingTargetType.RbacGroup => "rbac_group",
+                BetaPluginInstallationSettingTargetType.OrganizationMember => "organization_member",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

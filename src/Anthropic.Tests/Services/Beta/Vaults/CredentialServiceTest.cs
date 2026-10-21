@@ -16,7 +16,6 @@ public class CredentialServiceTest : TestBase
                 {
                     Token = "bearer_exampletoken",
                     McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                    Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
                 },
             },
             TestContext.Current.CancellationToken

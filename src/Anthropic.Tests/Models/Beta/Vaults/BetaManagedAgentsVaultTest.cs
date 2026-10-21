@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults;
 
 namespace Anthropic.Tests.Models.Beta.Vaults;
@@ -19,7 +18,6 @@ public class BetaManagedAgentsVaultTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             DisplayName = "Example vault",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = BetaManagedAgentsVaultType.Vault,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
@@ -27,7 +25,7 @@ public class BetaManagedAgentsVaultTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDisplayName = "Example vault";
         Dictionary<string, string> expectedMetadata = new() { { "environment", "production" } };
-        ApiEnum<string, BetaManagedAgentsVaultType> expectedType = BetaManagedAgentsVaultType.Vault;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
 
         Assert.Equal(expectedID, model.ID);
@@ -41,7 +39,7 @@ public class BetaManagedAgentsVaultTest : TestBase
 
             Assert.Equal(value, model.Metadata[item.Key]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
 
@@ -55,7 +53,6 @@ public class BetaManagedAgentsVaultTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             DisplayName = "Example vault",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = BetaManagedAgentsVaultType.Vault,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
@@ -78,7 +75,6 @@ public class BetaManagedAgentsVaultTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             DisplayName = "Example vault",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = BetaManagedAgentsVaultType.Vault,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
@@ -93,7 +89,7 @@ public class BetaManagedAgentsVaultTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedDisplayName = "Example vault";
         Dictionary<string, string> expectedMetadata = new() { { "environment", "production" } };
-        ApiEnum<string, BetaManagedAgentsVaultType> expectedType = BetaManagedAgentsVaultType.Vault;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("vault");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -107,7 +103,7 @@ public class BetaManagedAgentsVaultTest : TestBase
 
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
 
@@ -121,7 +117,6 @@ public class BetaManagedAgentsVaultTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             DisplayName = "Example vault",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = BetaManagedAgentsVaultType.Vault,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
@@ -138,68 +133,11 @@ public class BetaManagedAgentsVaultTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             DisplayName = "Example vault",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
-            Type = BetaManagedAgentsVaultType.Vault,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
 
         BetaManagedAgentsVault copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsVaultTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsVaultType.Vault)]
-    public void Validation_Works(BetaManagedAgentsVaultType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsVaultType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsVaultType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsVaultType.Vault)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsVaultType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsVaultType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsVaultType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsVaultType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsVaultType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

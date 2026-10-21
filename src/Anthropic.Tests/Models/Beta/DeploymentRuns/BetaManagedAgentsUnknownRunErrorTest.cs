@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
@@ -10,28 +9,19 @@ public class BetaManagedAgentsUnknownRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsUnknownRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        var model = new BetaManagedAgentsUnknownRunError { Message = "message" };
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsUnknownRunErrorType> expectedType =
-            BetaManagedAgentsUnknownRunErrorType.UnknownError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("unknown_error");
 
         Assert.Equal(expectedMessage, model.Message);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsUnknownRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        var model = new BetaManagedAgentsUnknownRunError { Message = "message" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsUnknownRunError>(
@@ -45,11 +35,7 @@ public class BetaManagedAgentsUnknownRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsUnknownRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        var model = new BetaManagedAgentsUnknownRunError { Message = "message" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsUnknownRunError>(
@@ -59,21 +45,16 @@ public class BetaManagedAgentsUnknownRunErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsUnknownRunErrorType> expectedType =
-            BetaManagedAgentsUnknownRunErrorType.UnknownError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("unknown_error");
 
         Assert.Equal(expectedMessage, deserialized.Message);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsUnknownRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        var model = new BetaManagedAgentsUnknownRunError { Message = "message" };
 
         model.Validate();
     }
@@ -81,66 +62,10 @@ public class BetaManagedAgentsUnknownRunErrorTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsUnknownRunError
-        {
-            Message = "message",
-            Type = BetaManagedAgentsUnknownRunErrorType.UnknownError,
-        };
+        var model = new BetaManagedAgentsUnknownRunError { Message = "message" };
 
         BetaManagedAgentsUnknownRunError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsUnknownRunErrorTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsUnknownRunErrorType.UnknownError)]
-    public void Validation_Works(BetaManagedAgentsUnknownRunErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUnknownRunErrorType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUnknownRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsUnknownRunErrorType.UnknownError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsUnknownRunErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUnknownRunErrorType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUnknownRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUnknownRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUnknownRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

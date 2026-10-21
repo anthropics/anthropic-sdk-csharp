@@ -15,7 +15,7 @@ namespace Anthropic.Models.Organization.Workspaces.RateLimits;
 public sealed record class WorkspaceRateLimit : JsonModel
 {
     /// <summary>
-    /// The rate-limit group this entry's limits apply to. Its `type` equals `group_type`.
+    /// The rate-limit group this entry's limits apply to.
     /// </summary>
     public required Group Group
     {
@@ -52,7 +52,7 @@ public sealed record class WorkspaceRateLimit : JsonModel
     }
 
     /// <summary>
-    /// Model names this entry's limits apply to, including aliases. `null` when `group_type`
+    /// Model names this entry's limits apply to, including aliases. `null` when `group.type`
     /// is not `"model_group"`.
     /// </summary>
     public required IReadOnlyList<string>? Models
@@ -175,7 +175,7 @@ class WorkspaceRateLimitFromRaw : IFromRawJson<WorkspaceRateLimit>
 }
 
 /// <summary>
-/// The rate-limit group this entry's limits apply to. Its `type` equals `group_type`.
+/// The rate-limit group this entry's limits apply to.
 /// </summary>
 [JsonConverter(typeof(GroupConverter))]
 public record class Group : ModelBase
@@ -212,19 +212,22 @@ public record class Group : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, GroupTypeValue> Type
     {
         get
         {
             return this.Value switch
             {
-                RateLimits::OrganizationRateLimitModelGroup x => x.Type,
-                RateLimits::OrganizationRateLimitBatchGroup x => x.Type,
-                RateLimits::OrganizationRateLimitTokenCountGroup x => x.Type,
-                RateLimits::OrganizationRateLimitFilesGroup x => x.Type,
-                RateLimits::OrganizationRateLimitSkillsGroup x => x.Type,
-                RateLimits::OrganizationRateLimitWebSearchGroup x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                RateLimits::OrganizationRateLimitModelGroup _ => GroupTypeValue.ModelGroup,
+                RateLimits::OrganizationRateLimitBatchGroup _ => GroupTypeValue.Batch,
+                RateLimits::OrganizationRateLimitTokenCountGroup _ => GroupTypeValue.TokenCount,
+                RateLimits::OrganizationRateLimitFilesGroup _ => GroupTypeValue.Files,
+                RateLimits::OrganizationRateLimitSkillsGroup _ => GroupTypeValue.Skills,
+                RateLimits::OrganizationRateLimitWebSearchGroup _ => GroupTypeValue.WebSearch,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, GroupTypeValue>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -752,5 +755,61 @@ sealed class GroupConverter : JsonConverter<Group>
     public override void Write(Utf8JsonWriter writer, Group value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(GroupTypeValueConverter))]
+public enum GroupTypeValue
+{
+    ModelGroup,
+    Batch,
+    TokenCount,
+    Files,
+    Skills,
+    WebSearch,
+}
+
+sealed class GroupTypeValueConverter : JsonConverter<GroupTypeValue>
+{
+    public override GroupTypeValue Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "model_group" => GroupTypeValue.ModelGroup,
+            "batch" => GroupTypeValue.Batch,
+            "token_count" => GroupTypeValue.TokenCount,
+            "files" => GroupTypeValue.Files,
+            "skills" => GroupTypeValue.Skills,
+            "web_search" => GroupTypeValue.WebSearch,
+            _ => (GroupTypeValue)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        GroupTypeValue value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                GroupTypeValue.ModelGroup => "model_group",
+                GroupTypeValue.Batch => "batch",
+                GroupTypeValue.TokenCount => "token_count",
+                GroupTypeValue.Files => "files",
+                GroupTypeValue.Skills => "skills",
+                GroupTypeValue.WebSearch => "web_search",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

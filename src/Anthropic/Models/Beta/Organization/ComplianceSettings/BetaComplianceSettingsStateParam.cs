@@ -25,15 +25,19 @@ public record class BetaComplianceSettingsStateParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaComplianceSettingsStateParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaComplianceSettingsStateEnabledParam x => x.Type,
-                BetaComplianceSettingsStateDisabledParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaComplianceSettingsStateEnabledParam _ =>
+                    BetaComplianceSettingsStateParamType.Enabled,
+                BetaComplianceSettingsStateDisabledParam _ =>
+                    BetaComplianceSettingsStateParamType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaComplianceSettingsStateParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -317,5 +321,50 @@ sealed class BetaComplianceSettingsStateParamConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaComplianceSettingsStateParamTypeConverter))]
+public enum BetaComplianceSettingsStateParamType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaComplianceSettingsStateParamTypeConverter
+    : JsonConverter<BetaComplianceSettingsStateParamType>
+{
+    public override BetaComplianceSettingsStateParamType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaComplianceSettingsStateParamType.Enabled,
+            "disabled" => BetaComplianceSettingsStateParamType.Disabled,
+            _ => (BetaComplianceSettingsStateParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaComplianceSettingsStateParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaComplianceSettingsStateParamType.Enabled => "enabled",
+                BetaComplianceSettingsStateParamType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

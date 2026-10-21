@@ -40,14 +40,12 @@ public sealed record class BetaManagedAgentsMultiagentCoordinator : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -59,10 +57,16 @@ public sealed record class BetaManagedAgentsMultiagentCoordinator : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("coordinator")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsMultiagentCoordinator() { }
+    public BetaManagedAgentsMultiagentCoordinator()
+    {
+        this.Type = JsonSerializer.SerializeToElement("coordinator");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -75,6 +79,8 @@ public sealed record class BetaManagedAgentsMultiagentCoordinator : JsonModel
     public BetaManagedAgentsMultiagentCoordinator(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("coordinator");
     }
 
 #pragma warning disable CS8618
@@ -91,6 +97,13 @@ public sealed record class BetaManagedAgentsMultiagentCoordinator : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsMultiagentCoordinator(IReadOnlyList<Agent> agents)
+        : this()
+    {
+        this.Agents = agents;
     }
 }
 
@@ -121,6 +134,22 @@ public record class Agent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, AgentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentReference _ => AgentType.Agent,
+                BetaManagedAgentsAdvisor _ => AgentType.Advisor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, AgentType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -386,16 +415,16 @@ sealed class AgentConverter : JsonConverter<Agent>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsMultiagentCoordinatorTypeConverter))]
-public enum BetaManagedAgentsMultiagentCoordinatorType
+[JsonConverter(typeof(AgentTypeConverter))]
+public enum AgentType
 {
-    Coordinator,
+    Agent,
+    Advisor,
 }
 
-sealed class BetaManagedAgentsMultiagentCoordinatorTypeConverter
-    : JsonConverter<BetaManagedAgentsMultiagentCoordinatorType>
+sealed class AgentTypeConverter : JsonConverter<AgentType>
 {
-    public override BetaManagedAgentsMultiagentCoordinatorType Read(
+    public override AgentType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -403,14 +432,15 @@ sealed class BetaManagedAgentsMultiagentCoordinatorTypeConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "coordinator" => BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
-            _ => (BetaManagedAgentsMultiagentCoordinatorType)(-1),
+            "agent" => AgentType.Agent,
+            "advisor" => AgentType.Advisor,
+            _ => (AgentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsMultiagentCoordinatorType value,
+        AgentType value,
         JsonSerializerOptions options
     )
     {
@@ -418,7 +448,8 @@ sealed class BetaManagedAgentsMultiagentCoordinatorTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsMultiagentCoordinatorType.Coordinator => "coordinator",
+                AgentType.Agent => "agent",
+                AgentType.Advisor => "advisor",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

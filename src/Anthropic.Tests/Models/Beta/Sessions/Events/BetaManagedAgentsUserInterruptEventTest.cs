@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -14,19 +13,17 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
 
         string expectedID = "id";
-        ApiEnum<string, BetaManagedAgentsUserInterruptEventType> expectedType =
-            BetaManagedAgentsUserInterruptEventType.UserInterrupt;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.interrupt");
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
@@ -37,7 +34,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -57,7 +53,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -70,13 +65,12 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
-        ApiEnum<string, BetaManagedAgentsUserInterruptEventType> expectedType =
-            BetaManagedAgentsUserInterruptEventType.UserInterrupt;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.interrupt");
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
@@ -87,7 +81,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -98,11 +91,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsUserInterruptEvent
-        {
-            ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
-        };
+        var model = new BetaManagedAgentsUserInterruptEvent { ID = "id" };
 
         Assert.Null(model.ProcessedAt);
         Assert.False(model.RawData.ContainsKey("processed_at"));
@@ -113,11 +102,7 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsUserInterruptEvent
-        {
-            ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
-        };
+        var model = new BetaManagedAgentsUserInterruptEvent { ID = "id" };
 
         model.Validate();
     }
@@ -128,7 +113,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
 
             ProcessedAt = null,
             SessionThreadID = null,
@@ -146,7 +130,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
 
             ProcessedAt = null,
             SessionThreadID = null,
@@ -161,7 +144,6 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         var model = new BetaManagedAgentsUserInterruptEvent
         {
             ID = "id",
-            Type = BetaManagedAgentsUserInterruptEventType.UserInterrupt,
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             SessionThreadID = "session_thread_id",
         };
@@ -169,57 +151,5 @@ public class BetaManagedAgentsUserInterruptEventTest : TestBase
         BetaManagedAgentsUserInterruptEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsUserInterruptEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsUserInterruptEventType.UserInterrupt)]
-    public void Validation_Works(BetaManagedAgentsUserInterruptEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserInterruptEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserInterruptEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsUserInterruptEventType.UserInterrupt)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsUserInterruptEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserInterruptEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserInterruptEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserInterruptEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserInterruptEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic.Exceptions;
 using Anthropic.Helpers.Beta;
 using Anthropic.Models.Beta.Messages;
 using Anthropic.Services.Beta;
@@ -114,7 +115,7 @@ public class BetaToolRunnerTest
         new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = "Hello", Role = Role.User }],
+            Messages = [new BetaUserMessageParam { Content = "Hello" }],
             Model = Messages::Model.ClaudeOpus4_6,
         };
 
@@ -259,13 +260,22 @@ public class BetaToolRunnerTest
         Assert.Equal(3, secondCallParams!.Messages.Count);
     }
 
-    private static BetaMessageParam MakeSystemToolChangeMessage(BetaContentBlockParam block) =>
-        new() { Role = Role.System, Content = new BetaMessageParamContent([block]) };
+    private static BetaMessageParam MakeSystemToolChangeMessage(SystemMessageContentBlock block) =>
+        new BetaSystemMessageParam { Content = new BetaSystemMessageParamContent([block]) };
 
-    private static BetaContentBlockParam MakeToolRemovalBlock(string name) =>
+    private static BetaMessageParam MakeSystemMessageFromRawContent(JsonElement content) =>
+        BetaSystemMessageParam.FromRawUnchecked(
+            new Dictionary<string, JsonElement>
+            {
+                ["role"] = JsonSerializer.SerializeToElement("system"),
+                ["content"] = content,
+            }
+        );
+
+    private static SystemMessageContentBlock MakeToolRemovalBlock(string name) =>
         new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference(name));
 
-    private static BetaContentBlockParam MakeToolAdditionBlock(string name) =>
+    private static SystemMessageContentBlock MakeToolAdditionBlock(string name) =>
         new BetaRequestToolAdditionBlock(new BetaToolChangeToolReference(name));
 
     /// <summary>
@@ -310,7 +320,7 @@ public class BetaToolRunnerTest
 
         Assert.NotNull(secondCallParams);
         var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
-        return Assert.Single(userMsg.Content.Json.EnumerateArray());
+        return Assert.Single(userMsg.Json.GetProperty("content").EnumerateArray());
     }
 
     [Fact]
@@ -332,7 +342,7 @@ public class BetaToolRunnerTest
         {
             Messages =
             [
-                new() { Content = "Hello", Role = Role.User },
+                new BetaUserMessageParam { Content = "Hello" },
                 MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
             ],
         };
@@ -427,7 +437,7 @@ public class BetaToolRunnerTest
         {
             Messages =
             [
-                new() { Content = "Hello", Role = Role.User },
+                new BetaUserMessageParam { Content = "Hello" },
                 MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather")),
                 MakeSystemToolChangeMessage(MakeToolAdditionBlock("get_weather")),
             ],
@@ -436,6 +446,138 @@ public class BetaToolRunnerTest
 
         Assert.True(toolExecuted);
         Assert.Equal("Sunny", result.GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task SystemMessageWithoutContent_LeavesToolsAvailable()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var tool = MakeWeatherToolSync(_ => "Sunny");
+
+        var paramsWithoutContent = BaseParams with
+        {
+            Messages =
+            [
+                new BetaUserMessageParam { Content = "Hello" },
+                new BetaSystemMessageParam
+                {
+                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
+                },
+            ],
+        };
+        var result = await RunAndCaptureToolResult(paramsWithoutContent, [tool], "get_weather", ct);
+
+        Assert.Equal("Sunny", result.GetProperty("content").GetString());
+    }
+
+    [Fact]
+    public async Task ToolRemoval_InSystemMessageBuiltFromJson_IsHonored()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        var removal = MakeSystemToolChangeMessage(MakeToolRemovalBlock("get_weather"));
+        var paramsWithRemoval = BaseParams with
+        {
+            Messages =
+            [
+                new BetaUserMessageParam { Content = "Hello" },
+                new BetaMessageParam(removal.Json),
+            ],
+        };
+        var result = await RunAndCaptureToolResult(paramsWithRemoval, [tool], "get_weather", ct);
+
+        Assert.False(toolExecuted);
+        Assert.True(result.GetProperty("is_error").GetBoolean());
+    }
+
+    [Fact]
+    public async Task ToolRemoval_BesideBlockOutsideSystemContent_IsHonored()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        var content = new BetaMessageContentParam(
+            [
+                new BetaToolResultBlockParam { ToolUseID = "tu_0" },
+                new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference("get_weather")),
+            ]
+        );
+        var paramsWithRemoval = BaseParams with
+        {
+            Messages =
+            [
+                new BetaUserMessageParam { Content = "Hello" },
+                MakeSystemMessageFromRawContent(content.Json),
+            ],
+        };
+        var result = await RunAndCaptureToolResult(paramsWithRemoval, [tool], "get_weather", ct);
+
+        Assert.False(toolExecuted);
+        Assert.True(result.GetProperty("is_error").GetBoolean());
+    }
+
+    [Fact]
+    public async Task ToolRemoval_BesideUnknownBlockType_IsHonored()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var toolExecuted = false;
+        var tool = MakeWeatherToolSync(_ =>
+        {
+            toolExecuted = true;
+            return "Sunny";
+        });
+
+        using var unknownBlock = JsonDocument.Parse("""{"type":"future_block"}""");
+        var content = new BetaMessageContentParam(
+            [
+                new BetaContentBlockParam(unknownBlock.RootElement),
+                new BetaRequestToolRemovalBlock(new BetaToolChangeToolReference("get_weather")),
+            ]
+        );
+        var paramsWithRemoval = BaseParams with
+        {
+            Messages =
+            [
+                new BetaUserMessageParam { Content = "Hello" },
+                MakeSystemMessageFromRawContent(content.Json),
+            ],
+        };
+        var result = await RunAndCaptureToolResult(paramsWithRemoval, [tool], "get_weather", ct);
+
+        Assert.False(toolExecuted);
+        Assert.True(result.GetProperty("is_error").GetBoolean());
+    }
+
+    [Fact]
+    public async Task ToolRemoval_WithoutToolReference_Throws()
+    {
+        var ct = TestContext.Current.CancellationToken;
+        var tool = MakeWeatherToolSync(_ => "Sunny");
+
+        using var content = JsonDocument.Parse("""[{"type":"tool_removal"}]""");
+        var paramsWithRemoval = BaseParams with
+        {
+            Messages =
+            [
+                new BetaUserMessageParam { Content = "Hello" },
+                MakeSystemMessageFromRawContent(content.RootElement),
+            ],
+        };
+
+        await Assert.ThrowsAsync<AnthropicInvalidDataException>(() =>
+            RunAndCaptureToolResult(paramsWithRemoval, [tool], "get_weather", ct)
+        );
     }
 
     // --- AddTools / RemoveTools ---
@@ -675,7 +817,7 @@ public class BetaToolRunnerTest
                 runner.SetParams(p =>
                     p with
                     {
-                        Messages = [new() { Content = "Start over", Role = Role.User }],
+                        Messages = [new BetaUserMessageParam { Content = "Start over" }],
                     }
                 );
             }
@@ -1491,7 +1633,7 @@ public class BetaToolRunnerTest
                 runner.SetParams(p =>
                     p with
                     {
-                        Messages = [new() { Content = "Custom history", Role = Role.User }],
+                        Messages = [new BetaUserMessageParam { Content = "Custom history" }],
                     }
                 );
             }
@@ -1542,9 +1684,7 @@ public class BetaToolRunnerTest
             {
                 // Push additional context — runner skips auto-append and uses
                 // the updated messages from PushMessages.
-                runner.PushMessages(
-                    new BetaMessageParam { Content = "Extra context", Role = Role.User }
-                );
+                runner.PushMessages(new BetaUserMessageParam { Content = "Extra context" });
             }
         }
 
@@ -1872,7 +2012,7 @@ public class BetaToolRunnerTest
         Assert.NotNull(secondCallParams);
         // The user message with tool results should be the last message.
         var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
-        var contentJson = userMsg.Content.Json;
+        var contentJson = userMsg.Json.GetProperty("content");
         var results = new List<JsonElement>();
         foreach (var item in contentJson.EnumerateArray())
             results.Add(item);
@@ -1929,7 +2069,7 @@ public class BetaToolRunnerTest
         Assert.NotNull(secondCallParams);
         // Verify the error content was passed through (not just ex.Message).
         var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
-        var resultJsonEnumerator = userMsg.Content.Json.EnumerateArray();
+        var resultJsonEnumerator = userMsg.Json.GetProperty("content").EnumerateArray();
         resultJsonEnumerator.MoveNext();
         var resultJson = resultJsonEnumerator.Current;
         Assert.True(resultJson.GetProperty("is_error").GetBoolean());
@@ -2088,7 +2228,7 @@ public class BetaToolRunnerTest
         // orphaned once the fallback handler trims the pre-seam tool_use from history.
         Assert.NotNull(secondCallParams);
         var userMsg = secondCallParams!.Messages[secondCallParams.Messages.Count - 1];
-        var resultJson = Assert.Single(userMsg.Content.Json.EnumerateArray());
+        var resultJson = Assert.Single(userMsg.Json.GetProperty("content").EnumerateArray());
         Assert.Equal("tu_post", resultJson.GetProperty("tool_use_id").GetString());
     }
 
@@ -2515,8 +2655,7 @@ public class BetaToolRunnerTest
         // server resumes it.
         Assert.NotNull(secondCallParams);
         Assert.Equal(2, secondCallParams!.Messages.Count);
-        var appended = secondCallParams.Messages[1];
-        Assert.Equal(Role.Assistant, appended.Role.Value());
+        Assert.True(secondCallParams.Messages[1].TryPickAssistant(out var appended));
         Assert.Equal(
             ["text", "server_tool_use"],
             appended.Content.Json.EnumerateArray().Select(b => b.GetProperty("type").GetString())
@@ -2611,8 +2750,7 @@ public class BetaToolRunnerTest
 
         Assert.NotNull(secondCallParams);
         Assert.Equal(2, secondCallParams!.Messages.Count);
-        var appended = secondCallParams.Messages[1];
-        Assert.Equal(Role.Assistant, appended.Role.Value());
+        Assert.True(secondCallParams.Messages[1].TryPickAssistant(out var appended));
         var blocks = appended.Content.Json.EnumerateArray().ToList();
         Assert.Equal(
             ["text", "server_tool_use"],
@@ -2665,8 +2803,7 @@ public class BetaToolRunnerTest
         // turn follows it — so the model answers on the next request.
         Assert.NotNull(secondCallParams);
         Assert.Equal(2, secondCallParams!.Messages.Count);
-        var appended = secondCallParams.Messages[1];
-        Assert.Equal(Role.Assistant, appended.Role.Value());
+        Assert.True(secondCallParams.Messages[1].TryPickAssistant(out var appended));
         var block = Assert.Single(appended.Content.Json.EnumerateArray());
         Assert.Equal("compaction", block.GetProperty("type").GetString());
         Assert.Equal(
@@ -2744,8 +2881,7 @@ public class BetaToolRunnerTest
 
         Assert.NotNull(secondCallParams);
         Assert.Equal(2, secondCallParams!.Messages.Count);
-        var appended = secondCallParams.Messages[1];
-        Assert.Equal(Role.Assistant, appended.Role.Value());
+        Assert.True(secondCallParams.Messages[1].TryPickAssistant(out var appended));
         var block = Assert.Single(appended.Content.Json.EnumerateArray());
         Assert.Equal("compaction", block.GetProperty("type").GetString());
         Assert.Equal(

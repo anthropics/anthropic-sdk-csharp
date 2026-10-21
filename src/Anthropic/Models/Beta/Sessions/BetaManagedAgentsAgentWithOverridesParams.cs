@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,8 +7,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -36,14 +36,12 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentWithOverridesParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -52,13 +50,13 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     /// Replacement MCP server list. Full replacement: the provided array becomes
     /// the MCP servers. Send an empty array to clear; omit to preserve the agent's servers.
     /// </summary>
-    public IReadOnlyList<BetaManagedAgentsUrlMcpServerParams>? McpServers
+    public IReadOnlyList<Agents::BetaManagedAgentsUrlMcpServerParams>? McpServers
     {
         get
         {
             this._rawData.Freeze();
             return this._rawData.GetNullableStruct<
-                ImmutableArray<BetaManagedAgentsUrlMcpServerParams>
+                ImmutableArray<Agents::BetaManagedAgentsUrlMcpServerParams>
             >("mcp_servers");
         }
         init
@@ -69,7 +67,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<BetaManagedAgentsUrlMcpServerParams>?>(
+            this._rawData.Set<ImmutableArray<Agents::BetaManagedAgentsUrlMcpServerParams>?>(
                 "mcp_servers",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -80,14 +78,12 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     /// Replacement model. Accepts the model string, e.g. `claude-opus-5-5`, or a
     /// `model_config` object. Omit to use the agent's model.
     /// </summary>
-    public global::Anthropic.Models.Beta.Sessions.Model? Model
+    public Model? Model
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<global::Anthropic.Models.Beta.Sessions.Model>(
-                "model"
-            );
+            return this._rawData.GetNullableClass<Model>("model");
         }
         init
         {
@@ -105,14 +101,14 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     /// Replacement skill list. Full replacement: the provided array becomes the
     /// skills. Send an empty array to clear; omit to preserve the agent's skills.
     /// </summary>
-    public IReadOnlyList<BetaManagedAgentsSkillParams>? Skills
+    public IReadOnlyList<Agents::BetaManagedAgentsSkillParams>? Skills
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<ImmutableArray<BetaManagedAgentsSkillParams>>(
-                "skills"
-            );
+            return this._rawData.GetNullableStruct<
+                ImmutableArray<Agents::BetaManagedAgentsSkillParams>
+            >("skills");
         }
         init
         {
@@ -122,7 +118,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<BetaManagedAgentsSkillParams>?>(
+            this._rawData.Set<ImmutableArray<Agents::BetaManagedAgentsSkillParams>?>(
                 "skills",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -147,14 +143,12 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     /// Replacement tool list. Full replacement: the provided array becomes the tool
     /// configuration. Send an empty array to clear; omit to preserve the agent's tools.
     /// </summary>
-    public IReadOnlyList<global::Anthropic.Models.Beta.Sessions.Tool>? Tools
+    public IReadOnlyList<Tool>? Tools
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<
-                ImmutableArray<global::Anthropic.Models.Beta.Sessions.Tool>
-            >("tools");
+            return this._rawData.GetNullableStruct<ImmutableArray<Tool>>("tools");
         }
         init
         {
@@ -164,7 +158,7 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
                 return;
             }
 
-            this._rawData.Set<ImmutableArray<global::Anthropic.Models.Beta.Sessions.Tool>?>(
+            this._rawData.Set<ImmutableArray<Tool>?>(
                 "tools",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -197,7 +191,15 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent_with_overrides")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         foreach (var item in this.McpServers ?? [])
         {
             item.Validate();
@@ -215,7 +217,10 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
         _ = this.Version;
     }
 
-    public BetaManagedAgentsAgentWithOverridesParams() { }
+    public BetaManagedAgentsAgentWithOverridesParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent_with_overrides");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -230,6 +235,8 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent_with_overrides");
     }
 
 #pragma warning disable CS8618
@@ -247,6 +254,13 @@ public sealed record class BetaManagedAgentsAgentWithOverridesParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsAgentWithOverridesParams(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
 class BetaManagedAgentsAgentWithOverridesParamsFromRaw
@@ -258,55 +272,11 @@ class BetaManagedAgentsAgentWithOverridesParamsFromRaw
     ) => BetaManagedAgentsAgentWithOverridesParams.FromRawUnchecked(rawData);
 }
 
-[JsonConverter(typeof(BetaManagedAgentsAgentWithOverridesParamsTypeConverter))]
-public enum BetaManagedAgentsAgentWithOverridesParamsType
-{
-    AgentWithOverrides,
-}
-
-sealed class BetaManagedAgentsAgentWithOverridesParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentWithOverridesParamsType>
-{
-    public override BetaManagedAgentsAgentWithOverridesParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent_with_overrides" =>
-                BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
-            _ => (BetaManagedAgentsAgentWithOverridesParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentWithOverridesParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides =>
-                    "agent_with_overrides",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
 /// <summary>
 /// Replacement model. Accepts the model string, e.g. `claude-opus-5-5`, or a `model_config`
 /// object. Omit to use the agent's model.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.ModelConverter))]
+[JsonConverter(typeof(ModelConverter))]
 public record class Model : ModelBase
 {
     public object? Value { get; } = null;
@@ -324,13 +294,13 @@ public record class Model : ModelBase
         }
     }
 
-    public Model(ApiEnum<string, BetaManagedAgentsModel> value, JsonElement? element = null)
+    public Model(ApiEnum<string, Agents::BetaManagedAgentsModel> value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Model(BetaManagedAgentsModelConfigParams value, JsonElement? element = null)
+    public Model(Agents::BetaManagedAgentsModelConfigParams value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -343,47 +313,47 @@ public record class Model : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of BetaManagedAgentsModel.
+    /// type <see cref="ApiEnum{TRaw, TEnum}"/> with a <c>TRaw</c> of <c>string</c> and a <c>TEnum</c> of Agents::BetaManagedAgentsModel.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgents(out var value)) {
-    ///     // `value` is of type `ApiEnum&lt;string, BetaManagedAgentsModel&gt;`
+    ///     // `value` is of type `ApiEnum&lt;string, Agents::BetaManagedAgentsModel&gt;`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgents(
-        [NotNullWhen(true)] out ApiEnum<string, BetaManagedAgentsModel>? value
+        [NotNullWhen(true)] out ApiEnum<string, Agents::BetaManagedAgentsModel>? value
     )
     {
-        value = this.Value as ApiEnum<string, BetaManagedAgentsModel>;
+        value = this.Value as ApiEnum<string, Agents::BetaManagedAgentsModel>;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsModelConfigParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsModelConfigParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsModelConfigParams(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsModelConfigParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsModelConfigParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsModelConfigParams(
-        [NotNullWhen(true)] out BetaManagedAgentsModelConfigParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsModelConfigParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsModelConfigParams;
+        value = this.Value as Agents::BetaManagedAgentsModelConfigParams;
         return value != null;
     }
 
@@ -401,23 +371,23 @@ public record class Model : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (ApiEnum&lt;string, BetaManagedAgentsModel&gt; value) =&gt; {...},
-    ///     (BetaManagedAgentsModelConfigParams value) =&gt; {...}
+    ///     (ApiEnum&lt;string, Agents::BetaManagedAgentsModel&gt; value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsModelConfigParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<ApiEnum<string, BetaManagedAgentsModel>> betaManagedAgents,
-        System::Action<BetaManagedAgentsModelConfigParams> betaManagedAgentsModelConfigParams
+        Action<ApiEnum<string, Agents::BetaManagedAgentsModel>> betaManagedAgents,
+        Action<Agents::BetaManagedAgentsModelConfigParams> betaManagedAgentsModelConfigParams
     )
     {
         switch (this.Value)
         {
-            case ApiEnum<string, BetaManagedAgentsModel> value:
+            case ApiEnum<string, Agents::BetaManagedAgentsModel> value:
                 betaManagedAgents(value);
                 break;
-            case BetaManagedAgentsModelConfigParams value:
+            case Agents::BetaManagedAgentsModelConfigParams value:
                 betaManagedAgentsModelConfigParams(value);
                 break;
             default:
@@ -440,36 +410,35 @@ public record class Model : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (ApiEnum&lt;string, BetaManagedAgentsModel&gt; value) =&gt; {...},
-    ///     (BetaManagedAgentsModelConfigParams value) =&gt; {...}
+    ///     (ApiEnum&lt;string, Agents::BetaManagedAgentsModel&gt; value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsModelConfigParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<ApiEnum<string, BetaManagedAgentsModel>, T> betaManagedAgents,
-        System::Func<BetaManagedAgentsModelConfigParams, T> betaManagedAgentsModelConfigParams
+        Func<ApiEnum<string, Agents::BetaManagedAgentsModel>, T> betaManagedAgents,
+        Func<Agents::BetaManagedAgentsModelConfigParams, T> betaManagedAgentsModelConfigParams
     )
     {
         return this.Value switch
         {
-            ApiEnum<string, BetaManagedAgentsModel> value => betaManagedAgents(value),
-            BetaManagedAgentsModelConfigParams value => betaManagedAgentsModelConfigParams(value),
+            ApiEnum<string, Agents::BetaManagedAgentsModel> value => betaManagedAgents(value),
+            Agents::BetaManagedAgentsModelConfigParams value => betaManagedAgentsModelConfigParams(
+                value
+            ),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Model"),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Model(
-        ApiEnum<string, BetaManagedAgentsModel> value
-    ) => new((ApiEnum<string, BetaManagedAgentsModel>)value);
+    public static implicit operator Model(ApiEnum<string, Agents::BetaManagedAgentsModel> value) =>
+        new((ApiEnum<string, Agents::BetaManagedAgentsModel>)value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Model(
-        BetaManagedAgentsModel value
-    ) => new((ApiEnum<string, BetaManagedAgentsModel>)value);
+    public static implicit operator Model(Agents::BetaManagedAgentsModel value) =>
+        new((ApiEnum<string, Agents::BetaManagedAgentsModel>)value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Model(
-        BetaManagedAgentsModelConfigParams value
-    ) => new(value);
+    public static implicit operator Model(Agents::BetaManagedAgentsModelConfigParams value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -493,7 +462,7 @@ public record class Model : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Model? other) =>
+    public virtual bool Equals(Model? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -513,52 +482,52 @@ public record class Model : ModelBase
     {
         return this.Value switch
         {
-            ApiEnum<string, BetaManagedAgentsModel> _ => 0,
-            BetaManagedAgentsModelConfigParams _ => 1,
+            ApiEnum<string, Agents::BetaManagedAgentsModel> _ => 0,
+            Agents::BetaManagedAgentsModelConfigParams _ => 1,
             _ => -1,
         };
     }
 }
 
-sealed class ModelConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Model>
+sealed class ModelConverter : JsonConverter<Model>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Model? Read(
+    public override Model? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
         try
         {
-            var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsModel>>(
-                element,
-                options
-            );
+            var deserialized = JsonSerializer.Deserialize<
+                ApiEnum<string, Agents::BetaManagedAgentsModel>
+            >(element, options);
             if (deserialized != null)
             {
                 deserialized.Raw();
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
 
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsModelConfigParams>(
-                element,
-                options
-            );
+            var deserialized =
+                JsonSerializer.Deserialize<Agents::BetaManagedAgentsModelConfigParams>(
+                    element,
+                    options
+                );
             if (deserialized != null)
             {
                 deserialized.Validate();
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -566,11 +535,7 @@ sealed class ModelConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
         return new(element);
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Model value,
-        JsonSerializerOptions options
-    )
+    public override void Write(Utf8JsonWriter writer, Model value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
     }
@@ -579,7 +544,7 @@ sealed class ModelConverter : JsonConverter<global::Anthropic.Models.Beta.Sessio
 /// <summary>
 /// Union type for tool configurations in the tools array.
 /// </summary>
-[JsonConverter(typeof(global::Anthropic.Models.Beta.Sessions.ToolConverter))]
+[JsonConverter(typeof(ToolConverter))]
 public record class Tool : ModelBase
 {
     public object? Value { get; } = null;
@@ -597,19 +562,40 @@ public record class Tool : ModelBase
         }
     }
 
-    public Tool(BetaManagedAgentsAgentToolset20260401Params value, JsonElement? element = null)
+    public ApiEnum<string, ToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsAgentToolset20260401Params _ =>
+                    ToolType.AgentToolset20260401,
+                Agents::BetaManagedAgentsMcpToolsetParams _ => ToolType.McpToolset,
+                Agents::BetaManagedAgentsCustomToolParams _ => ToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ToolType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
+    public Tool(
+        Agents::BetaManagedAgentsAgentToolset20260401Params value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsMcpToolsetParams value, JsonElement? element = null)
+    public Tool(Agents::BetaManagedAgentsMcpToolsetParams value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
     }
 
-    public Tool(BetaManagedAgentsCustomToolParams value, JsonElement? element = null)
+    public Tool(Agents::BetaManagedAgentsCustomToolParams value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -622,70 +608,70 @@ public record class Tool : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsAgentToolset20260401Params"/>.
+    /// type <see cref="Agents::BetaManagedAgentsAgentToolset20260401Params"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsAgentToolset20260401Params(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsAgentToolset20260401Params`
+    ///     // `value` is of type `Agents::BetaManagedAgentsAgentToolset20260401Params`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsAgentToolset20260401Params(
-        [NotNullWhen(true)] out BetaManagedAgentsAgentToolset20260401Params? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsAgentToolset20260401Params? value
     )
     {
-        value = this.Value as BetaManagedAgentsAgentToolset20260401Params;
+        value = this.Value as Agents::BetaManagedAgentsAgentToolset20260401Params;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMcpToolsetParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMcpToolsetParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsMcpToolsetParams(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMcpToolsetParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMcpToolsetParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsMcpToolsetParams(
-        [NotNullWhen(true)] out BetaManagedAgentsMcpToolsetParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMcpToolsetParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsMcpToolsetParams;
+        value = this.Value as Agents::BetaManagedAgentsMcpToolsetParams;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsCustomToolParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsCustomToolParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaManagedAgentsCustomToolParams(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsCustomToolParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsCustomToolParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaManagedAgentsCustomToolParams(
-        [NotNullWhen(true)] out BetaManagedAgentsCustomToolParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsCustomToolParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsCustomToolParams;
+        value = this.Value as Agents::BetaManagedAgentsCustomToolParams;
         return value != null;
     }
 
@@ -703,28 +689,28 @@ public record class Tool : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomToolParams value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomToolParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsAgentToolset20260401Params> betaManagedAgentsAgentToolset20260401Params,
-        System::Action<BetaManagedAgentsMcpToolsetParams> betaManagedAgentsMcpToolsetParams,
-        System::Action<BetaManagedAgentsCustomToolParams> betaManagedAgentsCustomToolParams
+        Action<Agents::BetaManagedAgentsAgentToolset20260401Params> betaManagedAgentsAgentToolset20260401Params,
+        Action<Agents::BetaManagedAgentsMcpToolsetParams> betaManagedAgentsMcpToolsetParams,
+        Action<Agents::BetaManagedAgentsCustomToolParams> betaManagedAgentsCustomToolParams
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsAgentToolset20260401Params value:
+            case Agents::BetaManagedAgentsAgentToolset20260401Params value:
                 betaManagedAgentsAgentToolset20260401Params(value);
                 break;
-            case BetaManagedAgentsMcpToolsetParams value:
+            case Agents::BetaManagedAgentsMcpToolsetParams value:
                 betaManagedAgentsMcpToolsetParams(value);
                 break;
-            case BetaManagedAgentsCustomToolParams value:
+            case Agents::BetaManagedAgentsCustomToolParams value:
                 betaManagedAgentsCustomToolParams(value);
                 break;
             default:
@@ -747,43 +733,45 @@ public record class Tool : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
-    ///     (BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
-    ///     (BetaManagedAgentsCustomToolParams value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsAgentToolset20260401Params value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMcpToolsetParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsCustomToolParams value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsAgentToolset20260401Params,
+        Func<
+            Agents::BetaManagedAgentsAgentToolset20260401Params,
             T
         > betaManagedAgentsAgentToolset20260401Params,
-        System::Func<BetaManagedAgentsMcpToolsetParams, T> betaManagedAgentsMcpToolsetParams,
-        System::Func<BetaManagedAgentsCustomToolParams, T> betaManagedAgentsCustomToolParams
+        Func<Agents::BetaManagedAgentsMcpToolsetParams, T> betaManagedAgentsMcpToolsetParams,
+        Func<Agents::BetaManagedAgentsCustomToolParams, T> betaManagedAgentsCustomToolParams
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401Params value =>
+            Agents::BetaManagedAgentsAgentToolset20260401Params value =>
                 betaManagedAgentsAgentToolset20260401Params(value),
-            BetaManagedAgentsMcpToolsetParams value => betaManagedAgentsMcpToolsetParams(value),
-            BetaManagedAgentsCustomToolParams value => betaManagedAgentsCustomToolParams(value),
+            Agents::BetaManagedAgentsMcpToolsetParams value => betaManagedAgentsMcpToolsetParams(
+                value
+            ),
+            Agents::BetaManagedAgentsCustomToolParams value => betaManagedAgentsCustomToolParams(
+                value
+            ),
             _ => throw new AnthropicInvalidDataException("Data did not match any variant of Tool"),
         };
     }
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
-        BetaManagedAgentsAgentToolset20260401Params value
+    public static implicit operator Tool(
+        Agents::BetaManagedAgentsAgentToolset20260401Params value
     ) => new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
-        BetaManagedAgentsMcpToolsetParams value
-    ) => new(value);
+    public static implicit operator Tool(Agents::BetaManagedAgentsMcpToolsetParams value) =>
+        new(value);
 
-    public static implicit operator global::Anthropic.Models.Beta.Sessions.Tool(
-        BetaManagedAgentsCustomToolParams value
-    ) => new(value);
+    public static implicit operator Tool(Agents::BetaManagedAgentsCustomToolParams value) =>
+        new(value);
 
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
@@ -809,7 +797,7 @@ public record class Tool : ModelBase
         );
     }
 
-    public virtual bool Equals(global::Anthropic.Models.Beta.Sessions.Tool? other) =>
+    public virtual bool Equals(Tool? other) =>
         other != null
         && this.VariantIndex() == other.VariantIndex()
         && JsonElement.DeepEquals(this.Json, other.Json);
@@ -829,19 +817,19 @@ public record class Tool : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsAgentToolset20260401Params _ => 0,
-            BetaManagedAgentsMcpToolsetParams _ => 1,
-            BetaManagedAgentsCustomToolParams _ => 2,
+            Agents::BetaManagedAgentsAgentToolset20260401Params _ => 0,
+            Agents::BetaManagedAgentsMcpToolsetParams _ => 1,
+            Agents::BetaManagedAgentsCustomToolParams _ => 2,
             _ => -1,
         };
     }
 }
 
-sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Tool>
+sealed class ToolConverter : JsonConverter<Tool>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Tool? Read(
+    public override Tool? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -863,7 +851,7 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsAgentToolset20260401Params>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsAgentToolset20260401Params>(
                             element,
                             options
                         );
@@ -884,7 +872,7 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetParams>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMcpToolsetParams>(
                             element,
                             options
                         );
@@ -905,7 +893,7 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsCustomToolParams>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsCustomToolParams>(
                             element,
                             options
                         );
@@ -923,17 +911,56 @@ sealed class ToolConverter : JsonConverter<global::Anthropic.Models.Beta.Session
             }
             default:
             {
-                return new global::Anthropic.Models.Beta.Sessions.Tool(element);
+                return new Tool(element);
             }
         }
     }
 
-    public override void Write(
-        Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Tool value,
+    public override void Write(Utf8JsonWriter writer, Tool value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolTypeConverter))]
+public enum ToolType
+{
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
+}
+
+sealed class ToolTypeConverter : JsonConverter<ToolType>
+{
+    public override ToolType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
-        JsonSerializer.Serialize(writer, value.Json, options);
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "agent_toolset_20260401" => ToolType.AgentToolset20260401,
+            "mcp_toolset" => ToolType.McpToolset,
+            "custom" => ToolType.Custom,
+            _ => (ToolType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, ToolType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolType.AgentToolset20260401 => "agent_toolset_20260401",
+                ToolType.McpToolset => "mcp_toolset",
+                ToolType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

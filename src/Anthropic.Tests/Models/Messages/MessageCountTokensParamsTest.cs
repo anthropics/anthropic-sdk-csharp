@@ -15,7 +15,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()
@@ -91,7 +91,7 @@ public class MessageCountTokensParamsTest : TestBase
 
         List<Messages::MessageParam> expectedMessages =
         [
-            new() { Content = "Hello, world", Role = Messages::Role.User },
+            new Messages::UserMessageParam("Hello, world"),
         ];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         Messages::CacheControlEphemeral expectedCacheControl = new() { Ttl = Messages::Ttl.Ttl5m };
@@ -196,7 +196,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Speed = Messages::MessageCountTokensParamsSpeed.Standard,
@@ -223,7 +223,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Speed = Messages::MessageCountTokensParamsSpeed.Standard,
@@ -259,7 +259,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()
@@ -364,7 +364,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             OutputConfig = new()
             {
@@ -447,7 +447,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             OutputConfig = new()
             {
@@ -533,7 +533,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         Messages::MessageCountTokensParams parameters = new()
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
         };
 
@@ -550,7 +550,7 @@ public class MessageCountTokensParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         Messages::MessageCountTokensParams parameters = new()
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -573,7 +573,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new Messages::MessageCountTokensParams
         {
-            Messages = [new() { Content = "Hello, world", Role = Messages::Role.User }],
+            Messages = [new Messages::UserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             OutputConfig = new()

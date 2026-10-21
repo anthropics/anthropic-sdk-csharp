@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.1...Bedrock-v1.0.0) (2026-10-21)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** add support for new API version 2026-10-21
+
+### Features
+
+* **api:** add support for new API version 2026-10-21
+
 ## [0.14.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.0...Bedrock-v0.14.1) (2026-10-19)
 
 ### Bug Fixes

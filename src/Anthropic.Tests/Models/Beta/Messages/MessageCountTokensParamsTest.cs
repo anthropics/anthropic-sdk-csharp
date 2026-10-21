@@ -17,16 +17,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
@@ -138,16 +129,7 @@ public class MessageCountTokensParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        List<BetaMessageParam> expectedMessages =
-        [
-            new()
-            {
-                Content = "Hello, world",
-                Role = Role.User,
-                ClearAt = ClearAt.NextUserMessage,
-                OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-            },
-        ];
+        List<BetaMessageParam> expectedMessages = [new BetaUserMessageParam("Hello, world")];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
@@ -307,16 +289,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
@@ -369,16 +342,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
@@ -442,16 +406,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
@@ -600,16 +555,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             McpServers =
             [
@@ -714,16 +660,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             McpServers =
             [
@@ -834,16 +771,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         MessageCountTokensParams parameters = new()
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
         };
 
@@ -863,16 +791,7 @@ public class MessageCountTokensParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         MessageCountTokensParams parameters = new()
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             UserProfileID = "anthropic-user-profile-id",
@@ -900,16 +819,7 @@ public class MessageCountTokensParamsTest : TestBase
     {
         var parameters = new MessageCountTokensParams
         {
-            Messages =
-            [
-                new()
-                {
-                    Content = "Hello, world",
-                    Role = Role.User,
-                    ClearAt = ClearAt.NextUserMessage,
-                    OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                },
-            ],
+            Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },

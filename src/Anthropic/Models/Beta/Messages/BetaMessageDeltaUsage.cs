@@ -332,17 +332,20 @@ public record class Iteration : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, IterationType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaMessageIterationUsage x => x.Type,
-                BetaCompactionIterationUsage x => x.Type,
-                BetaAdvisorMessageIterationUsage x => x.Type,
-                BetaFallbackMessageIterationUsage x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaMessageIterationUsage _ => IterationType.Message,
+                BetaCompactionIterationUsage _ => IterationType.Compaction,
+                BetaAdvisorMessageIterationUsage _ => IterationType.AdvisorMessage,
+                BetaFallbackMessageIterationUsage _ => IterationType.FallbackMessage,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, IterationType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -738,5 +741,55 @@ sealed class IterationConverter : JsonConverter<Iteration>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(IterationTypeConverter))]
+public enum IterationType
+{
+    Message,
+    Compaction,
+    AdvisorMessage,
+    FallbackMessage,
+}
+
+sealed class IterationTypeConverter : JsonConverter<IterationType>
+{
+    public override IterationType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "message" => IterationType.Message,
+            "compaction" => IterationType.Compaction,
+            "advisor_message" => IterationType.AdvisorMessage,
+            "fallback_message" => IterationType.FallbackMessage,
+            _ => (IterationType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        IterationType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                IterationType.Message => "message",
+                IterationType.Compaction => "compaction",
+                IterationType.AdvisorMessage => "advisor_message",
+                IterationType.FallbackMessage => "fallback_message",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

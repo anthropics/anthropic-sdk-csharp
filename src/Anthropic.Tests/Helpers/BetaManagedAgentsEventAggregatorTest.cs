@@ -62,10 +62,7 @@ public class BetaManagedAgentsEventAggregatorTest
 
         var message = Assert.Contains("evt_1", aggregator.AgentMessages);
         Assert.Equal("evt_1", message.ID);
-        Assert.Equal(
-            Events::BetaManagedAgentsAgentMessageEventType.AgentMessage,
-            message.Type.Value()
-        );
+        Assert.Equal("agent.message", message.Type.GetString());
         Assert.Empty(message.Content);
     }
 

@@ -255,36 +255,97 @@ public record struct ClientOptions
     /// </summary>
     internal ActivitySource? OpenTelemetrySource { get; set; }
 
-    Lazy<string?> _apiKey = new(() => Environment.GetEnvironmentVariable("ANTHROPIC_API_KEY"));
-    internal bool ApiKeyExplicit { get; private set; }
-    public string? ApiKey
+    ClientCredential _credential = ClientCredential.FromEnvironment();
+
+    /// <inheritdoc cref="ClientCredential.IsUnset"/>
+    internal readonly bool CredentialIsUnset
     {
-        readonly get { return _apiKey.Value; }
-        set
-        {
-            _apiKey = new(() => value);
-            ApiKeyExplicit = true;
-        }
+        get { return _credential.IsUnset; }
     }
 
-    Lazy<string?> _authToken = new(() =>
-        Environment.GetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN")
-    );
-    internal bool AuthTokenExplicit { get; private set; }
+    /// <summary>
+    /// The API key to authenticate with, sent as <c>Authorization: Bearer</c>.
+    ///
+    /// <para>Pass at most one of <see cref="ApiKey"/>, <see cref="AuthToken"/> and
+    /// <see cref="Credentials"/>. The one you pass is used and no credential is read from the
+    /// environment. Setting a second one throws an <see cref="ArgumentException"/>.</para>
+    ///
+    /// <para>Defaults to the <c>ANTHROPIC_API_KEY</c> environment variable. Setting this to
+    /// <c>null</c> clears it: that variable isn't read, and neither are profiles or the workload
+    /// identity federation variables.</para>
+    /// </summary>
+    public string? ApiKey
+    {
+        readonly get { return _credential.ApiKey; }
+        set { _credential = _credential.WithApiKey(value); }
+    }
+
+    /// <summary>
+    /// The auth token to authenticate with, sent as <c>Authorization: Bearer</c>.
+    ///
+    /// <para>Pass at most one of <see cref="ApiKey"/>, <see cref="AuthToken"/> and
+    /// <see cref="Credentials"/>. The one you pass is used and no credential is read from the
+    /// environment. Setting a second one throws an <see cref="ArgumentException"/>.</para>
+    ///
+    /// <para>Defaults to the <c>ANTHROPIC_AUTH_TOKEN</c> environment variable, which is ignored
+    /// when <c>ANTHROPIC_API_KEY</c> is set. The first request sent with both set warns on stderr,
+    /// once per process. Setting this to <c>null</c> clears it: that variable isn't read, and
+    /// neither are profiles or the workload identity federation variables.</para>
+    /// </summary>
     public string? AuthToken
     {
-        readonly get { return _authToken.Value; }
-        set
+        readonly get { return _credential.AuthToken; }
+        set { _credential = _credential.WithAuthToken(value); }
+    }
+
+    /// <summary>
+    /// Applies a <c>WithOptions</c> modifier to a copy of these options.
+    /// </summary>
+    internal readonly ClientOptions Apply(Func<ClientOptions, ClientOptions> modifier)
+    {
+        var inherited = InheritCredential();
+        var options = modifier(inherited);
+        var isCloudBackend = _backendAdaptationHandler != null;
+        var isFresh = options.CredentialIsUnset;
+        if (isCloudBackend || isFresh)
         {
-            _authToken = new(() => value);
-            AuthTokenExplicit = true;
+            // Cloud-backend clients settle their credentials at construction; one from the
+            // modifier or the environment would conflict with the backend's own. Fresh options
+            // that pass no credential inherit this client's too.
+            options._credential = inherited._credential;
+            if (!options.BaseUrlExplicit)
+            {
+                // Fresh options: the credentials above must not go to another host.
+                options.BaseUrl = BaseUrl;
+            }
         }
+        if (isFresh)
+        {
+            // A profile's workspace header goes with its credential. Null means unset only in
+            // fresh options; in a copy of these options the modifier cleared the headers.
+            options.ExtraHeaders ??= ExtraHeaders;
+        }
+        return options;
+    }
+
+    /// <summary>
+    /// Returns a copy whose credential counts as inherited: the copy reads none from the
+    /// environment, and a credential option set on it replaces the inherited one instead of
+    /// counting as a second.
+    /// </summary>
+    internal readonly ClientOptions InheritCredential()
+    {
+        var options = this;
+        options._credential = _credential.Inherit();
+        return options;
     }
 
     /// <summary>
     /// OIDC/OAuth credentials for authenticating with the Anthropic API.
-    /// When set, these are used instead of env-var-based ApiKey/AuthToken.
-    /// An explicitly provided ApiKey takes priority over Credentials.
+    ///
+    /// <para>Pass at most one of <see cref="ApiKey"/>, <see cref="AuthToken"/> and
+    /// <see cref="Credentials"/>. The one you pass is used and no credential is read from the
+    /// environment. Setting a second one throws an <see cref="ArgumentException"/>.</para>
     ///
     /// <para>The client wraps the provider in an internal token cache and sets the
     /// <c>Authorization</c> and <c>anthropic-beta</c> headers on every request.</para>
@@ -293,14 +354,40 @@ public record struct ClientOptions
     /// client is disposed. Advanced: if the value is already a <c>TokenCache</c>
     /// (e.g., propagated via <c>WithOptions</c>), the client does not dispose it.</para>
     /// </summary>
-    public IAccessTokenProvider? Credentials { get; set; }
+    public IAccessTokenProvider? Credentials
+    {
+        readonly get { return _credential.Credentials; }
+        set { _credential = _credential.WithCredentials(value); }
+    }
+
+    static int s_environmentCredentialsWarningEmitted;
+
+    internal static void ResetEnvironmentCredentialsWarningForTests() =>
+        s_environmentCredentialsWarningEmitted = 0;
+
+    /// <summary>
+    /// Warns on stderr, once per process, when the API key hides an auth token.
+    /// </summary>
+    internal readonly void WarnIfEnvironmentHoldsApiKeyAndAuthToken()
+    {
+        if (
+            _credential.ApiKeyHidesAuthToken
+            && Interlocked.CompareExchange(ref s_environmentCredentialsWarningEmitted, 1, 0) == 0
+        )
+        {
+            Console.Error.WriteLine(
+                "Anthropic: ANTHROPIC_API_KEY and ANTHROPIC_AUTH_TOKEN are both set. "
+                    + "Using ANTHROPIC_API_KEY."
+            );
+        }
+    }
 
     /// <summary>
     /// Extra headers to include on every request (e.g. <c>anthropic-workspace-id</c>).
     /// These are additive metadata applied via <c>TryAddWithoutValidation</c> after
-    /// authentication headers are set; they will not override <c>Authorization</c> or
-    /// <c>X-Api-Key</c>. To change auth, use <see cref="ApiKey"/>, <see cref="AuthToken"/>,
-    /// or <see cref="Credentials"/>.
+    /// authentication headers are set; they will not override <c>Authorization</c>.
+    /// To change auth, use <see cref="ApiKey"/>, <see cref="AuthToken"/>, or
+    /// <see cref="Credentials"/>.
     /// </summary>
     public IReadOnlyDictionary<string, string>? ExtraHeaders { get; set; }
 

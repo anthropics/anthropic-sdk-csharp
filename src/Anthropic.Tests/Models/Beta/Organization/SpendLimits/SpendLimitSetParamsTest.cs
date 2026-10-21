@@ -206,6 +206,27 @@ public class ScopeTest : TestBase
     }
 
     [Fact]
+    public void BetaSpendLimitUserTypeWorks()
+    {
+        Scope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Assert.Equal(ScopeTypeValue.User, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSpendLimitOrganizationTypeWorks()
+    {
+        Scope value = new BetaSpendLimitOrganizationScope();
+        Assert.Equal(ScopeTypeValue.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaSpendLimitWorkspaceTypeWorks()
+    {
+        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Assert.Equal(ScopeTypeValue.Workspace, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Scope value = new(
@@ -219,12 +240,72 @@ public class ScopeTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user");
+        ApiEnum<string, ScopeTypeValue> expectedType = ScopeTypeValue.User;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Scope emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ScopeTypeValueTest : TestBase
+{
+    [Theory]
+    [InlineData(ScopeTypeValue.User)]
+    [InlineData(ScopeTypeValue.Organization)]
+    [InlineData(ScopeTypeValue.Workspace)]
+    public void Validation_Works(ScopeTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ScopeTypeValue> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ScopeTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ScopeTypeValue.User)]
+    [InlineData(ScopeTypeValue.Organization)]
+    [InlineData(ScopeTypeValue.Workspace)]
+    public void SerializationRoundtrip_Works(ScopeTypeValue rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ScopeTypeValue> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ScopeTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ScopeTypeValue>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ScopeTypeValue>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

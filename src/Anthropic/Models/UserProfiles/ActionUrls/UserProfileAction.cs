@@ -28,6 +28,20 @@ public record class UserProfileAction : ModelBase
         }
     }
 
+    public ApiEnum<string, UserProfileActionType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                UserProfileEnrollEndUserAction _ => UserProfileActionType.EnrollEndUser,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, UserProfileActionType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public UserProfileAction(UserProfileEnrollEndUserAction value, JsonElement? element = null)
     {
         this.Value = value;
@@ -229,5 +243,46 @@ sealed class UserProfileActionConverter : JsonConverter<UserProfileAction>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(UserProfileActionTypeConverter))]
+public enum UserProfileActionType
+{
+    EnrollEndUser,
+}
+
+sealed class UserProfileActionTypeConverter : JsonConverter<UserProfileActionType>
+{
+    public override UserProfileActionType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enroll_end_user" => UserProfileActionType.EnrollEndUser,
+            _ => (UserProfileActionType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        UserProfileActionType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                UserProfileActionType.EnrollEndUser => "enroll_end_user",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

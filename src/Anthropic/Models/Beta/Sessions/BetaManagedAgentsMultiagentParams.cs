@@ -1,10 +1,10 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Agents;
-using System = System;
+using Agents = Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -29,8 +29,25 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsMultiagentParamsType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsMultiagentCoordinatorParams _ =>
+                    BetaManagedAgentsMultiagentParamsType.Coordinator,
+                Agents::BetaManagedAgentsMultiagent20261001Params _ =>
+                    BetaManagedAgentsMultiagentParamsType.Multiagent20261001,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMultiagentParamsType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsMultiagentParams(
-        BetaManagedAgentsMultiagentCoordinatorParams value,
+        Agents::BetaManagedAgentsMultiagentCoordinatorParams value,
         JsonElement? element = null
     )
     {
@@ -39,7 +56,7 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
     }
 
     public BetaManagedAgentsMultiagentParams(
-        BetaManagedAgentsMultiagent20261001Params value,
+        Agents::BetaManagedAgentsMultiagent20261001Params value,
         JsonElement? element = null
     )
     {
@@ -54,47 +71,47 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMultiagentCoordinatorParams"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMultiagentCoordinatorParams"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickCoordinator(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMultiagentCoordinatorParams`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMultiagentCoordinatorParams`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickCoordinator(
-        [NotNullWhen(true)] out BetaManagedAgentsMultiagentCoordinatorParams? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMultiagentCoordinatorParams? value
     )
     {
-        value = this.Value as BetaManagedAgentsMultiagentCoordinatorParams;
+        value = this.Value as Agents::BetaManagedAgentsMultiagentCoordinatorParams;
         return value != null;
     }
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaManagedAgentsMultiagent20261001Params"/>.
+    /// type <see cref="Agents::BetaManagedAgentsMultiagent20261001Params"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickMultiagent20261001(out var value)) {
-    ///     // `value` is of type `BetaManagedAgentsMultiagent20261001Params`
+    ///     // `value` is of type `Agents::BetaManagedAgentsMultiagent20261001Params`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickMultiagent20261001(
-        [NotNullWhen(true)] out BetaManagedAgentsMultiagent20261001Params? value
+        [NotNullWhen(true)] out Agents::BetaManagedAgentsMultiagent20261001Params? value
     )
     {
-        value = this.Value as BetaManagedAgentsMultiagent20261001Params;
+        value = this.Value as Agents::BetaManagedAgentsMultiagent20261001Params;
         return value != null;
     }
 
@@ -112,23 +129,23 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
     /// <example>
     /// <code>
     /// instance.Switch(
-    ///     (BetaManagedAgentsMultiagentCoordinatorParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagent20261001Params value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsMultiagentCoordinatorParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMultiagent20261001Params value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsMultiagentCoordinatorParams> coordinator,
-        System::Action<BetaManagedAgentsMultiagent20261001Params> multiagent20261001
+        Action<Agents::BetaManagedAgentsMultiagentCoordinatorParams> coordinator,
+        Action<Agents::BetaManagedAgentsMultiagent20261001Params> multiagent20261001
     )
     {
         switch (this.Value)
         {
-            case BetaManagedAgentsMultiagentCoordinatorParams value:
+            case Agents::BetaManagedAgentsMultiagentCoordinatorParams value:
                 coordinator(value);
                 break;
-            case BetaManagedAgentsMultiagent20261001Params value:
+            case Agents::BetaManagedAgentsMultiagent20261001Params value:
                 multiagent20261001(value);
                 break;
             default:
@@ -153,21 +170,21 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
     /// <example>
     /// <code>
     /// var result = instance.Match(
-    ///     (BetaManagedAgentsMultiagentCoordinatorParams value) =&gt; {...},
-    ///     (BetaManagedAgentsMultiagent20261001Params value) =&gt; {...}
+    ///     (Agents::BetaManagedAgentsMultiagentCoordinatorParams value) =&gt; {...},
+    ///     (Agents::BetaManagedAgentsMultiagent20261001Params value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsMultiagentCoordinatorParams, T> coordinator,
-        System::Func<BetaManagedAgentsMultiagent20261001Params, T> multiagent20261001
+        Func<Agents::BetaManagedAgentsMultiagentCoordinatorParams, T> coordinator,
+        Func<Agents::BetaManagedAgentsMultiagent20261001Params, T> multiagent20261001
     )
     {
         return this.Value switch
         {
-            BetaManagedAgentsMultiagentCoordinatorParams value => coordinator(value),
-            BetaManagedAgentsMultiagent20261001Params value => multiagent20261001(value),
+            Agents::BetaManagedAgentsMultiagentCoordinatorParams value => coordinator(value),
+            Agents::BetaManagedAgentsMultiagent20261001Params value => multiagent20261001(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaManagedAgentsMultiagentParams"
             ),
@@ -175,11 +192,11 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
     }
 
     public static implicit operator BetaManagedAgentsMultiagentParams(
-        BetaManagedAgentsMultiagentCoordinatorParams value
+        Agents::BetaManagedAgentsMultiagentCoordinatorParams value
     ) => new(value);
 
     public static implicit operator BetaManagedAgentsMultiagentParams(
-        BetaManagedAgentsMultiagent20261001Params value
+        Agents::BetaManagedAgentsMultiagent20261001Params value
     ) => new(value);
 
     /// <summary>
@@ -226,8 +243,8 @@ public record class BetaManagedAgentsMultiagentParams : ModelBase
     {
         return this.Value switch
         {
-            BetaManagedAgentsMultiagentCoordinatorParams _ => 0,
-            BetaManagedAgentsMultiagent20261001Params _ => 1,
+            Agents::BetaManagedAgentsMultiagentCoordinatorParams _ => 0,
+            Agents::BetaManagedAgentsMultiagent20261001Params _ => 1,
             _ => -1,
         };
     }
@@ -238,7 +255,7 @@ sealed class BetaManagedAgentsMultiagentParamsConverter
 {
     public override BetaManagedAgentsMultiagentParams? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -260,7 +277,7 @@ sealed class BetaManagedAgentsMultiagentParamsConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsMultiagentCoordinatorParams>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMultiagentCoordinatorParams>(
                             element,
                             options
                         );
@@ -281,7 +298,7 @@ sealed class BetaManagedAgentsMultiagentParamsConverter
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaManagedAgentsMultiagent20261001Params>(
+                        JsonSerializer.Deserialize<Agents::BetaManagedAgentsMultiagent20261001Params>(
                             element,
                             options
                         );
@@ -311,5 +328,50 @@ sealed class BetaManagedAgentsMultiagentParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMultiagentParamsTypeConverter))]
+public enum BetaManagedAgentsMultiagentParamsType
+{
+    Coordinator,
+    Multiagent20261001,
+}
+
+sealed class BetaManagedAgentsMultiagentParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsMultiagentParamsType>
+{
+    public override BetaManagedAgentsMultiagentParamsType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "coordinator" => BetaManagedAgentsMultiagentParamsType.Coordinator,
+            "multiagent_20261001" => BetaManagedAgentsMultiagentParamsType.Multiagent20261001,
+            _ => (BetaManagedAgentsMultiagentParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMultiagentParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMultiagentParamsType.Coordinator => "coordinator",
+                BetaManagedAgentsMultiagentParamsType.Multiagent20261001 => "multiagent_20261001",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

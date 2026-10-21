@@ -188,6 +188,69 @@ public class BetaErrorTest : TestBase
     }
 
     [Fact]
+    public void InvalidRequestTypeWorks()
+    {
+        BetaError value = new BetaInvalidRequestError("message");
+        Assert.Equal(BetaErrorType.InvalidRequestError, value.Type.Value());
+    }
+
+    [Fact]
+    public void AuthenticationTypeWorks()
+    {
+        BetaError value = new BetaAuthenticationError("message");
+        Assert.Equal(BetaErrorType.AuthenticationError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BillingTypeWorks()
+    {
+        BetaError value = new BetaBillingError("message");
+        Assert.Equal(BetaErrorType.BillingError, value.Type.Value());
+    }
+
+    [Fact]
+    public void PermissionTypeWorks()
+    {
+        BetaError value = new BetaPermissionError("message");
+        Assert.Equal(BetaErrorType.PermissionError, value.Type.Value());
+    }
+
+    [Fact]
+    public void NotFoundTypeWorks()
+    {
+        BetaError value = new BetaNotFoundError("message");
+        Assert.Equal(BetaErrorType.NotFoundError, value.Type.Value());
+    }
+
+    [Fact]
+    public void RateLimitTypeWorks()
+    {
+        BetaError value = new BetaRateLimitError("message");
+        Assert.Equal(BetaErrorType.RateLimitError, value.Type.Value());
+    }
+
+    [Fact]
+    public void GatewayTimeoutTypeWorks()
+    {
+        BetaError value = new BetaGatewayTimeoutError("message");
+        Assert.Equal(BetaErrorType.TimeoutError, value.Type.Value());
+    }
+
+    [Fact]
+    public void ApiTypeWorks()
+    {
+        BetaError value = new BetaApiError("message");
+        Assert.Equal(BetaErrorType.ApiError, value.Type.Value());
+    }
+
+    [Fact]
+    public void OverloadedTypeWorks()
+    {
+        BetaError value = new BetaOverloadedError("message");
+        Assert.Equal(BetaErrorType.OverloadedError, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaError value = new(
@@ -203,10 +266,10 @@ public class BetaErrorTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMessage = "message";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("invalid_request_error");
+        ApiEnum<string, BetaErrorType> expectedType = BetaErrorType.InvalidRequestError;
 
         Assert.Equal(expectedMessage, value.Message);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaError emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -226,5 +289,77 @@ public class BetaErrorTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.Message);
+    }
+}
+
+public class BetaErrorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaErrorType.InvalidRequestError)]
+    [InlineData(BetaErrorType.AuthenticationError)]
+    [InlineData(BetaErrorType.BillingError)]
+    [InlineData(BetaErrorType.PermissionError)]
+    [InlineData(BetaErrorType.NotFoundError)]
+    [InlineData(BetaErrorType.RateLimitError)]
+    [InlineData(BetaErrorType.TimeoutError)]
+    [InlineData(BetaErrorType.ApiError)]
+    [InlineData(BetaErrorType.OverloadedError)]
+    public void Validation_Works(BetaErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaErrorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaErrorType.InvalidRequestError)]
+    [InlineData(BetaErrorType.AuthenticationError)]
+    [InlineData(BetaErrorType.BillingError)]
+    [InlineData(BetaErrorType.PermissionError)]
+    [InlineData(BetaErrorType.NotFoundError)]
+    [InlineData(BetaErrorType.RateLimitError)]
+    [InlineData(BetaErrorType.TimeoutError)]
+    [InlineData(BetaErrorType.ApiError)]
+    [InlineData(BetaErrorType.OverloadedError)]
+    public void SerializationRoundtrip_Works(BetaErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaErrorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaErrorType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaErrorType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

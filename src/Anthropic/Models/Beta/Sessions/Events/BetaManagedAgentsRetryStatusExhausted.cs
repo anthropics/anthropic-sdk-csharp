@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 )]
 public sealed record class BetaManagedAgentsRetryStatusExhausted : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsRetryStatusExhaustedType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsRetryStatusExhaustedType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -36,10 +33,16 @@ public sealed record class BetaManagedAgentsRetryStatusExhausted : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("exhausted")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsRetryStatusExhausted() { }
+    public BetaManagedAgentsRetryStatusExhausted()
+    {
+        this.Type = JsonSerializer.SerializeToElement("exhausted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -52,6 +55,8 @@ public sealed record class BetaManagedAgentsRetryStatusExhausted : JsonModel
     public BetaManagedAgentsRetryStatusExhausted(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("exhausted");
     }
 
 #pragma warning disable CS8618
@@ -69,15 +74,6 @@ public sealed record class BetaManagedAgentsRetryStatusExhausted : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsRetryStatusExhausted(
-        ApiEnum<string, BetaManagedAgentsRetryStatusExhaustedType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsRetryStatusExhaustedFromRaw
@@ -87,46 +83,4 @@ class BetaManagedAgentsRetryStatusExhaustedFromRaw
     public BetaManagedAgentsRetryStatusExhausted FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsRetryStatusExhausted.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsRetryStatusExhaustedTypeConverter))]
-public enum BetaManagedAgentsRetryStatusExhaustedType
-{
-    Exhausted,
-}
-
-sealed class BetaManagedAgentsRetryStatusExhaustedTypeConverter
-    : JsonConverter<BetaManagedAgentsRetryStatusExhaustedType>
-{
-    public override BetaManagedAgentsRetryStatusExhaustedType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "exhausted" => BetaManagedAgentsRetryStatusExhaustedType.Exhausted,
-            _ => (BetaManagedAgentsRetryStatusExhaustedType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsRetryStatusExhaustedType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted => "exhausted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

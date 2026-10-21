@@ -1,6 +1,6 @@
 using System.Threading.Tasks;
 using Anthropic.Models.Beta.Messages;
-using Messages = Anthropic.Models.Messages;
+using Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Services.Beta;
 
@@ -12,17 +12,8 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = Role.User,
-                        ClearAt = ClearAt.NextUserMessage,
-                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus5_5,
+                Messages = [new BetaUserMessageParam("Hello, world")],
+                Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -35,17 +26,8 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = Role.User,
-                        ClearAt = ClearAt.NextUserMessage,
-                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus5_5,
+                Messages = [new BetaUserMessageParam("Hello, world")],
+                Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );
@@ -61,17 +43,8 @@ public class MessageServiceTest : TestBase
         var betaMessageTokensCount = await this.client.Beta.Messages.CountTokens(
             new()
             {
-                Messages =
-                [
-                    new()
-                    {
-                        Content = "Hello, world",
-                        Role = Role.User,
-                        ClearAt = ClearAt.NextUserMessage,
-                        OutputConfig = new() { Effort = BetaSystemMessageOutputConfigEffort.Low },
-                    },
-                ],
-                Model = Messages::Model.ClaudeOpus5_5,
+                Messages = [new BetaUserMessageParam("Hello, world")],
+                Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
         );

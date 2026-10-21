@@ -28,15 +28,19 @@ public record class BetaManagedAgentsWebFetchUrlSourceUserInput : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsWebFetchUrlSourceAll x => x.Type,
-                BetaManagedAgentsWebFetchUrlSourceNone x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsWebFetchUrlSourceAll _ =>
+                    BetaManagedAgentsWebFetchUrlSourceUserInputType.All,
+                BetaManagedAgentsWebFetchUrlSourceNone _ =>
+                    BetaManagedAgentsWebFetchUrlSourceUserInputType.None,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -316,5 +320,50 @@ sealed class BetaManagedAgentsWebFetchUrlSourceUserInputConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsWebFetchUrlSourceUserInputTypeConverter))]
+public enum BetaManagedAgentsWebFetchUrlSourceUserInputType
+{
+    All,
+    None,
+}
+
+sealed class BetaManagedAgentsWebFetchUrlSourceUserInputTypeConverter
+    : JsonConverter<BetaManagedAgentsWebFetchUrlSourceUserInputType>
+{
+    public override BetaManagedAgentsWebFetchUrlSourceUserInputType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => BetaManagedAgentsWebFetchUrlSourceUserInputType.All,
+            "none" => BetaManagedAgentsWebFetchUrlSourceUserInputType.None,
+            _ => (BetaManagedAgentsWebFetchUrlSourceUserInputType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsWebFetchUrlSourceUserInputType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsWebFetchUrlSourceUserInputType.All => "all",
+                BetaManagedAgentsWebFetchUrlSourceUserInputType.None => "none",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

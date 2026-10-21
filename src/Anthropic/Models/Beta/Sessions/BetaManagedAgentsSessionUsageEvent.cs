@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -37,24 +37,22 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     /// <summary>
     /// Timestamp when the snapshot was taken.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionUsageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionUsageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -91,12 +89,18 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     {
         _ = this.ID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session.usage")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         this.Usage.Validate();
         this.Budget?.Validate();
     }
 
-    public BetaManagedAgentsSessionUsageEvent() { }
+    public BetaManagedAgentsSessionUsageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.usage");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -109,6 +113,8 @@ public sealed record class BetaManagedAgentsSessionUsageEvent : JsonModel
     public BetaManagedAgentsSessionUsageEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.usage");
     }
 
 #pragma warning disable CS8618
@@ -134,46 +140,4 @@ class BetaManagedAgentsSessionUsageEventFromRaw : IFromRawJson<BetaManagedAgents
     public BetaManagedAgentsSessionUsageEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionUsageEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionUsageEventTypeConverter))]
-public enum BetaManagedAgentsSessionUsageEventType
-{
-    SessionUsage,
-}
-
-sealed class BetaManagedAgentsSessionUsageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionUsageEventType>
-{
-    public override BetaManagedAgentsSessionUsageEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.usage" => BetaManagedAgentsSessionUsageEventType.SessionUsage,
-            _ => (BetaManagedAgentsSessionUsageEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionUsageEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionUsageEventType.SessionUsage => "session.usage",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

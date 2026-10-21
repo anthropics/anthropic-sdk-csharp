@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +10,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services.Beta.Vaults;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -223,10 +223,10 @@ public record class CredentialCreateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/vaults/{0}/credentials",
@@ -298,6 +298,23 @@ public record class Auth : ModelBase
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "mcp_server_url"
+                ),
+            };
+        }
+    }
+
+    public ApiEnum<string, AuthType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsMcpOAuthCreateParams _ => AuthType.McpOAuth,
+                BetaManagedAgentsStaticBearerCreateParams _ => AuthType.StaticBearer,
+                BetaManagedAgentsEnvironmentVariableCreateParams _ => AuthType.EnvironmentVariable,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, AuthType>>(
+                    this.Json,
+                    "type"
                 ),
             };
         }
@@ -417,9 +434,9 @@ public record class Auth : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsMcpOAuthCreateParams> betaManagedAgentsMcpOAuthCreateParams,
-        System::Action<BetaManagedAgentsStaticBearerCreateParams> betaManagedAgentsStaticBearerCreateParams,
-        System::Action<BetaManagedAgentsEnvironmentVariableCreateParams> betaManagedAgentsEnvironmentVariableCreateParams
+        Action<BetaManagedAgentsMcpOAuthCreateParams> betaManagedAgentsMcpOAuthCreateParams,
+        Action<BetaManagedAgentsStaticBearerCreateParams> betaManagedAgentsStaticBearerCreateParams,
+        Action<BetaManagedAgentsEnvironmentVariableCreateParams> betaManagedAgentsEnvironmentVariableCreateParams
     )
     {
         switch (this.Value)
@@ -461,15 +478,12 @@ public record class Auth : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsMcpOAuthCreateParams,
-            T
-        > betaManagedAgentsMcpOAuthCreateParams,
-        System::Func<
+        Func<BetaManagedAgentsMcpOAuthCreateParams, T> betaManagedAgentsMcpOAuthCreateParams,
+        Func<
             BetaManagedAgentsStaticBearerCreateParams,
             T
         > betaManagedAgentsStaticBearerCreateParams,
-        System::Func<
+        Func<
             BetaManagedAgentsEnvironmentVariableCreateParams,
             T
         > betaManagedAgentsEnvironmentVariableCreateParams
@@ -554,7 +568,7 @@ sealed class AuthConverter : JsonConverter<Auth>
 {
     public override Auth? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -644,5 +658,48 @@ sealed class AuthConverter : JsonConverter<Auth>
     public override void Write(Utf8JsonWriter writer, Auth value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(AuthTypeConverter))]
+public enum AuthType
+{
+    McpOAuth,
+    StaticBearer,
+    EnvironmentVariable,
+}
+
+sealed class AuthTypeConverter : JsonConverter<AuthType>
+{
+    public override AuthType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "mcp_oauth" => AuthType.McpOAuth,
+            "static_bearer" => AuthType.StaticBearer,
+            "environment_variable" => AuthType.EnvironmentVariable,
+            _ => (AuthType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, AuthType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AuthType.McpOAuth => "mcp_oauth",
+                AuthType.StaticBearer => "static_bearer",
+                AuthType.EnvironmentVariable => "environment_variable",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

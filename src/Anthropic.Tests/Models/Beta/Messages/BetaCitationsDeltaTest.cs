@@ -321,6 +321,79 @@ public class CitationTest : TestBase
     }
 
     [Fact]
+    public void BetaCitationCharLocationTypeWorks()
+    {
+        Citation value = new BetaCitationCharLocation()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "My Document",
+            EndCharIndex = 0,
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            StartCharIndex = 0,
+        };
+        Assert.Equal(CitationType.CharLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCitationPageLocationTypeWorks()
+    {
+        Citation value = new BetaCitationPageLocation()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "My Document",
+            EndPageNumber = 0,
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            StartPageNumber = 1,
+        };
+        Assert.Equal(CitationType.PageLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCitationContentBlockLocationTypeWorks()
+    {
+        Citation value = new BetaCitationContentBlockLocation()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            DocumentIndex = 0,
+            DocumentTitle = "My Document",
+            EndBlockIndex = 0,
+            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+            StartBlockIndex = 0,
+        };
+        Assert.Equal(CitationType.ContentBlockLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCitationsWebSearchResultLocationTypeWorks()
+    {
+        Citation value = new BetaCitationsWebSearchResultLocation()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            EncryptedIndex = "encrypted_index",
+            Title = "title",
+            Url = "url",
+        };
+        Assert.Equal(CitationType.WebSearchResultLocation, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCitationSearchResultLocationTypeWorks()
+    {
+        Citation value = new BetaCitationSearchResultLocation()
+        {
+            CitedText = "The grass is green. The sky is blue.",
+            EndBlockIndex = 0,
+            SearchResultIndex = 0,
+            Source = "source",
+            StartBlockIndex = 0,
+            Title = "title",
+        };
+        Assert.Equal(CitationType.SearchResultLocation, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Citation value = new(
@@ -345,7 +418,7 @@ public class CitationTest : TestBase
         long expectedDocumentIndex = 0;
         string expectedDocumentTitle = "My Document";
         string expectedFileID = "file_011CNha8iCJcU1wXNR6q4V8w";
-        JsonElement expectedType = JsonSerializer.SerializeToElement("char_location");
+        ApiEnum<string, CitationType> expectedType = CitationType.CharLocation;
         long expectedEndBlockIndex = 0;
         long expectedStartBlockIndex = 0;
         string expectedTitle = "title";
@@ -354,7 +427,7 @@ public class CitationTest : TestBase
         Assert.Equal(expectedDocumentIndex, value.DocumentIndex);
         Assert.Equal(expectedDocumentTitle, value.DocumentTitle);
         Assert.Equal(expectedFileID, value.FileID);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedEndBlockIndex, value.EndBlockIndex);
         Assert.Equal(expectedStartBlockIndex, value.StartBlockIndex);
         Assert.Equal(expectedTitle, value.Title);
@@ -407,5 +480,69 @@ public class CitationTest : TestBase
         Assert.Null(mismatchedValue.EndBlockIndex);
         Assert.Null(mismatchedValue.StartBlockIndex);
         Assert.Null(mismatchedValue.Title);
+    }
+}
+
+public class CitationTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(CitationType.CharLocation)]
+    [InlineData(CitationType.PageLocation)]
+    [InlineData(CitationType.ContentBlockLocation)]
+    [InlineData(CitationType.WebSearchResultLocation)]
+    [InlineData(CitationType.SearchResultLocation)]
+    public void Validation_Works(CitationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CitationType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CitationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(CitationType.CharLocation)]
+    [InlineData(CitationType.PageLocation)]
+    [InlineData(CitationType.ContentBlockLocation)]
+    [InlineData(CitationType.WebSearchResultLocation)]
+    [InlineData(CitationType.SearchResultLocation)]
+    public void SerializationRoundtrip_Works(CitationType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, CitationType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CitationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, CitationType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CitationType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

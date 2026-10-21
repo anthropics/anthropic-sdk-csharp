@@ -328,6 +328,38 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         );
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SigV4Mode_EnvCredentialsNotSentAsBearer(bool freshOptions)
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", "first-party-api-key");
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicBedrockMantleClient(
+            new()
+            {
+                AwsAccessKey = "AKIAIOSFODNN7EXAMPLE",
+                AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                AwsRegion = "us-east-1",
+                BaseUrl = "http://localhost",
+            }
+        );
+        if (freshOptions)
+        {
+            client = Assert.IsType<AnthropicBedrockMantleClient>(
+                client.WithOptions(opts => new ClientOptions { BaseUrl = opts.BaseUrl })
+            );
+        }
+        var req = await SendOneRequest(client);
+
+        // Exactly one Authorization value — the SigV4 signature, never an ambient
+        // first-party credential.
+        Assert.StartsWith(
+            "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/",
+            req.Headers.GetValues("Authorization").Single()
+        );
+    }
+
     [Fact]
     public async Task SigV4Mode_SendsSigV4Headers()
     {
@@ -535,7 +567,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
             new MessageCreateParams
             {
                 MaxTokens = 16,
-                Messages = [new() { Content = "hello", Role = Role.User }],
+                Messages = [new UserMessageParam { Content = "hello" }],
                 Model = "anthropic.claude-3",
             },
             TestContext.Current.CancellationToken
@@ -562,7 +594,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
             )
             {
                 MaxTokens = 16,
-                Messages = [new() { Content = "hello", Role = Role.User }],
+                Messages = [new UserMessageParam { Content = "hello" }],
                 Model = "anthropic.claude-3",
             },
             TestContext.Current.CancellationToken
@@ -631,7 +663,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         )
         {
             MaxTokens = 16,
-            Messages = [new() { Content = "hello", Role = Role.User }],
+            Messages = [new UserMessageParam { Content = "hello" }],
             Model = "anthropic.claude-3",
             UserProfileID = userProfileID,
         };
@@ -647,7 +679,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         )
         {
             MaxTokens = 16,
-            Messages = [new() { Content = "hello", Role = BetaMessages::Role.User }],
+            Messages = [new BetaMessages::BetaUserMessageParam { Content = "hello" }],
             Model = "anthropic.claude-3",
             UserProfileID = userProfileID,
         };
@@ -780,7 +812,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
             await client.WithRawResponse.Beta.Messages.CountTokens(
                 new()
                 {
-                    Messages = [new() { Content = "hello", Role = BetaMessages::Role.User }],
+                    Messages = [new BetaMessages::BetaUserMessageParam { Content = "hello" }],
                     Model = "anthropic.claude-3",
                     UserProfileID = "uprof_test",
                 },
@@ -792,7 +824,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
             await client.WithRawResponse.Messages.CountTokens(
                 new()
                 {
-                    Messages = [new() { Content = "hello", Role = Role.User }],
+                    Messages = [new UserMessageParam { Content = "hello" }],
                     Model = "anthropic.claude-3",
                     UserProfileID = "uprof_test",
                 },
@@ -822,7 +854,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
                         Params = new()
                         {
                             MaxTokens = 16,
-                            Messages = [new() { Content = "hello", Role = Role.User }],
+                            Messages = [new UserMessageParam { Content = "hello" }],
                             Model = "anthropic.claude-3",
                         },
                     },

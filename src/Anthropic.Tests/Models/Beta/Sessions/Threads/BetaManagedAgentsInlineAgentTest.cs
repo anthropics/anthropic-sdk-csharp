@@ -21,28 +21,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -54,19 +46,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -78,28 +65,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = new Agents::BetaManagedAgentsEffortLow(
-                Agents::BetaManagedAgentsEffortLowType.Low
-            ),
+            Effort = new Agents::BetaManagedAgentsEffortLow(),
             InferenceGeo = "inference_geo",
             Speed = Agents::Speed.Standard,
         };
         string expectedName = "pdf-reader-3";
         List<Skill> expectedSkills =
         [
-            new Agents::BetaManagedAgentsAnthropicSkill()
-            {
-                SkillID = "xlsx",
-                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                Version = "1",
-            },
+            new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem = "You extract tables precisely. Output CSV only.";
         List<Tool> expectedTools =
@@ -111,19 +90,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                     new Agents::BetaManagedAgentsBashToolConfig()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
-                Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
             },
         ];
         JsonElement expectedType = JsonSerializer.SerializeToElement("inline");
@@ -163,28 +137,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -196,19 +162,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -234,28 +195,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -267,19 +220,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -298,28 +246,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
             new()
             {
                 Name = "example-mcp",
-                Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                 Url = "https://example-server.modelcontextprotocol.io/sse",
             },
         ];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-            Effort = new Agents::BetaManagedAgentsEffortLow(
-                Agents::BetaManagedAgentsEffortLowType.Low
-            ),
+            Effort = new Agents::BetaManagedAgentsEffortLow(),
             InferenceGeo = "inference_geo",
             Speed = Agents::Speed.Standard,
         };
         string expectedName = "pdf-reader-3";
         List<Skill> expectedSkills =
         [
-            new Agents::BetaManagedAgentsAnthropicSkill()
-            {
-                SkillID = "xlsx",
-                Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                Version = "1",
-            },
+            new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
         ];
         string expectedSystem = "You extract tables precisely. Output CSV only.";
         List<Tool> expectedTools =
@@ -331,19 +271,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                     new Agents::BetaManagedAgentsBashToolConfig()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
                 ],
                 DefaultConfig = new()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
-                Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
             },
         ];
         JsonElement expectedType = JsonSerializer.SerializeToElement("inline");
@@ -383,28 +318,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -416,19 +343,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -448,28 +370,20 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = Agents::BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new Agents::BetaManagedAgentsEffortLow(
-                    Agents::BetaManagedAgentsEffortLowType.Low
-                ),
+                Effort = new Agents::BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
             Skills =
             [
-                new Agents::BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
             ],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
@@ -481,19 +395,14 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                         new Agents::BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                                Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                            Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                        ),
+                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                     },
-                    Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
         };
@@ -512,7 +421,6 @@ public class SkillTest : TestBase
         Skill value = new Agents::BetaManagedAgentsAnthropicSkill()
         {
             SkillID = "xlsx",
-            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
             Version = "1",
         };
         value.Validate();
@@ -524,7 +432,6 @@ public class SkillTest : TestBase
         Skill value = new Agents::BetaManagedAgentsCustomSkill()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
         value.Validate();
@@ -536,7 +443,6 @@ public class SkillTest : TestBase
         Skill value = new Agents::BetaManagedAgentsAnthropicSkill()
         {
             SkillID = "xlsx",
-            Type = Agents::BetaManagedAgentsAnthropicSkillType.Anthropic,
             Version = "1",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -551,13 +457,34 @@ public class SkillTest : TestBase
         Skill value = new Agents::BetaManagedAgentsCustomSkill()
         {
             SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-            Type = Agents::BetaManagedAgentsCustomSkillType.Custom,
             Version = "2",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Skill>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAnthropicTypeWorks()
+    {
+        Skill value = new Agents::BetaManagedAgentsAnthropicSkill()
+        {
+            SkillID = "xlsx",
+            Version = "1",
+        };
+        Assert.Equal(SkillType.Anthropic, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomTypeWorks()
+    {
+        Skill value = new Agents::BetaManagedAgentsCustomSkill()
+        {
+            SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
+            Version = "2",
+        };
+        Assert.Equal(SkillType.Custom, value.Type.Value());
     }
 
     [Fact]
@@ -568,6 +495,7 @@ public class SkillTest : TestBase
                 """
                 {
                   "skill_id": "xlsx",
+                  "type": "anthropic",
                   "version": "1"
                 }
                 """
@@ -576,14 +504,17 @@ public class SkillTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedSkillID = "xlsx";
+        ApiEnum<string, SkillType> expectedType = SkillType.Anthropic;
         string expectedVersion = "1";
 
         Assert.Equal(expectedSkillID, value.SkillID);
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedVersion, value.Version);
 
         Skill emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.SkillID);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Version);
 
         Skill mismatchedValue = new(
@@ -606,6 +537,64 @@ public class SkillTest : TestBase
     }
 }
 
+public class SkillTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(SkillType.Anthropic)]
+    [InlineData(SkillType.Custom)]
+    public void Validation_Works(SkillType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SkillType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(SkillType.Anthropic)]
+    [InlineData(SkillType.Custom)]
+    public void SerializationRoundtrip_Works(SkillType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, SkillType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+}
+
 public class ToolTest : TestBase
 {
     [Fact]
@@ -618,19 +607,14 @@ public class ToolTest : TestBase
                 new Agents::BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
-            Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
         };
         value.Validate();
     }
@@ -646,20 +630,15 @@ public class ToolTest : TestBase
                 {
                     Enabled = true,
                     Name = "name",
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
             McpServerName = "mcp_server_name",
-            Type = Agents::BetaManagedAgentsMcpToolsetType.McpToolset,
         };
         value.Validate();
     }
@@ -679,7 +658,6 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = Agents::BetaManagedAgentsCustomToolType.Custom,
         };
         value.Validate();
     }
@@ -694,19 +672,14 @@ public class ToolTest : TestBase
                 new Agents::BetaManagedAgentsBashToolConfig()
                 {
                     Enabled = true,
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
-            Type = Agents::BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -725,20 +698,15 @@ public class ToolTest : TestBase
                 {
                     Enabled = true,
                     Name = "name",
-                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                        Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                    ),
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
                 },
             ],
             DefaultConfig = new()
             {
                 Enabled = true,
-                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(
-                    Agents::BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                ),
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
             },
             McpServerName = "mcp_server_name",
-            Type = Agents::BetaManagedAgentsMcpToolsetType.McpToolset,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -761,10 +729,157 @@ public class ToolTest : TestBase
                 Required = ["string"],
             },
             Name = "name",
-            Type = Agents::BetaManagedAgentsCustomToolType.Custom,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAgentToolset20260401TypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsAgentToolset20260401()
+        {
+            Configs =
+            [
+                new Agents::BetaManagedAgentsBashToolConfig()
+                {
+                    Enabled = true,
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+        };
+        Assert.Equal(ToolType.AgentToolset20260401, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsMcpToolsetTypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsMcpToolset()
+        {
+            Configs =
+            [
+                new()
+                {
+                    Enabled = true,
+                    Name = "name",
+                    PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+                },
+            ],
+            DefaultConfig = new()
+            {
+                Enabled = true,
+                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
+            },
+            McpServerName = "mcp_server_name",
+        };
+        Assert.Equal(ToolType.McpToolset, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCustomTypeWorks()
+    {
+        Tool value = new Agents::BetaManagedAgentsCustomTool()
+        {
+            Description = "description",
+            InputSchema = new()
+            {
+                Properties = new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+                Required = ["string"],
+            },
+            Name = "name",
+        };
+        Assert.Equal(ToolType.Custom, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Tool value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent_toolset_20260401"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, ToolType> expectedType = ToolType.AgentToolset20260401;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Tool emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ToolTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolType.AgentToolset20260401)]
+    [InlineData(ToolType.McpToolset)]
+    [InlineData(ToolType.Custom)]
+    public void Validation_Works(ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolType.AgentToolset20260401)]
+    [InlineData(ToolType.McpToolset)]
+    [InlineData(ToolType.Custom)]
+    public void SerializationRoundtrip_Works(ToolType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

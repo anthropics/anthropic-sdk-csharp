@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
@@ -10,30 +9,21 @@ public class BetaManagedAgentsSessionResourceNotFoundRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundRunError
-        {
-            Message = "message",
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundRunError { Message = "message" };
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType> expectedType =
-            BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "session_resource_not_found_error"
+        );
 
         Assert.Equal(expectedMessage, model.Message);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundRunError
-        {
-            Message = "message",
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundRunError { Message = "message" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -48,12 +38,7 @@ public class BetaManagedAgentsSessionResourceNotFoundRunErrorTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundRunError
-        {
-            Message = "message",
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundRunError { Message = "message" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -64,22 +49,18 @@ public class BetaManagedAgentsSessionResourceNotFoundRunErrorTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMessage = "message";
-        ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType> expectedType =
-            BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError;
+        JsonElement expectedType = JsonSerializer.SerializeToElement(
+            "session_resource_not_found_error"
+        );
 
         Assert.Equal(expectedMessage, deserialized.Message);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundRunError
-        {
-            Message = "message",
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundRunError { Message = "message" };
 
         model.Validate();
     }
@@ -87,69 +68,10 @@ public class BetaManagedAgentsSessionResourceNotFoundRunErrorTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsSessionResourceNotFoundRunError
-        {
-            Message = "message",
-            Type =
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-        };
+        var model = new BetaManagedAgentsSessionResourceNotFoundRunError { Message = "message" };
 
         BetaManagedAgentsSessionResourceNotFoundRunError copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsSessionResourceNotFoundRunErrorTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError)]
-    public void Validation_Works(BetaManagedAgentsSessionResourceNotFoundRunErrorType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsSessionResourceNotFoundRunErrorType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

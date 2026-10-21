@@ -146,14 +146,12 @@ public sealed record class BetaManagedAgentsSessionThreadAgent : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionThreadAgentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionThreadAgentType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -189,11 +187,17 @@ public sealed record class BetaManagedAgentsSessionThreadAgent : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Version;
     }
 
-    public BetaManagedAgentsSessionThreadAgent() { }
+    public BetaManagedAgentsSessionThreadAgent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -206,6 +210,8 @@ public sealed record class BetaManagedAgentsSessionThreadAgent : JsonModel
     public BetaManagedAgentsSessionThreadAgent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent");
     }
 
 #pragma warning disable CS8618
@@ -263,6 +269,23 @@ public record class BetaManagedAgentsSessionThreadAgentSkill : ModelBase
                 BetaManagedAgentsAnthropicSkill x => x.SkillID,
                 BetaManagedAgentsCustomSkill x => x.SkillID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "skill_id"),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAnthropicSkill _ =>
+                    BetaManagedAgentsSessionThreadAgentSkillType.Anthropic,
+                BetaManagedAgentsCustomSkill _ =>
+                    BetaManagedAgentsSessionThreadAgentSkillType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -563,6 +586,51 @@ sealed class BetaManagedAgentsSessionThreadAgentSkillConverter
     }
 }
 
+[JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentSkillTypeConverter))]
+public enum BetaManagedAgentsSessionThreadAgentSkillType
+{
+    Anthropic,
+    Custom,
+}
+
+sealed class BetaManagedAgentsSessionThreadAgentSkillTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionThreadAgentSkillType>
+{
+    public override BetaManagedAgentsSessionThreadAgentSkillType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "anthropic" => BetaManagedAgentsSessionThreadAgentSkillType.Anthropic,
+            "custom" => BetaManagedAgentsSessionThreadAgentSkillType.Custom,
+            _ => (BetaManagedAgentsSessionThreadAgentSkillType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionThreadAgentSkillType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionThreadAgentSkillType.Anthropic => "anthropic",
+                BetaManagedAgentsSessionThreadAgentSkillType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Union type for tool configurations returned in API responses.
 /// </summary>
@@ -581,6 +649,24 @@ public record class BetaManagedAgentsSessionThreadAgentTool : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentToolset20260401 _ =>
+                    BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401,
+                BetaManagedAgentsMcpToolset _ =>
+                    BetaManagedAgentsSessionThreadAgentToolType.McpToolset,
+                BetaManagedAgentsCustomTool _ => BetaManagedAgentsSessionThreadAgentToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -940,16 +1026,18 @@ sealed class BetaManagedAgentsSessionThreadAgentToolConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentTypeConverter))]
-public enum BetaManagedAgentsSessionThreadAgentType
+[JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentToolTypeConverter))]
+public enum BetaManagedAgentsSessionThreadAgentToolType
 {
-    Agent,
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
 }
 
-sealed class BetaManagedAgentsSessionThreadAgentTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionThreadAgentType>
+sealed class BetaManagedAgentsSessionThreadAgentToolTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionThreadAgentToolType>
 {
-    public override BetaManagedAgentsSessionThreadAgentType Read(
+    public override BetaManagedAgentsSessionThreadAgentToolType Read(
         ref Utf8JsonReader reader,
         System::Type typeToConvert,
         JsonSerializerOptions options
@@ -957,14 +1045,17 @@ sealed class BetaManagedAgentsSessionThreadAgentTypeConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent" => BetaManagedAgentsSessionThreadAgentType.Agent,
-            _ => (BetaManagedAgentsSessionThreadAgentType)(-1),
+            "agent_toolset_20260401" =>
+                BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401,
+            "mcp_toolset" => BetaManagedAgentsSessionThreadAgentToolType.McpToolset,
+            "custom" => BetaManagedAgentsSessionThreadAgentToolType.Custom,
+            _ => (BetaManagedAgentsSessionThreadAgentToolType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionThreadAgentType value,
+        BetaManagedAgentsSessionThreadAgentToolType value,
         JsonSerializerOptions options
     )
     {
@@ -972,7 +1063,10 @@ sealed class BetaManagedAgentsSessionThreadAgentTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionThreadAgentType.Agent => "agent",
+                BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401 =>
+                    "agent_toolset_20260401",
+                BetaManagedAgentsSessionThreadAgentToolType.McpToolset => "mcp_toolset",
+                BetaManagedAgentsSessionThreadAgentToolType.Custom => "custom",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

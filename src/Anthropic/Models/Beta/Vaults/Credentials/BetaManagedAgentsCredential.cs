@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -33,12 +33,12 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
     /// <summary>
     /// When the credential was archived. Null if not archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -59,12 +59,12 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -88,14 +88,12 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
         }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Vaults.Credentials.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Vaults.Credentials.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -103,12 +101,12 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -147,13 +145,24 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
         this.Auth.Validate();
         _ = this.CreatedAt;
         _ = this.Metadata;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("vault_credential")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         _ = this.VaultID;
         _ = this.DisplayName;
     }
 
-    public BetaManagedAgentsCredential() { }
+    public BetaManagedAgentsCredential()
+    {
+        this.Type = JsonSerializer.SerializeToElement("vault_credential");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -164,6 +173,8 @@ public sealed record class BetaManagedAgentsCredential : JsonModel
     public BetaManagedAgentsCredential(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("vault_credential");
     }
 
 #pragma warning disable CS8618
@@ -225,6 +236,25 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
                     this.Json,
                     "mcp_server_url"
                 ),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsCredentialAuthType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsMcpOAuthAuthResponse _ =>
+                    BetaManagedAgentsCredentialAuthType.McpOAuth,
+                BetaManagedAgentsStaticBearerAuthResponse _ =>
+                    BetaManagedAgentsCredentialAuthType.StaticBearer,
+                BetaManagedAgentsEnvironmentVariableAuthResponse _ =>
+                    BetaManagedAgentsCredentialAuthType.EnvironmentVariable,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsCredentialAuthType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -352,9 +382,9 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsMcpOAuthAuthResponse> betaManagedAgentsMcpOAuthAuthResponse,
-        System::Action<BetaManagedAgentsStaticBearerAuthResponse> betaManagedAgentsStaticBearerAuthResponse,
-        System::Action<BetaManagedAgentsEnvironmentVariableAuthResponse> betaManagedAgentsEnvironmentVariableAuthResponse
+        Action<BetaManagedAgentsMcpOAuthAuthResponse> betaManagedAgentsMcpOAuthAuthResponse,
+        Action<BetaManagedAgentsStaticBearerAuthResponse> betaManagedAgentsStaticBearerAuthResponse,
+        Action<BetaManagedAgentsEnvironmentVariableAuthResponse> betaManagedAgentsEnvironmentVariableAuthResponse
     )
     {
         switch (this.Value)
@@ -398,15 +428,12 @@ public record class BetaManagedAgentsCredentialAuth : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsMcpOAuthAuthResponse,
-            T
-        > betaManagedAgentsMcpOAuthAuthResponse,
-        System::Func<
+        Func<BetaManagedAgentsMcpOAuthAuthResponse, T> betaManagedAgentsMcpOAuthAuthResponse,
+        Func<
             BetaManagedAgentsStaticBearerAuthResponse,
             T
         > betaManagedAgentsStaticBearerAuthResponse,
-        System::Func<
+        Func<
             BetaManagedAgentsEnvironmentVariableAuthResponse,
             T
         > betaManagedAgentsEnvironmentVariableAuthResponse
@@ -500,7 +527,7 @@ sealed class BetaManagedAgentsCredentialAuthConverter
 {
     public override BetaManagedAgentsCredentialAuth? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -597,36 +624,35 @@ sealed class BetaManagedAgentsCredentialAuthConverter
     }
 }
 
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
+[JsonConverter(typeof(BetaManagedAgentsCredentialAuthTypeConverter))]
+public enum BetaManagedAgentsCredentialAuthType
 {
-    VaultCredential,
+    McpOAuth,
+    StaticBearer,
+    EnvironmentVariable,
 }
 
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Vaults.Credentials.Type>
+sealed class BetaManagedAgentsCredentialAuthTypeConverter
+    : JsonConverter<BetaManagedAgentsCredentialAuthType>
 {
-    public override global::Anthropic.Models.Beta.Vaults.Credentials.Type Read(
+    public override BetaManagedAgentsCredentialAuthType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "vault_credential" => global::Anthropic
-                .Models
-                .Beta
-                .Vaults
-                .Credentials
-                .Type
-                .VaultCredential,
-            _ => (global::Anthropic.Models.Beta.Vaults.Credentials.Type)(-1),
+            "mcp_oauth" => BetaManagedAgentsCredentialAuthType.McpOAuth,
+            "static_bearer" => BetaManagedAgentsCredentialAuthType.StaticBearer,
+            "environment_variable" => BetaManagedAgentsCredentialAuthType.EnvironmentVariable,
+            _ => (BetaManagedAgentsCredentialAuthType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Vaults.Credentials.Type value,
+        BetaManagedAgentsCredentialAuthType value,
         JsonSerializerOptions options
     )
     {
@@ -634,8 +660,9 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Vaults.
             writer,
             value switch
             {
-                global::Anthropic.Models.Beta.Vaults.Credentials.Type.VaultCredential =>
-                    "vault_credential",
+                BetaManagedAgentsCredentialAuthType.McpOAuth => "mcp_oauth",
+                BetaManagedAgentsCredentialAuthType.StaticBearer => "static_bearer",
+                BetaManagedAgentsCredentialAuthType.EnvironmentVariable => "environment_variable",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

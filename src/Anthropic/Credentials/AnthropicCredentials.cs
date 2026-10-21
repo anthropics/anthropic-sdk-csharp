@@ -14,10 +14,12 @@ public static class AnthropicCredentials
 {
     /// <summary>
     /// Resolves credentials from environment variables and config files.
-    /// Returns <c>null</c> if <c>ANTHROPIC_API_KEY</c> is set (existing API key auth handles it).
+    /// Returns <c>null</c> if <c>ANTHROPIC_API_KEY</c> is set and no profile is named (existing
+    /// API key auth handles it).
     /// </summary>
-    /// <param name="profile">Override profile name. Defaults to <c>ANTHROPIC_PROFILE</c> env var
-    /// or the active_config file.</param>
+    /// <param name="profile">Override profile name. A profile named here is used whatever
+    /// <c>ANTHROPIC_API_KEY</c> and <c>ANTHROPIC_AUTH_TOKEN</c> hold. Defaults to
+    /// <c>ANTHROPIC_PROFILE</c> env var or the active_config file.</param>
     /// <param name="baseUrl">Override base URL. Defaults to config file value or
     /// <see cref="EnvironmentUrl.Production"/>.</param>
     /// <param name="httpClient">Optional <see cref="HttpClient"/> for token exchange requests.</param>
@@ -28,18 +30,21 @@ public static class AnthropicCredentials
         HttpClient? httpClient = null
     )
     {
-        // ANTHROPIC_API_KEY
-        var apiKey = Environment.GetEnvironmentVariable(CredentialsConstants.EnvApiKey);
-        if (!string.IsNullOrEmpty(apiKey))
+        if (profile == null)
         {
-            return null;
-        }
+            // ANTHROPIC_API_KEY
+            var apiKey = Environment.GetEnvironmentVariable(CredentialsConstants.EnvApiKey);
+            if (!string.IsNullOrEmpty(apiKey))
+            {
+                return null;
+            }
 
-        // ANTHROPIC_AUTH_TOKEN (static bearer token)
-        var authToken = Environment.GetEnvironmentVariable(CredentialsConstants.EnvAuthToken);
-        if (!string.IsNullOrEmpty(authToken))
-        {
-            return new CredentialResult(new StaticTokenCredentials(authToken));
+            // ANTHROPIC_AUTH_TOKEN (static bearer token)
+            var authToken = Environment.GetEnvironmentVariable(CredentialsConstants.EnvAuthToken);
+            if (!string.IsNullOrEmpty(authToken))
+            {
+                return new CredentialResult(new StaticTokenCredentials(authToken));
+            }
         }
 
         // Resolution order per the credential spec:

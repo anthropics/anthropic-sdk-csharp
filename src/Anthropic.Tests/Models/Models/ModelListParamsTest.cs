@@ -4,7 +4,6 @@ using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using Anthropic.Models.Beta;
 using Anthropic.Models.Models;
 
 namespace Anthropic.Tests.Models.Models;
@@ -20,7 +19,6 @@ public class ModelListParamsTest : TestBase
             BeforeID = "before_id",
             Lifecycle = [Lifecycle.Active],
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -28,10 +26,6 @@ public class ModelListParamsTest : TestBase
         string expectedBeforeID = "before_id";
         List<ApiEnum<string, Lifecycle>> expectedLifecycle = [Lifecycle.Active];
         long expectedLimit = 1;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
@@ -43,12 +37,6 @@ public class ModelListParamsTest : TestBase
             Assert.Equal(expectedLifecycle[i], parameters.Lifecycle[i]);
         }
         Assert.Equal(expectedLimit, parameters.Limit);
-        Assert.NotNull(parameters.Betas);
-        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
-        for (int i = 0; i < expectedBetas.Count; i++)
-        {
-            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
-        }
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
     }
 
@@ -65,8 +53,6 @@ public class ModelListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("lifecycle"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
-        Assert.Null(parameters.Betas);
-        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
@@ -81,7 +67,6 @@ public class ModelListParamsTest : TestBase
             BeforeID = null,
             Lifecycle = null,
             Limit = null,
-            Betas = null,
             WorkspaceID = null,
         };
 
@@ -93,8 +78,6 @@ public class ModelListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("lifecycle"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
-        Assert.Null(parameters.Betas);
-        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
@@ -108,7 +91,6 @@ public class ModelListParamsTest : TestBase
             BeforeID = "before_id",
             Lifecycle = [Lifecycle.Active],
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -117,7 +99,6 @@ public class ModelListParamsTest : TestBase
             BeforeID = null,
             Lifecycle = null,
             Limit = null,
-            Betas = null,
             WorkspaceID = null,
         };
 
@@ -129,8 +110,6 @@ public class ModelListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("lifecycle"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
-        Assert.Null(parameters.Betas);
-        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
         Assert.Null(parameters.WorkspaceID);
         Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-workspace-id"));
     }
@@ -162,18 +141,10 @@ public class ModelListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        ModelListParams parameters = new()
-        {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
-            WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
-        };
+        ModelListParams parameters = new() { WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy" };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.Equal(
-            ["message-batches-2024-09-24"],
-            requestMessage.Headers.GetValues("anthropic-beta")
-        );
         Assert.Equal(
             ["wrkspc_011CZkZaBF1tNoB5wlCeusgy"],
             requestMessage.Headers.GetValues("anthropic-workspace-id")
@@ -189,7 +160,6 @@ public class ModelListParamsTest : TestBase
             BeforeID = "before_id",
             Lifecycle = [Lifecycle.Active],
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

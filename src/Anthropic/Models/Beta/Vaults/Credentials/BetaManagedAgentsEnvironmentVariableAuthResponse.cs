@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -61,14 +61,12 @@ public sealed record class BetaManagedAgentsEnvironmentVariableAuthResponse : Js
         init { this._rawData.Set("secret_name", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEnvironmentVariableAuthResponseType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -79,10 +77,21 @@ public sealed record class BetaManagedAgentsEnvironmentVariableAuthResponse : Js
         this.InjectionLocation.Validate();
         this.Networking.Validate();
         _ = this.SecretName;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("environment_variable")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEnvironmentVariableAuthResponse() { }
+    public BetaManagedAgentsEnvironmentVariableAuthResponse()
+    {
+        this.Type = JsonSerializer.SerializeToElement("environment_variable");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -97,6 +106,8 @@ public sealed record class BetaManagedAgentsEnvironmentVariableAuthResponse : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("environment_variable");
     }
 
 #pragma warning disable CS8618
@@ -143,6 +154,23 @@ public record class Networking : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, NetworkingType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUnrestrictedCredentialNetworkingResponse _ =>
+                    NetworkingType.Unrestricted,
+                BetaManagedAgentsLimitedCredentialNetworkingResponse _ => NetworkingType.Limited,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, NetworkingType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -236,8 +264,8 @@ public record class Networking : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUnrestrictedCredentialNetworkingResponse> betaManagedAgentsUnrestrictedCredentialNetworkingResponse,
-        System::Action<BetaManagedAgentsLimitedCredentialNetworkingResponse> betaManagedAgentsLimitedCredentialNetworkingResponse
+        Action<BetaManagedAgentsUnrestrictedCredentialNetworkingResponse> betaManagedAgentsUnrestrictedCredentialNetworkingResponse,
+        Action<BetaManagedAgentsLimitedCredentialNetworkingResponse> betaManagedAgentsLimitedCredentialNetworkingResponse
     )
     {
         switch (this.Value)
@@ -277,11 +305,11 @@ public record class Networking : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsUnrestrictedCredentialNetworkingResponse,
             T
         > betaManagedAgentsUnrestrictedCredentialNetworkingResponse,
-        System::Func<
+        Func<
             BetaManagedAgentsLimitedCredentialNetworkingResponse,
             T
         > betaManagedAgentsLimitedCredentialNetworkingResponse
@@ -362,7 +390,7 @@ sealed class NetworkingConverter : JsonConverter<Networking>
 {
     public override Networking? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -438,32 +466,32 @@ sealed class NetworkingConverter : JsonConverter<Networking>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsEnvironmentVariableAuthResponseTypeConverter))]
-public enum BetaManagedAgentsEnvironmentVariableAuthResponseType
+[JsonConverter(typeof(NetworkingTypeConverter))]
+public enum NetworkingType
 {
-    EnvironmentVariable,
+    Unrestricted,
+    Limited,
 }
 
-sealed class BetaManagedAgentsEnvironmentVariableAuthResponseTypeConverter
-    : JsonConverter<BetaManagedAgentsEnvironmentVariableAuthResponseType>
+sealed class NetworkingTypeConverter : JsonConverter<NetworkingType>
 {
-    public override BetaManagedAgentsEnvironmentVariableAuthResponseType Read(
+    public override NetworkingType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "environment_variable" =>
-                BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable,
-            _ => (BetaManagedAgentsEnvironmentVariableAuthResponseType)(-1),
+            "unrestricted" => NetworkingType.Unrestricted,
+            "limited" => NetworkingType.Limited,
+            _ => (NetworkingType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsEnvironmentVariableAuthResponseType value,
+        NetworkingType value,
         JsonSerializerOptions options
     )
     {
@@ -471,8 +499,8 @@ sealed class BetaManagedAgentsEnvironmentVariableAuthResponseTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsEnvironmentVariableAuthResponseType.EnvironmentVariable =>
-                    "environment_variable",
+                NetworkingType.Unrestricted => "unrestricted",
+                NetworkingType.Limited => "limited",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

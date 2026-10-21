@@ -15,7 +15,7 @@ namespace Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 public sealed record class BetaWorkspaceRateLimit : JsonModel
 {
     /// <summary>
-    /// The rate-limit group this entry's limits apply to. Its `type` equals `group_type`.
+    /// The rate-limit group this entry's limits apply to.
     /// </summary>
     public required Group Group
     {
@@ -25,27 +25,6 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
             return this._rawData.GetNotNullClass<Group>("group");
         }
         init { this._rawData.Set("group", value); }
-    }
-
-    /// <summary>
-    /// Deprecated: use `group.type` instead. The kind of rate-limit group this entry
-    /// represents. `model_group` entries apply to a family of models (listed in
-    /// `models`); other values apply to an API-surface category and have `models`
-    /// set to `null`. Always equal to `group.type`.
-    /// </summary>
-    [Obsolete(
-        "Use `group.type` instead. `group_type` is still returned and always equals `group.type`."
-    )]
-    public required ApiEnum<string, BetaWorkspaceRateLimitGroupType> GroupType
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaWorkspaceRateLimitGroupType>>(
-                "group_type"
-            );
-        }
-        init { this._rawData.Set("group_type", value); }
     }
 
     /// <summary>
@@ -73,7 +52,7 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     }
 
     /// <summary>
-    /// Model names this entry's limits apply to, including aliases. `null` when `group_type`
+    /// Model names this entry's limits apply to, including aliases. `null` when `group.type`
     /// is not `"model_group"`.
     /// </summary>
     public required IReadOnlyList<string>? Models
@@ -135,7 +114,6 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     public override void Validate()
     {
         this.Group.Validate();
-        this.GroupType.Validate();
         foreach (var item in this.Limits)
         {
             item.Validate();
@@ -154,7 +132,6 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
         _ = this.WorkspaceID;
     }
 
-    [Obsolete("Required properties are deprecated: group_type")]
     public BetaWorkspaceRateLimit()
     {
         this.Type = JsonSerializer.SerializeToElement("workspace_rate_limit");
@@ -162,12 +139,10 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    [Obsolete("Required properties are deprecated: group_type")]
     public BetaWorkspaceRateLimit(BetaWorkspaceRateLimit betaWorkspaceRateLimit)
         : base(betaWorkspaceRateLimit) { }
 #pragma warning restore CS8618
 
-    [Obsolete("Required properties are deprecated: group_type")]
     public BetaWorkspaceRateLimit(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
@@ -176,7 +151,6 @@ public sealed record class BetaWorkspaceRateLimit : JsonModel
     }
 
 #pragma warning disable CS8618
-    [Obsolete("Required properties are deprecated: group_type")]
     [SetsRequiredMembers]
     BetaWorkspaceRateLimit(FrozenDictionary<string, JsonElement> rawData)
     {
@@ -202,7 +176,7 @@ class BetaWorkspaceRateLimitFromRaw : IFromRawJson<BetaWorkspaceRateLimit>
 }
 
 /// <summary>
-/// The rate-limit group this entry's limits apply to. Its `type` equals `group_type`.
+/// The rate-limit group this entry's limits apply to.
 /// </summary>
 [JsonConverter(typeof(GroupConverter))]
 public record class Group : ModelBase
@@ -239,19 +213,22 @@ public record class Group : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, GroupTypeValue> Type
     {
         get
         {
             return this.Value switch
             {
-                RateLimits::BetaOrganizationRateLimitModelGroup x => x.Type,
-                RateLimits::BetaOrganizationRateLimitBatchGroup x => x.Type,
-                RateLimits::BetaOrganizationRateLimitTokenCountGroup x => x.Type,
-                RateLimits::BetaOrganizationRateLimitFilesGroup x => x.Type,
-                RateLimits::BetaOrganizationRateLimitSkillsGroup x => x.Type,
-                RateLimits::BetaOrganizationRateLimitWebSearchGroup x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                RateLimits::BetaOrganizationRateLimitModelGroup _ => GroupTypeValue.ModelGroup,
+                RateLimits::BetaOrganizationRateLimitBatchGroup _ => GroupTypeValue.Batch,
+                RateLimits::BetaOrganizationRateLimitTokenCountGroup _ => GroupTypeValue.TokenCount,
+                RateLimits::BetaOrganizationRateLimitFilesGroup _ => GroupTypeValue.Files,
+                RateLimits::BetaOrganizationRateLimitSkillsGroup _ => GroupTypeValue.Skills,
+                RateLimits::BetaOrganizationRateLimitWebSearchGroup _ => GroupTypeValue.WebSearch,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, GroupTypeValue>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -800,30 +777,20 @@ sealed class GroupConverter : JsonConverter<Group>
     }
 }
 
-/// <summary>
-/// Deprecated: use `group.type` instead. The kind of rate-limit group this entry
-/// represents. `model_group` entries apply to a family of models (listed in `models`);
-/// other values apply to an API-surface category and have `models` set to `null`.
-/// Always equal to `group.type`.
-/// </summary>
-[Obsolete(
-    "Use `group.type` instead. `group_type` is still returned and always equals `group.type`."
-)]
-[JsonConverter(typeof(BetaWorkspaceRateLimitGroupTypeConverter))]
-public enum BetaWorkspaceRateLimitGroupType
+[JsonConverter(typeof(GroupTypeValueConverter))]
+public enum GroupTypeValue
 {
-    Batch,
-    Files,
     ModelGroup,
-    Skills,
+    Batch,
     TokenCount,
+    Files,
+    Skills,
     WebSearch,
 }
 
-sealed class BetaWorkspaceRateLimitGroupTypeConverter
-    : JsonConverter<BetaWorkspaceRateLimitGroupType>
+sealed class GroupTypeValueConverter : JsonConverter<GroupTypeValue>
 {
-    public override BetaWorkspaceRateLimitGroupType Read(
+    public override GroupTypeValue Read(
         ref Utf8JsonReader reader,
         Type typeToConvert,
         JsonSerializerOptions options
@@ -831,19 +798,19 @@ sealed class BetaWorkspaceRateLimitGroupTypeConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "batch" => BetaWorkspaceRateLimitGroupType.Batch,
-            "files" => BetaWorkspaceRateLimitGroupType.Files,
-            "model_group" => BetaWorkspaceRateLimitGroupType.ModelGroup,
-            "skills" => BetaWorkspaceRateLimitGroupType.Skills,
-            "token_count" => BetaWorkspaceRateLimitGroupType.TokenCount,
-            "web_search" => BetaWorkspaceRateLimitGroupType.WebSearch,
-            _ => (BetaWorkspaceRateLimitGroupType)(-1),
+            "model_group" => GroupTypeValue.ModelGroup,
+            "batch" => GroupTypeValue.Batch,
+            "token_count" => GroupTypeValue.TokenCount,
+            "files" => GroupTypeValue.Files,
+            "skills" => GroupTypeValue.Skills,
+            "web_search" => GroupTypeValue.WebSearch,
+            _ => (GroupTypeValue)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaWorkspaceRateLimitGroupType value,
+        GroupTypeValue value,
         JsonSerializerOptions options
     )
     {
@@ -851,12 +818,12 @@ sealed class BetaWorkspaceRateLimitGroupTypeConverter
             writer,
             value switch
             {
-                BetaWorkspaceRateLimitGroupType.Batch => "batch",
-                BetaWorkspaceRateLimitGroupType.Files => "files",
-                BetaWorkspaceRateLimitGroupType.ModelGroup => "model_group",
-                BetaWorkspaceRateLimitGroupType.Skills => "skills",
-                BetaWorkspaceRateLimitGroupType.TokenCount => "token_count",
-                BetaWorkspaceRateLimitGroupType.WebSearch => "web_search",
+                GroupTypeValue.ModelGroup => "model_group",
+                GroupTypeValue.Batch => "batch",
+                GroupTypeValue.TokenCount => "token_count",
+                GroupTypeValue.Files => "files",
+                GroupTypeValue.Skills => "skills",
+                GroupTypeValue.WebSearch => "web_search",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

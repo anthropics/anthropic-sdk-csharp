@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -31,14 +30,12 @@ public sealed record class BetaManagedAgentsAgentMessagePreview : JsonModel
         init { this._rawData.Set("id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentMessagePreviewType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentMessagePreviewType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -47,10 +44,16 @@ public sealed record class BetaManagedAgentsAgentMessagePreview : JsonModel
     public override void Validate()
     {
         _ = this.ID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("agent.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAgentMessagePreview() { }
+    public BetaManagedAgentsAgentMessagePreview()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -63,6 +66,8 @@ public sealed record class BetaManagedAgentsAgentMessagePreview : JsonModel
     public BetaManagedAgentsAgentMessagePreview(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.message");
     }
 
 #pragma warning disable CS8618
@@ -80,6 +85,13 @@ public sealed record class BetaManagedAgentsAgentMessagePreview : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsAgentMessagePreview(string id)
+        : this()
+    {
+        this.ID = id;
+    }
 }
 
 class BetaManagedAgentsAgentMessagePreviewFromRaw
@@ -89,46 +101,4 @@ class BetaManagedAgentsAgentMessagePreviewFromRaw
     public BetaManagedAgentsAgentMessagePreview FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAgentMessagePreview.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAgentMessagePreviewTypeConverter))]
-public enum BetaManagedAgentsAgentMessagePreviewType
-{
-    AgentMessage,
-}
-
-sealed class BetaManagedAgentsAgentMessagePreviewTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentMessagePreviewType>
-{
-    public override BetaManagedAgentsAgentMessagePreviewType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "agent.message" => BetaManagedAgentsAgentMessagePreviewType.AgentMessage,
-            _ => (BetaManagedAgentsAgentMessagePreviewType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAgentMessagePreviewType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAgentMessagePreviewType.AgentMessage => "agent.message",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

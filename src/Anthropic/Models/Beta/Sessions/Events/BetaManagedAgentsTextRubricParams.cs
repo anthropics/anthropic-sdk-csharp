@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -34,14 +33,12 @@ public sealed record class BetaManagedAgentsTextRubricParams : JsonModel
         init { this._rawData.Set("content", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsTextRubricParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsTextRubricParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -50,10 +47,16 @@ public sealed record class BetaManagedAgentsTextRubricParams : JsonModel
     public override void Validate()
     {
         _ = this.Content;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("text")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsTextRubricParams() { }
+    public BetaManagedAgentsTextRubricParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("text");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -66,6 +69,8 @@ public sealed record class BetaManagedAgentsTextRubricParams : JsonModel
     public BetaManagedAgentsTextRubricParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("text");
     }
 
 #pragma warning disable CS8618
@@ -83,6 +88,13 @@ public sealed record class BetaManagedAgentsTextRubricParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsTextRubricParams(string content)
+        : this()
+    {
+        this.Content = content;
+    }
 }
 
 class BetaManagedAgentsTextRubricParamsFromRaw : IFromRawJson<BetaManagedAgentsTextRubricParams>
@@ -91,46 +103,4 @@ class BetaManagedAgentsTextRubricParamsFromRaw : IFromRawJson<BetaManagedAgentsT
     public BetaManagedAgentsTextRubricParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsTextRubricParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsTextRubricParamsTypeConverter))]
-public enum BetaManagedAgentsTextRubricParamsType
-{
-    Text,
-}
-
-sealed class BetaManagedAgentsTextRubricParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsTextRubricParamsType>
-{
-    public override BetaManagedAgentsTextRubricParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "text" => BetaManagedAgentsTextRubricParamsType.Text,
-            _ => (BetaManagedAgentsTextRubricParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsTextRubricParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsTextRubricParamsType.Text => "text",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -18,9 +18,8 @@ var personMessage = await client.Messages.Create<PersonInfo>(
         MaxTokens = 1024,
         Messages =
         [
-            new()
+            new UserMessageParam
             {
-                Role = Role.User,
                 Content =
                     "Extract the person information from this text: John Smith is a 32-year-old software engineer. His email is john.smith@example.com and he is currently employed at a tech startup.",
             },
@@ -50,9 +49,8 @@ var companyMessage = await client.Messages.Create<CompanyInfo>(
         MaxTokens = 2048,
         Messages =
         [
-            new()
+            new UserMessageParam
             {
-                Role = Role.User,
                 Content = """
                 Extract the company information from this text:
 
@@ -96,9 +94,8 @@ var sentimentMessage = await client.Messages.Create<SentimentResult>(
         MaxTokens = 256,
         Messages =
         [
-            new()
+            new UserMessageParam
             {
-                Role = Role.User,
                 Content =
                     "Analyze the sentiment of this review: \"The battery life is outstanding and the screen is gorgeous, but the price feels steep for what you get.\"",
             },
@@ -143,9 +140,8 @@ var productMessage = await client.Messages.Create<Product>(
         MaxTokens = 1024,
         Messages =
         [
-            new()
+            new UserMessageParam
             {
-                Role = Role.User,
                 Content =
                     "Extract product info: The Quantum X2000 laptop costs $1,299.99 and is currently in stock with 42 units available.",
             },

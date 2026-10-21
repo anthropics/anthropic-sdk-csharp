@@ -7,10 +7,7 @@ AnthropicClient client = new();
 MessageCreateParams parameters = new()
 {
     MaxTokens = 2048,
-    Messages =
-    [
-        new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
-    ],
+    Messages = [new UserMessageParam { Content = "Tell me a story about building the best SDK!" }],
     Model = Model.ClaudeSonnet5_5,
 };
 

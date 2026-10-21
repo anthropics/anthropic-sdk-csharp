@@ -25,15 +25,17 @@ public record class ComplianceSettingsState : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ComplianceSettingsStateType> Type
     {
         get
         {
             return this.Value switch
             {
-                ComplianceSettingsStateEnabled x => x.Type,
-                ComplianceSettingsStateDisabled x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                ComplianceSettingsStateEnabled _ => ComplianceSettingsStateType.Enabled,
+                ComplianceSettingsStateDisabled _ => ComplianceSettingsStateType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ComplianceSettingsStateType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -309,5 +311,49 @@ sealed class ComplianceSettingsStateConverter : JsonConverter<ComplianceSettings
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ComplianceSettingsStateTypeConverter))]
+public enum ComplianceSettingsStateType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class ComplianceSettingsStateTypeConverter : JsonConverter<ComplianceSettingsStateType>
+{
+    public override ComplianceSettingsStateType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => ComplianceSettingsStateType.Enabled,
+            "disabled" => ComplianceSettingsStateType.Disabled,
+            _ => (ComplianceSettingsStateType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ComplianceSettingsStateType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ComplianceSettingsStateType.Enabled => "enabled",
+                ComplianceSettingsStateType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

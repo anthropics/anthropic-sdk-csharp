@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.Deployments;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
@@ -22,12 +21,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -35,36 +29,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -72,7 +53,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -81,14 +61,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -99,47 +76,30 @@ public class DeploymentListPageResponseTest : TestBase
             new()
             {
                 ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                Agent = new()
-                {
-                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
+                Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                 ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "Compiles yesterday's orders into a report every weekday morning.",
                 EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 InitialEvents =
                 [
-                    new BetaManagedAgentsDeploymentUserMessageEvent()
-                    {
-                        Content =
+                    new BetaManagedAgentsDeploymentUserMessageEvent(
                         [
-                            new BetaManagedAgentsTextBlock()
-                            {
-                                Text = "Compile yesterday's orders into report.md.",
-                                Type = BetaManagedAgentsTextBlockType.Text,
-                            },
-                        ],
-                        Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                    },
+                            new BetaManagedAgentsTextBlock(
+                                "Compile yesterday's orders into report.md."
+                            ),
+                        ]
+                    ),
                 ],
                 Metadata = new Dictionary<string, string>(),
                 Name = "Daily order report",
-                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                    BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                ),
+                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                 Resources =
                 [
                     new BetaManagedAgentsGitHubRepositoryResourceConfig()
                     {
-                        Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                         Url = "url",
-                        Checkout = new BetaManagedAgentsBranchCheckout()
-                        {
-                            Name = "main",
-                            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                        },
+                        Checkout = new BetaManagedAgentsBranchCheckout("main"),
                         MountPath = "mount_path",
                     },
                 ],
@@ -147,7 +107,6 @@ public class DeploymentListPageResponseTest : TestBase
                 {
                     Expression = "0 9 * * 1-5",
                     Timezone = "America/Los_Angeles",
-                    Type = BetaManagedAgentsScheduleType.Cron,
                     LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                     UpcomingRunsAt =
                     [
@@ -156,14 +115,11 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                 },
                 Status = BetaManagedAgentsDeploymentStatus.Active,
-                Type = BetaManagedAgentsDeploymentType.Deployment,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                Budget = new()
-                {
-                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                    Type = BetaManagedAgentsBudgetLimitType.Limit,
-                },
+                Budget = new(
+                    new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                ),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -186,12 +142,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -199,36 +150,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -236,7 +174,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -245,14 +182,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -277,12 +211,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -290,36 +219,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -327,7 +243,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -336,14 +251,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -361,47 +273,30 @@ public class DeploymentListPageResponseTest : TestBase
             new()
             {
                 ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                Agent = new()
-                {
-                    ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
+                Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                 ArchivedAt = null,
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Description = "Compiles yesterday's orders into a report every weekday morning.",
                 EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                 InitialEvents =
                 [
-                    new BetaManagedAgentsDeploymentUserMessageEvent()
-                    {
-                        Content =
+                    new BetaManagedAgentsDeploymentUserMessageEvent(
                         [
-                            new BetaManagedAgentsTextBlock()
-                            {
-                                Text = "Compile yesterday's orders into report.md.",
-                                Type = BetaManagedAgentsTextBlockType.Text,
-                            },
-                        ],
-                        Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                    },
+                            new BetaManagedAgentsTextBlock(
+                                "Compile yesterday's orders into report.md."
+                            ),
+                        ]
+                    ),
                 ],
                 Metadata = new Dictionary<string, string>(),
                 Name = "Daily order report",
-                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                    BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                ),
+                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                 Resources =
                 [
                     new BetaManagedAgentsGitHubRepositoryResourceConfig()
                     {
-                        Type = BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                         Url = "url",
-                        Checkout = new BetaManagedAgentsBranchCheckout()
-                        {
-                            Name = "main",
-                            Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                        },
+                        Checkout = new BetaManagedAgentsBranchCheckout("main"),
                         MountPath = "mount_path",
                     },
                 ],
@@ -409,7 +304,6 @@ public class DeploymentListPageResponseTest : TestBase
                 {
                     Expression = "0 9 * * 1-5",
                     Timezone = "America/Los_Angeles",
-                    Type = BetaManagedAgentsScheduleType.Cron,
                     LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                     UpcomingRunsAt =
                     [
@@ -418,14 +312,11 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                 },
                 Status = BetaManagedAgentsDeploymentStatus.Active,
-                Type = BetaManagedAgentsDeploymentType.Deployment,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                Budget = new()
-                {
-                    MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                    Type = BetaManagedAgentsBudgetLimitType.Limit,
-                },
+                Budget = new(
+                    new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                ),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -448,12 +339,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -461,36 +347,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -498,7 +371,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -507,14 +379,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -533,12 +402,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -546,36 +410,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -583,7 +434,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -592,14 +442,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
         };
@@ -618,12 +465,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -631,36 +473,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -668,7 +497,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -677,14 +505,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
         };
@@ -702,12 +527,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -715,36 +535,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -752,7 +559,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -761,14 +567,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
 
@@ -789,12 +592,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -802,36 +600,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -839,7 +624,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -848,14 +632,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
 
@@ -875,12 +656,7 @@ public class DeploymentListPageResponseTest : TestBase
                 new()
                 {
                     ID = "depl_011CZkZcDH3vPqd7xnEfwTai",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYpogX7uDKUyvBTophP",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYpogX7uDKUyvBTophP", Version = 1 },
                     ArchivedAt = null,
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Description =
@@ -888,36 +664,23 @@ public class DeploymentListPageResponseTest : TestBase
                     EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
                     InitialEvents =
                     [
-                        new BetaManagedAgentsDeploymentUserMessageEvent()
-                        {
-                            Content =
+                        new BetaManagedAgentsDeploymentUserMessageEvent(
                             [
-                                new BetaManagedAgentsTextBlock()
-                                {
-                                    Text = "Compile yesterday's orders into report.md.",
-                                    Type = BetaManagedAgentsTextBlockType.Text,
-                                },
-                            ],
-                            Type = BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-                        },
+                                new BetaManagedAgentsTextBlock(
+                                    "Compile yesterday's orders into report.md."
+                                ),
+                            ]
+                        ),
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(
-                        BetaManagedAgentsManualDeploymentPausedReasonType.Manual
-                    ),
+                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
                     Resources =
                     [
                         new BetaManagedAgentsGitHubRepositoryResourceConfig()
                         {
-                            Type =
-                                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
                             Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout()
-                            {
-                                Name = "main",
-                                Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                            },
+                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
                             MountPath = "mount_path",
                         },
                     ],
@@ -925,7 +688,6 @@ public class DeploymentListPageResponseTest : TestBase
                     {
                         Expression = "0 9 * * 1-5",
                         Timezone = "America/Los_Angeles",
-                        Type = BetaManagedAgentsScheduleType.Cron,
                         LastRunAt = DateTimeOffset.Parse("2026-03-16T16:00:09Z"),
                         UpcomingRunsAt =
                         [
@@ -934,14 +696,11 @@ public class DeploymentListPageResponseTest : TestBase
                         ],
                     },
                     Status = BetaManagedAgentsDeploymentStatus.Active,
-                    Type = BetaManagedAgentsDeploymentType.Deployment,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     VaultIds = ["vlt_011CZkZDLs7fYzm1hXNPeRjv"],
-                    Budget = new()
-                    {
-                        MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                        Type = BetaManagedAgentsBudgetLimitType.Limit,
-                    },
+                    Budget = new(
+                        new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+                    ),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

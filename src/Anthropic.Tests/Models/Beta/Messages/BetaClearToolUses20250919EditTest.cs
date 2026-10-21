@@ -374,6 +374,20 @@ public class TriggerTest : TestBase
     }
 
     [Fact]
+    public void BetaInputTokensTypeWorks()
+    {
+        Trigger value = new BetaInputTokensTrigger(1);
+        Assert.Equal(TriggerType.InputTokens, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaToolUsesTypeWorks()
+    {
+        Trigger value = new BetaToolUsesTrigger(1);
+        Assert.Equal(TriggerType.ToolUses, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Trigger value = new(
@@ -388,10 +402,10 @@ public class TriggerTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("input_tokens");
+        ApiEnum<string, TriggerType> expectedType = TriggerType.InputTokens;
         long expectedValueValue = 1;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedValueValue, value.ValueValue);
 
         Trigger emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -412,5 +426,63 @@ public class TriggerTest : TestBase
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => mismatchedValue.ValueValue);
+    }
+}
+
+public class TriggerTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(TriggerType.InputTokens)]
+    [InlineData(TriggerType.ToolUses)]
+    public void Validation_Works(TriggerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, TriggerType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, TriggerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(TriggerType.InputTokens)]
+    [InlineData(TriggerType.ToolUses)]
+    public void SerializationRoundtrip_Works(TriggerType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, TriggerType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TriggerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, TriggerType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TriggerType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

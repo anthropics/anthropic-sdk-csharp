@@ -309,6 +309,39 @@ public class EditTest : TestBase
     }
 
     [Fact]
+    public void BetaClearToolUses20250919TypeWorks()
+    {
+        Edit value = new BetaClearToolUses20250919Edit()
+        {
+            ClearAtLeast = new(0),
+            ClearToolInputs = true,
+            ExcludeTools = ["string"],
+            Keep = new(0),
+            Trigger = new BetaInputTokensTrigger(1),
+        };
+        Assert.Equal(EditType.ClearToolUses20250919, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaClearThinking20251015TypeWorks()
+    {
+        Edit value = new BetaClearThinking20251015Edit() { Keep = new All() };
+        Assert.Equal(EditType.ClearThinking20251015, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaCompact20260112TypeWorks()
+    {
+        Edit value = new BetaCompact20260112Edit()
+        {
+            Instructions = "instructions",
+            PauseAfterCompaction = true,
+            Trigger = new(1),
+        };
+        Assert.Equal(EditType.Compact20260112, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Edit value = new(
@@ -322,12 +355,72 @@ public class EditTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("clear_tool_uses_20250919");
+        ApiEnum<string, EditType> expectedType = EditType.ClearToolUses20250919;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         Edit emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class EditTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(EditType.ClearToolUses20250919)]
+    [InlineData(EditType.ClearThinking20251015)]
+    [InlineData(EditType.Compact20260112)]
+    public void Validation_Works(EditType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, EditType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, EditType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(EditType.ClearToolUses20250919)]
+    [InlineData(EditType.ClearThinking20251015)]
+    [InlineData(EditType.Compact20260112)]
+    public void SerializationRoundtrip_Works(EditType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, EditType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EditType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, EditType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EditType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -13,27 +13,14 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
         var model = new BetaManagedAgentsMultiagentWorkflowsEnabled
         {
             InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsDisabled(),
-            PredefinedAgents =
-            [
-                new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
+            PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
         };
 
         BetaManagedAgentsMultiagentInlineAgents expectedInlineAgents =
             new BetaManagedAgentsMultiagentInlineAgentsDisabled();
         List<BetaManagedAgentsAgentReference> expectedPredefinedAgents =
         [
-            new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
         ];
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
@@ -52,15 +39,7 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
         var model = new BetaManagedAgentsMultiagentWorkflowsEnabled
         {
             InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsDisabled(),
-            PredefinedAgents =
-            [
-                new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
+            PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -78,15 +57,7 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
         var model = new BetaManagedAgentsMultiagentWorkflowsEnabled
         {
             InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsDisabled(),
-            PredefinedAgents =
-            [
-                new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
+            PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -100,12 +71,7 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
             new BetaManagedAgentsMultiagentInlineAgentsDisabled();
         List<BetaManagedAgentsAgentReference> expectedPredefinedAgents =
         [
-            new()
-            {
-                ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
-                Version = 1,
-            },
+            new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
         ];
         JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
 
@@ -124,15 +90,7 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
         var model = new BetaManagedAgentsMultiagentWorkflowsEnabled
         {
             InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsDisabled(),
-            PredefinedAgents =
-            [
-                new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
+            PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
         };
 
         model.Validate();
@@ -144,15 +102,7 @@ public class BetaManagedAgentsMultiagentWorkflowsEnabledTest : TestBase
         var model = new BetaManagedAgentsMultiagentWorkflowsEnabled
         {
             InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsDisabled(),
-            PredefinedAgents =
-            [
-                new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
-            ],
+            PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
         };
 
         BetaManagedAgentsMultiagentWorkflowsEnabled copied = new(model);

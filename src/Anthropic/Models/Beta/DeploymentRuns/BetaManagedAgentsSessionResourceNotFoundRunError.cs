@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsSessionResourceNotFoundRunError : Js
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsSessionResourceNotFoundRunError : Js
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session_resource_not_found_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionResourceNotFoundRunError() { }
+    public BetaManagedAgentsSessionResourceNotFoundRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_resource_not_found_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -67,6 +75,8 @@ public sealed record class BetaManagedAgentsSessionResourceNotFoundRunError : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_resource_not_found_error");
     }
 
 #pragma warning disable CS8618
@@ -84,6 +94,13 @@ public sealed record class BetaManagedAgentsSessionResourceNotFoundRunError : Js
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsSessionResourceNotFoundRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsSessionResourceNotFoundRunErrorFromRaw
@@ -93,48 +110,4 @@ class BetaManagedAgentsSessionResourceNotFoundRunErrorFromRaw
     public BetaManagedAgentsSessionResourceNotFoundRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionResourceNotFoundRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionResourceNotFoundRunErrorTypeConverter))]
-public enum BetaManagedAgentsSessionResourceNotFoundRunErrorType
-{
-    SessionResourceNotFoundError,
-}
-
-sealed class BetaManagedAgentsSessionResourceNotFoundRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionResourceNotFoundRunErrorType>
-{
-    public override BetaManagedAgentsSessionResourceNotFoundRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session_resource_not_found_error" =>
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError,
-            _ => (BetaManagedAgentsSessionResourceNotFoundRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionResourceNotFoundRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionResourceNotFoundRunErrorType.SessionResourceNotFoundError =>
-                    "session_resource_not_found_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

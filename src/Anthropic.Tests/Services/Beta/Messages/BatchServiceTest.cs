@@ -22,19 +22,7 @@ public class BatchServiceTest : TestBase
                         Params = new()
                         {
                             MaxTokens = 1024,
-                            Messages =
-                            [
-                                new()
-                                {
-                                    Content = "Hello, world",
-                                    Role = Role.User,
-                                    ClearAt = ClearAt.NextUserMessage,
-                                    OutputConfig = new()
-                                    {
-                                        Effort = BetaSystemMessageOutputConfigEffort.Low,
-                                    },
-                                },
-                            ],
+                            Messages = [new BetaUserMessageParam("Hello, world")],
                             Model = Messages::Model.ClaudeOpus5_5,
                             CacheControl = new() { Ttl = Ttl.Ttl5m },
                             Compaction = new() { Instructions = "instructions" },
@@ -127,7 +115,6 @@ public class BatchServiceTest : TestBase
                                     },
                                 ]
                             ),
-                            Temperature = 1,
                             Thinking = new BetaThinkingConfigAdaptive()
                             {
                                 BlockBinding = new()
@@ -171,8 +158,6 @@ public class BatchServiceTest : TestBase
                                     Type = BetaToolType.Custom,
                                 },
                             ],
-                            TopK = 5,
-                            TopP = 0.7,
                         },
                     },
                 ],

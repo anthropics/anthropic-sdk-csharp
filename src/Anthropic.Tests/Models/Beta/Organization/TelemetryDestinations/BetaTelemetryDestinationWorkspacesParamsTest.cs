@@ -75,6 +75,30 @@ public class BetaTelemetryDestinationWorkspacesParamsTest : TestBase
     }
 
     [Fact]
+    public void AllTypeWorks()
+    {
+        BetaTelemetryDestinationWorkspacesParams value =
+            new BetaTelemetryDestinationWorkspacesAllParams();
+        Assert.Equal(BetaTelemetryDestinationWorkspacesParamsType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void IncludeTypeWorks()
+    {
+        BetaTelemetryDestinationWorkspacesParams value =
+            new BetaTelemetryDestinationWorkspacesIncludeParams() { WorkspaceIds = ["string"] };
+        Assert.Equal(BetaTelemetryDestinationWorkspacesParamsType.Include, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExcludeTypeWorks()
+    {
+        BetaTelemetryDestinationWorkspacesParams value =
+            new BetaTelemetryDestinationWorkspacesExcludeParams() { WorkspaceIds = ["string"] };
+        Assert.Equal(BetaTelemetryDestinationWorkspacesParamsType.Exclude, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaTelemetryDestinationWorkspacesParams value = new(
@@ -91,10 +115,11 @@ public class BetaTelemetryDestinationWorkspacesParamsTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType> expectedType =
+            BetaTelemetryDestinationWorkspacesParamsType.All;
         List<string> expectedWorkspaceIds = ["string"];
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.NotNull(value.WorkspaceIds);
         Assert.Equal(expectedWorkspaceIds.Count, value.WorkspaceIds.Count);
         for (int i = 0; i < expectedWorkspaceIds.Count; i++)
@@ -108,5 +133,61 @@ public class BetaTelemetryDestinationWorkspacesParamsTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.WorkspaceIds);
+    }
+}
+
+public class BetaTelemetryDestinationWorkspacesParamsTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.All)]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Include)]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Exclude)]
+    public void Validation_Works(BetaTelemetryDestinationWorkspacesParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.All)]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Include)]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Exclude)]
+    public void SerializationRoundtrip_Works(BetaTelemetryDestinationWorkspacesParamsType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

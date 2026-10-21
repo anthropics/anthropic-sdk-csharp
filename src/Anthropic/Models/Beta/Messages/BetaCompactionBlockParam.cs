@@ -188,15 +188,18 @@ public record class BetaCompactionBlockParamToolChange : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaCompactionBlockParamToolChangeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaRequestToolAdditionBlock x => x.Type,
-                BetaRequestToolRemovalBlock x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaRequestToolAdditionBlock _ =>
+                    BetaCompactionBlockParamToolChangeType.ToolAddition,
+                BetaRequestToolRemovalBlock _ => BetaCompactionBlockParamToolChangeType.ToolRemoval,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaCompactionBlockParamToolChangeType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -497,5 +500,50 @@ sealed class BetaCompactionBlockParamToolChangeConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaCompactionBlockParamToolChangeTypeConverter))]
+public enum BetaCompactionBlockParamToolChangeType
+{
+    ToolAddition,
+    ToolRemoval,
+}
+
+sealed class BetaCompactionBlockParamToolChangeTypeConverter
+    : JsonConverter<BetaCompactionBlockParamToolChangeType>
+{
+    public override BetaCompactionBlockParamToolChangeType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "tool_addition" => BetaCompactionBlockParamToolChangeType.ToolAddition,
+            "tool_removal" => BetaCompactionBlockParamToolChangeType.ToolRemoval,
+            _ => (BetaCompactionBlockParamToolChangeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaCompactionBlockParamToolChangeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaCompactionBlockParamToolChangeType.ToolAddition => "tool_addition",
+                BetaCompactionBlockParamToolChangeType.ToolRemoval => "tool_removal",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

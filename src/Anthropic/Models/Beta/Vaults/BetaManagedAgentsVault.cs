@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults;
 
@@ -31,12 +31,12 @@ public sealed record class BetaManagedAgentsVault : JsonModel
     /// <summary>
     /// When the vault was archived. Null if not archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -44,12 +44,12 @@ public sealed record class BetaManagedAgentsVault : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -86,14 +86,12 @@ public sealed record class BetaManagedAgentsVault : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsVaultType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsVaultType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -101,12 +99,12 @@ public sealed record class BetaManagedAgentsVault : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -119,11 +117,17 @@ public sealed record class BetaManagedAgentsVault : JsonModel
         _ = this.CreatedAt;
         _ = this.DisplayName;
         _ = this.Metadata;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("vault")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
     }
 
-    public BetaManagedAgentsVault() { }
+    public BetaManagedAgentsVault()
+    {
+        this.Type = JsonSerializer.SerializeToElement("vault");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -134,6 +138,8 @@ public sealed record class BetaManagedAgentsVault : JsonModel
     public BetaManagedAgentsVault(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("vault");
     }
 
 #pragma warning disable CS8618
@@ -159,45 +165,4 @@ class BetaManagedAgentsVaultFromRaw : IFromRawJson<BetaManagedAgentsVault>
     public BetaManagedAgentsVault FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsVault.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsVaultTypeConverter))]
-public enum BetaManagedAgentsVaultType
-{
-    Vault,
-}
-
-sealed class BetaManagedAgentsVaultTypeConverter : JsonConverter<BetaManagedAgentsVaultType>
-{
-    public override BetaManagedAgentsVaultType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "vault" => BetaManagedAgentsVaultType.Vault,
-            _ => (BetaManagedAgentsVaultType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsVaultType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsVaultType.Vault => "vault",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

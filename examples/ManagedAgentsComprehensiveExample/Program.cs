@@ -42,7 +42,6 @@ var credential = await client.Beta.Vaults.Credentials.Create(
     {
         Auth = new BetaManagedAgentsStaticBearerCreateParams
         {
-            Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             McpServerUrl = mcpServerUrl,
             Token = githubToken,
         },
@@ -80,27 +79,14 @@ var agentV1 = await client.Beta.Agents.Create(
         System = "You are a helpful assistant.",
         McpServers =
         [
-            new BetaManagedAgentsUrlMcpServerParams
-            {
-                Type = BetaManagedAgentsUrlMcpServerParamsType.Url,
-                Name = mcpServerName,
-                Url = mcpServerUrl,
-            },
+            new BetaManagedAgentsUrlMcpServerParams { Name = mcpServerName, Url = mcpServerUrl },
         ],
         Tools =
         [
-            new BetaManagedAgentsAgentToolset20260401Params
-            {
-                Type = BetaManagedAgentsAgentToolset20260401ParamsType.AgentToolset20260401,
-            },
-            new BetaManagedAgentsMcpToolsetParams
-            {
-                Type = BetaManagedAgentsMcpToolsetParamsType.McpToolset,
-                McpServerName = mcpServerName,
-            },
+            new BetaManagedAgentsAgentToolset20260401Params(),
+            new BetaManagedAgentsMcpToolsetParams { McpServerName = mcpServerName },
             new BetaManagedAgentsCustomToolParams
             {
-                Type = BetaManagedAgentsCustomToolParamsType.Custom,
                 Name = "get_weather",
                 Description = "Look up the current weather for a city.",
                 InputSchema = new BetaManagedAgentsCustomToolInputSchema
@@ -127,16 +113,8 @@ var agent = await client.Beta.Agents.Update(
         Version = agentV1.Version,
         Skills =
         [
-            new BetaManagedAgentsCustomSkillParams
-            {
-                Type = BetaManagedAgentsCustomSkillParamsType.Custom,
-                SkillID = skill.ID,
-            },
-            new BetaManagedAgentsAnthropicSkillParams
-            {
-                Type = BetaManagedAgentsAnthropicSkillParamsType.Anthropic,
-                SkillID = "xlsx",
-            },
+            new BetaManagedAgentsCustomSkillParams { SkillID = skill.ID },
+            new BetaManagedAgentsAnthropicSkillParams { SkillID = "xlsx" },
         ],
     }
 );
@@ -149,12 +127,7 @@ Console.WriteLine($"Agent versions: [{string.Join(", ", versions.Items.Select(v 
 var session = await client.Beta.Sessions.Create(
     new SessionCreateParams
     {
-        Agent = new BetaManagedAgentsAgentParams
-        {
-            Type = global::Anthropic.Models.Beta.Sessions.BetaManagedAgentsAgentParamsType.Agent,
-            ID = agent.ID,
-            Version = agent.Version,
-        },
+        Agent = new BetaManagedAgentsAgentParams { ID = agent.ID, Version = agent.Version },
         EnvironmentID = environment.ID,
         VaultIds = [vault.ID],
     }
@@ -170,15 +143,7 @@ await client.Beta.Sessions.Events.Send(
         [
             new BetaManagedAgentsUserMessageEventParams
             {
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                Content =
-                [
-                    new BetaManagedAgentsTextBlock
-                    {
-                        Type = BetaManagedAgentsTextBlockType.Text,
-                        Text = prompt,
-                    },
-                ],
+                Content = [new BetaManagedAgentsTextBlock { Text = prompt }],
             },
         ],
     }
@@ -202,16 +167,10 @@ await foreach (var streamEvent in client.Beta.Sessions.Events.StreamStreaming(se
                 [
                     new BetaManagedAgentsUserCustomToolResultEventParams
                     {
-                        Type =
-                            BetaManagedAgentsUserCustomToolResultEventParamsType.UserCustomToolResult,
                         CustomToolUseID = toolUse.ID,
                         Content =
                         [
-                            new BetaManagedAgentsTextBlock
-                            {
-                                Type = BetaManagedAgentsTextBlockType.Text,
-                                Text = "{\"temperature_c\": 14}",
-                            },
+                            new BetaManagedAgentsTextBlock { Text = "{\"temperature_c\": 14}" },
                         ],
                     },
                 ],

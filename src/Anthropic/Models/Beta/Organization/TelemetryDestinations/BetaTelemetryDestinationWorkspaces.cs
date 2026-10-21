@@ -36,16 +36,21 @@ public record class BetaTelemetryDestinationWorkspaces : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaTelemetryDestinationWorkspacesType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaTelemetryDestinationWorkspacesAll x => x.Type,
-                BetaTelemetryDestinationWorkspacesInclude x => x.Type,
-                BetaTelemetryDestinationWorkspacesExclude x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaTelemetryDestinationWorkspacesAll _ =>
+                    BetaTelemetryDestinationWorkspacesType.All,
+                BetaTelemetryDestinationWorkspacesInclude _ =>
+                    BetaTelemetryDestinationWorkspacesType.Include,
+                BetaTelemetryDestinationWorkspacesExclude _ =>
+                    BetaTelemetryDestinationWorkspacesType.Exclude,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaTelemetryDestinationWorkspacesType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -397,5 +402,53 @@ sealed class BetaTelemetryDestinationWorkspacesConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaTelemetryDestinationWorkspacesTypeConverter))]
+public enum BetaTelemetryDestinationWorkspacesType
+{
+    All,
+    Include,
+    Exclude,
+}
+
+sealed class BetaTelemetryDestinationWorkspacesTypeConverter
+    : JsonConverter<BetaTelemetryDestinationWorkspacesType>
+{
+    public override BetaTelemetryDestinationWorkspacesType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => BetaTelemetryDestinationWorkspacesType.All,
+            "include" => BetaTelemetryDestinationWorkspacesType.Include,
+            "exclude" => BetaTelemetryDestinationWorkspacesType.Exclude,
+            _ => (BetaTelemetryDestinationWorkspacesType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaTelemetryDestinationWorkspacesType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaTelemetryDestinationWorkspacesType.All => "all",
+                BetaTelemetryDestinationWorkspacesType.Include => "include",
+                BetaTelemetryDestinationWorkspacesType.Exclude => "exclude",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

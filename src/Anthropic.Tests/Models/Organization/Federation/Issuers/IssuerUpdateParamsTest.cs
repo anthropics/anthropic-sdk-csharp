@@ -230,6 +230,42 @@ public class IssuerUpdateParamsJwksTest : TestBase
     }
 
     [Fact]
+    public void DiscoveryTypeWorks()
+    {
+        IssuerUpdateParamsJwks value = new JwksDiscovery()
+        {
+            CACertPem = "ca_cert_pem",
+            DiscoveryBase = "discovery_base",
+        };
+        Assert.Equal(IssuerUpdateParamsJwksType.Discovery, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExplicitUrlTypeWorks()
+    {
+        IssuerUpdateParamsJwks value = new JwksExplicitUrl()
+        {
+            Url = "x",
+            CACertPem = "ca_cert_pem",
+        };
+        Assert.Equal(IssuerUpdateParamsJwksType.ExplicitUrl, value.Type.Value());
+    }
+
+    [Fact]
+    public void InlineTypeWorks()
+    {
+        IssuerUpdateParamsJwks value = new JwksInline(
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ]
+        );
+        Assert.Equal(IssuerUpdateParamsJwksType.Inline, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         IssuerUpdateParamsJwks value = new(
@@ -244,10 +280,11 @@ public class IssuerUpdateParamsJwksTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("discovery");
+        ApiEnum<string, IssuerUpdateParamsJwksType> expectedType =
+            IssuerUpdateParamsJwksType.Discovery;
         string expectedCACertPem = "ca_cert_pem";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCACertPem, value.CACertPem);
 
         IssuerUpdateParamsJwks emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -268,5 +305,65 @@ public class IssuerUpdateParamsJwksTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CACertPem);
+    }
+}
+
+public class IssuerUpdateParamsJwksTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(IssuerUpdateParamsJwksType.Discovery)]
+    [InlineData(IssuerUpdateParamsJwksType.ExplicitUrl)]
+    [InlineData(IssuerUpdateParamsJwksType.Inline)]
+    public void Validation_Works(IssuerUpdateParamsJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, IssuerUpdateParamsJwksType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, IssuerUpdateParamsJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(IssuerUpdateParamsJwksType.Discovery)]
+    [InlineData(IssuerUpdateParamsJwksType.ExplicitUrl)]
+    [InlineData(IssuerUpdateParamsJwksType.Inline)]
+    public void SerializationRoundtrip_Works(IssuerUpdateParamsJwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, IssuerUpdateParamsJwksType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IssuerUpdateParamsJwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, IssuerUpdateParamsJwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IssuerUpdateParamsJwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

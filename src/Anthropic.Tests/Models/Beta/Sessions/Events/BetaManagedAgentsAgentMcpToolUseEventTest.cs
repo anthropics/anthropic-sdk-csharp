@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
@@ -22,7 +21,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -36,8 +34,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         string expectedMcpServerName = "mcp_server_name";
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType> expectedType =
-            BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.mcp_tool_use");
         ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission> expectedEvaluatedPermission =
             BetaManagedAgentsAgentEvaluatedPermission.Allow;
         BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
@@ -55,7 +52,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         Assert.Equal(expectedMcpServerName, model.McpServerName);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedEvaluatedPermission, model.EvaluatedPermission);
         Assert.Equal(expectedEvaluation, model.Evaluation);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
@@ -74,7 +71,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -102,7 +98,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -123,8 +118,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         string expectedMcpServerName = "mcp_server_name";
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType> expectedType =
-            BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.mcp_tool_use");
         ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission> expectedEvaluatedPermission =
             BetaManagedAgentsAgentEvaluatedPermission.Allow;
         BetaManagedAgentsAgentToolEvaluation expectedEvaluation =
@@ -142,7 +136,7 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         Assert.Equal(expectedMcpServerName, deserialized.McpServerName);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedEvaluatedPermission, deserialized.EvaluatedPermission);
         Assert.Equal(expectedEvaluation, deserialized.Evaluation);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
@@ -161,7 +155,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -183,7 +176,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -206,7 +198,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -226,7 +217,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
@@ -253,7 +243,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -283,7 +272,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             SessionThreadID = "session_thread_id",
 
             // Null should be interpreted as omitted for these properties
@@ -307,7 +295,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
         };
@@ -329,7 +316,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
         };
@@ -350,7 +336,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
 
@@ -374,7 +359,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
 
@@ -397,7 +381,6 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
             McpServerName = "mcp_server_name",
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse,
             EvaluatedPermission = BetaManagedAgentsAgentEvaluatedPermission.Allow,
             Evaluation = new BetaManagedAgentsAgentToolEvaluationAlwaysAllow(),
             SessionThreadID = "session_thread_id",
@@ -406,57 +389,5 @@ public class BetaManagedAgentsAgentMcpToolUseEventTest : TestBase
         BetaManagedAgentsAgentMcpToolUseEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsAgentMcpToolUseEventTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse)]
-    public void Validation_Works(BetaManagedAgentsAgentMcpToolUseEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsAgentMcpToolUseEventType.AgentMcpToolUse)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentMcpToolUseEventType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsAgentMcpToolUseEventType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

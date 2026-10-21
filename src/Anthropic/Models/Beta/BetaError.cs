@@ -45,22 +45,25 @@ public record class BetaError : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaErrorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaInvalidRequestError x => x.Type,
-                BetaAuthenticationError x => x.Type,
-                BetaBillingError x => x.Type,
-                BetaPermissionError x => x.Type,
-                BetaNotFoundError x => x.Type,
-                BetaRateLimitError x => x.Type,
-                BetaGatewayTimeoutError x => x.Type,
-                BetaApiError x => x.Type,
-                BetaOverloadedError x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaInvalidRequestError _ => BetaErrorType.InvalidRequestError,
+                BetaAuthenticationError _ => BetaErrorType.AuthenticationError,
+                BetaBillingError _ => BetaErrorType.BillingError,
+                BetaPermissionError _ => BetaErrorType.PermissionError,
+                BetaNotFoundError _ => BetaErrorType.NotFoundError,
+                BetaRateLimitError _ => BetaErrorType.RateLimitError,
+                BetaGatewayTimeoutError _ => BetaErrorType.TimeoutError,
+                BetaApiError _ => BetaErrorType.ApiError,
+                BetaOverloadedError _ => BetaErrorType.OverloadedError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, BetaErrorType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -738,5 +741,70 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaErrorTypeConverter))]
+public enum BetaErrorType
+{
+    InvalidRequestError,
+    AuthenticationError,
+    BillingError,
+    PermissionError,
+    NotFoundError,
+    RateLimitError,
+    TimeoutError,
+    ApiError,
+    OverloadedError,
+}
+
+sealed class BetaErrorTypeConverter : JsonConverter<BetaErrorType>
+{
+    public override BetaErrorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "invalid_request_error" => BetaErrorType.InvalidRequestError,
+            "authentication_error" => BetaErrorType.AuthenticationError,
+            "billing_error" => BetaErrorType.BillingError,
+            "permission_error" => BetaErrorType.PermissionError,
+            "not_found_error" => BetaErrorType.NotFoundError,
+            "rate_limit_error" => BetaErrorType.RateLimitError,
+            "timeout_error" => BetaErrorType.TimeoutError,
+            "api_error" => BetaErrorType.ApiError,
+            "overloaded_error" => BetaErrorType.OverloadedError,
+            _ => (BetaErrorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaErrorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaErrorType.InvalidRequestError => "invalid_request_error",
+                BetaErrorType.AuthenticationError => "authentication_error",
+                BetaErrorType.BillingError => "billing_error",
+                BetaErrorType.PermissionError => "permission_error",
+                BetaErrorType.NotFoundError => "not_found_error",
+                BetaErrorType.RateLimitError => "rate_limit_error",
+                BetaErrorType.TimeoutError => "timeout_error",
+                BetaErrorType.ApiError => "api_error",
+                BetaErrorType.OverloadedError => "overloaded_error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

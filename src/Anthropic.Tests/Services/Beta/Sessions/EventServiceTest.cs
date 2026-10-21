@@ -25,18 +25,9 @@ public class EventServiceTest : TestBase
             {
                 Events =
                 [
-                    new BetaManagedAgentsUserMessageEventParams()
-                    {
-                        Content =
-                        [
-                            new BetaManagedAgentsTextBlock()
-                            {
-                                Text = "Where is my order #1234?",
-                                Type = BetaManagedAgentsTextBlockType.Text,
-                            },
-                        ],
-                        Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-                    },
+                    new BetaManagedAgentsUserMessageEventParams(
+                        [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    ),
                 ],
             },
             TestContext.Current.CancellationToken

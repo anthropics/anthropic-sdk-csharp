@@ -18,9 +18,8 @@ public abstract class TracingTestBase
         new()
         {
             MaxTokens = 64,
-            Messages = [new() { Role = Role.User, Content = text }],
+            Messages = [new UserMessageParam { Content = text }],
             Model = "claude-test",
-            Temperature = 0.5,
             System = "Be brief.",
         };
 
@@ -28,7 +27,7 @@ public abstract class TracingTestBase
         new()
         {
             MaxTokens = 64,
-            Messages = [new() { Role = Beta.Role.User, Content = "Weather?" }],
+            Messages = [new Beta.BetaUserMessageParam { Content = "Weather?" }],
             Model = "claude-test",
         };
 

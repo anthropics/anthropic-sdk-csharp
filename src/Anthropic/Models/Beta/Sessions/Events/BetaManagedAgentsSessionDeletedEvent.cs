@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -37,24 +37,22 @@ public sealed record class BetaManagedAgentsSessionDeletedEvent : JsonModel
     /// <summary>
     /// Timestamp when the session was deleted.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionDeletedEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionDeletedEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -64,10 +62,18 @@ public sealed record class BetaManagedAgentsSessionDeletedEvent : JsonModel
     {
         _ = this.ID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session.deleted"))
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionDeletedEvent() { }
+    public BetaManagedAgentsSessionDeletedEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.deleted");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -80,6 +86,8 @@ public sealed record class BetaManagedAgentsSessionDeletedEvent : JsonModel
     public BetaManagedAgentsSessionDeletedEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.deleted");
     }
 
 #pragma warning disable CS8618
@@ -106,46 +114,4 @@ class BetaManagedAgentsSessionDeletedEventFromRaw
     public BetaManagedAgentsSessionDeletedEvent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsSessionDeletedEvent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionDeletedEventTypeConverter))]
-public enum BetaManagedAgentsSessionDeletedEventType
-{
-    SessionDeleted,
-}
-
-sealed class BetaManagedAgentsSessionDeletedEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionDeletedEventType>
-{
-    public override BetaManagedAgentsSessionDeletedEventType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session.deleted" => BetaManagedAgentsSessionDeletedEventType.SessionDeleted,
-            _ => (BetaManagedAgentsSessionDeletedEventType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionDeletedEventType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionDeletedEventType.SessionDeleted => "session.deleted",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

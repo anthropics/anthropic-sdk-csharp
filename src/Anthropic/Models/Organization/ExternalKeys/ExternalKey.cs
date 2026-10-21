@@ -198,15 +198,18 @@ public record class Attachment : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, AttachmentType> Type
     {
         get
         {
             return this.Value switch
             {
-                ExternalKeyAttachedAttachment x => x.Type,
-                ExternalKeyUnattachedAttachment x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                ExternalKeyAttachedAttachment _ => AttachmentType.Attached,
+                ExternalKeyUnattachedAttachment _ => AttachmentType.Unattached,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, AttachmentType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -481,6 +484,50 @@ sealed class AttachmentConverter : JsonConverter<Attachment>
     }
 }
 
+[JsonConverter(typeof(AttachmentTypeConverter))]
+public enum AttachmentType
+{
+    Attached,
+    Unattached,
+}
+
+sealed class AttachmentTypeConverter : JsonConverter<AttachmentType>
+{
+    public override AttachmentType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "attached" => AttachmentType.Attached,
+            "unattached" => AttachmentType.Unattached,
+            _ => (AttachmentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        AttachmentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                AttachmentType.Attached => "attached",
+                AttachmentType.Unattached => "unattached",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// KMS provider identity and auth coordinates.
 /// </summary>
@@ -502,16 +549,18 @@ public record class ExternalKeyProviderConfig : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ExternalKeyProviderConfigType> Type
     {
         get
         {
             return this.Value switch
             {
-                AwsExternalKeyConfig x => x.Type,
-                GcpExternalKeyConfig x => x.Type,
-                AzureExternalKeyConfig x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                AwsExternalKeyConfig _ => ExternalKeyProviderConfigType.Aws,
+                GcpExternalKeyConfig _ => ExternalKeyProviderConfigType.Gcp,
+                AzureExternalKeyConfig _ => ExternalKeyProviderConfigType.Azure,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ExternalKeyProviderConfigType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -857,5 +906,52 @@ sealed class ExternalKeyProviderConfigConverter : JsonConverter<ExternalKeyProvi
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ExternalKeyProviderConfigTypeConverter))]
+public enum ExternalKeyProviderConfigType
+{
+    Aws,
+    Gcp,
+    Azure,
+}
+
+sealed class ExternalKeyProviderConfigTypeConverter : JsonConverter<ExternalKeyProviderConfigType>
+{
+    public override ExternalKeyProviderConfigType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "aws" => ExternalKeyProviderConfigType.Aws,
+            "gcp" => ExternalKeyProviderConfigType.Gcp,
+            "azure" => ExternalKeyProviderConfigType.Azure,
+            _ => (ExternalKeyProviderConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ExternalKeyProviderConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ExternalKeyProviderConfigType.Aws => "aws",
+                ExternalKeyProviderConfigType.Gcp => "gcp",
+                ExternalKeyProviderConfigType.Azure => "azure",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

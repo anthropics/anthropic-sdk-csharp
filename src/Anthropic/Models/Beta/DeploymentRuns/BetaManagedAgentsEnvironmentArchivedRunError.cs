@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsEnvironmentArchivedRunError : JsonMo
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsEnvironmentArchivedRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEnvironmentArchivedRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsEnvironmentArchivedRunError : JsonMo
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("environment_archived_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEnvironmentArchivedRunError() { }
+    public BetaManagedAgentsEnvironmentArchivedRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("environment_archived_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -67,6 +75,8 @@ public sealed record class BetaManagedAgentsEnvironmentArchivedRunError : JsonMo
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("environment_archived_error");
     }
 
 #pragma warning disable CS8618
@@ -84,6 +94,13 @@ public sealed record class BetaManagedAgentsEnvironmentArchivedRunError : JsonMo
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsEnvironmentArchivedRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsEnvironmentArchivedRunErrorFromRaw
@@ -93,48 +110,4 @@ class BetaManagedAgentsEnvironmentArchivedRunErrorFromRaw
     public BetaManagedAgentsEnvironmentArchivedRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEnvironmentArchivedRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsEnvironmentArchivedRunErrorTypeConverter))]
-public enum BetaManagedAgentsEnvironmentArchivedRunErrorType
-{
-    EnvironmentArchivedError,
-}
-
-sealed class BetaManagedAgentsEnvironmentArchivedRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsEnvironmentArchivedRunErrorType>
-{
-    public override BetaManagedAgentsEnvironmentArchivedRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "environment_archived_error" =>
-                BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-            _ => (BetaManagedAgentsEnvironmentArchivedRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEnvironmentArchivedRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError =>
-                    "environment_archived_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

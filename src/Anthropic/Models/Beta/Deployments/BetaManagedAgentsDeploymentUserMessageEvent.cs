@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +8,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Events = Anthropic.Models.Beta.Sessions.Events;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -41,14 +41,12 @@ public sealed record class BetaManagedAgentsDeploymentUserMessageEvent : JsonMod
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeploymentUserMessageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeploymentUserMessageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -60,10 +58,16 @@ public sealed record class BetaManagedAgentsDeploymentUserMessageEvent : JsonMod
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("user.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsDeploymentUserMessageEvent() { }
+    public BetaManagedAgentsDeploymentUserMessageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -78,6 +82,8 @@ public sealed record class BetaManagedAgentsDeploymentUserMessageEvent : JsonMod
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.message");
     }
 
 #pragma warning disable CS8618
@@ -94,6 +100,13 @@ public sealed record class BetaManagedAgentsDeploymentUserMessageEvent : JsonMod
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDeploymentUserMessageEvent(IReadOnlyList<Content> content)
+        : this()
+    {
+        this.Content = content;
     }
 }
 
@@ -124,6 +137,24 @@ public record class Content : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, ContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Events::BetaManagedAgentsTextBlock _ => ContentType.Text,
+                Events::BetaManagedAgentsImageBlock _ => ContentType.Image,
+                Events::BetaManagedAgentsDocumentBlock _ => ContentType.Document,
+                Events::BetaManagedAgentsRedactedBlock _ => ContentType.Redacted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ContentType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -271,10 +302,10 @@ public record class Content : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Events::BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<Events::BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<Events::BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
+        Action<Events::BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<Events::BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<Events::BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<Events::BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -322,10 +353,10 @@ public record class Content : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Events::BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<Events::BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<Events::BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
+        Func<Events::BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<Events::BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<Events::BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<Events::BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -408,7 +439,7 @@ sealed class ContentConverter : JsonConverter<Content>
 {
     public override Content? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -522,31 +553,36 @@ sealed class ContentConverter : JsonConverter<Content>
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsDeploymentUserMessageEventTypeConverter))]
-public enum BetaManagedAgentsDeploymentUserMessageEventType
+[JsonConverter(typeof(ContentTypeConverter))]
+public enum ContentType
 {
-    UserMessage,
+    Text,
+    Image,
+    Document,
+    Redacted,
 }
 
-sealed class BetaManagedAgentsDeploymentUserMessageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsDeploymentUserMessageEventType>
+sealed class ContentTypeConverter : JsonConverter<ContentType>
 {
-    public override BetaManagedAgentsDeploymentUserMessageEventType Read(
+    public override ContentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user.message" => BetaManagedAgentsDeploymentUserMessageEventType.UserMessage,
-            _ => (BetaManagedAgentsDeploymentUserMessageEventType)(-1),
+            "text" => ContentType.Text,
+            "image" => ContentType.Image,
+            "document" => ContentType.Document,
+            "redacted" => ContentType.Redacted,
+            _ => (ContentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsDeploymentUserMessageEventType value,
+        ContentType value,
         JsonSerializerOptions options
     )
     {
@@ -554,7 +590,10 @@ sealed class BetaManagedAgentsDeploymentUserMessageEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsDeploymentUserMessageEventType.UserMessage => "user.message",
+                ContentType.Text => "text",
+                ContentType.Image => "image",
+                ContentType.Document => "document",
+                ContentType.Redacted => "redacted",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

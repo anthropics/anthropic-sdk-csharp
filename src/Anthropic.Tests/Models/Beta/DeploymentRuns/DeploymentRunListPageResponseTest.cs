@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Agents;
 using Anthropic.Models.Beta.DeploymentRuns;
 
 namespace Anthropic.Tests.Models.Beta.DeploymentRuns;
@@ -19,27 +18,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
             NextPage = "next_page",
@@ -50,27 +36,14 @@ public class DeploymentRunListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
-                Agent = new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
+                Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 DeploymentID = "deployment_id",
-                Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                {
-                    Message = "message",
-                    Type =
-                        BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                },
+                Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                 SessionID = "session_id",
-                TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                {
-                    ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                },
-                Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                    DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                ),
             },
         ];
         string expectedNextPage = "next_page";
@@ -93,27 +66,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
             NextPage = "next_page",
@@ -138,27 +98,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
             NextPage = "next_page",
@@ -176,27 +123,14 @@ public class DeploymentRunListPageResponseTest : TestBase
             new()
             {
                 ID = "id",
-                Agent = new()
-                {
-                    ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
-                    Version = 1,
-                },
+                Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 DeploymentID = "deployment_id",
-                Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                {
-                    Message = "message",
-                    Type =
-                        BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                },
+                Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                 SessionID = "session_id",
-                TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                {
-                    ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                },
-                Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                    DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                ),
             },
         ];
         string expectedNextPage = "next_page";
@@ -219,27 +153,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
             NextPage = "next_page",
@@ -258,27 +179,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
         };
@@ -297,27 +205,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
         };
@@ -335,27 +230,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
 
@@ -376,27 +258,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
 
@@ -416,27 +285,14 @@ public class DeploymentRunListPageResponseTest : TestBase
                 new()
                 {
                     ID = "id",
-                    Agent = new()
-                    {
-                        ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentReferenceType.Agent,
-                        Version = 1,
-                    },
+                    Agent = new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     DeploymentID = "deployment_id",
-                    Error = new BetaManagedAgentsEnvironmentArchivedRunError()
-                    {
-                        Message = "message",
-                        Type =
-                            BetaManagedAgentsEnvironmentArchivedRunErrorType.EnvironmentArchivedError,
-                    },
+                    Error = new BetaManagedAgentsEnvironmentArchivedRunError("message"),
                     SessionID = "session_id",
-                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext()
-                    {
-                        ScheduledAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                        Type = BetaManagedAgentsScheduleTriggerContextType.Schedule,
-                    },
-                    Type = BetaManagedAgentsDeploymentRunType.DeploymentRun,
+                    TriggerContext = new BetaManagedAgentsScheduleTriggerContext(
+                        DateTimeOffset.Parse("2019-12-27T18:11:19.117Z")
+                    ),
                 },
             ],
             NextPage = "next_page",

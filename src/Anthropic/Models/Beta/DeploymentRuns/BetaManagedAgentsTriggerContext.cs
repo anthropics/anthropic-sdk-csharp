@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -25,6 +25,23 @@ public record class BetaManagedAgentsTriggerContext : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsTriggerContextType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsScheduleTriggerContext _ =>
+                    BetaManagedAgentsTriggerContextType.Schedule,
+                BetaManagedAgentsManualTriggerContext _ =>
+                    BetaManagedAgentsTriggerContextType.Manual,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsTriggerContextType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -116,8 +133,8 @@ public record class BetaManagedAgentsTriggerContext : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsScheduleTriggerContext> schedule,
-        System::Action<BetaManagedAgentsManualTriggerContext> manual
+        Action<BetaManagedAgentsScheduleTriggerContext> schedule,
+        Action<BetaManagedAgentsManualTriggerContext> manual
     )
     {
         switch (this.Value)
@@ -157,8 +174,8 @@ public record class BetaManagedAgentsTriggerContext : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsScheduleTriggerContext, T> schedule,
-        System::Func<BetaManagedAgentsManualTriggerContext, T> manual
+        Func<BetaManagedAgentsScheduleTriggerContext, T> schedule,
+        Func<BetaManagedAgentsManualTriggerContext, T> manual
     )
     {
         return this.Value switch
@@ -232,7 +249,7 @@ sealed class BetaManagedAgentsTriggerContextConverter
 {
     public override BetaManagedAgentsTriggerContext? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -305,5 +322,50 @@ sealed class BetaManagedAgentsTriggerContextConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsTriggerContextTypeConverter))]
+public enum BetaManagedAgentsTriggerContextType
+{
+    Schedule,
+    Manual,
+}
+
+sealed class BetaManagedAgentsTriggerContextTypeConverter
+    : JsonConverter<BetaManagedAgentsTriggerContextType>
+{
+    public override BetaManagedAgentsTriggerContextType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "schedule" => BetaManagedAgentsTriggerContextType.Schedule,
+            "manual" => BetaManagedAgentsTriggerContextType.Manual,
+            _ => (BetaManagedAgentsTriggerContextType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsTriggerContextType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsTriggerContextType.Schedule => "schedule",
+                BetaManagedAgentsTriggerContextType.Manual => "manual",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

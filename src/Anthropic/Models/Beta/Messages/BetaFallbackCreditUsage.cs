@@ -110,15 +110,18 @@ public record class Status : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, StatusType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaFallbackCreditRedeemed x => x.Type,
-                BetaFallbackCreditNotApplied x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaFallbackCreditRedeemed _ => StatusType.Redeemed,
+                BetaFallbackCreditNotApplied _ => StatusType.NotApplied,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, StatusType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -384,5 +387,49 @@ sealed class StatusConverter : JsonConverter<Status>
     public override void Write(Utf8JsonWriter writer, Status value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(StatusTypeConverter))]
+public enum StatusType
+{
+    Redeemed,
+    NotApplied,
+}
+
+sealed class StatusTypeConverter : JsonConverter<StatusType>
+{
+    public override StatusType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "redeemed" => StatusType.Redeemed,
+            "not_applied" => StatusType.NotApplied,
+            _ => (StatusType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        StatusType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                StatusType.Redeemed => "redeemed",
+                StatusType.NotApplied => "not_applied",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

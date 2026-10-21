@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -29,14 +28,12 @@ public sealed record class BetaManagedAgentsDeltaContent : JsonModel
         init { this._rawData.Set("content", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsDeltaContentType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsDeltaContentType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -69,11 +66,17 @@ public sealed record class BetaManagedAgentsDeltaContent : JsonModel
     public override void Validate()
     {
         this.Content.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("content_delta")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Index;
     }
 
-    public BetaManagedAgentsDeltaContent() { }
+    public BetaManagedAgentsDeltaContent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("content_delta");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -86,6 +89,8 @@ public sealed record class BetaManagedAgentsDeltaContent : JsonModel
     public BetaManagedAgentsDeltaContent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("content_delta");
     }
 
 #pragma warning disable CS8618
@@ -103,6 +108,13 @@ public sealed record class BetaManagedAgentsDeltaContent : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsDeltaContent(BetaManagedAgentsTextBlock content)
+        : this()
+    {
+        this.Content = content;
+    }
 }
 
 class BetaManagedAgentsDeltaContentFromRaw : IFromRawJson<BetaManagedAgentsDeltaContent>
@@ -111,46 +123,4 @@ class BetaManagedAgentsDeltaContentFromRaw : IFromRawJson<BetaManagedAgentsDelta
     public BetaManagedAgentsDeltaContent FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsDeltaContent.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsDeltaContentTypeConverter))]
-public enum BetaManagedAgentsDeltaContentType
-{
-    ContentDelta,
-}
-
-sealed class BetaManagedAgentsDeltaContentTypeConverter
-    : JsonConverter<BetaManagedAgentsDeltaContentType>
-{
-    public override BetaManagedAgentsDeltaContentType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "content_delta" => BetaManagedAgentsDeltaContentType.ContentDelta,
-            _ => (BetaManagedAgentsDeltaContentType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsDeltaContentType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsDeltaContentType.ContentDelta => "content_delta",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

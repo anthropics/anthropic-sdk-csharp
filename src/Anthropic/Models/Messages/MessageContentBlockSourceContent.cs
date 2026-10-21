@@ -25,15 +25,17 @@ public record class MessageContentBlockSourceContent : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, MessageContentBlockSourceContentType> Type
     {
         get
         {
             return this.Value switch
             {
-                TextBlockParam x => x.Type,
-                ImageBlockParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                TextBlockParam _ => MessageContentBlockSourceContentType.Text,
+                ImageBlockParam _ => MessageContentBlockSourceContentType.Image,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, MessageContentBlockSourceContentType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -319,5 +321,50 @@ sealed class MessageContentBlockSourceContentConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(MessageContentBlockSourceContentTypeConverter))]
+public enum MessageContentBlockSourceContentType
+{
+    Text,
+    Image,
+}
+
+sealed class MessageContentBlockSourceContentTypeConverter
+    : JsonConverter<MessageContentBlockSourceContentType>
+{
+    public override MessageContentBlockSourceContentType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => MessageContentBlockSourceContentType.Text,
+            "image" => MessageContentBlockSourceContentType.Image,
+            _ => (MessageContentBlockSourceContentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        MessageContentBlockSourceContentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                MessageContentBlockSourceContentType.Text => "text",
+                MessageContentBlockSourceContentType.Image => "image",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

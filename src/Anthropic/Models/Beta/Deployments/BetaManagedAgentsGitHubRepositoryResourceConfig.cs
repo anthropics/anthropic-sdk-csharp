@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Sessions = Anthropic.Models.Beta.Sessions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -22,14 +22,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsGitHubRepositoryResourceConfig : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsGitHubRepositoryResourceConfigType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -76,13 +74,24 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceConfig : Jso
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("github_repository")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Url;
         this.Checkout?.Validate();
         _ = this.MountPath;
     }
 
-    public BetaManagedAgentsGitHubRepositoryResourceConfig() { }
+    public BetaManagedAgentsGitHubRepositoryResourceConfig()
+    {
+        this.Type = JsonSerializer.SerializeToElement("github_repository");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -97,6 +106,8 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceConfig : Jso
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("github_repository");
     }
 
 #pragma warning disable CS8618
@@ -114,6 +125,13 @@ public sealed record class BetaManagedAgentsGitHubRepositoryResourceConfig : Jso
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsGitHubRepositoryResourceConfig(string url)
+        : this()
+    {
+        this.Url = url;
+    }
 }
 
 class BetaManagedAgentsGitHubRepositoryResourceConfigFromRaw
@@ -123,50 +141,6 @@ class BetaManagedAgentsGitHubRepositoryResourceConfigFromRaw
     public BetaManagedAgentsGitHubRepositoryResourceConfig FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsGitHubRepositoryResourceConfig.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsGitHubRepositoryResourceConfigTypeConverter))]
-public enum BetaManagedAgentsGitHubRepositoryResourceConfigType
-{
-    GitHubRepository,
-}
-
-sealed class BetaManagedAgentsGitHubRepositoryResourceConfigTypeConverter
-    : JsonConverter<BetaManagedAgentsGitHubRepositoryResourceConfigType>
-{
-    public override BetaManagedAgentsGitHubRepositoryResourceConfigType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "github_repository" =>
-                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository,
-            _ => (BetaManagedAgentsGitHubRepositoryResourceConfigType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsGitHubRepositoryResourceConfigType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsGitHubRepositoryResourceConfigType.GitHubRepository =>
-                    "github_repository",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }
 
 /// <summary>
@@ -187,6 +161,22 @@ public record class Checkout : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, CheckoutType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Sessions::BetaManagedAgentsBranchCheckout _ => CheckoutType.Branch,
+                Sessions::BetaManagedAgentsCommitCheckout _ => CheckoutType.Commit,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, CheckoutType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -274,8 +264,8 @@ public record class Checkout : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Sessions::BetaManagedAgentsBranchCheckout> betaManagedAgentsBranch,
-        System::Action<Sessions::BetaManagedAgentsCommitCheckout> betaManagedAgentsCommit
+        Action<Sessions::BetaManagedAgentsBranchCheckout> betaManagedAgentsBranch,
+        Action<Sessions::BetaManagedAgentsCommitCheckout> betaManagedAgentsCommit
     )
     {
         switch (this.Value)
@@ -315,8 +305,8 @@ public record class Checkout : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Sessions::BetaManagedAgentsBranchCheckout, T> betaManagedAgentsBranch,
-        System::Func<Sessions::BetaManagedAgentsCommitCheckout, T> betaManagedAgentsCommit
+        Func<Sessions::BetaManagedAgentsBranchCheckout, T> betaManagedAgentsBranch,
+        Func<Sessions::BetaManagedAgentsCommitCheckout, T> betaManagedAgentsCommit
     )
     {
         return this.Value switch
@@ -388,7 +378,7 @@ sealed class CheckoutConverter : JsonConverter<Checkout?>
 {
     public override Checkout? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -461,5 +451,49 @@ sealed class CheckoutConverter : JsonConverter<Checkout?>
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(CheckoutTypeConverter))]
+public enum CheckoutType
+{
+    Branch,
+    Commit,
+}
+
+sealed class CheckoutTypeConverter : JsonConverter<CheckoutType>
+{
+    public override CheckoutType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "branch" => CheckoutType.Branch,
+            "commit" => CheckoutType.Commit,
+            _ => (CheckoutType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        CheckoutType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                CheckoutType.Branch => "branch",
+                CheckoutType.Commit => "commit",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

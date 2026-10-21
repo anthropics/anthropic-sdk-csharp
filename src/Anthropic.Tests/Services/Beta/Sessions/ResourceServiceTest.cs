@@ -1,5 +1,5 @@
+using System.Text.Json;
 using System.Threading.Tasks;
-using Anthropic.Models.Beta.Sessions.Resources;
 
 namespace Anthropic.Tests.Services.Beta.Sessions;
 
@@ -59,7 +59,11 @@ public class ResourceServiceTest : TestBase
     {
         var betaManagedAgentsFileResource = await this.client.Beta.Sessions.Resources.Add(
             "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new() { FileID = "file_011CNha8iCJcU1wXNR6q4V8w", Type = Type.File },
+            new()
+            {
+                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                Type = JsonSerializer.SerializeToElement("file"),
+            },
             TestContext.Current.CancellationToken
         );
         betaManagedAgentsFileResource.Validate();

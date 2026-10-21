@@ -43,13 +43,11 @@ await client.Beta.Sessions.Events.Send(
         [
             new BetaManagedAgentsUserMessageEventParams
             {
-                Type = BetaManagedAgentsUserMessageEventParamsType.UserMessage,
                 Content =
                 [
                     new BetaManagedAgentsTextBlock
                     {
                         Text = "Write a short haiku about the ocean.",
-                        Type = BetaManagedAgentsTextBlockType.Text,
                     },
                 ],
             },

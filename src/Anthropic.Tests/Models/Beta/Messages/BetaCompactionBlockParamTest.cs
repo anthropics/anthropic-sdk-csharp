@@ -305,6 +305,28 @@ public class BetaCompactionBlockParamToolChangeTest : TestBase
     }
 
     [Fact]
+    public void BetaRequestToolAdditionBlockTypeWorks()
+    {
+        BetaCompactionBlockParamToolChange value = new BetaRequestToolAdditionBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(BetaCompactionBlockParamToolChangeType.ToolAddition, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRequestToolRemovalBlockTypeWorks()
+    {
+        BetaCompactionBlockParamToolChange value = new BetaRequestToolRemovalBlock()
+        {
+            Tool = new BetaToolChangeToolReference("name"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(BetaCompactionBlockParamToolChangeType.ToolRemoval, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaCompactionBlockParamToolChange value = new(
@@ -322,10 +344,11 @@ public class BetaCompactionBlockParamToolChangeTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_addition");
+        ApiEnum<string, BetaCompactionBlockParamToolChangeType> expectedType =
+            BetaCompactionBlockParamToolChangeType.ToolAddition;
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCacheControl, value.CacheControl);
 
         BetaCompactionBlockParamToolChange emptyValue = new(
@@ -348,5 +371,59 @@ public class BetaCompactionBlockParamToolChangeTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CacheControl);
+    }
+}
+
+public class BetaCompactionBlockParamToolChangeTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolAddition)]
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolRemoval)]
+    public void Validation_Works(BetaCompactionBlockParamToolChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCompactionBlockParamToolChangeType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCompactionBlockParamToolChangeType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolAddition)]
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolRemoval)]
+    public void SerializationRoundtrip_Works(BetaCompactionBlockParamToolChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCompactionBlockParamToolChangeType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCompactionBlockParamToolChangeType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCompactionBlockParamToolChangeType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaCompactionBlockParamToolChangeType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

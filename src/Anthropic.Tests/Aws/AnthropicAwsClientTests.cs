@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Aws;
 using Anthropic.Core;
+using Anthropic.Credentials;
 using Anthropic.Exceptions;
 using Anthropic.Models.Files;
 using Moq;
@@ -15,6 +16,7 @@ using Messages = Anthropic.Models.Messages;
 
 namespace Anthropic.Tests.Aws;
 
+[Collection("EnvVarMutating")]
 public class AnthropicAwsClientTests : IDisposable
 {
     private readonly string? _origAwsApiKey;
@@ -226,7 +228,7 @@ public class AnthropicAwsClientTests : IDisposable
     #region Request Headers — API Key Mode
 
     [Fact]
-    public async Task ApiKeyMode_SendsApiKeyHeader()
+    public async Task ApiKeyMode_SendsBearerAuthHeader()
     {
         var client = new AnthropicAwsClient(
             new()
@@ -238,8 +240,9 @@ public class AnthropicAwsClientTests : IDisposable
         );
         var req = await AnthropicAwsClientTests.SendOneRequest(client);
 
-        Assert.True(req.Headers.Contains("X-Api-Key"));
-        Assert.Equal("sk-test-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.True(req.Headers.Contains("Authorization"));
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
+        Assert.False(req.Headers.Contains("X-Api-Key"));
     }
 
     [Fact]
@@ -287,7 +290,7 @@ public class AnthropicAwsClientTests : IDisposable
                 {
                     MaxTokens = 1,
                     Model = "claude-test",
-                    Messages = [new() { Role = Messages::Role.User, Content = "hi" }],
+                    Messages = [new Messages::UserMessageParam { Content = "hi" }],
                     WorkspaceID = "ws-request",
                 },
             },
@@ -316,7 +319,8 @@ public class AnthropicAwsClientTests : IDisposable
 
         Assert.False(req.Headers.Contains("x-amz-date"));
         Assert.False(req.Headers.Contains("x-amz-content-sha256"));
-        Assert.False(req.Headers.Contains("Authorization"));
+        var authHeader = req.Headers.GetValues("Authorization").Single();
+        Assert.StartsWith("Bearer ", authHeader);
     }
 
     #endregion
@@ -348,6 +352,39 @@ public class AnthropicAwsClientTests : IDisposable
         );
     }
 
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SigV4Mode_EnvCredentialsNotSentAsBearer(bool freshOptions)
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", "first-party-api-key");
+        Environment.SetEnvironmentVariable("ANTHROPIC_AUTH_TOKEN", "first-party-auth-token");
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                AwsAccessKey = "AKIAIOSFODNN7EXAMPLE",
+                AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                AwsRegion = "us-east-1",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+        if (freshOptions)
+        {
+            client = Assert.IsType<AnthropicAwsClient>(
+                client.WithOptions(opts => new ClientOptions { BaseUrl = opts.BaseUrl })
+            );
+        }
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        // Exactly one Authorization value — the SigV4 signature, never an ambient
+        // first-party credential.
+        Assert.StartsWith(
+            "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/",
+            req.Headers.GetValues("Authorization").Single()
+        );
+    }
+
     [Fact]
     public async Task ApiKeyMode_EnvAuthTokenNotSentAsBearer()
     {
@@ -362,8 +399,46 @@ public class AnthropicAwsClientTests : IDisposable
         );
         var req = await AnthropicAwsClientTests.SendOneRequest(client);
 
-        Assert.Equal("sk-test-key", req.Headers.GetValues("X-Api-Key").Single());
-        Assert.False(req.Headers.Contains("Authorization"));
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
+        Assert.False(req.Headers.Contains("X-Api-Key"));
+    }
+
+    [Fact]
+    public async Task ApiKeyMode_FreshOptions_KeepsApiKey()
+    {
+        Environment.SetEnvironmentVariable("ANTHROPIC_API_KEY", "first-party-api-key");
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "sk-test-key",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+        client = Assert.IsType<AnthropicAwsClient>(
+            client.WithOptions(opts => new ClientOptions { BaseUrl = opts.BaseUrl })
+        );
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
+    }
+
+    [Fact]
+    public async Task ApiKeyMode_FreshOptions_KeepsBaseUrl()
+    {
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "sk-test-key",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+        client = Assert.IsType<AnthropicAwsClient>(client.WithOptions(_ => new ClientOptions()));
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        Assert.Equal("localhost", req.RequestUri?.Host);
+        Assert.Equal("Bearer sk-test-key", req.Headers.GetValues("Authorization").Single());
     }
 
     [Fact]
@@ -646,7 +721,58 @@ public class AnthropicAwsClientTests : IDisposable
         );
         var req = await AnthropicAwsClientTests.SendOneRequest(client);
 
-        Assert.Equal("arg-key", req.Headers.GetValues("X-Api-Key").Single());
+        Assert.Equal("Bearer arg-key", req.Headers.GetValues("Authorization").Single());
+    }
+
+    [Fact]
+    public async Task ApiKeyArg_ReplacesFirstPartyCredentialsInClientOptions()
+    {
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "arg-key",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+                ClientOptions = new ClientOptions
+                {
+                    Credentials = new StaticTokenCredentials("first-party-token"),
+                },
+            }
+        );
+        var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+        Assert.Equal("Bearer arg-key", req.Headers.GetValues("Authorization").Single());
+    }
+
+    private sealed class DisposableCredentials : IAccessTokenProvider
+    {
+        public bool Disposed { get; private set; }
+
+        public ValueTask<AccessToken> GetTokenAsync(
+            bool forceRefresh = false,
+            CancellationToken cancellationToken = default
+        ) => new(new AccessToken("first-party-token"));
+
+        public void Dispose() => Disposed = true;
+    }
+
+    [Fact]
+    public void Dispose_DisposesFirstPartyCredentialsReplacedByApiKeyArg()
+    {
+        var credentials = new DisposableCredentials();
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                ApiKey = "arg-key",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+                ClientOptions = new ClientOptions { Credentials = credentials },
+            }
+        );
+
+        client.Dispose();
+
+        Assert.True(credentials.Disposed);
     }
 
     #endregion

@@ -96,6 +96,41 @@ public class BetaTelemetryDestinationDisabledReasonTest : TestBase
     }
 
     [Fact]
+    public void CallerTypeWorks()
+    {
+        BetaTelemetryDestinationDisabledReason value =
+            new BetaTelemetryDestinationDisabledReasonCaller();
+        Assert.Equal(BetaTelemetryDestinationDisabledReasonType.Caller, value.Type.Value());
+    }
+
+    [Fact]
+    public void SustainedFailureTypeWorks()
+    {
+        BetaTelemetryDestinationDisabledReason value =
+            new BetaTelemetryDestinationDisabledReasonSustainedFailure();
+        Assert.Equal(
+            BetaTelemetryDestinationDisabledReasonType.SustainedFailure,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void InvalidAddressTypeWorks()
+    {
+        BetaTelemetryDestinationDisabledReason value =
+            new BetaTelemetryDestinationDisabledReasonInvalidAddress();
+        Assert.Equal(BetaTelemetryDestinationDisabledReasonType.InvalidAddress, value.Type.Value());
+    }
+
+    [Fact]
+    public void RedirectTypeWorks()
+    {
+        BetaTelemetryDestinationDisabledReason value =
+            new BetaTelemetryDestinationDisabledReasonRedirect();
+        Assert.Equal(BetaTelemetryDestinationDisabledReasonType.Redirect, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaTelemetryDestinationDisabledReason value = new(
@@ -109,14 +144,73 @@ public class BetaTelemetryDestinationDisabledReasonTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("caller");
+        ApiEnum<string, BetaTelemetryDestinationDisabledReasonType> expectedType =
+            BetaTelemetryDestinationDisabledReasonType.Caller;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaTelemetryDestinationDisabledReason emptyValue = new(
             JsonSerializer.Deserialize<JsonElement>("{}")
         );
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaTelemetryDestinationDisabledReasonTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Caller)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.SustainedFailure)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.InvalidAddress)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Redirect)]
+    public void Validation_Works(BetaTelemetryDestinationDisabledReasonType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTelemetryDestinationDisabledReasonType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Caller)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.SustainedFailure)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.InvalidAddress)]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Redirect)]
+    public void SerializationRoundtrip_Works(BetaTelemetryDestinationDisabledReasonType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaTelemetryDestinationDisabledReasonType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

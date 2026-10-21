@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 
@@ -27,6 +27,24 @@ public record class BetaManagedAgentsActor : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsActorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsSessionActor _ => BetaManagedAgentsActorType.SessionActor,
+                BetaManagedAgentsApiActor _ => BetaManagedAgentsActorType.ApiActor,
+                BetaManagedAgentsUserActor _ => BetaManagedAgentsActorType.UserActor,
+                BetaManagedAgentsServiceAccountActor _ =>
+                    BetaManagedAgentsActorType.ServiceAccountActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsActorType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -171,10 +189,10 @@ public record class BetaManagedAgentsActor : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionActor> session,
-        System::Action<BetaManagedAgentsApiActor> api,
-        System::Action<BetaManagedAgentsUserActor> user,
-        System::Action<BetaManagedAgentsServiceAccountActor> serviceAccount
+        Action<BetaManagedAgentsSessionActor> session,
+        Action<BetaManagedAgentsApiActor> api,
+        Action<BetaManagedAgentsUserActor> user,
+        Action<BetaManagedAgentsServiceAccountActor> serviceAccount
     )
     {
         switch (this.Value)
@@ -222,10 +240,10 @@ public record class BetaManagedAgentsActor : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionActor, T> session,
-        System::Func<BetaManagedAgentsApiActor, T> api,
-        System::Func<BetaManagedAgentsUserActor, T> user,
-        System::Func<BetaManagedAgentsServiceAccountActor, T> serviceAccount
+        Func<BetaManagedAgentsSessionActor, T> session,
+        Func<BetaManagedAgentsApiActor, T> api,
+        Func<BetaManagedAgentsUserActor, T> user,
+        Func<BetaManagedAgentsServiceAccountActor, T> serviceAccount
     )
     {
         return this.Value switch
@@ -312,7 +330,7 @@ sealed class BetaManagedAgentsActorConverter : JsonConverter<BetaManagedAgentsAc
 {
     public override BetaManagedAgentsActor? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -424,5 +442,55 @@ sealed class BetaManagedAgentsActorConverter : JsonConverter<BetaManagedAgentsAc
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsActorTypeConverter))]
+public enum BetaManagedAgentsActorType
+{
+    SessionActor,
+    ApiActor,
+    UserActor,
+    ServiceAccountActor,
+}
+
+sealed class BetaManagedAgentsActorTypeConverter : JsonConverter<BetaManagedAgentsActorType>
+{
+    public override BetaManagedAgentsActorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "session_actor" => BetaManagedAgentsActorType.SessionActor,
+            "api_actor" => BetaManagedAgentsActorType.ApiActor,
+            "user_actor" => BetaManagedAgentsActorType.UserActor,
+            "service_account_actor" => BetaManagedAgentsActorType.ServiceAccountActor,
+            _ => (BetaManagedAgentsActorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsActorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsActorType.SessionActor => "session_actor",
+                BetaManagedAgentsActorType.ApiActor => "api_actor",
+                BetaManagedAgentsActorType.UserActor => "user_actor",
+                BetaManagedAgentsActorType.ServiceAccountActor => "service_account_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

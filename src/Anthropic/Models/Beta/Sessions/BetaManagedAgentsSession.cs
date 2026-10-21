@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,7 +8,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Resources;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -46,12 +46,12 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     /// <summary>
     /// When the session was archived. Null if not archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -72,12 +72,12 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -183,14 +183,12 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         init { this._rawData.Set("title", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsSessionType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -198,12 +196,12 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     /// <summary>
     /// A timestamp in RFC 3339 format
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -274,14 +272,20 @@ public sealed record class BetaManagedAgentsSession : JsonModel
         this.Stats.Validate();
         this.Status.Validate();
         _ = this.Title;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         this.Usage.Validate();
         _ = this.VaultIds;
         _ = this.DeploymentID;
     }
 
-    public BetaManagedAgentsSession() { }
+    public BetaManagedAgentsSession()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -292,6 +296,8 @@ public sealed record class BetaManagedAgentsSession : JsonModel
     public BetaManagedAgentsSession(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session");
     }
 
 #pragma warning disable CS8618
@@ -348,7 +354,7 @@ sealed class BetaManagedAgentsSessionStatusConverter : JsonConverter<BetaManaged
 {
     public override BetaManagedAgentsSessionStatus Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -376,47 +382,6 @@ sealed class BetaManagedAgentsSessionStatusConverter : JsonConverter<BetaManaged
                 BetaManagedAgentsSessionStatus.Running => "running",
                 BetaManagedAgentsSessionStatus.Idle => "idle",
                 BetaManagedAgentsSessionStatus.Terminated => "terminated",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-[JsonConverter(typeof(BetaManagedAgentsSessionTypeConverter))]
-public enum BetaManagedAgentsSessionType
-{
-    Session,
-}
-
-sealed class BetaManagedAgentsSessionTypeConverter : JsonConverter<BetaManagedAgentsSessionType>
-{
-    public override BetaManagedAgentsSessionType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "session" => BetaManagedAgentsSessionType.Session,
-            _ => (BetaManagedAgentsSessionType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsSessionType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsSessionType.Session => "session",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

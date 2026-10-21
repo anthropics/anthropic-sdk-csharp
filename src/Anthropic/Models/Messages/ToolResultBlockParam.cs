@@ -440,19 +440,22 @@ public record class Block : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BlockType> Type
     {
         get
         {
             return this.Value switch
             {
-                TextBlockParam x => x.Type,
-                ImageBlockParam x => x.Type,
-                SearchResultBlockParam x => x.Type,
-                DocumentBlockParam x => x.Type,
-                ToolReferenceBlockParam x => x.Type,
-                BrowserStateBlockParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                TextBlockParam _ => BlockType.Text,
+                ImageBlockParam _ => BlockType.Image,
+                SearchResultBlockParam _ => BlockType.SearchResult,
+                DocumentBlockParam _ => BlockType.Document,
+                ToolReferenceBlockParam _ => BlockType.ToolReference,
+                BrowserStateBlockParam _ => BlockType.BrowserState,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, BlockType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -984,5 +987,61 @@ sealed class BlockConverter : JsonConverter<Block>
     public override void Write(Utf8JsonWriter writer, Block value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BlockTypeConverter))]
+public enum BlockType
+{
+    Text,
+    Image,
+    SearchResult,
+    Document,
+    ToolReference,
+    BrowserState,
+}
+
+sealed class BlockTypeConverter : JsonConverter<BlockType>
+{
+    public override BlockType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "text" => BlockType.Text,
+            "image" => BlockType.Image,
+            "search_result" => BlockType.SearchResult,
+            "document" => BlockType.Document,
+            "tool_reference" => BlockType.ToolReference,
+            "browser_state" => BlockType.BrowserState,
+            _ => (BlockType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BlockType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BlockType.Text => "text",
+                BlockType.Image => "image",
+                BlockType.SearchResult => "search_result",
+                BlockType.Document => "document",
+                BlockType.ToolReference => "tool_reference",
+                BlockType.BrowserState => "browser_state",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

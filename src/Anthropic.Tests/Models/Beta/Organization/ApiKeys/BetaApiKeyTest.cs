@@ -22,7 +22,6 @@ public class BetaApiKeyTest : TestBase
             Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
             Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::BetaApiKeyStatus.Active,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         string expectedID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
@@ -44,7 +43,6 @@ public class BetaApiKeyTest : TestBase
         ApiEnum<string, ApiKeys::BetaApiKeyStatus> expectedStatus =
             ApiKeys::BetaApiKeyStatus.Active;
         JsonElement expectedType = JsonSerializer.SerializeToElement("api_key");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
@@ -56,7 +54,6 @@ public class BetaApiKeyTest : TestBase
         Assert.Equal(expectedScope, model.Scope);
         Assert.Equal(expectedStatus, model.Status);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
-        Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
     }
 
     [Fact]
@@ -73,7 +70,6 @@ public class BetaApiKeyTest : TestBase
             Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
             Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::BetaApiKeyStatus.Active,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -99,7 +95,6 @@ public class BetaApiKeyTest : TestBase
             Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
             Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::BetaApiKeyStatus.Active,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -128,7 +123,6 @@ public class BetaApiKeyTest : TestBase
         ApiEnum<string, ApiKeys::BetaApiKeyStatus> expectedStatus =
             ApiKeys::BetaApiKeyStatus.Active;
         JsonElement expectedType = JsonSerializer.SerializeToElement("api_key");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
@@ -140,7 +134,6 @@ public class BetaApiKeyTest : TestBase
         Assert.Equal(expectedScope, deserialized.Scope);
         Assert.Equal(expectedStatus, deserialized.Status);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
-        Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
     }
 
     [Fact]
@@ -157,7 +150,6 @@ public class BetaApiKeyTest : TestBase
             Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
             Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::BetaApiKeyStatus.Active,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         model.Validate();
@@ -177,7 +169,6 @@ public class BetaApiKeyTest : TestBase
             Principal = new ApiKeys::BetaApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
             Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::BetaApiKeyStatus.Active,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         ApiKeys::BetaApiKey copied = new(model);
@@ -237,6 +228,24 @@ public class PrincipalTest : TestBase
     }
 
     [Fact]
+    public void BetaApiKeyUserActorTypeWorks()
+    {
+        ApiKeys::Principal value = new ApiKeys::BetaApiKeyUserActor(
+            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+        );
+        Assert.Equal(ApiKeys::PrincipalType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaApiKeyServiceAccountActorTypeWorks()
+    {
+        ApiKeys::Principal value = new ApiKeys::BetaApiKeyServiceAccountActor(
+            "svac_01Hk3R9TWxq7CfQak00OiVw4"
+        );
+        Assert.Equal(ApiKeys::PrincipalType.ServiceAccountActor, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ApiKeys::Principal value = new(
@@ -250,13 +259,71 @@ public class PrincipalTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
+        ApiEnum<string, ApiKeys::PrincipalType> expectedType = ApiKeys::PrincipalType.UserActor;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ApiKeys::Principal emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class PrincipalTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ApiKeys::PrincipalType.UserActor)]
+    [InlineData(ApiKeys::PrincipalType.ServiceAccountActor)]
+    public void Validation_Works(ApiKeys::PrincipalType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ApiKeys::PrincipalType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::PrincipalType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ApiKeys::PrincipalType.UserActor)]
+    [InlineData(ApiKeys::PrincipalType.ServiceAccountActor)]
+    public void SerializationRoundtrip_Works(ApiKeys::PrincipalType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ApiKeys::PrincipalType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::PrincipalType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::PrincipalType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::PrincipalType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 
@@ -307,26 +374,100 @@ public class ScopeTest : TestBase
     }
 
     [Fact]
+    public void BetaApiKeyOrganizationTypeWorks()
+    {
+        ApiKeys::Scope value = new ApiKeys::BetaApiKeyOrganizationScope();
+        Assert.Equal(ApiKeys::ScopeType.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaApiKeyWorkspaceTypeWorks()
+    {
+        ApiKeys::Scope value = new ApiKeys::BetaApiKeyWorkspaceScope(
+            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        );
+        Assert.Equal(ApiKeys::ScopeType.Workspace, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ApiKeys::Scope value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "type": "organization"
+                  "type": "workspace"
                 }
                 """
             )
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+        ApiEnum<string, ApiKeys::ScopeType> expectedType = ApiKeys::ScopeType.Workspace;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ApiKeys::Scope emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ScopeTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ApiKeys::ScopeType.Organization)]
+    [InlineData(ApiKeys::ScopeType.Workspace)]
+    public void Validation_Works(ApiKeys::ScopeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ApiKeys::ScopeType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::ScopeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ApiKeys::ScopeType.Organization)]
+    [InlineData(ApiKeys::ScopeType.Workspace)]
+    public void SerializationRoundtrip_Works(ApiKeys::ScopeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ApiKeys::ScopeType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::ScopeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::ScopeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::ScopeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -61,14 +61,12 @@ public sealed record class BetaManagedAgentsMcpAuthenticationFailedError : JsonM
         init { this._rawData.Set("retry_status", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -79,10 +77,21 @@ public sealed record class BetaManagedAgentsMcpAuthenticationFailedError : JsonM
         _ = this.McpServerName;
         _ = this.Message;
         this.RetryStatus.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("mcp_authentication_failed_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsMcpAuthenticationFailedError() { }
+    public BetaManagedAgentsMcpAuthenticationFailedError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("mcp_authentication_failed_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -97,6 +106,8 @@ public sealed record class BetaManagedAgentsMcpAuthenticationFailedError : JsonM
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("mcp_authentication_failed_error");
     }
 
 #pragma warning disable CS8618
@@ -143,6 +154,25 @@ public record class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus : M
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsRetryStatusRetrying _ =>
+                    BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Retrying,
+                BetaManagedAgentsRetryStatusExhausted _ =>
+                    BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Exhausted,
+                BetaManagedAgentsRetryStatusTerminal _ =>
+                    BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Terminal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -269,9 +299,9 @@ public record class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus : M
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
-        System::Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
-        System::Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
+        Action<BetaManagedAgentsRetryStatusRetrying> betaManagedAgentsRetryStatusRetrying,
+        Action<BetaManagedAgentsRetryStatusExhausted> betaManagedAgentsRetryStatusExhausted,
+        Action<BetaManagedAgentsRetryStatusTerminal> betaManagedAgentsRetryStatusTerminal
     )
     {
         switch (this.Value)
@@ -315,12 +345,9 @@ public record class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus : M
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
-        System::Func<
-            BetaManagedAgentsRetryStatusExhausted,
-            T
-        > betaManagedAgentsRetryStatusExhausted,
-        System::Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
+        Func<BetaManagedAgentsRetryStatusRetrying, T> betaManagedAgentsRetryStatusRetrying,
+        Func<BetaManagedAgentsRetryStatusExhausted, T> betaManagedAgentsRetryStatusExhausted,
+        Func<BetaManagedAgentsRetryStatusTerminal, T> betaManagedAgentsRetryStatusTerminal
     )
     {
         return this.Value switch
@@ -413,7 +440,7 @@ sealed class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusConverter
 {
     public override BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatus? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -510,32 +537,35 @@ sealed class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsMcpAuthenticationFailedErrorTypeConverter))]
-public enum BetaManagedAgentsMcpAuthenticationFailedErrorType
+[JsonConverter(typeof(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusTypeConverter))]
+public enum BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType
 {
-    McpAuthenticationFailedError,
+    Retrying,
+    Exhausted,
+    Terminal,
 }
 
-sealed class BetaManagedAgentsMcpAuthenticationFailedErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsMcpAuthenticationFailedErrorType>
+sealed class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusTypeConverter
+    : JsonConverter<BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType>
 {
-    public override BetaManagedAgentsMcpAuthenticationFailedErrorType Read(
+    public override BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "mcp_authentication_failed_error" =>
-                BetaManagedAgentsMcpAuthenticationFailedErrorType.McpAuthenticationFailedError,
-            _ => (BetaManagedAgentsMcpAuthenticationFailedErrorType)(-1),
+            "retrying" => BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Retrying,
+            "exhausted" => BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Exhausted,
+            "terminal" => BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Terminal,
+            _ => (BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsMcpAuthenticationFailedErrorType value,
+        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType value,
         JsonSerializerOptions options
     )
     {
@@ -543,8 +573,10 @@ sealed class BetaManagedAgentsMcpAuthenticationFailedErrorTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsMcpAuthenticationFailedErrorType.McpAuthenticationFailedError =>
-                    "mcp_authentication_failed_error",
+                BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Retrying => "retrying",
+                BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Exhausted =>
+                    "exhausted",
+                BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Terminal => "terminal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -1,6 +1,5 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Vaults.Credentials;
 
 namespace Anthropic.Tests.Models.Beta.Vaults.Credentials;
@@ -10,28 +9,19 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-            ClientSecret = "x",
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = "x" };
 
-        ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType> expectedType =
-            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("client_secret_basic");
         string expectedClientSecret = "x";
 
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedClientSecret, model.ClientSecret);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-            ClientSecret = "x",
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = "x" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -46,11 +36,7 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-            ClientSecret = "x",
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = "x" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized =
@@ -60,22 +46,17 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
             );
         Assert.NotNull(deserialized);
 
-        ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType> expectedType =
-            BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("client_secret_basic");
         string expectedClientSecret = "x";
 
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedClientSecret, deserialized.ClientSecret);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-            ClientSecret = "x",
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = "x" };
 
         model.Validate();
     }
@@ -83,10 +64,7 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { };
 
         Assert.Null(model.ClientSecret);
         Assert.False(model.RawData.ContainsKey("client_secret"));
@@ -95,10 +73,7 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { };
 
         model.Validate();
     }
@@ -106,12 +81,7 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-
-            ClientSecret = null,
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = null };
 
         Assert.Null(model.ClientSecret);
         Assert.True(model.RawData.ContainsKey("client_secret"));
@@ -120,12 +90,7 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-
-            ClientSecret = null,
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = null };
 
         model.Validate();
     }
@@ -133,68 +98,10 @@ public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam
-        {
-            Type = BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic,
-            ClientSecret = "x",
-        };
+        var model = new BetaManagedAgentsTokenEndpointAuthBasicUpdateParam { ClientSecret = "x" };
 
         BetaManagedAgentsTokenEndpointAuthBasicUpdateParam copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsTokenEndpointAuthBasicUpdateParamTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic)]
-    public void Validation_Works(BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType.ClientSecretBasic)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType rawValue
-    )
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsTokenEndpointAuthBasicUpdateParamType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }

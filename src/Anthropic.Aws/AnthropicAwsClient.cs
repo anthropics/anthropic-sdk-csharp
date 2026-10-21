@@ -184,6 +184,6 @@ public sealed class AnthropicAwsClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicAwsClient(_awsConfig, modifier(_options));
+        return new AnthropicAwsClient(_awsConfig, _options.Apply(modifier));
     }
 }

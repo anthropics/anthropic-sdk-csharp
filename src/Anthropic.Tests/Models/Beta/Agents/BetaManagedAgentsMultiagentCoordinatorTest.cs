@@ -18,11 +18,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
                 new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
         List<Agent> expectedAgents =
@@ -30,19 +28,17 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
             new BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
                 Version = 1,
             },
         ];
-        ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType> expectedType =
-            BetaManagedAgentsMultiagentCoordinatorType.Coordinator;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("coordinator");
 
         Assert.Equal(expectedAgents.Count, model.Agents.Count);
         for (int i = 0; i < expectedAgents.Count; i++)
         {
             Assert.Equal(expectedAgents[i], model.Agents[i]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -55,11 +51,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
                 new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -81,11 +75,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
                 new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -100,19 +92,17 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
             new BetaManagedAgentsAgentReference()
             {
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                Type = BetaManagedAgentsAgentReferenceType.Agent,
                 Version = 1,
             },
         ];
-        ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType> expectedType =
-            BetaManagedAgentsMultiagentCoordinatorType.Coordinator;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("coordinator");
 
         Assert.Equal(expectedAgents.Count, deserialized.Agents.Count);
         for (int i = 0; i < expectedAgents.Count; i++)
         {
             Assert.Equal(expectedAgents[i], deserialized.Agents[i]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -125,11 +115,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
                 new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
         model.Validate();
@@ -145,11 +133,9 @@ public class BetaManagedAgentsMultiagentCoordinatorTest : TestBase
                 new BetaManagedAgentsAgentReference()
                 {
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    Type = BetaManagedAgentsAgentReferenceType.Agent,
                     Version = 1,
                 },
             ],
-            Type = BetaManagedAgentsMultiagentCoordinatorType.Coordinator,
         };
 
         BetaManagedAgentsMultiagentCoordinator copied = new(model);
@@ -166,7 +152,6 @@ public class AgentTest : TestBase
         Agent value = new BetaManagedAgentsAgentReference()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = BetaManagedAgentsAgentReferenceType.Agent,
             Version = 1,
         };
         value.Validate();
@@ -175,7 +160,7 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAdvisorValidationWorks()
     {
-        Agent value = new BetaManagedAgentsAdvisor() { Model = "model", Type = Type.Advisor };
+        Agent value = new BetaManagedAgentsAdvisor("model");
         value.Validate();
     }
 
@@ -185,7 +170,6 @@ public class AgentTest : TestBase
         Agent value = new BetaManagedAgentsAgentReference()
         {
             ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-            Type = BetaManagedAgentsAgentReferenceType.Agent,
             Version = 1,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -197,47 +181,92 @@ public class AgentTest : TestBase
     [Fact]
     public void BetaManagedAgentsAdvisorSerializationRoundtripWorks()
     {
-        Agent value = new BetaManagedAgentsAdvisor() { Model = "model", Type = Type.Advisor };
+        Agent value = new BetaManagedAgentsAdvisor("model");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Agent>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsAgentReferenceTypeWorks()
+    {
+        Agent value = new BetaManagedAgentsAgentReference()
+        {
+            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+            Version = 1,
+        };
+        Assert.Equal(AgentType.Agent, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAdvisorTypeWorks()
+    {
+        Agent value = new BetaManagedAgentsAdvisor("model");
+        Assert.Equal(AgentType.Advisor, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Agent value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "agent"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, AgentType> expectedType = AgentType.Agent;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Agent emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsMultiagentCoordinatorTypeTest : TestBase
+public class AgentTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsMultiagentCoordinatorType.Coordinator)]
-    public void Validation_Works(BetaManagedAgentsMultiagentCoordinatorType rawValue)
+    [InlineData(AgentType.Agent)]
+    [InlineData(AgentType.Advisor)]
+    public void Validation_Works(AgentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType> value = rawValue;
+        ApiEnum<string, AgentType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMultiagentCoordinatorType.Coordinator)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMultiagentCoordinatorType rawValue)
+    [InlineData(AgentType.Agent)]
+    [InlineData(AgentType.Advisor)]
+    public void SerializationRoundtrip_Works(AgentType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType> value = rawValue;
+        ApiEnum<string, AgentType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -245,13 +274,15 @@ public class BetaManagedAgentsMultiagentCoordinatorTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMultiagentCoordinatorType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

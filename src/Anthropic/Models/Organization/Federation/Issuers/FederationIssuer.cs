@@ -313,16 +313,18 @@ public record class FederationIssuerJwks : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, FederationIssuerJwksType> Type
     {
         get
         {
             return this.Value switch
             {
-                JwksDiscovery x => x.Type,
-                JwksExplicitUrl x => x.Type,
-                JwksInline x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                JwksDiscovery _ => FederationIssuerJwksType.Discovery,
+                JwksExplicitUrl _ => FederationIssuerJwksType.ExplicitUrl,
+                JwksInline _ => FederationIssuerJwksType.Inline,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, FederationIssuerJwksType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -662,5 +664,52 @@ sealed class FederationIssuerJwksConverter : JsonConverter<FederationIssuerJwks>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(FederationIssuerJwksTypeConverter))]
+public enum FederationIssuerJwksType
+{
+    Discovery,
+    ExplicitUrl,
+    Inline,
+}
+
+sealed class FederationIssuerJwksTypeConverter : JsonConverter<FederationIssuerJwksType>
+{
+    public override FederationIssuerJwksType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "discovery" => FederationIssuerJwksType.Discovery,
+            "explicit_url" => FederationIssuerJwksType.ExplicitUrl,
+            "inline" => FederationIssuerJwksType.Inline,
+            _ => (FederationIssuerJwksType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        FederationIssuerJwksType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                FederationIssuerJwksType.Discovery => "discovery",
+                FederationIssuerJwksType.ExplicitUrl => "explicit_url",
+                FederationIssuerJwksType.Inline => "inline",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

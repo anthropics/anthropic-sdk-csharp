@@ -282,16 +282,19 @@ public record class Jwks : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, JwksType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaJwksDiscovery x => x.Type,
-                BetaJwksExplicitUrl x => x.Type,
-                BetaJwksInline x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaJwksDiscovery _ => JwksType.Discovery,
+                BetaJwksExplicitUrl _ => JwksType.ExplicitUrl,
+                BetaJwksInline _ => JwksType.Inline,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, JwksType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -624,5 +627,48 @@ sealed class JwksConverter : JsonConverter<Jwks>
     public override void Write(Utf8JsonWriter writer, Jwks value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(JwksTypeConverter))]
+public enum JwksType
+{
+    Discovery,
+    ExplicitUrl,
+    Inline,
+}
+
+sealed class JwksTypeConverter : JsonConverter<JwksType>
+{
+    public override JwksType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "discovery" => JwksType.Discovery,
+            "explicit_url" => JwksType.ExplicitUrl,
+            "inline" => JwksType.Inline,
+            _ => (JwksType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, JwksType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                JwksType.Discovery => "discovery",
+                JwksType.ExplicitUrl => "explicit_url",
+                JwksType.Inline => "inline",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

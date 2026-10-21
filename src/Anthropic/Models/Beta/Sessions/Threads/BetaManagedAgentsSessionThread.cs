@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,7 +7,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Agents = Anthropic.Models.Beta.Agents;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Threads;
 
@@ -52,12 +52,12 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
     /// <summary>
     /// When the thread was archived. Null if not archived.
     /// </summary>
-    public required System::DateTimeOffset? ArchivedAt
+    public required DateTimeOffset? ArchivedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("archived_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("archived_at");
         }
         init { this._rawData.Set("archived_at", value); }
     }
@@ -65,12 +65,12 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
     /// <summary>
     /// When the thread was created.
     /// </summary>
-    public required System::DateTimeOffset CreatedAt
+    public required DateTimeOffset CreatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("created_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
     }
@@ -129,14 +129,12 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
         init { this._rawData.Set("status", value); }
     }
 
-    public required ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Threads.Type> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, global::Anthropic.Models.Beta.Sessions.Threads.Type>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -144,12 +142,12 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
     /// <summary>
     /// When the thread was last updated.
     /// </summary>
-    public required System::DateTimeOffset UpdatedAt
+    public required DateTimeOffset UpdatedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("updated_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
         }
         init { this._rawData.Set("updated_at", value); }
     }
@@ -192,13 +190,19 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
         _ = this.SessionID;
         this.Stats?.Validate();
         this.Status.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("session_thread")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.UpdatedAt;
         this.Usage?.Validate();
         _ = this.WorkflowRunID;
     }
 
-    public BetaManagedAgentsSessionThread() { }
+    public BetaManagedAgentsSessionThread()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session_thread");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -211,6 +215,8 @@ public sealed record class BetaManagedAgentsSessionThread : JsonModel
     public BetaManagedAgentsSessionThread(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session_thread");
     }
 
 #pragma warning disable CS8618
@@ -338,6 +344,23 @@ public record class Agent : ModelBase
         }
     }
 
+    public ApiEnum<string, AgentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                Agents::BetaManagedAgentsSessionThreadAgent _ => AgentType.Agent,
+                Agents::BetaManagedAgentsAdvisor _ => AgentType.Advisor,
+                BetaManagedAgentsInlineAgent _ => AgentType.Inline,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, AgentType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public Agent(Agents::BetaManagedAgentsSessionThreadAgent value, JsonElement? element = null)
     {
         this.Value = value;
@@ -452,9 +475,9 @@ public record class Agent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<Agents::BetaManagedAgentsSessionThreadAgent> betaManagedAgentsSessionThread,
-        System::Action<Agents::BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor,
-        System::Action<BetaManagedAgentsInlineAgent> betaManagedAgentsInline
+        Action<Agents::BetaManagedAgentsSessionThreadAgent> betaManagedAgentsSessionThread,
+        Action<Agents::BetaManagedAgentsAdvisor> betaManagedAgentsAdvisor,
+        Action<BetaManagedAgentsInlineAgent> betaManagedAgentsInline
     )
     {
         switch (this.Value)
@@ -496,9 +519,9 @@ public record class Agent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<Agents::BetaManagedAgentsSessionThreadAgent, T> betaManagedAgentsSessionThread,
-        System::Func<Agents::BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor,
-        System::Func<BetaManagedAgentsInlineAgent, T> betaManagedAgentsInline
+        Func<Agents::BetaManagedAgentsSessionThreadAgent, T> betaManagedAgentsSessionThread,
+        Func<Agents::BetaManagedAgentsAdvisor, T> betaManagedAgentsAdvisor,
+        Func<BetaManagedAgentsInlineAgent, T> betaManagedAgentsInline
     )
     {
         return this.Value switch
@@ -574,7 +597,7 @@ sealed class AgentConverter : JsonConverter<Agent>
 {
     public override Agent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -665,30 +688,34 @@ sealed class AgentConverter : JsonConverter<Agent>
     }
 }
 
-[JsonConverter(typeof(TypeConverter))]
-public enum Type
+[JsonConverter(typeof(AgentTypeConverter))]
+public enum AgentType
 {
-    SessionThread,
+    Agent,
+    Advisor,
+    Inline,
 }
 
-sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Sessions.Threads.Type>
+sealed class AgentTypeConverter : JsonConverter<AgentType>
 {
-    public override global::Anthropic.Models.Beta.Sessions.Threads.Type Read(
+    public override AgentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "session_thread" => global::Anthropic.Models.Beta.Sessions.Threads.Type.SessionThread,
-            _ => (global::Anthropic.Models.Beta.Sessions.Threads.Type)(-1),
+            "agent" => AgentType.Agent,
+            "advisor" => AgentType.Advisor,
+            "inline" => AgentType.Inline,
+            _ => (AgentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        global::Anthropic.Models.Beta.Sessions.Threads.Type value,
+        AgentType value,
         JsonSerializerOptions options
     )
     {
@@ -696,8 +723,9 @@ sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Session
             writer,
             value switch
             {
-                global::Anthropic.Models.Beta.Sessions.Threads.Type.SessionThread =>
-                    "session_thread",
+                AgentType.Agent => "agent",
+                AgentType.Advisor => "advisor",
+                AgentType.Inline => "inline",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

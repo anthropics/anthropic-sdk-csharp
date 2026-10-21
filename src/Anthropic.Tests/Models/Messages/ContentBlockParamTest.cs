@@ -625,6 +625,266 @@ public class ContentBlockParamTest : TestBase
     }
 
     [Fact]
+    public void TextTypeWorks()
+    {
+        ContentBlockParam value = new TextBlockParam()
+        {
+            Text = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations =
+            [
+                new CitationCharLocationParam()
+                {
+                    CitedText = "The grass is green. The sky is blue.",
+                    DocumentIndex = 0,
+                    DocumentTitle = "x",
+                    EndCharIndex = 0,
+                    StartCharIndex = 0,
+                },
+            ],
+        };
+        Assert.Equal(ContentBlockParamType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void ImageTypeWorks()
+    {
+        ContentBlockParam value = new ImageBlockParam()
+        {
+            Source = new Base64ImageSource()
+            {
+                Data = "U3RhaW5sZXNzIHJvY2tz",
+                MediaType = MediaType.ImageJpeg,
+            },
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Transformations = new() { OversizedImage = OversizedImage.Downsize },
+        };
+        Assert.Equal(ContentBlockParamType.Image, value.Type.Value());
+    }
+
+    [Fact]
+    public void DocumentTypeWorks()
+    {
+        ContentBlockParam value = new DocumentBlockParam()
+        {
+            Source = new Base64PdfSource("U3RhaW5sZXNzIHJvY2tz"),
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+            Context = "x",
+            Title = "x",
+        };
+        Assert.Equal(ContentBlockParamType.Document, value.Type.Value());
+    }
+
+    [Fact]
+    public void SearchResultTypeWorks()
+    {
+        ContentBlockParam value = new SearchResultBlockParam()
+        {
+            Content =
+            [
+                new()
+                {
+                    Text = "x",
+                    CacheControl = new() { Ttl = Ttl.Ttl5m },
+                    Citations =
+                    [
+                        new CitationCharLocationParam()
+                        {
+                            CitedText = "The grass is green. The sky is blue.",
+                            DocumentIndex = 0,
+                            DocumentTitle = "x",
+                            EndCharIndex = 0,
+                            StartCharIndex = 0,
+                        },
+                    ],
+                },
+            ],
+            Source = "source",
+            Title = "title",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Citations = new() { Enabled = true },
+        };
+        Assert.Equal(ContentBlockParamType.SearchResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ThinkingTypeWorks()
+    {
+        ContentBlockParam value = new ThinkingBlockParam()
+        {
+            Signature = "signature",
+            Thinking = "thinking",
+        };
+        Assert.Equal(ContentBlockParamType.Thinking, value.Type.Value());
+    }
+
+    [Fact]
+    public void RedactedThinkingTypeWorks()
+    {
+        ContentBlockParam value = new RedactedThinkingBlockParam("data");
+        Assert.Equal(ContentBlockParamType.RedactedThinking, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolUseTypeWorks()
+    {
+        ContentBlockParam value = new ToolUseBlockParam()
+        {
+            ID = "id",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = "x",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+            ToolsetName = "toolset_name",
+        };
+        Assert.Equal(ContentBlockParamType.ToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolResultTypeWorks()
+    {
+        ContentBlockParam value = new ToolResultBlockParam()
+        {
+            ToolUseID = "tool_use_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Content = "string",
+            IsError = true,
+            ToolsetName = "toolset_name",
+        };
+        Assert.Equal(ContentBlockParamType.ToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ServerToolUseTypeWorks()
+    {
+        ContentBlockParam value = new ServerToolUseBlockParam()
+        {
+            ID = "srvtoolu_SQfNkl1n_JR_",
+            Input = new Dictionary<string, JsonElement>()
+            {
+                { "foo", JsonSerializer.SerializeToElement("bar") },
+            },
+            Name = ServerToolUseBlockParamName.WebSearch,
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        Assert.Equal(ContentBlockParamType.ServerToolUse, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebSearchToolResultTypeWorks()
+    {
+        ContentBlockParam value = new WebSearchToolResultBlockParam()
+        {
+            Content = new(
+                [
+                    new WebSearchResultBlockParam()
+                    {
+                        EncryptedContent = "encrypted_content",
+                        Title = "title",
+                        Url = "url",
+                        PageAge = "page_age",
+                    },
+                ]
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        Assert.Equal(ContentBlockParamType.WebSearchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void WebFetchToolResultTypeWorks()
+    {
+        ContentBlockParam value = new WebFetchToolResultBlockParam()
+        {
+            Content = new WebFetchToolResultErrorBlockParam(
+                WebFetchToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+            Caller = new DirectCaller(),
+        };
+        Assert.Equal(ContentBlockParamType.WebFetchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void CodeExecutionToolResultTypeWorks()
+    {
+        ContentBlockParam value = new CodeExecutionToolResultBlockParam()
+        {
+            Content = new CodeExecutionToolResultErrorParam(
+                CodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(ContentBlockParamType.CodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void BashCodeExecutionToolResultTypeWorks()
+    {
+        ContentBlockParam value = new BashCodeExecutionToolResultBlockParam()
+        {
+            Content = new BashCodeExecutionToolResultErrorParam(
+                BashCodeExecutionToolResultErrorCode.InvalidToolInput
+            ),
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(ContentBlockParamType.BashCodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void TextEditorCodeExecutionToolResultTypeWorks()
+    {
+        ContentBlockParam value = new TextEditorCodeExecutionToolResultBlockParam()
+        {
+            Content = new TextEditorCodeExecutionToolResultErrorParam()
+            {
+                ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(ContentBlockParamType.TextEditorCodeExecutionToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolSearchToolResultTypeWorks()
+    {
+        ContentBlockParam value = new ToolSearchToolResultBlockParam()
+        {
+            Content = new ToolSearchToolResultErrorParam()
+            {
+                ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
+                ErrorMessage = "error_message",
+            },
+            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(ContentBlockParamType.ToolSearchToolResult, value.Type.Value());
+    }
+
+    [Fact]
+    public void ContainerUploadTypeWorks()
+    {
+        ContentBlockParam value = new ContainerUploadBlockParam()
+        {
+            FileID = "file_id",
+            CacheControl = new() { Ttl = Ttl.Ttl5m },
+        };
+        Assert.Equal(ContentBlockParamType.ContainerUpload, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ContentBlockParam value = new(
@@ -646,14 +906,14 @@ public class ContentBlockParamTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("text");
+        ApiEnum<string, ContentBlockParamType> expectedType = ContentBlockParamType.Text;
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         string expectedTitle = "x";
         string expectedID = "id";
         string expectedToolsetName = "toolset_name";
         string expectedToolUseID = "tool_use_id";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCacheControl, value.CacheControl);
         Assert.Equal(expectedTitle, value.Title);
         Assert.Equal(expectedID, value.ID);
@@ -698,5 +958,91 @@ public class ContentBlockParamTest : TestBase
         Assert.Null(mismatchedValue.ID);
         Assert.Null(mismatchedValue.ToolsetName);
         Assert.Null(mismatchedValue.ToolUseID);
+    }
+}
+
+public class ContentBlockParamTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ContentBlockParamType.Text)]
+    [InlineData(ContentBlockParamType.Image)]
+    [InlineData(ContentBlockParamType.Document)]
+    [InlineData(ContentBlockParamType.SearchResult)]
+    [InlineData(ContentBlockParamType.Thinking)]
+    [InlineData(ContentBlockParamType.RedactedThinking)]
+    [InlineData(ContentBlockParamType.ToolUse)]
+    [InlineData(ContentBlockParamType.ToolResult)]
+    [InlineData(ContentBlockParamType.ServerToolUse)]
+    [InlineData(ContentBlockParamType.WebSearchToolResult)]
+    [InlineData(ContentBlockParamType.WebFetchToolResult)]
+    [InlineData(ContentBlockParamType.CodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.BashCodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.TextEditorCodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.ToolSearchToolResult)]
+    [InlineData(ContentBlockParamType.ContainerUpload)]
+    public void Validation_Works(ContentBlockParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContentBlockParamType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ContentBlockParamType.Text)]
+    [InlineData(ContentBlockParamType.Image)]
+    [InlineData(ContentBlockParamType.Document)]
+    [InlineData(ContentBlockParamType.SearchResult)]
+    [InlineData(ContentBlockParamType.Thinking)]
+    [InlineData(ContentBlockParamType.RedactedThinking)]
+    [InlineData(ContentBlockParamType.ToolUse)]
+    [InlineData(ContentBlockParamType.ToolResult)]
+    [InlineData(ContentBlockParamType.ServerToolUse)]
+    [InlineData(ContentBlockParamType.WebSearchToolResult)]
+    [InlineData(ContentBlockParamType.WebFetchToolResult)]
+    [InlineData(ContentBlockParamType.CodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.BashCodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.TextEditorCodeExecutionToolResult)]
+    [InlineData(ContentBlockParamType.ToolSearchToolResult)]
+    [InlineData(ContentBlockParamType.ContainerUpload)]
+    public void SerializationRoundtrip_Works(ContentBlockParamType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ContentBlockParamType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockParamType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockParamType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockParamType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

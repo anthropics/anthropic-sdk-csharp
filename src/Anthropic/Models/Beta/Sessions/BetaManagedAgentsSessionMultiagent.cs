@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -25,6 +25,23 @@ public record class BetaManagedAgentsSessionMultiagent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsSessionMultiagentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsSessionMultiagentCoordinator _ =>
+                    BetaManagedAgentsSessionMultiagentType.Coordinator,
+                BetaManagedAgentsSessionMultiagent20261001 _ =>
+                    BetaManagedAgentsSessionMultiagentType.Multiagent20261001,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionMultiagentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -118,8 +135,8 @@ public record class BetaManagedAgentsSessionMultiagent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionMultiagentCoordinator> coordinator,
-        System::Action<BetaManagedAgentsSessionMultiagent20261001> multiagent20261001
+        Action<BetaManagedAgentsSessionMultiagentCoordinator> coordinator,
+        Action<BetaManagedAgentsSessionMultiagent20261001> multiagent20261001
     )
     {
         switch (this.Value)
@@ -159,8 +176,8 @@ public record class BetaManagedAgentsSessionMultiagent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionMultiagentCoordinator, T> coordinator,
-        System::Func<BetaManagedAgentsSessionMultiagent20261001, T> multiagent20261001
+        Func<BetaManagedAgentsSessionMultiagentCoordinator, T> coordinator,
+        Func<BetaManagedAgentsSessionMultiagent20261001, T> multiagent20261001
     )
     {
         return this.Value switch
@@ -237,7 +254,7 @@ sealed class BetaManagedAgentsSessionMultiagentConverter
 {
     public override BetaManagedAgentsSessionMultiagent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -310,5 +327,50 @@ sealed class BetaManagedAgentsSessionMultiagentConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsSessionMultiagentTypeConverter))]
+public enum BetaManagedAgentsSessionMultiagentType
+{
+    Coordinator,
+    Multiagent20261001,
+}
+
+sealed class BetaManagedAgentsSessionMultiagentTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionMultiagentType>
+{
+    public override BetaManagedAgentsSessionMultiagentType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "coordinator" => BetaManagedAgentsSessionMultiagentType.Coordinator,
+            "multiagent_20261001" => BetaManagedAgentsSessionMultiagentType.Multiagent20261001,
+            _ => (BetaManagedAgentsSessionMultiagentType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsSessionMultiagentType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsSessionMultiagentType.Coordinator => "coordinator",
+                BetaManagedAgentsSessionMultiagentType.Multiagent20261001 => "multiagent_20261001",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

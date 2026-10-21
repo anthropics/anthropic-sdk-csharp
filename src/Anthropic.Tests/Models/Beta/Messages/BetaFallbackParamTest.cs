@@ -486,6 +486,49 @@ public class ThinkingTest : TestBase
     }
 
     [Fact]
+    public void BetaThinkingConfigEnabledTypeWorks()
+    {
+        Thinking value = new BetaThinkingConfigEnabled()
+        {
+            BudgetTokens = 1024,
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = BetaThinkingConfigEnabledDisplay.Summarized,
+        };
+        Assert.Equal(ThinkingType.Enabled, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaThinkingConfigDisabledTypeWorks()
+    {
+        Thinking value = new BetaThinkingConfigDisabled();
+        Assert.Equal(ThinkingType.Disabled, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaThinkingConfigBetweenToolsTypeWorks()
+    {
+        Thinking value = new BetaThinkingConfigBetweenTools();
+        Assert.Equal(ThinkingType.BetweenTools, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaThinkingConfigAdaptiveTypeWorks()
+    {
+        Thinking value = new BetaThinkingConfigAdaptive()
+        {
+            BlockBinding = new()
+            {
+                PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
+            },
+            Display = Display.Summarized,
+        };
+        Assert.Equal(ThinkingType.Adaptive, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Thinking value = new(
@@ -502,13 +545,13 @@ public class ThinkingTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("enabled");
+        ApiEnum<string, ThinkingType> expectedType = ThinkingType.Enabled;
         BetaThinkingBlockBinding expectedBlockBinding = new()
         {
             PrefixMismatchBehavior = BetaThinkingPrefixMismatchBehavior.Error,
         };
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedBlockBinding, value.BlockBinding);
 
         Thinking emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -529,5 +572,67 @@ public class ThinkingTest : TestBase
         );
 
         Assert.Null(mismatchedValue.BlockBinding);
+    }
+}
+
+public class ThinkingTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ThinkingType.Enabled)]
+    [InlineData(ThinkingType.Disabled)]
+    [InlineData(ThinkingType.BetweenTools)]
+    [InlineData(ThinkingType.Adaptive)]
+    public void Validation_Works(ThinkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ThinkingType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ThinkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ThinkingType.Enabled)]
+    [InlineData(ThinkingType.Disabled)]
+    [InlineData(ThinkingType.BetweenTools)]
+    [InlineData(ThinkingType.Adaptive)]
+    public void SerializationRoundtrip_Works(ThinkingType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ThinkingType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ThinkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ThinkingType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ThinkingType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

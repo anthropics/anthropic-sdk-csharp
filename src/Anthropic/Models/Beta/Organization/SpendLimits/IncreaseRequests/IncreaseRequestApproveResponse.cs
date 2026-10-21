@@ -213,15 +213,18 @@ public record class IncreaseRequestApproveResponseActor : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, IncreaseRequestApproveResponseActorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserActor x => x.Type,
-                BetaSpendLimitScopedApiKeyActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserActor _ => IncreaseRequestApproveResponseActorType.UserActor,
+                BetaSpendLimitScopedApiKeyActor _ =>
+                    IncreaseRequestApproveResponseActorType.ScopedApiKeyActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, IncreaseRequestApproveResponseActorType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -507,6 +510,51 @@ sealed class IncreaseRequestApproveResponseActorConverter
     }
 }
 
+[JsonConverter(typeof(IncreaseRequestApproveResponseActorTypeConverter))]
+public enum IncreaseRequestApproveResponseActorType
+{
+    UserActor,
+    ScopedApiKeyActor,
+}
+
+sealed class IncreaseRequestApproveResponseActorTypeConverter
+    : JsonConverter<IncreaseRequestApproveResponseActorType>
+{
+    public override IncreaseRequestApproveResponseActorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => IncreaseRequestApproveResponseActorType.UserActor,
+            "scoped_api_key_actor" => IncreaseRequestApproveResponseActorType.ScopedApiKeyActor,
+            _ => (IncreaseRequestApproveResponseActorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        IncreaseRequestApproveResponseActorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                IncreaseRequestApproveResponseActorType.UserActor => "user_actor",
+                IncreaseRequestApproveResponseActorType.ScopedApiKeyActor => "scoped_api_key_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 [JsonConverter(typeof(IncreaseRequestApproveResponseResolvedByConverter))]
 public record class IncreaseRequestApproveResponseResolvedBy : ModelBase
 {
@@ -525,15 +573,18 @@ public record class IncreaseRequestApproveResponseResolvedBy : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, IncreaseRequestApproveResponseResolvedByType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserActor x => x.Type,
-                BetaSpendLimitScopedApiKeyActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserActor _ => IncreaseRequestApproveResponseResolvedByType.UserActor,
+                BetaSpendLimitScopedApiKeyActor _ =>
+                    IncreaseRequestApproveResponseResolvedByType.ScopedApiKeyActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, IncreaseRequestApproveResponseResolvedByType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -818,5 +869,52 @@ sealed class IncreaseRequestApproveResponseResolvedByConverter
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(IncreaseRequestApproveResponseResolvedByTypeConverter))]
+public enum IncreaseRequestApproveResponseResolvedByType
+{
+    UserActor,
+    ScopedApiKeyActor,
+}
+
+sealed class IncreaseRequestApproveResponseResolvedByTypeConverter
+    : JsonConverter<IncreaseRequestApproveResponseResolvedByType>
+{
+    public override IncreaseRequestApproveResponseResolvedByType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => IncreaseRequestApproveResponseResolvedByType.UserActor,
+            "scoped_api_key_actor" =>
+                IncreaseRequestApproveResponseResolvedByType.ScopedApiKeyActor,
+            _ => (IncreaseRequestApproveResponseResolvedByType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        IncreaseRequestApproveResponseResolvedByType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                IncreaseRequestApproveResponseResolvedByType.UserActor => "user_actor",
+                IncreaseRequestApproveResponseResolvedByType.ScopedApiKeyActor =>
+                    "scoped_api_key_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -98,12 +98,20 @@ public class AnthropicFoundryClientAuthTests : IDisposable
         return wireRequest!;
     }
 
-    [Fact]
-    public async Task ApiKeyCredentials_EnvApiKeyNotSentAlongside()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ApiKeyCredentials_EnvApiKeyNotSentAlongside(bool freshOptions)
     {
         var client = new AnthropicFoundryClient(
             new AnthropicFoundryApiKeyCredentials("foundry-key", "test-resource")
         );
+        if (freshOptions)
+        {
+            client = Assert.IsType<AnthropicFoundryClient>(
+                client.WithOptions(opts => new ClientOptions { BaseUrl = opts.BaseUrl })
+            );
+        }
         var req = await SendOneRequest(client);
 
         // Exactly one x-api-key value on the wire — the Foundry credential's, never the

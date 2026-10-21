@@ -8,7 +8,7 @@ using Anthropic.Models.Messages;
 // -------------------------------------------------------------------
 // Just construct the client. Auth is resolved automatically in this order:
 //
-//   1. Explicit ApiKey / AuthToken / Credentials constructor arg
+//   1. The one of ApiKey / AuthToken / Credentials passed in code (passing two throws)
 //   2. ANTHROPIC_API_KEY env var         → API key auth
 //   3. ANTHROPIC_AUTH_TOKEN env var      → static bearer token
 //   4. ANTHROPIC_PROFILE env var        → named profile from config files
@@ -51,10 +51,7 @@ using var client = new AnthropicClient();
 MessageCreateParams parameters = new()
 {
     MaxTokens = 2048,
-    Messages =
-    [
-        new() { Content = "Tell me a story about building the best SDK!", Role = Role.User },
-    ],
+    Messages = [new UserMessageParam { Content = "Tell me a story about building the best SDK!" }],
     Model = "claude-sonnet-5-5",
 };
 

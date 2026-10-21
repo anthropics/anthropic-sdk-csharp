@@ -45,19 +45,21 @@ public record class CacheMissReason : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, CacheMissReasonType> Type
     {
         get
         {
             return this.Value switch
             {
-                CacheMissModelChanged x => x.Type,
-                CacheMissSystemChanged x => x.Type,
-                CacheMissToolsChanged x => x.Type,
-                CacheMissMessagesChanged x => x.Type,
-                CacheMissPreviousMessageNotFound x => x.Type,
-                CacheMissUnavailable x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                CacheMissModelChanged _ => CacheMissReasonType.ModelChanged,
+                CacheMissSystemChanged _ => CacheMissReasonType.SystemChanged,
+                CacheMissToolsChanged _ => CacheMissReasonType.ToolsChanged,
+                CacheMissMessagesChanged _ => CacheMissReasonType.MessagesChanged,
+                CacheMissPreviousMessageNotFound _ => CacheMissReasonType.PreviousMessageNotFound,
+                CacheMissUnavailable _ => CacheMissReasonType.Unavailable,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, CacheMissReasonType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -566,5 +568,61 @@ sealed class CacheMissReasonConverter : JsonConverter<CacheMissReason>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(CacheMissReasonTypeConverter))]
+public enum CacheMissReasonType
+{
+    ModelChanged,
+    SystemChanged,
+    ToolsChanged,
+    MessagesChanged,
+    PreviousMessageNotFound,
+    Unavailable,
+}
+
+sealed class CacheMissReasonTypeConverter : JsonConverter<CacheMissReasonType>
+{
+    public override CacheMissReasonType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "model_changed" => CacheMissReasonType.ModelChanged,
+            "system_changed" => CacheMissReasonType.SystemChanged,
+            "tools_changed" => CacheMissReasonType.ToolsChanged,
+            "messages_changed" => CacheMissReasonType.MessagesChanged,
+            "previous_message_not_found" => CacheMissReasonType.PreviousMessageNotFound,
+            "unavailable" => CacheMissReasonType.Unavailable,
+            _ => (CacheMissReasonType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        CacheMissReasonType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                CacheMissReasonType.ModelChanged => "model_changed",
+                CacheMissReasonType.SystemChanged => "system_changed",
+                CacheMissReasonType.ToolsChanged => "tools_changed",
+                CacheMissReasonType.MessagesChanged => "messages_changed",
+                CacheMissReasonType.PreviousMessageNotFound => "previous_message_not_found",
+                CacheMissReasonType.Unavailable => "unavailable",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -128,6 +128,48 @@ public class BetaCacheMissReasonTest : TestBase
     }
 
     [Fact]
+    public void ModelChangedTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissModelChanged(0);
+        Assert.Equal(BetaCacheMissReasonType.ModelChanged, value.Type.Value());
+    }
+
+    [Fact]
+    public void SystemChangedTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissSystemChanged(0);
+        Assert.Equal(BetaCacheMissReasonType.SystemChanged, value.Type.Value());
+    }
+
+    [Fact]
+    public void ToolsChangedTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissToolsChanged(0);
+        Assert.Equal(BetaCacheMissReasonType.ToolsChanged, value.Type.Value());
+    }
+
+    [Fact]
+    public void MessagesChangedTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissMessagesChanged(0);
+        Assert.Equal(BetaCacheMissReasonType.MessagesChanged, value.Type.Value());
+    }
+
+    [Fact]
+    public void PreviousMessageNotFoundTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissPreviousMessageNotFound();
+        Assert.Equal(BetaCacheMissReasonType.PreviousMessageNotFound, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnavailableTypeWorks()
+    {
+        BetaCacheMissReason value = new BetaCacheMissUnavailable();
+        Assert.Equal(BetaCacheMissReasonType.Unavailable, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaCacheMissReason value = new(
@@ -143,10 +185,11 @@ public class BetaCacheMissReasonTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         long expectedCacheMissedInputTokens = 0;
-        JsonElement expectedType = JsonSerializer.SerializeToElement("model_changed");
+        ApiEnum<string, BetaCacheMissReasonType> expectedType =
+            BetaCacheMissReasonType.ModelChanged;
 
         Assert.Equal(expectedCacheMissedInputTokens, value.CacheMissedInputTokens);
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         BetaCacheMissReason emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
@@ -166,5 +209,71 @@ public class BetaCacheMissReasonTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CacheMissedInputTokens);
+    }
+}
+
+public class BetaCacheMissReasonTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaCacheMissReasonType.ModelChanged)]
+    [InlineData(BetaCacheMissReasonType.SystemChanged)]
+    [InlineData(BetaCacheMissReasonType.ToolsChanged)]
+    [InlineData(BetaCacheMissReasonType.MessagesChanged)]
+    [InlineData(BetaCacheMissReasonType.PreviousMessageNotFound)]
+    [InlineData(BetaCacheMissReasonType.Unavailable)]
+    public void Validation_Works(BetaCacheMissReasonType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCacheMissReasonType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaCacheMissReasonType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaCacheMissReasonType.ModelChanged)]
+    [InlineData(BetaCacheMissReasonType.SystemChanged)]
+    [InlineData(BetaCacheMissReasonType.ToolsChanged)]
+    [InlineData(BetaCacheMissReasonType.MessagesChanged)]
+    [InlineData(BetaCacheMissReasonType.PreviousMessageNotFound)]
+    [InlineData(BetaCacheMissReasonType.Unavailable)]
+    public void SerializationRoundtrip_Works(BetaCacheMissReasonType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaCacheMissReasonType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaCacheMissReasonType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaCacheMissReasonType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaCacheMissReasonType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -255,6 +255,38 @@ public class JwksTest : TestBase
     }
 
     [Fact]
+    public void DiscoveryTypeWorks()
+    {
+        Jwks value = new JwksDiscovery()
+        {
+            CACertPem = "ca_cert_pem",
+            DiscoveryBase = "discovery_base",
+        };
+        Assert.Equal(JwksType.Discovery, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExplicitUrlTypeWorks()
+    {
+        Jwks value = new JwksExplicitUrl() { Url = "x", CACertPem = "ca_cert_pem" };
+        Assert.Equal(JwksType.ExplicitUrl, value.Type.Value());
+    }
+
+    [Fact]
+    public void InlineTypeWorks()
+    {
+        Jwks value = new JwksInline(
+            [
+                new Dictionary<string, JsonElement>()
+                {
+                    { "foo", JsonSerializer.SerializeToElement("bar") },
+                },
+            ]
+        );
+        Assert.Equal(JwksType.Inline, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Jwks value = new(
@@ -269,10 +301,10 @@ public class JwksTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("discovery");
+        ApiEnum<string, JwksType> expectedType = JwksType.Discovery;
         string expectedCACertPem = "ca_cert_pem";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedCACertPem, value.CACertPem);
 
         Jwks emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -293,5 +325,65 @@ public class JwksTest : TestBase
         );
 
         Assert.Null(mismatchedValue.CACertPem);
+    }
+}
+
+public class JwksTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(JwksType.Discovery)]
+    [InlineData(JwksType.ExplicitUrl)]
+    [InlineData(JwksType.Inline)]
+    public void Validation_Works(JwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, JwksType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, JwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(JwksType.Discovery)]
+    [InlineData(JwksType.ExplicitUrl)]
+    [InlineData(JwksType.Inline)]
+    public void SerializationRoundtrip_Works(JwksType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, JwksType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, JwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, JwksType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, JwksType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

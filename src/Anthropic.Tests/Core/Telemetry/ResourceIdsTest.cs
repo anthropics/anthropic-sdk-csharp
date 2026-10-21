@@ -289,7 +289,6 @@ public class ResourceIdsTest : TracingTestBase
                 Agent = new BetaManagedAgentsAgentWithOverridesParams
                 {
                     ID = "agent_1",
-                    Type = BetaManagedAgentsAgentWithOverridesParamsType.AgentWithOverrides,
                     Model = (ApiEnum<string, Agents::BetaManagedAgentsModel>)"claude-test-override",
                 },
                 EnvironmentID = "env_1",

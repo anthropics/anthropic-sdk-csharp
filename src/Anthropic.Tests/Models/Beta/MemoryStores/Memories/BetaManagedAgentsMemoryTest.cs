@@ -1,7 +1,6 @@
 using System;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 
 namespace Anthropic.Tests.Models.Beta.MemoryStores.Memories;
@@ -20,7 +19,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Content = "content",
         };
@@ -32,8 +30,7 @@ public class BetaManagedAgentsMemoryTest : TestBase
         string expectedMemoryStoreID = "memory_store_id";
         string expectedMemoryVersionID = "memory_version_id";
         string expectedPath = "path";
-        ApiEnum<string, BetaManagedAgentsMemoryType> expectedType =
-            BetaManagedAgentsMemoryType.Memory;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedContent = "content";
 
@@ -44,7 +41,7 @@ public class BetaManagedAgentsMemoryTest : TestBase
         Assert.Equal(expectedMemoryStoreID, model.MemoryStoreID);
         Assert.Equal(expectedMemoryVersionID, model.MemoryVersionID);
         Assert.Equal(expectedPath, model.Path);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedContent, model.Content);
     }
@@ -61,7 +58,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Content = "content",
         };
@@ -87,7 +83,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Content = "content",
         };
@@ -106,8 +101,7 @@ public class BetaManagedAgentsMemoryTest : TestBase
         string expectedMemoryStoreID = "memory_store_id";
         string expectedMemoryVersionID = "memory_version_id";
         string expectedPath = "path";
-        ApiEnum<string, BetaManagedAgentsMemoryType> expectedType =
-            BetaManagedAgentsMemoryType.Memory;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedContent = "content";
 
@@ -118,7 +112,7 @@ public class BetaManagedAgentsMemoryTest : TestBase
         Assert.Equal(expectedMemoryStoreID, deserialized.MemoryStoreID);
         Assert.Equal(expectedMemoryVersionID, deserialized.MemoryVersionID);
         Assert.Equal(expectedPath, deserialized.Path);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedContent, deserialized.Content);
     }
@@ -135,7 +129,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Content = "content",
         };
@@ -155,7 +148,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -175,7 +167,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -194,7 +185,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
 
             Content = null,
@@ -216,7 +206,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
 
             Content = null,
@@ -237,7 +226,6 @@ public class BetaManagedAgentsMemoryTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryVersionID = "memory_version_id",
             Path = "path",
-            Type = BetaManagedAgentsMemoryType.Memory,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Content = "content",
         };
@@ -245,61 +233,5 @@ public class BetaManagedAgentsMemoryTest : TestBase
         BetaManagedAgentsMemory copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryType.Memory)]
-    public void Validation_Works(BetaManagedAgentsMemoryType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryType.Memory)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryType>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

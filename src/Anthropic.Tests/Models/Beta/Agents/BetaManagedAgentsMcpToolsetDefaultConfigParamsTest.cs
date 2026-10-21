@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
@@ -12,16 +13,12 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetDefaultConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         bool expectedEnabled = true;
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
 
         Assert.Equal(expectedEnabled, model.Enabled);
         Assert.Equal(expectedPermissionPolicy, model.PermissionPolicy);
@@ -33,9 +30,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetDefaultConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -54,9 +49,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetDefaultConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -69,9 +62,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
 
         bool expectedEnabled = true;
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy expectedPermissionPolicy =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
 
         Assert.Equal(expectedEnabled, deserialized.Enabled);
         Assert.Equal(expectedPermissionPolicy, deserialized.PermissionPolicy);
@@ -83,9 +74,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetDefaultConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         model.Validate();
@@ -143,9 +132,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsTest : TestBase
         var model = new BetaManagedAgentsMcpToolsetDefaultConfigParams
         {
             Enabled = true,
-            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            ),
+            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
         };
 
         BetaManagedAgentsMcpToolsetDefaultConfigParams copied = new(model);
@@ -160,9 +147,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTest 
     public void BetaManagedAgentsAlwaysAllowValidationWorks()
     {
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         value.Validate();
     }
 
@@ -170,7 +155,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTest 
     public void BetaManagedAgentsAlwaysAskValidationWorks()
     {
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         value.Validate();
     }
 
@@ -186,9 +171,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTest 
     public void BetaManagedAgentsAlwaysAllowSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAllowPolicy(
-                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-            );
+            new BetaManagedAgentsAlwaysAllowPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy>(
@@ -203,7 +186,7 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTest 
     public void BetaManagedAgentsAlwaysAskSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
-            new BetaManagedAgentsAlwaysAskPolicy(BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk);
+            new BetaManagedAgentsAlwaysAskPolicy();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy>(
@@ -225,6 +208,130 @@ public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTest 
                 element,
                 ModelBase.SerializerOptions
             );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAllowTypeWorks()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAllowPolicy();
+        Assert.Equal(
+            BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAlwaysAskTypeWorks()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAlwaysAskPolicy();
+        Assert.Equal(
+            BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAsk,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsAutoTypeWorks()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value =
+            new BetaManagedAgentsAutoPolicy();
+        Assert.Equal(
+            BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.Auto,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "always_allow"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<
+            string,
+            BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType
+        > expectedType =
+            BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicy emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.Auto)]
+    public void Validation_Works(
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType> value =
+            rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow)]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAsk)]
+    [InlineData(BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType.Auto)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType> value =
+            rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigParamsPermissionPolicyType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

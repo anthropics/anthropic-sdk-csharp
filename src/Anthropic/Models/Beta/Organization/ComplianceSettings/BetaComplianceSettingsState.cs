@@ -25,15 +25,17 @@ public record class BetaComplianceSettingsState : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaComplianceSettingsStateType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaComplianceSettingsStateEnabled x => x.Type,
-                BetaComplianceSettingsStateDisabled x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaComplianceSettingsStateEnabled _ => BetaComplianceSettingsStateType.Enabled,
+                BetaComplianceSettingsStateDisabled _ => BetaComplianceSettingsStateType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaComplianceSettingsStateType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -312,5 +314,50 @@ sealed class BetaComplianceSettingsStateConverter : JsonConverter<BetaCompliance
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaComplianceSettingsStateTypeConverter))]
+public enum BetaComplianceSettingsStateType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaComplianceSettingsStateTypeConverter
+    : JsonConverter<BetaComplianceSettingsStateType>
+{
+    public override BetaComplianceSettingsStateType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaComplianceSettingsStateType.Enabled,
+            "disabled" => BetaComplianceSettingsStateType.Disabled,
+            _ => (BetaComplianceSettingsStateType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaComplianceSettingsStateType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaComplianceSettingsStateType.Enabled => "enabled",
+                BetaComplianceSettingsStateType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

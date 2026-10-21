@@ -163,6 +163,25 @@ public record class BetaManagedAgentsEditToolConfigParamsPermissionPolicy : Mode
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsEditToolConfigParamsPermissionPolicyType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAlwaysAllowPolicy _ =>
+                    BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAllow,
+                BetaManagedAgentsAlwaysAskPolicy _ =>
+                    BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAsk,
+                BetaManagedAgentsAutoPolicy _ =>
+                    BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsEditToolConfigParamsPermissionPolicyType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsEditToolConfigParamsPermissionPolicy(
         BetaManagedAgentsAlwaysAllowPolicy value,
         JsonElement? element = null
@@ -510,6 +529,55 @@ sealed class BetaManagedAgentsEditToolConfigParamsPermissionPolicyConverter
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsEditToolConfigParamsPermissionPolicyTypeConverter))]
+public enum BetaManagedAgentsEditToolConfigParamsPermissionPolicyType
+{
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
+}
+
+sealed class BetaManagedAgentsEditToolConfigParamsPermissionPolicyTypeConverter
+    : JsonConverter<BetaManagedAgentsEditToolConfigParamsPermissionPolicyType>
+{
+    public override BetaManagedAgentsEditToolConfigParamsPermissionPolicyType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "always_allow" => BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAllow,
+            "always_ask" => BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAsk,
+            "auto" => BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.Auto,
+            _ => (BetaManagedAgentsEditToolConfigParamsPermissionPolicyType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsEditToolConfigParamsPermissionPolicyType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAllow =>
+                    "always_allow",
+                BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.AlwaysAsk => "always_ask",
+                BetaManagedAgentsEditToolConfigParamsPermissionPolicyType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

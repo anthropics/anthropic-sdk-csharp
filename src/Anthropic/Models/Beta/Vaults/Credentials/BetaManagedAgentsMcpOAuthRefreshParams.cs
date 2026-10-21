@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Vaults.Credentials;
 
@@ -167,6 +167,24 @@ public record class TokenEndpointAuth : ModelBase
         }
     }
 
+    public ApiEnum<string, TokenEndpointAuthType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTokenEndpointAuthNoneParam _ => TokenEndpointAuthType.None,
+                BetaManagedAgentsTokenEndpointAuthBasicParam _ =>
+                    TokenEndpointAuthType.ClientSecretBasic,
+                BetaManagedAgentsTokenEndpointAuthPostParam _ =>
+                    TokenEndpointAuthType.ClientSecretPost,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, TokenEndpointAuthType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public string? ClientSecret
     {
         get
@@ -307,9 +325,9 @@ public record class TokenEndpointAuth : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTokenEndpointAuthNoneParam> betaManagedAgentsTokenEndpointAuthNoneParam,
-        System::Action<BetaManagedAgentsTokenEndpointAuthBasicParam> betaManagedAgentsTokenEndpointAuthBasicParam,
-        System::Action<BetaManagedAgentsTokenEndpointAuthPostParam> betaManagedAgentsTokenEndpointAuthPostParam
+        Action<BetaManagedAgentsTokenEndpointAuthNoneParam> betaManagedAgentsTokenEndpointAuthNoneParam,
+        Action<BetaManagedAgentsTokenEndpointAuthBasicParam> betaManagedAgentsTokenEndpointAuthBasicParam,
+        Action<BetaManagedAgentsTokenEndpointAuthPostParam> betaManagedAgentsTokenEndpointAuthPostParam
     )
     {
         switch (this.Value)
@@ -353,15 +371,15 @@ public record class TokenEndpointAuth : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthNoneParam,
             T
         > betaManagedAgentsTokenEndpointAuthNoneParam,
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthBasicParam,
             T
         > betaManagedAgentsTokenEndpointAuthBasicParam,
-        System::Func<
+        Func<
             BetaManagedAgentsTokenEndpointAuthPostParam,
             T
         > betaManagedAgentsTokenEndpointAuthPostParam
@@ -453,7 +471,7 @@ sealed class TokenEndpointAuthConverter : JsonConverter<TokenEndpointAuth>
 {
     public override TokenEndpointAuth? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -547,5 +565,52 @@ sealed class TokenEndpointAuthConverter : JsonConverter<TokenEndpointAuth>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(TokenEndpointAuthTypeConverter))]
+public enum TokenEndpointAuthType
+{
+    None,
+    ClientSecretBasic,
+    ClientSecretPost,
+}
+
+sealed class TokenEndpointAuthTypeConverter : JsonConverter<TokenEndpointAuthType>
+{
+    public override TokenEndpointAuthType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "none" => TokenEndpointAuthType.None,
+            "client_secret_basic" => TokenEndpointAuthType.ClientSecretBasic,
+            "client_secret_post" => TokenEndpointAuthType.ClientSecretPost,
+            _ => (TokenEndpointAuthType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TokenEndpointAuthType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TokenEndpointAuthType.None => "none",
+                TokenEndpointAuthType.ClientSecretBasic => "client_secret_basic",
+                TokenEndpointAuthType.ClientSecretPost => "client_secret_post",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -71,24 +71,22 @@ public sealed record class BetaManagedAgentsAgentThreadMessageReceivedEvent : Js
     /// <summary>
     /// Timestamp when the message was received.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -117,11 +115,22 @@ public sealed record class BetaManagedAgentsAgentThreadMessageReceivedEvent : Js
         }
         _ = this.FromSessionThreadID;
         _ = this.ProcessedAt;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("agent.thread_message_received")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.FromAgentName;
     }
 
-    public BetaManagedAgentsAgentThreadMessageReceivedEvent() { }
+    public BetaManagedAgentsAgentThreadMessageReceivedEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("agent.thread_message_received");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -136,6 +145,8 @@ public sealed record class BetaManagedAgentsAgentThreadMessageReceivedEvent : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("agent.thread_message_received");
     }
 
 #pragma warning disable CS8618
@@ -182,6 +193,27 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ =>
+                    BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text,
+                BetaManagedAgentsImageBlock _ =>
+                    BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image,
+                BetaManagedAgentsDocumentBlock _ =>
+                    BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document,
+                BetaManagedAgentsRedactedBlock _ =>
+                    BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -341,10 +373,10 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
+        Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -392,10 +424,10 @@ public record class BetaManagedAgentsAgentThreadMessageReceivedEventContent : Mo
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
+        Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -486,7 +518,7 @@ sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentConverter
 {
     public override BetaManagedAgentsAgentThreadMessageReceivedEventContent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -600,32 +632,37 @@ sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsAgentThreadMessageReceivedEventTypeConverter))]
-public enum BetaManagedAgentsAgentThreadMessageReceivedEventType
+[JsonConverter(typeof(BetaManagedAgentsAgentThreadMessageReceivedEventContentTypeConverter))]
+public enum BetaManagedAgentsAgentThreadMessageReceivedEventContentType
 {
-    AgentThreadMessageReceived,
+    Text,
+    Image,
+    Document,
+    Redacted,
 }
 
-sealed class BetaManagedAgentsAgentThreadMessageReceivedEventTypeConverter
-    : JsonConverter<BetaManagedAgentsAgentThreadMessageReceivedEventType>
+sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentTypeConverter
+    : JsonConverter<BetaManagedAgentsAgentThreadMessageReceivedEventContentType>
 {
-    public override BetaManagedAgentsAgentThreadMessageReceivedEventType Read(
+    public override BetaManagedAgentsAgentThreadMessageReceivedEventContentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "agent.thread_message_received" =>
-                BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived,
-            _ => (BetaManagedAgentsAgentThreadMessageReceivedEventType)(-1),
+            "text" => BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text,
+            "image" => BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image,
+            "document" => BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document,
+            "redacted" => BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted,
+            _ => (BetaManagedAgentsAgentThreadMessageReceivedEventContentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsAgentThreadMessageReceivedEventType value,
+        BetaManagedAgentsAgentThreadMessageReceivedEventContentType value,
         JsonSerializerOptions options
     )
     {
@@ -633,8 +670,10 @@ sealed class BetaManagedAgentsAgentThreadMessageReceivedEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsAgentThreadMessageReceivedEventType.AgentThreadMessageReceived =>
-                    "agent.thread_message_received",
+                BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Text => "text",
+                BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Image => "image",
+                BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Document => "document",
+                BetaManagedAgentsAgentThreadMessageReceivedEventContentType.Redacted => "redacted",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

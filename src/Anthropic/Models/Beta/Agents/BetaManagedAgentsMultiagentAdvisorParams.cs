@@ -28,15 +28,19 @@ public record class BetaManagedAgentsMultiagentAdvisorParams : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsMultiagentAdvisorParamsType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsMultiagentAdvisorEnabledParams x => x.Type,
-                BetaManagedAgentsMultiagentAdvisorDisabledParams x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsMultiagentAdvisorEnabledParams _ =>
+                    BetaManagedAgentsMultiagentAdvisorParamsType.Enabled,
+                BetaManagedAgentsMultiagentAdvisorDisabledParams _ =>
+                    BetaManagedAgentsMultiagentAdvisorParamsType.Disabled,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMultiagentAdvisorParamsType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -320,5 +324,50 @@ sealed class BetaManagedAgentsMultiagentAdvisorParamsConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMultiagentAdvisorParamsTypeConverter))]
+public enum BetaManagedAgentsMultiagentAdvisorParamsType
+{
+    Enabled,
+    Disabled,
+}
+
+sealed class BetaManagedAgentsMultiagentAdvisorParamsTypeConverter
+    : JsonConverter<BetaManagedAgentsMultiagentAdvisorParamsType>
+{
+    public override BetaManagedAgentsMultiagentAdvisorParamsType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaManagedAgentsMultiagentAdvisorParamsType.Enabled,
+            "disabled" => BetaManagedAgentsMultiagentAdvisorParamsType.Disabled,
+            _ => (BetaManagedAgentsMultiagentAdvisorParamsType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMultiagentAdvisorParamsType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMultiagentAdvisorParamsType.Enabled => "enabled",
+                BetaManagedAgentsMultiagentAdvisorParamsType.Disabled => "disabled",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

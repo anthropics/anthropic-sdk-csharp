@@ -15,8 +15,8 @@ namespace Anthropic.Bedrock;
 /// </summary>
 internal sealed class BedrockAdaptationHandler : DelegatingHandler
 {
-    private const string AnthropicVersion = "bedrock-2023-05-31";
     private const string HeaderAnthropicBeta = "anthropic-beta";
+    private const string HeaderAnthropicVersion = "anthropic-version";
 
     /// <summary>
     /// The name of the header that identifies the content type for the "payloads" of AWS
@@ -63,6 +63,12 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
     {
         ValidateRequest(requestMessage);
 
+        // Bedrock takes the API version from the body. A caller's value follows the SDK's own.
+        var version = requestMessage.Headers.TryGetValues(HeaderAnthropicVersion, out var values)
+            ? values.Last()
+            : null;
+        requestMessage.Headers.Remove(HeaderAnthropicVersion);
+
         if (requestMessage.Content is not null)
         {
             var bodyContent = JsonNode.Parse(
@@ -89,7 +95,10 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 );
             }
 
-            bodyContent["anthropic_version"] = JsonValue.Create(AnthropicVersion);
+            if (version is not null)
+            {
+                bodyContent["anthropic_version"] = JsonValue.Create(version);
+            }
 
             var modelValue =
                 bodyContent["model"]
@@ -102,6 +111,7 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
 
             var contentStream = new MemoryStream();
             requestMessage.Content = new StreamContent(contentStream);
+            requestMessage.Content.Headers.ContentType = new("application/json");
             using var writer = new Utf8JsonWriter(contentStream);
             {
                 bodyContent.WriteTo(writer);
@@ -138,7 +148,6 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 "X-Amzn-Bedrock-Accept",
                 "application/json"
             );
-            requestMessage.Headers.TryAddWithoutValidation("content-type", "application/json");
             if (parsedStreamValue)
             {
                 requestMessage.Headers.TryAddWithoutValidation("Accept-Encoding", "gzip");

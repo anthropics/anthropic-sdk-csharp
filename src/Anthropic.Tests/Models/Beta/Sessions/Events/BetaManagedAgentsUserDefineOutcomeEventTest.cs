@@ -18,12 +18,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         string expectedID = "sevt_011CZkZSTx3mFgt7odUWmkyq";
@@ -31,13 +28,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
         int expectedMaxIterations = 3;
         string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
-        Rubric expectedRubric = new BetaManagedAgentsTextRubric()
-        {
-            Content = "Must cover all five sections; cite sources inline.",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType> expectedType =
-            BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome;
+        Rubric expectedRubric = new BetaManagedAgentsTextRubric(
+            "Must cover all five sections; cite sources inline."
+        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.define_outcome");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedDescription, model.Description);
@@ -45,7 +39,7 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
         Assert.Equal(expectedOutcomeID, model.OutcomeID);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedRubric, model.Rubric);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -58,12 +52,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -85,12 +76,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -105,13 +93,10 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
         int expectedMaxIterations = 3;
         string expectedOutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z");
-        Rubric expectedRubric = new BetaManagedAgentsTextRubric()
-        {
-            Content = "Must cover all five sections; cite sources inline.",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType> expectedType =
-            BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome;
+        Rubric expectedRubric = new BetaManagedAgentsTextRubric(
+            "Must cover all five sections; cite sources inline."
+        );
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user.define_outcome");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedDescription, deserialized.Description);
@@ -119,7 +104,7 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
         Assert.Equal(expectedOutcomeID, deserialized.OutcomeID);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedRubric, deserialized.Rubric);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -132,12 +117,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         model.Validate();
@@ -153,12 +135,9 @@ public class BetaManagedAgentsUserDefineOutcomeEventTest : TestBase
             MaxIterations = 3,
             OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:02:14Z"),
-            Rubric = new BetaManagedAgentsTextRubric()
-            {
-                Content = "Must cover all five sections; cite sources inline.",
-                Type = BetaManagedAgentsTextRubricType.Text,
-            },
-            Type = BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome,
+            Rubric = new BetaManagedAgentsTextRubric(
+                "Must cover all five sections; cite sources inline."
+            ),
         };
 
         BetaManagedAgentsUserDefineOutcomeEvent copied = new(model);
@@ -172,33 +151,21 @@ public class RubricTest : TestBase
     [Fact]
     public void BetaManagedAgentsFileValidationWorks()
     {
-        Rubric value = new BetaManagedAgentsFileRubric()
-        {
-            FileID = "file_id",
-            Type = BetaManagedAgentsFileRubricType.File,
-        };
+        Rubric value = new BetaManagedAgentsFileRubric("file_id");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsTextValidationWorks()
     {
-        Rubric value = new BetaManagedAgentsTextRubric()
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        Rubric value = new BetaManagedAgentsTextRubric("content");
         value.Validate();
     }
 
     [Fact]
     public void BetaManagedAgentsFileSerializationRoundtripWorks()
     {
-        Rubric value = new BetaManagedAgentsFileRubric()
-        {
-            FileID = "file_id",
-            Type = BetaManagedAgentsFileRubricType.File,
-        };
+        Rubric value = new BetaManagedAgentsFileRubric("file_id");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Rubric>(element, ModelBase.SerializerOptions);
 
@@ -208,51 +175,88 @@ public class RubricTest : TestBase
     [Fact]
     public void BetaManagedAgentsTextSerializationRoundtripWorks()
     {
-        Rubric value = new BetaManagedAgentsTextRubric()
-        {
-            Content = "content",
-            Type = BetaManagedAgentsTextRubricType.Text,
-        };
+        Rubric value = new BetaManagedAgentsTextRubric("content");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Rubric>(element, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsFileTypeWorks()
+    {
+        Rubric value = new BetaManagedAgentsFileRubric("file_id");
+        Assert.Equal(RubricType.File, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsTextTypeWorks()
+    {
+        Rubric value = new BetaManagedAgentsTextRubric("content");
+        Assert.Equal(RubricType.Text, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        Rubric value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "text"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, RubricType> expectedType = RubricType.Text;
+
+        Assert.Equal(expectedType, value.Type);
+
+        Rubric emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsUserDefineOutcomeEventTypeTest : TestBase
+public class RubricTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome)]
-    public void Validation_Works(BetaManagedAgentsUserDefineOutcomeEventType rawValue)
+    [InlineData(RubricType.File)]
+    [InlineData(RubricType.Text)]
+    public void Validation_Works(RubricType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType> value = rawValue;
+        ApiEnum<string, RubricType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, RubricType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventType.UserDefineOutcome)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsUserDefineOutcomeEventType rawValue)
+    [InlineData(RubricType.File)]
+    [InlineData(RubricType.Text)]
+    public void SerializationRoundtrip_Works(RubricType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType> value = rawValue;
+        ApiEnum<string, RubricType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, RubricType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -260,13 +264,15 @@ public class BetaManagedAgentsUserDefineOutcomeEventTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, RubricType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, RubricType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

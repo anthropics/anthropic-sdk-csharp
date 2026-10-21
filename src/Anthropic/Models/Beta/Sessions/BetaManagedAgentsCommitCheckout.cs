@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -30,14 +29,12 @@ public sealed record class BetaManagedAgentsCommitCheckout : JsonModel
         init { this._rawData.Set("sha", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsCommitCheckoutType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsCommitCheckoutType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -46,10 +43,16 @@ public sealed record class BetaManagedAgentsCommitCheckout : JsonModel
     public override void Validate()
     {
         _ = this.Sha;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("commit")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsCommitCheckout() { }
+    public BetaManagedAgentsCommitCheckout()
+    {
+        this.Type = JsonSerializer.SerializeToElement("commit");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -62,6 +65,8 @@ public sealed record class BetaManagedAgentsCommitCheckout : JsonModel
     public BetaManagedAgentsCommitCheckout(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("commit");
     }
 
 #pragma warning disable CS8618
@@ -79,6 +84,13 @@ public sealed record class BetaManagedAgentsCommitCheckout : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsCommitCheckout(string sha)
+        : this()
+    {
+        this.Sha = sha;
+    }
 }
 
 class BetaManagedAgentsCommitCheckoutFromRaw : IFromRawJson<BetaManagedAgentsCommitCheckout>
@@ -87,46 +99,4 @@ class BetaManagedAgentsCommitCheckoutFromRaw : IFromRawJson<BetaManagedAgentsCom
     public BetaManagedAgentsCommitCheckout FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCommitCheckout.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsCommitCheckoutTypeConverter))]
-public enum BetaManagedAgentsCommitCheckoutType
-{
-    Commit,
-}
-
-sealed class BetaManagedAgentsCommitCheckoutTypeConverter
-    : JsonConverter<BetaManagedAgentsCommitCheckoutType>
-{
-    public override BetaManagedAgentsCommitCheckoutType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "commit" => BetaManagedAgentsCommitCheckoutType.Commit,
-            _ => (BetaManagedAgentsCommitCheckoutType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCommitCheckoutType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCommitCheckoutType.Commit => "commit",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

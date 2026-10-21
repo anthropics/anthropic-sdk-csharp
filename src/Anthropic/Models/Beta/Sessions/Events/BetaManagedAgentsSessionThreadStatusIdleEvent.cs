@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -50,12 +50,12 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
     /// <summary>
     /// Timestamp of the status transition.
     /// </summary>
-    public required System::DateTimeOffset ProcessedAt
+    public required DateTimeOffset ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -101,14 +101,12 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
         init { this._rawData.Set("stop_reason", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -122,10 +120,21 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
         _ = this.SessionThreadID;
         this.StopDetails?.Validate();
         this.StopReason.Validate();
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("session.thread_status_idle")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsSessionThreadStatusIdleEvent() { }
+    public BetaManagedAgentsSessionThreadStatusIdleEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("session.thread_status_idle");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -140,6 +149,8 @@ public sealed record class BetaManagedAgentsSessionThreadStatusIdleEvent : JsonM
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("session.thread_status_idle");
     }
 
 #pragma warning disable CS8618
@@ -183,6 +194,29 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsSessionEndTurn _ =>
+                    BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.EndTurn,
+                BetaManagedAgentsSessionRequiresAction _ =>
+                    BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RequiresAction,
+                BetaManagedAgentsSessionRetriesExhausted _ =>
+                    BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RetriesExhausted,
+                BetaManagedAgentsSessionBudgetReached _ =>
+                    BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.BudgetReached,
+                BetaManagedAgentsSessionRefusal _ =>
+                    BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.Refusal,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -375,11 +409,11 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
-        System::Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
-        System::Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
-        System::Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
-        System::Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
+        Action<BetaManagedAgentsSessionEndTurn> betaManagedAgentsSessionEndTurn,
+        Action<BetaManagedAgentsSessionRequiresAction> betaManagedAgentsSessionRequiresAction,
+        Action<BetaManagedAgentsSessionRetriesExhausted> betaManagedAgentsSessionRetriesExhausted,
+        Action<BetaManagedAgentsSessionBudgetReached> betaManagedAgentsSessionBudgetReached,
+        Action<BetaManagedAgentsSessionRefusal> betaManagedAgentsSessionRefusal
     )
     {
         switch (this.Value)
@@ -431,20 +465,11 @@ public record class BetaManagedAgentsSessionThreadStatusIdleEventStopReason : Mo
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsSessionEndTurn, T> betaManagedAgentsSessionEndTurn,
-        System::Func<
-            BetaManagedAgentsSessionRequiresAction,
-            T
-        > betaManagedAgentsSessionRequiresAction,
-        System::Func<
-            BetaManagedAgentsSessionRetriesExhausted,
-            T
-        > betaManagedAgentsSessionRetriesExhausted,
-        System::Func<
-            BetaManagedAgentsSessionBudgetReached,
-            T
-        > betaManagedAgentsSessionBudgetReached,
-        System::Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
+        Func<BetaManagedAgentsSessionEndTurn, T> betaManagedAgentsSessionEndTurn,
+        Func<BetaManagedAgentsSessionRequiresAction, T> betaManagedAgentsSessionRequiresAction,
+        Func<BetaManagedAgentsSessionRetriesExhausted, T> betaManagedAgentsSessionRetriesExhausted,
+        Func<BetaManagedAgentsSessionBudgetReached, T> betaManagedAgentsSessionBudgetReached,
+        Func<BetaManagedAgentsSessionRefusal, T> betaManagedAgentsSessionRefusal
     )
     {
         return this.Value switch
@@ -550,7 +575,7 @@ sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonConverter
 {
     public override BetaManagedAgentsSessionThreadStatusIdleEventStopReason? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -687,32 +712,42 @@ sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusIdleEventTypeConverter))]
-public enum BetaManagedAgentsSessionThreadStatusIdleEventType
+[JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTypeConverter))]
+public enum BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType
 {
-    SessionThreadStatusIdle,
+    EndTurn,
+    RequiresAction,
+    RetriesExhausted,
+    BudgetReached,
+    Refusal,
 }
 
-sealed class BetaManagedAgentsSessionThreadStatusIdleEventTypeConverter
-    : JsonConverter<BetaManagedAgentsSessionThreadStatusIdleEventType>
+sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTypeConverter
+    : JsonConverter<BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType>
 {
-    public override BetaManagedAgentsSessionThreadStatusIdleEventType Read(
+    public override BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "session.thread_status_idle" =>
-                BetaManagedAgentsSessionThreadStatusIdleEventType.SessionThreadStatusIdle,
-            _ => (BetaManagedAgentsSessionThreadStatusIdleEventType)(-1),
+            "end_turn" => BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.EndTurn,
+            "requires_action" =>
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RequiresAction,
+            "retries_exhausted" =>
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RetriesExhausted,
+            "budget_reached" =>
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.BudgetReached,
+            "refusal" => BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.Refusal,
+            _ => (BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsSessionThreadStatusIdleEventType value,
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType value,
         JsonSerializerOptions options
     )
     {
@@ -720,8 +755,14 @@ sealed class BetaManagedAgentsSessionThreadStatusIdleEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsSessionThreadStatusIdleEventType.SessionThreadStatusIdle =>
-                    "session.thread_status_idle",
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.EndTurn => "end_turn",
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RequiresAction =>
+                    "requires_action",
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RetriesExhausted =>
+                    "retries_exhausted",
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.BudgetReached =>
+                    "budget_reached",
+                BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.Refusal => "refusal",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

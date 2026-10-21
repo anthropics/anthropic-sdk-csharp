@@ -1045,15 +1045,7 @@ public static class AnthropicClientExtensions
                             // `{ "role": "system" }` message at its position, as-is. The API
                             // rejects the request if the model or the placement does not support
                             // mid-conversation system messages.
-                            messageParams.Add(
-                                new()
-                                {
-                                    Role = Role.System,
-                                    Content = systemBlocks
-                                        .Select(static b => (ContentBlockParam)b)
-                                        .ToList(),
-                                }
-                            );
+                            messageParams.Add(new SystemMessageParam { Content = systemBlocks });
                         }
                     }
 
@@ -1458,11 +1450,9 @@ public static class AnthropicClientExtensions
                 }
 
                 messageParams.Add(
-                    new()
-                    {
-                        Role = message.Role == ChatRole.Assistant ? Role.Assistant : Role.User,
-                        Content = contents,
-                    }
+                    message.Role == ChatRole.Assistant
+                        ? new AssistantMessageParam { Content = contents }
+                        : new UserMessageParam { Content = contents }
                 );
             }
 
@@ -1512,7 +1502,7 @@ public static class AnthropicClientExtensions
             var createParamsOriginalMessages = createParams?.Messages;
             if (createParamsOriginalMessages is not { Count: > 0 } && messages.Count == 0)
             {
-                messages.Add(new MessageParam() { Role = Role.User, Content = new("\u200b") }); // zero-width space
+                messages.Add(new UserMessageParam { Content = new("\u200b") }); // zero-width space
             }
 
             if (createParams is not null)
@@ -1603,21 +1593,6 @@ public static class AnthropicClientExtensions
                         {
                             StopSequences = [.. stopSequences],
                         };
-                }
-
-                if (createParams.Temperature is null && options.Temperature is { } temperature)
-                {
-                    createParams = createParams with { Temperature = temperature };
-                }
-
-                if (createParams.TopK is null && options.TopK is { } topK)
-                {
-                    createParams = createParams with { TopK = topK };
-                }
-
-                if (createParams.TopP is null && options.TopP is { } topP)
-                {
-                    createParams = createParams with { TopP = topP };
                 }
 
                 if (options.Tools is { } tools)

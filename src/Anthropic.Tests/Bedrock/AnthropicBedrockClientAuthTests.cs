@@ -158,7 +158,25 @@ public class AnthropicBedrockClientAuthTests : IDisposable
     }
 
     [Fact]
-    public async Task ExplicitApiKey_StillHonored()
+    public async Task FirstPartyEnvCredentials_FreshOptions_NeitherSignedNorSent()
+    {
+        var sent = await SendOneRequest(
+            (client, httpClient) =>
+                client.WithOptions(opts => new ClientOptions
+                {
+                    BaseUrl = opts.BaseUrl,
+                    HttpClient = httpClient,
+                })
+        );
+
+        Assert.NotNull(sent.Credentials.AuthorizationAtSigning);
+        Assert.Empty(sent.Credentials.AuthorizationAtSigning!);
+        string[] wireAuthorization = [.. sent.Wire.Headers.GetValues("Authorization")];
+        Assert.Equal(["AWS4-HMAC-SHA256 test-signature"], wireAuthorization);
+    }
+
+    [Fact]
+    public async Task ExplicitApiKey_NeitherSignedNorSent()
     {
         var sent = await SendOneRequest(
             (client, httpClient) =>
@@ -170,7 +188,9 @@ public class AnthropicBedrockClientAuthTests : IDisposable
                 })
         );
 
-        Assert.True(sent.Credentials.ApiKeyPresentAtSigning);
-        Assert.True(sent.Wire.Headers.Contains("X-Api-Key"));
+        Assert.NotNull(sent.Credentials.AuthorizationAtSigning);
+        Assert.Empty(sent.Credentials.AuthorizationAtSigning!);
+        string[] wireAuthorization = [.. sent.Wire.Headers.GetValues("Authorization")];
+        Assert.Equal(["AWS4-HMAC-SHA256 test-signature"], wireAuthorization);
     }
 }

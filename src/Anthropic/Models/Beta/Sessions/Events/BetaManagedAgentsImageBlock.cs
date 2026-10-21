@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -30,14 +30,12 @@ public sealed record class BetaManagedAgentsImageBlock : JsonModel
         init { this._rawData.Set("source", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsImageBlockType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaManagedAgentsImageBlockType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -46,10 +44,16 @@ public sealed record class BetaManagedAgentsImageBlock : JsonModel
     public override void Validate()
     {
         this.Source.Validate();
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("image")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsImageBlock() { }
+    public BetaManagedAgentsImageBlock()
+    {
+        this.Type = JsonSerializer.SerializeToElement("image");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -60,6 +64,8 @@ public sealed record class BetaManagedAgentsImageBlock : JsonModel
     public BetaManagedAgentsImageBlock(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("image");
     }
 
 #pragma warning disable CS8618
@@ -76,6 +82,13 @@ public sealed record class BetaManagedAgentsImageBlock : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsImageBlock(BetaManagedAgentsImageBlockSource source)
+        : this()
+    {
+        this.Source = source;
     }
 }
 
@@ -105,6 +118,23 @@ public record class BetaManagedAgentsImageBlockSource : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsImageBlockSourceType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsBase64ImageSource _ =>
+                    BetaManagedAgentsImageBlockSourceType.Base64,
+                BetaManagedAgentsUrlImageSource _ => BetaManagedAgentsImageBlockSourceType.Url,
+                BetaManagedAgentsFileImageSource _ => BetaManagedAgentsImageBlockSourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -231,9 +261,9 @@ public record class BetaManagedAgentsImageBlockSource : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsBase64ImageSource> betaManagedAgentsBase64Image,
-        System::Action<BetaManagedAgentsUrlImageSource> betaManagedAgentsUrlImage,
-        System::Action<BetaManagedAgentsFileImageSource> betaManagedAgentsFileImage
+        Action<BetaManagedAgentsBase64ImageSource> betaManagedAgentsBase64Image,
+        Action<BetaManagedAgentsUrlImageSource> betaManagedAgentsUrlImage,
+        Action<BetaManagedAgentsFileImageSource> betaManagedAgentsFileImage
     )
     {
         switch (this.Value)
@@ -277,9 +307,9 @@ public record class BetaManagedAgentsImageBlockSource : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsBase64ImageSource, T> betaManagedAgentsBase64Image,
-        System::Func<BetaManagedAgentsUrlImageSource, T> betaManagedAgentsUrlImage,
-        System::Func<BetaManagedAgentsFileImageSource, T> betaManagedAgentsFileImage
+        Func<BetaManagedAgentsBase64ImageSource, T> betaManagedAgentsBase64Image,
+        Func<BetaManagedAgentsUrlImageSource, T> betaManagedAgentsUrlImage,
+        Func<BetaManagedAgentsFileImageSource, T> betaManagedAgentsFileImage
     )
     {
         return this.Value switch
@@ -363,7 +393,7 @@ sealed class BetaManagedAgentsImageBlockSourceConverter
 {
     public override BetaManagedAgentsImageBlockSource? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -458,31 +488,35 @@ sealed class BetaManagedAgentsImageBlockSourceConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsImageBlockTypeConverter))]
-public enum BetaManagedAgentsImageBlockType
+[JsonConverter(typeof(BetaManagedAgentsImageBlockSourceTypeConverter))]
+public enum BetaManagedAgentsImageBlockSourceType
 {
-    Image,
+    Base64,
+    Url,
+    File,
 }
 
-sealed class BetaManagedAgentsImageBlockTypeConverter
-    : JsonConverter<BetaManagedAgentsImageBlockType>
+sealed class BetaManagedAgentsImageBlockSourceTypeConverter
+    : JsonConverter<BetaManagedAgentsImageBlockSourceType>
 {
-    public override BetaManagedAgentsImageBlockType Read(
+    public override BetaManagedAgentsImageBlockSourceType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "image" => BetaManagedAgentsImageBlockType.Image,
-            _ => (BetaManagedAgentsImageBlockType)(-1),
+            "base64" => BetaManagedAgentsImageBlockSourceType.Base64,
+            "url" => BetaManagedAgentsImageBlockSourceType.Url,
+            "file" => BetaManagedAgentsImageBlockSourceType.File,
+            _ => (BetaManagedAgentsImageBlockSourceType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsImageBlockType value,
+        BetaManagedAgentsImageBlockSourceType value,
         JsonSerializerOptions options
     )
     {
@@ -490,7 +524,9 @@ sealed class BetaManagedAgentsImageBlockTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsImageBlockType.Image => "image",
+                BetaManagedAgentsImageBlockSourceType.Base64 => "base64",
+                BetaManagedAgentsImageBlockSourceType.Url => "url",
+                BetaManagedAgentsImageBlockSourceType.File => "file",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

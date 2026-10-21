@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using UserProfiles = Anthropic.Models.Beta.UserProfiles;
+using Anthropic.Models.Beta.UserProfiles;
 
 namespace Anthropic.Tests.Models.Beta.UserProfiles;
 
@@ -12,26 +12,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -43,21 +42,21 @@ public class BetaUserProfileTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new();
         string expectedName = "Example User";
-        Dictionary<string, UserProfiles::BetaUserProfileTrustGrant> expectedTrustGrants = new()
+        Dictionary<string, BetaUserProfileTrustGrant> expectedTrustGrants = new()
         {
-            { "cyber", new(UserProfiles::Status.Active) },
+            { "cyber", new(Status.Active) },
         };
-        ApiEnum<string, UserProfiles::Type> expectedType = UserProfiles::Type.UserProfile;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user_profile");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        ApiEnum<string, UserProfiles::BetaUserProfileAccessType> expectedAccessType =
-            UserProfiles::BetaUserProfileAccessType.Application;
+        ApiEnum<string, BetaUserProfileAccessType> expectedAccessType =
+            BetaUserProfileAccessType.Application;
         string expectedExternalID = "user_12345";
-        UserProfiles::BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
+        BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
-            AccountStatus = UserProfiles::AccountStatus.Active,
+            AccountStatus = AccountStatus.Active,
             Country = "US",
             EmailHash = null,
-            EntityType = UserProfiles::EntityType.Business,
+            EntityType = EntityType.Business,
             NameHash = null,
             OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             ReferenceID = "user_12345",
@@ -83,7 +82,7 @@ public class BetaUserProfileTest : TestBase
 
             Assert.Equal(value, model.TrustGrants[item.Key]);
         }
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedAccessType, model.AccessType);
         Assert.Equal(expectedExternalID, model.ExternalID);
@@ -94,26 +93,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -122,7 +120,7 @@ public class BetaUserProfileTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfiles::BetaUserProfile>(
+        var deserialized = JsonSerializer.Deserialize<BetaUserProfile>(
             json,
             ModelBase.SerializerOptions
         );
@@ -133,26 +131,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -161,7 +158,7 @@ public class BetaUserProfileTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfiles::BetaUserProfile>(
+        var deserialized = JsonSerializer.Deserialize<BetaUserProfile>(
             element,
             ModelBase.SerializerOptions
         );
@@ -171,21 +168,21 @@ public class BetaUserProfileTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         Dictionary<string, string> expectedMetadata = new();
         string expectedName = "Example User";
-        Dictionary<string, UserProfiles::BetaUserProfileTrustGrant> expectedTrustGrants = new()
+        Dictionary<string, BetaUserProfileTrustGrant> expectedTrustGrants = new()
         {
-            { "cyber", new(UserProfiles::Status.Active) },
+            { "cyber", new(Status.Active) },
         };
-        ApiEnum<string, UserProfiles::Type> expectedType = UserProfiles::Type.UserProfile;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("user_profile");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        ApiEnum<string, UserProfiles::BetaUserProfileAccessType> expectedAccessType =
-            UserProfiles::BetaUserProfileAccessType.Application;
+        ApiEnum<string, BetaUserProfileAccessType> expectedAccessType =
+            BetaUserProfileAccessType.Application;
         string expectedExternalID = "user_12345";
-        UserProfiles::BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
+        BetaUserProfileExternalUserDetails expectedExternalUserDetails = new()
         {
-            AccountStatus = UserProfiles::AccountStatus.Active,
+            AccountStatus = AccountStatus.Active,
             Country = "US",
             EmailHash = null,
-            EntityType = UserProfiles::EntityType.Business,
+            EntityType = EntityType.Business,
             NameHash = null,
             OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
             ReferenceID = "user_12345",
@@ -211,7 +208,7 @@ public class BetaUserProfileTest : TestBase
 
             Assert.Equal(value, deserialized.TrustGrants[item.Key]);
         }
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedAccessType, deserialized.AccessType);
         Assert.Equal(expectedExternalID, deserialized.ExternalID);
@@ -222,26 +219,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -255,17 +251,16 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
@@ -280,17 +275,16 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesUnsetValidation_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
@@ -302,17 +296,16 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullAreNotSet_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
@@ -331,26 +324,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullInWithAreUnset_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -372,17 +364,16 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNonNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             ExternalID = "user_12345",
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
@@ -398,25 +389,24 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -432,25 +422,24 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -463,25 +452,24 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -500,25 +488,24 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -534,26 +521,25 @@ public class BetaUserProfileTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new UserProfiles::BetaUserProfile
+        var model = new BetaUserProfile
         {
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Metadata = new Dictionary<string, string>(),
             Name = "Example User",
-            TrustGrants = new Dictionary<string, UserProfiles::BetaUserProfileTrustGrant>()
+            TrustGrants = new Dictionary<string, BetaUserProfileTrustGrant>()
             {
-                { "cyber", new(UserProfiles::Status.Active) },
+                { "cyber", new(Status.Active) },
             },
-            Type = UserProfiles::Type.UserProfile,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            AccessType = UserProfiles::BetaUserProfileAccessType.Application,
+            AccessType = BetaUserProfileAccessType.Application,
             ExternalID = "user_12345",
             ExternalUserDetails = new()
             {
-                AccountStatus = UserProfiles::AccountStatus.Active,
+                AccountStatus = AccountStatus.Active,
                 Country = "US",
                 EmailHash = null,
-                EntityType = UserProfiles::EntityType.Business,
+                EntityType = EntityType.Business,
                 NameHash = null,
                 OnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
                 ReferenceID = "user_12345",
@@ -561,103 +547,49 @@ public class BetaUserProfileTest : TestBase
             ExternalUserOnboardedAt = DateTimeOffset.Parse("2024-11-02T08:15:00Z"),
         };
 
-        UserProfiles::BetaUserProfile copied = new(model);
+        BetaUserProfile copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class TypeTest : TestBase
-{
-    [Theory]
-    [InlineData(UserProfiles::Type.UserProfile)]
-    public void Validation_Works(UserProfiles::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, UserProfiles::Type> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, UserProfiles::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(UserProfiles::Type.UserProfile)]
-    public void SerializationRoundtrip_Works(UserProfiles::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, UserProfiles::Type> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfiles::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, UserProfiles::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfiles::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }
 
 public class BetaUserProfileAccessTypeTest : TestBase
 {
     [Theory]
-    [InlineData(UserProfiles::BetaUserProfileAccessType.Application)]
-    [InlineData(UserProfiles::BetaUserProfileAccessType.Passthrough)]
-    public void Validation_Works(UserProfiles::BetaUserProfileAccessType rawValue)
+    [InlineData(BetaUserProfileAccessType.Application)]
+    [InlineData(BetaUserProfileAccessType.Passthrough)]
+    public void Validation_Works(BetaUserProfileAccessType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, UserProfiles::BetaUserProfileAccessType> value = rawValue;
+        ApiEnum<string, BetaUserProfileAccessType> value = rawValue;
         value.Validate();
     }
 
     [Fact]
     public void InvalidEnumValidationThrows_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, UserProfiles::BetaUserProfileAccessType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileAccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
 
         Assert.NotNull(value);
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
     }
 
     [Theory]
-    [InlineData(UserProfiles::BetaUserProfileAccessType.Application)]
-    [InlineData(UserProfiles::BetaUserProfileAccessType.Passthrough)]
-    public void SerializationRoundtrip_Works(UserProfiles::BetaUserProfileAccessType rawValue)
+    [InlineData(BetaUserProfileAccessType.Application)]
+    [InlineData(BetaUserProfileAccessType.Passthrough)]
+    public void SerializationRoundtrip_Works(BetaUserProfileAccessType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, UserProfiles::BetaUserProfileAccessType> value = rawValue;
+        ApiEnum<string, BetaUserProfileAccessType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, UserProfiles::BetaUserProfileAccessType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileAccessType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }
@@ -665,13 +597,15 @@ public class BetaUserProfileAccessTypeTest : TestBase
     [Fact]
     public void InvalidEnumSerializationRoundtrip_Works()
     {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, UserProfiles::BetaUserProfileAccessType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileAccessType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, UserProfiles::BetaUserProfileAccessType>
-        >(json, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileAccessType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(value, deserialized);
     }

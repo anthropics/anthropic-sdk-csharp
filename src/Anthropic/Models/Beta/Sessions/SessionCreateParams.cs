@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,7 +11,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions.Events;
 using Anthropic.Services.Beta;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -330,10 +330,10 @@ public record class SessionCreateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/sessions")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/sessions")
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
@@ -398,6 +398,23 @@ public record class Agent : ModelBase
                 BetaManagedAgentsAgentParams x => x.ID,
                 BetaManagedAgentsAgentWithOverridesParams x => x.ID,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "id"),
+            };
+        }
+    }
+
+    public JsonElement? Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                string _ => null,
+                BetaManagedAgentsAgentParams x => x.Type,
+                BetaManagedAgentsAgentWithOverridesParams x => x.Type,
+                _ => WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -528,9 +545,9 @@ public record class Agent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams,
-        System::Action<BetaManagedAgentsAgentWithOverridesParams> betaManagedAgentsAgentWithOverridesParams
+        Action<string> @string,
+        Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams,
+        Action<BetaManagedAgentsAgentWithOverridesParams> betaManagedAgentsAgentWithOverridesParams
     )
     {
         switch (this.Value)
@@ -572,12 +589,9 @@ public record class Agent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams,
-        System::Func<
-            BetaManagedAgentsAgentWithOverridesParams,
-            T
-        > betaManagedAgentsAgentWithOverridesParams
+        Func<string, T> @string,
+        Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams,
+        Func<BetaManagedAgentsAgentWithOverridesParams, T> betaManagedAgentsAgentWithOverridesParams
     )
     {
         return this.Value switch
@@ -653,7 +667,7 @@ sealed class AgentConverter : JsonConverter<Agent>
 {
     public override Agent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -670,7 +684,7 @@ sealed class AgentConverter : JsonConverter<Agent>
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -688,7 +702,7 @@ sealed class AgentConverter : JsonConverter<Agent>
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -701,7 +715,7 @@ sealed class AgentConverter : JsonConverter<Agent>
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -734,6 +748,22 @@ public record class InitialEvent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, InitialEventType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsUserMessageEventParams _ => InitialEventType.UserMessage,
+                BetaManagedAgentsUserDefineOutcomeEventParams _ =>
+                    InitialEventType.UserDefineOutcome,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, InitialEventType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -824,8 +854,8 @@ public record class InitialEvent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsUserMessageEventParams> betaManagedAgentsUserMessageEventParams,
-        System::Action<BetaManagedAgentsUserDefineOutcomeEventParams> betaManagedAgentsUserDefineOutcomeEventParams
+        Action<BetaManagedAgentsUserMessageEventParams> betaManagedAgentsUserMessageEventParams,
+        Action<BetaManagedAgentsUserDefineOutcomeEventParams> betaManagedAgentsUserDefineOutcomeEventParams
     )
     {
         switch (this.Value)
@@ -865,11 +895,8 @@ public record class InitialEvent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
-            BetaManagedAgentsUserMessageEventParams,
-            T
-        > betaManagedAgentsUserMessageEventParams,
-        System::Func<
+        Func<BetaManagedAgentsUserMessageEventParams, T> betaManagedAgentsUserMessageEventParams,
+        Func<
             BetaManagedAgentsUserDefineOutcomeEventParams,
             T
         > betaManagedAgentsUserDefineOutcomeEventParams
@@ -951,7 +978,7 @@ sealed class InitialEventConverter : JsonConverter<InitialEvent>
 {
     public override InitialEvent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1027,6 +1054,50 @@ sealed class InitialEventConverter : JsonConverter<InitialEvent>
     }
 }
 
+[JsonConverter(typeof(InitialEventTypeConverter))]
+public enum InitialEventType
+{
+    UserMessage,
+    UserDefineOutcome,
+}
+
+sealed class InitialEventTypeConverter : JsonConverter<InitialEventType>
+{
+    public override InitialEventType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user.message" => InitialEventType.UserMessage,
+            "user.define_outcome" => InitialEventType.UserDefineOutcome,
+            _ => (InitialEventType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        InitialEventType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                InitialEventType.UserMessage => "user.message",
+                InitialEventType.UserDefineOutcome => "user.define_outcome",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Union of resources that can be mounted into a session.
 /// </summary>
@@ -1045,6 +1116,23 @@ public record class Resource : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, ResourceType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceParams _ => ResourceType.GitHubRepository,
+                BetaManagedAgentsFileResourceParams _ => ResourceType.File,
+                BetaManagedAgentsMemoryStoreResourceParam _ => ResourceType.MemoryStore,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ResourceType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
         }
     }
 
@@ -1182,9 +1270,9 @@ public record class Resource : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsGitHubRepositoryResourceParams> betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams,
-        System::Action<BetaManagedAgentsMemoryStoreResourceParam> betaManagedAgentsMemoryStoreResourceParam
+        Action<BetaManagedAgentsGitHubRepositoryResourceParams> betaManagedAgentsGitHubRepositoryResourceParams,
+        Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams,
+        Action<BetaManagedAgentsMemoryStoreResourceParam> betaManagedAgentsMemoryStoreResourceParam
     )
     {
         switch (this.Value)
@@ -1228,15 +1316,12 @@ public record class Resource : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsGitHubRepositoryResourceParams,
             T
         > betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams,
-        System::Func<
-            BetaManagedAgentsMemoryStoreResourceParam,
-            T
-        > betaManagedAgentsMemoryStoreResourceParam
+        Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams,
+        Func<BetaManagedAgentsMemoryStoreResourceParam, T> betaManagedAgentsMemoryStoreResourceParam
     )
     {
         return this.Value switch
@@ -1319,7 +1404,7 @@ sealed class ResourceConverter : JsonConverter<Resource>
 {
     public override Resource? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1409,5 +1494,52 @@ sealed class ResourceConverter : JsonConverter<Resource>
     public override void Write(Utf8JsonWriter writer, Resource value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ResourceTypeConverter))]
+public enum ResourceType
+{
+    GitHubRepository,
+    File,
+    MemoryStore,
+}
+
+sealed class ResourceTypeConverter : JsonConverter<ResourceType>
+{
+    public override ResourceType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "github_repository" => ResourceType.GitHubRepository,
+            "file" => ResourceType.File,
+            "memory_store" => ResourceType.MemoryStore,
+            _ => (ResourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ResourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ResourceType.GitHubRepository => "github_repository",
+                ResourceType.File => "file",
+                ResourceType.MemoryStore => "memory_store",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

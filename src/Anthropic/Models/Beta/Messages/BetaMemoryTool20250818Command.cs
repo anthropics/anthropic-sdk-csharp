@@ -25,22 +25,26 @@ public record class BetaMemoryTool20250818Command : ModelBase
         }
     }
 
-    public JsonElement Command
+    public ApiEnum<string, BetaMemoryTool20250818CommandCommand> Command
     {
         get
         {
             return this.Value switch
             {
-                BetaMemoryTool20250818ViewCommand x => x.Command,
-                BetaMemoryTool20250818CreateCommand x => x.Command,
-                BetaMemoryTool20250818StrReplaceCommand x => x.Command,
-                BetaMemoryTool20250818InsertCommand x => x.Command,
-                BetaMemoryTool20250818DeleteCommand x => x.Command,
-                BetaMemoryTool20250818RenameCommand x => x.Command,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(
-                    this.Json,
-                    "command"
-                ),
+                BetaMemoryTool20250818ViewCommand _ => BetaMemoryTool20250818CommandCommand.View,
+                BetaMemoryTool20250818CreateCommand _ =>
+                    BetaMemoryTool20250818CommandCommand.Create,
+                BetaMemoryTool20250818StrReplaceCommand _ =>
+                    BetaMemoryTool20250818CommandCommand.StrReplace,
+                BetaMemoryTool20250818InsertCommand _ =>
+                    BetaMemoryTool20250818CommandCommand.Insert,
+                BetaMemoryTool20250818DeleteCommand _ =>
+                    BetaMemoryTool20250818CommandCommand.Delete,
+                BetaMemoryTool20250818RenameCommand _ =>
+                    BetaMemoryTool20250818CommandCommand.Rename,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaMemoryTool20250818CommandCommand>
+                >(this.Json, "command"),
             };
         }
     }
@@ -611,5 +615,62 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaMemoryTool20250818CommandCommandConverter))]
+public enum BetaMemoryTool20250818CommandCommand
+{
+    View,
+    Create,
+    StrReplace,
+    Insert,
+    Delete,
+    Rename,
+}
+
+sealed class BetaMemoryTool20250818CommandCommandConverter
+    : JsonConverter<BetaMemoryTool20250818CommandCommand>
+{
+    public override BetaMemoryTool20250818CommandCommand Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "view" => BetaMemoryTool20250818CommandCommand.View,
+            "create" => BetaMemoryTool20250818CommandCommand.Create,
+            "str_replace" => BetaMemoryTool20250818CommandCommand.StrReplace,
+            "insert" => BetaMemoryTool20250818CommandCommand.Insert,
+            "delete" => BetaMemoryTool20250818CommandCommand.Delete,
+            "rename" => BetaMemoryTool20250818CommandCommand.Rename,
+            _ => (BetaMemoryTool20250818CommandCommand)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaMemoryTool20250818CommandCommand value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaMemoryTool20250818CommandCommand.View => "view",
+                BetaMemoryTool20250818CommandCommand.Create => "create",
+                BetaMemoryTool20250818CommandCommand.StrReplace => "str_replace",
+                BetaMemoryTool20250818CommandCommand.Insert => "insert",
+                BetaMemoryTool20250818CommandCommand.Delete => "delete",
+                BetaMemoryTool20250818CommandCommand.Rename => "rename",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

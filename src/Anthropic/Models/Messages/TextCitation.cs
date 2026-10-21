@@ -95,18 +95,20 @@ public record class TextCitation : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, TextCitationType> Type
     {
         get
         {
             return this.Value switch
             {
-                CitationCharLocation x => x.Type,
-                CitationPageLocation x => x.Type,
-                CitationContentBlockLocation x => x.Type,
-                CitationsWebSearchResultLocation x => x.Type,
-                CitationsSearchResultLocation x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                CitationCharLocation _ => TextCitationType.CharLocation,
+                CitationPageLocation _ => TextCitationType.PageLocation,
+                CitationContentBlockLocation _ => TextCitationType.ContentBlockLocation,
+                CitationsWebSearchResultLocation _ => TextCitationType.WebSearchResultLocation,
+                CitationsSearchResultLocation _ => TextCitationType.SearchResultLocation,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, TextCitationType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -614,5 +616,58 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(TextCitationTypeConverter))]
+public enum TextCitationType
+{
+    CharLocation,
+    PageLocation,
+    ContentBlockLocation,
+    WebSearchResultLocation,
+    SearchResultLocation,
+}
+
+sealed class TextCitationTypeConverter : JsonConverter<TextCitationType>
+{
+    public override TextCitationType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "char_location" => TextCitationType.CharLocation,
+            "page_location" => TextCitationType.PageLocation,
+            "content_block_location" => TextCitationType.ContentBlockLocation,
+            "web_search_result_location" => TextCitationType.WebSearchResultLocation,
+            "search_result_location" => TextCitationType.SearchResultLocation,
+            _ => (TextCitationType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TextCitationType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TextCitationType.CharLocation => "char_location",
+                TextCitationType.PageLocation => "page_location",
+                TextCitationType.ContentBlockLocation => "content_block_location",
+                TextCitationType.WebSearchResultLocation => "web_search_result_location",
+                TextCitationType.SearchResultLocation => "search_result_location",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

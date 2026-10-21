@@ -45,9 +45,6 @@ static class RequestAttributes
                 AddMessagesCreateRequestAttributes(
                     tags,
                     maxTokens: parameters.MaxTokens,
-                    temperature: parameters.Temperature,
-                    topP: parameters.TopP,
-                    topK: parameters.TopK,
                     stream: stream,
                     effort: parameters.OutputConfig?.Effort?.Raw(),
                     outputFormat: parameters.OutputConfig?.Format != null,
@@ -85,9 +82,6 @@ static class RequestAttributes
                 AddMessagesCreateRequestAttributes(
                     tags,
                     maxTokens: parameters.MaxTokens,
-                    temperature: parameters.Temperature,
-                    topP: parameters.TopP,
-                    topK: parameters.TopK,
                     stream: stream,
                     effort: parameters.OutputConfig?.Effort?.Raw(),
                     // The request sets `output_config.format`, or the deprecated `output_format`.
@@ -169,9 +163,6 @@ static class RequestAttributes
     static void AddMessagesCreateRequestAttributes(
         List<KeyValuePair<string, object?>> tags,
         long maxTokens,
-        double? temperature,
-        double? topP,
-        long? topK,
         bool stream,
         string? effort,
         bool outputFormat,
@@ -182,9 +173,6 @@ static class RequestAttributes
     )
     {
         tags.Add(new(AttributeGenAiRequestMaxTokens, maxTokens));
-        tags.AddTag(AttributeGenAiRequestTemperature, temperature);
-        tags.AddTag(AttributeGenAiRequestTopP, topP);
-        tags.AddTag(AttributeGenAiRequestTopK, topK);
         if (stream)
         {
             tags.Add(new(AttributeGenAiRequestStream, true));

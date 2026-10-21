@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
-using Dreams = Anthropic.Models.Beta.Dreams;
+using Anthropic.Models.Beta.Dreams;
 
 namespace Anthropic.Tests.Models.Beta.Dreams;
 
@@ -12,37 +11,20 @@ public class BetaDreamTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Dreams::BetaDream
+        var model = new BetaDream
         {
             ID = "id",
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Error = new() { Message = "message", Type = "type" },
-            Inputs =
-            [
-                new Dreams::BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Instructions = "instructions",
-            Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-            ),
-            Outputs =
-            [
-                new()
-                {
-                    MemoryStoreID = "memory_store_id",
-                    Type = Dreams::BetaDreamOutputType.MemoryStore,
-                },
-            ],
+            Model = new() { ID = "x", Speed = Speed.Standard },
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
+            Outputs = [new("memory_store_id")],
             SessionID = "session_id",
-            Status = Dreams::BetaDreamStatus.Pending,
-            Type = Dreams::Type.Dream,
+            Status = BetaDreamStatus.Pending,
             Usage = new()
             {
                 CacheCreationInputTokens = 0,
@@ -56,36 +38,16 @@ public class BetaDreamTest : TestBase
         DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedEndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        Dreams::BetaDreamError expectedError = new() { Message = "message", Type = "type" };
-        List<Dreams::BetaDreamInput> expectedInputs =
-        [
-            new Dreams::BetaDreamMemoryStoreInput()
-            {
-                MemoryStoreID = "x",
-                Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-            },
-        ];
+        BetaDreamError expectedError = new() { Message = "message", Type = "type" };
+        List<BetaDreamInput> expectedInputs = [new BetaDreamMemoryStoreInput("x")];
         string expectedInstructions = "instructions";
-        Dreams::BetaDreamModelConfig expectedModel = new()
-        {
-            ID = "x",
-            Speed = Dreams::Speed.Standard,
-        };
-        Dreams::BetaOutputBehavior expectedOutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-            Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-        );
-        List<Dreams::BetaDreamOutput> expectedOutputs =
-        [
-            new()
-            {
-                MemoryStoreID = "memory_store_id",
-                Type = Dreams::BetaDreamOutputType.MemoryStore,
-            },
-        ];
+        BetaDreamModelConfig expectedModel = new() { ID = "x", Speed = Speed.Standard };
+        BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew();
+        List<BetaDreamOutput> expectedOutputs = [new("memory_store_id")];
         string expectedSessionID = "session_id";
-        ApiEnum<string, Dreams::BetaDreamStatus> expectedStatus = Dreams::BetaDreamStatus.Pending;
-        ApiEnum<string, Dreams::Type> expectedType = Dreams::Type.Dream;
-        Dreams::BetaDreamUsage expectedUsage = new()
+        ApiEnum<string, BetaDreamStatus> expectedStatus = BetaDreamStatus.Pending;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("dream");
+        BetaDreamUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
@@ -113,44 +75,27 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedSessionID, model.SessionID);
         Assert.Equal(expectedStatus, model.Status);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUsage, model.Usage);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Dreams::BetaDream
+        var model = new BetaDream
         {
             ID = "id",
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Error = new() { Message = "message", Type = "type" },
-            Inputs =
-            [
-                new Dreams::BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Instructions = "instructions",
-            Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-            ),
-            Outputs =
-            [
-                new()
-                {
-                    MemoryStoreID = "memory_store_id",
-                    Type = Dreams::BetaDreamOutputType.MemoryStore,
-                },
-            ],
+            Model = new() { ID = "x", Speed = Speed.Standard },
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
+            Outputs = [new("memory_store_id")],
             SessionID = "session_id",
-            Status = Dreams::BetaDreamStatus.Pending,
-            Type = Dreams::Type.Dream,
+            Status = BetaDreamStatus.Pending,
             Usage = new()
             {
                 CacheCreationInputTokens = 0,
@@ -161,10 +106,7 @@ public class BetaDreamTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDream>(
-            json,
-            ModelBase.SerializerOptions
-        );
+        var deserialized = JsonSerializer.Deserialize<BetaDream>(json, ModelBase.SerializerOptions);
 
         Assert.Equal(model, deserialized);
     }
@@ -172,37 +114,20 @@ public class BetaDreamTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Dreams::BetaDream
+        var model = new BetaDream
         {
             ID = "id",
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Error = new() { Message = "message", Type = "type" },
-            Inputs =
-            [
-                new Dreams::BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Instructions = "instructions",
-            Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-            ),
-            Outputs =
-            [
-                new()
-                {
-                    MemoryStoreID = "memory_store_id",
-                    Type = Dreams::BetaDreamOutputType.MemoryStore,
-                },
-            ],
+            Model = new() { ID = "x", Speed = Speed.Standard },
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
+            Outputs = [new("memory_store_id")],
             SessionID = "session_id",
-            Status = Dreams::BetaDreamStatus.Pending,
-            Type = Dreams::Type.Dream,
+            Status = BetaDreamStatus.Pending,
             Usage = new()
             {
                 CacheCreationInputTokens = 0,
@@ -213,7 +138,7 @@ public class BetaDreamTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<Dreams::BetaDream>(
+        var deserialized = JsonSerializer.Deserialize<BetaDream>(
             element,
             ModelBase.SerializerOptions
         );
@@ -223,36 +148,16 @@ public class BetaDreamTest : TestBase
         DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         DateTimeOffset expectedEndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        Dreams::BetaDreamError expectedError = new() { Message = "message", Type = "type" };
-        List<Dreams::BetaDreamInput> expectedInputs =
-        [
-            new Dreams::BetaDreamMemoryStoreInput()
-            {
-                MemoryStoreID = "x",
-                Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-            },
-        ];
+        BetaDreamError expectedError = new() { Message = "message", Type = "type" };
+        List<BetaDreamInput> expectedInputs = [new BetaDreamMemoryStoreInput("x")];
         string expectedInstructions = "instructions";
-        Dreams::BetaDreamModelConfig expectedModel = new()
-        {
-            ID = "x",
-            Speed = Dreams::Speed.Standard,
-        };
-        Dreams::BetaOutputBehavior expectedOutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-            Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-        );
-        List<Dreams::BetaDreamOutput> expectedOutputs =
-        [
-            new()
-            {
-                MemoryStoreID = "memory_store_id",
-                Type = Dreams::BetaDreamOutputType.MemoryStore,
-            },
-        ];
+        BetaDreamModelConfig expectedModel = new() { ID = "x", Speed = Speed.Standard };
+        BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew();
+        List<BetaDreamOutput> expectedOutputs = [new("memory_store_id")];
         string expectedSessionID = "session_id";
-        ApiEnum<string, Dreams::BetaDreamStatus> expectedStatus = Dreams::BetaDreamStatus.Pending;
-        ApiEnum<string, Dreams::Type> expectedType = Dreams::Type.Dream;
-        Dreams::BetaDreamUsage expectedUsage = new()
+        ApiEnum<string, BetaDreamStatus> expectedStatus = BetaDreamStatus.Pending;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("dream");
+        BetaDreamUsage expectedUsage = new()
         {
             CacheCreationInputTokens = 0,
             CacheReadInputTokens = 0,
@@ -280,44 +185,27 @@ public class BetaDreamTest : TestBase
         }
         Assert.Equal(expectedSessionID, deserialized.SessionID);
         Assert.Equal(expectedStatus, deserialized.Status);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUsage, deserialized.Usage);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new Dreams::BetaDream
+        var model = new BetaDream
         {
             ID = "id",
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Error = new() { Message = "message", Type = "type" },
-            Inputs =
-            [
-                new Dreams::BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Instructions = "instructions",
-            Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-            ),
-            Outputs =
-            [
-                new()
-                {
-                    MemoryStoreID = "memory_store_id",
-                    Type = Dreams::BetaDreamOutputType.MemoryStore,
-                },
-            ],
+            Model = new() { ID = "x", Speed = Speed.Standard },
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
+            Outputs = [new("memory_store_id")],
             SessionID = "session_id",
-            Status = Dreams::BetaDreamStatus.Pending,
-            Type = Dreams::Type.Dream,
+            Status = BetaDreamStatus.Pending,
             Usage = new()
             {
                 CacheCreationInputTokens = 0,
@@ -333,37 +221,20 @@ public class BetaDreamTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Dreams::BetaDream
+        var model = new BetaDream
         {
             ID = "id",
             ArchivedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             EndedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Error = new() { Message = "message", Type = "type" },
-            Inputs =
-            [
-                new Dreams::BetaDreamMemoryStoreInput()
-                {
-                    MemoryStoreID = "x",
-                    Type = Dreams::BetaDreamMemoryStoreInputType.MemoryStore,
-                },
-            ],
+            Inputs = [new BetaDreamMemoryStoreInput("x")],
             Instructions = "instructions",
-            Model = new() { ID = "x", Speed = Dreams::Speed.Standard },
-            OutputBehavior = new Dreams::BetaOutputBehaviorCreateNew(
-                Dreams::BetaOutputBehaviorCreateNewType.CreateNew
-            ),
-            Outputs =
-            [
-                new()
-                {
-                    MemoryStoreID = "memory_store_id",
-                    Type = Dreams::BetaDreamOutputType.MemoryStore,
-                },
-            ],
+            Model = new() { ID = "x", Speed = Speed.Standard },
+            OutputBehavior = new BetaOutputBehaviorCreateNew(),
+            Outputs = [new("memory_store_id")],
             SessionID = "session_id",
-            Status = Dreams::BetaDreamStatus.Pending,
-            Type = Dreams::Type.Dream,
+            Status = BetaDreamStatus.Pending,
             Usage = new()
             {
                 CacheCreationInputTokens = 0,
@@ -373,64 +244,8 @@ public class BetaDreamTest : TestBase
             },
         };
 
-        Dreams::BetaDream copied = new(model);
+        BetaDream copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class TypeTest : TestBase
-{
-    [Theory]
-    [InlineData(Dreams::Type.Dream)]
-    public void Validation_Works(Dreams::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Dreams::Type> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Dreams::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Dreams::Type.Dream)]
-    public void SerializationRoundtrip_Works(Dreams::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Dreams::Type> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Dreams::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Dreams::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Dreams::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

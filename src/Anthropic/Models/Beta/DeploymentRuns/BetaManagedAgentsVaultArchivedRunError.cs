@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsVaultArchivedRunError : JsonModel
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsVaultArchivedRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsVaultArchivedRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsVaultArchivedRunError : JsonModel
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("vault_archived_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsVaultArchivedRunError() { }
+    public BetaManagedAgentsVaultArchivedRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("vault_archived_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -65,6 +73,8 @@ public sealed record class BetaManagedAgentsVaultArchivedRunError : JsonModel
     public BetaManagedAgentsVaultArchivedRunError(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("vault_archived_error");
     }
 
 #pragma warning disable CS8618
@@ -82,6 +92,13 @@ public sealed record class BetaManagedAgentsVaultArchivedRunError : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsVaultArchivedRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsVaultArchivedRunErrorFromRaw
@@ -91,47 +108,4 @@ class BetaManagedAgentsVaultArchivedRunErrorFromRaw
     public BetaManagedAgentsVaultArchivedRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsVaultArchivedRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsVaultArchivedRunErrorTypeConverter))]
-public enum BetaManagedAgentsVaultArchivedRunErrorType
-{
-    VaultArchivedError,
-}
-
-sealed class BetaManagedAgentsVaultArchivedRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsVaultArchivedRunErrorType>
-{
-    public override BetaManagedAgentsVaultArchivedRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "vault_archived_error" => BetaManagedAgentsVaultArchivedRunErrorType.VaultArchivedError,
-            _ => (BetaManagedAgentsVaultArchivedRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsVaultArchivedRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsVaultArchivedRunErrorType.VaultArchivedError =>
-                    "vault_archived_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -2,8 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
-using Events = Anthropic.Models.Beta.Sessions.Events;
+using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Sessions.Events;
 
@@ -12,7 +11,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -21,7 +20,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -32,7 +30,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
         };
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, Events::Type> expectedType = Events::Type.AgentCustomToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.custom_tool_use");
         string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, model.ID);
@@ -45,14 +43,14 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
         }
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
     }
 
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -61,16 +59,14 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
             SessionThreadID = "session_thread_id",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<Events::BetaManagedAgentsAgentCustomToolUseEvent>(
-                json,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentCustomToolUseEvent>(
+            json,
+            ModelBase.SerializerOptions
+        );
 
         Assert.Equal(model, deserialized);
     }
@@ -78,7 +74,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -87,16 +83,14 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
             SessionThreadID = "session_thread_id",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<Events::BetaManagedAgentsAgentCustomToolUseEvent>(
-                element,
-                ModelBase.SerializerOptions
-            );
+        var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsAgentCustomToolUseEvent>(
+            element,
+            ModelBase.SerializerOptions
+        );
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
@@ -106,7 +100,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
         };
         string expectedName = "name";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
-        ApiEnum<string, Events::Type> expectedType = Events::Type.AgentCustomToolUse;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("agent.custom_tool_use");
         string expectedSessionThreadID = "session_thread_id";
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -119,14 +113,14 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
         }
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
     }
 
     [Fact]
     public void Validation_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -135,7 +129,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
             SessionThreadID = "session_thread_id",
         };
 
@@ -145,7 +138,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -154,7 +147,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
         };
 
         Assert.Null(model.SessionThreadID);
@@ -164,7 +156,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -173,7 +165,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
         };
 
         model.Validate();
@@ -182,7 +173,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullAreSetToNull_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -191,7 +182,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
 
             SessionThreadID = null,
         };
@@ -203,7 +193,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesSetToNullValidation_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -212,7 +202,6 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
 
             SessionThreadID = null,
         };
@@ -223,7 +212,7 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new Events::BetaManagedAgentsAgentCustomToolUseEvent
+        var model = new BetaManagedAgentsAgentCustomToolUseEvent
         {
             ID = "id",
             Input = new Dictionary<string, JsonElement>()
@@ -232,68 +221,11 @@ public class BetaManagedAgentsAgentCustomToolUseEventTest : TestBase
             },
             Name = "name",
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-            Type = Events::Type.AgentCustomToolUse,
             SessionThreadID = "session_thread_id",
         };
 
-        Events::BetaManagedAgentsAgentCustomToolUseEvent copied = new(model);
+        BetaManagedAgentsAgentCustomToolUseEvent copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class TypeTest : TestBase
-{
-    [Theory]
-    [InlineData(Events::Type.AgentCustomToolUse)]
-    public void Validation_Works(Events::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Events::Type> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Events::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Events::Type.AgentCustomToolUse)]
-    public void SerializationRoundtrip_Works(Events::Type rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Events::Type> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Events::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Events::Type>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Events::Type>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

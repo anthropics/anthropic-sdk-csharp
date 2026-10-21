@@ -45,7 +45,7 @@ public class MessageStreamingAggregationTest
         new()
         {
             MaxTokens = 1024,
-            Messages = [new() { Content = new(""), Role = Anthropic.Models.Messages.Role.User }],
+            Messages = [new UserMessageParam { Content = new("") }],
             Model = Model.ClaudeSonnet4_5,
         };
 

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -20,17 +19,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -38,10 +32,21 @@ public sealed record class BetaManagedAgentsWorkspaceArchivedDeploymentPausedRea
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("workspace_archived_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError() { }
+    public BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("workspace_archived_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -56,6 +61,8 @@ public sealed record class BetaManagedAgentsWorkspaceArchivedDeploymentPausedRea
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("workspace_archived_error");
     }
 
 #pragma warning disable CS8618
@@ -75,15 +82,6 @@ public sealed record class BetaManagedAgentsWorkspaceArchivedDeploymentPausedRea
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorFromRaw
@@ -93,48 +91,4 @@ class BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorTypeConverter))]
-public enum BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType
-{
-    WorkspaceArchivedError,
-}
-
-sealed class BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "workspace_archived_error" =>
-                BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType.WorkspaceArchivedError,
-            _ => (BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType.WorkspaceArchivedError =>
-                    "workspace_archived_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

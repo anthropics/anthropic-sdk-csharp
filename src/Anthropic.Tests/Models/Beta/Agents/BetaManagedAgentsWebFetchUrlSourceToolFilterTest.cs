@@ -97,6 +97,38 @@ public class BetaManagedAgentsWebFetchUrlSourceToolFilterTest : TestBase
     }
 
     [Fact]
+    public void AllTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceToolFilter value =
+            new BetaManagedAgentsWebFetchUrlSourceAll();
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceToolFilterType.All, value.Type.Value());
+    }
+
+    [Fact]
+    public void NoneTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceToolFilter value =
+            new BetaManagedAgentsWebFetchUrlSourceNone();
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceToolFilterType.None, value.Type.Value());
+    }
+
+    [Fact]
+    public void OnlyTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceToolFilter value =
+            new BetaManagedAgentsWebFetchUrlSourceOnly([new("x")]);
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExceptTypeWorks()
+    {
+        BetaManagedAgentsWebFetchUrlSourceToolFilter value =
+            new BetaManagedAgentsWebFetchUrlSourceExcept([new("x")]);
+        Assert.Equal(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaManagedAgentsWebFetchUrlSourceToolFilter value = new(
@@ -116,10 +148,11 @@ public class BetaManagedAgentsWebFetchUrlSourceToolFilterTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("all");
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType> expectedType =
+            BetaManagedAgentsWebFetchUrlSourceToolFilterType.All;
         List<BetaManagedAgentsWebFetchUrlSourceToolReference> expectedTools = [new("x")];
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.NotNull(value.Tools);
         Assert.Equal(expectedTools.Count, value.Tools.Count);
         for (int i = 0; i < expectedTools.Count; i++)
@@ -133,5 +166,65 @@ public class BetaManagedAgentsWebFetchUrlSourceToolFilterTest : TestBase
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
         Assert.Null(emptyValue.Tools);
+    }
+}
+
+public class BetaManagedAgentsWebFetchUrlSourceToolFilterTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.All)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.None)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except)]
+    public void Validation_Works(BetaManagedAgentsWebFetchUrlSourceToolFilterType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.All)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.None)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only)]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsWebFetchUrlSourceToolFilterType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }

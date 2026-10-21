@@ -677,6 +677,23 @@ public record class Tool : ModelBase
         }
     }
 
+    public ApiEnum<string, ToolType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAgentToolset20260401Params _ => ToolType.AgentToolset20260401,
+                BetaManagedAgentsMcpToolsetParams _ => ToolType.McpToolset,
+                BetaManagedAgentsCustomToolParams _ => ToolType.Custom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ToolType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
     public Tool(BetaManagedAgentsAgentToolset20260401Params value, JsonElement? element = null)
     {
         this.Value = value;
@@ -1006,5 +1023,48 @@ sealed class ToolConverter : JsonConverter<Tool>
     public override void Write(Utf8JsonWriter writer, Tool value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ToolTypeConverter))]
+public enum ToolType
+{
+    AgentToolset20260401,
+    McpToolset,
+    Custom,
+}
+
+sealed class ToolTypeConverter : JsonConverter<ToolType>
+{
+    public override ToolType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "agent_toolset_20260401" => ToolType.AgentToolset20260401,
+            "mcp_toolset" => ToolType.McpToolset,
+            "custom" => ToolType.Custom,
+            _ => (ToolType)(-1),
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, ToolType value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ToolType.AgentToolset20260401 => "agent_toolset_20260401",
+                ToolType.McpToolset => "mcp_toolset",
+                ToolType.Custom => "custom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

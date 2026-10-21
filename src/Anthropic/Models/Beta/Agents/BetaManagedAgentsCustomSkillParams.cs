@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsCustomSkillParams : JsonModel
         init { this._rawData.Set("skill_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsCustomSkillParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsCustomSkillParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -62,11 +59,17 @@ public sealed record class BetaManagedAgentsCustomSkillParams : JsonModel
     public override void Validate()
     {
         _ = this.SkillID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("custom")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Version;
     }
 
-    public BetaManagedAgentsCustomSkillParams() { }
+    public BetaManagedAgentsCustomSkillParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("custom");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -79,6 +82,8 @@ public sealed record class BetaManagedAgentsCustomSkillParams : JsonModel
     public BetaManagedAgentsCustomSkillParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("custom");
     }
 
 #pragma warning disable CS8618
@@ -96,6 +101,13 @@ public sealed record class BetaManagedAgentsCustomSkillParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsCustomSkillParams(string skillID)
+        : this()
+    {
+        this.SkillID = skillID;
+    }
 }
 
 class BetaManagedAgentsCustomSkillParamsFromRaw : IFromRawJson<BetaManagedAgentsCustomSkillParams>
@@ -104,46 +116,4 @@ class BetaManagedAgentsCustomSkillParamsFromRaw : IFromRawJson<BetaManagedAgents
     public BetaManagedAgentsCustomSkillParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsCustomSkillParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsCustomSkillParamsTypeConverter))]
-public enum BetaManagedAgentsCustomSkillParamsType
-{
-    Custom,
-}
-
-sealed class BetaManagedAgentsCustomSkillParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsCustomSkillParamsType>
-{
-    public override BetaManagedAgentsCustomSkillParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "custom" => BetaManagedAgentsCustomSkillParamsType.Custom,
-            _ => (BetaManagedAgentsCustomSkillParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsCustomSkillParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsCustomSkillParamsType.Custom => "custom",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

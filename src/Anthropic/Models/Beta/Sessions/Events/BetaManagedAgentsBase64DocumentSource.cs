@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -46,14 +45,12 @@ public sealed record class BetaManagedAgentsBase64DocumentSource : JsonModel
         init { this._rawData.Set("media_type", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsBase64DocumentSourceType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsBase64DocumentSourceType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,10 +60,16 @@ public sealed record class BetaManagedAgentsBase64DocumentSource : JsonModel
     {
         _ = this.Data;
         _ = this.MediaType;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("base64")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsBase64DocumentSource() { }
+    public BetaManagedAgentsBase64DocumentSource()
+    {
+        this.Type = JsonSerializer.SerializeToElement("base64");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -79,6 +82,8 @@ public sealed record class BetaManagedAgentsBase64DocumentSource : JsonModel
     public BetaManagedAgentsBase64DocumentSource(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("base64");
     }
 
 #pragma warning disable CS8618
@@ -105,46 +110,4 @@ class BetaManagedAgentsBase64DocumentSourceFromRaw
     public BetaManagedAgentsBase64DocumentSource FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsBase64DocumentSource.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsBase64DocumentSourceTypeConverter))]
-public enum BetaManagedAgentsBase64DocumentSourceType
-{
-    Base64,
-}
-
-sealed class BetaManagedAgentsBase64DocumentSourceTypeConverter
-    : JsonConverter<BetaManagedAgentsBase64DocumentSourceType>
-{
-    public override BetaManagedAgentsBase64DocumentSourceType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "base64" => BetaManagedAgentsBase64DocumentSourceType.Base64,
-            _ => (BetaManagedAgentsBase64DocumentSourceType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsBase64DocumentSourceType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsBase64DocumentSourceType.Base64 => "base64",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

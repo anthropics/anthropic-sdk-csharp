@@ -53,30 +53,35 @@ public record class BetaComputerToolUseBlock : ModelBase
         }
     }
 
-    public JsonElement Name
+    public ApiEnum<string, BetaComputerToolUseBlockName> Name
     {
         get
         {
             return this.Value switch
             {
-                BetaComputerKeyToolUseBlock x => x.Name,
-                BetaComputerHoldKeyToolUseBlock x => x.Name,
-                BetaComputerTypeToolUseBlock x => x.Name,
-                BetaComputerCursorPositionToolUseBlock x => x.Name,
-                BetaComputerMouseMoveToolUseBlock x => x.Name,
-                BetaComputerLeftMouseDownToolUseBlock x => x.Name,
-                BetaComputerLeftMouseUpToolUseBlock x => x.Name,
-                BetaComputerLeftClickToolUseBlock x => x.Name,
-                BetaComputerLeftClickDragToolUseBlock x => x.Name,
-                BetaComputerRightClickToolUseBlock x => x.Name,
-                BetaComputerMiddleClickToolUseBlock x => x.Name,
-                BetaComputerDoubleClickToolUseBlock x => x.Name,
-                BetaComputerTripleClickToolUseBlock x => x.Name,
-                BetaComputerScrollToolUseBlock x => x.Name,
-                BetaComputerWaitToolUseBlock x => x.Name,
-                BetaComputerScreenshotToolUseBlock x => x.Name,
-                BetaComputerZoomToolUseBlock x => x.Name,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "name"),
+                BetaComputerKeyToolUseBlock _ => BetaComputerToolUseBlockName.Key,
+                BetaComputerHoldKeyToolUseBlock _ => BetaComputerToolUseBlockName.HoldKey,
+                BetaComputerTypeToolUseBlock _ => BetaComputerToolUseBlockName.Type,
+                BetaComputerCursorPositionToolUseBlock _ =>
+                    BetaComputerToolUseBlockName.CursorPosition,
+                BetaComputerMouseMoveToolUseBlock _ => BetaComputerToolUseBlockName.MouseMove,
+                BetaComputerLeftMouseDownToolUseBlock _ =>
+                    BetaComputerToolUseBlockName.LeftMouseDown,
+                BetaComputerLeftMouseUpToolUseBlock _ => BetaComputerToolUseBlockName.LeftMouseUp,
+                BetaComputerLeftClickToolUseBlock _ => BetaComputerToolUseBlockName.LeftClick,
+                BetaComputerLeftClickDragToolUseBlock _ =>
+                    BetaComputerToolUseBlockName.LeftClickDrag,
+                BetaComputerRightClickToolUseBlock _ => BetaComputerToolUseBlockName.RightClick,
+                BetaComputerMiddleClickToolUseBlock _ => BetaComputerToolUseBlockName.MiddleClick,
+                BetaComputerDoubleClickToolUseBlock _ => BetaComputerToolUseBlockName.DoubleClick,
+                BetaComputerTripleClickToolUseBlock _ => BetaComputerToolUseBlockName.TripleClick,
+                BetaComputerScrollToolUseBlock _ => BetaComputerToolUseBlockName.Scroll,
+                BetaComputerWaitToolUseBlock _ => BetaComputerToolUseBlockName.Wait,
+                BetaComputerScreenshotToolUseBlock _ => BetaComputerToolUseBlockName.Screenshot,
+                BetaComputerZoomToolUseBlock _ => BetaComputerToolUseBlockName.Zoom,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaComputerToolUseBlockName>
+                >(this.Json, "name"),
             };
         }
     }
@@ -1415,5 +1420,94 @@ sealed class BetaComputerToolUseBlockConverter : JsonConverter<BetaComputerToolU
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaComputerToolUseBlockNameConverter))]
+public enum BetaComputerToolUseBlockName
+{
+    Key,
+    HoldKey,
+    Type,
+    CursorPosition,
+    MouseMove,
+    LeftMouseDown,
+    LeftMouseUp,
+    LeftClick,
+    LeftClickDrag,
+    RightClick,
+    MiddleClick,
+    DoubleClick,
+    TripleClick,
+    Scroll,
+    Wait,
+    Screenshot,
+    Zoom,
+}
+
+sealed class BetaComputerToolUseBlockNameConverter : JsonConverter<BetaComputerToolUseBlockName>
+{
+    public override BetaComputerToolUseBlockName Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "key" => BetaComputerToolUseBlockName.Key,
+            "hold_key" => BetaComputerToolUseBlockName.HoldKey,
+            "type" => BetaComputerToolUseBlockName.Type,
+            "cursor_position" => BetaComputerToolUseBlockName.CursorPosition,
+            "mouse_move" => BetaComputerToolUseBlockName.MouseMove,
+            "left_mouse_down" => BetaComputerToolUseBlockName.LeftMouseDown,
+            "left_mouse_up" => BetaComputerToolUseBlockName.LeftMouseUp,
+            "left_click" => BetaComputerToolUseBlockName.LeftClick,
+            "left_click_drag" => BetaComputerToolUseBlockName.LeftClickDrag,
+            "right_click" => BetaComputerToolUseBlockName.RightClick,
+            "middle_click" => BetaComputerToolUseBlockName.MiddleClick,
+            "double_click" => BetaComputerToolUseBlockName.DoubleClick,
+            "triple_click" => BetaComputerToolUseBlockName.TripleClick,
+            "scroll" => BetaComputerToolUseBlockName.Scroll,
+            "wait" => BetaComputerToolUseBlockName.Wait,
+            "screenshot" => BetaComputerToolUseBlockName.Screenshot,
+            "zoom" => BetaComputerToolUseBlockName.Zoom,
+            _ => (BetaComputerToolUseBlockName)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaComputerToolUseBlockName value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaComputerToolUseBlockName.Key => "key",
+                BetaComputerToolUseBlockName.HoldKey => "hold_key",
+                BetaComputerToolUseBlockName.Type => "type",
+                BetaComputerToolUseBlockName.CursorPosition => "cursor_position",
+                BetaComputerToolUseBlockName.MouseMove => "mouse_move",
+                BetaComputerToolUseBlockName.LeftMouseDown => "left_mouse_down",
+                BetaComputerToolUseBlockName.LeftMouseUp => "left_mouse_up",
+                BetaComputerToolUseBlockName.LeftClick => "left_click",
+                BetaComputerToolUseBlockName.LeftClickDrag => "left_click_drag",
+                BetaComputerToolUseBlockName.RightClick => "right_click",
+                BetaComputerToolUseBlockName.MiddleClick => "middle_click",
+                BetaComputerToolUseBlockName.DoubleClick => "double_click",
+                BetaComputerToolUseBlockName.TripleClick => "triple_click",
+                BetaComputerToolUseBlockName.Scroll => "scroll",
+                BetaComputerToolUseBlockName.Wait => "wait",
+                BetaComputerToolUseBlockName.Screenshot => "screenshot",
+                BetaComputerToolUseBlockName.Zoom => "zoom",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

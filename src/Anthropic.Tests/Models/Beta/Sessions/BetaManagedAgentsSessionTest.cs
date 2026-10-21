@@ -28,20 +28,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -54,16 +51,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -73,7 +67,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -89,41 +82,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -138,30 +117,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -175,7 +144,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -186,7 +154,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -194,20 +161,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -234,20 +195,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-            {
-                Agents =
+            Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                 [
                     new BetaManagedAgentsSessionThreadAgent()
                     {
@@ -259,16 +217,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -278,7 +233,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -293,41 +247,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
-                ],
-                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-            },
+                ]
+            ),
             Name = "My First Agent",
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                 new BetaManagedAgentsCustomSkill()
                 {
                     SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                    Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
             ],
@@ -342,29 +282,21 @@ public class BetaManagedAgentsSessionTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         Dictionary<string, string> expectedMetadata = new();
@@ -378,7 +310,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Iteration = 0,
                 OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                 Result = "satisfied",
-                Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
             },
         ];
         List<BetaManagedAgentsSessionResource> expectedResources =
@@ -389,7 +320,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 MountPath = "/uploads/receipt.pdf",
-                Type = BetaManagedAgentsFileResourceType.File,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsGitHubRepositoryResource()
@@ -397,14 +327,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                 ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
-                Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Url = "https://github.com/example-org/example-repo",
-                Checkout = new BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new BetaManagedAgentsBranchCheckout("main"),
             },
         ];
         BetaManagedAgentsSessionStats expectedStats = new()
@@ -415,8 +340,7 @@ public class BetaManagedAgentsSessionTest : TestBase
         ApiEnum<string, BetaManagedAgentsSessionStatus> expectedStatus =
             BetaManagedAgentsSessionStatus.Idle;
         string expectedTitle = "Order #1234 inquiry";
-        ApiEnum<string, BetaManagedAgentsSessionType> expectedType =
-            BetaManagedAgentsSessionType.Session;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         BetaManagedAgentsSessionUsage expectedUsage = new()
         {
@@ -457,7 +381,7 @@ public class BetaManagedAgentsSessionTest : TestBase
         Assert.Equal(expectedStats, model.Stats);
         Assert.Equal(expectedStatus, model.Status);
         Assert.Equal(expectedTitle, model.Title);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
         Assert.Equal(expectedUsage, model.Usage);
         Assert.Equal(expectedVaultIds.Count, model.VaultIds.Count);
@@ -484,20 +408,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -510,16 +431,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -529,7 +447,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -545,41 +462,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -594,30 +497,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -631,7 +524,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -642,7 +534,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -650,20 +541,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -704,20 +589,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -730,16 +612,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -749,7 +628,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -765,41 +643,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -814,30 +678,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -851,7 +705,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -862,7 +715,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -870,20 +722,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -917,20 +763,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                 new()
                 {
                     Name = "example-mcp",
-                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                     Url = "https://example-server.modelcontextprotocol.io/sse",
                 },
             ],
             Model = new()
             {
                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                Effort = new BetaManagedAgentsEffortLow(),
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-            {
-                Agents =
+            Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                 [
                     new BetaManagedAgentsSessionThreadAgent()
                     {
@@ -942,16 +785,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new()
                             {
                                 Name = "example-mcp",
-                                Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                 Url = "https://example-server.modelcontextprotocol.io/sse",
                             },
                         ],
                         Model = new()
                         {
                             ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                            Effort = new BetaManagedAgentsEffortLow(
-                                BetaManagedAgentsEffortLowType.Low
-                            ),
+                            Effort = new BetaManagedAgentsEffortLow(),
                             InferenceGeo = "inference_geo",
                             Speed = Speed.Standard,
                         },
@@ -961,7 +801,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsAnthropicSkill()
                             {
                                 SkillID = "xlsx",
-                                Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                 Version = "1",
                             },
                         ],
@@ -976,41 +815,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                     new BetaManagedAgentsBashToolConfig()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                            BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                     },
                                 ],
                                 DefaultConfig = new()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                        BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                 },
-                                Type =
-                                    BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                             },
                         ],
-                        Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                         Version = 1,
                     },
-                ],
-                Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-            },
+                ]
+            ),
             Name = "My First Agent",
             Skills =
             [
-                new BetaManagedAgentsAnthropicSkill()
-                {
-                    SkillID = "xlsx",
-                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                    Version = "1",
-                },
+                new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                 new BetaManagedAgentsCustomSkill()
                 {
                     SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                    Type = BetaManagedAgentsCustomSkillType.Custom,
                     Version = "2",
                 },
             ],
@@ -1025,29 +850,21 @@ public class BetaManagedAgentsSessionTest : TestBase
                         new BetaManagedAgentsBashToolConfig()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                         },
                     ],
                     DefaultConfig = new()
                     {
                         Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                        ),
+                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                     },
-                    Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                 },
             ],
-            Type = BetaManagedAgentsSessionAgentType.Agent,
             Version = 1,
         };
-        BetaManagedAgentsBudgetLimit expectedBudget = new()
-        {
-            MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-            Type = BetaManagedAgentsBudgetLimitType.Limit,
-        };
+        BetaManagedAgentsBudgetLimit expectedBudget = new(
+            new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
+        );
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         Dictionary<string, string> expectedMetadata = new();
@@ -1061,7 +878,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                 Iteration = 0,
                 OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                 Result = "satisfied",
-                Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
             },
         ];
         List<BetaManagedAgentsSessionResource> expectedResources =
@@ -1072,7 +888,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 MountPath = "/uploads/receipt.pdf",
-                Type = BetaManagedAgentsFileResourceType.File,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsGitHubRepositoryResource()
@@ -1080,14 +895,9 @@ public class BetaManagedAgentsSessionTest : TestBase
                 ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
-                Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Url = "https://github.com/example-org/example-repo",
-                Checkout = new BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new BetaManagedAgentsBranchCheckout("main"),
             },
         ];
         BetaManagedAgentsSessionStats expectedStats = new()
@@ -1098,8 +908,7 @@ public class BetaManagedAgentsSessionTest : TestBase
         ApiEnum<string, BetaManagedAgentsSessionStatus> expectedStatus =
             BetaManagedAgentsSessionStatus.Idle;
         string expectedTitle = "Order #1234 inquiry";
-        ApiEnum<string, BetaManagedAgentsSessionType> expectedType =
-            BetaManagedAgentsSessionType.Session;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("session");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         BetaManagedAgentsSessionUsage expectedUsage = new()
         {
@@ -1140,7 +949,7 @@ public class BetaManagedAgentsSessionTest : TestBase
         Assert.Equal(expectedStats, deserialized.Stats);
         Assert.Equal(expectedStatus, deserialized.Status);
         Assert.Equal(expectedTitle, deserialized.Title);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
         Assert.Equal(expectedUsage, deserialized.Usage);
         Assert.Equal(expectedVaultIds.Count, deserialized.VaultIds.Count);
@@ -1167,20 +976,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -1193,16 +999,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -1212,7 +1015,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -1228,41 +1030,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -1277,30 +1065,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -1314,7 +1092,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -1325,7 +1102,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -1333,20 +1109,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -1381,20 +1151,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -1407,16 +1174,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -1426,7 +1190,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -1442,41 +1205,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -1491,30 +1240,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -1528,7 +1267,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -1539,7 +1277,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -1547,20 +1284,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -1595,20 +1326,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -1621,16 +1349,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -1640,7 +1365,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -1656,41 +1380,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -1705,30 +1415,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -1742,7 +1442,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -1753,7 +1452,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -1761,20 +1459,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -1808,20 +1500,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -1834,16 +1523,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -1853,7 +1539,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -1869,41 +1554,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -1918,30 +1589,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -1955,7 +1616,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -1966,7 +1626,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -1974,20 +1633,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -2024,20 +1677,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -2050,16 +1700,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -2069,7 +1716,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -2085,41 +1731,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -2134,30 +1766,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -2171,7 +1793,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -2182,7 +1803,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -2190,20 +1810,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -2239,20 +1853,17 @@ public class BetaManagedAgentsSessionTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator()
-                {
-                    Agents =
+                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
                     [
                         new BetaManagedAgentsSessionThreadAgent()
                         {
@@ -2265,16 +1876,13 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new()
                                 {
                                     Name = "example-mcp",
-                                    Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                                     Url = "https://example-server.modelcontextprotocol.io/sse",
                                 },
                             ],
                             Model = new()
                             {
                                 ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new BetaManagedAgentsEffortLow(
-                                    BetaManagedAgentsEffortLowType.Low
-                                ),
+                                Effort = new BetaManagedAgentsEffortLow(),
                                 InferenceGeo = "inference_geo",
                                 Speed = Speed.Standard,
                             },
@@ -2284,7 +1892,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                                 new BetaManagedAgentsAnthropicSkill()
                                 {
                                     SkillID = "xlsx",
-                                    Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
                                     Version = "1",
                                 },
                             ],
@@ -2300,41 +1907,27 @@ public class BetaManagedAgentsSessionTest : TestBase
                                         {
                                             Enabled = true,
                                             PermissionPolicy =
-                                                new BetaManagedAgentsAlwaysAllowPolicy(
-                                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                                ),
+                                                new BetaManagedAgentsAlwaysAllowPolicy(),
                                         },
                                     ],
                                     DefaultConfig = new()
                                     {
                                         Enabled = true,
-                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                            BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                        ),
+                                        PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                                     },
-                                    Type =
-                                        BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                                 },
                             ],
-                            Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                             Version = 1,
                         },
-                    ],
-                    Type = BetaManagedAgentsSessionMultiagentCoordinatorType.Coordinator,
-                },
+                    ]
+                ),
                 Name = "My First Agent",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     new BetaManagedAgentsCustomSkill()
                     {
                         SkillID = "skill_011CZkZFNu9hAbo3jZPRgTmx",
-                        Type = BetaManagedAgentsCustomSkillType.Custom,
                         Version = "2",
                     },
                 ],
@@ -2349,30 +1942,20 @@ public class BetaManagedAgentsSessionTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionAgentType.Agent,
                 Version = 1,
             },
             ArchivedAt = null,
-            Budget = new()
-            {
-                MaxListCost = new() { Amount = "2500", Currency = BetaCurrency.Usd },
-                Type = BetaManagedAgentsBudgetLimitType.Limit,
-            },
+            Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Metadata = new Dictionary<string, string>(),
@@ -2386,7 +1969,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     Iteration = 0,
                     OutcomeID = "outc_011CZkZRSw2kEfs6ncTVmjxP",
                     Result = "satisfied",
-                    Type = BetaManagedAgentsOutcomeEvaluationResourceType.OutcomeEvaluation,
                 },
             ],
             Resources =
@@ -2397,7 +1979,6 @@ public class BetaManagedAgentsSessionTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -2405,20 +1986,14 @@ public class BetaManagedAgentsSessionTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             Stats = new() { ActiveSeconds = 0, DurationSeconds = 0 },
             Status = BetaManagedAgentsSessionStatus.Idle,
             Title = "Order #1234 inquiry",
-            Type = BetaManagedAgentsSessionType.Session,
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             Usage = new()
             {
@@ -2494,60 +2069,6 @@ public class BetaManagedAgentsSessionStatusTest : TestBase
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionStatus>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-}
-
-public class BetaManagedAgentsSessionTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionType.Session)]
-    public void Validation_Works(BetaManagedAgentsSessionType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsSessionType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsSessionType.Session)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsSessionType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsSessionType>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsSessionType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

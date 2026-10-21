@@ -67,8 +67,10 @@ public class AnthropicVertexClientAuthTests : IDisposable
             new StringContent("{\"model\":\"claude-sonnet-4-5\",\"max_tokens\":1024}");
     }
 
-    [Fact]
-    public async Task EnvCredentials_NotSentToVertex()
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task EnvCredentials_NotSentToVertex(bool freshOptions)
     {
         HttpRequestMessage? wireRequest = null;
         var handlerMock = new Mock<HttpMessageHandler>();
@@ -99,11 +101,15 @@ public class AnthropicVertexClientAuthTests : IDisposable
                 }
             );
 
-        var client = new AnthropicVertexClient(new FakeVertexCredentials())
+        IAnthropicClient client = new AnthropicVertexClient(new FakeVertexCredentials())
         {
             HttpClient = new HttpClient(handlerMock.Object),
             Handlers = new List<DelegatingHandler>(),
         };
+        if (freshOptions)
+        {
+            client = client.WithOptions(o => new ClientOptions { HttpClient = o.HttpClient });
+        }
 
         await client.WithRawResponse.Execute(
             new HttpRequest<JsonBodyParams> { Method = HttpMethod.Post, Params = new() },

@@ -232,6 +232,51 @@ public class ResourceTest : TestBase
     }
 
     [Fact]
+    public void BetaRbacOrganizationPermissionTypeWorks()
+    {
+        Resource value = new BetaRbacOrganizationPermissionResource(
+            "3c4f5e6d-7a8b-49c0-9d1e-2f3a4b5c6d7e"
+        );
+        Assert.Equal(ResourceType.Organization, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRbacConnectorToolPermissionTypeWorks()
+    {
+        Resource value = new BetaRbacConnectorToolPermissionResource()
+        {
+            ConnectorID = "mcpsrv_01BqrKSXkKPpCJWuLoof7q8m",
+            ToolName = "search_issues",
+        };
+        Assert.Equal(ResourceType.ConnectorTool, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRbacConnectorScopePermissionTypeWorks()
+    {
+        Resource value = new BetaRbacConnectorScopePermissionResource()
+        {
+            ConnectorID = "mcpsrv_01BqrKSXkKPpCJWuLoof7q8m",
+            Scope = "offline_access",
+        };
+        Assert.Equal(ResourceType.ConnectorScope, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRbacConnectorPermissionTypeWorks()
+    {
+        Resource value = new BetaRbacConnectorPermissionResource("mcpsrv_01BqrKSXkKPpCJWuLoof7q8m");
+        Assert.Equal(ResourceType.Connector, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaRbacAllConnectorsPermissionTypeWorks()
+    {
+        Resource value = new BetaRbacAllConnectorsPermissionResource();
+        Assert.Equal(ResourceType.AllConnectors, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Resource value = new(
@@ -246,10 +291,10 @@ public class ResourceTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("organization");
+        ApiEnum<string, ResourceType> expectedType = ResourceType.Organization;
         string expectedConnectorID = "mcpsrv_01BqrKSXkKPpCJWuLoof7q8m";
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedConnectorID, value.ConnectorID);
 
         Resource emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
@@ -270,5 +315,69 @@ public class ResourceTest : TestBase
         );
 
         Assert.Null(mismatchedValue.ConnectorID);
+    }
+}
+
+public class ResourceTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ResourceType.Organization)]
+    [InlineData(ResourceType.ConnectorTool)]
+    [InlineData(ResourceType.ConnectorScope)]
+    [InlineData(ResourceType.Connector)]
+    [InlineData(ResourceType.AllConnectors)]
+    public void Validation_Works(ResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResourceType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ResourceType.Organization)]
+    [InlineData(ResourceType.ConnectorTool)]
+    [InlineData(ResourceType.ConnectorScope)]
+    [InlineData(ResourceType.Connector)]
+    [InlineData(ResourceType.AllConnectors)]
+    public void SerializationRoundtrip_Works(ResourceType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ResourceType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

@@ -36,17 +36,19 @@ public record class BetaThinkingConfigParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaThinkingConfigParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaThinkingConfigEnabled x => x.Type,
-                BetaThinkingConfigDisabled x => x.Type,
-                BetaThinkingConfigBetweenTools x => x.Type,
-                BetaThinkingConfigAdaptive x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaThinkingConfigEnabled _ => BetaThinkingConfigParamType.Enabled,
+                BetaThinkingConfigDisabled _ => BetaThinkingConfigParamType.Disabled,
+                BetaThinkingConfigBetweenTools _ => BetaThinkingConfigParamType.BetweenTools,
+                BetaThinkingConfigAdaptive _ => BetaThinkingConfigParamType.Adaptive,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaThinkingConfigParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -459,5 +461,55 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaThinkingConfigParamTypeConverter))]
+public enum BetaThinkingConfigParamType
+{
+    Enabled,
+    Disabled,
+    BetweenTools,
+    Adaptive,
+}
+
+sealed class BetaThinkingConfigParamTypeConverter : JsonConverter<BetaThinkingConfigParamType>
+{
+    public override BetaThinkingConfigParamType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "enabled" => BetaThinkingConfigParamType.Enabled,
+            "disabled" => BetaThinkingConfigParamType.Disabled,
+            "between_tools" => BetaThinkingConfigParamType.BetweenTools,
+            "adaptive" => BetaThinkingConfigParamType.Adaptive,
+            _ => (BetaThinkingConfigParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaThinkingConfigParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaThinkingConfigParamType.Enabled => "enabled",
+                BetaThinkingConfigParamType.Disabled => "disabled",
+                BetaThinkingConfigParamType.BetweenTools => "between_tools",
+                BetaThinkingConfigParamType.Adaptive => "adaptive",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

@@ -14,25 +14,19 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string expectedMcpServerName = "mcp_server_name";
         string expectedMessage = "message";
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType> expectedType =
-            BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_connection_failed_error");
 
         Assert.Equal(expectedMcpServerName, model.McpServerName);
         Assert.Equal(expectedMessage, model.Message);
         Assert.Equal(expectedRetryStatus, model.RetryStatus);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
 
     [Fact]
@@ -42,10 +36,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -64,10 +55,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -80,16 +68,13 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         string expectedMcpServerName = "mcp_server_name";
         string expectedMessage = "message";
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus expectedRetryStatus =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
-        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType> expectedType =
-            BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError;
+            new BetaManagedAgentsRetryStatusRetrying();
+        JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_connection_failed_error");
 
         Assert.Equal(expectedMcpServerName, deserialized.McpServerName);
         Assert.Equal(expectedMessage, deserialized.Message);
         Assert.Equal(expectedRetryStatus, deserialized.RetryStatus);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
 
     [Fact]
@@ -99,10 +84,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         model.Validate();
@@ -115,10 +97,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTest : TestBase
         {
             McpServerName = "mcp_server_name",
             Message = "message",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            ),
-            Type = BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError,
+            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
         };
 
         BetaManagedAgentsMcpConnectionFailedError copied = new(model);
@@ -133,9 +112,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingValidationWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         value.Validate();
     }
 
@@ -143,9 +120,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedValidationWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         value.Validate();
     }
 
@@ -153,9 +128,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalValidationWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         value.Validate();
     }
 
@@ -163,9 +136,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusRetryingSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusRetrying(
-                BetaManagedAgentsRetryStatusRetryingType.Retrying
-            );
+            new BetaManagedAgentsRetryStatusRetrying();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpConnectionFailedErrorRetryStatus>(
@@ -180,9 +151,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusExhaustedSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusExhausted(
-                BetaManagedAgentsRetryStatusExhaustedType.Exhausted
-            );
+            new BetaManagedAgentsRetryStatusExhausted();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpConnectionFailedErrorRetryStatus>(
@@ -197,9 +166,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
     public void BetaManagedAgentsRetryStatusTerminalSerializationRoundtripWorks()
     {
         BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
-            new BetaManagedAgentsRetryStatusTerminal(
-                BetaManagedAgentsRetryStatusTerminalType.Terminal
-            );
+            new BetaManagedAgentsRetryStatusTerminal();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized =
             JsonSerializer.Deserialize<BetaManagedAgentsMcpConnectionFailedErrorRetryStatus>(
@@ -209,16 +176,77 @@ public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTest : TestBase
 
         Assert.Equal(value, deserialized);
     }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusRetryingTypeWorks()
+    {
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusRetrying();
+        Assert.Equal(
+            BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Retrying,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusExhaustedTypeWorks()
+    {
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusExhausted();
+        Assert.Equal(
+            BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Exhausted,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaManagedAgentsRetryStatusTerminalTypeWorks()
+    {
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value =
+            new BetaManagedAgentsRetryStatusTerminal();
+        Assert.Equal(
+            BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Terminal,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatus value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "retrying"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType> expectedType =
+            BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Retrying;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatus emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
 }
 
-public class BetaManagedAgentsMcpConnectionFailedErrorTypeTest : TestBase
+public class BetaManagedAgentsMcpConnectionFailedErrorRetryStatusTypeTest : TestBase
 {
     [Theory]
-    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError)]
-    public void Validation_Works(BetaManagedAgentsMcpConnectionFailedErrorType rawValue)
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Terminal)]
+    public void Validation_Works(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType> value = rawValue;
         value.Validate();
     }
 
@@ -226,7 +254,7 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTypeTest : TestBase
     public void InvalidEnumValidationThrows_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
 
         Assert.NotNull(value);
@@ -234,15 +262,19 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorType.McpConnectionFailedError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMcpConnectionFailedErrorType rawValue)
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Retrying)]
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Exhausted)]
+    [InlineData(BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType.Terminal)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType rawValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType> value = rawValue;
+        ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType> value = rawValue;
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
@@ -252,11 +284,11 @@ public class BetaManagedAgentsMcpConnectionFailedErrorTypeTest : TestBase
     public void InvalidEnumSerializationRoundtrip_Works()
     {
         var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType>
         >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorType>
+            ApiEnum<string, BetaManagedAgentsMcpConnectionFailedErrorRetryStatusType>
         >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);

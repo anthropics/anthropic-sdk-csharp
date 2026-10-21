@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -50,14 +50,12 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEventParams : Js
         init { this._rawData.Set("tool_use_id", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -81,11 +79,22 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEventParams : Js
     {
         this.Result.Validate();
         _ = this.ToolUseID;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("user.tool_confirmation")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.DenyMessage;
     }
 
-    public BetaManagedAgentsUserToolConfirmationEventParams() { }
+    public BetaManagedAgentsUserToolConfirmationEventParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.tool_confirmation");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -100,6 +109,8 @@ public sealed record class BetaManagedAgentsUserToolConfirmationEventParams : Js
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.tool_confirmation");
     }
 
 #pragma warning disable CS8618
@@ -143,7 +154,7 @@ sealed class BetaManagedAgentsUserToolConfirmationEventParamsResultConverter
 {
     public override BetaManagedAgentsUserToolConfirmationEventParamsResult Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -167,50 +178,6 @@ sealed class BetaManagedAgentsUserToolConfirmationEventParamsResultConverter
             {
                 BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow => "allow",
                 BetaManagedAgentsUserToolConfirmationEventParamsResult.Deny => "deny",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUserToolConfirmationEventParamsTypeConverter))]
-public enum BetaManagedAgentsUserToolConfirmationEventParamsType
-{
-    UserToolConfirmation,
-}
-
-sealed class BetaManagedAgentsUserToolConfirmationEventParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsUserToolConfirmationEventParamsType>
-{
-    public override BetaManagedAgentsUserToolConfirmationEventParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "user.tool_confirmation" =>
-                BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation,
-            _ => (BetaManagedAgentsUserToolConfirmationEventParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUserToolConfirmationEventParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUserToolConfirmationEventParamsType.UserToolConfirmation =>
-                    "user.tool_confirmation",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

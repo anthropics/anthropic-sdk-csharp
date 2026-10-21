@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -28,14 +27,12 @@ namespace Anthropic.Models.Beta.MemoryStores.Memories;
 )]
 public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsMemoryPreconditionFailedErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMemoryPreconditionFailedErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -65,11 +62,22 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("memory_precondition_failed_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Message;
     }
 
-    public BetaManagedAgentsMemoryPreconditionFailedError() { }
+    public BetaManagedAgentsMemoryPreconditionFailedError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory_precondition_failed_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -84,6 +92,8 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory_precondition_failed_error");
     }
 
 #pragma warning disable CS8618
@@ -101,15 +111,6 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsMemoryPreconditionFailedError(
-        ApiEnum<string, BetaManagedAgentsMemoryPreconditionFailedErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsMemoryPreconditionFailedErrorFromRaw
@@ -119,48 +120,4 @@ class BetaManagedAgentsMemoryPreconditionFailedErrorFromRaw
     public BetaManagedAgentsMemoryPreconditionFailedError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMemoryPreconditionFailedError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMemoryPreconditionFailedErrorTypeConverter))]
-public enum BetaManagedAgentsMemoryPreconditionFailedErrorType
-{
-    MemoryPreconditionFailedError,
-}
-
-sealed class BetaManagedAgentsMemoryPreconditionFailedErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsMemoryPreconditionFailedErrorType>
-{
-    public override BetaManagedAgentsMemoryPreconditionFailedErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory_precondition_failed_error" =>
-                BetaManagedAgentsMemoryPreconditionFailedErrorType.MemoryPreconditionFailedError,
-            _ => (BetaManagedAgentsMemoryPreconditionFailedErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMemoryPreconditionFailedErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMemoryPreconditionFailedErrorType.MemoryPreconditionFailedError =>
-                    "memory_precondition_failed_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -26,7 +26,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -51,7 +50,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -82,7 +80,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -117,7 +114,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -149,7 +145,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -180,7 +175,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],
@@ -261,7 +255,6 @@ public class BetaManagedAgentsMultiagent20261001ParamsTest : TestBase
                     new BetaManagedAgentsAgentParams()
                     {
                         ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                        Type = BetaManagedAgentsAgentParamsType.Agent,
                         Version = 1,
                     },
                 ],

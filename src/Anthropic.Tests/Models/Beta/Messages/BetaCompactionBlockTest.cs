@@ -256,6 +256,24 @@ public class ToolChangeTest : TestBase
     }
 
     [Fact]
+    public void BetaResponseToolAdditionBlockTypeWorks()
+    {
+        ToolChange value = new BetaResponseToolAdditionBlock(
+            new BetaResponseToolChangeToolReference("name")
+        );
+        Assert.Equal(ToolChangeType.ToolAddition, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaResponseToolRemovalBlockTypeWorks()
+    {
+        ToolChange value = new BetaResponseToolRemovalBlock(
+            new BetaResponseToolChangeToolReference("name")
+        );
+        Assert.Equal(ToolChangeType.ToolRemoval, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ToolChange value = new(
@@ -269,12 +287,70 @@ public class ToolChangeTest : TestBase
         );
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
-        JsonElement expectedType = JsonSerializer.SerializeToElement("tool_addition");
+        ApiEnum<string, ToolChangeType> expectedType = ToolChangeType.ToolAddition;
 
-        Assert.True(JsonElement.DeepEquals(expectedType, value.Type));
+        Assert.Equal(expectedType, value.Type);
 
         ToolChange emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class ToolChangeTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(ToolChangeType.ToolAddition)]
+    [InlineData(ToolChangeType.ToolRemoval)]
+    public void Validation_Works(ToolChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolChangeType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolChangeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(ToolChangeType.ToolAddition)]
+    [InlineData(ToolChangeType.ToolRemoval)]
+    public void SerializationRoundtrip_Works(ToolChangeType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, ToolChangeType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChangeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, ToolChangeType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChangeType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

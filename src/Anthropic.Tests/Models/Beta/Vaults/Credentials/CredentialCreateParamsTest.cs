@@ -21,7 +21,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
@@ -34,7 +33,6 @@ public class CredentialCreateParamsTest : TestBase
         {
             Token = "bearer_exampletoken",
             McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-            Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
         };
         string expectedDisplayName = "Example credential";
         Dictionary<string, string> expectedMetadata = new() { { "environment", "production" } };
@@ -74,7 +72,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             DisplayName = "Example credential",
         };
@@ -97,7 +94,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             DisplayName = "Example credential",
 
@@ -125,7 +121,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
@@ -157,7 +152,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -178,7 +172,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
@@ -201,7 +194,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
         };
 
@@ -228,7 +220,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -256,7 +247,6 @@ public class CredentialCreateParamsTest : TestBase
             {
                 Token = "bearer_exampletoken",
                 McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-                Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
             },
             DisplayName = "Example credential",
             Metadata = new Dictionary<string, string>() { { "environment", "production" } },
@@ -279,16 +269,13 @@ public class AuthTest : TestBase
         {
             AccessToken = "x",
             McpServerUrl = "x",
-            Type = BetaManagedAgentsMcpOAuthCreateParamsType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "x",
                 RefreshToken = "x",
                 TokenEndpoint = "x",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                    BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
                 Resource = "x",
                 Scope = "x",
             },
@@ -303,7 +290,6 @@ public class AuthTest : TestBase
         {
             Token = "bearer_exampletoken",
             McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-            Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
         };
         value.Validate();
     }
@@ -313,12 +299,9 @@ public class AuthTest : TestBase
     {
         Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
         {
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretName = "x",
             SecretValue = "x",
-            Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
         };
         value.Validate();
@@ -331,16 +314,13 @@ public class AuthTest : TestBase
         {
             AccessToken = "x",
             McpServerUrl = "x",
-            Type = BetaManagedAgentsMcpOAuthCreateParamsType.McpOAuth,
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
                 ClientID = "x",
                 RefreshToken = "x",
                 TokenEndpoint = "x",
-                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(
-                    BetaManagedAgentsTokenEndpointAuthNoneParamType.None
-                ),
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
                 Resource = "x",
                 Scope = "x",
             },
@@ -358,7 +338,6 @@ public class AuthTest : TestBase
         {
             Token = "bearer_exampletoken",
             McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
-            Type = BetaManagedAgentsStaticBearerCreateParamsType.StaticBearer,
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Auth>(element, ModelBase.SerializerOptions);
@@ -371,12 +350,9 @@ public class AuthTest : TestBase
     {
         Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
         {
-            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(
-                BetaManagedAgentsUnrestrictedCredentialNetworkingParamsType.Unrestricted
-            ),
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
             SecretName = "x",
             SecretValue = "x",
-            Type = BetaManagedAgentsEnvironmentVariableCreateParamsType.EnvironmentVariable,
             InjectionLocation = new() { Body = true, Header = true },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -386,13 +362,59 @@ public class AuthTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsMcpOAuthCreateParamsTypeWorks()
+    {
+        Auth value = new BetaManagedAgentsMcpOAuthCreateParams()
+        {
+            AccessToken = "x",
+            McpServerUrl = "x",
+            ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            Refresh = new()
+            {
+                ClientID = "x",
+                RefreshToken = "x",
+                TokenEndpoint = "x",
+                TokenEndpointAuth = new BetaManagedAgentsTokenEndpointAuthNoneParam(),
+                Resource = "x",
+                Scope = "x",
+            },
+        };
+        Assert.Equal(AuthType.McpOAuth, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsStaticBearerCreateParamsTypeWorks()
+    {
+        Auth value = new BetaManagedAgentsStaticBearerCreateParams()
+        {
+            Token = "bearer_exampletoken",
+            McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
+        };
+        Assert.Equal(AuthType.StaticBearer, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsEnvironmentVariableCreateParamsTypeWorks()
+    {
+        Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
+        {
+            Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
+            SecretName = "x",
+            SecretValue = "x",
+            InjectionLocation = new() { Body = true, Header = true },
+        };
+        Assert.Equal(AuthType.EnvironmentVariable, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         Auth value = new(
             JsonSerializer.Deserialize<JsonElement>(
                 """
                 {
-                  "mcp_server_url": "x"
+                  "mcp_server_url": "x",
+                  "type": "static_bearer"
                 }
                 """
             )
@@ -400,12 +422,15 @@ public class AuthTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedMcpServerUrl = "x";
+        ApiEnum<string, AuthType> expectedType = AuthType.StaticBearer;
 
         Assert.Equal(expectedMcpServerUrl, value.McpServerUrl);
+        Assert.Equal(expectedType, value.Type);
 
         Auth emptyValue = new(JsonSerializer.Deserialize<JsonElement>("{}"));
 
         Assert.Null(emptyValue.McpServerUrl);
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
 
         Auth mismatchedValue = new(
             JsonSerializer.Deserialize<JsonElement>(
@@ -420,5 +445,65 @@ public class AuthTest : TestBase
         );
 
         Assert.Null(mismatchedValue.McpServerUrl);
+    }
+}
+
+public class AuthTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(AuthType.McpOAuth)]
+    [InlineData(AuthType.StaticBearer)]
+    [InlineData(AuthType.EnvironmentVariable)]
+    public void Validation_Works(AuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, AuthType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(AuthType.McpOAuth)]
+    [InlineData(AuthType.StaticBearer)]
+    [InlineData(AuthType.EnvironmentVariable)]
+    public void SerializationRoundtrip_Works(AuthType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, AuthType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AuthType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<ApiEnum<string, AuthType>>(
+            JsonSerializer.SerializeToElement("invalid value"),
+            ModelBase.SerializerOptions
+        );
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AuthType>>(
+            json,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
     }
 }

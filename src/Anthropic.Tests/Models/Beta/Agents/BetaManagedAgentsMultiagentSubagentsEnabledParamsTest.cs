@@ -16,9 +16,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
             PredefinedAgents =
             [
                 "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
+                new BetaManagedAgentsMultiagentSelfParams(),
             ],
         };
 
@@ -28,9 +26,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
         List<BetaManagedAgentsMultiagentPredefinedAgentParams> expectedPredefinedAgents =
         [
             "agent_011CZkYqphY8vELVzwCUpqiQ",
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
-            ),
+            new BetaManagedAgentsMultiagentSelfParams(),
         ];
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -52,9 +48,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
             PredefinedAgents =
             [
                 "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
+                new BetaManagedAgentsMultiagentSelfParams(),
             ],
         };
 
@@ -77,9 +71,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
             PredefinedAgents =
             [
                 "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
+                new BetaManagedAgentsMultiagentSelfParams(),
             ],
         };
 
@@ -97,9 +89,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
         List<BetaManagedAgentsMultiagentPredefinedAgentParams> expectedPredefinedAgents =
         [
             "agent_011CZkYqphY8vELVzwCUpqiQ",
-            new BetaManagedAgentsMultiagentSelfParams(
-                BetaManagedAgentsMultiagentSelfParamsType.Self
-            ),
+            new BetaManagedAgentsMultiagentSelfParams(),
         ];
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -121,9 +111,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
             PredefinedAgents =
             [
                 "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
+                new BetaManagedAgentsMultiagentSelfParams(),
             ],
         };
 
@@ -185,9 +173,7 @@ public class BetaManagedAgentsMultiagentSubagentsEnabledParamsTest : TestBase
             PredefinedAgents =
             [
                 "agent_011CZkYqphY8vELVzwCUpqiQ",
-                new BetaManagedAgentsMultiagentSelfParams(
-                    BetaManagedAgentsMultiagentSelfParamsType.Self
-                ),
+                new BetaManagedAgentsMultiagentSelfParams(),
             ],
         };
 

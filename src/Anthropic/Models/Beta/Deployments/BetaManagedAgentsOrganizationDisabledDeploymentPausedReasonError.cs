@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -21,20 +20,12 @@ namespace Anthropic.Models.Beta.Deployments;
 public sealed record class BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError
     : JsonModel
 {
-    public required ApiEnum<
-        string,
-        BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType
-    > Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<
-                    string,
-                    BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType
-                >
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -42,10 +33,21 @@ public sealed record class BetaManagedAgentsOrganizationDisabledDeploymentPaused
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("organization_disabled_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError() { }
+    public BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("organization_disabled_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -60,6 +62,8 @@ public sealed record class BetaManagedAgentsOrganizationDisabledDeploymentPaused
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("organization_disabled_error");
     }
 
 #pragma warning disable CS8618
@@ -79,15 +83,6 @@ public sealed record class BetaManagedAgentsOrganizationDisabledDeploymentPaused
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorFromRaw
@@ -97,50 +92,4 @@ class BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(
-    typeof(BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorTypeConverter)
-)]
-public enum BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType
-{
-    OrganizationDisabledError,
-}
-
-sealed class BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "organization_disabled_error" =>
-                BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType.OrganizationDisabledError,
-            _ => (BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType.OrganizationDisabledError =>
-                    "organization_disabled_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

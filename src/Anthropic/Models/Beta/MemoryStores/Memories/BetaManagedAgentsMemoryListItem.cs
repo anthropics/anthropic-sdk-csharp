@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.MemoryStores.Memories;
 
@@ -38,6 +38,21 @@ public record class BetaManagedAgentsMemoryListItem : ModelBase
                 BetaManagedAgentsMemory x => x.Path,
                 BetaManagedAgentsMemoryPrefix x => x.Path,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "path"),
+            };
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsMemoryListItemType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsMemory _ => BetaManagedAgentsMemoryListItemType.Memory,
+                BetaManagedAgentsMemoryPrefix _ => BetaManagedAgentsMemoryListItemType.MemoryPrefix,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMemoryListItemType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -130,8 +145,8 @@ public record class BetaManagedAgentsMemoryListItem : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsMemory> betaManagedAgentsMemory,
-        System::Action<BetaManagedAgentsMemoryPrefix> prefix
+        Action<BetaManagedAgentsMemory> betaManagedAgentsMemory,
+        Action<BetaManagedAgentsMemoryPrefix> prefix
     )
     {
         switch (this.Value)
@@ -171,8 +186,8 @@ public record class BetaManagedAgentsMemoryListItem : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsMemory, T> betaManagedAgentsMemory,
-        System::Func<BetaManagedAgentsMemoryPrefix, T> prefix
+        Func<BetaManagedAgentsMemory, T> betaManagedAgentsMemory,
+        Func<BetaManagedAgentsMemoryPrefix, T> prefix
     )
     {
         return this.Value switch
@@ -249,7 +264,7 @@ sealed class BetaManagedAgentsMemoryListItemConverter
 {
     public override BetaManagedAgentsMemoryListItem? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -320,5 +335,50 @@ sealed class BetaManagedAgentsMemoryListItemConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMemoryListItemTypeConverter))]
+public enum BetaManagedAgentsMemoryListItemType
+{
+    Memory,
+    MemoryPrefix,
+}
+
+sealed class BetaManagedAgentsMemoryListItemTypeConverter
+    : JsonConverter<BetaManagedAgentsMemoryListItemType>
+{
+    public override BetaManagedAgentsMemoryListItemType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "memory" => BetaManagedAgentsMemoryListItemType.Memory,
+            "memory_prefix" => BetaManagedAgentsMemoryListItemType.MemoryPrefix,
+            _ => (BetaManagedAgentsMemoryListItemType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMemoryListItemType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMemoryListItemType.Memory => "memory",
+                BetaManagedAgentsMemoryListItemType.MemoryPrefix => "memory_prefix",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

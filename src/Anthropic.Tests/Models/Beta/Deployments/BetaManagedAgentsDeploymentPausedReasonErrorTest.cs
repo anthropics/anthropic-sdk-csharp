@@ -1,5 +1,6 @@
 using System.Text.Json;
 using Anthropic.Core;
+using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Deployments;
 
 namespace Anthropic.Tests.Models.Beta.Deployments;
@@ -10,9 +11,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void EnvironmentArchivedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonErrorType.EnvironmentArchivedError
-            );
+            new BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -20,7 +19,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void AgentArchivedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsAgentArchivedDeploymentPausedReasonError(Type.AgentArchivedError);
+            new BetaManagedAgentsAgentArchivedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -28,9 +27,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void EnvironmentNotFoundValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType.EnvironmentNotFoundError
-            );
+            new BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -38,9 +35,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void VaultNotFoundValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsVaultNotFoundDeploymentPausedReasonErrorType.VaultNotFoundError
-            );
+            new BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -48,9 +43,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void FileNotFoundValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsFileNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType.FileNotFoundError
-            );
+            new BetaManagedAgentsFileNotFoundDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -58,9 +51,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SessionResourceNotFoundValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError
-            );
+            new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -68,9 +59,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void WorkspaceArchivedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType.WorkspaceArchivedError
-            );
+            new BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -78,9 +67,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void OrganizationDisabledValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError(
-                BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType.OrganizationDisabledError
-            );
+            new BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -88,9 +75,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void MemoryStoreArchivedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonErrorType.MemoryStoreArchivedError
-            );
+            new BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -98,9 +83,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SkillNotFoundValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType.SkillNotFoundError
-            );
+            new BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -108,9 +91,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void VaultArchivedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsVaultArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsVaultArchivedDeploymentPausedReasonErrorType.VaultArchivedError
-            );
+            new BetaManagedAgentsVaultArchivedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -118,9 +99,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void UnknownValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsUnknownDeploymentPausedReasonError(
-                BetaManagedAgentsUnknownDeploymentPausedReasonErrorType.UnknownError
-            );
+            new BetaManagedAgentsUnknownDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -128,9 +107,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SelfHostedResourcesUnsupportedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError(
-                BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError
-            );
+            new BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -138,9 +115,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void McpEgressBlockedValidationWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError(
-                BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType.McpEgressBlockedError
-            );
+            new BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError();
         value.Validate();
     }
 
@@ -148,9 +123,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void EnvironmentArchivedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonErrorType.EnvironmentArchivedError
-            );
+            new BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -164,7 +137,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void AgentArchivedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsAgentArchivedDeploymentPausedReasonError(Type.AgentArchivedError);
+            new BetaManagedAgentsAgentArchivedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -178,9 +151,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void EnvironmentNotFoundSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonErrorType.EnvironmentNotFoundError
-            );
+            new BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -194,9 +165,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void VaultNotFoundSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsVaultNotFoundDeploymentPausedReasonErrorType.VaultNotFoundError
-            );
+            new BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -210,9 +179,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void FileNotFoundSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsFileNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsFileNotFoundDeploymentPausedReasonErrorType.FileNotFoundError
-            );
+            new BetaManagedAgentsFileNotFoundDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -226,9 +193,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SessionResourceNotFoundSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonErrorType.SessionResourceNotFoundError
-            );
+            new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -242,9 +207,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void WorkspaceArchivedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonErrorType.WorkspaceArchivedError
-            );
+            new BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -258,9 +221,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void OrganizationDisabledSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError(
-                BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonErrorType.OrganizationDisabledError
-            );
+            new BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -274,9 +235,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void MemoryStoreArchivedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonErrorType.MemoryStoreArchivedError
-            );
+            new BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -290,9 +249,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SkillNotFoundSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError(
-                BetaManagedAgentsSkillNotFoundDeploymentPausedReasonErrorType.SkillNotFoundError
-            );
+            new BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -306,9 +263,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void VaultArchivedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsVaultArchivedDeploymentPausedReasonError(
-                BetaManagedAgentsVaultArchivedDeploymentPausedReasonErrorType.VaultArchivedError
-            );
+            new BetaManagedAgentsVaultArchivedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -322,9 +277,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void UnknownSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsUnknownDeploymentPausedReasonError(
-                BetaManagedAgentsUnknownDeploymentPausedReasonErrorType.UnknownError
-            );
+            new BetaManagedAgentsUnknownDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -338,9 +291,7 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void SelfHostedResourcesUnsupportedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError(
-                BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError
-            );
+            new BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
@@ -354,14 +305,276 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTest : TestBase
     public void McpEgressBlockedSerializationRoundtripWorks()
     {
         BetaManagedAgentsDeploymentPausedReasonError value =
-            new BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError(
-                BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonErrorType.McpEgressBlockedError
-            );
+            new BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsDeploymentPausedReasonError>(
             element,
             ModelBase.SerializerOptions
         );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void EnvironmentArchivedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsEnvironmentArchivedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void AgentArchivedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsAgentArchivedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void EnvironmentNotFoundTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsEnvironmentNotFoundDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void VaultNotFoundTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsVaultNotFoundDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void FileNotFoundTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsFileNotFoundDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void SessionResourceNotFoundTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsSessionResourceNotFoundDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void WorkspaceArchivedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsWorkspaceArchivedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void OrganizationDisabledTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsOrganizationDisabledDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void MemoryStoreArchivedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsMemoryStoreArchivedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void SkillNotFoundTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsSkillNotFoundDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void VaultArchivedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsVaultArchivedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsUnknownDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void SelfHostedResourcesUnsupportedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsSelfHostedResourcesUnsupportedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void McpEgressBlockedTypeWorks()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value =
+            new BetaManagedAgentsMcpEgressBlockedDeploymentPausedReasonError();
+        Assert.Equal(
+            BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError,
+            value.Type.Value()
+        );
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaManagedAgentsDeploymentPausedReasonError value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "environment_archived_error"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType> expectedType =
+            BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaManagedAgentsDeploymentPausedReasonError emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaManagedAgentsDeploymentPausedReasonErrorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError)]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError
+    )]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError)]
+    public void Validation_Works(BetaManagedAgentsDeploymentPausedReasonErrorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError)]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError)]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError
+    )]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError)]
+    public void SerializationRoundtrip_Works(
+        BetaManagedAgentsDeploymentPausedReasonErrorType rawValue
+    )
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
+        >(json, ModelBase.SerializerOptions);
 
         Assert.Equal(value, deserialized);
     }

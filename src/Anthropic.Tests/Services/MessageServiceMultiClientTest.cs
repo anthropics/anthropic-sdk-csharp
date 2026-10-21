@@ -31,7 +31,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
             new MessageCreateParams()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages = [new UserMessageParam { Content = "Hello, world" }],
                 Model = modelName,
             },
             TestContext.Current.CancellationToken
@@ -53,7 +53,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages = [new UserMessageParam { Content = "Hello, world" }],
                 Model = modelName,
             },
             TestContext.Current.CancellationToken
@@ -75,11 +75,7 @@ public class MessageServiceMultiClientTest : MessageServiceTest
     {
         client = c;
         var messageTokensCount = await client.Messages.CountTokens(
-            new()
-            {
-                Messages = [new() { Content = "string", Role = Role.User }],
-                Model = modelName,
-            },
+            new() { Messages = [new UserMessageParam { Content = "string" }], Model = modelName },
             TestContext.Current.CancellationToken
         );
         messageTokensCount.Validate();

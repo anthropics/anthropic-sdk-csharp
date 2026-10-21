@@ -188,7 +188,7 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicGoogleCloudClient(_googleCloudConfig, modifier(_options));
+        return new AnthropicGoogleCloudClient(_googleCloudConfig, _options.Apply(modifier));
     }
 
     internal static string DeriveWorkspaceBaseUrl(

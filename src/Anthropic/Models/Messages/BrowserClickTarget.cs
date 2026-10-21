@@ -28,15 +28,17 @@ public record class BrowserClickTarget : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BrowserClickTargetType> Type
     {
         get
         {
             return this.Value switch
             {
-                BrowserCoordinateTarget x => x.Type,
-                BrowserRefTarget x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BrowserCoordinateTarget _ => BrowserClickTargetType.Coordinate,
+                BrowserRefTarget _ => BrowserClickTargetType.Ref,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BrowserClickTargetType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -303,5 +305,49 @@ sealed class BrowserClickTargetConverter : JsonConverter<BrowserClickTarget>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BrowserClickTargetTypeConverter))]
+public enum BrowserClickTargetType
+{
+    Coordinate,
+    Ref,
+}
+
+sealed class BrowserClickTargetTypeConverter : JsonConverter<BrowserClickTargetType>
+{
+    public override BrowserClickTargetType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "coordinate" => BrowserClickTargetType.Coordinate,
+            "ref" => BrowserClickTargetType.Ref,
+            _ => (BrowserClickTargetType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BrowserClickTargetType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BrowserClickTargetType.Coordinate => "coordinate",
+                BrowserClickTargetType.Ref => "ref",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

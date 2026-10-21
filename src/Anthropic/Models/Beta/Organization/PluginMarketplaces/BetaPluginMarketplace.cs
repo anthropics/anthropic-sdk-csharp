@@ -311,15 +311,18 @@ public record class Owner : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, OwnerTypeValue> Type
     {
         get
         {
             return this.Value switch
             {
-                Plugins::BetaPluginOwnerOrganization x => x.Type,
-                Plugins::BetaPluginOwnerUser x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                Plugins::BetaPluginOwnerOrganization _ => OwnerTypeValue.Organization,
+                Plugins::BetaPluginOwnerUser _ => OwnerTypeValue.User,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, OwnerTypeValue>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -584,6 +587,50 @@ sealed class OwnerConverter : JsonConverter<Owner>
     public override void Write(Utf8JsonWriter writer, Owner value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(OwnerTypeValueConverter))]
+public enum OwnerTypeValue
+{
+    Organization,
+    User,
+}
+
+sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
+{
+    public override OwnerTypeValue Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => OwnerTypeValue.Organization,
+            "user" => OwnerTypeValue.User,
+            _ => (OwnerTypeValue)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        OwnerTypeValue value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                OwnerTypeValue.Organization => "organization",
+                OwnerTypeValue.User => "user",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

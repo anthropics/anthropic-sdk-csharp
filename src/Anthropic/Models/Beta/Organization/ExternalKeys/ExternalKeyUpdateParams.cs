@@ -267,16 +267,19 @@ public record class ExternalKeyUpdateParamsProviderConfig : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaAwsExternalKeyConfig x => x.Type,
-                BetaGcpExternalKeyConfig x => x.Type,
-                BetaAzureExternalKeyConfigParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaAwsExternalKeyConfig _ => ExternalKeyUpdateParamsProviderConfigType.Aws,
+                BetaGcpExternalKeyConfig _ => ExternalKeyUpdateParamsProviderConfigType.Gcp,
+                BetaAzureExternalKeyConfigParam _ =>
+                    ExternalKeyUpdateParamsProviderConfigType.Azure,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -637,5 +640,53 @@ sealed class ExternalKeyUpdateParamsProviderConfigConverter
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ExternalKeyUpdateParamsProviderConfigTypeConverter))]
+public enum ExternalKeyUpdateParamsProviderConfigType
+{
+    Aws,
+    Gcp,
+    Azure,
+}
+
+sealed class ExternalKeyUpdateParamsProviderConfigTypeConverter
+    : JsonConverter<ExternalKeyUpdateParamsProviderConfigType>
+{
+    public override ExternalKeyUpdateParamsProviderConfigType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "aws" => ExternalKeyUpdateParamsProviderConfigType.Aws,
+            "gcp" => ExternalKeyUpdateParamsProviderConfigType.Gcp,
+            "azure" => ExternalKeyUpdateParamsProviderConfigType.Azure,
+            _ => (ExternalKeyUpdateParamsProviderConfigType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ExternalKeyUpdateParamsProviderConfigType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ExternalKeyUpdateParamsProviderConfigType.Aws => "aws",
+                ExternalKeyUpdateParamsProviderConfigType.Gcp => "gcp",
+                ExternalKeyUpdateParamsProviderConfigType.Azure => "azure",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

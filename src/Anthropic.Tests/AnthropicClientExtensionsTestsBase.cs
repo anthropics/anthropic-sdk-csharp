@@ -267,9 +267,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "text": "Tell me a story"
                     }]
                 }],
-                "max_tokens": 100,
-                "temperature": 0.5,
-                "top_p": 0.75
+                "max_tokens": 100
             }
             """,
             actualResponse: """
@@ -293,12 +291,7 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatOptions options = new()
-        {
-            Temperature = 0.5f,
-            MaxOutputTokens = 100,
-            TopP = 0.75f,
-        };
+        ChatOptions options = new() { MaxOutputTokens = 100 };
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Tell me a story",
@@ -1648,7 +1641,7 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
-    public async Task GetResponseAsync_WithTopK()
+    public async Task GetResponseAsync_IgnoresSamplingOptions()
     {
         VerbatimHttpHandler handler = new(
             expectedRequest: """
@@ -1661,8 +1654,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                         "text": "Test"
                     }]
                 }],
-                "max_tokens": 1024,
-                "top_k": 50
+                "max_tokens": 1024
             }
             """,
             actualResponse: """
@@ -1686,7 +1678,12 @@ public abstract class AnthropicClientExtensionsTestsBase
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
-        ChatOptions options = new() { TopK = 50 };
+        ChatOptions options = new()
+        {
+            Temperature = 0.5f,
+            TopK = 50,
+            TopP = 0.75f,
+        };
 
         ChatResponse response = await chatClient.GetResponseAsync(
             "Test",

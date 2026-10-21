@@ -29,17 +29,23 @@ public record class BetaManagedAgentsWebFetchUrlSourceToolFilter : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsWebFetchUrlSourceAll x => x.Type,
-                BetaManagedAgentsWebFetchUrlSourceNone x => x.Type,
-                BetaManagedAgentsWebFetchUrlSourceOnly x => x.Type,
-                BetaManagedAgentsWebFetchUrlSourceExcept x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsWebFetchUrlSourceAll _ =>
+                    BetaManagedAgentsWebFetchUrlSourceToolFilterType.All,
+                BetaManagedAgentsWebFetchUrlSourceNone _ =>
+                    BetaManagedAgentsWebFetchUrlSourceToolFilterType.None,
+                BetaManagedAgentsWebFetchUrlSourceOnly _ =>
+                    BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only,
+                BetaManagedAgentsWebFetchUrlSourceExcept _ =>
+                    BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -471,5 +477,56 @@ sealed class BetaManagedAgentsWebFetchUrlSourceToolFilterConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsWebFetchUrlSourceToolFilterTypeConverter))]
+public enum BetaManagedAgentsWebFetchUrlSourceToolFilterType
+{
+    All,
+    None,
+    Only,
+    Except,
+}
+
+sealed class BetaManagedAgentsWebFetchUrlSourceToolFilterTypeConverter
+    : JsonConverter<BetaManagedAgentsWebFetchUrlSourceToolFilterType>
+{
+    public override BetaManagedAgentsWebFetchUrlSourceToolFilterType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "all" => BetaManagedAgentsWebFetchUrlSourceToolFilterType.All,
+            "none" => BetaManagedAgentsWebFetchUrlSourceToolFilterType.None,
+            "only" => BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only,
+            "except" => BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except,
+            _ => (BetaManagedAgentsWebFetchUrlSourceToolFilterType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsWebFetchUrlSourceToolFilterType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsWebFetchUrlSourceToolFilterType.All => "all",
+                BetaManagedAgentsWebFetchUrlSourceToolFilterType.None => "none",
+                BetaManagedAgentsWebFetchUrlSourceToolFilterType.Only => "only",
+                BetaManagedAgentsWebFetchUrlSourceToolFilterType.Except => "except",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

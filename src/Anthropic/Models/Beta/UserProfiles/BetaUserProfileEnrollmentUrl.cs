@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -5,7 +6,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -21,12 +21,12 @@ public sealed record class BetaUserProfileEnrollmentUrl : JsonModel
     /// <summary>
     /// When this enrollment URL expires, in RFC 3339 format.
     /// </summary>
-    public required System::DateTimeOffset ExpiresAt
+    public required DateTimeOffset ExpiresAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullStruct<System::DateTimeOffset>("expires_at");
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("expires_at");
         }
         init { this._rawData.Set("expires_at", value); }
     }
@@ -34,14 +34,12 @@ public sealed record class BetaUserProfileEnrollmentUrl : JsonModel
     /// <summary>
     /// Object type. Always `enrollment_url`.
     /// </summary>
-    public required ApiEnum<string, BetaUserProfileEnrollmentUrlType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaUserProfileEnrollmentUrlType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -63,11 +61,17 @@ public sealed record class BetaUserProfileEnrollmentUrl : JsonModel
     public override void Validate()
     {
         _ = this.ExpiresAt;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("enrollment_url")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.Url;
     }
 
-    public BetaUserProfileEnrollmentUrl() { }
+    public BetaUserProfileEnrollmentUrl()
+    {
+        this.Type = JsonSerializer.SerializeToElement("enrollment_url");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -78,6 +82,8 @@ public sealed record class BetaUserProfileEnrollmentUrl : JsonModel
     public BetaUserProfileEnrollmentUrl(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("enrollment_url");
     }
 
 #pragma warning disable CS8618
@@ -103,49 +109,4 @@ class BetaUserProfileEnrollmentUrlFromRaw : IFromRawJson<BetaUserProfileEnrollme
     public BetaUserProfileEnrollmentUrl FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaUserProfileEnrollmentUrl.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Object type. Always `enrollment_url`.
-/// </summary>
-[JsonConverter(typeof(BetaUserProfileEnrollmentUrlTypeConverter))]
-public enum BetaUserProfileEnrollmentUrlType
-{
-    EnrollmentUrl,
-}
-
-sealed class BetaUserProfileEnrollmentUrlTypeConverter
-    : JsonConverter<BetaUserProfileEnrollmentUrlType>
-{
-    public override BetaUserProfileEnrollmentUrlType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "enrollment_url" => BetaUserProfileEnrollmentUrlType.EnrollmentUrl,
-            _ => (BetaUserProfileEnrollmentUrlType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaUserProfileEnrollmentUrlType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaUserProfileEnrollmentUrlType.EnrollmentUrl => "enrollment_url",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

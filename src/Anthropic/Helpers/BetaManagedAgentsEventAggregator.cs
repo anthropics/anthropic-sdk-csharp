@@ -79,7 +79,6 @@ public sealed class BetaManagedAgentsEventAggregator
                     ID = agentMessagePreview.ID,
                     Content = [],
                     ProcessedAt = default,
-                    Type = BetaManagedAgentsAgentMessageEventType.AgentMessage,
                 };
             }
         }

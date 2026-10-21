@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Deployments;
 )]
 public sealed record class BetaManagedAgentsUnknownDeploymentPausedReasonError : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsUnknownDeploymentPausedReasonErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUnknownDeploymentPausedReasonErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -36,10 +33,16 @@ public sealed record class BetaManagedAgentsUnknownDeploymentPausedReasonError :
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("unknown_error")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUnknownDeploymentPausedReasonError() { }
+    public BetaManagedAgentsUnknownDeploymentPausedReasonError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("unknown_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -54,6 +57,8 @@ public sealed record class BetaManagedAgentsUnknownDeploymentPausedReasonError :
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("unknown_error");
     }
 
 #pragma warning disable CS8618
@@ -73,15 +78,6 @@ public sealed record class BetaManagedAgentsUnknownDeploymentPausedReasonError :
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsUnknownDeploymentPausedReasonError(
-        ApiEnum<string, BetaManagedAgentsUnknownDeploymentPausedReasonErrorType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsUnknownDeploymentPausedReasonErrorFromRaw
@@ -91,47 +87,4 @@ class BetaManagedAgentsUnknownDeploymentPausedReasonErrorFromRaw
     public BetaManagedAgentsUnknownDeploymentPausedReasonError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsUnknownDeploymentPausedReasonError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsUnknownDeploymentPausedReasonErrorTypeConverter))]
-public enum BetaManagedAgentsUnknownDeploymentPausedReasonErrorType
-{
-    UnknownError,
-}
-
-sealed class BetaManagedAgentsUnknownDeploymentPausedReasonErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsUnknownDeploymentPausedReasonErrorType>
-{
-    public override BetaManagedAgentsUnknownDeploymentPausedReasonErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "unknown_error" => BetaManagedAgentsUnknownDeploymentPausedReasonErrorType.UnknownError,
-            _ => (BetaManagedAgentsUnknownDeploymentPausedReasonErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsUnknownDeploymentPausedReasonErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsUnknownDeploymentPausedReasonErrorType.UnknownError =>
-                    "unknown_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Dreams;
 )]
 public sealed record class BetaOutputBehaviorCreateNew : JsonModel
 {
-    public required ApiEnum<string, BetaOutputBehaviorCreateNewType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaOutputBehaviorCreateNewType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -36,10 +33,16 @@ public sealed record class BetaOutputBehaviorCreateNew : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("create_new")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaOutputBehaviorCreateNew() { }
+    public BetaOutputBehaviorCreateNew()
+    {
+        this.Type = JsonSerializer.SerializeToElement("create_new");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -50,6 +53,8 @@ public sealed record class BetaOutputBehaviorCreateNew : JsonModel
     public BetaOutputBehaviorCreateNew(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("create_new");
     }
 
 #pragma warning disable CS8618
@@ -67,13 +72,6 @@ public sealed record class BetaOutputBehaviorCreateNew : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaOutputBehaviorCreateNew(ApiEnum<string, BetaOutputBehaviorCreateNewType> type)
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaOutputBehaviorCreateNewFromRaw : IFromRawJson<BetaOutputBehaviorCreateNew>
@@ -82,46 +80,4 @@ class BetaOutputBehaviorCreateNewFromRaw : IFromRawJson<BetaOutputBehaviorCreate
     public BetaOutputBehaviorCreateNew FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaOutputBehaviorCreateNew.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaOutputBehaviorCreateNewTypeConverter))]
-public enum BetaOutputBehaviorCreateNewType
-{
-    CreateNew,
-}
-
-sealed class BetaOutputBehaviorCreateNewTypeConverter
-    : JsonConverter<BetaOutputBehaviorCreateNewType>
-{
-    public override BetaOutputBehaviorCreateNewType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "create_new" => BetaOutputBehaviorCreateNewType.CreateNew,
-            _ => (BetaOutputBehaviorCreateNewType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaOutputBehaviorCreateNewType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaOutputBehaviorCreateNewType.CreateNew => "create_new",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

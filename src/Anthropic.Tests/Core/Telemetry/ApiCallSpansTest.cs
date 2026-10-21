@@ -36,7 +36,6 @@ public class ApiCallSpansTest : TracingTestBase
         Assert.Equal("anthropic", span.GetTagItem("gen_ai.provider.name"));
         Assert.Equal("claude-test", span.GetTagItem("gen_ai.request.model"));
         Assert.Equal(64L, span.GetTagItem("gen_ai.request.max_tokens"));
-        Assert.Equal(0.5, span.GetTagItem("gen_ai.request.temperature"));
         Assert.Null(span.GetTagItem("gen_ai.request.stream"));
         Assert.Null(span.GetTagItem("gen_ai.output.type"));
         Assert.Equal("api.example.test", span.GetTagItem("server.address"));
@@ -279,11 +278,7 @@ public class ApiCallSpansTest : TracingTestBase
             )
         ) { }
         await client.Messages.CountTokens(
-            new()
-            {
-                Messages = [new() { Role = Role.User, Content = "Hi" }],
-                Model = "claude-test",
-            },
+            new() { Messages = [new UserMessageParam { Content = "Hi" }], Model = "claude-test" },
             TestContext.Current.CancellationToken
         );
         await client.Messages.Batches.Retrieve(
@@ -823,11 +818,7 @@ public class ApiCallSpansTest : TracingTestBase
         var client = Fixtures.Client(handler);
 
         await client.Messages.CountTokens(
-            new()
-            {
-                Messages = [new() { Role = Role.User, Content = "Hi" }],
-                Model = "claude-test",
-            },
+            new() { Messages = [new UserMessageParam { Content = "Hi" }], Model = "claude-test" },
             TestContext.Current.CancellationToken
         );
 
@@ -863,7 +854,7 @@ public class ApiCallSpansTest : TracingTestBase
                         Params = new()
                         {
                             MaxTokens = 1,
-                            Messages = [new() { Role = Beta.Role.User, Content = "x" }],
+                            Messages = [new Beta.BetaUserMessageParam { Content = "x" }],
                             Model = "claude-test",
                         },
                     },
@@ -922,7 +913,7 @@ public class ApiCallSpansTest : TracingTestBase
         new()
         {
             MaxTokens = 1,
-            Messages = [new() { Role = Role.User, Content = "x" }],
+            Messages = [new UserMessageParam { Content = "x" }],
             Model = "claude-test",
         };
 
@@ -977,7 +968,7 @@ public class ApiCallSpansTest : TracingTestBase
                         Params = new()
                         {
                             MaxTokens = 1,
-                            Messages = [new() { Role = Beta.Role.User, Content = "x" }],
+                            Messages = [new Beta.BetaUserMessageParam { Content = "x" }],
                             Model = "claude-test",
                         },
                     },
@@ -992,11 +983,7 @@ public class ApiCallSpansTest : TracingTestBase
             cancellationToken
         );
         await client.Messages.CountTokens(
-            new()
-            {
-                Messages = [new() { Role = Role.User, Content = "Hi" }],
-                Model = "claude-test",
-            },
+            new() { Messages = [new UserMessageParam { Content = "Hi" }], Model = "claude-test" },
             cancellationToken
         );
         await client.Messages.Batches.Retrieve("msgbatch_1", cancellationToken: cancellationToken);

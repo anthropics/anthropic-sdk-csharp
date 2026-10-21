@@ -186,7 +186,7 @@ public class HandlersTest : TestBase
         MessageCreateParams parameters = new()
         {
             MaxTokens = 64,
-            Messages = [new() { Content = "hello", Role = Role.User }],
+            Messages = [new BetaUserMessageParam { Content = "hello" }],
             Model = Messages::Model.ClaudeSonnet4_5,
         };
 

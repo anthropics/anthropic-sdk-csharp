@@ -13,7 +13,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -22,8 +21,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         };
 
         string expectedMemoryStoreID = "memory_store_id";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType> expectedType =
-            BetaManagedAgentsMemoryStoreResourceType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedDescription = "description";
         string expectedInstructions = "instructions";
@@ -31,7 +29,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         string expectedName = "name";
 
         Assert.Equal(expectedMemoryStoreID, model.MemoryStoreID);
-        Assert.Equal(expectedType, model.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedAccess, model.Access);
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedInstructions, model.Instructions);
@@ -45,7 +43,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -68,7 +65,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -84,8 +80,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedMemoryStoreID = "memory_store_id";
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType> expectedType =
-            BetaManagedAgentsMemoryStoreResourceType.MemoryStore;
+        JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedDescription = "description";
         string expectedInstructions = "instructions";
@@ -93,7 +88,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         string expectedName = "name";
 
         Assert.Equal(expectedMemoryStoreID, deserialized.MemoryStoreID);
-        Assert.Equal(expectedType, deserialized.Type);
+        Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedAccess, deserialized.Access);
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedInstructions, deserialized.Instructions);
@@ -107,7 +102,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -124,7 +118,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -141,7 +134,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -157,7 +149,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -177,7 +168,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -199,7 +189,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -218,7 +207,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Description = "description",
         };
 
@@ -238,7 +226,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Description = "description",
         };
 
@@ -251,7 +238,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Description = "description",
 
             Access = null,
@@ -276,7 +262,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Description = "description",
 
             Access = null,
@@ -294,7 +279,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         var model = new BetaManagedAgentsMemoryStoreResource
         {
             MemoryStoreID = "memory_store_id",
-            Type = BetaManagedAgentsMemoryStoreResourceType.MemoryStore,
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -305,58 +289,6 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         BetaManagedAgentsMemoryStoreResource copied = new(model);
 
         Assert.Equal(model, copied);
-    }
-}
-
-public class BetaManagedAgentsMemoryStoreResourceTypeTest : TestBase
-{
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreResourceType.MemoryStore)]
-    public void Validation_Works(BetaManagedAgentsMemoryStoreResourceType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(BetaManagedAgentsMemoryStoreResourceType.MemoryStore)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryStoreResourceType rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType>
-        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<
-            ApiEnum<string, BetaManagedAgentsMemoryStoreResourceType>
-        >(json, ModelBase.SerializerOptions);
-
-        Assert.Equal(value, deserialized);
     }
 }
 

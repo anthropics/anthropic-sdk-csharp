@@ -1,5 +1,21 @@
 # Changelog
 
+## [13.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.60.0...Anthropic-v13.0.0) (2026-10-21)
+
+### ⚠ BREAKING CHANGES
+
+* **api:** add support for new API version 2026-10-21
+
+### Features
+
+* **api:** add a workspace_id filter and the usage_tier scope type to list spend limits
+* **api:** add support for new API version 2026-10-21
+
+
+### Documentation
+
+* **api:** remove outdated system role note from messages description
+
 ## [12.60.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.59.0...Anthropic-v12.60.0) (2026-10-20)
 
 ### Features

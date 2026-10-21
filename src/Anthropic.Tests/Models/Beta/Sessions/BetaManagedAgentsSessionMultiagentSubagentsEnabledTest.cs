@@ -26,26 +26,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -58,22 +52,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -93,26 +81,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Name = "Researcher",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                 ],
                 System =
                     "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -125,22 +107,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
         ];
@@ -173,26 +149,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -205,22 +175,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -254,26 +218,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -286,22 +244,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -329,26 +281,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                     new()
                     {
                         Name = "example-mcp",
-                        Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                         Url = "https://example-server.modelcontextprotocol.io/sse",
                     },
                 ],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                    Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                    Effort = new BetaManagedAgentsEffortLow(),
                     InferenceGeo = "inference_geo",
                     Speed = Speed.Standard,
                 },
                 Name = "Researcher",
                 Skills =
                 [
-                    new BetaManagedAgentsAnthropicSkill()
-                    {
-                        SkillID = "xlsx",
-                        Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                        Version = "1",
-                    },
+                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                 ],
                 System =
                     "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -361,22 +307,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                             new BetaManagedAgentsBashToolConfig()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                    BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                             },
                         ],
                         DefaultConfig = new()
                         {
                             Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                            ),
+                            PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                         },
-                        Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                     },
                 ],
-                Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                 Version = 1,
             },
         ];
@@ -409,26 +349,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -441,22 +375,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],
@@ -483,26 +411,20 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                         new()
                         {
                             Name = "example-mcp",
-                            Type = BetaManagedAgentsMcpServerUrlDefinitionType.Url,
                             Url = "https://example-server.modelcontextprotocol.io/sse",
                         },
                     ],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
-                        Effort = new BetaManagedAgentsEffortLow(BetaManagedAgentsEffortLowType.Low),
+                        Effort = new BetaManagedAgentsEffortLow(),
                         InferenceGeo = "inference_geo",
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
                     Skills =
                     [
-                        new BetaManagedAgentsAnthropicSkill()
-                        {
-                            SkillID = "xlsx",
-                            Type = BetaManagedAgentsAnthropicSkillType.Anthropic,
-                            Version = "1",
-                        },
+                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
                     ],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
@@ -515,22 +437,16 @@ public class BetaManagedAgentsSessionMultiagentSubagentsEnabledTest : TestBase
                                 new BetaManagedAgentsBashToolConfig()
                                 {
                                     Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(
-                                        BetaManagedAgentsAlwaysAllowPolicyType.AlwaysAllow
-                                    ),
+                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
                                 },
                             ],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(
-                                    BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk
-                                ),
+                                PermissionPolicy = new BetaManagedAgentsAlwaysAskPolicy(),
                             },
-                            Type = BetaManagedAgentsAgentToolset20260401Type.AgentToolset20260401,
                         },
                     ],
-                    Type = BetaManagedAgentsSessionThreadAgentType.Agent,
                     Version = 1,
                 },
             ],

@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Dreams;
 
@@ -33,14 +32,12 @@ public sealed record class BetaDreamMemoryStoreOutput : JsonModel
         init { this._rawData.Set("memory_store_id", value); }
     }
 
-    public required ApiEnum<string, BetaDreamMemoryStoreOutputType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<ApiEnum<string, BetaDreamMemoryStoreOutputType>>(
-                "type"
-            );
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,16 @@ public sealed record class BetaDreamMemoryStoreOutput : JsonModel
     public override void Validate()
     {
         _ = this.MemoryStoreID;
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("memory_store")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaDreamMemoryStoreOutput() { }
+    public BetaDreamMemoryStoreOutput()
+    {
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -63,6 +66,8 @@ public sealed record class BetaDreamMemoryStoreOutput : JsonModel
     public BetaDreamMemoryStoreOutput(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("memory_store");
     }
 
 #pragma warning disable CS8618
@@ -80,6 +85,13 @@ public sealed record class BetaDreamMemoryStoreOutput : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaDreamMemoryStoreOutput(string memoryStoreID)
+        : this()
+    {
+        this.MemoryStoreID = memoryStoreID;
+    }
 }
 
 class BetaDreamMemoryStoreOutputFromRaw : IFromRawJson<BetaDreamMemoryStoreOutput>
@@ -88,45 +100,4 @@ class BetaDreamMemoryStoreOutputFromRaw : IFromRawJson<BetaDreamMemoryStoreOutpu
     public BetaDreamMemoryStoreOutput FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaDreamMemoryStoreOutput.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaDreamMemoryStoreOutputTypeConverter))]
-public enum BetaDreamMemoryStoreOutputType
-{
-    MemoryStore,
-}
-
-sealed class BetaDreamMemoryStoreOutputTypeConverter : JsonConverter<BetaDreamMemoryStoreOutputType>
-{
-    public override BetaDreamMemoryStoreOutputType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "memory_store" => BetaDreamMemoryStoreOutputType.MemoryStore,
-            _ => (BetaDreamMemoryStoreOutputType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaDreamMemoryStoreOutputType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaDreamMemoryStoreOutputType.MemoryStore => "memory_store",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

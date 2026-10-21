@@ -79,18 +79,21 @@ public record class TextCitationParam : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, TextCitationParamType> Type
     {
         get
         {
             return this.Value switch
             {
-                CitationCharLocationParam x => x.Type,
-                CitationPageLocationParam x => x.Type,
-                CitationContentBlockLocationParam x => x.Type,
-                CitationWebSearchResultLocationParam x => x.Type,
-                CitationSearchResultLocationParam x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                CitationCharLocationParam _ => TextCitationParamType.CharLocation,
+                CitationPageLocationParam _ => TextCitationParamType.PageLocation,
+                CitationContentBlockLocationParam _ => TextCitationParamType.ContentBlockLocation,
+                CitationWebSearchResultLocationParam _ =>
+                    TextCitationParamType.WebSearchResultLocation,
+                CitationSearchResultLocationParam _ => TextCitationParamType.SearchResultLocation,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, TextCitationParamType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -612,5 +615,58 @@ sealed class TextCitationParamConverter : JsonConverter<TextCitationParam>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(TextCitationParamTypeConverter))]
+public enum TextCitationParamType
+{
+    CharLocation,
+    PageLocation,
+    ContentBlockLocation,
+    WebSearchResultLocation,
+    SearchResultLocation,
+}
+
+sealed class TextCitationParamTypeConverter : JsonConverter<TextCitationParamType>
+{
+    public override TextCitationParamType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "char_location" => TextCitationParamType.CharLocation,
+            "page_location" => TextCitationParamType.PageLocation,
+            "content_block_location" => TextCitationParamType.ContentBlockLocation,
+            "web_search_result_location" => TextCitationParamType.WebSearchResultLocation,
+            "search_result_location" => TextCitationParamType.SearchResultLocation,
+            _ => (TextCitationParamType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        TextCitationParamType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                TextCitationParamType.CharLocation => "char_location",
+                TextCitationParamType.PageLocation => "page_location",
+                TextCitationParamType.ContentBlockLocation => "content_block_location",
+                TextCitationParamType.WebSearchResultLocation => "web_search_result_location",
+                TextCitationParamType.SearchResultLocation => "search_result_location",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

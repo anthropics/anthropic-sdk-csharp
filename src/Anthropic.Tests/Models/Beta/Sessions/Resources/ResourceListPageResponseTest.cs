@@ -22,7 +22,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -30,14 +29,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -51,7 +45,6 @@ public class ResourceListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 MountPath = "/uploads/receipt.pdf",
-                Type = BetaManagedAgentsFileResourceType.File,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsGitHubRepositoryResource()
@@ -59,14 +52,9 @@ public class ResourceListPageResponseTest : TestBase
                 ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
-                Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Url = "https://github.com/example-org/example-repo",
-                Checkout = new BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new BetaManagedAgentsBranchCheckout("main"),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -92,7 +80,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -100,14 +87,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -135,7 +117,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -143,14 +124,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -171,7 +147,6 @@ public class ResourceListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                 MountPath = "/uploads/receipt.pdf",
-                Type = BetaManagedAgentsFileResourceType.File,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             },
             new BetaManagedAgentsGitHubRepositoryResource()
@@ -179,14 +154,9 @@ public class ResourceListPageResponseTest : TestBase
                 ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                 CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 MountPath = "/workspace/example-repo",
-                Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                 UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 Url = "https://github.com/example-org/example-repo",
-                Checkout = new BetaManagedAgentsBranchCheckout()
-                {
-                    Name = "main",
-                    Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                },
+                Checkout = new BetaManagedAgentsBranchCheckout("main"),
             },
         ];
         string expectedNextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=";
@@ -212,7 +182,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -220,14 +189,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",
@@ -249,7 +213,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -257,14 +220,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
         };
@@ -286,7 +244,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -294,14 +251,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
         };
@@ -322,7 +274,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -330,14 +281,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
 
@@ -361,7 +307,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -369,14 +314,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
 
@@ -399,7 +339,6 @@ public class ResourceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
                     MountPath = "/uploads/receipt.pdf",
-                    Type = BetaManagedAgentsFileResourceType.File,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 },
                 new BetaManagedAgentsGitHubRepositoryResource()
@@ -407,14 +346,9 @@ public class ResourceListPageResponseTest : TestBase
                     ID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
                     CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     MountPath = "/workspace/example-repo",
-                    Type = BetaManagedAgentsGitHubRepositoryResourceType.GitHubRepository,
                     UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                     Url = "https://github.com/example-org/example-repo",
-                    Checkout = new BetaManagedAgentsBranchCheckout()
-                    {
-                        Name = "main",
-                        Type = BetaManagedAgentsBranchCheckoutType.Branch,
-                    },
+                    Checkout = new BetaManagedAgentsBranchCheckout("main"),
                 },
             ],
             NextPage = "page_MjAyNS0wNS0xNFQwMDowMDowMFo=",

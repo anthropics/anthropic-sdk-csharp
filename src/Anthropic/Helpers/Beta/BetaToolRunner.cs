@@ -45,7 +45,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     private bool _compacting;
 
     // Tools run in parallel and may call AddTools / RemoveTools.
-    private readonly ConcurrentQueue<BetaContentBlockParam> _pendingToolChanges = new();
+    private readonly ConcurrentQueue<SystemMessageContentBlock> _pendingToolChanges = new();
 
     internal BetaToolRunner(
         IMessageService service,
@@ -190,7 +190,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         RemoveTools([.. tools.Select(tool => tool.Name)]);
     }
 
-    private static BetaContentBlockParam ToolAddition(BetaToolUnion definition) =>
+    private static SystemMessageContentBlock ToolAddition(BetaToolUnion definition) =>
         new BetaRequestToolAdditionBlock(new BetaToolChangeToolDefinitionParam(definition));
 
     private static string? DefinitionName(BetaToolUnion definition) =>
@@ -203,7 +203,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         if (resumingPausedTurn)
             return;
 
-        var blocks = new List<BetaContentBlockParam>();
+        var blocks = new List<SystemMessageContentBlock>();
         while (_pendingToolChanges.TryDequeue(out var block))
         {
             blocks.Add(block);
@@ -211,13 +211,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
         if (blocks.Count > 0)
         {
-            messages.Add(
-                new BetaMessageParam
-                {
-                    Role = Role.System,
-                    Content = new BetaMessageParamContent(blocks),
-                }
-            );
+            messages.Add(new BetaSystemMessageParam { Content = blocks });
         }
     }
 
@@ -266,8 +260,8 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         var edits = parameters.ContextManagement?.Edits ?? [];
         if (
             edits.Any(edit =>
-                edit.Type.ValueKind == JsonValueKind.String
-                && edit.Type.GetString()!.StartsWith("compact_", StringComparison.Ordinal)
+                edit.Type.Json.ValueKind == JsonValueKind.String
+                && edit.Type.Json.GetString()!.StartsWith("compact_", StringComparison.Ordinal)
             )
         )
         {
@@ -444,13 +438,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             messages.Add(ToAssistantParam(response));
 
             // Append tool results as a user message.
-            messages.Add(
-                new BetaMessageParam
-                {
-                    Role = Role.User,
-                    Content = new BetaMessageParamContent(toolResults),
-                }
-            );
+            messages.Add(new BetaUserMessageParam { Content = toolResults });
         }
     }
 
@@ -802,11 +790,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         var contentJson = JsonSerializer.SerializeToElement(
             response.Content.Select(b => b.Json).ToArray()
         );
-        return new BetaMessageParam
-        {
-            Role = Role.Assistant,
-            Content = new BetaMessageParamContent(contentJson),
-        };
+        return new BetaAssistantMessageParam { Content = new BetaMessageContentParam(contentJson) };
     }
 
     /// <summary>
@@ -855,10 +839,13 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         {
             if (message.Role.Raw() != "system")
                 continue;
-            if (!message.Content.TryPickBetaContentBlockParams(out var blocks))
-                continue;
 
-            foreach (var block in blocks)
+            // Block by block: one this SDK can't model must not hide a removal beside it.
+            var blocks = WrappedJsonSerializer.GetNullableClassProperty<BetaContentBlockParam?[]>(
+                message.Json,
+                "content"
+            );
+            foreach (var block in blocks ?? [])
             {
                 ApplyToolChange(block, available);
             }
@@ -893,9 +880,9 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         }
     }
 
-    private static void ApplyToolChange(BetaContentBlockParam block, HashSet<string> available)
+    private static void ApplyToolChange(BetaContentBlockParam? block, HashSet<string> available)
     {
-        switch (block.Value)
+        switch (block?.Value)
         {
             case BetaRequestToolRemovalBlock removal:
                 if (ReferencedToolName(removal.Tool.Value) is { } removedName)

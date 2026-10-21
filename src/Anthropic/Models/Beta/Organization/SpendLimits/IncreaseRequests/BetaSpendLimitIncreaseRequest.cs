@@ -194,15 +194,18 @@ public record class Actor : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ActorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserActor x => x.Type,
-                BetaSpendLimitScopedApiKeyActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserActor _ => ActorType.UserActor,
+                BetaSpendLimitScopedApiKeyActor _ => ActorType.ScopedApiKeyActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ActorType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -467,6 +470,50 @@ sealed class ActorConverter : JsonConverter<Actor>
     }
 }
 
+[JsonConverter(typeof(ActorTypeConverter))]
+public enum ActorType
+{
+    UserActor,
+    ScopedApiKeyActor,
+}
+
+sealed class ActorTypeConverter : JsonConverter<ActorType>
+{
+    public override ActorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => ActorType.UserActor,
+            "scoped_api_key_actor" => ActorType.ScopedApiKeyActor,
+            _ => (ActorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ActorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ActorType.UserActor => "user_actor",
+                ActorType.ScopedApiKeyActor => "scoped_api_key_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 [JsonConverter(typeof(ResolvedByConverter))]
 public record class ResolvedBy : ModelBase
 {
@@ -485,15 +532,18 @@ public record class ResolvedBy : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ResolvedByType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaSpendLimitUserActor x => x.Type,
-                BetaSpendLimitScopedApiKeyActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaSpendLimitUserActor _ => ResolvedByType.UserActor,
+                BetaSpendLimitScopedApiKeyActor _ => ResolvedByType.ScopedApiKeyActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ResolvedByType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -765,5 +815,49 @@ sealed class ResolvedByConverter : JsonConverter<ResolvedBy?>
     )
     {
         JsonSerializer.Serialize(writer, value?.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ResolvedByTypeConverter))]
+public enum ResolvedByType
+{
+    UserActor,
+    ScopedApiKeyActor,
+}
+
+sealed class ResolvedByTypeConverter : JsonConverter<ResolvedByType>
+{
+    public override ResolvedByType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => ResolvedByType.UserActor,
+            "scoped_api_key_actor" => ResolvedByType.ScopedApiKeyActor,
+            _ => (ResolvedByType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ResolvedByType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ResolvedByType.UserActor => "user_actor",
+                ResolvedByType.ScopedApiKeyActor => "scoped_api_key_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

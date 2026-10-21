@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -20,14 +19,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsAlwaysAskPolicy : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsAlwaysAskPolicyType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsAlwaysAskPolicyType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -35,10 +32,16 @@ public sealed record class BetaManagedAgentsAlwaysAskPolicy : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("always_ask")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsAlwaysAskPolicy() { }
+    public BetaManagedAgentsAlwaysAskPolicy()
+    {
+        this.Type = JsonSerializer.SerializeToElement("always_ask");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -51,6 +54,8 @@ public sealed record class BetaManagedAgentsAlwaysAskPolicy : JsonModel
     public BetaManagedAgentsAlwaysAskPolicy(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("always_ask");
     }
 
 #pragma warning disable CS8618
@@ -68,15 +73,6 @@ public sealed record class BetaManagedAgentsAlwaysAskPolicy : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsAlwaysAskPolicy(
-        ApiEnum<string, BetaManagedAgentsAlwaysAskPolicyType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsAlwaysAskPolicyFromRaw : IFromRawJson<BetaManagedAgentsAlwaysAskPolicy>
@@ -85,46 +81,4 @@ class BetaManagedAgentsAlwaysAskPolicyFromRaw : IFromRawJson<BetaManagedAgentsAl
     public BetaManagedAgentsAlwaysAskPolicy FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsAlwaysAskPolicy.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsAlwaysAskPolicyTypeConverter))]
-public enum BetaManagedAgentsAlwaysAskPolicyType
-{
-    AlwaysAsk,
-}
-
-sealed class BetaManagedAgentsAlwaysAskPolicyTypeConverter
-    : JsonConverter<BetaManagedAgentsAlwaysAskPolicyType>
-{
-    public override BetaManagedAgentsAlwaysAskPolicyType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "always_ask" => BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk,
-            _ => (BetaManagedAgentsAlwaysAskPolicyType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsAlwaysAskPolicyType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsAlwaysAskPolicyType.AlwaysAsk => "always_ask",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

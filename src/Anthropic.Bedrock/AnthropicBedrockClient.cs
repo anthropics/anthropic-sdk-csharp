@@ -60,6 +60,6 @@ public sealed class AnthropicBedrockClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicBedrockClient(_bedrockCredentials, modifier(this._options));
+        return new AnthropicBedrockClient(_bedrockCredentials, this._options.Apply(modifier));
     }
 }

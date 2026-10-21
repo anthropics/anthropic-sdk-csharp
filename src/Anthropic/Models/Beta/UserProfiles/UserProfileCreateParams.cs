@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -9,7 +10,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services.Beta;
-using System = System;
 
 namespace Anthropic.Models.Beta.UserProfiles;
 
@@ -102,12 +102,12 @@ public record class UserProfileCreateParams : ParamsBase
     /// Legacy field, accepted only under the `user-profiles-2026-08-18` beta header;
     /// without a legacy header, send `external_user_details.onboarded_at`.
     /// </summary>
-    public System::DateTimeOffset? ExternalUserOnboardedAt
+    public DateTimeOffset? ExternalUserOnboardedAt
     {
         get
         {
             this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<System::DateTimeOffset>(
+            return this._rawBodyData.GetNullableStruct<DateTimeOffset>(
                 "external_user_onboarded_at"
             );
         }
@@ -298,10 +298,10 @@ public record class UserProfileCreateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/user_profiles")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/user_profiles")
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
@@ -358,7 +358,7 @@ sealed class AccessTypeConverter : JsonConverter<AccessType>
 {
     public override AccessType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

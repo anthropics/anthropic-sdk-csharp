@@ -27,8 +27,7 @@ public sealed record class BetaApiKeyWorkspaceScope : JsonModel
     }
 
     /// <summary>
-    /// ID of the Workspace the API key belongs to. Unlike the deprecated top-level
-    /// `workspace_id`, this is the Workspace's real ID even for the organization's
+    /// ID of the Workspace the API key belongs to, including when it is the organization's
     /// default Workspace.
     /// </summary>
     public required string WorkspaceID

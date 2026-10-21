@@ -686,11 +686,10 @@ public static class AnthropicBetaClientExtensions
                             // rejects the request if the model or the placement does not support
                             // mid-conversation system messages.
                             messageParams.Add(
-                                new()
+                                new BetaSystemMessageParam
                                 {
-                                    Role = Role.System,
                                     Content = systemBlocks
-                                        .Select(static b => (BetaContentBlockParam)b)
+                                        .Select(static b => (SystemMessageContentBlock)b)
                                         .ToList(),
                                 }
                             );
@@ -1149,11 +1148,9 @@ public static class AnthropicBetaClientExtensions
                 }
 
                 messageParams.Add(
-                    new()
-                    {
-                        Role = message.Role == ChatRole.Assistant ? Role.Assistant : Role.User,
-                        Content = contents,
-                    }
+                    message.Role == ChatRole.Assistant
+                        ? new BetaAssistantMessageParam { Content = contents }
+                        : new BetaUserMessageParam { Content = contents }
                 );
             }
 
@@ -1231,7 +1228,7 @@ public static class AnthropicBetaClientExtensions
             var createParamsOriginalMessages = createParams?.Messages;
             if (createParamsOriginalMessages is not { Count: > 0 } && messages.Count == 0)
             {
-                messages.Add(new BetaMessageParam() { Role = Role.User, Content = new("\u200b") }); // zero-width space
+                messages.Add(new BetaUserMessageParam { Content = new("\u200b") }); // zero-width space
             }
 
             if (createParams is not null)
@@ -1340,21 +1337,6 @@ public static class AnthropicBetaClientExtensions
                         {
                             StopSequences = [.. stopSequences],
                         };
-                }
-
-                if (createParams.Temperature is null && options.Temperature is { } temperature)
-                {
-                    createParams = createParams with { Temperature = temperature };
-                }
-
-                if (createParams.TopK is null && options.TopK is { } topK)
-                {
-                    createParams = createParams with { TopK = topK };
-                }
-
-                if (createParams.TopP is null && options.TopP is { } topP)
-                {
-                    createParams = createParams with { TopP = topP };
                 }
 
                 if (options.Tools is { } tools)

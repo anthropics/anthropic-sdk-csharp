@@ -28,16 +28,18 @@ public record class BetaToolUseCaller : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaToolUseCallerType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaDirectCaller x => x.Type,
-                BetaServerToolCaller x => x.Type,
-                BetaServerToolCaller20260120 x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaDirectCaller _ => BetaToolUseCallerType.Direct,
+                BetaServerToolCaller _ => BetaToolUseCallerType.CodeExecution20250825,
+                BetaServerToolCaller20260120 _ => BetaToolUseCallerType.CodeExecution20260120,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaToolUseCallerType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -383,5 +385,52 @@ sealed class BetaToolUseCallerConverter : JsonConverter<BetaToolUseCaller>
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaToolUseCallerTypeConverter))]
+public enum BetaToolUseCallerType
+{
+    Direct,
+    CodeExecution20250825,
+    CodeExecution20260120,
+}
+
+sealed class BetaToolUseCallerTypeConverter : JsonConverter<BetaToolUseCallerType>
+{
+    public override BetaToolUseCallerType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "direct" => BetaToolUseCallerType.Direct,
+            "code_execution_20250825" => BetaToolUseCallerType.CodeExecution20250825,
+            "code_execution_20260120" => BetaToolUseCallerType.CodeExecution20260120,
+            _ => (BetaToolUseCallerType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaToolUseCallerType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaToolUseCallerType.Direct => "direct",
+                BetaToolUseCallerType.CodeExecution20250825 => "code_execution_20250825",
+                BetaToolUseCallerType.CodeExecution20260120 => "code_execution_20260120",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

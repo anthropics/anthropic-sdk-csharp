@@ -116,6 +116,25 @@ public record class BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy : M
         }
     }
 
+    public ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsAlwaysAllowPolicy _ =>
+                    BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAllow,
+                BetaManagedAgentsAlwaysAskPolicy _ =>
+                    BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAsk,
+                BetaManagedAgentsAutoPolicy _ =>
+                    BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.Auto,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType>
+                >(this.Json, "type"),
+            };
+        }
+    }
+
     public BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicy(
         BetaManagedAgentsAlwaysAllowPolicy value,
         JsonElement? element = null
@@ -463,5 +482,56 @@ sealed class BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyTypeConverter))]
+public enum BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType
+{
+    AlwaysAllow,
+    AlwaysAsk,
+    Auto,
+}
+
+sealed class BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyTypeConverter
+    : JsonConverter<BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType>
+{
+    public override BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "always_allow" =>
+                BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAllow,
+            "always_ask" => BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAsk,
+            "auto" => BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.Auto,
+            _ => (BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAllow =>
+                    "always_allow",
+                BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.AlwaysAsk =>
+                    "always_ask",
+                BetaManagedAgentsMcpToolsetDefaultConfigPermissionPolicyType.Auto => "auto",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

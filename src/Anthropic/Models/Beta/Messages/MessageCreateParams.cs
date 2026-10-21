@@ -105,8 +105,7 @@ public record class MessageCreateParams : ParamsBase
     /// <para>See [input examples](https://platform.claude.com/docs/en/build-with-claude/working-with-messages).</para>
     ///
     /// <para>Note that if you want to include a [system prompt](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role),
-    /// you can use the top-level `system` parameter — there is no `"system"` role
-    /// for input messages in the Messages API.</para>
+    /// you can use the top-level `system` parameter.</para>
     ///
     /// <para>There is a limit of 100,000 messages in a single request.</para>
     /// </summary>
@@ -480,38 +479,6 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
-    /// Amount of randomness injected into the response.
-    ///
-    /// <para>Defaults to `1.0`. Ranges from `0.0` to `1.0`. Use `temperature` closer
-    /// to `0.0` for analytical / multiple choice, and closer to `1.0` for creative
-    /// and generative tasks.</para>
-    ///
-    /// <para>Note that even with `temperature` of `0.0`, the results will not be
-    /// fully deterministic.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not support setting temperature. A value of 1.0 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
-    )]
-    public double? Temperature
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<double>("temperature");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawBodyData.Remove("temperature");
-                return;
-            }
-
-            this._rawBodyData.Set("temperature", value);
-        }
-    }
-
-    /// <summary>
     /// Configuration for Claude's thinking.
     ///
     /// <para>With `{"type": "adaptive"}`, Claude decides when and how much to think.
@@ -631,67 +598,6 @@ public record class MessageCreateParams : ParamsBase
                 "tools",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
-        }
-    }
-
-    /// <summary>
-    /// Only sample from the top K options for each subsequent token.
-    ///
-    /// <para>Used to remove "long tail" low probability responses. [Learn more technical
-    /// details here](https://towardsdatascience.com/how-to-sample-from-language-models-682bceb97277).</para>
-    ///
-    /// <para>Recommended for advanced use cases only.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not accept top_k; any value will be rejected with a 400 error."
-    )]
-    public long? TopK
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<long>("top_k");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawBodyData.Remove("top_k");
-                return;
-            }
-
-            this._rawBodyData.Set("top_k", value);
-        }
-    }
-
-    /// <summary>
-    /// Use nucleus sampling.
-    ///
-    /// <para>In nucleus sampling, we compute the cumulative distribution over all
-    /// the options for each subsequent token in decreasing probability order and
-    /// cut it off once it reaches a particular probability specified by `top_p`.</para>
-    ///
-    /// <para>Recommended for advanced use cases only.</para>
-    /// </summary>
-    [System::Obsolete(
-        "Deprecated. Models released after Claude Opus 4.6 do not support setting top_p. A value >= 0.99 will be accepted for backwards compatibility, all other values will be rejected with a 400 error."
-    )]
-    public double? TopP
-    {
-        get
-        {
-            this._rawBodyData.Freeze();
-            return this._rawBodyData.GetNullableStruct<double>("top_p");
-        }
-        init
-        {
-            if (value == null)
-            {
-                this._rawBodyData.Remove("top_p");
-                return;
-            }
-
-            this._rawBodyData.Set("top_p", value);
         }
     }
 

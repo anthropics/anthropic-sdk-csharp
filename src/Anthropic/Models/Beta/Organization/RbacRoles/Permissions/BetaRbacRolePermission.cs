@@ -153,18 +153,21 @@ public record class Resource : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ResourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaRbacOrganizationPermissionResource x => x.Type,
-                BetaRbacConnectorToolPermissionResource x => x.Type,
-                BetaRbacConnectorScopePermissionResource x => x.Type,
-                BetaRbacConnectorPermissionResource x => x.Type,
-                BetaRbacAllConnectorsPermissionResource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaRbacOrganizationPermissionResource _ => ResourceType.Organization,
+                BetaRbacConnectorToolPermissionResource _ => ResourceType.ConnectorTool,
+                BetaRbacConnectorScopePermissionResource _ => ResourceType.ConnectorScope,
+                BetaRbacConnectorPermissionResource _ => ResourceType.Connector,
+                BetaRbacAllConnectorsPermissionResource _ => ResourceType.AllConnectors,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ResourceType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -646,5 +649,58 @@ sealed class ResourceConverter : JsonConverter<Resource>
     public override void Write(Utf8JsonWriter writer, Resource value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ResourceTypeConverter))]
+public enum ResourceType
+{
+    Organization,
+    ConnectorTool,
+    ConnectorScope,
+    Connector,
+    AllConnectors,
+}
+
+sealed class ResourceTypeConverter : JsonConverter<ResourceType>
+{
+    public override ResourceType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => ResourceType.Organization,
+            "connector_tool" => ResourceType.ConnectorTool,
+            "connector_scope" => ResourceType.ConnectorScope,
+            "connector" => ResourceType.Connector,
+            "all_connectors" => ResourceType.AllConnectors,
+            _ => (ResourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ResourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ResourceType.Organization => "organization",
+                ResourceType.ConnectorTool => "connector_tool",
+                ResourceType.ConnectorScope => "connector_scope",
+                ResourceType.Connector => "connector",
+                ResourceType.AllConnectors => "all_connectors",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

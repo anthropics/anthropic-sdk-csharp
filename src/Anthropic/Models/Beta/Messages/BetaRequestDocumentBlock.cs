@@ -194,18 +194,20 @@ public record class BetaRequestDocumentBlockSource : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaRequestDocumentBlockSourceType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaBase64PdfSource x => x.Type,
-                BetaPlainTextSource x => x.Type,
-                BetaContentBlockSource x => x.Type,
-                BetaUrlPdfSource x => x.Type,
-                BetaFileDocumentSource x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaBase64PdfSource _ => BetaRequestDocumentBlockSourceType.Base64,
+                BetaPlainTextSource _ => BetaRequestDocumentBlockSourceType.Text,
+                BetaContentBlockSource _ => BetaRequestDocumentBlockSourceType.Content,
+                BetaUrlPdfSource _ => BetaRequestDocumentBlockSourceType.Url,
+                BetaFileDocumentSource _ => BetaRequestDocumentBlockSourceType.File,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaRequestDocumentBlockSourceType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -657,5 +659,59 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaRequestDocumentBlockSourceTypeConverter))]
+public enum BetaRequestDocumentBlockSourceType
+{
+    Base64,
+    Text,
+    Content,
+    Url,
+    File,
+}
+
+sealed class BetaRequestDocumentBlockSourceTypeConverter
+    : JsonConverter<BetaRequestDocumentBlockSourceType>
+{
+    public override BetaRequestDocumentBlockSourceType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "base64" => BetaRequestDocumentBlockSourceType.Base64,
+            "text" => BetaRequestDocumentBlockSourceType.Text,
+            "content" => BetaRequestDocumentBlockSourceType.Content,
+            "url" => BetaRequestDocumentBlockSourceType.Url,
+            "file" => BetaRequestDocumentBlockSourceType.File,
+            _ => (BetaRequestDocumentBlockSourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaRequestDocumentBlockSourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaRequestDocumentBlockSourceType.Base64 => "base64",
+                BetaRequestDocumentBlockSourceType.Text => "text",
+                BetaRequestDocumentBlockSourceType.Content => "content",
+                BetaRequestDocumentBlockSourceType.Url => "url",
+                BetaRequestDocumentBlockSourceType.File => "file",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

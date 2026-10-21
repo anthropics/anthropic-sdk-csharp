@@ -11,7 +11,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages = [new UserMessageParam("Hello, world")],
                 Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
@@ -25,7 +25,7 @@ public class MessageServiceTest : TestBase
             new()
             {
                 MaxTokens = 1024,
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages = [new UserMessageParam("Hello, world")],
                 Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken
@@ -42,7 +42,7 @@ public class MessageServiceTest : TestBase
         var messageTokensCount = await this.client.Messages.CountTokens(
             new()
             {
-                Messages = [new() { Content = "Hello, world", Role = Role.User }],
+                Messages = [new UserMessageParam("Hello, world")],
                 Model = Model.ClaudeOpus5_5,
             },
             TestContext.Current.CancellationToken

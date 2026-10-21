@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -42,14 +42,12 @@ public sealed record class BetaManagedAgentsUserMessageEventParams : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserMessageEventParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserMessageEventParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -61,10 +59,16 @@ public sealed record class BetaManagedAgentsUserMessageEventParams : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("user.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsUserMessageEventParams() { }
+    public BetaManagedAgentsUserMessageEventParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -77,6 +81,8 @@ public sealed record class BetaManagedAgentsUserMessageEventParams : JsonModel
     public BetaManagedAgentsUserMessageEventParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.message");
     }
 
 #pragma warning disable CS8618
@@ -93,6 +99,15 @@ public sealed record class BetaManagedAgentsUserMessageEventParams : JsonModel
     )
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsUserMessageEventParams(
+        IReadOnlyList<BetaManagedAgentsUserMessageEventParamsContent> content
+    )
+        : this()
+    {
+        this.Content = content;
     }
 }
 
@@ -123,6 +138,27 @@ public record class BetaManagedAgentsUserMessageEventParamsContent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsUserMessageEventParamsContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ =>
+                    BetaManagedAgentsUserMessageEventParamsContentType.Text,
+                BetaManagedAgentsImageBlock _ =>
+                    BetaManagedAgentsUserMessageEventParamsContentType.Image,
+                BetaManagedAgentsDocumentBlock _ =>
+                    BetaManagedAgentsUserMessageEventParamsContentType.Document,
+                BetaManagedAgentsRedactedBlock _ =>
+                    BetaManagedAgentsUserMessageEventParamsContentType.Redacted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsUserMessageEventParamsContentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -282,10 +318,10 @@ public record class BetaManagedAgentsUserMessageEventParamsContent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
+        Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -333,10 +369,10 @@ public record class BetaManagedAgentsUserMessageEventParamsContent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
+        Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -427,7 +463,7 @@ sealed class BetaManagedAgentsUserMessageEventParamsContentConverter
 {
     public override BetaManagedAgentsUserMessageEventParamsContent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -541,31 +577,37 @@ sealed class BetaManagedAgentsUserMessageEventParamsContentConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsUserMessageEventParamsTypeConverter))]
-public enum BetaManagedAgentsUserMessageEventParamsType
+[JsonConverter(typeof(BetaManagedAgentsUserMessageEventParamsContentTypeConverter))]
+public enum BetaManagedAgentsUserMessageEventParamsContentType
 {
-    UserMessage,
+    Text,
+    Image,
+    Document,
+    Redacted,
 }
 
-sealed class BetaManagedAgentsUserMessageEventParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsUserMessageEventParamsType>
+sealed class BetaManagedAgentsUserMessageEventParamsContentTypeConverter
+    : JsonConverter<BetaManagedAgentsUserMessageEventParamsContentType>
 {
-    public override BetaManagedAgentsUserMessageEventParamsType Read(
+    public override BetaManagedAgentsUserMessageEventParamsContentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user.message" => BetaManagedAgentsUserMessageEventParamsType.UserMessage,
-            _ => (BetaManagedAgentsUserMessageEventParamsType)(-1),
+            "text" => BetaManagedAgentsUserMessageEventParamsContentType.Text,
+            "image" => BetaManagedAgentsUserMessageEventParamsContentType.Image,
+            "document" => BetaManagedAgentsUserMessageEventParamsContentType.Document,
+            "redacted" => BetaManagedAgentsUserMessageEventParamsContentType.Redacted,
+            _ => (BetaManagedAgentsUserMessageEventParamsContentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsUserMessageEventParamsType value,
+        BetaManagedAgentsUserMessageEventParamsContentType value,
         JsonSerializerOptions options
     )
     {
@@ -573,7 +615,10 @@ sealed class BetaManagedAgentsUserMessageEventParamsTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsUserMessageEventParamsType.UserMessage => "user.message",
+                BetaManagedAgentsUserMessageEventParamsContentType.Text => "text",
+                BetaManagedAgentsUserMessageEventParamsContentType.Image => "image",
+                BetaManagedAgentsUserMessageEventParamsContentType.Document => "document",
+                BetaManagedAgentsUserMessageEventParamsContentType.Redacted => "redacted",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

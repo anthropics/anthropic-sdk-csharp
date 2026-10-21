@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -6,7 +7,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -55,14 +55,12 @@ public sealed record class BetaManagedAgentsUserMessageEvent : JsonModel
         }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsUserMessageEventType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsUserMessageEventType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -70,12 +68,12 @@ public sealed record class BetaManagedAgentsUserMessageEvent : JsonModel
     /// <summary>
     /// Timestamp when the agent finished processing this message.
     /// </summary>
-    public System::DateTimeOffset? ProcessedAt
+    public DateTimeOffset? ProcessedAt
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<System::DateTimeOffset>("processed_at");
+            return this._rawData.GetNullableStruct<DateTimeOffset>("processed_at");
         }
         init { this._rawData.Set("processed_at", value); }
     }
@@ -88,11 +86,17 @@ public sealed record class BetaManagedAgentsUserMessageEvent : JsonModel
         {
             item.Validate();
         }
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("user.message")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
         _ = this.ProcessedAt;
     }
 
-    public BetaManagedAgentsUserMessageEvent() { }
+    public BetaManagedAgentsUserMessageEvent()
+    {
+        this.Type = JsonSerializer.SerializeToElement("user.message");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -105,6 +109,8 @@ public sealed record class BetaManagedAgentsUserMessageEvent : JsonModel
     public BetaManagedAgentsUserMessageEvent(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("user.message");
     }
 
 #pragma warning disable CS8618
@@ -150,6 +156,25 @@ public record class BetaManagedAgentsUserMessageEventContent : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, BetaManagedAgentsUserMessageEventContentType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsTextBlock _ => BetaManagedAgentsUserMessageEventContentType.Text,
+                BetaManagedAgentsImageBlock _ => BetaManagedAgentsUserMessageEventContentType.Image,
+                BetaManagedAgentsDocumentBlock _ =>
+                    BetaManagedAgentsUserMessageEventContentType.Document,
+                BetaManagedAgentsRedactedBlock _ =>
+                    BetaManagedAgentsUserMessageEventContentType.Redacted,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsUserMessageEventContentType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -309,10 +334,10 @@ public record class BetaManagedAgentsUserMessageEventContent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
-        System::Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
-        System::Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
-        System::Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
+        Action<BetaManagedAgentsTextBlock> betaManagedAgentsTextBlock,
+        Action<BetaManagedAgentsImageBlock> betaManagedAgentsImageBlock,
+        Action<BetaManagedAgentsDocumentBlock> betaManagedAgentsDocumentBlock,
+        Action<BetaManagedAgentsRedactedBlock> betaManagedAgentsRedactedBlock
     )
     {
         switch (this.Value)
@@ -360,10 +385,10 @@ public record class BetaManagedAgentsUserMessageEventContent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
-        System::Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
-        System::Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
-        System::Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
+        Func<BetaManagedAgentsTextBlock, T> betaManagedAgentsTextBlock,
+        Func<BetaManagedAgentsImageBlock, T> betaManagedAgentsImageBlock,
+        Func<BetaManagedAgentsDocumentBlock, T> betaManagedAgentsDocumentBlock,
+        Func<BetaManagedAgentsRedactedBlock, T> betaManagedAgentsRedactedBlock
     )
     {
         return this.Value switch
@@ -454,7 +479,7 @@ sealed class BetaManagedAgentsUserMessageEventContentConverter
 {
     public override BetaManagedAgentsUserMessageEventContent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -568,31 +593,37 @@ sealed class BetaManagedAgentsUserMessageEventContentConverter
     }
 }
 
-[JsonConverter(typeof(BetaManagedAgentsUserMessageEventTypeConverter))]
-public enum BetaManagedAgentsUserMessageEventType
+[JsonConverter(typeof(BetaManagedAgentsUserMessageEventContentTypeConverter))]
+public enum BetaManagedAgentsUserMessageEventContentType
 {
-    UserMessage,
+    Text,
+    Image,
+    Document,
+    Redacted,
 }
 
-sealed class BetaManagedAgentsUserMessageEventTypeConverter
-    : JsonConverter<BetaManagedAgentsUserMessageEventType>
+sealed class BetaManagedAgentsUserMessageEventContentTypeConverter
+    : JsonConverter<BetaManagedAgentsUserMessageEventContentType>
 {
-    public override BetaManagedAgentsUserMessageEventType Read(
+    public override BetaManagedAgentsUserMessageEventContentType Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "user.message" => BetaManagedAgentsUserMessageEventType.UserMessage,
-            _ => (BetaManagedAgentsUserMessageEventType)(-1),
+            "text" => BetaManagedAgentsUserMessageEventContentType.Text,
+            "image" => BetaManagedAgentsUserMessageEventContentType.Image,
+            "document" => BetaManagedAgentsUserMessageEventContentType.Document,
+            "redacted" => BetaManagedAgentsUserMessageEventContentType.Redacted,
+            _ => (BetaManagedAgentsUserMessageEventContentType)(-1),
         };
     }
 
     public override void Write(
         Utf8JsonWriter writer,
-        BetaManagedAgentsUserMessageEventType value,
+        BetaManagedAgentsUserMessageEventContentType value,
         JsonSerializerOptions options
     )
     {
@@ -600,7 +631,10 @@ sealed class BetaManagedAgentsUserMessageEventTypeConverter
             writer,
             value switch
             {
-                BetaManagedAgentsUserMessageEventType.UserMessage => "user.message",
+                BetaManagedAgentsUserMessageEventContentType.Text => "text",
+                BetaManagedAgentsUserMessageEventContentType.Image => "image",
+                BetaManagedAgentsUserMessageEventContentType.Document => "document",
+                BetaManagedAgentsUserMessageEventContentType.Redacted => "redacted",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

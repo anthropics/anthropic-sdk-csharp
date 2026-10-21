@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -10,7 +11,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Sessions;
 using Anthropic.Services.Beta;
-using System = System;
 
 namespace Anthropic.Models.Beta.Deployments;
 
@@ -377,10 +377,10 @@ public record class DeploymentUpdateParams : ParamsBase
             && this._rawBodyData.Equals(other._rawBodyData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(
+        return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/')
                 + string.Format(
                     "/v1/deployments/{0}",
@@ -527,8 +527,8 @@ public record class DeploymentUpdateParamsAgent : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<string> @string,
-        System::Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams
+        Action<string> @string,
+        Action<BetaManagedAgentsAgentParams> betaManagedAgentsAgentParams
     )
     {
         switch (this.Value)
@@ -568,8 +568,8 @@ public record class DeploymentUpdateParamsAgent : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<string, T> @string,
-        System::Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams
+        Func<string, T> @string,
+        Func<BetaManagedAgentsAgentParams, T> betaManagedAgentsAgentParams
     )
     {
         return this.Value switch
@@ -643,7 +643,7 @@ sealed class DeploymentUpdateParamsAgentConverter : JsonConverter<DeploymentUpda
 {
     public override DeploymentUpdateParamsAgent? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -660,7 +660,7 @@ sealed class DeploymentUpdateParamsAgentConverter : JsonConverter<DeploymentUpda
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -673,7 +673,7 @@ sealed class DeploymentUpdateParamsAgentConverter : JsonConverter<DeploymentUpda
                 return new(deserialized, element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -709,6 +709,24 @@ public record class DeploymentUpdateParamsResource : ModelBase
                 this.Value,
                 ModelBase.SerializerOptions
             );
+        }
+    }
+
+    public ApiEnum<string, DeploymentUpdateParamsResourceType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaManagedAgentsGitHubRepositoryResourceParams _ =>
+                    DeploymentUpdateParamsResourceType.GitHubRepository,
+                BetaManagedAgentsFileResourceParams _ => DeploymentUpdateParamsResourceType.File,
+                BetaManagedAgentsMemoryStoreResourceParam _ =>
+                    DeploymentUpdateParamsResourceType.MemoryStore,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, DeploymentUpdateParamsResourceType>
+                >(this.Json, "type"),
+            };
         }
     }
 
@@ -852,9 +870,9 @@ public record class DeploymentUpdateParamsResource : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsGitHubRepositoryResourceParams> betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams,
-        System::Action<BetaManagedAgentsMemoryStoreResourceParam> betaManagedAgentsMemoryStoreResourceParam
+        Action<BetaManagedAgentsGitHubRepositoryResourceParams> betaManagedAgentsGitHubRepositoryResourceParams,
+        Action<BetaManagedAgentsFileResourceParams> betaManagedAgentsFileResourceParams,
+        Action<BetaManagedAgentsMemoryStoreResourceParam> betaManagedAgentsMemoryStoreResourceParam
     )
     {
         switch (this.Value)
@@ -898,15 +916,12 @@ public record class DeploymentUpdateParamsResource : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<
+        Func<
             BetaManagedAgentsGitHubRepositoryResourceParams,
             T
         > betaManagedAgentsGitHubRepositoryResourceParams,
-        System::Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams,
-        System::Func<
-            BetaManagedAgentsMemoryStoreResourceParam,
-            T
-        > betaManagedAgentsMemoryStoreResourceParam
+        Func<BetaManagedAgentsFileResourceParams, T> betaManagedAgentsFileResourceParams,
+        Func<BetaManagedAgentsMemoryStoreResourceParam, T> betaManagedAgentsMemoryStoreResourceParam
     )
     {
         return this.Value switch
@@ -993,7 +1008,7 @@ sealed class DeploymentUpdateParamsResourceConverter : JsonConverter<DeploymentU
 {
     public override DeploymentUpdateParamsResource? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -1087,5 +1102,53 @@ sealed class DeploymentUpdateParamsResourceConverter : JsonConverter<DeploymentU
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(DeploymentUpdateParamsResourceTypeConverter))]
+public enum DeploymentUpdateParamsResourceType
+{
+    GitHubRepository,
+    File,
+    MemoryStore,
+}
+
+sealed class DeploymentUpdateParamsResourceTypeConverter
+    : JsonConverter<DeploymentUpdateParamsResourceType>
+{
+    public override DeploymentUpdateParamsResourceType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "github_repository" => DeploymentUpdateParamsResourceType.GitHubRepository,
+            "file" => DeploymentUpdateParamsResourceType.File,
+            "memory_store" => DeploymentUpdateParamsResourceType.MemoryStore,
+            _ => (DeploymentUpdateParamsResourceType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        DeploymentUpdateParamsResourceType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                DeploymentUpdateParamsResourceType.GitHubRepository => "github_repository",
+                DeploymentUpdateParamsResourceType.File => "file",
+                DeploymentUpdateParamsResourceType.MemoryStore => "memory_store",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

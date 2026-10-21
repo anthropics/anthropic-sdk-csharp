@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,7 +9,6 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services.Beta;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions;
 
@@ -68,12 +68,12 @@ public record class SessionListParams : ParamsBase
     /// <summary>
     /// Return sessions created after this time (exclusive).
     /// </summary>
-    public System::DateTimeOffset? CreatedAtGt
+    public DateTimeOffset? CreatedAtGt
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gt]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[gt]");
         }
         init
         {
@@ -90,12 +90,12 @@ public record class SessionListParams : ParamsBase
     /// <summary>
     /// Return sessions created at or after this time (inclusive).
     /// </summary>
-    public System::DateTimeOffset? CreatedAtGte
+    public DateTimeOffset? CreatedAtGte
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[gte]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[gte]");
         }
         init
         {
@@ -112,12 +112,12 @@ public record class SessionListParams : ParamsBase
     /// <summary>
     /// Return sessions created before this time (exclusive).
     /// </summary>
-    public System::DateTimeOffset? CreatedAtLt
+    public DateTimeOffset? CreatedAtLt
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lt]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[lt]");
         }
         init
         {
@@ -134,12 +134,12 @@ public record class SessionListParams : ParamsBase
     /// <summary>
     /// Return sessions created at or before this time (inclusive).
     /// </summary>
-    public System::DateTimeOffset? CreatedAtLte
+    public DateTimeOffset? CreatedAtLte
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<System::DateTimeOffset>("created_at[lte]");
+            return this._rawQueryData.GetNullableStruct<DateTimeOffset>("created_at[lte]");
         }
         init
         {
@@ -435,10 +435,10 @@ public record class SessionListParams : ParamsBase
             && this._rawQueryData.Equals(other._rawQueryData);
     }
 
-    public override System::Uri Url(ClientOptions options)
+    public override Uri Url(ClientOptions options)
     {
         var queryString = this.QueryString(options);
-        return new System::UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/sessions")
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/sessions")
         {
             Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
         }.Uri;
@@ -493,7 +493,7 @@ sealed class OrderConverter : JsonConverter<Order>
 {
     public override Order Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -551,7 +551,7 @@ sealed class StatusConverter : JsonConverter<Status>
 {
     public override Status Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {

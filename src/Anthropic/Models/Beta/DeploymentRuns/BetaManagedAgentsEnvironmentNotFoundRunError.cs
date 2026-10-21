@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.DeploymentRuns;
 
@@ -33,14 +32,12 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundRunError : JsonMo
         init { this._rawData.Set("message", value); }
     }
 
-    public required ApiEnum<string, BetaManagedAgentsEnvironmentNotFoundRunErrorType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsEnvironmentNotFoundRunErrorType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -49,10 +46,21 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundRunError : JsonMo
     public override void Validate()
     {
         _ = this.Message;
-        this.Type.Validate();
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("environment_not_found_error")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsEnvironmentNotFoundRunError() { }
+    public BetaManagedAgentsEnvironmentNotFoundRunError()
+    {
+        this.Type = JsonSerializer.SerializeToElement("environment_not_found_error");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -67,6 +75,8 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundRunError : JsonMo
     )
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("environment_not_found_error");
     }
 
 #pragma warning disable CS8618
@@ -84,6 +94,13 @@ public sealed record class BetaManagedAgentsEnvironmentNotFoundRunError : JsonMo
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
+
+    [SetsRequiredMembers]
+    public BetaManagedAgentsEnvironmentNotFoundRunError(string message)
+        : this()
+    {
+        this.Message = message;
+    }
 }
 
 class BetaManagedAgentsEnvironmentNotFoundRunErrorFromRaw
@@ -93,48 +110,4 @@ class BetaManagedAgentsEnvironmentNotFoundRunErrorFromRaw
     public BetaManagedAgentsEnvironmentNotFoundRunError FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsEnvironmentNotFoundRunError.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsEnvironmentNotFoundRunErrorTypeConverter))]
-public enum BetaManagedAgentsEnvironmentNotFoundRunErrorType
-{
-    EnvironmentNotFoundError,
-}
-
-sealed class BetaManagedAgentsEnvironmentNotFoundRunErrorTypeConverter
-    : JsonConverter<BetaManagedAgentsEnvironmentNotFoundRunErrorType>
-{
-    public override BetaManagedAgentsEnvironmentNotFoundRunErrorType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "environment_not_found_error" =>
-                BetaManagedAgentsEnvironmentNotFoundRunErrorType.EnvironmentNotFoundError,
-            _ => (BetaManagedAgentsEnvironmentNotFoundRunErrorType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsEnvironmentNotFoundRunErrorType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsEnvironmentNotFoundRunErrorType.EnvironmentNotFoundError =>
-                    "environment_not_found_error",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

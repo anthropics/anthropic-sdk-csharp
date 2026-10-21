@@ -5,7 +5,6 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Agents;
 
@@ -21,14 +20,12 @@ namespace Anthropic.Models.Beta.Agents;
 )]
 public sealed record class BetaManagedAgentsMultiagentSelfParams : JsonModel
 {
-    public required ApiEnum<string, BetaManagedAgentsMultiagentSelfParamsType> Type
+    public JsonElement Type
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<
-                ApiEnum<string, BetaManagedAgentsMultiagentSelfParamsType>
-            >("type");
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
         }
         init { this._rawData.Set("type", value); }
     }
@@ -36,10 +33,16 @@ public sealed record class BetaManagedAgentsMultiagentSelfParams : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
-        this.Type.Validate();
+        if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("self")))
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
     }
 
-    public BetaManagedAgentsMultiagentSelfParams() { }
+    public BetaManagedAgentsMultiagentSelfParams()
+    {
+        this.Type = JsonSerializer.SerializeToElement("self");
+    }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
@@ -52,6 +55,8 @@ public sealed record class BetaManagedAgentsMultiagentSelfParams : JsonModel
     public BetaManagedAgentsMultiagentSelfParams(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("self");
     }
 
 #pragma warning disable CS8618
@@ -69,15 +74,6 @@ public sealed record class BetaManagedAgentsMultiagentSelfParams : JsonModel
     {
         return new(FrozenDictionary.ToFrozenDictionary(rawData));
     }
-
-    [SetsRequiredMembers]
-    public BetaManagedAgentsMultiagentSelfParams(
-        ApiEnum<string, BetaManagedAgentsMultiagentSelfParamsType> type
-    )
-        : this()
-    {
-        this.Type = type;
-    }
 }
 
 class BetaManagedAgentsMultiagentSelfParamsFromRaw
@@ -87,46 +83,4 @@ class BetaManagedAgentsMultiagentSelfParamsFromRaw
     public BetaManagedAgentsMultiagentSelfParams FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaManagedAgentsMultiagentSelfParams.FromRawUnchecked(rawData);
-}
-
-[JsonConverter(typeof(BetaManagedAgentsMultiagentSelfParamsTypeConverter))]
-public enum BetaManagedAgentsMultiagentSelfParamsType
-{
-    Self,
-}
-
-sealed class BetaManagedAgentsMultiagentSelfParamsTypeConverter
-    : JsonConverter<BetaManagedAgentsMultiagentSelfParamsType>
-{
-    public override BetaManagedAgentsMultiagentSelfParamsType Read(
-        ref Utf8JsonReader reader,
-        System::Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "self" => BetaManagedAgentsMultiagentSelfParamsType.Self,
-            _ => (BetaManagedAgentsMultiagentSelfParamsType)(-1),
-        };
-    }
-
-    public override void Write(
-        Utf8JsonWriter writer,
-        BetaManagedAgentsMultiagentSelfParamsType value,
-        JsonSerializerOptions options
-    )
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                BetaManagedAgentsMultiagentSelfParamsType.Self => "self",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
 }

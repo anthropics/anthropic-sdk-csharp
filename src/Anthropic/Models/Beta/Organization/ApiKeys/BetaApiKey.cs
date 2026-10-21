@@ -150,24 +150,6 @@ public sealed record class BetaApiKey : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// Deprecated: use `scope` instead. ID of the Workspace associated with the API
-    /// key, or `null` if the API key belongs to the default Workspace. Also `null`
-    /// for a principal-bound API key that has no Workspace; `scope` tells the two apart.
-    /// </summary>
-    [System::Obsolete(
-        "Use `scope` instead. `workspace_id` is `null` both for an API key in the default Workspace and for a principal-bound API key that has no Workspace."
-    )]
-    public required string? WorkspaceID
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("workspace_id");
-        }
-        init { this._rawData.Set("workspace_id", value); }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -184,10 +166,8 @@ public sealed record class BetaApiKey : JsonModel
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
-        _ = this.WorkspaceID;
     }
 
-    [System::Obsolete("Required properties are deprecated: workspace_id")]
     public BetaApiKey()
     {
         this.Type = JsonSerializer.SerializeToElement("api_key");
@@ -195,12 +175,10 @@ public sealed record class BetaApiKey : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    [System::Obsolete("Required properties are deprecated: workspace_id")]
     public BetaApiKey(BetaApiKey betaApiKey)
         : base(betaApiKey) { }
 #pragma warning restore CS8618
 
-    [System::Obsolete("Required properties are deprecated: workspace_id")]
     public BetaApiKey(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
@@ -209,7 +187,6 @@ public sealed record class BetaApiKey : JsonModel
     }
 
 #pragma warning disable CS8618
-    [System::Obsolete("Required properties are deprecated: workspace_id")]
     [SetsRequiredMembers]
     BetaApiKey(FrozenDictionary<string, JsonElement> rawData)
     {
@@ -253,15 +230,18 @@ public record class Principal : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, PrincipalType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaApiKeyUserActor x => x.Type,
-                BetaApiKeyServiceAccountActor x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaApiKeyUserActor _ => PrincipalType.UserActor,
+                BetaApiKeyServiceAccountActor _ => PrincipalType.ServiceAccountActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, PrincipalType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -534,6 +514,50 @@ sealed class PrincipalConverter : JsonConverter<Principal?>
     }
 }
 
+[JsonConverter(typeof(PrincipalTypeConverter))]
+public enum PrincipalType
+{
+    UserActor,
+    ServiceAccountActor,
+}
+
+sealed class PrincipalTypeConverter : JsonConverter<PrincipalType>
+{
+    public override PrincipalType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => PrincipalType.UserActor,
+            "service_account_actor" => PrincipalType.ServiceAccountActor,
+            _ => (PrincipalType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        PrincipalType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                PrincipalType.UserActor => "user_actor",
+                PrincipalType.ServiceAccountActor => "service_account_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
+}
+
 /// <summary>
 /// Where the API key belongs: its Workspace (`{"type": "workspace", "workspace_id":
 /// "wrkspc_..."}`, with the Workspace's real ID even when it is the organization's
@@ -558,15 +582,18 @@ public record class Scope : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, ScopeType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaApiKeyOrganizationScope x => x.Type,
-                BetaApiKeyWorkspaceScope x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaApiKeyOrganizationScope _ => ScopeType.Organization,
+                BetaApiKeyWorkspaceScope _ => ScopeType.Workspace,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ScopeType>>(
+                    this.Json,
+                    "type"
+                ),
             };
         }
     }
@@ -828,6 +855,50 @@ sealed class ScopeConverter : JsonConverter<Scope>
     public override void Write(Utf8JsonWriter writer, Scope value, JsonSerializerOptions options)
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ScopeTypeConverter))]
+public enum ScopeType
+{
+    Organization,
+    Workspace,
+}
+
+sealed class ScopeTypeConverter : JsonConverter<ScopeType>
+{
+    public override ScopeType Read(
+        ref Utf8JsonReader reader,
+        System::Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "organization" => ScopeType.Organization,
+            "workspace" => ScopeType.Workspace,
+            _ => (ScopeType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ScopeType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ScopeType.Organization => "organization",
+                ScopeType.Workspace => "workspace",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }
 

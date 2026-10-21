@@ -1,9 +1,9 @@
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
-using System = System;
 
 namespace Anthropic.Models.Beta.Sessions.Events;
 
@@ -46,18 +46,25 @@ public record class BetaManagedAgentsWorkflowRunError : ModelBase
         }
     }
 
-    public JsonElement Type
+    public ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType> Type
     {
         get
         {
             return this.Value switch
             {
-                BetaManagedAgentsTimeoutWorkflowRunError x => x.Type,
-                BetaManagedAgentsProgramWorkflowRunError x => x.Type,
-                BetaManagedAgentsUnknownWorkflowRunError x => x.Type,
-                BetaManagedAgentsThreadLimitWorkflowRunError x => x.Type,
-                BetaManagedAgentsMaxWorkflowRunsWorkflowRunError x => x.Type,
-                _ => WrappedJsonSerializer.GetNotNullStructProperty<JsonElement>(this.Json, "type"),
+                BetaManagedAgentsTimeoutWorkflowRunError _ =>
+                    BetaManagedAgentsWorkflowRunErrorType.TimeoutError,
+                BetaManagedAgentsProgramWorkflowRunError _ =>
+                    BetaManagedAgentsWorkflowRunErrorType.ProgramError,
+                BetaManagedAgentsUnknownWorkflowRunError _ =>
+                    BetaManagedAgentsWorkflowRunErrorType.UnknownError,
+                BetaManagedAgentsThreadLimitWorkflowRunError _ =>
+                    BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError,
+                BetaManagedAgentsMaxWorkflowRunsWorkflowRunError _ =>
+                    BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<
+                    ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
+                >(this.Json, "type"),
             };
         }
     }
@@ -251,11 +258,11 @@ public record class BetaManagedAgentsWorkflowRunError : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        System::Action<BetaManagedAgentsTimeoutWorkflowRunError> timeout,
-        System::Action<BetaManagedAgentsProgramWorkflowRunError> program,
-        System::Action<BetaManagedAgentsUnknownWorkflowRunError> unknown,
-        System::Action<BetaManagedAgentsThreadLimitWorkflowRunError> threadLimit,
-        System::Action<BetaManagedAgentsMaxWorkflowRunsWorkflowRunError> maxWorkflowRuns
+        Action<BetaManagedAgentsTimeoutWorkflowRunError> timeout,
+        Action<BetaManagedAgentsProgramWorkflowRunError> program,
+        Action<BetaManagedAgentsUnknownWorkflowRunError> unknown,
+        Action<BetaManagedAgentsThreadLimitWorkflowRunError> threadLimit,
+        Action<BetaManagedAgentsMaxWorkflowRunsWorkflowRunError> maxWorkflowRuns
     )
     {
         switch (this.Value)
@@ -307,11 +314,11 @@ public record class BetaManagedAgentsWorkflowRunError : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        System::Func<BetaManagedAgentsTimeoutWorkflowRunError, T> timeout,
-        System::Func<BetaManagedAgentsProgramWorkflowRunError, T> program,
-        System::Func<BetaManagedAgentsUnknownWorkflowRunError, T> unknown,
-        System::Func<BetaManagedAgentsThreadLimitWorkflowRunError, T> threadLimit,
-        System::Func<BetaManagedAgentsMaxWorkflowRunsWorkflowRunError, T> maxWorkflowRuns
+        Func<BetaManagedAgentsTimeoutWorkflowRunError, T> timeout,
+        Func<BetaManagedAgentsProgramWorkflowRunError, T> program,
+        Func<BetaManagedAgentsUnknownWorkflowRunError, T> unknown,
+        Func<BetaManagedAgentsThreadLimitWorkflowRunError, T> threadLimit,
+        Func<BetaManagedAgentsMaxWorkflowRunsWorkflowRunError, T> maxWorkflowRuns
     )
     {
         return this.Value switch
@@ -409,7 +416,7 @@ sealed class BetaManagedAgentsWorkflowRunErrorConverter
 {
     public override BetaManagedAgentsWorkflowRunError? Read(
         ref Utf8JsonReader reader,
-        System::Type typeToConvert,
+        Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -545,5 +552,60 @@ sealed class BetaManagedAgentsWorkflowRunErrorConverter
     )
     {
         JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(BetaManagedAgentsWorkflowRunErrorTypeConverter))]
+public enum BetaManagedAgentsWorkflowRunErrorType
+{
+    TimeoutError,
+    ProgramError,
+    UnknownError,
+    ThreadLimitError,
+    MaxWorkflowRunsError,
+}
+
+sealed class BetaManagedAgentsWorkflowRunErrorTypeConverter
+    : JsonConverter<BetaManagedAgentsWorkflowRunErrorType>
+{
+    public override BetaManagedAgentsWorkflowRunErrorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "timeout_error" => BetaManagedAgentsWorkflowRunErrorType.TimeoutError,
+            "program_error" => BetaManagedAgentsWorkflowRunErrorType.ProgramError,
+            "unknown_error" => BetaManagedAgentsWorkflowRunErrorType.UnknownError,
+            "thread_limit_error" => BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError,
+            "max_workflow_runs_error" => BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError,
+            _ => (BetaManagedAgentsWorkflowRunErrorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        BetaManagedAgentsWorkflowRunErrorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                BetaManagedAgentsWorkflowRunErrorType.TimeoutError => "timeout_error",
+                BetaManagedAgentsWorkflowRunErrorType.ProgramError => "program_error",
+                BetaManagedAgentsWorkflowRunErrorType.UnknownError => "unknown_error",
+                BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError => "thread_limit_error",
+                BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError =>
+                    "max_workflow_runs_error",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
     }
 }

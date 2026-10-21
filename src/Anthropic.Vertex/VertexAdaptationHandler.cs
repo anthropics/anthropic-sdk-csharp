@@ -14,7 +14,7 @@ namespace Anthropic.Vertex;
 /// </summary>
 internal sealed class VertexAdaptationHandler : DelegatingHandler
 {
-    private const string ANTHROPIC_VERSION = "vertex-2023-10-16";
+    private const string HEADER_ANTHROPIC_VERSION = "anthropic-version";
 
     private readonly IAnthropicVertexCredentials _vertexCredentials;
 
@@ -47,7 +47,12 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
             ).ConfigureAwait(false)
         )!;
 
-        bodyContent["anthropic_version"] = JsonValue.Create(ANTHROPIC_VERSION);
+        // Vertex takes the API version from the body. A caller's value follows the SDK's own.
+        if (requestMessage.Headers.TryGetValues(HEADER_ANTHROPIC_VERSION, out var values))
+        {
+            bodyContent["anthropic_version"] = JsonValue.Create(values.Last());
+            requestMessage.Headers.Remove(HEADER_ANTHROPIC_VERSION);
+        }
 
         var modelValue =
             bodyContent["model"]
