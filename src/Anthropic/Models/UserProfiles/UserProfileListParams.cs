@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -17,6 +18,40 @@ namespace Anthropic.Models.UserProfiles;
 /// </summary>
 public record class UserProfileListParams : ParamsBase
 {
+    /// <summary>
+    /// Return only the user profiles whose `enforcement_status` is one of these values:
+    /// `unrestricted`, `pending`, `restricted` or `banned`. Repeat the parameter
+    /// to match any of several. With it set, a page may hold fewer than `limit` profiles,
+    /// or none, and still carry a `next_page`: the service examines a bounded number
+    /// of profiles per request, and only a null `next_page` means the listing is
+    /// complete. Rejected with `invalid_request_error` under the `user-profiles-2026-09-04`
+    /// and earlier beta headers. Fails with `overloaded_error` when a profile's enforcement
+    /// actions cannot be read for the moment.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, UserProfileEnforcementStatus>>? EnforcementStatus
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, UserProfileEnforcementStatus>>
+            >("enforcement_status");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("enforcement_status");
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, UserProfileEnforcementStatus>>?>(
+                "enforcement_status",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
     /// <summary>
     /// The maximum number of user profiles to return, from 1 to 100. Defaults to 20.
     /// </summary>
@@ -217,7 +252,8 @@ public record class UserProfileListParams : ParamsBase
 
     internal override string Route => "/v1/user_profiles";
 
-    internal override IReadOnlyList<string> QueryParams => ["limit", "order", "order_by", "page"];
+    internal override IReadOnlyList<string> QueryParams =>
+        ["enforcement_status", "limit", "order", "order_by", "page"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {

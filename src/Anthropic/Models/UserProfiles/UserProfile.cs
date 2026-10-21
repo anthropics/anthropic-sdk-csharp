@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -59,6 +60,49 @@ public sealed record class UserProfile : JsonModel
             return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
         }
         init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// The enforcement actions open on this profile; empty when none is open. Absent
+    /// under the `user-profiles-2026-09-04` and earlier beta headers.
+    /// </summary>
+    public required IReadOnlyList<UserProfileEnforcementAction> EnforcementActions
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<ImmutableArray<UserProfileEnforcementAction>>(
+                "enforcement_actions"
+            );
+        }
+        init
+        {
+            this._rawData.Set<ImmutableArray<UserProfileEnforcementAction>>(
+                "enforcement_actions",
+                ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Anthropic's enforcement status of this profile, from its open enforcement
+    /// actions and any identity check under review, by the first rule that applies:
+    /// `banned` while any open action is a `ban`; `pending` while a restriction that
+    /// an identity check can clear is open, the end user has submitted that check,
+    /// Anthropic's review of it has not ended, and no open action's `reason` is `account_compromise`;
+    /// `restricted` while any action is open; `unrestricted` while none is. Absent
+    /// under the `user-profiles-2026-09-04` and earlier beta headers.
+    /// </summary>
+    public required ApiEnum<string, UserProfileEnforcementStatus> EnforcementStatus
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<ApiEnum<string, UserProfileEnforcementStatus>>(
+                "enforcement_status"
+            );
+        }
+        init { this._rawData.Set("enforcement_status", value); }
     }
 
     /// <summary>
@@ -166,6 +210,11 @@ public sealed record class UserProfile : JsonModel
         _ = this.ID;
         this.AccessType.Validate();
         _ = this.CreatedAt;
+        foreach (var item in this.EnforcementActions)
+        {
+            item.Validate();
+        }
+        this.EnforcementStatus.Validate();
         this.ExternalUserDetails.Validate();
         _ = this.Metadata;
         _ = this.Name;
