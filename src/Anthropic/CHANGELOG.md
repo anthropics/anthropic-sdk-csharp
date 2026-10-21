@@ -1,6 +1,11 @@
 # Changelog
 
-## [12.60.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.60.0...Anthropic-v12.60.1) (2026-10-20)
+## [12.61.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v12.60.0...Anthropic-v12.61.0) (2026-10-21)
+
+### Features
+
+* **api:** add a workspace_id filter and the usage_tier scope type to list spend limits
+
 
 ### Documentation
 

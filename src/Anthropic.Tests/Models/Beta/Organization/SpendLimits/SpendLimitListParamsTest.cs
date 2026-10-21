@@ -19,12 +19,14 @@ public class SpendLimitListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         long expectedLimit = 1;
         string expectedPage = "page";
         List<ApiEnum<string, ScopeType>> expectedScopeType = [ScopeType.Organization];
+        string expectedWorkspaceID = "workspace_id";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -38,6 +40,7 @@ public class SpendLimitListParamsTest : TestBase
         {
             Assert.Equal(expectedScopeType[i], parameters.ScopeType[i]);
         }
+        Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -53,6 +56,7 @@ public class SpendLimitListParamsTest : TestBase
         {
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
         };
 
         Assert.Null(parameters.Limit);
@@ -68,6 +72,7 @@ public class SpendLimitListParamsTest : TestBase
         {
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
 
             // Null should be interpreted as omitted for these properties
             Limit = null,
@@ -88,6 +93,7 @@ public class SpendLimitListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         } with
         {
@@ -115,6 +121,8 @@ public class SpendLimitListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.ScopeType);
         Assert.False(parameters.RawQueryData.ContainsKey("scope_type"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.False(parameters.RawQueryData.ContainsKey("workspace_id"));
     }
 
     [Fact]
@@ -127,12 +135,15 @@ public class SpendLimitListParamsTest : TestBase
 
             Page = null,
             ScopeType = null,
+            WorkspaceID = null,
         };
 
         Assert.Null(parameters.Page);
         Assert.True(parameters.RawQueryData.ContainsKey("page"));
         Assert.Null(parameters.ScopeType);
         Assert.True(parameters.RawQueryData.ContainsKey("scope_type"));
+        Assert.Null(parameters.WorkspaceID);
+        Assert.True(parameters.RawQueryData.ContainsKey("workspace_id"));
     }
 
     [Fact]
@@ -143,6 +154,7 @@ public class SpendLimitListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -150,7 +162,7 @@ public class SpendLimitListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limits?beta=true&limit=1&page=page&scope_type%5b%5d=organization"
+                    "https://api.anthropic.com/v1/organizations/spend_limits?beta=true&limit=1&page=page&scope_type%5b%5d=organization&workspace_id=workspace_id"
                 ),
                 url
             )
@@ -182,6 +194,7 @@ public class SpendLimitListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeType = [ScopeType.Organization],
+            WorkspaceID = "workspace_id",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -198,6 +211,7 @@ public class ScopeTypeTest : TestBase
     [InlineData(ScopeType.OrganizationService)]
     [InlineData(ScopeType.RbacGroup)]
     [InlineData(ScopeType.SeatTier)]
+    [InlineData(ScopeType.UsageTier)]
     [InlineData(ScopeType.User)]
     [InlineData(ScopeType.Workspace)]
     public void Validation_Works(ScopeType rawValue)
@@ -224,6 +238,7 @@ public class ScopeTypeTest : TestBase
     [InlineData(ScopeType.OrganizationService)]
     [InlineData(ScopeType.RbacGroup)]
     [InlineData(ScopeType.SeatTier)]
+    [InlineData(ScopeType.UsageTier)]
     [InlineData(ScopeType.User)]
     [InlineData(ScopeType.Workspace)]
     public void SerializationRoundtrip_Works(ScopeType rawValue)
