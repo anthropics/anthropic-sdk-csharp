@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 
 namespace Anthropic.Core;
 
@@ -21,6 +22,7 @@ internal static class StainlessHelperHeader
     // match on them, so renames lose history. New tags are hyphenated lowercase.
     internal const string BetaToolRunner = "BetaToolRunner";
     internal const string FallbackRefusalMiddleware = "fallback-refusal-middleware";
+    internal const string MessageThread = "message-thread";
 
     /// <summary>
     /// Returns the <see cref="Name"/> header value to set after appending <paramref name="value"/>
@@ -46,4 +48,33 @@ internal static class StainlessHelperHeader
                 .Append(value)
                 .Distinct()
         );
+
+    /// <summary>
+    /// Returns the raw header data of request params with <paramref name="value"/> appended to
+    /// their <see cref="Name"/> header, as by <see cref="MergedValue"/>. The result holds the
+    /// header once, under <see cref="Name"/>.
+    /// </summary>
+    internal static IReadOnlyDictionary<string, JsonElement> Tagged(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        string value
+    )
+    {
+        var headers = rawHeaderData.ToLookup(header =>
+            string.Equals(header.Key, Name, StringComparison.OrdinalIgnoreCase)
+        );
+        var tagged = headers[false].ToDictionary(header => header.Key, header => header.Value);
+        tagged[Name] = JsonSerializer.SerializeToElement(
+            MergedValue(
+                headers[true]
+                    .Select(header => new KeyValuePair<string, string[]>(
+                        header.Key,
+                        header.Value.ValueKind == JsonValueKind.Array
+                            ? [.. header.Value.EnumerateArray().Select(item => item.ToString())]
+                            : [header.Value.ToString()]
+                    )),
+                value
+            )
+        );
+        return tagged;
+    }
 }

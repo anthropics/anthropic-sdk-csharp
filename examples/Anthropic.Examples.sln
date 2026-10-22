@@ -43,6 +43,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "McpToolRunnerExample", "Mcp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StreamingAggregationBetaExample", "StreamingAggregationBetaExample\StreamingAggregationBetaExample.csproj", "{F8E2ECB5-E4B8-48EE-A052-9BF9EAFE75AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MessageThreadExample", "MessageThreadExample\MessageThreadExample.csproj", "{99D17627-AF8A-4713-9BB2-2F58E19AAC97}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -293,6 +295,18 @@ Global
 		{F8E2ECB5-E4B8-48EE-A052-9BF9EAFE75AA}.Release|x64.Build.0 = Release|Any CPU
 		{F8E2ECB5-E4B8-48EE-A052-9BF9EAFE75AA}.Release|x86.ActiveCfg = Release|Any CPU
 		{F8E2ECB5-E4B8-48EE-A052-9BF9EAFE75AA}.Release|x86.Build.0 = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|x64.Build.0 = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Debug|x86.Build.0 = Debug|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|x64.ActiveCfg = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|x64.Build.0 = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|x86.ActiveCfg = Release|Any CPU
+		{99D17627-AF8A-4713-9BB2-2F58E19AAC97}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

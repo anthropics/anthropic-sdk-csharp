@@ -509,6 +509,22 @@ public record class MessageCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Server-held conversation state (a Thread). `{"type": "create"}` asks the server
+    /// to hold this conversation's state under the response's `id`; `{"type": "continue",
+    /// "previous_message_id": ...}` resumes from a previous response so only the
+    /// new turn's messages are sent. The response shape is unchanged.
+    /// </summary>
+    public BetaMessageThreadParam? Thread
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaMessageThreadParam>("thread");
+        }
+        init { this._rawBodyData.Set("thread", value); }
+    }
+
+    /// <summary>
     /// How the model should use the provided tools. The model can use a specific
     /// tool, any available tool, decide by itself, or not use tools at all.
     /// </summary>

@@ -13,6 +13,7 @@ using Anthropic.Credentials;
 
 namespace Anthropic.Tests.Credentials;
 
+[Collection("console stderr")]
 public class CredentialsFileProviderTests : IDisposable
 {
     private readonly string _tempDir;

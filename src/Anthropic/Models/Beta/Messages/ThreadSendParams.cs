@@ -1,0 +1,701 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Diagnostics.CodeAnalysis;
+using System.Net.Http;
+using System.Text;
+using System.Text.Json;
+using Anthropic.Core;
+using Anthropic.Models.Messages;
+
+namespace Anthropic.Models.Beta.Messages;
+
+/// <summary>
+/// The parameters of one turn of a message thread: the fields that the turn's request sends.
+///
+/// <para>It has every field of <see cref="MessageCreateParams"/> except <c>Thread</c>,
+/// <c>Messages</c>, <c>OutputConfig</c> and <c>OutputFormat</c>. The message thread sets
+/// <c>Thread</c> on each request itself, the messages of a turn are given beside these
+/// parameters, and <see cref="ThreadCreateParams"/> takes the other two when the thread is
+/// created.</para>
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
+/// </summary>
+public record class ThreadSendParams : ParamsBase
+{
+    readonly JsonDictionary _rawBodyData = new();
+    public IReadOnlyDictionary<string, JsonElement> RawBodyData
+    {
+        get { return this._rawBodyData.Freeze(); }
+    }
+
+    /// <summary>
+    /// The maximum number of tokens to generate before stopping.
+    ///
+    /// <para>Note that our models may stop _before_ reaching this maximum. This parameter
+    /// only specifies the absolute maximum number of tokens to generate.</para>
+    ///
+    /// <para>Set to `0` to populate the [prompt cache](https://platform.claude.com/docs/en/build-with-claude/prompt-caching#pre-warming-the-cache)
+    /// without generating a response.</para>
+    ///
+    /// <para>Different models have different maximum values for this parameter.
+    /// See [models](https://platform.claude.com/docs/en/about-claude/models/overview)
+    /// for details.</para>
+    /// </summary>
+    public required long MaxTokens
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullStruct<long>("max_tokens");
+        }
+        init { this._rawBodyData.Set("max_tokens", value); }
+    }
+
+    /// <summary>
+    /// The model that will complete your prompt.
+    ///
+    /// <para>See [models](https://docs.anthropic.com/en/docs/models-overview) for
+    /// additional details and options.</para>
+    /// </summary>
+    public required ApiEnum<string, Model> Model
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model");
+        }
+        init { this._rawBodyData.Set("model", value); }
+    }
+
+    /// <summary>
+    /// Top-level cache control automatically applies a cache_control marker to the
+    /// last cacheable block in the request.
+    /// </summary>
+    public BetaCacheControlEphemeral? CacheControl
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaCacheControlEphemeral>("cache_control");
+        }
+        init { this._rawBodyData.Set("cache_control", value); }
+    }
+
+    /// <summary>
+    /// Compaction configuration.
+    ///
+    /// <para>When set on `POST /v1/messages`, the request is a compaction request:
+    /// the conversation in `messages` is summarized and the response holds only
+    /// the resulting `compaction` block (`stop_reason` `"compaction"`), which later
+    /// requests send first in `messages` in place of the messages it summarizes.
+    /// `POST /v1/messages/count_tokens` accepts this parameter and ignores it: the
+    /// count it returns is for the conversation in `messages` as sent. Cannot be
+    /// combined with `context_management`.</para>
+    /// </summary>
+    public BetaCompactionConfig? Compaction
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaCompactionConfig>("compaction");
+        }
+        init { this._rawBodyData.Set("compaction", value); }
+    }
+
+    /// <summary>
+    /// Container identifier for reuse across requests.
+    /// </summary>
+    public global::Anthropic.Models.Beta.Messages.Container? Container
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<global::Anthropic.Models.Beta.Messages.Container>(
+                "container"
+            );
+        }
+        init { this._rawBodyData.Set("container", value); }
+    }
+
+    /// <summary>
+    /// Context management configuration.
+    ///
+    /// <para>This allows you to control how Claude manages context across multiple
+    /// requests, such as whether to clear function results or not.</para>
+    /// </summary>
+    public BetaContextManagementConfig? ContextManagement
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaContextManagementConfig>(
+                "context_management"
+            );
+        }
+        init { this._rawBodyData.Set("context_management", value); }
+    }
+
+    /// <summary>
+    /// Request-level diagnostics. Supply `previous_message_id` to have the response
+    /// include `diagnostics.cache_miss_reason` explaining any prompt-cache divergence
+    /// from that prior request.
+    /// </summary>
+    public BetaDiagnosticsParam? Diagnostics
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaDiagnosticsParam>("diagnostics");
+        }
+        init { this._rawBodyData.Set("diagnostics", value); }
+    }
+
+    /// <summary>
+    /// The `fallback_credit_token` from a prior refusal's `stop_details`.
+    ///
+    /// <para>When a preceding request was refused and returned a `fallback_credit_token`,
+    /// pass that code here on the retry to have the retry's cache-creation tokens
+    /// for the prefix that was warm on the refused model billed at the cache-read
+    /// rate. Must be redeemed by the same organization and workspace, with the same
+    /// request body (optionally extended by one appended `assistant` message whose
+    /// content is the partial text — with any trailing whitespace stripped from
+    /// the final text block — and paired server-tool blocks streamed before the
+    /// refusal; the appended-assistant form is not available for requests with `output_format`
+    /// set or forced `tool_choice`), on an eligible fallback model, on the same platform,
+    /// and within 5 minutes of the refusal; a mismatch is a 400. A token minted mid-server-tool-loop
+    /// whose partial content was continuable may only be redeemed with the appended-assistant
+    /// form — if an exact-body retry is rejected with a 400 saying the token must
+    /// be redeemed by continuing the partial response, retry with the appended-assistant
+    /// form instead.</para>
+    ///
+    /// <para>When the appended-assistant form is used on a model that otherwise disallows
+    /// assistant-turn prefill, this token also authorizes that one prefill.</para>
+    /// </summary>
+    public FallbackCreditToken? FallbackCreditToken
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<FallbackCreditToken>("fallback_credit_token");
+        }
+        init { this._rawBodyData.Set("fallback_credit_token", value); }
+    }
+
+    /// <summary>
+    /// Opt-in server-side retry on one or more substitute models when the requested
+    /// model declines for policy reasons. Tried in order: if the first entry also
+    /// declines, the second is tried, and so on. Some models don't support fallbacks;
+    /// on those models, a list of fallback models returns a 400 error. See [Server-side
+    /// fallback](https://platform.claude.com/docs/en/build-with-claude/refusals-and-fallback#server-side-fallback).
+    /// The string "default" requests the requested model's server-defined default
+    /// fallback configuration. On a model that doesn't support fallbacks, the request
+    /// runs on the requested model alone, so a declined request stays declined.
+    /// </summary>
+    public BetaFallbacksParam? Fallbacks
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaFallbacksParam>("fallbacks");
+        }
+        init { this._rawBodyData.Set("fallbacks", value); }
+    }
+
+    /// <summary>
+    /// Specifies the geographic region for inference processing. If not specified,
+    /// the workspace's `default_inference_geo` is used.
+    /// </summary>
+    public string? InferenceGeo
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("inference_geo");
+        }
+        init { this._rawBodyData.Set("inference_geo", value); }
+    }
+
+    /// <summary>
+    /// MCP servers to be utilized in this request
+    /// </summary>
+    public IReadOnlyList<BetaRequestMcpServerUrlDefinition>? McpServers
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<
+                ImmutableArray<BetaRequestMcpServerUrlDefinition>
+            >("mcp_servers");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("mcp_servers");
+                return;
+            }
+
+            this._rawBodyData.Set<ImmutableArray<BetaRequestMcpServerUrlDefinition>?>(
+                "mcp_servers",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// An object describing metadata about the request.
+    /// </summary>
+    public BetaMetadata? Metadata
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaMetadata>("metadata");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("metadata");
+                return;
+            }
+
+            this._rawBodyData.Set("metadata", value);
+        }
+    }
+
+    /// <summary>
+    /// Determines whether to use priority capacity (if available) or standard capacity
+    /// for this request.
+    ///
+    /// <para>Anthropic offers different levels of service for your API requests.
+    /// See [service-tiers](https://platform.claude.com/docs/en/api/service-tiers)
+    /// for details.</para>
+    /// </summary>
+    public ApiEnum<string, global::Anthropic.Models.Beta.Messages.ServiceTier>? ServiceTier
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Beta.Messages.ServiceTier>
+            >("service_tier");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("service_tier");
+                return;
+            }
+
+            this._rawBodyData.Set("service_tier", value);
+        }
+    }
+
+    /// <summary>
+    /// The inference speed mode for this request. `"fast"` enables high output-tokens-per-second inference.
+    ///
+    /// <para>Some models require the `fast-mode-2026-02-01` beta header for any `speed`
+    /// value. See [fast mode](https://platform.claude.com/docs/en/build-with-claude/fast-mode)
+    /// for which models.</para>
+    /// </summary>
+    public ApiEnum<string, global::Anthropic.Models.Beta.Messages.Speed>? Speed
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<
+                ApiEnum<string, global::Anthropic.Models.Beta.Messages.Speed>
+            >("speed");
+        }
+        init { this._rawBodyData.Set("speed", value); }
+    }
+
+    /// <summary>
+    /// Custom text sequences that will cause the model to stop generating.
+    ///
+    /// <para>Our models will normally stop when they have naturally completed their
+    /// turn, which will result in a response `stop_reason` of `"end_turn"`.</para>
+    ///
+    /// <para>If you want the model to stop generating when it encounters custom
+    /// strings of text, you can use the `stop_sequences` parameter. If the model
+    /// encounters one of the custom sequences, the response `stop_reason` value
+    /// will be `"stop_sequence"` and the response `stop_sequence` value will contain
+    /// the matched stop sequence.</para>
+    /// </summary>
+    public IReadOnlyList<string>? StopSequences
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<string>>("stop_sequences");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("stop_sequences");
+                return;
+            }
+
+            this._rawBodyData.Set<ImmutableArray<string>?>(
+                "stop_sequences",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// System prompt.
+    ///
+    /// <para>A system prompt is a way of providing context and instructions to Claude,
+    /// such as specifying a particular goal or role. See our [guide to system prompts](https://platform.claude.com/docs/en/build-with-claude/prompt-engineering/claude-prompting-best-practices#give-claude-a-role).</para>
+    /// </summary>
+    public global::Anthropic.Models.Beta.Messages.MessageCreateParamsSystem? System
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<global::Anthropic.Models.Beta.Messages.MessageCreateParamsSystem>(
+                "system"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("system");
+                return;
+            }
+
+            this._rawBodyData.Set("system", value);
+        }
+    }
+
+    /// <summary>
+    /// Configuration for Claude's thinking.
+    ///
+    /// <para>With `{"type": "adaptive"}`, Claude decides when and how much to think.
+    /// With `{"type": "enabled"}` (manual extended thinking), you set a `budget_tokens`
+    /// of at least 1,024. Thinking tokens count toward your `max_tokens` limit.</para>
+    ///
+    /// <para>Which `type` values are accepted, and what happens when you omit `thinking`,
+    /// depend on the model. See [thinking](https://platform.claude.com/docs/en/build-with-claude/thinking#configuring-thinking)
+    /// for each model's behavior.</para>
+    /// </summary>
+    public BetaThinkingConfigParam? Thinking
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaThinkingConfigParam>("thinking");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("thinking");
+                return;
+            }
+
+            this._rawBodyData.Set("thinking", value);
+        }
+    }
+
+    /// <summary>
+    /// How the model should use the provided tools. The model can use a specific
+    /// tool, any available tool, decide by itself, or not use tools at all.
+    /// </summary>
+    public BetaToolChoice? ToolChoice
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaToolChoice>("tool_choice");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("tool_choice");
+                return;
+            }
+
+            this._rawBodyData.Set("tool_choice", value);
+        }
+    }
+
+    /// <summary>
+    /// Definitions of tools that the model may use.
+    ///
+    /// <para>If you include `tools` in your API request, the model may return `tool_use`
+    /// content blocks that represent the model's use of those tools. You can then
+    /// run those tools using the tool input generated by the model and then optionally
+    /// return results back to the model using `tool_result` content blocks.</para>
+    ///
+    /// <para>There are two types of tools: **client tools** and **server tools**.
+    /// The behavior described below applies to client tools. For [server tools](https://platform.claude.com/docs/en/agents-and-tools/tool-use/server-tools),
+    /// see their individual documentation as each has its own behavior (e.g., the
+    /// [web search tool](https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-search-tool)).</para>
+    ///
+    /// <para>Each tool definition includes:</para>
+    ///
+    /// <para>* `name`: Name of the tool. * `description`: Optional, but strongly-recommended
+    /// description of the tool. * `input_schema`: [JSON schema](https://json-schema.org/draft/2020-12)
+    /// for the tool `input` shape that the model will produce in `tool_use` output
+    /// content blocks.</para>
+    ///
+    /// <para>For example, if you defined `tools` as:</para>
+    ///
+    /// <para>```json [   {     "name": "get_stock_price",     "description": "Get
+    /// the current stock price for a given ticker symbol.",     "input_schema": {
+    ///       "type": "object",       "properties": {         "ticker": {
+    ///    "type": "string",           "description": "The stock ticker symbol, e.g.
+    /// AAPL for Apple Inc."         }       },       "required": ["ticker"]
+    /// }   } ] ```</para>
+    ///
+    /// <para>And then asked the model "What's the S&amp;P 500 at today?", the model
+    /// might produce `tool_use` content blocks in the response like this:</para>
+    ///
+    /// <para>```json [   {     "type": "tool_use",     "id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
+    ///     "name": "get_stock_price",     "input": { "ticker": "^GSPC" }   } ] ```</para>
+    ///
+    /// <para>You might then run your `get_stock_price` tool with `{"ticker": "^GSPC"}`
+    /// as an input, and return the following back to the model in a subsequent `user` message:</para>
+    ///
+    /// <para>```json [   {     "type": "tool_result",     "tool_use_id": "toolu_01D7FLrfh4GYq7yT1ULFeyMV",
+    ///     "content": "259.75 USD"   } ] ```</para>
+    ///
+    /// <para>Tools can be used for workflows that include running client-side tools
+    /// and functions, or more generally whenever you want the model to produce a
+    /// particular JSON structure of output.</para>
+    ///
+    /// <para>See our [guide](https://platform.claude.com/docs/en/agents-and-tools/tool-use/overview)
+    /// for more details.</para>
+    /// </summary>
+    public IReadOnlyList<BetaToolUnion>? Tools
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableStruct<ImmutableArray<BetaToolUnion>>("tools");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawBodyData.Remove("tools");
+                return;
+            }
+
+            this._rawBodyData.Set<ImmutableArray<BetaToolUnion>?>(
+                "tools",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Optional header to specify the beta version(s) you want to use.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-beta");
+                return;
+            }
+
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// The user profile ID to attribute this request to. Use when acting on behalf
+    /// of a party other than your organization.
+    /// </summary>
+    public string? UserProfileID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-user-profile-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-user-profile-id");
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-user-profile-id", value);
+        }
+    }
+
+    /// <summary>
+    /// Optional header to select the Workspace for this request. The value is a Workspace
+    /// ID (for example, `wrkspc_011CZkZaBF1tNoB5wlCeusgy`).
+    ///
+    /// <para>Only needed for credentials that can act on more than one Workspace.
+    /// A credential that belongs to a specific Workspace may omit it; if sent, it
+    /// must match that Workspace.</para>
+    /// </summary>
+    public string? WorkspaceID
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableClass<string>("anthropic-workspace-id");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-workspace-id");
+                return;
+            }
+
+            this._rawHeaderData.Set("anthropic-workspace-id", value);
+        }
+    }
+
+    public ThreadSendParams() { }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public ThreadSendParams(ThreadSendParams threadSendParams)
+        : base(threadSendParams)
+    {
+        this._rawBodyData = new(threadSendParams._rawBodyData);
+    }
+#pragma warning restore CS8618
+
+    public ThreadSendParams(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    ThreadSendParams(
+        FrozenDictionary<string, JsonElement> rawHeaderData,
+        FrozenDictionary<string, JsonElement> rawQueryData,
+        FrozenDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        this._rawHeaderData = new(rawHeaderData);
+        this._rawQueryData = new(rawQueryData);
+        this._rawBodyData = new(rawBodyData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="IFromRawJson{T}.FromRawUnchecked"/>
+    public static ThreadSendParams FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawHeaderData,
+        IReadOnlyDictionary<string, JsonElement> rawQueryData,
+        IReadOnlyDictionary<string, JsonElement> rawBodyData
+    )
+    {
+        return new(
+            FrozenDictionary.ToFrozenDictionary(rawHeaderData),
+            FrozenDictionary.ToFrozenDictionary(rawQueryData),
+            FrozenDictionary.ToFrozenDictionary(rawBodyData)
+        );
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(
+                new Dictionary<string, JsonElement>()
+                {
+                    ["HeaderData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawHeaderData.Freeze())
+                    ),
+                    ["QueryData"] = FriendlyJsonPrinter.PrintValue(
+                        JsonSerializer.SerializeToElement(this._rawQueryData.Freeze())
+                    ),
+                    ["BodyData"] = FriendlyJsonPrinter.PrintValue(this._rawBodyData.Freeze()),
+                }
+            ),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    public virtual bool Equals(ThreadSendParams? other)
+    {
+        if (other == null)
+        {
+            return false;
+        }
+        return this._rawHeaderData.Equals(other._rawHeaderData)
+            && this._rawQueryData.Equals(other._rawQueryData)
+            && this._rawBodyData.Equals(other._rawBodyData);
+    }
+
+    public override Uri Url(ClientOptions options)
+    {
+        var queryString = this.QueryString(options);
+        return new UriBuilder(options.BaseUrl.ToString().TrimEnd('/') + "/v1/messages")
+        {
+            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
+        }.Uri;
+    }
+
+    internal override string Route => "/v1/messages";
+
+    internal override HttpContent? BodyContent()
+    {
+        return new StringContent(
+            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
+            Encoding.UTF8,
+            "application/json"
+        );
+    }
+
+    internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
+    {
+        ParamsBase.AddDefaultHeaders(request, options);
+        foreach (var item in this.RawHeaderData)
+        {
+            ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);
+        }
+    }
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
+    internal static ThreadSendParams From(MessageCreateParams parameters) =>
+        FromRawUnchecked(parameters.RawHeaderData, parameters.RawQueryData, parameters.RawBodyData);
+
+    internal MessageCreateParams ToMessageCreateParams() =>
+        MessageCreateParams.FromRawUnchecked(
+            this.RawHeaderData,
+            this.RawQueryData,
+            this.RawBodyData
+        );
+}

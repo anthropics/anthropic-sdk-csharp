@@ -95,11 +95,13 @@ public class BetaToolRunnerCompactionTest
     private static BetaToolRunner WeatherRunner(
         Script script,
         MessageCreateParams? parameters = null,
-        int? maxIterations = null
+        int? maxIterations = null,
+        bool thread = true
     ) =>
         script.Service.ToolRunner(
             parameters ?? BaseParams,
             [MakeWeatherToolSync(_ => "Sunny")],
+            thread,
             maxIterations
         );
 
@@ -159,7 +161,8 @@ public class BetaToolRunnerCompactionTest
                 }),
             ],
             // The compaction request is not a model turn, so both real turns still fit.
-            maxIterations: 2
+            maxIterations: 2,
+            thread: false
         );
 
         var yielded = new List<BetaMessage>();
@@ -225,7 +228,7 @@ public class BetaToolRunnerCompactionTest
     {
         var ct = TestContext.Current.CancellationToken;
         var script = new Script(CompactedResponse(), FinalTurn());
-        var runner = WeatherRunner(script);
+        var runner = WeatherRunner(script, thread: false);
 
         // An edit made before the compaction request is part of what gets summarized.
         runner.PushMessages(new BetaUserMessageParam { Content = "And in NYC?" });
@@ -281,7 +284,7 @@ public class BetaToolRunnerCompactionTest
             },
         };
         var script = new Script(CompactedResponse(), FinalTurn());
-        var runner = WeatherRunner(script, parameters);
+        var runner = WeatherRunner(script, parameters, thread: false);
 
         runner.CompactBeforeNextTurn();
         await runner.RunUntilDoneAsync(ct);
@@ -415,7 +418,7 @@ public class BetaToolRunnerCompactionTest
     {
         var ct = TestContext.Current.CancellationToken;
         var script = new Script(MakePausedTurn(), ToolUseTurn(), CompactedResponse(), FinalTurn());
-        var runner = WeatherRunner(script);
+        var runner = WeatherRunner(script, thread: false);
 
         await foreach (var message in runner.WithCancellation(ct))
         {
@@ -475,7 +478,7 @@ public class BetaToolRunnerCompactionTest
     {
         var ct = TestContext.Current.CancellationToken;
         var script = new Script(ToolUseTurn() with { StopReason = BetaStopReason.MaxTokens });
-        var runner = WeatherRunner(script);
+        var runner = WeatherRunner(script, thread: false);
 
         var stderr = await FallbackTestSupport.CaptureStderr(async () =>
         {
@@ -522,7 +525,7 @@ public class BetaToolRunnerCompactionTest
         var ct = TestContext.Current.CancellationToken;
         var content = JsonSerializer.Deserialize<List<BetaContentBlock>>(contentJson)!;
         var script = new Script(ToolUseTurn(), MakeMessage(content, stopReason), FinalTurn());
-        var runner = WeatherRunner(script);
+        var runner = WeatherRunner(script, thread: false);
 
         var yielded = 0;
         var stderr = await FallbackTestSupport.CaptureStderr(async () =>

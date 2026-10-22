@@ -846,6 +846,22 @@ public sealed record class Params : JsonModel
     }
 
     /// <summary>
+    /// Server-held conversation state (a Thread). `{"type": "create"}` asks the server
+    /// to hold this conversation's state under the response's `id`; `{"type": "continue",
+    /// "previous_message_id": ...}` resumes from a previous response so only the
+    /// new turn's messages are sent. The response shape is unchanged.
+    /// </summary>
+    public BetaMessageThreadParam? Thread
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaMessageThreadParam>("thread");
+        }
+        init { this._rawData.Set("thread", value); }
+    }
+
+    /// <summary>
     /// How the model should use the provided tools. The model can use a specific
     /// tool, any available tool, decide by itself, or not use tools at all.
     /// </summary>
@@ -968,6 +984,7 @@ public sealed record class Params : JsonModel
         _ = this.Stream;
         this.System?.Validate();
         this.Thinking?.Validate();
+        this.Thread?.Validate();
         this.ToolChoice?.Validate();
         foreach (var item in this.Tools ?? [])
         {

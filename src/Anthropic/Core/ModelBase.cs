@@ -301,6 +301,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Messages::BetaMemoryTool20250818CommandCommand>(),
             new ApiEnumConverter<string, Messages::IterationType>(),
             new ApiEnumConverter<string, Messages::BetaMessageParamRole>(),
+            new ApiEnumConverter<string, Messages::BetaMessageThreadParamType>(),
             new ApiEnumConverter<string, Messages::Effort>(),
             new ApiEnumConverter<string, Messages::BetaRawContentBlockDeltaType>(),
             new ApiEnumConverter<string, Messages::ContentBlockType>(),

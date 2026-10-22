@@ -128,6 +128,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -276,6 +277,7 @@ public class BatchCreateParamsTest : TestBase
                         },
                         Display = Messages::Display.Summarized,
                     },
+                    Thread = new Messages::BetaThreadCreateParams(),
                     ToolChoice = new Messages::BetaToolChoiceAuto()
                     {
                         DisableParallelToolUse = true,
@@ -450,6 +452,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -612,6 +615,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -779,6 +783,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -950,6 +955,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -1115,6 +1121,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -1288,6 +1295,7 @@ public class BatchCreateParamsTest : TestBase
                             },
                             Display = Messages::Display.Summarized,
                         },
+                        Thread = new Messages::BetaThreadCreateParams(),
                         ToolChoice = new Messages::BetaToolChoiceAuto()
                         {
                             DisableParallelToolUse = true,
@@ -1444,6 +1452,7 @@ public class RequestTest : TestBase
                     },
                     Display = Messages::Display.Summarized,
                 },
+                Thread = new Messages::BetaThreadCreateParams(),
                 ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -1579,6 +1588,7 @@ public class RequestTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -1722,6 +1732,7 @@ public class RequestTest : TestBase
                     },
                     Display = Messages::Display.Summarized,
                 },
+                Thread = new Messages::BetaThreadCreateParams(),
                 ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -1868,6 +1879,7 @@ public class RequestTest : TestBase
                     },
                     Display = Messages::Display.Summarized,
                 },
+                Thread = new Messages::BetaThreadCreateParams(),
                 ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -2010,6 +2022,7 @@ public class RequestTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -2153,6 +2166,7 @@ public class RequestTest : TestBase
                     },
                     Display = Messages::Display.Summarized,
                 },
+                Thread = new Messages::BetaThreadCreateParams(),
                 ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -2296,6 +2310,7 @@ public class RequestTest : TestBase
                     },
                     Display = Messages::Display.Summarized,
                 },
+                Thread = new Messages::BetaThreadCreateParams(),
                 ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
                 Tools =
                 [
@@ -2441,6 +2456,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -2585,6 +2601,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             };
+        Messages::BetaMessageThreadParam expectedThread = new Messages::BetaThreadCreateParams();
         Messages::BetaToolChoice expectedToolChoice = new Messages::BetaToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -2655,6 +2672,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedStream, model.Stream);
         Assert.Equal(expectedSystem, model.System);
         Assert.Equal(expectedThinking, model.Thinking);
+        Assert.Equal(expectedThread, model.Thread);
         Assert.Equal(expectedToolChoice, model.ToolChoice);
         Assert.NotNull(model.Tools);
         Assert.Equal(expectedTools.Count, model.Tools.Count);
@@ -2767,6 +2785,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -2909,6 +2928,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -3057,6 +3077,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             };
+        Messages::BetaMessageThreadParam expectedThread = new Messages::BetaThreadCreateParams();
         Messages::BetaToolChoice expectedToolChoice = new Messages::BetaToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -3127,6 +3148,7 @@ public class ParamsTest : TestBase
         Assert.Equal(expectedStream, deserialized.Stream);
         Assert.Equal(expectedSystem, deserialized.System);
         Assert.Equal(expectedThinking, deserialized.Thinking);
+        Assert.Equal(expectedThread, deserialized.Thread);
         Assert.Equal(expectedToolChoice, deserialized.ToolChoice);
         Assert.NotNull(deserialized.Tools);
         Assert.Equal(expectedTools.Count, deserialized.Tools.Count);
@@ -3239,6 +3261,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -3324,6 +3347,7 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new Messages::BetaThreadCreateParams(),
         };
 
         Assert.Null(model.McpServers);
@@ -3397,6 +3421,7 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new Messages::BetaThreadCreateParams(),
         };
 
         model.Validate();
@@ -3451,6 +3476,7 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new Messages::BetaThreadCreateParams(),
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3590,6 +3616,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -3707,6 +3734,7 @@ public class ParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new Messages::BetaThreadCreateParams(),
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -3839,6 +3867,8 @@ public class ParamsTest : TestBase
         Assert.False(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.False(model.RawData.ContainsKey("speed"));
+        Assert.Null(model.Thread);
+        Assert.False(model.RawData.ContainsKey("thread"));
     }
 
     [Fact]
@@ -4043,6 +4073,7 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
+            Thread = null,
         };
 
         Assert.Null(model.CacheControl);
@@ -4065,6 +4096,8 @@ public class ParamsTest : TestBase
         Assert.True(model.RawData.ContainsKey("output_format"));
         Assert.Null(model.Speed);
         Assert.True(model.RawData.ContainsKey("speed"));
+        Assert.Null(model.Thread);
+        Assert.True(model.RawData.ContainsKey("thread"));
     }
 
     [Fact]
@@ -4171,6 +4204,7 @@ public class ParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
+            Thread = null,
         };
 
         model.Validate();
@@ -4279,6 +4313,7 @@ public class ParamsTest : TestBase
                 },
                 Display = Messages::Display.Summarized,
             },
+            Thread = new Messages::BetaThreadCreateParams(),
             ToolChoice = new Messages::BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [

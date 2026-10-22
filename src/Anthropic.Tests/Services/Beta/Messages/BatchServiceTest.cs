@@ -124,6 +124,7 @@ public class BatchServiceTest : TestBase
                                 },
                                 Display = Display.Summarized,
                             },
+                            Thread = new BetaThreadCreateParams(),
                             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
                             Tools =
                             [
