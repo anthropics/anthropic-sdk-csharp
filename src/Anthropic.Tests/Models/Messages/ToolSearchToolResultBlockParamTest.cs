@@ -17,7 +17,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -26,7 +26,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
             ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
             ErrorMessage = "error_message",
         };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
@@ -46,7 +46,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -69,7 +69,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -85,7 +85,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
             ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
             ErrorMessage = "error_message",
         };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("tool_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
@@ -105,7 +105,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -122,7 +122,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         Assert.Null(model.CacheControl);
@@ -139,7 +139,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -155,7 +155,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -174,7 +174,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -192,7 +192,7 @@ public class ToolSearchToolResultBlockParamTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 

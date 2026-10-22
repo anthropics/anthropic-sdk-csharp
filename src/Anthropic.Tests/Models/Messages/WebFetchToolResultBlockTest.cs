@@ -16,14 +16,14 @@ public class WebFetchToolResultBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         WebFetchToolResultBlockCaller expectedCaller = new DirectCaller();
         WebFetchToolResultBlockContent expectedContent = new WebFetchToolResultErrorBlock(
             WebFetchToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result");
 
         Assert.Equal(expectedCaller, model.Caller);
@@ -41,7 +41,7 @@ public class WebFetchToolResultBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,7 +62,7 @@ public class WebFetchToolResultBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -76,7 +76,7 @@ public class WebFetchToolResultBlockTest : TestBase
         WebFetchToolResultBlockContent expectedContent = new WebFetchToolResultErrorBlock(
             WebFetchToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result");
 
         Assert.Equal(expectedCaller, deserialized.Caller);
@@ -94,7 +94,7 @@ public class WebFetchToolResultBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -109,7 +109,7 @@ public class WebFetchToolResultBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         WebFetchToolResultBlock copied = new(model);
@@ -130,14 +130,14 @@ public class WebFetchToolResultBlockCallerTest : TestBase
     [Fact]
     public void ServerToolValidationWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void ServerToolCaller20260120ValidationWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -157,7 +157,7 @@ public class WebFetchToolResultBlockCallerTest : TestBase
     [Fact]
     public void ServerToolSerializationRoundtripWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebFetchToolResultBlockCaller>(
             element,
@@ -170,7 +170,7 @@ public class WebFetchToolResultBlockCallerTest : TestBase
     [Fact]
     public void ServerToolCaller20260120SerializationRoundtripWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebFetchToolResultBlockCaller>(
             element,
@@ -190,14 +190,14 @@ public class WebFetchToolResultBlockCallerTest : TestBase
     [Fact]
     public void ServerToolTypeWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller("srvtoolu_c");
         Assert.Equal(WebFetchToolResultBlockCallerType.CodeExecution20250825, value.Type.Value());
     }
 
     [Fact]
     public void ServerToolCaller20260120TypeWorks()
     {
-        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        WebFetchToolResultBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(WebFetchToolResultBlockCallerType.CodeExecution20260120, value.Type.Value());
     }
 
@@ -209,7 +209,7 @@ public class WebFetchToolResultBlockCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -218,7 +218,7 @@ public class WebFetchToolResultBlockCallerTest : TestBase
 
         ApiEnum<string, WebFetchToolResultBlockCallerType> expectedType =
             WebFetchToolResultBlockCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

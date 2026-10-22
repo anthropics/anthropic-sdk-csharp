@@ -15,7 +15,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -24,7 +24,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaWebFetchToolResultBlockParamCaller expectedCaller = new BetaDirectCaller();
@@ -44,7 +44,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -66,7 +66,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -82,7 +82,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_fetch_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaWebFetchToolResultBlockParamCaller expectedCaller = new BetaDirectCaller();
@@ -102,7 +102,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -118,7 +118,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -134,7 +134,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -149,7 +149,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -168,7 +168,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         } with
@@ -189,7 +189,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -207,7 +207,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
 
@@ -223,7 +223,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
 
@@ -238,7 +238,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
 
             CacheControl = null,
@@ -256,7 +256,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
 
             CacheControl = null,
@@ -273,7 +273,7 @@ public class BetaWebFetchToolResultBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -392,9 +392,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
@@ -402,7 +400,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120ValidationWorks()
     {
         BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         value.Validate();
     }
@@ -423,9 +421,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamCaller>(
             element,
@@ -439,7 +435,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120SerializationRoundtripWorks()
     {
         BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebFetchToolResultBlockParamCaller>(
@@ -460,9 +456,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolTypeWorks()
     {
-        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         Assert.Equal(
             BetaWebFetchToolResultBlockParamCallerType.CodeExecution20250825,
             value.Type.Value()
@@ -473,7 +467,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120TypeWorks()
     {
         BetaWebFetchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         Assert.Equal(
             BetaWebFetchToolResultBlockParamCallerType.CodeExecution20260120,
@@ -489,7 +483,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -498,7 +492,7 @@ public class BetaWebFetchToolResultBlockParamCallerTest : TestBase
 
         ApiEnum<string, BetaWebFetchToolResultBlockParamCallerType> expectedType =
             BetaWebFetchToolResultBlockParamCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

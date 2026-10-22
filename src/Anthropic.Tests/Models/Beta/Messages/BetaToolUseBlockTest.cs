@@ -341,14 +341,14 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolCaller20260120ValidationWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -368,7 +368,7 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(
             element,
@@ -381,7 +381,7 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaServerToolCaller20260120SerializationRoundtripWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaToolUseBlockCaller>(
             element,
@@ -401,14 +401,14 @@ public class BetaToolUseBlockCallerTest : TestBase
     [Fact]
     public void BetaServerToolTypeWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller("srvtoolu_c");
         Assert.Equal(BetaToolUseBlockCallerType.CodeExecution20250825, value.Type.Value());
     }
 
     [Fact]
     public void BetaServerToolCaller20260120TypeWorks()
     {
-        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        BetaToolUseBlockCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(BetaToolUseBlockCallerType.CodeExecution20260120, value.Type.Value());
     }
 
@@ -420,7 +420,7 @@ public class BetaToolUseBlockCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -429,7 +429,7 @@ public class BetaToolUseBlockCallerTest : TestBase
 
         ApiEnum<string, BetaToolUseBlockCallerType> expectedType =
             BetaToolUseBlockCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

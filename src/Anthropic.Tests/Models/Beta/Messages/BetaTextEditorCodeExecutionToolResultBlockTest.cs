@@ -17,7 +17,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BetaTextEditorCodeExecutionToolResultBlockContent expectedContent =
@@ -26,7 +26,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "text_editor_code_execution_tool_result"
         );
@@ -46,7 +46,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -68,7 +68,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -84,7 +84,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "text_editor_code_execution_tool_result"
         );
@@ -104,7 +104,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -120,7 +120,7 @@ public class BetaTextEditorCodeExecutionToolResultBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BetaTextEditorCodeExecutionToolResultBlock copied = new(model);

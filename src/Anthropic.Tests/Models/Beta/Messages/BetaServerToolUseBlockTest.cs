@@ -13,7 +13,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -22,7 +22,7 @@ public class BetaServerToolUseBlockTest : TestBase
             Caller = new BetaDirectCaller(),
         };
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -49,7 +49,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -72,7 +72,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -88,7 +88,7 @@ public class BetaServerToolUseBlockTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -115,7 +115,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -132,7 +132,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -149,7 +149,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -165,7 +165,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -185,7 +185,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -207,7 +207,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -226,7 +226,7 @@ public class BetaServerToolUseBlockTest : TestBase
     {
         var model = new BetaServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -323,14 +323,14 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolCaller20260120ValidationWorks()
     {
-        Caller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -347,7 +347,7 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
@@ -357,7 +357,7 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolCaller20260120SerializationRoundtripWorks()
     {
-        Caller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
@@ -374,14 +374,14 @@ public class CallerTest : TestBase
     [Fact]
     public void BetaServerToolTypeWorks()
     {
-        Caller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller("srvtoolu_c");
         Assert.Equal(CallerType.CodeExecution20250825, value.Type.Value());
     }
 
     [Fact]
     public void BetaServerToolCaller20260120TypeWorks()
     {
-        Caller value = new BetaServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new BetaServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(CallerType.CodeExecution20260120, value.Type.Value());
     }
 
@@ -393,7 +393,7 @@ public class CallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -401,7 +401,7 @@ public class CallerTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         ApiEnum<string, CallerType> expectedType = CallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

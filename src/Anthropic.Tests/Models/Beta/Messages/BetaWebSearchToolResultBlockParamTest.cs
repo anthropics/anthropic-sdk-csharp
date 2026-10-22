@@ -23,7 +23,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -39,7 +39,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                 },
             ]
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaWebSearchToolResultBlockParamCaller expectedCaller = new BetaDirectCaller();
@@ -67,7 +67,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -97,7 +97,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -120,7 +120,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                 },
             ]
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaWebSearchToolResultBlockParamCaller expectedCaller = new BetaDirectCaller();
@@ -148,7 +148,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -172,7 +172,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -196,7 +196,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -219,7 +219,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -246,7 +246,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         } with
@@ -275,7 +275,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -301,7 +301,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
 
@@ -325,7 +325,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
 
@@ -348,7 +348,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
 
             CacheControl = null,
@@ -374,7 +374,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
 
             CacheControl = null,
@@ -399,7 +399,7 @@ public class BetaWebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -422,9 +422,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
@@ -432,7 +430,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120ValidationWorks()
     {
         BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         value.Validate();
     }
@@ -453,9 +451,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParamCaller>(
             element,
@@ -469,7 +465,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120SerializationRoundtripWorks()
     {
         BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultBlockParamCaller>(
@@ -490,9 +486,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolTypeWorks()
     {
-        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         Assert.Equal(
             BetaWebSearchToolResultBlockParamCallerType.CodeExecution20250825,
             value.Type.Value()
@@ -503,7 +497,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
     public void BetaServerToolCaller20260120TypeWorks()
     {
         BetaWebSearchToolResultBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
+            "srvtoolu_c"
         );
         Assert.Equal(
             BetaWebSearchToolResultBlockParamCallerType.CodeExecution20260120,
@@ -519,7 +513,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -528,7 +522,7 @@ public class BetaWebSearchToolResultBlockParamCallerTest : TestBase
 
         ApiEnum<string, BetaWebSearchToolResultBlockParamCallerType> expectedType =
             BetaWebSearchToolResultBlockParamCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

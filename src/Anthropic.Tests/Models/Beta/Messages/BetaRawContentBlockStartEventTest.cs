@@ -266,7 +266,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -285,7 +285,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebSearchToolResultError(
                 BetaWebSearchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         value.Validate();
@@ -299,7 +299,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlock(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         value.Validate();
@@ -311,7 +311,7 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new BetaAdvisorToolResultBlock()
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -324,7 +324,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -337,7 +337,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaBashCodeExecutionToolResultError(
                 BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -352,7 +352,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -367,7 +367,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -543,7 +543,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -568,7 +568,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebSearchToolResultError(
                 BetaWebSearchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -588,7 +588,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlock(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -606,7 +606,7 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new BetaAdvisorToolResultBlock()
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -625,7 +625,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -644,7 +644,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaBashCodeExecutionToolResultError(
                 BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -665,7 +665,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -686,7 +686,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -880,7 +880,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -899,7 +899,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebSearchToolResultError(
                 BetaWebSearchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         Assert.Equal(ContentBlockType.WebSearchToolResult, value.Type.Value());
@@ -913,7 +913,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlock(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new BetaDirectCaller(),
         };
         Assert.Equal(ContentBlockType.WebFetchToolResult, value.Type.Value());
@@ -925,7 +925,7 @@ public class ContentBlockTest : TestBase
         ContentBlock value = new BetaAdvisorToolResultBlock()
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.AdvisorToolResult, value.Type.Value());
     }
@@ -938,7 +938,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.CodeExecutionToolResult, value.Type.Value());
     }
@@ -951,7 +951,7 @@ public class ContentBlockTest : TestBase
             Content = new BetaBashCodeExecutionToolResultError(
                 BetaBashCodeExecutionToolResultErrorErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.BashCodeExecutionToolResult, value.Type.Value());
     }
@@ -966,7 +966,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.TextEditorCodeExecutionToolResult, value.Type.Value());
     }
@@ -981,7 +981,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.ToolSearchToolResult, value.Type.Value());
     }
@@ -1081,7 +1081,7 @@ public class ContentBlockTest : TestBase
                   "type": "text",
                   "signature": "signature",
                   "id": "id",
-                  "tool_use_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_use_id": "srvtoolu_c"
                 }
                 """
             )
@@ -1091,7 +1091,7 @@ public class ContentBlockTest : TestBase
         ApiEnum<string, ContentBlockType> expectedType = ContentBlockType.Text;
         string expectedSignature = "signature";
         string expectedID = "id";
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedSignature, value.Signature);

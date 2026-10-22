@@ -66,7 +66,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new ServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -84,7 +84,7 @@ public class ContentBlockTest : TestBase
         {
             Caller = new DirectCaller(),
             Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -98,7 +98,7 @@ public class ContentBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -111,7 +111,7 @@ public class ContentBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -124,7 +124,7 @@ public class ContentBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -139,7 +139,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -154,7 +154,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         value.Validate();
     }
@@ -248,7 +248,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new ServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -272,7 +272,7 @@ public class ContentBlockTest : TestBase
         {
             Caller = new DirectCaller(),
             Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -292,7 +292,7 @@ public class ContentBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -311,7 +311,7 @@ public class ContentBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -330,7 +330,7 @@ public class ContentBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -351,7 +351,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -372,7 +372,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ContentBlock>(
@@ -454,7 +454,7 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new ServerToolUseBlock()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -472,7 +472,7 @@ public class ContentBlockTest : TestBase
         {
             Caller = new DirectCaller(),
             Content = new WebSearchToolResultError(WebSearchToolResultErrorCode.InvalidToolInput),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.WebSearchToolResult, value.Type.Value());
     }
@@ -486,7 +486,7 @@ public class ContentBlockTest : TestBase
             Content = new WebFetchToolResultErrorBlock(
                 WebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.WebFetchToolResult, value.Type.Value());
     }
@@ -499,7 +499,7 @@ public class ContentBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.CodeExecutionToolResult, value.Type.Value());
     }
@@ -512,7 +512,7 @@ public class ContentBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.BashCodeExecutionToolResult, value.Type.Value());
     }
@@ -527,7 +527,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.TextEditorCodeExecutionToolResult, value.Type.Value());
     }
@@ -542,7 +542,7 @@ public class ContentBlockTest : TestBase
                 ErrorCode = ToolSearchToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
         Assert.Equal(ContentBlockType.ToolSearchToolResult, value.Type.Value());
     }
@@ -563,7 +563,7 @@ public class ContentBlockTest : TestBase
                 {
                   "type": "text",
                   "id": "id",
-                  "tool_use_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_use_id": "srvtoolu_c"
                 }
                 """
             )
@@ -572,7 +572,7 @@ public class ContentBlockTest : TestBase
 
         ApiEnum<string, ContentBlockType> expectedType = ContentBlockType.Text;
         string expectedID = "id";
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedID, value.ID);

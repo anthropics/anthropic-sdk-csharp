@@ -9,9 +9,9 @@ public class ServerToolCaller20260120Test : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_c" };
 
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
 
         Assert.Equal(expectedToolID, model.ToolID);
@@ -21,7 +21,7 @@ public class ServerToolCaller20260120Test : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_c" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ServerToolCaller20260120>(
@@ -35,7 +35,7 @@ public class ServerToolCaller20260120Test : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_c" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ServerToolCaller20260120>(
@@ -44,7 +44,7 @@ public class ServerToolCaller20260120Test : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_20260120");
 
         Assert.Equal(expectedToolID, deserialized.ToolID);
@@ -54,7 +54,7 @@ public class ServerToolCaller20260120Test : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_c" };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class ServerToolCaller20260120Test : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_SQfNkl1n_JR_" };
+        var model = new ServerToolCaller20260120 { ToolID = "srvtoolu_c" };
 
         ServerToolCaller20260120 copied = new(model);
 

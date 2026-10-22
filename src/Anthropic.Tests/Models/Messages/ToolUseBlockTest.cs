@@ -242,14 +242,14 @@ public class ToolUseBlockCallerTest : TestBase
     [Fact]
     public void ServerToolValidationWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void ServerToolCaller20260120ValidationWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -269,7 +269,7 @@ public class ToolUseBlockCallerTest : TestBase
     [Fact]
     public void ServerToolSerializationRoundtripWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolUseBlockCaller>(
             element,
@@ -282,7 +282,7 @@ public class ToolUseBlockCallerTest : TestBase
     [Fact]
     public void ServerToolCaller20260120SerializationRoundtripWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ToolUseBlockCaller>(
             element,
@@ -302,14 +302,14 @@ public class ToolUseBlockCallerTest : TestBase
     [Fact]
     public void ServerToolTypeWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller("srvtoolu_c");
         Assert.Equal(ToolUseBlockCallerType.CodeExecution20250825, value.Type.Value());
     }
 
     [Fact]
     public void ServerToolCaller20260120TypeWorks()
     {
-        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        ToolUseBlockCaller value = new ServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(ToolUseBlockCallerType.CodeExecution20260120, value.Type.Value());
     }
 
@@ -321,7 +321,7 @@ public class ToolUseBlockCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -329,7 +329,7 @@ public class ToolUseBlockCallerTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         ApiEnum<string, ToolUseBlockCallerType> expectedType = ToolUseBlockCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);
