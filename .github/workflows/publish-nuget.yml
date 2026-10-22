@@ -11,7 +11,6 @@ jobs:
     environment: production-release
     permissions:
       contents: read
-      id-token: write
     env:
       NODE_OPTIONS: --use-openssl-ca
 
@@ -77,12 +76,6 @@ jobs:
           --configuration Release
           --output "${{github.workspace}}/artifacts/packages"
 
-      - name: Log in to nuget.org
-        uses: NuGet/login@8d196754b4036150537f80ac539e15c2f1028841 # v1.2.0
-        id: login
-        with:
-          user: ${{ secrets.ANTHROPIC_NUGET_USER || secrets.NUGET_USER }}
-
       - name: Publish package to nuget.org
         run: dotnet nuget push
           $(find ${{ github.workspace }}/artifacts/packages/*.nupkg ! -name "*.symbols.nupkg")
@@ -90,4 +83,4 @@ jobs:
           --api-key $NUGET_API_KEY
           --skip-duplicate
         env:
-          NUGET_API_KEY: ${{ steps.login.outputs.NUGET_API_KEY }}
+          NUGET_API_KEY: ${{ secrets.ANTHROPIC_NUGET_API_KEY || secrets.NUGET_API_KEY }}
