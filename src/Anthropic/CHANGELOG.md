@@ -1,5 +1,13 @@
 # Changelog
 
+## [13.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.1.0...Anthropic-v13.1.1) (2026-10-22)
+
+### Chores
+
+* **docs:** clarify plugin content scan and validation descriptions
+* **docs:** clarify plugin served_version_pinned and updated_at
+* **docs:** rate limit model lists vary by organization and workspace
+
 ## [13.1.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.0.0...Anthropic-v13.1.0) (2026-10-21)
 
 ### Features

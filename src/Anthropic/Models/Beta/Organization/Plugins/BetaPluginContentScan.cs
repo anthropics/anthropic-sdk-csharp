@@ -13,7 +13,8 @@ namespace Anthropic.Models.Beta.Organization.Plugins;
 public sealed record class BetaPluginContentScan : JsonModel
 {
     /// <summary>
-    /// The scan's verdict; set only when `status` is `completed`.
+    /// The scan's verdict; set only when `status` is `completed`. A `warn` can mean
+    /// a `fail` that was allowed in claude.ai.
     /// </summary>
     public required ApiEnum<string, Assessment>? Assessment
     {
@@ -43,7 +44,9 @@ public sealed record class BetaPluginContentScan : JsonModel
 
     /// <summary>
     /// `processing` while a scan runs, `completed` when it ran to completion, `errored`
-    /// when it could not run or its outcome cannot be read.
+    /// when it could not run. Once a scan of the version has completed, `content_scan`
+    /// describes the newest completed scan, even while a later scan runs. While
+    /// the scan outcome cannot be read, `status` is `errored` instead.
     /// </summary>
     public required ApiEnum<string, Status> Status
     {
@@ -102,7 +105,8 @@ class BetaPluginContentScanFromRaw : IFromRawJson<BetaPluginContentScan>
 }
 
 /// <summary>
-/// The scan's verdict; set only when `status` is `completed`.
+/// The scan's verdict; set only when `status` is `completed`. A `warn` can mean a
+/// `fail` that was allowed in claude.ai.
 /// </summary>
 [JsonConverter(typeof(AssessmentConverter))]
 public enum Assessment
@@ -156,7 +160,9 @@ sealed class AssessmentConverter : JsonConverter<Assessment>
 
 /// <summary>
 /// `processing` while a scan runs, `completed` when it ran to completion, `errored`
-/// when it could not run or its outcome cannot be read.
+/// when it could not run. Once a scan of the version has completed, `content_scan`
+/// describes the newest completed scan, even while a later scan runs. While the scan
+/// outcome cannot be read, `status` is `errored` instead.
 /// </summary>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
