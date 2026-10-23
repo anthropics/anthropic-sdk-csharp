@@ -140,7 +140,7 @@ public class WorkspaceListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/service_accounts/service_account_id/workspaces?beta=true&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/service_accounts/service_account_id/workspaces?limit=1&page=page"
                 ),
                 url
             )

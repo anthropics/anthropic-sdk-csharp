@@ -110,7 +110,7 @@ public class PermissionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_id/permissions?beta=true&limit=1&page=eyJjdXJzb3IiOiAicmJhY19yb2xlXzAxIn0"
+                    "https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_id/permissions?limit=1&page=eyJjdXJzb3IiOiAicmJhY19yb2xlXzAxIn0"
                 ),
                 url
             )

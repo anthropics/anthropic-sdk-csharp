@@ -59,7 +59,7 @@ public interface ISummaryServiceWithRawResponse
     ISummaryServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/summaries?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/summaries</c>, but is otherwise the
     /// same as <see cref="ISummaryService.List(SummaryListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SummaryListPage>> List(

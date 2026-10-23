@@ -143,7 +143,7 @@ public class IssuerListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/federation_issuers?beta=true&include_archived=true&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/federation_issuers?include_archived=true&limit=1&page=page"
                 ),
                 url
             )

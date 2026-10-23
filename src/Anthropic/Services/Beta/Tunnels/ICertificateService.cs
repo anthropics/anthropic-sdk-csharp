@@ -127,7 +127,7 @@ public interface ICertificateServiceWithRawResponse
     ICertificateServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/certificates?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/certificates</c>, but is otherwise the
     /// same as <see cref="ICertificateService.Create(CertificateCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnelCertificate>> Create(
@@ -143,7 +143,7 @@ public interface ICertificateServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}/certificates/{certificate_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}/certificates/{certificate_id}</c>, but is otherwise the
     /// same as <see cref="ICertificateService.Retrieve(CertificateRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnelCertificate>> Retrieve(
@@ -159,7 +159,7 @@ public interface ICertificateServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}/certificates?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}/certificates</c>, but is otherwise the
     /// same as <see cref="ICertificateService.List(CertificateListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<CertificateListPage>> List(
@@ -175,7 +175,7 @@ public interface ICertificateServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/certificates/{certificate_id}/archive</c>, but is otherwise the
     /// same as <see cref="ICertificateService.Archive(CertificateArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnelCertificate>> Archive(

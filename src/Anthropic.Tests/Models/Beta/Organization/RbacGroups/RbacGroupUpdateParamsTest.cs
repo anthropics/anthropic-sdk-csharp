@@ -53,9 +53,7 @@ public class RbacGroupUpdateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_id?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_id"),
                 url
             )
         );

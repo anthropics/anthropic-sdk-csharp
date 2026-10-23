@@ -87,7 +87,7 @@ public class ServiceAccountArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/service_accounts/service_account_id/archive?beta=true"
+                    "https://api.anthropic.com/v1/organizations/service_accounts/service_account_id/archive"
                 ),
                 url
             )

@@ -8,41 +8,47 @@ public class EventServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Sessions.Events.List(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Events.List(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Send_Works()
     {
-        var betaManagedAgentsSendSessionEvents = await this.client.Beta.Sessions.Events.Send(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new()
-            {
-                Events =
-                [
-                    new BetaManagedAgentsUserMessageEventParams(
-                        [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
-                    ),
-                ],
-            },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsSendSessionEvents = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Events.Send(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new()
+                {
+                    Events =
+                    [
+                        new BetaManagedAgentsUserMessageEventParams(
+                            [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                        ),
+                    ],
+                },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsSendSessionEvents.Validate();
     }
 
     [Fact]
     public async Task StreamStreaming_Works()
     {
-        var stream = this.client.Beta.Sessions.Events.StreamStreaming(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var stream = this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Events.StreamStreaming(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new(),
+                TestContext.Current.CancellationToken
+            );
 
         await foreach (var betaManagedAgentsStreamSessionEvents in stream)
         {

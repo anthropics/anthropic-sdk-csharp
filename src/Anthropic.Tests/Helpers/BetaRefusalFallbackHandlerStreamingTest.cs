@@ -256,13 +256,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
             },
             new JsonObject { ["role"] = "user", ["content"] = "continue" }
         );
-        HttpRequestMessage request = new(
-            HttpMethod.Post,
-            "https://api.example.com/v1/messages?beta=true"
-        )
-        {
-            Content = new StringContent(body.ToJsonString(), Encoding.UTF8, "application/json"),
-        };
+        var request = StreamingRequest(body);
 
         using var _ = BetaFallbackState.Create().Use();
         var response = await invoker.SendAsync(request, TestContext.Current.CancellationToken);
@@ -1580,14 +1574,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
     }
 
     static HttpRequestMessage StreamingRequest(JsonObject? body = null) =>
-        new(HttpMethod.Post, "https://api.example.com/v1/messages?beta=true")
-        {
-            Content = new StringContent(
-                (body ?? StreamingBody()).ToJsonString(),
-                Encoding.UTF8,
-                "application/json"
-            ),
-        };
+        FallbackTestSupport.BetaRequest("/v1/messages", (body ?? StreamingBody()).ToJsonString());
 
     /// <summary>
     /// Executes a streaming request inside the given state's scope (or none when <c>null</c> —

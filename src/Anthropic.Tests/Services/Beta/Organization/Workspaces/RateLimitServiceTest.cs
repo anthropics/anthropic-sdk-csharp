@@ -8,8 +8,9 @@ public class RateLimitServiceTest : TestBase
     [Fact]
     public async Task Update_Works()
     {
-        var betaWorkspaceRateLimit =
-            await this.client.Beta.Organization.Workspaces.RateLimits.Update(
+        var betaWorkspaceRateLimit = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.RateLimits.Update(
                 "rate_limit_id",
                 new()
                 {
@@ -24,11 +25,13 @@ public class RateLimitServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Workspaces.RateLimits.List(
-            "workspace_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.RateLimits.List(
+                "workspace_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 }

@@ -59,12 +59,12 @@ public class UsageListPageResponseTest : TestBase
                         OutputTokens = 891000,
                         Requests = 128,
                         ServerToolUse = new(10),
-                        TotalTokens = 5377000,
+                        TotalTokens = 5375500,
                         UncachedInputTokens = 1284500,
                     },
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -114,12 +114,12 @@ public class UsageListPageResponseTest : TestBase
                     OutputTokens = 891000,
                     Requests = 128,
                     ServerToolUse = new(10),
-                    TotalTokens = 5377000,
+                    TotalTokens = 5375500,
                     UncachedInputTokens = 1284500,
                 },
             },
         ];
-        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z");
         bool expectedHasMore = true;
         string expectedNextPage = "next_page";
 
@@ -183,12 +183,12 @@ public class UsageListPageResponseTest : TestBase
                         OutputTokens = 891000,
                         Requests = 128,
                         ServerToolUse = new(10),
-                        TotalTokens = 5377000,
+                        TotalTokens = 5375500,
                         UncachedInputTokens = 1284500,
                     },
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -252,12 +252,12 @@ public class UsageListPageResponseTest : TestBase
                         OutputTokens = 891000,
                         Requests = 128,
                         ServerToolUse = new(10),
-                        TotalTokens = 5377000,
+                        TotalTokens = 5375500,
                         UncachedInputTokens = 1284500,
                     },
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -314,12 +314,12 @@ public class UsageListPageResponseTest : TestBase
                     OutputTokens = 891000,
                     Requests = 128,
                     ServerToolUse = new(10),
-                    TotalTokens = 5377000,
+                    TotalTokens = 5375500,
                     UncachedInputTokens = 1284500,
                 },
             },
         ];
-        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z");
         bool expectedHasMore = true;
         string expectedNextPage = "next_page";
 
@@ -383,12 +383,12 @@ public class UsageListPageResponseTest : TestBase
                         OutputTokens = 891000,
                         Requests = 128,
                         ServerToolUse = new(10),
-                        TotalTokens = 5377000,
+                        TotalTokens = 5375500,
                         UncachedInputTokens = 1284500,
                     },
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -446,12 +446,12 @@ public class UsageListPageResponseTest : TestBase
                         OutputTokens = 891000,
                         Requests = 128,
                         ServerToolUse = new(10),
-                        TotalTokens = 5377000,
+                        TotalTokens = 5375500,
                         UncachedInputTokens = 1284500,
                     },
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };

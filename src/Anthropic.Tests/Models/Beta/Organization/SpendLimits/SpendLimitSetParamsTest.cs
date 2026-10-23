@@ -110,7 +110,7 @@ public class SpendLimitSetParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/spend_limits?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/spend_limits"),
                 url
             )
         );

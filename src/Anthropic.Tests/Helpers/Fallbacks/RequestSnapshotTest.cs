@@ -14,7 +14,7 @@ namespace Anthropic.Tests.Helpers.Fallbacks;
 
 public class RequestSnapshotTest
 {
-    static readonly Uri Uri = new("https://example.test/v1/messages?beta=true");
+    static readonly Uri Uri = new("https://example.test/v1/messages");
 
     static readonly FallbackDiagnostics Quiet = new(TextWriter.Null);
 

@@ -174,7 +174,7 @@ public interface IServiceAccountServiceWithRawResponse
     IServiceAccountServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}</c>, but is otherwise the
     /// same as <see cref="IServiceAccountService.Retrieve(ServiceAccountRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ServiceAccounts::BetaServiceAccountWorkspaceMember>> Retrieve(
@@ -190,7 +190,7 @@ public interface IServiceAccountServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}</c>, but is otherwise the
     /// same as <see cref="IServiceAccountService.Update(ServiceAccountUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ServiceAccounts::BetaServiceAccountWorkspaceMember>> Update(
@@ -206,7 +206,7 @@ public interface IServiceAccountServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/service_accounts?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/service_accounts</c>, but is otherwise the
     /// same as <see cref="IServiceAccountService.List(ServiceAccountListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ServiceAccountListPage>> List(
@@ -222,7 +222,7 @@ public interface IServiceAccountServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/service_accounts?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/service_accounts</c>, but is otherwise the
     /// same as <see cref="IServiceAccountService.Add(ServiceAccountAddParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ServiceAccounts::BetaServiceAccountWorkspaceMember>> Add(
@@ -238,7 +238,7 @@ public interface IServiceAccountServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/workspaces/{workspace_id}/service_accounts/{service_account_id}</c>, but is otherwise the
     /// same as <see cref="IServiceAccountService.Remove(ServiceAccountRemoveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ServiceAccountRemoveResponse>> Remove(

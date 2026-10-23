@@ -158,7 +158,7 @@ public interface IBatchServiceWithRawResponse
     IBatchServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/messages/batches?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages/batches</c>, but is otherwise the
     /// same as <see cref="IBatchService.Create(BatchCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageBatch>> Create(
@@ -167,7 +167,7 @@ public interface IBatchServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/messages/batches/{message_batch_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/messages/batches/{message_batch_id}</c>, but is otherwise the
     /// same as <see cref="IBatchService.Retrieve(BatchRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageBatch>> Retrieve(
@@ -183,7 +183,7 @@ public interface IBatchServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/messages/batches?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/messages/batches</c>, but is otherwise the
     /// same as <see cref="IBatchService.List(BatchListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BatchListPage>> List(
@@ -192,7 +192,7 @@ public interface IBatchServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/messages/batches/{message_batch_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/messages/batches/{message_batch_id}</c>, but is otherwise the
     /// same as <see cref="IBatchService.Delete(BatchDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedMessageBatch>> Delete(
@@ -208,7 +208,7 @@ public interface IBatchServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/messages/batches/{message_batch_id}/cancel?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages/batches/{message_batch_id}/cancel</c>, but is otherwise the
     /// same as <see cref="IBatchService.Cancel(BatchCancelParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageBatch>> Cancel(
@@ -224,7 +224,7 @@ public interface IBatchServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/messages/batches/{message_batch_id}/results?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/messages/batches/{message_batch_id}/results</c>, but is otherwise the
     /// same as <see cref="IBatchService.ResultsStreaming(BatchResultsParams, CancellationToken)"/>.
     /// </summary>
     Task<StreamingHttpResponse<BetaMessageBatchIndividualResponse>> ResultsStreaming(

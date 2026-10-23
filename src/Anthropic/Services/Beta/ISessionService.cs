@@ -130,7 +130,7 @@ public interface ISessionServiceWithRawResponse
     IThreadServiceWithRawResponse Threads { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions</c>, but is otherwise the
     /// same as <see cref="ISessionService.Create(SessionCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSession>> Create(
@@ -139,7 +139,7 @@ public interface ISessionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}</c>, but is otherwise the
     /// same as <see cref="ISessionService.Retrieve(SessionRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSession>> Retrieve(
@@ -155,7 +155,7 @@ public interface ISessionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}</c>, but is otherwise the
     /// same as <see cref="ISessionService.Update(SessionUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSession>> Update(
@@ -171,7 +171,7 @@ public interface ISessionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions</c>, but is otherwise the
     /// same as <see cref="ISessionService.List(SessionListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SessionListPage>> List(
@@ -180,7 +180,7 @@ public interface ISessionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/sessions/{session_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/sessions/{session_id}</c>, but is otherwise the
     /// same as <see cref="ISessionService.Delete(SessionDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeletedSession>> Delete(
@@ -196,7 +196,7 @@ public interface ISessionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/archive</c>, but is otherwise the
     /// same as <see cref="ISessionService.Archive(SessionArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSession>> Archive(

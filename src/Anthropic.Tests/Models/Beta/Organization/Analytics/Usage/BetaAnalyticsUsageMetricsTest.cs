@@ -18,7 +18,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -31,7 +31,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
         long expectedOutputTokens = 891000;
         long expectedRequests = 128;
         BetaAnalyticsServerToolUse expectedServerToolUse = new(10);
-        long expectedTotalTokens = 5377000;
+        long expectedTotalTokens = 5375500;
         long expectedUncachedInputTokens = 1284500;
 
         Assert.Equal(expectedCacheCreation, model.CacheCreation);
@@ -53,7 +53,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -76,7 +76,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -96,7 +96,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
         long expectedOutputTokens = 891000;
         long expectedRequests = 128;
         BetaAnalyticsServerToolUse expectedServerToolUse = new(10);
-        long expectedTotalTokens = 5377000;
+        long expectedTotalTokens = 5375500;
         long expectedUncachedInputTokens = 1284500;
 
         Assert.Equal(expectedCacheCreation, deserialized.CacheCreation);
@@ -118,7 +118,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -135,7 +135,7 @@ public class BetaAnalyticsUsageMetricsTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 

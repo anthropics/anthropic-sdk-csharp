@@ -709,7 +709,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
 
         var request = wire.Requests.Single();
         Assert.EndsWith("/v1/messages", request.Uri.AbsolutePath);
-        Assert.Equal(beta ? "?beta=true" : "", request.Uri.Query);
+        Assert.Equal("", request.Uri.Query);
         return request;
     }
 
@@ -834,7 +834,7 @@ public class AnthropicBedrockMantleClientTests : IDisposable
 
         var request = wire.Requests.Single();
         Assert.EndsWith("/v1/messages/count_tokens", request.Uri.AbsolutePath);
-        Assert.Equal(beta ? "?beta=true" : "", request.Uri.Query);
+        Assert.Equal("", request.Uri.Query);
         Assert.False(request.Headers.ContainsKey(UserProfileIDHeader));
         Assert.Equal("uprof_test", request.JsonBody["user_profile_id"]!.GetValue<string>());
     }

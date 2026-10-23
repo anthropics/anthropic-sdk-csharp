@@ -96,7 +96,7 @@ public class AgentArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/archive?beta=true"
+                    "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/archive"
                 ),
                 url
             )

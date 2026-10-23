@@ -109,7 +109,7 @@ public class CertificateArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/tunnels/tunnel_id/certificates/certificate_id/archive?beta=true"
+                    "https://api.anthropic.com/v1/tunnels/tunnel_id/certificates/certificate_id/archive"
                 ),
                 url
             )

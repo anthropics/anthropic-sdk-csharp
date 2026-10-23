@@ -94,10 +94,7 @@ public class SkillDeleteParamsTest : TestBase
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(
-            TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/skills/skill_id?beta=true"),
-                url
-            )
+            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/skills/skill_id"), url)
         );
     }
 

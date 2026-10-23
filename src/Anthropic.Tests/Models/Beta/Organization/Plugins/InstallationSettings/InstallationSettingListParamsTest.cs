@@ -166,7 +166,7 @@ public class InstallationSettingListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/installation_settings?beta=true&limit=1&organization_id=organization_id&page=page&target_type=organization"
+                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/installation_settings?limit=1&organization_id=organization_id&page=page&target_type=organization"
                 ),
                 url
             )

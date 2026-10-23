@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <!-- Metadata -->
-    <AssemblyTitle>Anthropic C#</AssemblyTitle>
+    <AssemblyTitle>Claude SDK for C#</AssemblyTitle>
     <AssemblyName>Anthropic</AssemblyName>
     <PackageId>Anthropic</PackageId>
     <VersionPrefix>13.2.1</VersionPrefix>

@@ -19,6 +19,7 @@ namespace Anthropic.GoogleCloud;
 internal sealed class GoogleCloudAdaptationHandler : DelegatingHandler
 {
     internal const string OrganizationPathPrefix = "/v1/organizations/";
+    internal const string UserProfilesPath = "/v1/user_profiles";
 
     private readonly GoogleCloudClientOptions _googleCloudConfig;
     private readonly string? _workspaceBaseUrl;
@@ -81,10 +82,10 @@ internal sealed class GoogleCloudAdaptationHandler : DelegatingHandler
             return;
         }
 
-        var path = requestUrl.Substring(derivedBaseUrl.Length);
-        if (path.StartsWith(OrganizationPathPrefix, StringComparison.Ordinal))
+        var pathAndQuery = requestUrl.Substring(derivedBaseUrl.Length);
+        if (IsOrganizationRoute(pathAndQuery.Split('?')[0]))
         {
-            requestMessage.RequestUri = new Uri(_organizationBaseUrl + path);
+            requestMessage.RequestUri = new Uri(_organizationBaseUrl + pathAndQuery);
             return;
         }
 
@@ -96,6 +97,11 @@ internal sealed class GoogleCloudAdaptationHandler : DelegatingHandler
             );
         }
     }
+
+    private static bool IsOrganizationRoute(string path) =>
+        path.StartsWith(OrganizationPathPrefix, StringComparison.Ordinal)
+        || path.Equals(UserProfilesPath, StringComparison.Ordinal)
+        || path.StartsWith(UserProfilesPath + "/", StringComparison.Ordinal);
 
     private async Task AdaptRequestAsync(
         HttpRequestMessage requestMessage,

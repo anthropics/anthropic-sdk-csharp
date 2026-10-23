@@ -96,7 +96,7 @@ public interface IMemberServiceWithRawResponse
     IMemberServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups/{rbac_group_id}/members?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups/{rbac_group_id}/members</c>, but is otherwise the
     /// same as <see cref="IMemberService.List(MemberListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<MemberListPage>> List(
@@ -112,7 +112,7 @@ public interface IMemberServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups/{rbac_group_id}/members?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups/{rbac_group_id}/members</c>, but is otherwise the
     /// same as <see cref="IMemberService.Add(MemberAddParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaRbacGroupMember>> Add(
@@ -128,7 +128,7 @@ public interface IMemberServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}/members/{user_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}/members/{user_id}</c>, but is otherwise the
     /// same as <see cref="IMemberService.Remove(MemberRemoveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<MemberRemoveResponse>> Remove(

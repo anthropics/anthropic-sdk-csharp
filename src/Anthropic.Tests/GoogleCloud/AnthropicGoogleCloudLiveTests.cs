@@ -131,6 +131,19 @@ public class AnthropicGoogleCloudLiveTests
     }
 
     [Fact]
+    public async Task Live_UserProfilesRoute()
+    {
+        Assert.SkipUnless(Live, "set ANTHROPIC_LIVE=1 to run live integration tests");
+
+        var client = NewLiveClient();
+        var page = await client.UserProfiles.List(
+            new() { Limit = 1 },
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(page.Items);
+    }
+
+    [Fact]
     public async Task Live_ManagedAgentsRoutes()
     {
         Assert.SkipUnless(Live, "set ANTHROPIC_LIVE=1 to run live integration tests");

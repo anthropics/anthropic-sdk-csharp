@@ -7,10 +7,9 @@ public class SkillServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Analytics.Skills.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Analytics.Skills.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 }

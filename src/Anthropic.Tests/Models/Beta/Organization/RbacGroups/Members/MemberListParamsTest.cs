@@ -110,7 +110,7 @@ public class MemberListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_id/members?beta=true&limit=1&page=eyJjdXJzb3IiOiAicmJhY19ncm91cF8wMSJ9"
+                    "https://api.anthropic.com/v1/organizations/rbac_groups/rbac_group_id/members?limit=1&page=eyJjdXJzb3IiOiAicmJhY19ncm91cF8wMSJ9"
                 ),
                 url
             )

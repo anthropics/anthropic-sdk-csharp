@@ -21,7 +21,8 @@ namespace Anthropic.Models.Beta.Environments.Work;
 public sealed record class BetaSelfHostedWorkHeartbeatResponse : JsonModel
 {
     /// <summary>
-    /// RFC 3339 timestamp of the actual heartbeat from DB
+    /// RFC 3339 timestamp of the most recent heartbeat recorded for this work item,
+    /// or an empty string if none has been recorded
     /// </summary>
     public required string LastHeartbeat
     {

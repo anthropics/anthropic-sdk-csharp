@@ -268,7 +268,7 @@ public class SessionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions?beta=true&agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&deployment_id=deployment_id&include_archived=true&limit=0&memory_store_id=memory_store_id&order=asc&page=page&statuses%5b%5d=rescheduling"
+                    "https://api.anthropic.com/v1/sessions?agent_id=agent_id&agent_version=0&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&deployment_id=deployment_id&include_archived=true&limit=0&memory_store_id=memory_store_id&order=asc&page=page&statuses%5b%5d=rescheduling"
                 ),
                 url
             )

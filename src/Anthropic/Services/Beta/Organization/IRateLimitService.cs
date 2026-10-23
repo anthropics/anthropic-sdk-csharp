@@ -57,7 +57,7 @@ public interface IRateLimitServiceWithRawResponse
     IRateLimitServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rate_limits?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rate_limits</c>, but is otherwise the
     /// same as <see cref="IRateLimitService.List(RateLimitListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RateLimitListPage>> List(

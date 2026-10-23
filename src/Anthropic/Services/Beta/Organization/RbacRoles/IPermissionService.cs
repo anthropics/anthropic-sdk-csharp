@@ -58,7 +58,7 @@ public interface IPermissionServiceWithRawResponse
     IPermissionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles/{rbac_role_id}/permissions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles/{rbac_role_id}/permissions</c>, but is otherwise the
     /// same as <see cref="IPermissionService.List(PermissionListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<PermissionListPage>> List(

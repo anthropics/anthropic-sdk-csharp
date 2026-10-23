@@ -17,9 +17,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics.UserCostReport;
 /// <para>Returns cost per user, ranked by spend; `group_by[]` or `bucket_width`
 /// splits a user across several rows. Use this to see which users account for the
 /// most cost. Only cost attributed to a user account is included; cost with no user
-/// attributed to it, such as requests attributed only to an API key, is left out.
-/// Available to organizations on a Claude Enterprise plan. Requires an API key with
-/// the `read:analytics` scope.</para>
+/// attributed to it, such as Code Review usage and Claude Tag usage in Slack channels,
+/// is left out. Available to organizations on a Claude Enterprise plan. Requires
+/// an API key with the `read:analytics` scope.</para>
 ///
 /// <para>This endpoint is one of the legacy Claude Enterprise usage and cost reports.
 /// For new integrations, use [`GET /v1/organizations/analytics/cost`](/docs/en/api/beta/organization/analytics/cost/list)
@@ -503,12 +503,11 @@ public record class UserCostReportListParams : ParamsBase
 
     public override Uri Url(ClientOptions options)
     {
-        var queryString = this.QueryString(options);
         return new UriBuilder(
             options.BaseUrl.ToString().TrimEnd('/') + "/v1/organizations/analytics/user_cost_report"
         )
         {
-            Query = string.IsNullOrEmpty(queryString) ? "beta=true" : ("beta=true&" + queryString),
+            Query = this.QueryString(options),
         }.Uri;
     }
 

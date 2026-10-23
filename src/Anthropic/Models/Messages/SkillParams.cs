@@ -10,7 +10,7 @@ using System = System;
 namespace Anthropic.Models.Messages;
 
 /// <summary>
-/// Specification for a skill to be loaded in a container (request model).
+/// Specification for a skill to be loaded in a container.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<SkillParams, SkillParamsFromRaw>))]
 public sealed record class SkillParams : JsonModel

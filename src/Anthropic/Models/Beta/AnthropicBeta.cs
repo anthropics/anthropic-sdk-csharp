@@ -62,6 +62,7 @@ public enum AnthropicBeta
     Webhooks2026_10_07,
     MessageThreads2026_08_12,
     AnalyticsUsageCost2026_08_24,
+    ExperimentalClaudeTag2026_10_21,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -133,6 +134,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "webhooks-2026-10-07" => AnthropicBeta.Webhooks2026_10_07,
             "message-threads-2026-08-12" => AnthropicBeta.MessageThreads2026_08_12,
             "analytics-usage-cost-2026-08-24" => AnthropicBeta.AnalyticsUsageCost2026_08_24,
+            "experimental-claude-tag-2026-10-21" => AnthropicBeta.ExperimentalClaudeTag2026_10_21,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -208,6 +210,8 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.Webhooks2026_10_07 => "webhooks-2026-10-07",
                 AnthropicBeta.MessageThreads2026_08_12 => "message-threads-2026-08-12",
                 AnthropicBeta.AnalyticsUsageCost2026_08_24 => "analytics-usage-cost-2026-08-24",
+                AnthropicBeta.ExperimentalClaudeTag2026_10_21 =>
+                    "experimental-claude-tag-2026-10-21",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

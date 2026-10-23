@@ -146,7 +146,7 @@ public class WorkHeartbeatParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW/work/work_id/heartbeat?beta=true&desired_ttl_seconds=0&expected_last_heartbeat=expected_last_heartbeat"
+                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW/work/work_id/heartbeat?desired_ttl_seconds=0&expected_last_heartbeat=expected_last_heartbeat"
                 ),
                 url
             )

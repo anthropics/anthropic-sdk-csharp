@@ -154,7 +154,7 @@ public class RuleListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/federation_rules?beta=true&include_archived=true&issuer_id=issuer_id&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/federation_rules?include_archived=true&issuer_id=issuer_id&limit=1&page=page"
                 ),
                 url
             )

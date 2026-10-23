@@ -386,7 +386,7 @@ public class UserCostReportListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/user_cost_report?beta=true&starting_at=2019-12-27T18%3a11%3a19.117%2b00%3a00&bucket_width=1d&claude_tag_categories%5b%5d=engaged&claude_tag_user_ids%5b%5d=U0123ABCDEF&context_windows%5b%5d=0-200k&ending_at=2019-12-27T18%3a11%3a19.117%2b00%3a00&exclude_deleted_users=true&group_by%5b%5d=claude_tag_category&inference_geos%5b%5d=global&limit=1&models%5b%5d=string&order=asc&order_by=amount&page=page&products%5b%5d=chat&rbac_group_ids%5b%5d=rbac_group_012rppKaSVsmTo6NqRDXQXNF&slack_channel_ids%5b%5d=C0123ABCDEF&speeds%5b%5d=fast&user_ids%5b%5d=user_01AbCdEfGhIjKlMnOpQrSt"
+                    "https://api.anthropic.com/v1/organizations/analytics/user_cost_report?starting_at=2019-12-27T18%3a11%3a19.117%2b00%3a00&bucket_width=1d&claude_tag_categories%5b%5d=engaged&claude_tag_user_ids%5b%5d=U0123ABCDEF&context_windows%5b%5d=0-200k&ending_at=2019-12-27T18%3a11%3a19.117%2b00%3a00&exclude_deleted_users=true&group_by%5b%5d=claude_tag_category&inference_geos%5b%5d=global&limit=1&models%5b%5d=string&order=asc&order_by=amount&page=page&products%5b%5d=chat&rbac_group_ids%5b%5d=rbac_group_012rppKaSVsmTo6NqRDXQXNF&slack_channel_ids%5b%5d=C0123ABCDEF&speeds%5b%5d=fast&user_ids%5b%5d=user_01AbCdEfGhIjKlMnOpQrSt"
                 ),
                 url
             )

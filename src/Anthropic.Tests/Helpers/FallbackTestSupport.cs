@@ -242,6 +242,17 @@ static class FallbackTestSupport
     public static JsonNode Block(BetaContentBlockParam block) =>
         JsonSerializer.SerializeToNode(block, ModelBase.SerializerOptions)!;
 
+    /// <summary>A POST of the given body with the qualifiers of the SDK's beta services.</summary>
+    public static HttpRequestMessage BetaRequest(string path, string body)
+    {
+        HttpRequestMessage request = new(HttpMethod.Post, "https://api.example.com" + path)
+        {
+            Content = new StringContent(body, Encoding.UTF8, "application/json"),
+        };
+        Qualifiers.Attach(request, new Dictionary<string, string>() { ["beta"] = "true" });
+        return request;
+    }
+
     /// <summary>The API's error body for the given status.</summary>
     public static string ErrorBody(int status)
     {

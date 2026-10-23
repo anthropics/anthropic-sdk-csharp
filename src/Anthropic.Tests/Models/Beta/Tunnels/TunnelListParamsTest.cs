@@ -131,7 +131,7 @@ public class TunnelListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/tunnels?beta=true&include_archived=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/tunnels?include_archived=true&limit=0&page=page"
                 ),
                 url
             )

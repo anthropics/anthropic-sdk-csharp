@@ -59,7 +59,7 @@ public class CostListPageResponseTest : TestBase
                     StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -109,7 +109,7 @@ public class CostListPageResponseTest : TestBase
                 StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             },
         ];
-        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z");
         bool expectedHasMore = true;
         string expectedNextPage = "next_page";
 
@@ -173,7 +173,7 @@ public class CostListPageResponseTest : TestBase
                     StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -237,7 +237,7 @@ public class CostListPageResponseTest : TestBase
                     StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -294,7 +294,7 @@ public class CostListPageResponseTest : TestBase
                 StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             },
         ];
-        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedDataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z");
         bool expectedHasMore = true;
         string expectedNextPage = "next_page";
 
@@ -358,7 +358,7 @@ public class CostListPageResponseTest : TestBase
                     StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };
@@ -416,7 +416,7 @@ public class CostListPageResponseTest : TestBase
                     StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
                 },
             ],
-            DataRefreshedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            DataRefreshedAt = DateTimeOffset.Parse("2026-10-01T04:02:11Z"),
             HasMore = true,
             NextPage = "next_page",
         };

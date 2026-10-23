@@ -109,7 +109,7 @@ public class CredentialRetrieveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials/vcrd_011CZkZEMt8gZan2iYPQfSkw?beta=true"
+                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials/vcrd_011CZkZEMt8gZan2iYPQfSkw"
                 ),
                 url
             )

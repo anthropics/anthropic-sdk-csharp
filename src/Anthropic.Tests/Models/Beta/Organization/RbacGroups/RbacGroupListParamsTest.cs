@@ -99,7 +99,7 @@ public class RbacGroupListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_groups?beta=true&limit=1&page=eyJjdXJzb3IiOiAicmJhY19ncm91cF8wMSJ9"
+                    "https://api.anthropic.com/v1/organizations/rbac_groups?limit=1&page=eyJjdXJzb3IiOiAicmJhY19ncm91cF8wMSJ9"
                 ),
                 url
             )

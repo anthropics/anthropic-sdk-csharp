@@ -8,19 +8,22 @@ public class InstallationSettingServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Plugins.InstallationSettings.List(
-            "plugin_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Plugins.InstallationSettings.List(
+                "plugin_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Remove_Works()
     {
-        var betaDeletedPluginInstallationSetting =
-            await this.client.Beta.Organization.Plugins.InstallationSettings.Remove(
+        var betaDeletedPluginInstallationSetting = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Plugins.InstallationSettings.Remove(
                 "target",
                 new() { PluginID = "plugin_id" },
                 TestContext.Current.CancellationToken
@@ -31,8 +34,9 @@ public class InstallationSettingServiceTest : TestBase
     [Fact]
     public async Task Set_Works()
     {
-        var betaPluginInstallationSetting =
-            await this.client.Beta.Organization.Plugins.InstallationSettings.Set(
+        var betaPluginInstallationSetting = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Plugins.InstallationSettings.Set(
                 "target",
                 new()
                 {

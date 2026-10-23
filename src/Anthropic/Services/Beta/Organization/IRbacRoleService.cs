@@ -73,7 +73,7 @@ public interface IRbacRoleServiceWithRawResponse
     IPermissionServiceWithRawResponse Permissions { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles/{rbac_role_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles/{rbac_role_id}</c>, but is otherwise the
     /// same as <see cref="IRbacRoleService.Retrieve(RbacRoleRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaRbacRole>> Retrieve(
@@ -89,7 +89,7 @@ public interface IRbacRoleServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_roles</c>, but is otherwise the
     /// same as <see cref="IRbacRoleService.List(RbacRoleListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RbacRoleListPage>> List(

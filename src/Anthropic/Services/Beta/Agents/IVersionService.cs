@@ -56,7 +56,7 @@ public interface IVersionServiceWithRawResponse
     IVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/agents/{agent_id}/versions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/agents/{agent_id}/versions</c>, but is otherwise the
     /// same as <see cref="IVersionService.List(VersionListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionListPage>> List(

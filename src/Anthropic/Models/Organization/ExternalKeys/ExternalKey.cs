@@ -73,7 +73,7 @@ public sealed record class ExternalKey : JsonModel
     }
 
     /// <summary>
-    /// Data residency geo. Selects which regional validator handles this key's encrypt/decrypt roundtrips.
+    /// Data residency geo. Selects the region that handles this key's encrypt/decrypt roundtrips.
     /// </summary>
     public required string Geo
     {

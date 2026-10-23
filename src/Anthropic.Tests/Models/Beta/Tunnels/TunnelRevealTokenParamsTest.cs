@@ -95,7 +95,7 @@ public class TunnelRevealTokenParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/reveal_token?beta=true"),
+                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/reveal_token"),
                 url
             )
         );

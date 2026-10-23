@@ -170,7 +170,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     TelemetryDestinations::IWorkspaceServiceWithRawResponse Workspaces { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.Create(TelemetryDestinationCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTelemetryDestination>> Create(
@@ -179,7 +179,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations/{destination_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations/{destination_id}</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.Retrieve(TelemetryDestinationRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTelemetryDestination>> Retrieve(
@@ -195,7 +195,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.Update(TelemetryDestinationUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTelemetryDestination>> Update(
@@ -211,7 +211,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.List(TelemetryDestinationListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<TelemetryDestinationListPage>> List(
@@ -220,7 +220,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/telemetry_destinations/{destination_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/telemetry_destinations/{destination_id}</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.Delete(TelemetryDestinationDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedTelemetryDestination>> Delete(
@@ -236,7 +236,7 @@ public interface ITelemetryDestinationServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}/test?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}/test</c>, but is otherwise the
     /// same as <see cref="ITelemetryDestinationService.Test(TelemetryDestinationTestParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTelemetryDestinationTestResponse>> Test(

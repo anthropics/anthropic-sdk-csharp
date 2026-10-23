@@ -150,7 +150,7 @@ public interface IIssuerServiceWithRawResponse
     IIssuerServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers</c>, but is otherwise the
     /// same as <see cref="IIssuerService.Create(IssuerCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationIssuer>> Create(
@@ -159,7 +159,7 @@ public interface IIssuerServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_issuers/{federation_issuer_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_issuers/{federation_issuer_id}</c>, but is otherwise the
     /// same as <see cref="IIssuerService.Retrieve(IssuerRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationIssuer>> Retrieve(
@@ -175,7 +175,7 @@ public interface IIssuerServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers/{federation_issuer_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers/{federation_issuer_id}</c>, but is otherwise the
     /// same as <see cref="IIssuerService.Update(IssuerUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationIssuer>> Update(
@@ -191,7 +191,7 @@ public interface IIssuerServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_issuers?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_issuers</c>, but is otherwise the
     /// same as <see cref="IIssuerService.List(IssuerListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<IssuerListPage>> List(
@@ -200,7 +200,7 @@ public interface IIssuerServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers/{federation_issuer_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_issuers/{federation_issuer_id}/archive</c>, but is otherwise the
     /// same as <see cref="IIssuerService.Archive(IssuerArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationIssuer>> Archive(

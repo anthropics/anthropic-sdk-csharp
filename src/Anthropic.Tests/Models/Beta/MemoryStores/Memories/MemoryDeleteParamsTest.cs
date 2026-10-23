@@ -122,7 +122,7 @@ public class MemoryDeleteParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories/memory_id?beta=true&expected_content_sha256=expected_content_sha256"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories/memory_id?expected_content_sha256=expected_content_sha256"
                 ),
                 url
             )

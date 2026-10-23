@@ -162,7 +162,7 @@ public class SpendLimitListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limits?beta=true&limit=1&page=page&scope_type%5b%5d=organization&workspace_id=workspace_id"
+                    "https://api.anthropic.com/v1/organizations/spend_limits?limit=1&page=page&scope_type%5b%5d=organization&workspace_id=workspace_id"
                 ),
                 url
             )

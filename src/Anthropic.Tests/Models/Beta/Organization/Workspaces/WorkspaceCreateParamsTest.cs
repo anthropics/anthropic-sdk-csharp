@@ -194,7 +194,7 @@ public class WorkspaceCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/workspaces?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/workspaces"),
                 url
             )
         );

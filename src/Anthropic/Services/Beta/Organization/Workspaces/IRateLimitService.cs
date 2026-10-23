@@ -90,7 +90,7 @@ public interface IRateLimitServiceWithRawResponse
     IRateLimitServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/rate_limits/{rate_limit_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/rate_limits/{rate_limit_id}</c>, but is otherwise the
     /// same as <see cref="IRateLimitService.Update(RateLimitUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaWorkspaceRateLimit>> Update(
@@ -106,7 +106,7 @@ public interface IRateLimitServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/rate_limits?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}/rate_limits</c>, but is otherwise the
     /// same as <see cref="IRateLimitService.List(RateLimitListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RateLimitListPage>> List(

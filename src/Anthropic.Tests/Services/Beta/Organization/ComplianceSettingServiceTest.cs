@@ -8,8 +8,9 @@ public class ComplianceSettingServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaComplianceSettings =
-            await this.client.Beta.Organization.ComplianceSettings.Retrieve(
+        var betaComplianceSettings = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.ComplianceSettings.Retrieve(
                 new(),
                 TestContext.Current.CancellationToken
             );
@@ -19,10 +20,12 @@ public class ComplianceSettingServiceTest : TestBase
     [Fact]
     public async Task Update_Works()
     {
-        var betaComplianceSettings = await this.client.Beta.Organization.ComplianceSettings.Update(
-            new() { State = new BetaComplianceSettingsStateEnabledParam() },
-            TestContext.Current.CancellationToken
-        );
+        var betaComplianceSettings = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.ComplianceSettings.Update(
+                new() { State = new BetaComplianceSettingsStateEnabledParam() },
+                TestContext.Current.CancellationToken
+            );
         betaComplianceSettings.Validate();
     }
 }

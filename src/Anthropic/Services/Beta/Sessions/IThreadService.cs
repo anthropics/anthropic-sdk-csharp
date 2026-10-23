@@ -91,7 +91,7 @@ public interface IThreadServiceWithRawResponse
     Threads::IEventServiceWithRawResponse Events { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/threads/{thread_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/threads/{thread_id}</c>, but is otherwise the
     /// same as <see cref="IThreadService.Retrieve(ThreadRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSessionThread>> Retrieve(
@@ -107,7 +107,7 @@ public interface IThreadServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/threads?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/threads</c>, but is otherwise the
     /// same as <see cref="IThreadService.List(ThreadListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ThreadListPage>> List(
@@ -123,7 +123,7 @@ public interface IThreadServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/threads/{thread_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/threads/{thread_id}/archive</c>, but is otherwise the
     /// same as <see cref="IThreadService.Archive(ThreadArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSessionThread>> Archive(

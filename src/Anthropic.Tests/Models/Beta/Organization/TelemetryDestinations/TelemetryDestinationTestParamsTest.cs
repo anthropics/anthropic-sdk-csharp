@@ -84,7 +84,7 @@ public class TelemetryDestinationTestParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/telemetry_destinations/destination_id/test?beta=true"
+                    "https://api.anthropic.com/v1/organizations/telemetry_destinations/destination_id/test"
                 ),
                 url
             )

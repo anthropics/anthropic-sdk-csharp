@@ -97,7 +97,7 @@ public class WorkspaceRemoveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/telemetry_destinations/destination_id/workspaces/workspace_id?beta=true"
+                    "https://api.anthropic.com/v1/organizations/telemetry_destinations/destination_id/workspaces/workspace_id"
                 ),
                 url
             )

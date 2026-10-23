@@ -35,7 +35,7 @@ namespace Anthropic.GoogleCloud;
 /// <para>
 /// Workspace ID: <see cref="WorkspaceId"/> → <c>ANTHROPIC_GOOGLE_CLOUD_WORKSPACE_ID</c> env var.
 /// Required when the base URL is derived, except for organization-level routes
-/// (<c>/v1/organizations</c>), which need none.
+/// (<c>/v1/organizations</c> and <c>/v1/user_profiles</c>), which need none.
 /// </para>
 ///
 /// <para>

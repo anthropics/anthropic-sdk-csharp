@@ -122,7 +122,7 @@ public interface IRbacGroupServiceWithRawResponse
     IMemberServiceWithRawResponse Members { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.Create(RbacGroupCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaRbacGroup>> Create(
@@ -131,7 +131,7 @@ public interface IRbacGroupServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups/{rbac_group_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups/{rbac_group_id}</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.Retrieve(RbacGroupRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaRbacGroup>> Retrieve(
@@ -147,7 +147,7 @@ public interface IRbacGroupServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups/{rbac_group_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/rbac_groups/{rbac_group_id}</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.Update(RbacGroupUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaRbacGroup>> Update(
@@ -163,7 +163,7 @@ public interface IRbacGroupServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/rbac_groups</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.List(RbacGroupListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RbacGroupListPage>> List(
@@ -172,7 +172,7 @@ public interface IRbacGroupServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.Delete(RbacGroupDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RbacGroupDeleteResponse>> Delete(

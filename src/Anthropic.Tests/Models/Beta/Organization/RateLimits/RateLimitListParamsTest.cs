@@ -82,7 +82,7 @@ public class RateLimitListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/rate_limits?beta=true&group_type=batch&limit=1&model=model&page=page"
+                    "https://api.anthropic.com/v1/organizations/rate_limits?group_type=batch&limit=1&model=model&page=page"
                 ),
                 url
             )

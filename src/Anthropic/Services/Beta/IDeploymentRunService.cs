@@ -64,7 +64,7 @@ public interface IDeploymentRunServiceWithRawResponse
     IDeploymentRunServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/deployment_runs/{deployment_run_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/deployment_runs/{deployment_run_id}</c>, but is otherwise the
     /// same as <see cref="IDeploymentRunService.Retrieve(DeploymentRunRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeploymentRun>> Retrieve(
@@ -80,7 +80,7 @@ public interface IDeploymentRunServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/deployment_runs?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/deployment_runs</c>, but is otherwise the
     /// same as <see cref="IDeploymentRunService.List(DeploymentRunListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<DeploymentRunListPage>> List(

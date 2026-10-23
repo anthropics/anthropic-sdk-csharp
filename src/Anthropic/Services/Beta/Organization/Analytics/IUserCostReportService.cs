@@ -32,9 +32,9 @@ public interface IUserCostReportService
     /// <para>Returns cost per user, ranked by spend; `group_by[]` or `bucket_width`
     /// splits a user across several rows. Use this to see which users account for the
     /// most cost. Only cost attributed to a user account is included; cost with no user
-    /// attributed to it, such as requests attributed only to an API key, is left out.
-    /// Available to organizations on a Claude Enterprise plan. Requires an API key with
-    /// the `read:analytics` scope.</para>
+    /// attributed to it, such as Code Review usage and Claude Tag usage in Slack
+    /// channels, is left out. Available to organizations on a Claude Enterprise plan.
+    /// Requires an API key with the `read:analytics` scope.</para>
     ///
     /// <para>This endpoint is one of the legacy Claude Enterprise usage and cost
     /// reports. For new integrations, use [`GET
@@ -63,7 +63,7 @@ public interface IUserCostReportServiceWithRawResponse
     IUserCostReportServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/user_cost_report?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/user_cost_report</c>, but is otherwise the
     /// same as <see cref="IUserCostReportService.List(UserCostReportListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<UserCostReportListPage>> List(

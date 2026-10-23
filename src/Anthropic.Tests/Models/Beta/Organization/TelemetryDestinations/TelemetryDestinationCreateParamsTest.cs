@@ -198,9 +198,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/telemetry_destinations?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/telemetry_destinations"),
                 url
             )
         );

@@ -94,7 +94,7 @@ public interface IUserServiceWithRawResponse
     IUserServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/users/{user_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/users/{user_id}</c>, but is otherwise the
     /// same as <see cref="IUserService.Retrieve(UserRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationUser>> Retrieve(
@@ -110,7 +110,7 @@ public interface IUserServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/users/{user_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/users/{user_id}</c>, but is otherwise the
     /// same as <see cref="IUserService.Update(UserUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationUser>> Update(
@@ -126,7 +126,7 @@ public interface IUserServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/users?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/users</c>, but is otherwise the
     /// same as <see cref="IUserService.List(UserListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<UserListPage>> List(
@@ -135,7 +135,7 @@ public interface IUserServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/users/{user_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/users/{user_id}</c>, but is otherwise the
     /// same as <see cref="IUserService.Remove(UserRemoveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<UserRemoveResponse>> Remove(

@@ -151,7 +151,7 @@ public class WorkPollParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW/work/poll?beta=true&block_ms=1&reclaim_older_than_ms=1"
+                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW/work/poll?block_ms=1&reclaim_older_than_ms=1"
                 ),
                 url
             )

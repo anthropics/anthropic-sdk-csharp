@@ -24,7 +24,7 @@ public class InviteRetrieveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/invites/invite_id?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/invites/invite_id"),
                 url
             )
         );

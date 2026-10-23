@@ -97,7 +97,7 @@ public class InstallationSettingRemoveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/installation_settings/target?beta=true"
+                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/installation_settings/target"
                 ),
                 url
             )

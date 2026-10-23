@@ -95,9 +95,7 @@ public class MemoryStoreArchiveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/archive?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/memory_stores/memory_store_id/archive"),
                 url
             )
         );

@@ -50,7 +50,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 OutputTokens = 891000,
                 Requests = 128,
                 ServerToolUse = new(10),
-                TotalTokens = 5377000,
+                TotalTokens = 5375500,
                 UncachedInputTokens = 1284500,
             },
         };
@@ -92,7 +92,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -144,7 +144,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 OutputTokens = 891000,
                 Requests = 128,
                 ServerToolUse = new(10),
-                TotalTokens = 5377000,
+                TotalTokens = 5375500,
                 UncachedInputTokens = 1284500,
             },
         };
@@ -200,7 +200,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 OutputTokens = 891000,
                 Requests = 128,
                 ServerToolUse = new(10),
-                TotalTokens = 5377000,
+                TotalTokens = 5375500,
                 UncachedInputTokens = 1284500,
             },
         };
@@ -249,7 +249,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             OutputTokens = 891000,
             Requests = 128,
             ServerToolUse = new(10),
-            TotalTokens = 5377000,
+            TotalTokens = 5375500,
             UncachedInputTokens = 1284500,
         };
 
@@ -301,7 +301,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 OutputTokens = 891000,
                 Requests = 128,
                 ServerToolUse = new(10),
-                TotalTokens = 5377000,
+                TotalTokens = 5375500,
                 UncachedInputTokens = 1284500,
             },
         };
@@ -351,7 +351,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 OutputTokens = 891000,
                 Requests = 128,
                 ServerToolUse = new(10),
-                TotalTokens = 5377000,
+                TotalTokens = 5375500,
                 UncachedInputTokens = 1284500,
             },
         };

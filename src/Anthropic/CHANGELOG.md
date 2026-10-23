@@ -1,10 +1,35 @@
 # Changelog
 
+## [13.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.3.0) (2026-10-23)
+
+### Features
+
+* **api:** add Claude Tag endpoints for Claude Enterprise organizations
+
+
+### Bug Fixes
+
+* **client:** link the long-request error message to the SDK documentation
+
+### Chores
+
+* **client:** stop sending query params hardcoded in endpoint paths
+* **docs:** improve the descriptions of the code execution tool and its encrypted results
+* **docs:** reword work queue, skill and external key descriptions
+* **docs:** update descriptions of the per-user usage and cost reports
+* **internal:** stop expecting the beta query param in tests
+
+
+### Documentation
+
+* update the README and the example request
+
 ## [13.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.0...Anthropic-v13.2.1) (2026-10-23)
 
 ### Chores
 
 * **internal:** carry endpoint path query params to the request layer
+* **internal:** read the beta route qualifier instead of the `beta=true` query
 
 ## [13.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.1.1...Anthropic-v13.2.0) (2026-10-23)
 

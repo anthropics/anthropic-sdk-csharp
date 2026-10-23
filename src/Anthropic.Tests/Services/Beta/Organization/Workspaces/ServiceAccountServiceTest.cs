@@ -8,8 +8,9 @@ public class ServiceAccountServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaServiceAccountWorkspaceMember =
-            await this.client.Beta.Organization.Workspaces.ServiceAccounts.Retrieve(
+        var betaServiceAccountWorkspaceMember = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.ServiceAccounts.Retrieve(
                 "service_account_id",
                 new() { WorkspaceID = "workspace_id" },
                 TestContext.Current.CancellationToken
@@ -20,8 +21,9 @@ public class ServiceAccountServiceTest : TestBase
     [Fact]
     public async Task Update_Works()
     {
-        var betaServiceAccountWorkspaceMember =
-            await this.client.Beta.Organization.Workspaces.ServiceAccounts.Update(
+        var betaServiceAccountWorkspaceMember = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.ServiceAccounts.Update(
                 "service_account_id",
                 new()
                 {
@@ -36,19 +38,22 @@ public class ServiceAccountServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Workspaces.ServiceAccounts.List(
-            "workspace_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.ServiceAccounts.List(
+                "workspace_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Add_Works()
     {
-        var betaServiceAccountWorkspaceMember =
-            await this.client.Beta.Organization.Workspaces.ServiceAccounts.Add(
+        var betaServiceAccountWorkspaceMember = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.ServiceAccounts.Add(
                 "workspace_id",
                 new()
                 {
@@ -63,11 +68,13 @@ public class ServiceAccountServiceTest : TestBase
     [Fact]
     public async Task Remove_Works()
     {
-        var serviceAccount = await this.client.Beta.Organization.Workspaces.ServiceAccounts.Remove(
-            "service_account_id",
-            new() { WorkspaceID = "workspace_id" },
-            TestContext.Current.CancellationToken
-        );
+        var serviceAccount = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Workspaces.ServiceAccounts.Remove(
+                "service_account_id",
+                new() { WorkspaceID = "workspace_id" },
+                TestContext.Current.CancellationToken
+            );
         serviceAccount.Validate();
     }
 }

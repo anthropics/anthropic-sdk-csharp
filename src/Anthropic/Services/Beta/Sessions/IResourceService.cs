@@ -116,7 +116,7 @@ public interface IResourceServiceWithRawResponse
     IResourceServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/resources/{resource_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/resources/{resource_id}</c>, but is otherwise the
     /// same as <see cref="IResourceService.Retrieve(ResourceRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ResourceRetrieveResponse>> Retrieve(
@@ -132,7 +132,7 @@ public interface IResourceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/resources/{resource_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/resources/{resource_id}</c>, but is otherwise the
     /// same as <see cref="IResourceService.Update(ResourceUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ResourceUpdateResponse>> Update(
@@ -148,7 +148,7 @@ public interface IResourceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/resources?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/resources</c>, but is otherwise the
     /// same as <see cref="IResourceService.List(ResourceListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ResourceListPage>> List(
@@ -164,7 +164,7 @@ public interface IResourceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/sessions/{session_id}/resources/{resource_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/sessions/{session_id}/resources/{resource_id}</c>, but is otherwise the
     /// same as <see cref="IResourceService.Delete(ResourceDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeleteSessionResource>> Delete(
@@ -180,7 +180,7 @@ public interface IResourceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/resources?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/resources</c>, but is otherwise the
     /// same as <see cref="IResourceService.Add(ResourceAddParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsFileResource>> Add(

@@ -8,45 +8,52 @@ public class ResourceServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var resource = await this.client.Beta.Sessions.Resources.Retrieve(
-            "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
-            new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
-            TestContext.Current.CancellationToken
-        );
+        var resource = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Resources.Retrieve(
+                "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
+                new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
+                TestContext.Current.CancellationToken
+            );
         resource.Validate();
     }
 
     [Fact]
     public async Task Update_Works()
     {
-        var resource = await this.client.Beta.Sessions.Resources.Update(
-            "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
-            new()
-            {
-                SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
-                AuthorizationToken = "ghp_exampletoken",
-            },
-            TestContext.Current.CancellationToken
-        );
+        var resource = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Resources.Update(
+                "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
+                new()
+                {
+                    SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                    AuthorizationToken = "ghp_exampletoken",
+                },
+                TestContext.Current.CancellationToken
+            );
         resource.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Sessions.Resources.List(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Resources.List(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Delete_Works()
     {
-        var betaManagedAgentsDeleteSessionResource =
-            await this.client.Beta.Sessions.Resources.Delete(
+        var betaManagedAgentsDeleteSessionResource = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Resources.Delete(
                 "sesrsc_011CZkZBJq5dWxk9fVLNcPht",
                 new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
                 TestContext.Current.CancellationToken
@@ -57,15 +64,17 @@ public class ResourceServiceTest : TestBase
     [Fact]
     public async Task Add_Works()
     {
-        var betaManagedAgentsFileResource = await this.client.Beta.Sessions.Resources.Add(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new()
-            {
-                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                Type = JsonSerializer.SerializeToElement("file"),
-            },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsFileResource = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Resources.Add(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new()
+                {
+                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
+                    Type = JsonSerializer.SerializeToElement("file"),
+                },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsFileResource.Validate();
     }
 }

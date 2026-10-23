@@ -142,7 +142,7 @@ public interface IDreamServiceWithRawResponse
     IDreamServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/dreams?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/dreams</c>, but is otherwise the
     /// same as <see cref="IDreamService.Create(DreamCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDream>> Create(
@@ -151,7 +151,7 @@ public interface IDreamServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/dreams/{dream_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/dreams/{dream_id}</c>, but is otherwise the
     /// same as <see cref="IDreamService.Retrieve(DreamRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDream>> Retrieve(
@@ -167,7 +167,7 @@ public interface IDreamServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/dreams?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/dreams</c>, but is otherwise the
     /// same as <see cref="IDreamService.List(DreamListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<DreamListPage>> List(
@@ -176,7 +176,7 @@ public interface IDreamServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/dreams/{dream_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/dreams/{dream_id}/archive</c>, but is otherwise the
     /// same as <see cref="IDreamService.Archive(DreamArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDream>> Archive(
@@ -192,7 +192,7 @@ public interface IDreamServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/dreams/{dream_id}/cancel?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/dreams/{dream_id}/cancel</c>, but is otherwise the
     /// same as <see cref="IDreamService.Cancel(DreamCancelParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDream>> Cancel(

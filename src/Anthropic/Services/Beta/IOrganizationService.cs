@@ -61,6 +61,8 @@ public interface IOrganizationService
 
     Organization::IWebhookService Webhooks { get; }
 
+    Organization::IClaudeTagService ClaudeTag { get; }
+
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
     /// API key.
@@ -118,8 +120,10 @@ public interface IOrganizationServiceWithRawResponse
 
     Organization::IWebhookServiceWithRawResponse Webhooks { get; }
 
+    Organization::IClaudeTagServiceWithRawResponse ClaudeTag { get; }
+
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/me?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/me</c>, but is otherwise the
     /// same as <see cref="IOrganizationService.Retrieve(OrganizationRetrieveParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganization>> Retrieve(

@@ -55,7 +55,7 @@ public interface IProjectServiceWithRawResponse
     IProjectServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/apps/chat/projects?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/apps/chat/projects</c>, but is otherwise the
     /// same as <see cref="IProjectService.List(ProjectListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ProjectListPage>> List(

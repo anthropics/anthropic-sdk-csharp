@@ -157,7 +157,7 @@ public class EnvironmentListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/environments?beta=true&include_archived=true&limit=1&page=page"
+                    "https://api.anthropic.com/v1/environments?include_archived=true&limit=1&page=page"
                 ),
                 url
             )

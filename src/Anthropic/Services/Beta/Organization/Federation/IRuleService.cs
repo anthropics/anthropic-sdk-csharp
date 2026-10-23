@@ -170,7 +170,7 @@ public interface IRuleServiceWithRawResponse
     Rules::IWorkspaceServiceWithRawResponse Workspaces { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules</c>, but is otherwise the
     /// same as <see cref="IRuleService.Create(RuleCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationRule>> Create(
@@ -179,7 +179,7 @@ public interface IRuleServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_rules/{federation_rule_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_rules/{federation_rule_id}</c>, but is otherwise the
     /// same as <see cref="IRuleService.Retrieve(RuleRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationRule>> Retrieve(
@@ -195,7 +195,7 @@ public interface IRuleServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules/{federation_rule_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules/{federation_rule_id}</c>, but is otherwise the
     /// same as <see cref="IRuleService.Update(RuleUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationRule>> Update(
@@ -211,7 +211,7 @@ public interface IRuleServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_rules?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/federation_rules</c>, but is otherwise the
     /// same as <see cref="IRuleService.List(RuleListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<RuleListPage>> List(
@@ -220,7 +220,7 @@ public interface IRuleServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules/{federation_rule_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/federation_rules/{federation_rule_id}/archive</c>, but is otherwise the
     /// same as <see cref="IRuleService.Archive(RuleArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaFederationRule>> Archive(

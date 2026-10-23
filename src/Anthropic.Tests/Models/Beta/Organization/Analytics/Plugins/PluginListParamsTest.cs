@@ -138,7 +138,7 @@ public class PluginListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/plugins?beta=true&date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=product&limit=1&order=asc&order_by=order_by&page=page&starting_date=2019-12-27"
+                    "https://api.anthropic.com/v1/organizations/analytics/plugins?date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=product&limit=1&order=asc&order_by=order_by&page=page&starting_date=2019-12-27"
                 ),
                 url
             )

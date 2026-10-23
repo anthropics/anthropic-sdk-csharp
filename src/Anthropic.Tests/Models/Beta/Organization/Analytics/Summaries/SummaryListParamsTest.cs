@@ -91,7 +91,7 @@ public class SummaryListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/summaries?beta=true&starting_date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/analytics/summaries?starting_date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&limit=1&page=page"
                 ),
                 url
             )

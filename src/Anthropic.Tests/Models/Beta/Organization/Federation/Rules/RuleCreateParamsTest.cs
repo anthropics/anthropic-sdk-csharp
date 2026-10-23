@@ -296,7 +296,7 @@ public class RuleCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/federation_rules?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/federation_rules"),
                 url
             )
         );

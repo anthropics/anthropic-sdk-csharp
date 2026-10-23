@@ -86,7 +86,7 @@ public interface IMemoryVersionServiceWithRawResponse
     IMemoryVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}</c>, but is otherwise the
     /// same as <see cref="IMemoryVersionService.Retrieve(MemoryVersionRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryVersion>> Retrieve(
@@ -102,7 +102,7 @@ public interface IMemoryVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}/memory_versions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}/memory_versions</c>, but is otherwise the
     /// same as <see cref="IMemoryVersionService.List(MemoryVersionListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<MemoryVersionListPage>> List(
@@ -118,7 +118,7 @@ public interface IMemoryVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}/redact?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}/memory_versions/{memory_version_id}/redact</c>, but is otherwise the
     /// same as <see cref="IMemoryVersionService.Redact(MemoryVersionRedactParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryVersion>> Redact(

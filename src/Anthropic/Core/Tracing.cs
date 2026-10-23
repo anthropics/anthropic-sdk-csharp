@@ -446,7 +446,7 @@ static class Tracing
     /// a parameter of its own. Any other name with brackets, such as <c>limit[x]</c> on an
     /// endpoint that defines <c>limit</c>, is left out, and so is what the SDK or the
     /// application adds to a query string besides the endpoint's parameters, such as
-    /// <c>beta=true</c>.</para>
+    /// <c>trace=on</c>.</para>
     /// </summary>
     internal static string? DefinedQuery(
         string query,

@@ -95,9 +95,7 @@ public class BatchCancelParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/messages/batches/message_batch_id/cancel?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/messages/batches/message_batch_id/cancel"),
                 url
             )
         );

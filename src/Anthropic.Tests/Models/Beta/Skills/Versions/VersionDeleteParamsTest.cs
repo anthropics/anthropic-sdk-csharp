@@ -100,7 +100,7 @@ public class VersionDeleteParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/skills/skill_id/versions/version?beta=true"),
+                new Uri("https://api.anthropic.com/v1/skills/skill_id/versions/version"),
                 url
             )
         );

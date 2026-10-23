@@ -52,6 +52,7 @@ public sealed class OrganizationService : IOrganizationService
         _pluginMarketplaces = new(() => new Organization::PluginMarketplaceService(client));
         _telemetryDestinations = new(() => new Organization::TelemetryDestinationService(client));
         _webhooks = new(() => new Organization::WebhookService(client));
+        _claudeTag = new(() => new Organization::ClaudeTagService(client));
     }
 
     readonly Lazy<Organization::IApiKeyService> _apiKeys;
@@ -156,6 +157,12 @@ public sealed class OrganizationService : IOrganizationService
         get { return _webhooks.Value; }
     }
 
+    readonly Lazy<Organization::IClaudeTagService> _claudeTag;
+    public Organization::IClaudeTagService ClaudeTag
+    {
+        get { return _claudeTag.Value; }
+    }
+
     /// <inheritdoc/>
     public async Task<BetaOrganization> Retrieve(
         OrganizationRetrieveParams? parameters = null,
@@ -211,6 +218,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
             new Organization::TelemetryDestinationServiceWithRawResponse(client)
         );
         _webhooks = new(() => new Organization::WebhookServiceWithRawResponse(client));
+        _claudeTag = new(() => new Organization::ClaudeTagServiceWithRawResponse(client));
     }
 
     readonly Lazy<Organization::IApiKeyServiceWithRawResponse> _apiKeys;
@@ -313,6 +321,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
     public Organization::IWebhookServiceWithRawResponse Webhooks
     {
         get { return _webhooks.Value; }
+    }
+
+    readonly Lazy<Organization::IClaudeTagServiceWithRawResponse> _claudeTag;
+    public Organization::IClaudeTagServiceWithRawResponse ClaudeTag
+    {
+        get { return _claudeTag.Value; }
     }
 
     /// <inheritdoc/>

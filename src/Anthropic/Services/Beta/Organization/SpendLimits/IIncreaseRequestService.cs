@@ -108,7 +108,7 @@ public interface IIncreaseRequestServiceWithRawResponse
     IIncreaseRequestServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}</c>, but is otherwise the
     /// same as <see cref="IIncreaseRequestService.Retrieve(IncreaseRequestRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSpendLimitIncreaseRequest>> Retrieve(
@@ -124,7 +124,7 @@ public interface IIncreaseRequestServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limit_increase_requests?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limit_increase_requests</c>, but is otherwise the
     /// same as <see cref="IIncreaseRequestService.List(IncreaseRequestListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<IncreaseRequestListPage>> List(
@@ -133,7 +133,7 @@ public interface IIncreaseRequestServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/approve?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/approve</c>, but is otherwise the
     /// same as <see cref="IIncreaseRequestService.Approve(IncreaseRequestApproveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<IncreaseRequestApproveResponse>> Approve(
@@ -149,7 +149,7 @@ public interface IIncreaseRequestServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/deny?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limit_increase_requests/{spend_limit_increase_request_id}/deny</c>, but is otherwise the
     /// same as <see cref="IIncreaseRequestService.Deny(IncreaseRequestDenyParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSpendLimitIncreaseRequest>> Deny(

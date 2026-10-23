@@ -79,7 +79,7 @@ public interface IApiKeyServiceWithRawResponse
     IApiKeyServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/api_keys/{api_key_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/api_keys/{api_key_id}</c>, but is otherwise the
     /// same as <see cref="IApiKeyService.Retrieve(ApiKeyRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaApiKey>> Retrieve(
@@ -95,7 +95,7 @@ public interface IApiKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/api_keys/{api_key_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/api_keys/{api_key_id}</c>, but is otherwise the
     /// same as <see cref="IApiKeyService.Update(ApiKeyUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaApiKey>> Update(
@@ -111,7 +111,7 @@ public interface IApiKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/api_keys?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/api_keys</c>, but is otherwise the
     /// same as <see cref="IApiKeyService.List(ApiKeyListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ApiKeyListPage>> List(

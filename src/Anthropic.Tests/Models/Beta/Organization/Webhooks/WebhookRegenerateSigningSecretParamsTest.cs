@@ -90,7 +90,7 @@ public class WebhookRegenerateSigningSecretParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/webhooks/webhook_endpoint_id/regenerate_signing_secret?beta=true"
+                    "https://api.anthropic.com/v1/organizations/webhooks/webhook_endpoint_id/regenerate_signing_secret"
                 ),
                 url
             )

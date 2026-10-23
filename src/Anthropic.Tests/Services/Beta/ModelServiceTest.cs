@@ -6,17 +6,17 @@ public class ModelServiceTest : TestBase
 {
     public async Task Retrieve_Works()
     {
-        var betaModelInfo = await this.client.Beta.Models.Retrieve(
-            "model_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaModelInfo = await this
+            .client.WithQuery("beta=true")
+            .Beta.Models.Retrieve("model_id", new(), TestContext.Current.CancellationToken);
         betaModelInfo.Validate();
     }
 
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Models.List(new(), TestContext.Current.CancellationToken);
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Models.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 }

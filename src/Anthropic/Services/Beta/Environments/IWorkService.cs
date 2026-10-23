@@ -197,7 +197,7 @@ public interface IWorkServiceWithRawResponse
     IWorkServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/{work_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/{work_id}</c>, but is otherwise the
     /// same as <see cref="IWorkService.Retrieve(WorkRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWork>> Retrieve(
@@ -213,7 +213,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}</c>, but is otherwise the
     /// same as <see cref="IWorkService.Update(WorkUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWork>> Update(
@@ -229,7 +229,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work</c>, but is otherwise the
     /// same as <see cref="IWorkService.List(WorkListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<WorkListPage>> List(
@@ -245,7 +245,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/ack?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/ack</c>, but is otherwise the
     /// same as <see cref="IWorkService.Ack(WorkAckParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWork>> Ack(
@@ -261,7 +261,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/heartbeat?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/heartbeat</c>, but is otherwise the
     /// same as <see cref="IWorkService.Heartbeat(WorkHeartbeatParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWorkHeartbeatResponse>> Heartbeat(
@@ -277,7 +277,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/poll?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/poll</c>, but is otherwise the
     /// same as <see cref="IWorkService.Poll(WorkPollParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWork?>> Poll(
@@ -293,7 +293,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/stats?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}/work/stats</c>, but is otherwise the
     /// same as <see cref="IWorkService.Stats(WorkStatsParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWorkQueueStats>> Stats(
@@ -309,7 +309,7 @@ public interface IWorkServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/stop?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/work/{work_id}/stop</c>, but is otherwise the
     /// same as <see cref="IWorkService.Stop(WorkStopParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSelfHostedWork>> Stop(

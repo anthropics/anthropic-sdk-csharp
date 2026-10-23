@@ -102,7 +102,7 @@ public class DeploymentUnpauseParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/unpause?beta=true"
+                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/unpause"
                 ),
                 url
             )

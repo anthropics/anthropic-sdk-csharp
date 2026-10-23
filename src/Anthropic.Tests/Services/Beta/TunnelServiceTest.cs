@@ -7,64 +7,54 @@ public class TunnelServiceTest : TestBase
     [Fact]
     public async Task Create_Works()
     {
-        var betaTunnel = await this.client.Beta.Tunnels.Create(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaTunnel = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.Create(new(), TestContext.Current.CancellationToken);
         betaTunnel.Validate();
     }
 
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaTunnel = await this.client.Beta.Tunnels.Retrieve(
-            "tunnel_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaTunnel = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.Retrieve("tunnel_id", new(), TestContext.Current.CancellationToken);
         betaTunnel.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Tunnels.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
     [Fact]
     public async Task Archive_Works()
     {
-        var betaTunnel = await this.client.Beta.Tunnels.Archive(
-            "tunnel_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaTunnel = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.Archive("tunnel_id", new(), TestContext.Current.CancellationToken);
         betaTunnel.Validate();
     }
 
     [Fact]
     public async Task RevealToken_Works()
     {
-        var betaTunnelToken = await this.client.Beta.Tunnels.RevealToken(
-            "tunnel_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaTunnelToken = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.RevealToken("tunnel_id", new(), TestContext.Current.CancellationToken);
         betaTunnelToken.Validate();
     }
 
     [Fact]
     public async Task RotateToken_Works()
     {
-        var betaTunnelToken = await this.client.Beta.Tunnels.RotateToken(
-            "tunnel_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaTunnelToken = await this
+            .client.WithQuery("beta=true")
+            .Beta.Tunnels.RotateToken("tunnel_id", new(), TestContext.Current.CancellationToken);
         betaTunnelToken.Validate();
     }
 }

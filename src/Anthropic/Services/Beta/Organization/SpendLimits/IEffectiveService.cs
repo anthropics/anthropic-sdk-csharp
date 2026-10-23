@@ -54,7 +54,7 @@ public interface IEffectiveServiceWithRawResponse
     IEffectiveServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits/effective?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits/effective</c>, but is otherwise the
     /// same as <see cref="IEffectiveService.List(EffectiveListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<EffectiveListPage>> List(

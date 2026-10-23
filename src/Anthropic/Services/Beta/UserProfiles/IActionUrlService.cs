@@ -56,7 +56,7 @@ public interface IActionUrlServiceWithRawResponse
     IActionUrlServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/user_profiles/{user_profile_id}/action_urls?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/user_profiles/{user_profile_id}/action_urls</c>, but is otherwise the
     /// same as <see cref="IActionUrlService.Create(ActionUrlCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaUserProfileActionUrl>> Create(

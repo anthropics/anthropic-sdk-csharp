@@ -99,7 +99,7 @@ public class RbacRoleListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_roles?beta=true&limit=1&page=eyJjdXJzb3IiOiAicmJhY19yb2xlXzAxIn0"
+                    "https://api.anthropic.com/v1/organizations/rbac_roles?limit=1&page=eyJjdXJzb3IiOiAicmJhY19yb2xlXzAxIn0"
                 ),
                 url
             )

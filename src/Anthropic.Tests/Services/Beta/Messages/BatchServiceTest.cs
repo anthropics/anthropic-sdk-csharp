@@ -11,209 +11,228 @@ public class BatchServiceTest : TestBase
 {
     public async Task Create_Works()
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Create(
-            new()
-            {
-                Requests =
-                [
-                    new()
-                    {
-                        CustomID = "my-custom-id-1",
-                        Params = new()
+        var betaMessageBatch = await this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.Create(
+                new()
+                {
+                    Requests =
+                    [
+                        new()
                         {
-                            MaxTokens = 1024,
-                            Messages = [new BetaUserMessageParam("Hello, world")],
-                            Model = Messages::Model.ClaudeOpus5_5,
-                            CacheControl = new() { Ttl = Ttl.Ttl5m },
-                            Compaction = new() { Instructions = "instructions" },
-                            Container = new BetaContainerParams()
+                            CustomID = "my-custom-id-1",
+                            Params = new()
                             {
-                                ID = "id",
-                                Skills =
+                                MaxTokens = 1024,
+                                Messages = [new BetaUserMessageParam("Hello, world")],
+                                Model = Messages::Model.ClaudeOpus5_5,
+                                CacheControl = new() { Ttl = Ttl.Ttl5m },
+                                Compaction = new() { Instructions = "instructions" },
+                                Container = new BetaContainerParams()
+                                {
+                                    ID = "id",
+                                    Skills =
+                                    [
+                                        new()
+                                        {
+                                            SkillID = "pdf",
+                                            Type = BetaSkillParamsType.Anthropic,
+                                            Version = "latest",
+                                        },
+                                    ],
+                                },
+                                ContextManagement = new()
+                                {
+                                    Edits =
+                                    [
+                                        new BetaClearToolUses20250919Edit()
+                                        {
+                                            ClearAtLeast = new(0),
+                                            ClearToolInputs = true,
+                                            ExcludeTools = ["string"],
+                                            Keep = new(0),
+                                            Trigger = new BetaInputTokensTrigger(1),
+                                        },
+                                    ],
+                                },
+                                Diagnostics = new() { PreviousMessageID = "previous_message_id" },
+                                FallbackCreditToken = "x",
+                                Fallbacks = new Default(),
+                                InferenceGeo = "inference_geo",
+                                McpServers =
                                 [
                                     new()
                                     {
-                                        SkillID = "pdf",
-                                        Type = BetaSkillParamsType.Anthropic,
-                                        Version = "latest",
+                                        Name = "name",
+                                        Url = "url",
+                                        AuthorizationToken = "authorization_token",
+                                        ToolConfiguration = new()
+                                        {
+                                            AllowedTools = ["string"],
+                                            Enabled = true,
+                                        },
                                     },
                                 ],
-                            },
-                            ContextManagement = new()
-                            {
-                                Edits =
-                                [
-                                    new BetaClearToolUses20250919Edit()
-                                    {
-                                        ClearAtLeast = new(0),
-                                        ClearToolInputs = true,
-                                        ExcludeTools = ["string"],
-                                        Keep = new(0),
-                                        Trigger = new BetaInputTokensTrigger(1),
-                                    },
-                                ],
-                            },
-                            Diagnostics = new() { PreviousMessageID = "previous_message_id" },
-                            FallbackCreditToken = "x",
-                            Fallbacks = new Default(),
-                            InferenceGeo = "inference_geo",
-                            McpServers =
-                            [
-                                new()
+                                Metadata = new()
                                 {
-                                    Name = "name",
-                                    Url = "url",
-                                    AuthorizationToken = "authorization_token",
-                                    ToolConfiguration = new()
-                                    {
-                                        AllowedTools = ["string"],
-                                        Enabled = true,
-                                    },
+                                    UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b",
                                 },
-                            ],
-                            Metadata = new() { UserID = "13803d75-b4b5-4c3e-b2a2-6f21399b021b" },
-                            OutputConfig = new()
-                            {
-                                Effort = Effort.Low,
-                                Format = new()
+                                OutputConfig = new()
+                                {
+                                    Effort = Effort.Low,
+                                    Format = new()
+                                    {
+                                        Schema = new Dictionary<string, JsonElement>()
+                                        {
+                                            { "foo", JsonSerializer.SerializeToElement("bar") },
+                                        },
+                                    },
+                                    TaskBudget = new() { Total = 1024, Remaining = 0 },
+                                },
+                                OutputFormat = new()
                                 {
                                     Schema = new Dictionary<string, JsonElement>()
                                     {
                                         { "foo", JsonSerializer.SerializeToElement("bar") },
                                     },
                                 },
-                                TaskBudget = new() { Total = 1024, Remaining = 0 },
-                            },
-                            OutputFormat = new()
-                            {
-                                Schema = new Dictionary<string, JsonElement>()
+                                ServiceTier = Batches::ServiceTier.Auto,
+                                Speed = Batches::Speed.Standard,
+                                StopSequences = ["string"],
+                                Stream = false,
+                                System = new(
+                                    [
+                                        new BetaTextBlockParam()
+                                        {
+                                            Text = "Today's date is 2024-06-01.",
+                                            CacheControl = new() { Ttl = Ttl.Ttl5m },
+                                            Citations =
+                                            [
+                                                new BetaCitationCharLocationParam()
+                                                {
+                                                    CitedText =
+                                                        "The grass is green. The sky is blue.",
+                                                    DocumentIndex = 0,
+                                                    DocumentTitle = "x",
+                                                    EndCharIndex = 0,
+                                                    StartCharIndex = 0,
+                                                },
+                                            ],
+                                        },
+                                    ]
+                                ),
+                                Thinking = new BetaThinkingConfigAdaptive()
                                 {
-                                    { "foo", JsonSerializer.SerializeToElement("bar") },
-                                },
-                            },
-                            ServiceTier = Batches::ServiceTier.Auto,
-                            Speed = Batches::Speed.Standard,
-                            StopSequences = ["string"],
-                            Stream = false,
-                            System = new(
-                                [
-                                    new BetaTextBlockParam()
+                                    BlockBinding = new()
                                     {
-                                        Text = "Today's date is 2024-06-01.",
-                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
-                                        Citations =
-                                        [
-                                            new BetaCitationCharLocationParam()
+                                        PrefixMismatchBehavior =
+                                            BetaThinkingPrefixMismatchBehavior.Error,
+                                    },
+                                    Display = Display.Summarized,
+                                },
+                                Thread = new BetaThreadCreateParams(),
+                                ToolChoice = new BetaToolChoiceAuto()
+                                {
+                                    DisableParallelToolUse = true,
+                                },
+                                Tools =
+                                [
+                                    new BetaTool()
+                                    {
+                                        InputSchema = new()
+                                        {
+                                            Properties = new Dictionary<string, JsonElement>()
                                             {
-                                                CitedText = "The grass is green. The sky is blue.",
-                                                DocumentIndex = 0,
-                                                DocumentTitle = "x",
-                                                EndCharIndex = 0,
-                                                StartCharIndex = 0,
+                                                {
+                                                    "location",
+                                                    JsonSerializer.SerializeToElement("bar")
+                                                },
+                                                {
+                                                    "unit",
+                                                    JsonSerializer.SerializeToElement("bar")
+                                                },
+                                            },
+                                            Required = ["location"],
+                                        },
+                                        Name = "name",
+                                        AllowedCallers = [BetaToolAllowedCaller.Direct],
+                                        CacheControl = new() { Ttl = Ttl.Ttl5m },
+                                        DeferLoading = true,
+                                        Description = "Get the current weather in a given location",
+                                        EagerInputStreaming = true,
+                                        InputExamples =
+                                        [
+                                            new Dictionary<string, JsonElement>()
+                                            {
+                                                { "foo", JsonSerializer.SerializeToElement("bar") },
                                             },
                                         ],
+                                        Strict = true,
+                                        Type = BetaToolType.Custom,
                                     },
-                                ]
-                            ),
-                            Thinking = new BetaThinkingConfigAdaptive()
-                            {
-                                BlockBinding = new()
-                                {
-                                    PrefixMismatchBehavior =
-                                        BetaThinkingPrefixMismatchBehavior.Error,
-                                },
-                                Display = Display.Summarized,
+                                ],
                             },
-                            Thread = new BetaThreadCreateParams(),
-                            ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
-                            Tools =
-                            [
-                                new BetaTool()
-                                {
-                                    InputSchema = new()
-                                    {
-                                        Properties = new Dictionary<string, JsonElement>()
-                                        {
-                                            {
-                                                "location",
-                                                JsonSerializer.SerializeToElement("bar")
-                                            },
-                                            { "unit", JsonSerializer.SerializeToElement("bar") },
-                                        },
-                                        Required = ["location"],
-                                    },
-                                    Name = "name",
-                                    AllowedCallers = [BetaToolAllowedCaller.Direct],
-                                    CacheControl = new() { Ttl = Ttl.Ttl5m },
-                                    DeferLoading = true,
-                                    Description = "Get the current weather in a given location",
-                                    EagerInputStreaming = true,
-                                    InputExamples =
-                                    [
-                                        new Dictionary<string, JsonElement>()
-                                        {
-                                            { "foo", JsonSerializer.SerializeToElement("bar") },
-                                        },
-                                    ],
-                                    Strict = true,
-                                    Type = BetaToolType.Custom,
-                                },
-                            ],
                         },
-                    },
-                ],
-            },
-            TestContext.Current.CancellationToken
-        );
+                    ],
+                },
+                TestContext.Current.CancellationToken
+            );
         betaMessageBatch.Validate();
     }
 
     public async Task Retrieve_Works()
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Retrieve(
-            "message_batch_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaMessageBatch = await this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.Retrieve(
+                "message_batch_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaMessageBatch.Validate();
     }
 
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Messages.Batches.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
     public async Task Delete_Works()
     {
-        var betaDeletedMessageBatch = await this.client.Beta.Messages.Batches.Delete(
-            "message_batch_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaDeletedMessageBatch = await this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.Delete(
+                "message_batch_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaDeletedMessageBatch.Validate();
     }
 
     public async Task Cancel_Works()
     {
-        var betaMessageBatch = await this.client.Beta.Messages.Batches.Cancel(
-            "message_batch_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaMessageBatch = await this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.Cancel(
+                "message_batch_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaMessageBatch.Validate();
     }
 
     public async Task ResultsStreaming_Works()
     {
-        var stream = this.client.Beta.Messages.Batches.ResultsStreaming(
-            "message_batch_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var stream = this
+            .client.WithQuery("beta=true")
+            .Beta.Messages.Batches.ResultsStreaming(
+                "message_batch_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
 
         await foreach (var betaMessageBatchIndividualResponse in stream)
         {

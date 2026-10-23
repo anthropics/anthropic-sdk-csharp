@@ -131,7 +131,7 @@ public interface IExternalKeyServiceWithRawResponse
     IExternalKeyServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.Create(ExternalKeyCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaExternalKey>> Create(
@@ -140,7 +140,7 @@ public interface IExternalKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/external_keys/{external_key_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/external_keys/{external_key_id}</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.Retrieve(ExternalKeyRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaExternalKey>> Retrieve(
@@ -156,7 +156,7 @@ public interface IExternalKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys/{external_key_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys/{external_key_id}</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.Update(ExternalKeyUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaExternalKey>> Update(
@@ -172,7 +172,7 @@ public interface IExternalKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/external_keys?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/external_keys</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.List(ExternalKeyListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ExternalKeyListPage>> List(
@@ -181,7 +181,7 @@ public interface IExternalKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/external_keys/{external_key_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/external_keys/{external_key_id}</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.Delete(ExternalKeyDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ExternalKeyDeleteResponse>> Delete(
@@ -197,7 +197,7 @@ public interface IExternalKeyServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys/{external_key_id}/validate?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/external_keys/{external_key_id}/validate</c>, but is otherwise the
     /// same as <see cref="IExternalKeyService.Validate(ExternalKeyValidateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ExternalKeyValidateResponse>> Validate(

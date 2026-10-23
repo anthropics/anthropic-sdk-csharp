@@ -8,10 +8,12 @@ public class UsageServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Analytics.Usage.List(
-            new() { StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z") },
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Analytics.Usage.List(
+                new() { StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z") },
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 }

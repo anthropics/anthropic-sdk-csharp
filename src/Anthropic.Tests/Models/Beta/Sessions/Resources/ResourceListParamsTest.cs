@@ -125,7 +125,7 @@ public class ResourceListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/resources?beta=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/resources?limit=0&page=page"
                 ),
                 url
             )

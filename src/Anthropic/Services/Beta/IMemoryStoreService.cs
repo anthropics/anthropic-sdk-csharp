@@ -126,7 +126,7 @@ public interface IMemoryStoreServiceWithRawResponse
     IMemoryVersionServiceWithRawResponse MemoryVersions { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/memory_stores?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/memory_stores</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.Create(MemoryStoreCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryStore>> Create(
@@ -135,7 +135,7 @@ public interface IMemoryStoreServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/memory_stores/{memory_store_id}</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.Retrieve(MemoryStoreRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryStore>> Retrieve(
@@ -151,7 +151,7 @@ public interface IMemoryStoreServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.Update(MemoryStoreUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryStore>> Update(
@@ -167,7 +167,7 @@ public interface IMemoryStoreServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/memory_stores?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/memory_stores</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.List(MemoryStoreListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<MemoryStoreListPage>> List(
@@ -176,7 +176,7 @@ public interface IMemoryStoreServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/memory_stores/{memory_store_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/memory_stores/{memory_store_id}</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.Delete(MemoryStoreDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeletedMemoryStore>> Delete(
@@ -192,7 +192,7 @@ public interface IMemoryStoreServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/memory_stores/{memory_store_id}/archive</c>, but is otherwise the
     /// same as <see cref="IMemoryStoreService.Archive(MemoryStoreArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsMemoryStore>> Archive(

@@ -70,7 +70,7 @@ public interface IModelServiceWithRawResponse
     IModelServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/models/{model_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/models/{model_id}</c>, but is otherwise the
     /// same as <see cref="IModelService.Retrieve(ModelRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaModelInfo>> Retrieve(
@@ -86,7 +86,7 @@ public interface IModelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/models?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/models</c>, but is otherwise the
     /// same as <see cref="IModelService.List(ModelListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ModelListPage>> List(

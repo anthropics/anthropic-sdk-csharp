@@ -84,7 +84,7 @@ public class RuleArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/federation_rules/federation_rule_id/archive?beta=true"
+                    "https://api.anthropic.com/v1/organizations/federation_rules/federation_rule_id/archive"
                 ),
                 url
             )

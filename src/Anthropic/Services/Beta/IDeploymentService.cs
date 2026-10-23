@@ -148,7 +148,7 @@ public interface IDeploymentServiceWithRawResponse
     IDeploymentServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Create(DeploymentCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Create(
@@ -157,7 +157,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/deployments/{deployment_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/deployments/{deployment_id}</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Retrieve(DeploymentRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Retrieve(
@@ -173,7 +173,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Update(DeploymentUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Update(
@@ -189,7 +189,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/deployments?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/deployments</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.List(DeploymentListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<DeploymentListPage>> List(
@@ -198,7 +198,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/archive</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Archive(DeploymentArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Archive(
@@ -214,7 +214,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/pause?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/pause</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Pause(DeploymentPauseParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Pause(
@@ -230,7 +230,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/run?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/run</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Run(DeploymentRunParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeploymentRun>> Run(
@@ -246,7 +246,7 @@ public interface IDeploymentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/unpause?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/deployments/{deployment_id}/unpause</c>, but is otherwise the
     /// same as <see cref="IDeploymentService.Unpause(DeploymentUnpauseParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeployment>> Unpause(

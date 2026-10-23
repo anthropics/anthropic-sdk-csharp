@@ -24,9 +24,7 @@ public class RbacRoleRetrieveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_id?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/rbac_roles/rbac_role_id"),
                 url
             )
         );

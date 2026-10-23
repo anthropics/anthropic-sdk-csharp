@@ -232,7 +232,7 @@ public class MemoryVersionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions?beta=true&api_key_id=api_key_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&memory_id=memory_id&operation=created&page=page&service_account_id=service_account_id&session_id=session_id&view=basic"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions?api_key_id=api_key_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&limit=0&memory_id=memory_id&operation=created&page=page&service_account_id=service_account_id&session_id=session_id&view=basic"
                 ),
                 url
             )
