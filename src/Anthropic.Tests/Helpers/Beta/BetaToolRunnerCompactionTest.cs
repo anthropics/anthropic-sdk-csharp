@@ -478,7 +478,7 @@ public class BetaToolRunnerCompactionTest
     {
         var ct = TestContext.Current.CancellationToken;
         var script = new Script(ToolUseTurn() with { StopReason = BetaStopReason.MaxTokens });
-        var runner = WeatherRunner(script, thread: false);
+        var runner = WeatherRunner(script);
 
         var stderr = await FallbackTestSupport.CaptureStderr(async () =>
         {

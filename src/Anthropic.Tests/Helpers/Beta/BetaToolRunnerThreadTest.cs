@@ -7,6 +7,7 @@ using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Exceptions;
+using Anthropic.Helpers;
 using Anthropic.Helpers.Beta;
 using Anthropic.Models.Beta.Messages;
 using static Anthropic.Tests.Helpers.Beta.MessageThreadTestSupport;
@@ -231,6 +232,67 @@ public class BetaToolRunnerThreadTest
             }
         };
 
+    /// <summary>Runs to the end, and calls <paramref name="afterTurn"/> with each reply but the final one.</summary>
+    static async Task RunReplies(
+        BetaToolRunner runner,
+        bool streaming,
+        Action<BetaMessage> afterTurn
+    )
+    {
+        void AfterTurn(BetaMessage reply)
+        {
+            if (reply.StopReason?.Raw() != "end_turn")
+            {
+                afterTurn(reply);
+            }
+        }
+
+        if (streaming)
+        {
+            await foreach (var turn in runner.Streaming(TestContext.Current.CancellationToken))
+            {
+                var aggregator = new BetaMessageContentAggregator();
+                await foreach (var _ in aggregator.CollectAsync(turn)) { }
+                AfterTurn(aggregator.Message());
+            }
+            return;
+        }
+
+        await foreach (var reply in runner.WithCancellation(TestContext.Current.CancellationToken))
+        {
+            AfterTurn(reply);
+        }
+    }
+
+    /// <summary>A reply as a caller who manages the history sends it back.</summary>
+    static BetaMessageParam Copy(BetaMessage reply) =>
+        new BetaAssistantMessageParam
+        {
+            Content = new BetaMessageContentParam(
+                JsonSerializer.SerializeToElement(
+                    reply.Content.Select(block => block.Json).ToArray()
+                )
+            ),
+        };
+
+    /// <summary>The caller's own results for tool calls.</summary>
+    static BetaMessageParam Mine(params string[] calls) =>
+        new BetaUserMessageParam
+        {
+            Content = calls
+                .Select(call =>
+                    (BetaContentBlockParam)new BetaToolResultBlockParam(call) { Content = "mine" }
+                )
+                .ToList(),
+        };
+
+    static string[] Calls(BetaMessage reply) =>
+        [
+            .. reply
+                .Content.Select(block => block.TryPickToolUse(out var call) ? call.ID : null)
+                .OfType<string>(),
+        ];
+
     static FakeTransport Replies(params string[] replies) => Replies(false, replies);
 
     static FakeTransport Replies(bool streaming, params string[] replies) =>
@@ -273,7 +335,7 @@ public class BetaToolRunnerThreadTest
             Assert.Equal([ThreadsBeta], Betas(transport, index));
             Assert.Equal(["BetaToolRunner, message-thread"], transport.HelperHeaderValues(index));
         }
-        Assert.Equal(["user", "assistant", "toolu_1", "assistant"], Shape(runner.Params.Messages));
+        Assert.Equal(["user"], Shape(runner.Params.Messages));
     }
 
     [Fact]
@@ -540,52 +602,21 @@ public class BetaToolRunnerThreadTest
 
     static string Paused(string id) => Reply(id, "pause_turn", Text("Working"));
 
-    /// <summary>
-    /// Runs to the end, and adds a message after the first turn, to the runner or to its thread.
-    /// </summary>
-    static Task RunAddingAMessage(
-        BetaMessageThread thread,
-        BetaToolRunner runner,
-        bool streaming,
-        bool push
-    ) =>
-        RunTurns(
-            runner,
-            streaming,
-            afterTurn: 0,
-            () =>
-            {
-                if (push)
-                {
-                    runner.PushMessages(User("Briefly."));
-                }
-                else
-                {
-                    thread.Append(User("Briefly."));
-                }
-            }
-        );
-
     [Theory]
-    [InlineData(false, false)]
-    [InlineData(false, true)]
-    [InlineData(true, false)]
-    [InlineData(true, true)]
-    public async Task MessageAddedWhileATurnIsPausedGoesOutWhenTheTurnResumes(
-        bool streaming,
-        bool push
-    )
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task MessageAppendedWhileATurnIsPausedGoesOutWhenTheTurnResumes(bool streaming)
     {
         var transport = Replies(streaming, Paused("msg_a"), Final("msg_b"));
         var thread = Messages(transport).Thread(ThreadParams());
         var runner = thread.ToolRunner([]);
 
-        await RunAddingAMessage(thread, runner, streaming, push);
+        await RunTurns(runner, streaming, afterTurn: 0, () => thread.Append(User("Briefly.")));
 
         Assert.Equal(2, transport.RequestCount);
         AssertContinues(transport.JsonBodies[1], "msg_a", Said("Briefly."));
         Assert.Equal(["user", "assistant", "user", "assistant"], Shape(thread.Messages));
-        Assert.Equal(["user", "assistant", "user", "assistant"], Shape(runner.Params.Messages));
+        Assert.Equal(["user"], Shape(runner.Params.Messages));
     }
 
     [Fact]
@@ -858,16 +889,17 @@ public class BetaToolRunnerThreadTest
     public async Task AppendedMessagesKeepTheThreadAndFollowTheToolResults()
     {
         var transport = Replies(ToolUse("msg_a", "toolu_1"), Final("msg_b"));
-        var runner = Messages(transport).ToolRunner(Params(), [Tool("get_weather", new Counter())]);
+        var tool = Tool("get_weather", new Counter());
+        var thread = Messages(transport).Thread(ThreadParams() with { Tools = [tool.Definition] });
 
         await RunTurns(
-            runner,
+            thread.ToolRunner([tool]),
             false,
             afterTurn: 0,
             () =>
             {
-                runner.PushMessages(User("In one word."));
-                runner.PushMessages(User("Please."));
+                thread.Append(User("In one word."));
+                thread.Append(User("Please."));
             }
         );
 
@@ -887,15 +919,20 @@ public class BetaToolRunnerThreadTest
         var transport = Replies(ToolUse("msg_a", "toolu_1"), Final("msg_b"));
         var runner = Messages(transport).ToolRunner(Params(), [Tool("get_weather", new Counter())]);
 
-        await RunTurns(
+        await RunReplies(
             runner,
             false,
-            afterTurn: 0,
-            () =>
+            reply =>
                 runner.SetParams(current =>
                     current with
                     {
-                        Messages = [User(question), current.Messages[1], User("In one word.")],
+                        Messages =
+                        [
+                            User(question),
+                            Copy(reply),
+                            Mine("toolu_1"),
+                            User("In one word."),
+                        ],
                     }
                 )
         );
@@ -919,16 +956,15 @@ public class BetaToolRunnerThreadTest
                 [Tool("get_weather", new Counter())]
             );
 
-        await RunTurns(
+        await RunReplies(
             runner,
             false,
-            afterTurn: 0,
-            () =>
+            reply =>
                 runner.SetParams(
                     Params() with
                     {
                         MaxTokens = 2048,
-                        Messages = runner.Params.Messages,
+                        Messages = [.. runner.Params.Messages, Copy(reply), Mine("toolu_1")],
                     }
                 )
         );
@@ -964,29 +1000,95 @@ public class BetaToolRunnerThreadTest
         Assert.Equal(0, counter.Runs);
     }
 
-    [Fact]
-    public async Task ChangedSystemGoesOutWithAHistoryThatStartsANewThread()
-    {
-        var transport = Replies(ToolUse("msg_a", "toolu_1"), Final("msg_b"));
-        var runner = Messages(transport).ToolRunner(Params(), [Tool("get_weather", new Counter())]);
+    const string Continued = "continued";
+    const string Rewritten = "rewritten";
 
-        await RunTurns(
-            runner,
-            false,
-            afterTurn: 0,
-            () =>
-                runner.SetParams(current =>
-                    current with
-                    {
-                        System = "Be thorough.",
-                        Messages = [User("Rewritten")],
-                    }
-                )
+    static MessageCreateParams WithAnotherSystem(
+        MessageCreateParams current,
+        string history,
+        BetaMessage reply
+    ) =>
+        current with
+        {
+            System = "Be thorough.",
+            Messages =
+                history == Continued
+                    ? [.. current.Messages, Copy(reply), Mine("toolu_1")]
+                    : [User("Rewritten")],
+        };
+
+    [Theory]
+    [InlineData(Continued, false)]
+    [InlineData(Continued, true)]
+    [InlineData(Rewritten, false)]
+    [InlineData(Rewritten, true)]
+    public async Task ChangedSystemIsRefusedWhateverHistoryComesWithIt(
+        string history,
+        bool streaming
+    )
+    {
+        var transport = Replies(streaming, ToolUse("msg_a", "toolu_1"));
+        var counter = new Counter();
+        var runner = Messages(transport).ToolRunner(Params(), [Tool("get_weather", counter)]);
+
+        var error = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            RunReplies(
+                runner,
+                streaming,
+                reply => runner.SetParams(current => WithAnotherSystem(current, history, reply))
+            )
         );
 
-        AssertCreate(transport.JsonBodies[1]);
-        Assert.Equal("Be thorough.", transport.JsonBodies[1]["system"]!.GetValue<string>());
-        Assert.Equal(["user"], Shape(transport.JsonBodies[1]));
+        Assert.Equal(Refusal("`System`"), error.Message);
+        Assert.Equal(1, transport.RequestCount);
+        Assert.Equal(0, counter.Runs);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ChangedSystemIsRefusedWhileATurnIsPaused(bool streaming)
+    {
+        var transport = Replies(streaming, Paused("msg_a"));
+        var runner = Messages(transport).ToolRunner(Params(), []);
+
+        var error = await Assert.ThrowsAsync<InvalidOperationException>(() =>
+            RunTurns(
+                runner,
+                streaming,
+                _ => runner.SetParams(current => current with { System = "Be thorough." })
+            )
+        );
+
+        Assert.Equal(Refusal("`System`"), error.Message);
+        Assert.Equal(1, transport.RequestCount);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task ChangedSystemGoesOutBeforeTheFirstRequestAndAfterACompaction(bool streaming)
+    {
+        var transport = Replies(
+            streaming,
+            ToolUse("msg_a", "toolu_1"),
+            Summary("msg_c"),
+            Final("msg_b")
+        );
+        var runner = Messages(transport)
+            .ToolRunner(CompactionParams(), [Tool("get_weather", new Counter())]);
+        runner.SetParams(current => current with { System = "Be thorough." });
+
+        await RunWithCompaction(
+            runner,
+            streaming,
+            () => runner.SetParams(current => current with { System = "Be kind." })
+        );
+
+        Assert.Equal(
+            ["Be thorough.", "Be thorough.", "Be kind."],
+            transport.JsonBodies.Select(request => request["system"]!.GetValue<string>())
+        );
     }
 
     [Fact]
@@ -1243,7 +1345,7 @@ public class BetaToolRunnerThreadTest
         var result = await runner.RunUntilDoneAsync(TestContext.Current.CancellationToken);
 
         Assert.Equal("msg_refused", result.ID);
-        Assert.Equal(["user", "assistant", "toolu_1"], Shape(runner.Params.Messages));
+        Assert.Equal(["user"], Shape(runner.Params.Messages));
     }
 
     sealed class Forecast
@@ -1667,9 +1769,7 @@ public class BetaToolRunnerThreadTest
     [Theory]
     [InlineData("message_start")]
     [InlineData("content_block_stop")]
-    public async Task MessageAppendedToTheThreadFollowsTheHistoryWhenTheCallerStopsReadingTheCompaction(
-        string lastEventRead
-    )
+    public async Task CompactionStreamTheCallerStopsReadingThrows(string lastEventRead)
     {
         var transport = Replies(
             true,
@@ -1677,32 +1777,31 @@ public class BetaToolRunnerThreadTest
             Summary("msg_c"),
             Final("msg_b")
         );
-        var tool = Tool("get_weather", new Counter());
-        var thread = CompactionThread(transport, tool);
-        var runner = thread.ToolRunner([tool]);
+        var runner = Messages(transport)
+            .ToolRunner(CompactionParams(), [Tool("get_weather", new Counter())]);
 
         var turns = 0;
-        await foreach (var turn in runner.Streaming(TestContext.Current.CancellationToken))
+        await Assert.ThrowsAsync<AnthropicInvalidDataException>(async () =>
         {
-            var compaction = turns++ == 1;
-            await foreach (var streamEvent in turn)
+            await foreach (var turn in runner.Streaming(TestContext.Current.CancellationToken))
             {
-                if (compaction && streamEvent.Json.GetProperty("type").GetString() == lastEventRead)
+                var compaction = turns++ == 1;
+                await foreach (var streamEvent in turn)
                 {
-                    break;
+                    if (
+                        compaction
+                        && streamEvent.Json.GetProperty("type").GetString() == lastEventRead
+                    )
+                    {
+                        break;
+                    }
                 }
-            }
-            if (compaction)
-            {
-                thread.Append(User("In one word."));
-            }
-            else if (turns == 1)
-            {
                 runner.CompactBeforeNextTurn();
             }
-        }
+        });
 
-        Assert.Equal(["user", "assistant", "toolu_1", "user"], Shape(transport.JsonBodies[2]));
+        Assert.Equal(2, turns);
+        Assert.Equal(2, transport.RequestCount);
     }
 
     [Theory]
@@ -1732,12 +1831,9 @@ public class BetaToolRunnerThreadTest
     }
 
     [Theory]
-    [InlineData(false, "user")]
-    [InlineData(true, "user", "assistant")]
-    public async Task StreamTheServerCutsOffThrows(
-        bool afterTheReplyStarts,
-        params string[] history
-    )
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task StreamTheServerCutsOffThrows(bool afterTheReplyStarts)
     {
         var cutOff = afterTheReplyStarts
             ? Stream(Reply("msg_a", "tool_use", Text("Looking."), Call("toolu_1")))
@@ -1755,11 +1851,11 @@ public class BetaToolRunnerThreadTest
         AssertCreate(transport.JsonBodies[0]);
         Assert.Equal(1, transport.RequestCount);
         Assert.Equal(0, counter.Runs);
-        Assert.Equal(history, Shape(runner.Params.Messages));
+        Assert.Equal(["user"], Shape(runner.Params.Messages));
     }
 
     [Fact]
-    public async Task StreamTheCallerStopsReadingEndsTheRunAndLeavesThePartialReplyOnTheThread()
+    public async Task StreamTheCallerStopsReadingThrowsAndLeavesThePartialReplyOnTheThread()
     {
         var transport = new FakeTransport()
             .EnqueueSse(Stream(Reply("msg_a", "tool_use", Text("Looking."), Call("toolu_1"))))
@@ -1769,24 +1865,545 @@ public class BetaToolRunnerThreadTest
         var thread = Messages(transport).Thread(ThreadParams() with { Tools = [tool.Definition] });
 
         var turns = 0;
-        await foreach (
-            var turn in thread.ToolRunner([tool]).Streaming(TestContext.Current.CancellationToken)
-        )
+        await Assert.ThrowsAsync<AnthropicInvalidDataException>(async () =>
         {
-            await foreach (var streamEvent in turn)
+            await foreach (
+                var turn in thread
+                    .ToolRunner([tool])
+                    .Streaming(TestContext.Current.CancellationToken)
+            )
             {
-                if (streamEvent.Json.GetProperty("type").GetString() == "content_block_stop")
+                await foreach (var streamEvent in turn)
                 {
-                    break;
+                    if (streamEvent.Json.GetProperty("type").GetString() == "content_block_stop")
+                    {
+                        break;
+                    }
                 }
+                turns++;
             }
-            turns++;
-        }
+        });
         await thread.Send(User("Go on"), TestContext.Current.CancellationToken);
 
         Assert.Equal(1, turns);
         Assert.Equal(0, counter.Runs);
         AssertCreate(transport.JsonBodies[1]);
         Assert.Equal(["user", "assistant", "user"], Shape(transport.JsonBodies[1]));
+    }
+
+    const string Default = "default";
+    const string OptOut = "opt-out";
+    const string Unsupported = "unsupported";
+
+    static readonly string[] s_modes = [Default, OptOut, Unsupported];
+
+    public static TheoryData<string, bool> ModesAndStreaming()
+    {
+        var data = new TheoryData<string, bool>();
+        foreach (var mode in s_modes)
+        {
+            data.Add(mode, false);
+            data.Add(mode, true);
+        }
+        return data;
+    }
+
+    /// <summary>
+    /// A run with default settings, with the opt-out, or with default settings against an API that
+    /// rejects the first request as unsupported.
+    /// </summary>
+    sealed class ModeRun(string mode, bool streaming, params string[] replies)
+    {
+        public FakeTransport Transport { get; } =
+            EnqueueReplies(
+                mode == Unsupported
+                    ? new FakeTransport().EnqueueJson(
+                        400,
+                        ThreadError("thread_unsupported_request")
+                    )
+                    : new FakeTransport(),
+                streaming,
+                replies
+            );
+
+        public Counter Counter { get; } = new();
+
+        public BetaToolRunner Runner(MessageCreateParams parameters) =>
+            Messages(Transport)
+                .ToolRunner(parameters, [Tool("get_weather", Counter)], thread: mode != OptOut);
+
+        /// <summary>The requests that were answered with a reply.</summary>
+        public List<JsonObject> Answered
+        {
+            get
+            {
+                var rejected = mode == Unsupported ? 1 : 0;
+                Assert.Equal(replies.Length + rejected, Transport.RequestCount);
+                return [.. Transport.JsonBodies.Skip(rejected)];
+            }
+        }
+
+        /// <summary>
+        /// The conversation that each answered request puts before the model: its messages, after
+        /// those of the turn that it continues. Each tool result comes with what it says.
+        /// </summary>
+        public string[][] Seen()
+        {
+            var held = new Dictionary<string, JsonArray>();
+            var seen = new List<string[]>();
+            var answered = Answered;
+            for (var index = 0; index < answered.Count; index++)
+            {
+                var previous = answered[index]["thread"]?["previous_message_id"];
+                var conversation = new JsonArray(
+                    [
+                        .. (previous == null ? [] : held[previous.GetValue<string>()])
+                            .Concat(answered[index]["messages"]!.AsArray())
+                            .Select(message => message!.DeepClone()),
+                    ]
+                );
+                seen.Add(
+                    [
+                        .. conversation.Select(message =>
+                            message!["content"] is JsonArray blocks
+                            && blocks.Any(block => block!["tool_use_id"] != null)
+                                ? string.Join(
+                                    "+",
+                                    blocks.Select(block =>
+                                        $"{block!["tool_use_id"]}={block["content"]}"
+                                    )
+                                )
+                                : message["role"]!.GetValue<string>()
+                        ),
+                    ]
+                );
+
+                var reply = JsonNode.Parse(replies[index])!;
+                conversation.Add(
+                    new JsonObject
+                    {
+                        ["role"] = "assistant",
+                        ["content"] = reply["content"]!.DeepClone(),
+                    }
+                );
+                held[reply["id"]!.GetValue<string>()] = conversation;
+            }
+            return [.. seen];
+        }
+    }
+
+    sealed class TakeOver(
+        string[] replies,
+        Action<BetaToolRunner, BetaMessage> afterTurn,
+        string[][] seen,
+        string[] byDefault,
+        int runs = 1,
+        IReadOnlyList<BetaMessageParam>? initial = null
+    )
+    {
+        public string[] Replies => replies;
+
+        public Action<BetaToolRunner, BetaMessage> AfterTurn => afterTurn;
+
+        /// <summary>The conversation that each request puts before the model, in every mode.</summary>
+        public string[][] Seen => seen;
+
+        /// <summary>Whether each request creates or continues with default settings.</summary>
+        public string[] ByDefault => byDefault;
+
+        public int Runs => runs;
+
+        public IReadOnlyList<BetaMessageParam> Initial => initial ?? [User("Weather?")];
+    }
+
+    static readonly string[] s_takeOvers =
+    [
+        "own result and a follow-up",
+        "two turns in a row",
+        "second turn only",
+        "own result only",
+        "one of two calls",
+        "user message only",
+        "history the caller keeps",
+        "appended to the params",
+        "tool turn left out of a longer history",
+        "copy of a paused turn",
+    ];
+
+    static TakeOver TakeOverNamed(string name)
+    {
+        string[] oneCall = [ToolUse("msg_a", "toolu_1"), Final("msg_b")];
+        string[] twoTurns =
+        [
+            ToolUse("msg_a", "toolu_1"),
+            ToolUse("msg_b", "toolu_2"),
+            Final("msg_c"),
+        ];
+        string[][] bothTurnsMine =
+        [
+            ["user"],
+            ["user", "assistant", "toolu_1=mine"],
+            ["user", "assistant", "toolu_1=mine", "assistant", "toolu_2=mine"],
+        ];
+        var kept = new List<BetaMessageParam> { User("Weather?") };
+        return name switch
+        {
+            "own result and a follow-up" => new(
+                oneCall,
+                (runner, reply) =>
+                    runner.PushMessages(Copy(reply), Mine("toolu_1"), User("Briefly.")),
+                [
+                    ["user"],
+                    ["user", "assistant", "toolu_1=mine", "user"],
+                ],
+                ["create", "continue"]
+            ),
+            "two turns in a row" => new(
+                twoTurns,
+                (runner, reply) => runner.PushMessages(Copy(reply), Mine(Calls(reply))),
+                bothTurnsMine,
+                ["create", "continue", "continue"],
+                runs: 2
+            ),
+            "second turn only" => new(
+                twoTurns,
+                (runner, reply) =>
+                {
+                    if (reply.ID == "msg_b")
+                    {
+                        runner.PushMessages(Copy(reply), Mine("toolu_2"));
+                    }
+                },
+                [
+                    ["user"],
+                    ["user", "assistant", "toolu_1=ran toolu_1"],
+                    ["user", "assistant", "toolu_2=mine"],
+                ],
+                ["create", "continue", "create"],
+                runs: 2
+            ),
+            "own result only" => new(
+                oneCall,
+                (runner, _) => runner.PushMessages(Mine("toolu_1")),
+                [
+                    ["user"],
+                    ["user", "toolu_1=mine"],
+                ],
+                ["create", "create"]
+            ),
+            "one of two calls" => new(
+                [ToolUse("msg_a", "toolu_1", "toolu_2"), Final("msg_b")],
+                (runner, reply) => runner.PushMessages(Copy(reply), Mine("toolu_1")),
+                [
+                    ["user"],
+                    ["user", "assistant", "toolu_1=mine"],
+                ],
+                ["create", "continue"],
+                runs: 2
+            ),
+            "user message only" => new(
+                oneCall,
+                (runner, _) => runner.PushMessages(User("Briefly.")),
+                [
+                    ["user"],
+                    ["user", "user"],
+                ],
+                ["create", "create"]
+            ),
+            "history the caller keeps" => new(
+                twoTurns,
+                (runner, reply) =>
+                {
+                    kept.Add(Copy(reply));
+                    kept.Add(Mine(Calls(reply)));
+                    runner.SetParams(Params() with { Messages = [.. kept] });
+                },
+                bothTurnsMine,
+                ["create", "continue", "continue"],
+                runs: 2
+            ),
+            "appended to the params" => new(
+                oneCall,
+                (runner, reply) =>
+                    runner.SetParams(current =>
+                        current with
+                        {
+                            Messages = [.. current.Messages, Copy(reply), Mine("toolu_1")],
+                        }
+                    ),
+                [
+                    ["user"],
+                    ["user", "assistant", "toolu_1=mine"],
+                ],
+                ["create", "continue"]
+            ),
+            "tool turn left out of a longer history" => new(
+                oneCall,
+                (runner, _) =>
+                    runner.SetParams(current =>
+                        current with
+                        {
+                            Messages = [.. current.Messages, User("No tools.")],
+                        }
+                    ),
+                [
+                    ["user", "assistant", "user"],
+                    ["user", "assistant", "user", "user"],
+                ],
+                ["create", "create"],
+                initial:
+                [
+                    User("Hello"),
+                    new BetaAssistantMessageParam { Content = "Hi." },
+                    User("Weather?"),
+                ]
+            ),
+            "copy of a paused turn" => new(
+                [Paused("msg_a"), Final("msg_b")],
+                (runner, reply) => runner.PushMessages(Copy(reply)),
+                [
+                    ["user"],
+                    ["user", "assistant"],
+                ],
+                ["create", "continue"],
+                runs: 0
+            ),
+            _ => throw new ArgumentOutOfRangeException(nameof(name), name, null),
+        };
+    }
+
+    public static TheoryData<string, string, bool> TakeOvers()
+    {
+        var data = new TheoryData<string, string, bool>();
+        foreach (var name in s_takeOvers)
+        {
+            foreach (var mode in s_modes)
+            {
+                data.Add(name, mode, false);
+                data.Add(name, mode, true);
+            }
+        }
+        return data;
+    }
+
+    [Theory]
+    [MemberData(nameof(TakeOvers))]
+    public async Task CallerWhoChangesTheParamsManagesTheHistory(
+        string name,
+        string mode,
+        bool streaming
+    )
+    {
+        var takeOver = TakeOverNamed(name);
+        var run = new ModeRun(mode, streaming, takeOver.Replies);
+        var runner = run.Runner(Params() with { Messages = takeOver.Initial });
+
+        await RunReplies(runner, streaming, reply => takeOver.AfterTurn(runner, reply));
+
+        Assert.Equal(takeOver.Seen, run.Seen());
+        Assert.Equal(takeOver.Runs, run.Counter.Runs);
+        Assert.Equal(
+            mode == Default ? takeOver.ByDefault : takeOver.ByDefault.Select(_ => (string?)null),
+            run.Answered.Select(request => request["thread"]?["type"]?.GetValue<string>())
+        );
+    }
+
+    [Theory]
+    [MemberData(nameof(ModesAndStreaming))]
+    public async Task ChangedFieldAloneSendsTheParamsWithoutTheTurn(string mode, bool streaming)
+    {
+        var run = new ModeRun(mode, streaming, ToolUse("msg_a", "toolu_1"), Final("msg_b"));
+        var runner = run.Runner(Params());
+
+        await RunReplies(
+            runner,
+            streaming,
+            _ =>
+                runner.SetParams(current =>
+                    current with
+                    {
+                        MaxTokens = 2048,
+                        StopSequences = ["END"],
+                    }
+                )
+        );
+
+        Assert.Equal(
+            [
+                ["user"],
+                ["user"],
+            ],
+            run.Seen()
+        );
+        Assert.Equal(1, run.Counter.Runs);
+        Assert.Equal(2048, run.Answered[1]["max_tokens"]!.GetValue<int>());
+        Assert.Equal("""["END"]""", run.Answered[1]["stop_sequences"]!.ToJsonString());
+    }
+
+    [Theory]
+    [InlineData(OptOut, null, false)]
+    [InlineData(OptOut, null, true)]
+    [InlineData(OptOut, Continued, false)]
+    [InlineData(OptOut, Continued, true)]
+    [InlineData(OptOut, Rewritten, false)]
+    [InlineData(OptOut, Rewritten, true)]
+    [InlineData(Unsupported, null, false)]
+    [InlineData(Unsupported, null, true)]
+    [InlineData(Unsupported, Continued, false)]
+    [InlineData(Unsupported, Continued, true)]
+    [InlineData(Unsupported, Rewritten, false)]
+    [InlineData(Unsupported, Rewritten, true)]
+    public async Task ChangedSystemGoesOutWithoutAThread(
+        string mode,
+        string? history,
+        bool streaming
+    )
+    {
+        var run = new ModeRun(mode, streaming, ToolUse("msg_a", "toolu_1"), Final("msg_b"));
+        var runner = run.Runner(Params());
+
+        await RunReplies(
+            runner,
+            streaming,
+            reply =>
+                runner.SetParams(current =>
+                    history == null
+                        ? current with
+                        {
+                            System = "Be thorough.",
+                        }
+                        : WithAnotherSystem(current, history, reply)
+                )
+        );
+
+        Assert.Equal("Be thorough.", run.Answered[1]["system"]!.GetValue<string>());
+        Assert.Equal(1, run.Counter.Runs);
+    }
+
+    [Theory]
+    [MemberData(nameof(ModesAndStreaming))]
+    public async Task ParamsHoldOnlyWhatTheCallerSet(string mode, bool streaming)
+    {
+        var run = new ModeRun(
+            mode,
+            streaming,
+            ToolUse("msg_a", "toolu_1"),
+            ToolUse("msg_b", "toolu_2"),
+            Final("msg_c")
+        );
+        var runner = run.Runner(Params());
+
+        await RunTurns(
+            runner,
+            streaming,
+            _ => Assert.Equal(["user"], Shape(runner.Params.Messages))
+        );
+
+        Assert.Equal(["user"], Shape(runner.Params.Messages));
+        Assert.Equal(3, run.Answered.Count);
+    }
+
+    [Theory]
+    [MemberData(nameof(ModesAndStreaming))]
+    public async Task NewRunnerFromTheParamsOfARunThatStoppedStartsFromWhatTheCallerSet(
+        string mode,
+        bool streaming
+    )
+    {
+        var run = new ModeRun(mode, false, ToolUse("msg_a", "toolu_1"));
+        var stopped = run.Runner(Params());
+        await foreach (var _ in stopped.WithCancellation(TestContext.Current.CancellationToken))
+        {
+            break;
+        }
+        var next = new ModeRun(mode, streaming, Final("msg_b"));
+
+        await RunTurns(next.Runner(stopped.Params), streaming);
+
+        Assert.Equal(
+            [
+                ["user"],
+            ],
+            next.Seen()
+        );
+    }
+
+    [Theory]
+    [MemberData(nameof(ModesAndStreaming))]
+    public async Task CompactionAfterATurnTheCallerManagedSummarizesTheCallersHistory(
+        string mode,
+        bool streaming
+    )
+    {
+        var run = new ModeRun(
+            mode,
+            streaming,
+            ToolUse("msg_a", "toolu_1"),
+            Summary("msg_summary"),
+            Final("msg_b")
+        );
+        var runner = run.Runner(CompactionParams());
+
+        await RunReplies(
+            runner,
+            streaming,
+            reply =>
+            {
+                if (reply.ID == "msg_a")
+                {
+                    runner.PushMessages(Copy(reply), Mine("toolu_1"));
+                    runner.CompactBeforeNextTurn();
+                }
+            }
+        );
+
+        Assert.Equal(
+            [
+                ["user"],
+                ["user", "assistant", "toolu_1=mine"],
+                ["assistant"],
+            ],
+            run.Seen()
+        );
+        Assert.NotNull(run.Answered[1]["compaction"]);
+        Assert.Equal(1, run.Counter.Runs);
+    }
+
+    [Theory]
+    [InlineData(Default, null)]
+    [InlineData(Default, "message_start")]
+    [InlineData(Default, "content_block_stop")]
+    [InlineData(OptOut, null)]
+    [InlineData(OptOut, "message_start")]
+    [InlineData(OptOut, "content_block_stop")]
+    public async Task StreamThatIsNotReadToItsEndThrows(string mode, string? lastEventRead)
+    {
+        var run = new ModeRun(mode, true, ToolUse("msg_a", "toolu_1"), Final("msg_b"));
+
+        var turns = 0;
+        await Assert.ThrowsAsync<AnthropicInvalidDataException>(async () =>
+        {
+            await foreach (
+                var turn in run.Runner(Params()).Streaming(TestContext.Current.CancellationToken)
+            )
+            {
+                turns++;
+                if (lastEventRead == null)
+                {
+                    continue;
+                }
+                await foreach (var streamEvent in turn)
+                {
+                    if (streamEvent.Json.GetProperty("type").GetString() == lastEventRead)
+                    {
+                        break;
+                    }
+                }
+            }
+        });
+
+        Assert.Equal(1, turns);
+        Assert.Equal(lastEventRead == null ? 0 : 1, run.Transport.RequestCount);
+        Assert.Equal(0, run.Counter.Runs);
     }
 }

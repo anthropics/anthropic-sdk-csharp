@@ -117,23 +117,14 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     }
 
     /// <summary>
-    /// The current parameters that will be used for the next API call. On a message thread
-    /// <c>Messages</c> holds the whole history, while the API call sends only the messages that
-    /// are new to the thread.
+    /// The current parameters that will be used for the next API call.
     /// </summary>
-    public MessageCreateParams Params =>
-        _thread == null || _paramsMutated
-            ? _currentParams
-            : _currentParams with
-            {
-                Messages = _thread.Messages,
-            };
+    public MessageCreateParams Params => _currentParams;
 
     /// <summary>
     /// Replaces the runner's parameters for the next API call.
-    ///
-    /// <para>Without a message thread, a call during iteration makes the runner skip
-    /// auto-appending the current assistant message to history for that turn.</para>
+    /// When called during iteration, the runner skips auto-appending the current
+    /// assistant message to history for that turn.
     ///
     /// <para>On a message thread, <c>System</c> cannot change. To change it during a run, create
     /// the runner with <c>thread: false</c>.</para>
@@ -146,7 +137,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     {
         ThrowIfCompactionParam(parameters);
         ThrowIfThreadParam(parameters);
-        if (_compacting && !HasSameMessages(parameters, Params))
+        if (_compacting && !HasSameMessages(parameters, _currentParams))
         {
             throw new AnthropicException(
                 "Message params can't be changed while the conversation is being compacted, "
@@ -164,17 +155,19 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
     }
 
     /// <summary>
-    /// Replaces the runner's parameters using a mutator function, like
-    /// <see cref="SetParams(MessageCreateParams)"/>.
+    /// Replaces the runner's parameters using a mutator function.
+    /// When called during iteration, the runner skips auto-appending the current
+    /// assistant message to history for that turn.
     /// </summary>
     public void SetParams(Func<MessageCreateParams, MessageCreateParams> mutator)
     {
-        SetParams(mutator(Params));
+        SetParams(mutator(_currentParams));
     }
 
     /// <summary>
-    /// Appends one or more messages to the conversation history without replacing all params,
-    /// like <see cref="SetParams(MessageCreateParams)"/>.
+    /// Appends one or more messages to the conversation history without replacing all params.
+    /// When called during iteration, the runner skips auto-appending the current
+    /// assistant message to history for that turn.
     /// </summary>
     public void PushMessages(params BetaMessageParam[] messages)
     {
@@ -392,9 +385,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
                         ),
                         ct
                     );
-                    BetaMessage? Message() =>
-                        _thread == null || aggregator.StreamEnded ? aggregator.Message() : null;
-                    return Task.FromResult((stream, (Func<BetaMessage?>)Message));
+                    return Task.FromResult((stream, (Func<BetaMessage>)aggregator.Message));
                 },
                 cancellationToken
             ),
@@ -404,10 +395,9 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
     /// <summary>
     /// Makes one API call. Returns the item the loop yields for it, plus how to read the
-    /// completed <see cref="BetaMessage"/> once the caller has consumed that item: <c>null</c>
-    /// when the caller stopped reading the stream of a message thread before the message was whole.
+    /// completed <see cref="BetaMessage"/> once the caller has consumed that item.
     /// </summary>
-    private delegate Task<(T Item, Func<BetaMessage?> Message)> Send<T>(
+    private delegate Task<(T Item, Func<BetaMessage> Message)> Send<T>(
         MessageCreateParams parameters,
         CancellationToken cancellationToken
     );
@@ -421,7 +411,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
-        var messages = new List<BetaMessageParam>(Params.Messages);
+        var messages = new List<BetaMessageParam>(History);
         var iterations = 0;
         var turnPaused = false;
         var resumingPausedTurn = false;
@@ -455,8 +445,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             yield return item;
 
-            if (message() is not { } response)
-                yield break;
+            var response = message();
             _currentParams = MessageThreadState.WithContainerOf(_currentParams, response);
 
             var nextStep = DetermineNextStepFromStopReason(response);
@@ -464,6 +453,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             resumingPausedTurn = response.StopReason?.Value() == BetaStopReason.PauseTurn;
             if (turnPaused)
             {
+                _thread?.ThrowIfCreateOnlyChanged(BuildRequestParams(messages));
                 messages = HistoryAfter(response, messages);
                 continue;
             }
@@ -486,10 +476,11 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             if (_thread != null)
             {
-                // No tool runs for a turn that the thread would refuse.
+                // No tool runs for a turn that the thread would refuse. It is asked first, because
+                // messages that start a new thread would take the change with them.
+                _thread.ThrowIfCreateOnlyChanged(BuildRequestParams(messages));
                 if (_paramsMutated)
                     _thread.ReplaceMessages(_currentParams.Messages);
-                _thread.ThrowIfCreateOnlyChanged(BuildRequestParams(messages));
             }
 
             // Execute tools in parallel and collect results in order. Availability is
@@ -504,12 +495,13 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
             messages = HistoryAfter(response, messages);
 
-            // A caller who manages the history adds the results too. A thread still gets them.
-            var calls = messages.FindLastIndex(message => message.Role.Raw() == "assistant");
-            if (_paramsMutated && (_thread == null || calls < 0))
+            // If params were mutated during this iteration (between yield and here),
+            // skip auto-appending — the caller is managing history manually.
+            if (_paramsMutated)
                 continue;
 
             // Add tool results as a user message, directly after the calls they answer.
+            var calls = messages.FindLastIndex(message => message.Role.Raw() == "assistant");
             messages.Insert(calls + 1, new BetaUserMessageParam { Content = toolResults });
 
             // The run can end here, and the thread goes on from the results.
@@ -526,8 +518,11 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
         List<BetaMessageParam> messages
     ) =>
         _paramsMutated || _thread != null
-            ? [.. Params.Messages]
+            ? [.. History]
             : [.. messages, MessageThreadState.ToAssistantParam(response)];
+
+    private IReadOnlyList<BetaMessageParam> History =>
+        _paramsMutated || _thread == null ? _currentParams.Messages : _thread.Messages;
 
     private MessageCreateParams BuildRequestParams(IReadOnlyList<BetaMessageParam> messages) =>
         _currentParams with
@@ -562,8 +557,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             yield return item;
 
             var appended = _thread?.AppendedSince(messages.Count) ?? [];
-            if (message() is { } response)
-                AdoptCompactionResponse(response, messages);
+            AdoptCompactionResponse(message(), messages);
             messages.AddRange(appended);
             _thread?.ReplaceMessages(messages);
         }

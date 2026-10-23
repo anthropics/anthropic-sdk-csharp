@@ -7,6 +7,10 @@
 * **api:** add support for message threads
 * **api:** add usage and cost reports by dimension, mark older reports legacy
 
+### Bug Fixes
+
+* **tools:** restore the released tool runner behavior when the caller changes its state
+* **tools:** throw again when a stream of the tool runner is not read to its end
 
 ### Chores
 

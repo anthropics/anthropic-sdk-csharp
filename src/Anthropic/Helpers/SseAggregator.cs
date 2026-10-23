@@ -20,9 +20,6 @@ public abstract class SseAggregator<TMessage, TResult>
     private FilterResult _lastFilterResult = FilterResult.Ignore;
     private TResult? _message;
 
-    /// <summary>Whether the End message was collected, so that the stream holds a whole result.</summary>
-    internal bool StreamEnded => _streamEnded;
-
     /// <summary>
     /// Collects and filters the provided <see cref="IAsyncEnumerable{TMessage}"/> for aggregation with the <see cref="SseAggregatorExtensions.Aggregate(IAsyncEnumerable{RawMessageStreamEvent})"/> method.
     /// </summary>
