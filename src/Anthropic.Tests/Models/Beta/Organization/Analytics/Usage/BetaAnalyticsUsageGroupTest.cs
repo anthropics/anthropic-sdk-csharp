@@ -14,12 +14,12 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -31,7 +31,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
@@ -41,12 +41,13 @@ public class BetaAnalyticsUsageGroupTest : TestBase
 
         BetaAnalyticsActor expectedActor = new BetaAnalyticsReportUserActor()
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
         };
-        ApiEnum<string, BetaAnalyticsActorType> expectedActorType = BetaAnalyticsActorType.ApiActor;
+        ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
+            BetaAnalyticsActorType.UserActor;
         string expectedAgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f";
         string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
         ApiEnum<string, BetaAnalyticsClaudeTagCategory> expectedClaudeTagCategory =
@@ -62,7 +63,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         ApiEnum<string, BetaAnalyticsServiceTier> expectedServiceTier =
-            BetaAnalyticsServiceTier.Batch;
+            BetaAnalyticsServiceTier.Standard;
         string expectedSessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ";
         string expectedSlackChannelID = "C0123ABCDEF";
         ApiEnum<string, BetaAnalyticsSpeed> expectedSpeed = BetaAnalyticsSpeed.Fast;
@@ -97,12 +98,12 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -114,7 +115,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
@@ -138,12 +139,12 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -155,7 +156,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
@@ -172,12 +173,13 @@ public class BetaAnalyticsUsageGroupTest : TestBase
 
         BetaAnalyticsActor expectedActor = new BetaAnalyticsReportUserActor()
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
         };
-        ApiEnum<string, BetaAnalyticsActorType> expectedActorType = BetaAnalyticsActorType.ApiActor;
+        ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
+            BetaAnalyticsActorType.UserActor;
         string expectedAgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f";
         string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
         ApiEnum<string, BetaAnalyticsClaudeTagCategory> expectedClaudeTagCategory =
@@ -193,7 +195,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         ApiEnum<string, BetaAnalyticsServiceTier> expectedServiceTier =
-            BetaAnalyticsServiceTier.Batch;
+            BetaAnalyticsServiceTier.Standard;
         string expectedSessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ";
         string expectedSlackChannelID = "C0123ABCDEF";
         ApiEnum<string, BetaAnalyticsSpeed> expectedSpeed = BetaAnalyticsSpeed.Fast;
@@ -228,12 +230,12 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -245,7 +247,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
@@ -263,12 +265,12 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -280,7 +282,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,

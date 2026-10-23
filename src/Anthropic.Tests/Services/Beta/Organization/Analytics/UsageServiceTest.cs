@@ -9,7 +9,7 @@ public class UsageServiceTest : TestBase
     public async Task List_Works()
     {
         var page = await this.client.Beta.Organization.Analytics.Usage.List(
-            new() { StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z") },
+            new() { StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z") },
             TestContext.Current.CancellationToken
         );
         page.Validate();

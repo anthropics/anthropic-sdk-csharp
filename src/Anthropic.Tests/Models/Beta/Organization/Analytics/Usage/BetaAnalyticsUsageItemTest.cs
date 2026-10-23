@@ -13,17 +13,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageItem
         {
-            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            EndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z"),
             Group = new()
             {
                 Actor = new BetaAnalyticsReportUserActor()
                 {
-                    Deleted = true,
+                    Deleted = false,
                     EmailAddress = "user@emaildomain.com",
                     Name = "Jane Doe",
                     UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
                 },
-                ActorType = BetaAnalyticsActorType.ApiActor,
+                ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
                 ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -35,14 +35,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 Model = "claude-opus-5-5",
                 Product = "chat",
                 RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-                ServiceTier = BetaAnalyticsServiceTier.Batch,
+                ServiceTier = BetaAnalyticsServiceTier.Standard,
                 SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
                 WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
-            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
             {
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -55,17 +55,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
             },
         };
 
-        DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z");
         BetaAnalyticsUsageGroup expectedGroup = new()
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -77,14 +77,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
-        DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z");
         BetaAnalyticsUsageMetrics expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -107,17 +107,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageItem
         {
-            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            EndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z"),
             Group = new()
             {
                 Actor = new BetaAnalyticsReportUserActor()
                 {
-                    Deleted = true,
+                    Deleted = false,
                     EmailAddress = "user@emaildomain.com",
                     Name = "Jane Doe",
                     UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
                 },
-                ActorType = BetaAnalyticsActorType.ApiActor,
+                ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
                 ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -129,14 +129,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 Model = "claude-opus-5-5",
                 Product = "chat",
                 RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-                ServiceTier = BetaAnalyticsServiceTier.Batch,
+                ServiceTier = BetaAnalyticsServiceTier.Standard,
                 SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
                 WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
-            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
             {
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -163,17 +163,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageItem
         {
-            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            EndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z"),
             Group = new()
             {
                 Actor = new BetaAnalyticsReportUserActor()
                 {
-                    Deleted = true,
+                    Deleted = false,
                     EmailAddress = "user@emaildomain.com",
                     Name = "Jane Doe",
                     UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
                 },
-                ActorType = BetaAnalyticsActorType.ApiActor,
+                ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
                 ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -185,14 +185,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 Model = "claude-opus-5-5",
                 Product = "chat",
                 RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-                ServiceTier = BetaAnalyticsServiceTier.Batch,
+                ServiceTier = BetaAnalyticsServiceTier.Standard,
                 SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
                 WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
-            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
             {
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -212,17 +212,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedEndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z");
         BetaAnalyticsUsageGroup expectedGroup = new()
         {
             Actor = new BetaAnalyticsReportUserActor()
             {
-                Deleted = true,
+                Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
                 UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
             },
-            ActorType = BetaAnalyticsActorType.ApiActor,
+            ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
             ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -234,14 +234,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
             Model = "claude-opus-5-5",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            ServiceTier = BetaAnalyticsServiceTier.Batch,
+            ServiceTier = BetaAnalyticsServiceTier.Standard,
             SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
-        DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z");
         BetaAnalyticsUsageMetrics expectedUsage = new()
         {
             CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -264,17 +264,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageItem
         {
-            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            EndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z"),
             Group = new()
             {
                 Actor = new BetaAnalyticsReportUserActor()
                 {
-                    Deleted = true,
+                    Deleted = false,
                     EmailAddress = "user@emaildomain.com",
                     Name = "Jane Doe",
                     UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
                 },
-                ActorType = BetaAnalyticsActorType.ApiActor,
+                ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
                 ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -286,14 +286,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 Model = "claude-opus-5-5",
                 Product = "chat",
                 RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-                ServiceTier = BetaAnalyticsServiceTier.Batch,
+                ServiceTier = BetaAnalyticsServiceTier.Standard,
                 SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
                 WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
-            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
             {
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },
@@ -314,17 +314,17 @@ public class BetaAnalyticsUsageItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageItem
         {
-            EndingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            EndingAt = DateTimeOffset.Parse("2026-10-01T00:00:00Z"),
             Group = new()
             {
                 Actor = new BetaAnalyticsReportUserActor()
                 {
-                    Deleted = true,
+                    Deleted = false,
                     EmailAddress = "user@emaildomain.com",
                     Name = "Jane Doe",
                     UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
                 },
-                ActorType = BetaAnalyticsActorType.ApiActor,
+                ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
                 ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
@@ -336,14 +336,14 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 Model = "claude-opus-5-5",
                 Product = "chat",
                 RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-                ServiceTier = BetaAnalyticsServiceTier.Batch,
+                ServiceTier = BetaAnalyticsServiceTier.Standard,
                 SessionID = "sesn_0187kPDyNCwibNNvfaPEApCJ",
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
                 WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             },
-            StartingAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+            StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
             {
                 CacheCreation = new() { Ephemeral1hInputTokens = 0, Ephemeral5mInputTokens = 0 },

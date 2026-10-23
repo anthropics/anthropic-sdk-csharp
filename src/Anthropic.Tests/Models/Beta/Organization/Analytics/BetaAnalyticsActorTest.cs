@@ -12,7 +12,7 @@ public class BetaAnalyticsActorTest : TestBase
     {
         BetaAnalyticsActor value = new BetaAnalyticsReportUserActor()
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
@@ -56,7 +56,7 @@ public class BetaAnalyticsActorTest : TestBase
     {
         BetaAnalyticsActor value = new BetaAnalyticsReportUserActor()
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
@@ -124,7 +124,7 @@ public class BetaAnalyticsActorTest : TestBase
     {
         BetaAnalyticsActor value = new BetaAnalyticsReportUserActor()
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",

@@ -7,6 +7,11 @@
 * **api:** add support for message threads
 * **api:** add usage and cost reports by dimension, mark older reports legacy
 
+
+### Chores
+
+* **docs:** fix usage and cost report examples and ending_at docs
+
 ## [13.1.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.1.0...Anthropic-v13.1.1) (2026-10-22)
 
 ### Chores

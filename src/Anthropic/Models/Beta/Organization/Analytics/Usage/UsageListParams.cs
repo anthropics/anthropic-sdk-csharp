@@ -225,8 +225,9 @@ public record class UsageListParams : ParamsBase
     }
 
     /// <summary>
-    /// End of range, exclusive. When omitted, defaults to the earlier of now and
-    /// `starting_at` + 31 days. The range may span at most 31 days.
+    /// End of range, exclusive. Required when `time_bucket_width` is set. Without
+    /// `time_bucket_width`, defaults to the earlier of now and `starting_at` + 31
+    /// days. The range may span at most 31 days.
     /// </summary>
     public DateTimeOffset? EndingAt
     {

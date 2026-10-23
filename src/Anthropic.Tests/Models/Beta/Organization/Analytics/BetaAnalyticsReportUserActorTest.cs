@@ -11,13 +11,13 @@ public class BetaAnalyticsReportUserActorTest : TestBase
     {
         var model = new BetaAnalyticsReportUserActor
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
         };
 
-        bool expectedDeleted = true;
+        bool expectedDeleted = false;
         string expectedEmailAddress = "user@emaildomain.com";
         string expectedName = "Jane Doe";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
@@ -35,7 +35,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
     {
         var model = new BetaAnalyticsReportUserActor
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
@@ -55,7 +55,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
     {
         var model = new BetaAnalyticsReportUserActor
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
@@ -68,7 +68,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        bool expectedDeleted = true;
+        bool expectedDeleted = false;
         string expectedEmailAddress = "user@emaildomain.com";
         string expectedName = "Jane Doe";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
@@ -86,7 +86,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
     {
         var model = new BetaAnalyticsReportUserActor
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
@@ -100,7 +100,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
     {
         var model = new BetaAnalyticsReportUserActor
         {
-            Deleted = true,
+            Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
             UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
