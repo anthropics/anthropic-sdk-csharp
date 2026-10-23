@@ -10,8 +10,6 @@ namespace Anthropic.Models.Beta.Environments.Work;
 
 /// <summary>
 /// Statistics about the work queue for an environment.
-///
-/// <para>Uses Redis Stream consumer group metrics for O(1) queries.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<BetaSelfHostedWorkQueueStats, BetaSelfHostedWorkQueueStatsFromRaw>)
@@ -19,7 +17,7 @@ namespace Anthropic.Models.Beta.Environments.Work;
 public sealed record class BetaSelfHostedWorkQueueStats : JsonModel
 {
     /// <summary>
-    /// Number of work items waiting to be picked up (lag from consumer group)
+    /// Number of work items waiting to be picked up
     /// </summary>
     public required long Depth
     {
