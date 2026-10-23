@@ -2,6 +2,10 @@
 
 ## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/GoogleCloud-v1.0.0...GoogleCloud-v1.0.1) (2026-10-22)
 
+### Bug Fixes
+
+* **google-cloud:** send user profiles requests to the organization endpoint
+
 ### Documentation
 
 * **google-cloud:** update the product name
