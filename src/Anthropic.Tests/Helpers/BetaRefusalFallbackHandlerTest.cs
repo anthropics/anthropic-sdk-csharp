@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -156,7 +157,7 @@ public class BetaRefusalFallbackHandlerTest
         var transport = new FakeTransport().EnqueueJson(200, Message("primary-model"));
         using var invoker = Intercepted(transport, "fallback-model");
 
-        // the GA surface (no ?beta=true) is not applicable to this handler
+        // the GA surface (no `beta` qualifier) is not applicable to this handler
         var gaRequest = new HttpRequestMessage(
             HttpMethod.Post,
             "https://api.example.com/v1/messages"
@@ -794,27 +795,26 @@ public class BetaRefusalFallbackHandlerTest
         var transport = new FakeTransport().EnqueueJson(200, Refusal("primary-model"));
         using var invoker = Intercepted(transport, "fallback-model");
 
-        HttpRequestMessage request = new(
-            HttpMethod.Post,
-            "https://api.example.com/v1/complete?beta=true"
-        )
-        {
-            Content = JsonContent(MessagesBody()),
-        };
+        var request = FallbackTestSupport.BetaRequest(
+            "/v1/complete",
+            MessagesBody().ToJsonString()
+        );
         await invoker.SendAsync(request, TestContext.Current.CancellationToken);
 
         Assert.Equal(1, transport.RequestCount);
     }
 
-    [Fact]
-    public async Task SkipsNonBetaMessagesRequests()
+    [Theory]
+    [InlineData("https://api.example.com/v1/messages")]
+    [InlineData("https://api.example.com/v1/messages?beta=true")]
+    public async Task SkipsMessagesRequestsWithoutTheBetaQualifier(string url)
     {
         var transport = new FakeTransport().EnqueueJson(200, Refusal("primary-model"));
         using var invoker = Intercepted(transport, "fallback-model");
 
-        // The same request the beta service would make, minus its `beta=true` tag — what the
-        // non-beta `client.Messages` service sends.
-        HttpRequestMessage request = new(HttpMethod.Post, "https://api.example.com/v1/messages")
+        // The first is what the non-beta `client.Messages` service sends. The second is built by
+        // hand, not sent through an SDK method.
+        HttpRequestMessage request = new(HttpMethod.Post, url)
         {
             Content = JsonContent(MessagesBody()),
         };
@@ -822,6 +822,26 @@ public class BetaRefusalFallbackHandlerTest
 
         Assert.Equal(1, transport.RequestCount);
         Assert.Empty(transport.BetaHeaderValues(0));
+    }
+
+    [Fact]
+    public async Task HandlesAMessagesRequestWithTheBetaQualifier()
+    {
+        var transport = new FakeTransport()
+            .EnqueueJson(200, Refusal("primary-model", "credit-token"))
+            .EnqueueJson(200, Message("fallback-model"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        HttpRequestMessage request = new(HttpMethod.Post, "https://api.example.com/v1/messages")
+        {
+            Content = JsonContent(MessagesBody()),
+        };
+        Qualifiers.Attach(request, new Dictionary<string, string>() { ["beta"] = "true" });
+
+        using var _ = BetaFallbackState.Create().Use();
+        await invoker.SendAsync(request, TestContext.Current.CancellationToken);
+
+        Assert.Equal(["primary-model", "fallback-model"], transport.Models);
     }
 
     [Fact]
@@ -1322,13 +1342,7 @@ public class BetaRefusalFallbackHandlerTest
         const string requestBody = """
             {"model": "primary-model",  "max_tokens": 1024, "messages": [{"role": "user", "content": "hi"}, {"role": "assistant", "content": [{"type": "thinking", "thinking": "hmm", "signature": "sig"}, {"type": "text", "text": "answer"}]}]}
             """;
-        HttpRequestMessage request = new(
-            HttpMethod.Post,
-            "https://api.example.com/v1/messages?beta=true"
-        )
-        {
-            Content = new StringContent(requestBody, Encoding.UTF8, "application/json"),
-        };
+        var request = FallbackTestSupport.BetaRequest("/v1/messages", requestBody);
 
         using var _ = BetaFallbackState.Create().Use();
         await invoker.SendAsync(request, TestContext.Current.CancellationToken);
@@ -1406,10 +1420,7 @@ public class BetaRefusalFallbackHandlerTest
     }
 
     static HttpRequestMessage MessagesRequest(JsonObject? body = null) =>
-        new(HttpMethod.Post, "https://api.example.com/v1/messages?beta=true")
-        {
-            Content = JsonContent(body ?? MessagesBody()),
-        };
+        FallbackTestSupport.BetaRequest("/v1/messages", (body ?? MessagesBody()).ToJsonString());
 
     static StringContent JsonContent(JsonObject body) =>
         new(body.ToJsonString(), Encoding.UTF8, "application/json");

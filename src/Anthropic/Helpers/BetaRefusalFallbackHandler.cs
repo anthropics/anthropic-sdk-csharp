@@ -179,14 +179,14 @@ public sealed class BetaRefusalFallbackHandler : DelegatingHandler
         CancellationToken cancellationToken
     )
     {
-        // This handler only applies to the beta messages API; the SDK's beta services tag their
-        // requests with `beta=true`. An empty chain also disables this handler.
+        // This handler only applies to the beta messages API; the SDK's beta services set the
+        // `beta` qualifier on their requests. An empty chain also disables this handler.
         if (
             Fallbacks.Count == 0
             || request.Method != HttpMethod.Post
             || request.RequestUri is not Uri uri
             || !uri.AbsolutePath.EndsWith("/v1/messages", StringComparison.Ordinal)
-            || !uri.Query.TrimStart('?').Split('&').Contains("beta=true")
+            || Qualifiers.From(request)?.Contains(new("beta", "true")) != true
             || request.Content is not HttpContent requestContent
         )
         {
