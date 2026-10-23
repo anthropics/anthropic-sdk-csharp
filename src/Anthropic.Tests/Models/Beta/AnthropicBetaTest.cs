@@ -62,6 +62,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Webhooks2026_10_07)]
     [InlineData(AnthropicBeta.MessageThreads2026_08_12)]
     [InlineData(AnthropicBeta.AnalyticsUsageCost2026_08_24)]
+    [InlineData(AnthropicBeta.ExperimentalClaudeTag2026_10_21)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -136,6 +137,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Webhooks2026_10_07)]
     [InlineData(AnthropicBeta.MessageThreads2026_08_12)]
     [InlineData(AnthropicBeta.AnalyticsUsageCost2026_08_24)]
+    [InlineData(AnthropicBeta.ExperimentalClaudeTag2026_10_21)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {
         // force implicit conversion because Theory can't do that for us

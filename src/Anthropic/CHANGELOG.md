@@ -1,6 +1,11 @@
 # Changelog
 
-## [13.2.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.2.2) (2026-10-23)
+## [13.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.3.0) (2026-10-23)
+
+### Features
+
+* **api:** add Claude Tag endpoints for Claude Enterprise organizations
+
 
 ### Bug Fixes
 

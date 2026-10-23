@@ -61,6 +61,8 @@ public interface IOrganizationService
 
     Organization::IWebhookService Webhooks { get; }
 
+    Organization::IClaudeTagService ClaudeTag { get; }
+
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
     /// API key.
@@ -117,6 +119,8 @@ public interface IOrganizationServiceWithRawResponse
     Organization::ITelemetryDestinationServiceWithRawResponse TelemetryDestinations { get; }
 
     Organization::IWebhookServiceWithRawResponse Webhooks { get; }
+
+    Organization::IClaudeTagServiceWithRawResponse ClaudeTag { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/me</c>, but is otherwise the
