@@ -4,7 +4,7 @@
     <AssemblyTitle>Claude SDK for C#</AssemblyTitle>
     <AssemblyName>Anthropic</AssemblyName>
     <PackageId>Anthropic</PackageId>
-    <VersionPrefix>13.2.1</VersionPrefix>
+    <VersionPrefix>13.3.0</VersionPrefix>
     <StainlessMainProject>true</StainlessMainProject>
     <Description>The official .NET library for the Anthropic API.</Description>
     <OutputType>Library</OutputType>
