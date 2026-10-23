@@ -35,6 +35,8 @@ public sealed class AnalyticsService : IAnalyticsService
         _plugins = new(() => new Analytics::PluginService(client));
         _skills = new(() => new Analytics::SkillService(client));
         _artifacts = new(() => new Analytics::ArtifactService(client));
+        _usage = new(() => new Analytics::UsageService(client));
+        _cost = new(() => new Analytics::CostService(client));
         _usageReport = new(() => new Analytics::UsageReportService(client));
         _userUsageReport = new(() => new Analytics::UserUsageReportService(client));
         _costReport = new(() => new Analytics::CostReportService(client));
@@ -81,6 +83,18 @@ public sealed class AnalyticsService : IAnalyticsService
     public Analytics::IArtifactService Artifacts
     {
         get { return _artifacts.Value; }
+    }
+
+    readonly Lazy<Analytics::IUsageService> _usage;
+    public Analytics::IUsageService Usage
+    {
+        get { return _usage.Value; }
+    }
+
+    readonly Lazy<Analytics::ICostService> _cost;
+    public Analytics::ICostService Cost
+    {
+        get { return _cost.Value; }
     }
 
     readonly Lazy<Analytics::IUsageReportService> _usageReport;
@@ -130,6 +144,8 @@ public sealed class AnalyticsServiceWithRawResponse : IAnalyticsServiceWithRawRe
         _plugins = new(() => new Analytics::PluginServiceWithRawResponse(client));
         _skills = new(() => new Analytics::SkillServiceWithRawResponse(client));
         _artifacts = new(() => new Analytics::ArtifactServiceWithRawResponse(client));
+        _usage = new(() => new Analytics::UsageServiceWithRawResponse(client));
+        _cost = new(() => new Analytics::CostServiceWithRawResponse(client));
         _usageReport = new(() => new Analytics::UsageReportServiceWithRawResponse(client));
         _userUsageReport = new(() => new Analytics::UserUsageReportServiceWithRawResponse(client));
         _costReport = new(() => new Analytics::CostReportServiceWithRawResponse(client));
@@ -176,6 +192,18 @@ public sealed class AnalyticsServiceWithRawResponse : IAnalyticsServiceWithRawRe
     public Analytics::IArtifactServiceWithRawResponse Artifacts
     {
         get { return _artifacts.Value; }
+    }
+
+    readonly Lazy<Analytics::IUsageServiceWithRawResponse> _usage;
+    public Analytics::IUsageServiceWithRawResponse Usage
+    {
+        get { return _usage.Value; }
+    }
+
+    readonly Lazy<Analytics::ICostServiceWithRawResponse> _cost;
+    public Analytics::ICostServiceWithRawResponse Cost
+    {
+        get { return _cost.Value; }
     }
 
     readonly Lazy<Analytics::IUsageReportServiceWithRawResponse> _usageReport;

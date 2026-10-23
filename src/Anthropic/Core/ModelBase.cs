@@ -6,6 +6,8 @@ using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Anthropic.Models.Beta.Organization;
+using Anthropic.Models.Beta.Organization.Analytics.Cost;
+using Anthropic.Models.Beta.Organization.Analytics.Usage;
 using Anthropic.Models.Beta.Organization.Analytics.Users;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
@@ -824,6 +826,8 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, OrganizationRateLimits::GroupType>(),
             new ApiEnumConverter<string, BetaComplianceSettingsStateType>(),
             new ApiEnumConverter<string, BetaComplianceSettingsStateParamType>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsActorTypeValue>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsActorType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsClaudeTagCategory>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsContextWindow>(),
             new ApiEnumConverter<string, Analytics::InferenceGeo>(),
@@ -831,12 +835,20 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Analytics::BetaAnalyticsCostType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsCostUsersItemInferenceGeo>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsCostUsersItemSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsFederatedActorProviderType>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsGroupedCostType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsInferenceGeoFilter>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsProductFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsServiceTier>(),
             new ApiEnumConverter<string, Analytics::ShareStatus>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsTimeBucketWidth>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsTokenType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageBucketedResultInferenceGeo>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageBucketedResultSpeed>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageCostInferenceGeo>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageCostProductFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageCostSortOrder>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemInferenceGeo>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemSpeed>(),
             new ApiEnumConverter<string, GroupBy>(),
@@ -850,6 +862,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, AnalyticsSkills::GroupBy>(),
             new ApiEnumConverter<string, AnalyticsSkills::Order>(),
             new ApiEnumConverter<string, Artifacts::GroupBy>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageGroupBy>(),
+            new ApiEnumConverter<string, BetaAnalyticsUsageOrderBy>(),
+            new ApiEnumConverter<string, BetaAnalyticsCostGroupBy>(),
+            new ApiEnumConverter<string, BetaAnalyticsCostOrderBy>(),
             new ApiEnumConverter<string, UsageReport::BucketWidth>(),
             new ApiEnumConverter<string, UsageReport::GroupBy>(),
             new ApiEnumConverter<string, UsageReport::Speed>(),
