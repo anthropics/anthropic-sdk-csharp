@@ -152,6 +152,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             Span = span,
         };
         var response = await client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -221,6 +222,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             Span = span,
         };
         var response = await client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -283,6 +285,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             Span = span,
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

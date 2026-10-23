@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -231,6 +232,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.create",
             SpanResourceIds = ApiCallSpans.IsEnabled(this._client)
                 ? ApiCallSpans.SessionsCreateIds(parameters)
@@ -275,6 +277,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.retrieve",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -322,6 +325,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.update",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -366,6 +370,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -400,6 +405,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.delete",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -447,6 +453,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.archive",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };

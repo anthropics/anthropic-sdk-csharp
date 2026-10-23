@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -162,6 +163,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.dreams.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -200,6 +202,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.dreams.retrieve",
             SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };
@@ -242,6 +245,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.dreams.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -276,6 +280,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.dreams.archive",
             SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };
@@ -321,6 +326,7 @@ public sealed class DreamServiceWithRawResponse : IDreamServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.dreams.cancel",
             SpanResourceIds = [new("anthropic.dream.id", parameters.DreamID)],
         };

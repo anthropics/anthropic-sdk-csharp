@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -178,6 +179,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.agents.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -218,6 +220,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.agents.retrieve",
             SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
@@ -265,6 +268,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.agents.update",
             SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };
@@ -309,6 +313,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.agents.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -343,6 +348,7 @@ public sealed class AgentServiceWithRawResponse : IAgentServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.agents.archive",
             SpanResourceIds = [new("gen_ai.agent.id", parameters.AgentID)],
         };

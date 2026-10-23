@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -92,6 +93,7 @@ public sealed class PermissionServiceWithRawResponse : IPermissionServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_roles.permissions.list",
             SpanResourceIds = [new("anthropic.organization.rbac_role.id", parameters.RbacRoleID)],
         };

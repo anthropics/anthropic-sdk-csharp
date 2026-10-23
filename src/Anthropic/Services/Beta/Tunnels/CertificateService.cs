@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -163,6 +164,7 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.certificates.create",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
@@ -214,6 +216,7 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.certificates.retrieve",
             SpanResourceIds =
             [
@@ -263,6 +266,7 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.certificates.list",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
@@ -310,6 +314,7 @@ public sealed class CertificateServiceWithRawResponse : ICertificateServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.certificates.archive",
             SpanResourceIds =
             [

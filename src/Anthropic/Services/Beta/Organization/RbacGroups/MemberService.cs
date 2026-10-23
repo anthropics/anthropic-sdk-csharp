@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -134,6 +135,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.members.list",
             SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
@@ -181,6 +183,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.members.add",
             SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
@@ -232,6 +235,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.members.remove",
             SpanResourceIds =
             [

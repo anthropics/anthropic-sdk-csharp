@@ -134,6 +134,7 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.threads.events.list",
             SpanResourceIds =
             [
@@ -182,6 +183,7 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.threads.events.stream",
             SpanResourceIds =
             [

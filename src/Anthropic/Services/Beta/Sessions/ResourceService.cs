@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,6 +184,7 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.resources.retrieve",
             SpanResourceIds =
             [
@@ -232,6 +234,7 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.resources.update",
             SpanResourceIds =
             [
@@ -281,6 +284,7 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.resources.list",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -328,6 +332,7 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.resources.delete",
             SpanResourceIds =
             [
@@ -377,6 +382,7 @@ public sealed class ResourceServiceWithRawResponse : IResourceServiceWithRawResp
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.resources.add",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };

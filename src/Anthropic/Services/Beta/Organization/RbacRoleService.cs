@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -118,6 +119,7 @@ public sealed class RbacRoleServiceWithRawResponse : IRbacRoleServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_roles.retrieve",
             SpanResourceIds = [new("anthropic.organization.rbac_role.id", parameters.RbacRoleID)],
         };
@@ -162,6 +164,7 @@ public sealed class RbacRoleServiceWithRawResponse : IRbacRoleServiceWithRawResp
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_roles.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

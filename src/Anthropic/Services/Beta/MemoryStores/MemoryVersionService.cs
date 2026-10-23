@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -155,6 +156,7 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memory_versions.retrieve",
             SpanResourceIds =
             [
@@ -210,6 +212,7 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memory_versions.list",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -257,6 +260,7 @@ public sealed class MemoryVersionServiceWithRawResponse : IMemoryVersionServiceW
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memory_versions.redact",
             SpanResourceIds =
             [

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -212,6 +213,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -252,6 +254,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.retrieve",
             SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
@@ -299,6 +302,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.update",
             SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
@@ -343,6 +347,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -377,6 +382,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.delete",
             SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };
@@ -424,6 +430,7 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.create_enrollment_url",
             SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };

@@ -12,6 +12,12 @@ public sealed class HttpRequest<P>
     public required P Params { get; init; }
 
     /// <summary>
+    /// The query pairs that tell the operation apart from the others with its path in the OpenAPI
+    /// document. Set by the SDK method that sends the request.
+    /// </summary>
+    internal IReadOnlyDictionary<string, string>? Qualifiers { get; init; }
+
+    /// <summary>
     /// The name of the request's span. Set by the SDK method that sends the request.
     /// </summary>
     internal string? SpanName { get; init; }

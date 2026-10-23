@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -235,6 +236,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.create",
             SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
@@ -286,6 +288,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.retrieve",
             SpanResourceIds =
             [
@@ -335,6 +338,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.update",
             SpanResourceIds =
             [
@@ -384,6 +388,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.list",
             SpanResourceIds = [new("anthropic.vault.id", parameters.VaultID)],
         };
@@ -431,6 +436,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.delete",
             SpanResourceIds =
             [
@@ -480,6 +486,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.archive",
             SpanResourceIds =
             [
@@ -529,6 +536,7 @@ public sealed class CredentialServiceWithRawResponse : ICredentialServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.vaults.credentials.mcp_oauth_validate",
             SpanResourceIds =
             [

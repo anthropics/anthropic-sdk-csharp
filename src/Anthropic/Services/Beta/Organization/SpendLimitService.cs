@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -170,6 +171,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.spend_limits.retrieve",
             SpanResourceIds =
             [
@@ -217,6 +219,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.spend_limits.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -251,6 +254,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.spend_limits.delete",
             SpanResourceIds =
             [
@@ -296,6 +300,7 @@ public sealed class SpendLimitServiceWithRawResponse : ISpendLimitServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.spend_limits.set",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

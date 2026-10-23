@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -179,6 +180,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.members.retrieve",
             SpanResourceIds =
             [
@@ -228,6 +230,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.members.update",
             SpanResourceIds =
             [
@@ -277,6 +280,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.members.list",
             SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
@@ -324,6 +328,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.members.add",
             SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
@@ -375,6 +380,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.members.remove",
             SpanResourceIds =
             [

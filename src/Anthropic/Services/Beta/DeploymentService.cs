@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -237,6 +238,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -277,6 +279,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.retrieve",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
@@ -324,6 +327,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.update",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
@@ -368,6 +372,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -402,6 +407,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.archive",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
@@ -449,6 +455,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.pause",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
@@ -496,6 +503,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.run",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };
@@ -543,6 +551,7 @@ public sealed class DeploymentServiceWithRawResponse : IDeploymentServiceWithRaw
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployments.unpause",
             SpanResourceIds = [new("anthropic.deployment.id", parameters.DeploymentID)],
         };

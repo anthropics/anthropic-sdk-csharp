@@ -1,5 +1,11 @@
 # Changelog
 
+## [13.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.0...Anthropic-v13.2.1) (2026-10-23)
+
+### Chores
+
+* **internal:** carry endpoint path query params to the request layer
+
 ## [13.2.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.1.1...Anthropic-v13.2.0) (2026-10-23)
 
 ### Features

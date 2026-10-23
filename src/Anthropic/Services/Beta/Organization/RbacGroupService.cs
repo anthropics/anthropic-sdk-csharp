@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -173,6 +174,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -213,6 +215,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.retrieve",
             SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
@@ -260,6 +263,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.update",
             SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };
@@ -304,6 +308,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -338,6 +343,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.rbac_groups.delete",
             SpanResourceIds = [new("anthropic.organization.rbac_group.id", parameters.RbacGroupID)],
         };

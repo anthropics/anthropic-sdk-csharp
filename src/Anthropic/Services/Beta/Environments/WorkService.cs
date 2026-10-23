@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -253,6 +254,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.retrieve",
             SpanResourceIds =
             [
@@ -302,6 +304,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.update",
             SpanResourceIds =
             [
@@ -351,6 +354,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.list",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -398,6 +402,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.ack",
             SpanResourceIds =
             [
@@ -447,6 +452,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.heartbeat",
             SpanResourceIds =
             [
@@ -496,6 +502,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.poll",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -543,6 +550,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.stats",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -590,6 +598,7 @@ public sealed class WorkServiceWithRawResponse : IWorkServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.work.stop",
             SpanResourceIds =
             [

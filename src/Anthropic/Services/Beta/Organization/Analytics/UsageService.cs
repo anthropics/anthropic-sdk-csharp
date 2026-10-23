@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -77,6 +78,7 @@ public sealed class UsageServiceWithRawResponse : IUsageServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.analytics.usage.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

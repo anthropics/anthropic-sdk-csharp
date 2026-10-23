@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -149,6 +150,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.skills.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -187,6 +189,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.skills.retrieve",
             SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
@@ -229,6 +232,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.skills.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -263,6 +267,7 @@ public sealed class SkillServiceWithRawResponse : ISkillServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.skills.delete",
             SpanResourceIds = [new("anthropic.skill.id", parameters.SkillID)],
         };
