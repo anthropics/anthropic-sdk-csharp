@@ -443,7 +443,7 @@ public record struct ClientOptions
             throw new ArgumentOutOfRangeException(
                 nameof(maxTokens),
                 "Streaming is required for operations that may take longer than 10 minutes. "
-                    + "For more information, see https://github.com/anthropics/anthropic-sdk-csharp#streaming"
+                    + "For more information, see https://platform.claude.com/docs/en/cli-sdks-libraries/sdks/csharp#streaming"
             );
         }
 

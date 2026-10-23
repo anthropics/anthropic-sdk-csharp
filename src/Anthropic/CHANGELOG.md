@@ -2,6 +2,10 @@
 
 ## [13.2.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.2.2) (2026-10-23)
 
+### Bug Fixes
+
+* **client:** link the long-request error message to the SDK documentation
+
 ### Chores
 
 * **client:** stop sending query params hardcoded in endpoint paths
