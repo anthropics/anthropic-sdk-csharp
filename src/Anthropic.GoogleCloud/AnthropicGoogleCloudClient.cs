@@ -6,8 +6,8 @@ using Google.Apis.Auth.OAuth2;
 namespace Anthropic.GoogleCloud;
 
 /// <summary>
-/// An Anthropic client for Claude Platform on Google Cloud — the first-party Anthropic
-/// API served through the Google Cloud gateway.
+/// An Anthropic client for Claude Models on Google Cloud (Anthropic managed) — the
+/// first-party Anthropic API served through the Google Cloud gateway.
 /// </summary>
 /// <remarks>
 /// <para>
