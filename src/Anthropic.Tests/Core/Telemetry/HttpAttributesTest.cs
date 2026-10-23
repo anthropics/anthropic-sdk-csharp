@@ -128,8 +128,7 @@ public class HttpAttributesTest : TracingTestBase
         Assert.Equal(sent.Scheme, span.GetTagItem("url.scheme"));
         Assert.Equal(sent.AbsolutePath, span.GetTagItem("url.path"));
         Assert.EndsWith("/v1/files/file%201", sent.AbsolutePath, StringComparison.Ordinal);
-        // The request's only query parameter is `beta=true`, which the endpoint does not define.
-        Assert.Equal("?beta=true", sent.Query);
+        Assert.Equal("", sent.Query);
         Assert.Null(span.GetTagItem("url.query"));
         Assert.Equal(prefix + "/v1/files/file%201", span.GetTagItem("url.full"));
         Assert.All(
@@ -206,10 +205,8 @@ public class HttpAttributesTest : TracingTestBase
             spans,
             span =>
             {
-                var sent = requests[0].Uri!.Query.TrimStart('?').Split('&');
-                Assert.Contains("beta=true", sent);
                 // What is kept is as it was sent, in the order sent.
-                var kept = string.Join("&", sent.Where(pair => pair != "beta=true"));
+                var kept = requests[0].Uri!.Query.TrimStart('?');
                 Assert.Contains("scope_id=scope+1%2f2", kept, StringComparison.Ordinal);
                 Assert.Contains("limit=5", kept, StringComparison.Ordinal);
                 Assert.Equal(kept, span.GetTagItem("url.query"));
@@ -240,7 +237,7 @@ public class HttpAttributesTest : TracingTestBase
             { "", ["limit"], null, false },
             { "beta=true", ["limit"], null, false },
             { "beta=true&trace=on", [], null, false },
-            // What the SDK and the application add is left out.
+            // What the application adds is left out.
             { "beta=true&limit=5", ["limit"], "limit=5", false },
             { "limit=5&trace=on&page=p", ["limit", "page"], "limit=5&page=p", false },
             // The order and the bytes are those sent.
@@ -392,7 +389,6 @@ public class HttpAttributesTest : TracingTestBase
             {
                 var query = Assert.IsType<string>(content.GetTagItem("url.query"));
                 Assert.Contains(name + "=", query, StringComparison.Ordinal);
-                Assert.DoesNotContain("beta=", query, StringComparison.Ordinal);
                 Assert.Equal(
                     Fixtures.BaseUrl + content.GetTagItem("url.path") + "?" + query,
                     content.GetTagItem("url.full")
@@ -554,10 +550,9 @@ public class HttpAttributesTest : TracingTestBase
 
     /// <summary>
     /// What <c>url.query</c> keeps of <paramref name="sent"/>, the query string of a request with
-    /// <c>beta=true</c> and parameters that its endpoint defines.
+    /// only parameters that its endpoint defines.
     /// </summary>
-    static string DefinedPairs(string sent) =>
-        string.Join("&", sent.TrimStart('?').Split('&').Where(pair => pair != "beta=true"));
+    static string DefinedPairs(string sent) => sent.TrimStart('?');
 
     // The `filter` of these lists matches names, like a search.
     [Theory]

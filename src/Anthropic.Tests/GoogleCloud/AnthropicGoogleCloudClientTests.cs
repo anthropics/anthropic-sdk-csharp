@@ -701,7 +701,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
 
         var req = Assert.Single(captured);
         Assert.Equal(
-            OrganizationBaseUrl + "/v1/organizations/workspaces?beta=true",
+            OrganizationBaseUrl + "/v1/organizations/workspaces",
             req.RequestUri!.AbsoluteUri
         );
         Assert.Equal("Bearer tok", req.Headers.GetValues("Authorization").Single());
@@ -745,7 +745,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
 
         var req = Assert.Single(captured);
         Assert.Equal(
-            OrganizationBaseUrl + "/v1/organizations/workspaces?beta=true",
+            OrganizationBaseUrl + "/v1/organizations/workspaces",
             req.RequestUri!.AbsoluteUri
         );
         Assert.Equal("Bearer tok", req.Headers.GetValues("Authorization").Single());
@@ -771,7 +771,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         Assert.Equal(
             "https://claude.googleapis.com/v1/projects/fallback-proj"
                 + "/locations/env-loc/claudeOrganization/invoke"
-                + "/v1/organizations/workspaces?beta=true",
+                + "/v1/organizations/workspaces",
             req.RequestUri!.AbsoluteUri
         );
     }
@@ -823,10 +823,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         await SendWorkspaceRequest(client);
 
         Assert.Equal(
-            [
-                "http://localhost/v1/organizations/workspaces?beta=true",
-                "http://localhost/v1/messages",
-            ],
+            ["http://localhost/v1/organizations/workspaces", "http://localhost/v1/messages"],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
     }
@@ -842,7 +839,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         await SendWorkspaceRequest(client);
 
         Assert.Equal(
-            ["http://env-url/v1/organizations/workspaces?beta=true", "http://env-url/v1/messages"],
+            ["http://env-url/v1/organizations/workspaces", "http://env-url/v1/messages"],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
     }
@@ -861,8 +858,8 @@ public class AnthropicGoogleCloudClientTests : IDisposable
 
         Assert.Equal(
             [
-                "http://localhost/v1/organizations/workspaces?beta=true",
-                "http://localhost/v1/organizations/workspaces?beta=true",
+                "http://localhost/v1/organizations/workspaces",
+                "http://localhost/v1/organizations/workspaces",
             ],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
@@ -883,10 +880,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         await SendWorkspaceRequest(client);
 
         Assert.Equal(
-            [
-                "http://localhost/v1/organizations/workspaces?beta=true",
-                "http://localhost/v1/messages",
-            ],
+            ["http://localhost/v1/organizations/workspaces", "http://localhost/v1/messages"],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
     }
@@ -907,7 +901,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
 
         Assert.Equal(
             [
-                OrganizationBaseUrl + "/v1/organizations/workspaces?beta=true",
+                OrganizationBaseUrl + "/v1/organizations/workspaces",
                 WorkspaceBaseUrl + "/v1/messages",
             ],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
@@ -929,7 +923,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
 
         var req = Assert.Single(captured);
         Assert.Equal(
-            OrganizationBaseUrl + "/v1/organizations/workspaces?beta=true",
+            OrganizationBaseUrl + "/v1/organizations/workspaces",
             req.RequestUri!.AbsoluteUri
         );
         Assert.Equal("Bearer tok", req.Headers.GetValues("Authorization").Single());
@@ -957,10 +951,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         await SendWorkspaceRequest(client);
 
         Assert.Equal(
-            [
-                "http://localhost/v1/organizations/workspaces?beta=true",
-                "http://localhost/v1/messages",
-            ],
+            ["http://localhost/v1/organizations/workspaces", "http://localhost/v1/messages"],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
     }
@@ -982,10 +973,7 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         await SendWorkspaceRequest(client);
 
         Assert.Equal(
-            [
-                "http://localhost/v1/organizations/workspaces?beta=true",
-                "http://localhost/v1/messages",
-            ],
+            ["http://localhost/v1/organizations/workspaces", "http://localhost/v1/messages"],
             captured.Select(req => req.RequestUri!.AbsoluteUri)
         );
     }
