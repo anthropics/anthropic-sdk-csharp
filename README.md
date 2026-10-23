@@ -33,7 +33,7 @@ MessageCreateParams parameters = new()
     [
         new UserMessageParam("Hello, Claude")
     ],
-    Model = "claude-opus-5-5",
+    Model = Model.ClaudeOpus5_5,
 };
 
 var message = await client.Messages.Create(parameters);
