@@ -1,5 +1,5 @@
 {
-  "src/Anthropic": "13.1.1",
+  "src/Anthropic": "13.2.0",
   "src/Anthropic.Foundry": "1.0.0",
   "src/Anthropic.Bedrock": "1.0.0",
   "src/Anthropic.Vertex": "1.0.0",
