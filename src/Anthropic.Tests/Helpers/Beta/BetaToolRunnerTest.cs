@@ -252,7 +252,7 @@ public class BetaToolRunnerTest
                 }
             );
 
-        var runner = mock.Object.ToolRunner(BaseParams, []);
+        var runner = mock.Object.ToolRunner(BaseParams, [], thread: false);
         await runner.RunUntilDoneAsync(ct);
 
         Assert.NotNull(secondCallParams);
@@ -727,7 +727,8 @@ public class BetaToolRunnerTest
         var calls = new List<string>();
         var runner = turns.Service.ToolRunner(
             BaseParams,
-            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls)]
+            [MakeRecordingTool("get_weather", WeatherToolDefinition, calls)],
+            thread: false
         );
 
         await foreach (var _ in runner.WithCancellation(ct))
@@ -751,7 +752,7 @@ public class BetaToolRunnerTest
     {
         var ct = TestContext.Current.CancellationToken;
         var turns = new ScriptedTurns(MakeFinalTurn());
-        var runner = turns.Service.ToolRunner(BaseParams, []);
+        var runner = turns.Service.ToolRunner(BaseParams, [], thread: false);
 
         runner.AddTools(MakeRecordingTool("get_time", TimeToolDefinition, []));
         await runner.RunUntilDoneAsync(ct);
@@ -848,7 +849,7 @@ public class BetaToolRunnerTest
         );
         var calls = new List<string>();
         var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
-        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool], thread: false);
 
         await foreach (var _ in runner.WithCancellation(ct))
         {
@@ -1033,7 +1034,7 @@ public class BetaToolRunnerTest
             MakeMessage([MakeCompactionBlock("Summary so far.")], BetaStopReason.Compaction),
             MakeFinalTurn()
         );
-        var runner = turns.Service.ToolRunner(BaseParams, []);
+        var runner = turns.Service.ToolRunner(BaseParams, [], thread: false);
 
         await foreach (var _ in runner.WithCancellation(ct))
         {
@@ -1231,7 +1232,7 @@ public class BetaToolRunnerTest
         );
         var calls = new List<string>();
         var weatherTool = MakeRecordingTool("get_weather", WeatherToolDefinition, calls);
-        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool]);
+        var runner = turns.Service.ToolRunner(BaseParams, [weatherTool], thread: false);
 
         await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
         {
@@ -1726,7 +1727,7 @@ public class BetaToolRunnerTest
         Assert.NotNull(capturedParams);
         Assert.True(capturedParams!.RawHeaderData.ContainsKey("x-stainless-helper"));
         Assert.Equal(
-            "BetaToolRunner",
+            "BetaToolRunner, message-thread",
             capturedParams.RawHeaderData["x-stainless-helper"].GetString()
         );
     }
@@ -2642,7 +2643,11 @@ public class BetaToolRunnerTest
                 }
             );
 
-        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var runner = mock.Object.ToolRunner(
+            BaseParams,
+            [MakeWeatherToolSync(_ => "Sunny")],
+            thread: false
+        );
         var result = await runner.RunUntilDoneAsync(ct);
 
         Assert.Equal(BetaStopReason.EndTurn, result.StopReason!.Value());
@@ -2733,7 +2738,11 @@ public class BetaToolRunnerTest
                 }
             );
 
-        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var runner = mock.Object.ToolRunner(
+            BaseParams,
+            [MakeWeatherToolSync(_ => "Sunny")],
+            thread: false
+        );
         var iterationCount = 0;
 
         await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))
@@ -2790,7 +2799,11 @@ public class BetaToolRunnerTest
                 }
             );
 
-        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var runner = mock.Object.ToolRunner(
+            BaseParams,
+            [MakeWeatherToolSync(_ => "Sunny")],
+            thread: false
+        );
         var result = await runner.RunUntilDoneAsync(ct);
 
         Assert.Equal(BetaStopReason.EndTurn, result.StopReason!.Value());
@@ -2864,7 +2877,11 @@ public class BetaToolRunnerTest
                 }
             );
 
-        var runner = mock.Object.ToolRunner(BaseParams, [MakeWeatherToolSync(_ => "Sunny")]);
+        var runner = mock.Object.ToolRunner(
+            BaseParams,
+            [MakeWeatherToolSync(_ => "Sunny")],
+            thread: false
+        );
         var iterationCount = 0;
 
         await foreach (var stream in runner.Streaming(ct).WithCancellation(ct))

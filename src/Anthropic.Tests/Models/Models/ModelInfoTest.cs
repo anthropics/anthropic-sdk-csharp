@@ -60,7 +60,7 @@ public class ModelInfoTest : TestBase
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DisplayName = "Claude Opus 5.5",
             Lifecycle = ModelInfoLifecycle.Active,
-            Line = ModelLine.Haiku,
+            Line = ModelLine.Opus,
             MaxInputTokens = 0,
             MaxTokens = 0,
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -113,7 +113,7 @@ public class ModelInfoTest : TestBase
         DateTimeOffset expectedDeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDisplayName = "Claude Opus 5.5";
         ApiEnum<string, ModelInfoLifecycle> expectedLifecycle = ModelInfoLifecycle.Active;
-        ApiEnum<string, ModelLine> expectedLine = ModelLine.Haiku;
+        ApiEnum<string, ModelLine> expectedLine = ModelLine.Opus;
         long expectedMaxInputTokens = 0;
         long expectedMaxTokens = 0;
         DateTimeOffset expectedRetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -184,7 +184,7 @@ public class ModelInfoTest : TestBase
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DisplayName = "Claude Opus 5.5",
             Lifecycle = ModelInfoLifecycle.Active,
-            Line = ModelLine.Haiku,
+            Line = ModelLine.Opus,
             MaxInputTokens = 0,
             MaxTokens = 0,
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -248,7 +248,7 @@ public class ModelInfoTest : TestBase
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DisplayName = "Claude Opus 5.5",
             Lifecycle = ModelInfoLifecycle.Active,
-            Line = ModelLine.Haiku,
+            Line = ModelLine.Opus,
             MaxInputTokens = 0,
             MaxTokens = 0,
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -308,7 +308,7 @@ public class ModelInfoTest : TestBase
         DateTimeOffset expectedDeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDisplayName = "Claude Opus 5.5";
         ApiEnum<string, ModelInfoLifecycle> expectedLifecycle = ModelInfoLifecycle.Active;
-        ApiEnum<string, ModelLine> expectedLine = ModelLine.Haiku;
+        ApiEnum<string, ModelLine> expectedLine = ModelLine.Opus;
         long expectedMaxInputTokens = 0;
         long expectedMaxTokens = 0;
         DateTimeOffset expectedRetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -379,7 +379,7 @@ public class ModelInfoTest : TestBase
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DisplayName = "Claude Opus 5.5",
             Lifecycle = ModelInfoLifecycle.Active,
-            Line = ModelLine.Haiku,
+            Line = ModelLine.Opus,
             MaxInputTokens = 0,
             MaxTokens = 0,
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -440,7 +440,7 @@ public class ModelInfoTest : TestBase
             DeprecatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             DisplayName = "Claude Opus 5.5",
             Lifecycle = ModelInfoLifecycle.Active,
-            Line = ModelLine.Haiku,
+            Line = ModelLine.Opus,
             MaxInputTokens = 0,
             MaxTokens = 0,
             RetiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),

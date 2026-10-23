@@ -23,7 +23,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         };
@@ -39,7 +39,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                 },
             ]
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         WebSearchToolResultBlockParamCaller expectedCaller = new DirectCaller();
@@ -67,7 +67,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         };
@@ -97,7 +97,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         };
@@ -120,7 +120,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                 },
             ]
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("web_search_tool_result");
         CacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         WebSearchToolResultBlockParamCaller expectedCaller = new DirectCaller();
@@ -148,7 +148,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         };
@@ -172,7 +172,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -196,7 +196,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -219,7 +219,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -246,7 +246,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         } with
@@ -275,7 +275,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
 
             // Null should be interpreted as omitted for these properties
@@ -301,7 +301,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new DirectCaller(),
         };
 
@@ -325,7 +325,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new DirectCaller(),
         };
 
@@ -348,7 +348,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new DirectCaller(),
 
             CacheControl = null,
@@ -374,7 +374,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             Caller = new DirectCaller(),
 
             CacheControl = null,
@@ -399,7 +399,7 @@ public class WebSearchToolResultBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new DirectCaller(),
         };
@@ -422,16 +422,14 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void ServerToolValidationWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void ServerToolCaller20260120ValidationWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -451,7 +449,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void ServerToolSerializationRoundtripWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamCaller>(
             element,
@@ -464,9 +462,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void ServerToolCaller20260120SerializationRoundtripWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<WebSearchToolResultBlockParamCaller>(
             element,
@@ -486,7 +482,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void ServerToolTypeWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller("srvtoolu_c");
         Assert.Equal(
             WebSearchToolResultBlockParamCallerType.CodeExecution20250825,
             value.Type.Value()
@@ -496,9 +492,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
     [Fact]
     public void ServerToolCaller20260120TypeWorks()
     {
-        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        WebSearchToolResultBlockParamCaller value = new ServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(
             WebSearchToolResultBlockParamCallerType.CodeExecution20260120,
             value.Type.Value()
@@ -513,7 +507,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -522,7 +516,7 @@ public class WebSearchToolResultBlockParamCallerTest : TestBase
 
         ApiEnum<string, WebSearchToolResultBlockParamCallerType> expectedType =
             WebSearchToolResultBlockParamCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

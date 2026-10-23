@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Helpers;
 using Xunit;
@@ -45,5 +47,28 @@ public class StainlessHelperHeaderTest
             StainlessHelperHeader.FallbackRefusalMiddleware
         );
         Assert.Equal("a, b, c, fallback-refusal-middleware", merged);
+    }
+
+    [Fact]
+    public void Tagged_HoldsTheHeaderOnceAndKeepsTheOthers()
+    {
+        var tagged = StainlessHelperHeader.Tagged(
+            new Dictionary<string, JsonElement>
+            {
+                ["X-Stainless-Helper"] = JsonSerializer.SerializeToElement("a"),
+                [StainlessHelperHeader.Name] = JsonSerializer.Deserialize<JsonElement>(
+                    """["b", "message-thread"]"""
+                ),
+                ["x-other"] = JsonSerializer.SerializeToElement("kept"),
+            },
+            StainlessHelperHeader.MessageThread
+        );
+
+        Assert.Equal(
+            ["x-other: kept", "x-stainless-helper: a, b, message-thread"],
+            tagged
+                .Select(header => $"{header.Key}: {header.Value.GetString()}")
+                .OrderBy(line => line)
+        );
     }
 }

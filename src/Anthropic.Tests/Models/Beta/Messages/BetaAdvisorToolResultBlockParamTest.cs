@@ -15,7 +15,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -23,7 +23,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
@@ -41,7 +41,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -62,7 +62,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -77,7 +77,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_tool_result");
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
 
@@ -95,7 +95,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -110,7 +110,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         Assert.Null(model.CacheControl);
@@ -125,7 +125,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -139,7 +139,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -156,7 +156,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -172,7 +172,7 @@ public class BetaAdvisorToolResultBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 

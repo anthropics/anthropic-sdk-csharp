@@ -13,7 +13,7 @@ public class ServerToolUseBlockTest : TestBase
     {
         var model = new ServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -22,7 +22,7 @@ public class ServerToolUseBlockTest : TestBase
             Name = Name.WebSearch,
         };
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Caller expectedCaller = new DirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
@@ -49,7 +49,7 @@ public class ServerToolUseBlockTest : TestBase
     {
         var model = new ServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -72,7 +72,7 @@ public class ServerToolUseBlockTest : TestBase
     {
         var model = new ServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -88,7 +88,7 @@ public class ServerToolUseBlockTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Caller expectedCaller = new DirectCaller();
         Dictionary<string, JsonElement> expectedInput = new()
         {
@@ -115,7 +115,7 @@ public class ServerToolUseBlockTest : TestBase
     {
         var model = new ServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -132,7 +132,7 @@ public class ServerToolUseBlockTest : TestBase
     {
         var model = new ServerToolUseBlock
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Caller = new DirectCaller(),
             Input = new Dictionary<string, JsonElement>()
             {
@@ -159,14 +159,14 @@ public class CallerTest : TestBase
     [Fact]
     public void ServerToolValidationWorks()
     {
-        Caller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void ServerToolCaller20260120ValidationWorks()
     {
-        Caller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -183,7 +183,7 @@ public class CallerTest : TestBase
     [Fact]
     public void ServerToolSerializationRoundtripWorks()
     {
-        Caller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
@@ -193,7 +193,7 @@ public class CallerTest : TestBase
     [Fact]
     public void ServerToolCaller20260120SerializationRoundtripWorks()
     {
-        Caller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Caller>(element, ModelBase.SerializerOptions);
 
@@ -210,14 +210,14 @@ public class CallerTest : TestBase
     [Fact]
     public void ServerToolTypeWorks()
     {
-        Caller value = new ServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller("srvtoolu_c");
         Assert.Equal(CallerType.CodeExecution20250825, value.Type.Value());
     }
 
     [Fact]
     public void ServerToolCaller20260120TypeWorks()
     {
-        Caller value = new ServerToolCaller20260120("srvtoolu_SQfNkl1n_JR_");
+        Caller value = new ServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(CallerType.CodeExecution20260120, value.Type.Value());
     }
 
@@ -229,7 +229,7 @@ public class CallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -237,7 +237,7 @@ public class CallerTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         ApiEnum<string, CallerType> expectedType = CallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

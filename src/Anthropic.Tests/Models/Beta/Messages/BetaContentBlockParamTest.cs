@@ -148,7 +148,7 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaServerToolUseBlockParam()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -176,7 +176,7 @@ public class BetaContentBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -191,7 +191,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -206,7 +206,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -220,7 +220,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -234,7 +234,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -251,7 +251,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -267,7 +267,7 @@ public class BetaContentBlockParamTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         value.Validate();
@@ -578,7 +578,7 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaServerToolUseBlockParam()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -612,7 +612,7 @@ public class BetaContentBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -633,7 +633,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -654,7 +654,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -674,7 +674,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -694,7 +694,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -717,7 +717,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -739,7 +739,7 @@ public class BetaContentBlockParamTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1056,7 +1056,7 @@ public class BetaContentBlockParamTest : TestBase
     {
         BetaContentBlockParam value = new BetaServerToolUseBlockParam()
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -1084,7 +1084,7 @@ public class BetaContentBlockParamTest : TestBase
                     },
                 ]
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -1099,7 +1099,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaWebFetchToolResultErrorBlockParam(
                 BetaWebFetchToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Caller = new BetaDirectCaller(),
         };
@@ -1114,7 +1114,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaAdvisorToolResultErrorParam(
                 BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         Assert.Equal(BetaContentBlockParamType.AdvisorToolResult, value.Type.Value());
@@ -1128,7 +1128,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaCodeExecutionToolResultErrorParam(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         Assert.Equal(BetaContentBlockParamType.CodeExecutionToolResult, value.Type.Value());
@@ -1142,7 +1142,7 @@ public class BetaContentBlockParamTest : TestBase
             Content = new BetaBashCodeExecutionToolResultErrorParam(
                 BetaBashCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         Assert.Equal(BetaContentBlockParamType.BashCodeExecutionToolResult, value.Type.Value());
@@ -1159,7 +1159,7 @@ public class BetaContentBlockParamTest : TestBase
                     BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         Assert.Equal(
@@ -1178,7 +1178,7 @@ public class BetaContentBlockParamTest : TestBase
                 ErrorCode = BetaToolSearchToolResultErrorParamErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
         Assert.Equal(BetaContentBlockParamType.ToolSearchToolResult, value.Type.Value());

@@ -38,6 +38,10 @@ public interface IAnalyticsService
 
     Analytics::IArtifactService Artifacts { get; }
 
+    Analytics::IUsageService Usage { get; }
+
+    Analytics::ICostService Cost { get; }
+
     Analytics::IUsageReportService UsageReport { get; }
 
     Analytics::IUserUsageReportService UserUsageReport { get; }
@@ -73,6 +77,10 @@ public interface IAnalyticsServiceWithRawResponse
     Analytics::ISkillServiceWithRawResponse Skills { get; }
 
     Analytics::IArtifactServiceWithRawResponse Artifacts { get; }
+
+    Analytics::IUsageServiceWithRawResponse Usage { get; }
+
+    Analytics::ICostServiceWithRawResponse Cost { get; }
 
     Analytics::IUsageReportServiceWithRawResponse UsageReport { get; }
 

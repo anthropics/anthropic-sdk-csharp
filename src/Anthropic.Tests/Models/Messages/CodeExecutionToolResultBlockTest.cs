@@ -14,13 +14,13 @@ public class CodeExecutionToolResultBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         CodeExecutionToolResultBlockContent expectedContent = new CodeExecutionToolResultError(
             CodeExecutionToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
@@ -36,7 +36,7 @@ public class CodeExecutionToolResultBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -56,7 +56,7 @@ public class CodeExecutionToolResultBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -69,7 +69,7 @@ public class CodeExecutionToolResultBlockTest : TestBase
         CodeExecutionToolResultBlockContent expectedContent = new CodeExecutionToolResultError(
             CodeExecutionToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -85,7 +85,7 @@ public class CodeExecutionToolResultBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -99,7 +99,7 @@ public class CodeExecutionToolResultBlockTest : TestBase
             Content = new CodeExecutionToolResultError(
                 CodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         CodeExecutionToolResultBlock copied = new(model);

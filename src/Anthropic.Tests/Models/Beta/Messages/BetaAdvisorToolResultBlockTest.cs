@@ -13,11 +13,11 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         var model = new BetaAdvisorToolResultBlock
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         Content expectedContent = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded);
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
@@ -31,7 +31,7 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         var model = new BetaAdvisorToolResultBlock
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -49,7 +49,7 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         var model = new BetaAdvisorToolResultBlock
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,7 +60,7 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         Assert.NotNull(deserialized);
 
         Content expectedContent = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded);
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("advisor_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -74,7 +74,7 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         var model = new BetaAdvisorToolResultBlock
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -86,7 +86,7 @@ public class BetaAdvisorToolResultBlockTest : TestBase
         var model = new BetaAdvisorToolResultBlock
         {
             Content = new BetaAdvisorToolResultError(ErrorCode.MaxUsesExceeded),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BetaAdvisorToolResultBlock copied = new(model);

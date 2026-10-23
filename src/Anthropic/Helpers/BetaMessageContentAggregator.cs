@@ -18,8 +18,6 @@ public sealed class BetaMessageContentAggregator
         IReadOnlyDictionary<FilterResult, IList<BetaRawMessageStreamEvent>> messages
     )
     {
-        var content = messages[FilterResult.Content].GroupBy(e => e.Index);
-
         var startMessage =
             messages[FilterResult.StartMessage]
                 .Select(e => e.Value)
@@ -33,6 +31,27 @@ public sealed class BetaMessageContentAggregator
                 .FirstOrDefault()
             ?? throw new AnthropicInvalidDataException("stop message not yet received");
 
+        return Build(
+            startMessage,
+            messages[FilterResult.Content],
+            messages.TryGetValue(FilterResult.Delta, out var deltaEvents)
+                ? deltaEvents.Select(e => e.Value).OfType<BetaRawMessageDeltaEvent>()
+                : []
+        );
+    }
+
+    /// <summary>
+    /// Builds the message that <paramref name="contentEvents"/> and <paramref name="deltas"/>
+    /// add up to. It does not need a <c>message_stop</c>, so it also builds the part of a reply
+    /// that arrived before a stream ended.
+    /// </summary>
+    internal static BetaMessage Build(
+        BetaRawMessageStartEvent startMessage,
+        IEnumerable<BetaRawMessageStreamEvent> contentEvents,
+        IEnumerable<BetaRawMessageDeltaEvent> deltas
+    )
+    {
+        var content = contentEvents.GroupBy(e => e.Index);
         var contentBlocks = new List<BetaContentBlock>();
         var model = startMessage.Message.Model;
         foreach (var item in content)
@@ -69,11 +88,8 @@ public sealed class BetaMessageContentAggregator
         // message_delta usage counters are cumulative whole-message totals, so overwrite
         // rather than add; the optional ones are omitted when they don't apply and must
         // then leave the message_start values in place.
-        if (messages.TryGetValue(FilterResult.Delta, out var deltaEvents))
         {
-            var deltas = deltaEvents.Select(e => e.Value).OfType<BetaRawMessageDeltaEvent>();
-
-            foreach (var delta in deltas ?? [])
+            foreach (var delta in deltas)
             {
                 stopReason = delta.Delta.StopReason;
                 stopSequence = delta.Delta.StopSequence;

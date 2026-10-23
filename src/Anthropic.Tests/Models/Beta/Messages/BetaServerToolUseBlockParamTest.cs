@@ -13,7 +13,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -23,7 +23,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
             Caller = new BetaDirectCaller(),
         };
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -53,7 +53,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -77,7 +77,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -94,7 +94,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedID = "srvtoolu_c";
         Dictionary<string, JsonElement> expectedInput = new()
         {
             { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -124,7 +124,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -142,7 +142,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -160,7 +160,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -177,7 +177,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -198,7 +198,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -221,7 +221,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -241,7 +241,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -259,7 +259,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -276,7 +276,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -296,7 +296,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -315,7 +315,7 @@ public class BetaServerToolUseBlockParamTest : TestBase
     {
         var model = new BetaServerToolUseBlockParam
         {
-            ID = "srvtoolu_SQfNkl1n_JR_",
+            ID = "srvtoolu_c",
             Input = new Dictionary<string, JsonElement>()
             {
                 { "foo", JsonSerializer.SerializeToElement("bar") },
@@ -411,16 +411,14 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         value.Validate();
     }
 
     [Fact]
     public void BetaServerToolCaller20260120ValidationWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         value.Validate();
     }
 
@@ -440,7 +438,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolSerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(
             element,
@@ -453,9 +451,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolCaller20260120SerializationRoundtripWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaServerToolUseBlockParamCaller>(
             element,
@@ -475,7 +471,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolTypeWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_SQfNkl1n_JR_");
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller("srvtoolu_c");
         Assert.Equal(
             BetaServerToolUseBlockParamCallerType.CodeExecution20250825,
             value.Type.Value()
@@ -485,9 +481,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
     [Fact]
     public void BetaServerToolCaller20260120TypeWorks()
     {
-        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120(
-            "srvtoolu_SQfNkl1n_JR_"
-        );
+        BetaServerToolUseBlockParamCaller value = new BetaServerToolCaller20260120("srvtoolu_c");
         Assert.Equal(
             BetaServerToolUseBlockParamCallerType.CodeExecution20260120,
             value.Type.Value()
@@ -502,7 +496,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
                 """
                 {
                   "type": "direct",
-                  "tool_id": "srvtoolu_SQfNkl1n_JR_"
+                  "tool_id": "srvtoolu_c"
                 }
                 """
             )
@@ -511,7 +505,7 @@ public class BetaServerToolUseBlockParamCallerTest : TestBase
 
         ApiEnum<string, BetaServerToolUseBlockParamCallerType> expectedType =
             BetaServerToolUseBlockParamCallerType.Direct;
-        string expectedToolID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolID = "srvtoolu_c";
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedToolID, value.ToolID);

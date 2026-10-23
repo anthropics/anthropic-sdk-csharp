@@ -14,14 +14,14 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BetaCodeExecutionToolResultBlockContent expectedContent =
             new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, model.Content);
@@ -37,7 +37,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -57,7 +57,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -71,7 +71,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("code_execution_tool_result");
 
         Assert.Equal(expectedContent, deserialized.Content);
@@ -87,7 +87,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -101,7 +101,7 @@ public class BetaCodeExecutionToolResultBlockTest : TestBase
             Content = new BetaCodeExecutionToolResultError(
                 BetaCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BetaCodeExecutionToolResultBlock copied = new(model);

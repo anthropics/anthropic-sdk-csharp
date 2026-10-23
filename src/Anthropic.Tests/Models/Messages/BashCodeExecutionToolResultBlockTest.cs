@@ -15,13 +15,13 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         Content expectedContent = new BashCodeExecutionToolResultError(
             BashCodeExecutionToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result"
         );
@@ -39,7 +39,7 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,7 +59,7 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -72,7 +72,7 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
         Content expectedContent = new BashCodeExecutionToolResultError(
             BashCodeExecutionToolResultErrorCode.InvalidToolInput
         );
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "bash_code_execution_tool_result"
         );
@@ -90,7 +90,7 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -104,7 +104,7 @@ public class BashCodeExecutionToolResultBlockTest : TestBase
             Content = new BashCodeExecutionToolResultError(
                 BashCodeExecutionToolResultErrorCode.InvalidToolInput
             ),
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         BashCodeExecutionToolResultBlock copied = new(model);

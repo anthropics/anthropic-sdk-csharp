@@ -17,7 +17,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -27,7 +27,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "text_editor_code_execution_tool_result"
         );
@@ -49,7 +49,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -72,7 +72,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -89,7 +89,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             };
-        string expectedToolUseID = "srvtoolu_SQfNkl1n_JR_";
+        string expectedToolUseID = "srvtoolu_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement(
             "text_editor_code_execution_tool_result"
         );
@@ -111,7 +111,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 
@@ -128,7 +128,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         Assert.Null(model.CacheControl);
@@ -145,7 +145,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
         };
 
         model.Validate();
@@ -161,7 +161,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -180,7 +180,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
 
             CacheControl = null,
         };
@@ -198,7 +198,7 @@ public class TextEditorCodeExecutionToolResultBlockParamTest : TestBase
                 ErrorCode = TextEditorCodeExecutionToolResultErrorCode.InvalidToolInput,
                 ErrorMessage = "error_message",
             },
-            ToolUseID = "srvtoolu_SQfNkl1n_JR_",
+            ToolUseID = "srvtoolu_c",
             CacheControl = new() { Ttl = Ttl.Ttl5m },
         };
 

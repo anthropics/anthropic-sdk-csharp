@@ -114,6 +114,7 @@ public class MessageCreateParamsTest : TestBase
                 },
                 Display = Display.Summarized,
             },
+            Thread = new BetaThreadCreateParams(),
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -250,6 +251,7 @@ public class MessageCreateParamsTest : TestBase
             },
             Display = Display.Summarized,
         };
+        BetaMessageThreadParam expectedThread = new BetaThreadCreateParams();
         BetaToolChoice expectedToolChoice = new BetaToolChoiceAuto()
         {
             DisableParallelToolUse = true,
@@ -325,6 +327,7 @@ public class MessageCreateParamsTest : TestBase
         }
         Assert.Equal(expectedSystem, parameters.System);
         Assert.Equal(expectedThinking, parameters.Thinking);
+        Assert.Equal(expectedThread, parameters.Thread);
         Assert.Equal(expectedToolChoice, parameters.ToolChoice);
         Assert.NotNull(parameters.Tools);
         Assert.Equal(expectedTools.Count, parameters.Tools.Count);
@@ -391,6 +394,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new BetaThreadCreateParams(),
         };
 
         Assert.Null(parameters.McpServers);
@@ -468,6 +472,7 @@ public class MessageCreateParamsTest : TestBase
                 },
             },
             Speed = Speed.Standard,
+            Thread = new BetaThreadCreateParams(),
 
             // Null should be interpreted as omitted for these properties
             McpServers = null,
@@ -612,6 +617,7 @@ public class MessageCreateParamsTest : TestBase
                 },
                 Display = Display.Summarized,
             },
+            Thread = new BetaThreadCreateParams(),
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
@@ -806,6 +812,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("output_format"));
         Assert.Null(parameters.Speed);
         Assert.False(parameters.RawBodyData.ContainsKey("speed"));
+        Assert.Null(parameters.Thread);
+        Assert.False(parameters.RawBodyData.ContainsKey("thread"));
     }
 
     [Fact]
@@ -914,6 +922,7 @@ public class MessageCreateParamsTest : TestBase
             InferenceGeo = null,
             OutputFormat = null,
             Speed = null,
+            Thread = null,
         };
 
         Assert.Null(parameters.CacheControl);
@@ -936,6 +945,8 @@ public class MessageCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("output_format"));
         Assert.Null(parameters.Speed);
         Assert.True(parameters.RawBodyData.ContainsKey("speed"));
+        Assert.Null(parameters.Thread);
+        Assert.True(parameters.RawBodyData.ContainsKey("thread"));
     }
 
     [Fact]
@@ -1087,6 +1098,7 @@ public class MessageCreateParamsTest : TestBase
                 },
                 Display = Display.Summarized,
             },
+            Thread = new BetaThreadCreateParams(),
             ToolChoice = new BetaToolChoiceAuto() { DisableParallelToolUse = true },
             Tools =
             [
