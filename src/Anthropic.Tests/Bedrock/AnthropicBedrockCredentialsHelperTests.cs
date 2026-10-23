@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using Amazon;
+using Amazon.Runtime;
 using Anthropic.Bedrock;
 
 namespace Anthropic.Tests.Bedrock;
@@ -16,6 +18,7 @@ public sealed class AnthropicBedrockCredentialsHelperTests : IDisposable
     private const string SessionToken = "FwoGZXIvYXdzEA_SESSION_TOKEN";
 
     private readonly Dictionary<string, string?> _original = [];
+    private readonly string? _originalSdkRegion = AWSConfigs.AWSRegion;
 
     public AnthropicBedrockCredentialsHelperTests()
     {
@@ -32,6 +35,8 @@ public sealed class AnthropicBedrockCredentialsHelperTests : IDisposable
         {
             Environment.SetEnvironmentVariable(variable.Key, variable.Value);
         }
+        AWSConfigs.AWSRegion = _originalSdkRegion;
+        FallbackRegionFactory.Reset();
     }
 
     private void SetEnvironmentVariable(string name, string? value)
@@ -90,5 +95,18 @@ public sealed class AnthropicBedrockCredentialsHelperTests : IDisposable
         using var request = await SignWithCredentialsFromEnv();
 
         Assert.False(request.Headers.Contains("x-amz-security-token"));
+    }
+
+    [Fact]
+    public async Task FromEnv_WithoutAwsRegion_UsesTheNameOfTheAwsSdkRegion()
+    {
+        SetEnvironmentVariable("AWS_REGION", null);
+        SetEnvironmentVariable("AWS_BEARER_TOKEN_BEDROCK", "token");
+        AWSConfigs.AWSRegion = "us-west-2";
+        FallbackRegionFactory.Reset();
+
+        var credentials = await AnthropicBedrockCredentialsHelper.FromEnv();
+
+        Assert.Equal("us-west-2", credentials?.Region);
     }
 }
