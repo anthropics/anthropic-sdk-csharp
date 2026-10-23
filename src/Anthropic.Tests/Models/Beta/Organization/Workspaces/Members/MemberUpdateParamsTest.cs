@@ -41,7 +41,7 @@ public class MemberUpdateParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/members/user_id?beta=true"
+                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/members/user_id"
                 ),
                 url
             )

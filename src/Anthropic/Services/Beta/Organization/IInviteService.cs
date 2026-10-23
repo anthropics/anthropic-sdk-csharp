@@ -92,7 +92,7 @@ public interface IInviteServiceWithRawResponse
     IInviteServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/invites?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/invites</c>, but is otherwise the
     /// same as <see cref="IInviteService.Create(InviteCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationInvite>> Create(
@@ -101,7 +101,7 @@ public interface IInviteServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/invites/{invite_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/invites/{invite_id}</c>, but is otherwise the
     /// same as <see cref="IInviteService.Retrieve(InviteRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationInvite>> Retrieve(
@@ -117,7 +117,7 @@ public interface IInviteServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/invites?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/invites</c>, but is otherwise the
     /// same as <see cref="IInviteService.List(InviteListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<InviteListPage>> List(
@@ -126,7 +126,7 @@ public interface IInviteServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/invites/{invite_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/invites/{invite_id}</c>, but is otherwise the
     /// same as <see cref="IInviteService.Delete(InviteDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<InviteDeleteResponse>> Delete(

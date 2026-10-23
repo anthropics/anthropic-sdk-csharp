@@ -227,7 +227,7 @@ public interface IPluginServiceWithRawResponse
     IShareServiceWithRawResponse Shares { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins</c>, but is otherwise the
     /// same as <see cref="IPluginService.Create(PluginCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPlugin>> Create(
@@ -236,7 +236,7 @@ public interface IPluginServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}</c>, but is otherwise the
     /// same as <see cref="IPluginService.Retrieve(PluginRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPlugin>> Retrieve(
@@ -252,7 +252,7 @@ public interface IPluginServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}</c>, but is otherwise the
     /// same as <see cref="IPluginService.Update(PluginUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPlugin>> Update(
@@ -268,7 +268,7 @@ public interface IPluginServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins</c>, but is otherwise the
     /// same as <see cref="IPluginService.List(PluginListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<PluginListPage>> List(
@@ -277,7 +277,7 @@ public interface IPluginServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/plugins/{plugin_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/plugins/{plugin_id}</c>, but is otherwise the
     /// same as <see cref="IPluginService.Delete(PluginDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedPlugin>> Delete(

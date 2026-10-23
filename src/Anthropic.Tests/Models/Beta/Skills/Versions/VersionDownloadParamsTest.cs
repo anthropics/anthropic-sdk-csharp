@@ -100,9 +100,7 @@ public class VersionDownloadParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/skills/skill_id/versions/version/content?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/skills/skill_id/versions/version/content"),
                 url
             )
         );

@@ -163,7 +163,7 @@ public interface ITunnelServiceWithRawResponse
     ICertificateServiceWithRawResponse Certificates { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels</c>, but is otherwise the
     /// same as <see cref="ITunnelService.Create(TunnelCreateParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnel>> Create(
@@ -172,7 +172,7 @@ public interface ITunnelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/tunnels/{tunnel_id}</c>, but is otherwise the
     /// same as <see cref="ITunnelService.Retrieve(TunnelRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnel>> Retrieve(
@@ -188,7 +188,7 @@ public interface ITunnelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/tunnels?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/tunnels</c>, but is otherwise the
     /// same as <see cref="ITunnelService.List(TunnelListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<TunnelListPage>> List(
@@ -197,7 +197,7 @@ public interface ITunnelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/archive</c>, but is otherwise the
     /// same as <see cref="ITunnelService.Archive(TunnelArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnel>> Archive(
@@ -213,7 +213,7 @@ public interface ITunnelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/reveal_token?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/reveal_token</c>, but is otherwise the
     /// same as <see cref="ITunnelService.RevealToken(TunnelRevealTokenParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnelToken>> RevealToken(
@@ -229,7 +229,7 @@ public interface ITunnelServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/rotate_token?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/tunnels/{tunnel_id}/rotate_token</c>, but is otherwise the
     /// same as <see cref="ITunnelService.RotateToken(TunnelRotateTokenParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTunnelToken>> RotateToken(

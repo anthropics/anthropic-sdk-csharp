@@ -54,7 +54,7 @@ public interface IArtifactServiceWithRawResponse
     IArtifactServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/artifacts?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/artifacts</c>, but is otherwise the
     /// same as <see cref="IArtifactService.List(ArtifactListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ArtifactListPage>> List(

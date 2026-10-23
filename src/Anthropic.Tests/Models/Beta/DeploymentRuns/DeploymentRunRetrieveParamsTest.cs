@@ -95,7 +95,7 @@ public class DeploymentRunRetrieveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/deployment_runs/deployment_run_id?beta=true"),
+                new Uri("https://api.anthropic.com/v1/deployment_runs/deployment_run_id"),
                 url
             )
         );

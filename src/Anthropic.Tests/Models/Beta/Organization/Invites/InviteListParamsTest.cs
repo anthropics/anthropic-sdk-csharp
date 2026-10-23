@@ -148,7 +148,7 @@ public class InviteListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/invites?beta=true&after_id=after_id&before_id=before_id&email=dev%40stainless.com&limit=1&roles%5b%5d=string&statuses%5b%5d=accepted"
+                    "https://api.anthropic.com/v1/organizations/invites?after_id=after_id&before_id=before_id&email=dev%40stainless.com&limit=1&roles%5b%5d=string&statuses%5b%5d=accepted"
                 ),
                 url
             )

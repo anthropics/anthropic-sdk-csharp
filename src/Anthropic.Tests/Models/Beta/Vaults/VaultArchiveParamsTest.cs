@@ -95,9 +95,7 @@ public class VaultArchiveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/archive?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/archive"),
                 url
             )
         );

@@ -103,7 +103,7 @@ public class PluginMarketplaceUpdateParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/plugin_marketplaces/marketplace_id?beta=true"
+                    "https://api.anthropic.com/v1/organizations/plugin_marketplaces/marketplace_id"
                 ),
                 url
             )

@@ -7,8 +7,9 @@ public class MemoryVersionServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaManagedAgentsMemoryVersion =
-            await this.client.Beta.MemoryStores.MemoryVersions.Retrieve(
+        var betaManagedAgentsMemoryVersion = await this
+            .client.WithQuery("beta=true")
+            .Beta.MemoryStores.MemoryVersions.Retrieve(
                 "memory_version_id",
                 new() { MemoryStoreID = "memory_store_id" },
                 TestContext.Current.CancellationToken
@@ -19,19 +20,22 @@ public class MemoryVersionServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.MemoryStores.MemoryVersions.List(
-            "memory_store_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.MemoryStores.MemoryVersions.List(
+                "memory_store_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Redact_Works()
     {
-        var betaManagedAgentsMemoryVersion =
-            await this.client.Beta.MemoryStores.MemoryVersions.Redact(
+        var betaManagedAgentsMemoryVersion = await this
+            .client.WithQuery("beta=true")
+            .Beta.MemoryStores.MemoryVersions.Redact(
                 "memory_version_id",
                 new() { MemoryStoreID = "memory_store_id" },
                 TestContext.Current.CancellationToken

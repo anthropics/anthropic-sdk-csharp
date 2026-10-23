@@ -24,7 +24,7 @@ public class RbacGroupCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/rbac_groups?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/rbac_groups"),
                 url
             )
         );

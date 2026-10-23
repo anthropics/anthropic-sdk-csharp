@@ -146,7 +146,7 @@ public class UserProfileListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/user_profiles?beta=true&limit=0&order=asc&order_by=created_at&page=page"
+                    "https://api.anthropic.com/v1/user_profiles?limit=0&order=asc&order_by=created_at&page=page"
                 ),
                 url
             )

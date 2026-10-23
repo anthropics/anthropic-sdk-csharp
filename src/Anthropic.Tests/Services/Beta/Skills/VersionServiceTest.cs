@@ -7,50 +7,56 @@ public class VersionServiceTest : TestBase
 {
     public async Task Create_Works()
     {
-        var betaSkillVersion = await this.client.Beta.Skills.Versions.Create(
-            "skill_id",
-            new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
-            TestContext.Current.CancellationToken
-        );
+        var betaSkillVersion = await this
+            .client.WithQuery("beta=true")
+            .Beta.Skills.Versions.Create(
+                "skill_id",
+                new() { Files = [Encoding.UTF8.GetBytes("Example data")] },
+                TestContext.Current.CancellationToken
+            );
         betaSkillVersion.Validate();
     }
 
     public async Task Retrieve_Works()
     {
-        var betaSkillVersion = await this.client.Beta.Skills.Versions.Retrieve(
-            "version",
-            new() { SkillID = "skill_id" },
-            TestContext.Current.CancellationToken
-        );
+        var betaSkillVersion = await this
+            .client.WithQuery("beta=true")
+            .Beta.Skills.Versions.Retrieve(
+                "version",
+                new() { SkillID = "skill_id" },
+                TestContext.Current.CancellationToken
+            );
         betaSkillVersion.Validate();
     }
 
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Skills.Versions.List(
-            "skill_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Skills.Versions.List("skill_id", new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
     public async Task Delete_Works()
     {
-        var betaDeletedSkillVersion = await this.client.Beta.Skills.Versions.Delete(
-            "version",
-            new() { SkillID = "skill_id" },
-            TestContext.Current.CancellationToken
-        );
+        var betaDeletedSkillVersion = await this
+            .client.WithQuery("beta=true")
+            .Beta.Skills.Versions.Delete(
+                "version",
+                new() { SkillID = "skill_id" },
+                TestContext.Current.CancellationToken
+            );
         betaDeletedSkillVersion.Validate();
     }
 
     public async Task Download_Works()
     {
-        await this.client.Beta.Skills.Versions.Download(
-            "version",
-            new() { SkillID = "skill_id" },
-            TestContext.Current.CancellationToken
-        );
+        await this
+            .client.WithQuery("beta=true")
+            .Beta.Skills.Versions.Download(
+                "version",
+                new() { SkillID = "skill_id" },
+                TestContext.Current.CancellationToken
+            );
     }
 }

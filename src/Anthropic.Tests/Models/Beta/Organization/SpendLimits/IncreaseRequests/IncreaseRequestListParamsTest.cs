@@ -141,7 +141,7 @@ public class IncreaseRequestListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limit_increase_requests?beta=true&actor_ids%5b%5d=string&limit=1&page=page&status%5b%5d=approved"
+                    "https://api.anthropic.com/v1/organizations/spend_limit_increase_requests?actor_ids%5b%5d=string&limit=1&page=page&status%5b%5d=approved"
                 ),
                 url
             )

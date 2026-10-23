@@ -99,7 +99,7 @@ public class ArtifactListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/artifacts?beta=true&date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=product&limit=1&page=page"
+                    "https://api.anthropic.com/v1/organizations/analytics/artifacts?date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=product&limit=1&page=page"
                 ),
                 url
             )

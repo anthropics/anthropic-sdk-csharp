@@ -95,9 +95,7 @@ public class SessionRetrieveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7"),
                 url
             )
         );

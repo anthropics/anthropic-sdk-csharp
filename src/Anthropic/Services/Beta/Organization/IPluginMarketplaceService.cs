@@ -195,7 +195,7 @@ public interface IPluginMarketplaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugin_marketplaces/{marketplace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugin_marketplaces/{marketplace_id}</c>, but is otherwise the
     /// same as <see cref="IPluginMarketplaceService.Retrieve(PluginMarketplaceRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginMarketplace>> Retrieve(
@@ -211,7 +211,7 @@ public interface IPluginMarketplaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/{marketplace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/{marketplace_id}</c>, but is otherwise the
     /// same as <see cref="IPluginMarketplaceService.Update(PluginMarketplaceUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginMarketplace>> Update(
@@ -227,7 +227,7 @@ public interface IPluginMarketplaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugin_marketplaces?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugin_marketplaces</c>, but is otherwise the
     /// same as <see cref="IPluginMarketplaceService.List(PluginMarketplaceListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<PluginMarketplaceListPage>> List(
@@ -236,7 +236,7 @@ public interface IPluginMarketplaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/validate_archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/validate_archive</c>, but is otherwise the
     /// same as <see cref="IPluginMarketplaceService.ValidateArchive(PluginMarketplaceValidateArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginMarketplaceValidationReport>> ValidateArchive(
@@ -245,7 +245,7 @@ public interface IPluginMarketplaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/validate_repository?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugin_marketplaces/validate_repository</c>, but is otherwise the
     /// same as <see cref="IPluginMarketplaceService.ValidateRepository(PluginMarketplaceValidateRepositoryParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginMarketplaceValidationReport>> ValidateRepository(

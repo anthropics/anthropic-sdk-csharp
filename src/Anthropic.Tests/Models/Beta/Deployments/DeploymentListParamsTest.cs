@@ -184,7 +184,7 @@ public class DeploymentListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/deployments?beta=true&agent_id=agent_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&page=page&status=active"
+                    "https://api.anthropic.com/v1/deployments?agent_id=agent_id&created_at%5bgte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blte%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&page=page&status=active"
                 ),
                 url
             )

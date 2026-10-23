@@ -163,7 +163,7 @@ public class MemoryStoreUpdateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/memory_stores/memory_store_id?beta=true"),
+                new Uri("https://api.anthropic.com/v1/memory_stores/memory_store_id"),
                 url
             )
         );

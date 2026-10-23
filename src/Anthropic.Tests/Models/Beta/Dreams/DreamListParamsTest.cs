@@ -175,7 +175,7 @@ public class DreamListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/dreams?beta=true&created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&page=page&statuses%5b%5d=pending"
+                    "https://api.anthropic.com/v1/dreams?created_at%5bgt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&created_at%5blt%5d=2019-12-27T18%3a11%3a19.117%2b00%3a00&include_archived=true&limit=0&page=page&statuses%5b%5d=pending"
                 ),
                 url
             )

@@ -146,7 +146,7 @@ public interface ICredentialServiceWithRawResponse
     ICredentialServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials</c>, but is otherwise the
     /// same as <see cref="ICredentialService.Create(CredentialCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsCredential>> Create(
@@ -162,7 +162,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/vaults/{vault_id}/credentials/{credential_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/vaults/{vault_id}/credentials/{credential_id}</c>, but is otherwise the
     /// same as <see cref="ICredentialService.Retrieve(CredentialRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsCredential>> Retrieve(
@@ -178,7 +178,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}</c>, but is otherwise the
     /// same as <see cref="ICredentialService.Update(CredentialUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsCredential>> Update(
@@ -194,7 +194,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/vaults/{vault_id}/credentials?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/vaults/{vault_id}/credentials</c>, but is otherwise the
     /// same as <see cref="ICredentialService.List(CredentialListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<CredentialListPage>> List(
@@ -210,7 +210,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/vaults/{vault_id}/credentials/{credential_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/vaults/{vault_id}/credentials/{credential_id}</c>, but is otherwise the
     /// same as <see cref="ICredentialService.Delete(CredentialDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsDeletedCredential>> Delete(
@@ -226,7 +226,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}/archive</c>, but is otherwise the
     /// same as <see cref="ICredentialService.Archive(CredentialArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsCredential>> Archive(
@@ -242,7 +242,7 @@ public interface ICredentialServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/vaults/{vault_id}/credentials/{credential_id}/mcp_oauth_validate</c>, but is otherwise the
     /// same as <see cref="ICredentialService.McpOAuthValidate(CredentialMcpOAuthValidateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsCredentialValidation>> McpOAuthValidate(

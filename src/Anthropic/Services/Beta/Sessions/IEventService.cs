@@ -87,7 +87,7 @@ public interface IEventServiceWithRawResponse
     IEventServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/events?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/events</c>, but is otherwise the
     /// same as <see cref="IEventService.List(EventListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<EventListPage>> List(
@@ -103,7 +103,7 @@ public interface IEventServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/events?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/sessions/{session_id}/events</c>, but is otherwise the
     /// same as <see cref="IEventService.Send(EventSendParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsSendSessionEvents>> Send(
@@ -119,7 +119,7 @@ public interface IEventServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/events/stream?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/sessions/{session_id}/events/stream</c>, but is otherwise the
     /// same as <see cref="IEventService.StreamStreaming(EventStreamParams, CancellationToken)"/>.
     /// </summary>
     Task<StreamingHttpResponse<BetaManagedAgentsStreamSessionEvents>> StreamStreaming(

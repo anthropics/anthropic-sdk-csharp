@@ -173,7 +173,7 @@ public class FileListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/files?beta=true&ids%5b%5d=string&limit=1&page=page&scope_id=scope_id"
+                    "https://api.anthropic.com/v1/files?ids%5b%5d=string&limit=1&page=page&scope_id=scope_id"
                 ),
                 url
             )

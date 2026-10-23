@@ -146,7 +146,7 @@ public class ThreadListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads?beta=true&limit=0&page=page&statuses%5b%5d=running"
+                    "https://api.anthropic.com/v1/sessions/sesn_011CZkZAtmR3yMPDzynEDxu7/threads?limit=0&page=page&statuses%5b%5d=running"
                 ),
                 url
             )

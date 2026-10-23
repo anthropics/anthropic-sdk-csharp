@@ -117,7 +117,7 @@ public interface ISpendLimitServiceWithRawResponse
     IIncreaseRequestServiceWithRawResponse IncreaseRequests { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits/{spend_limit_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits/{spend_limit_id}</c>, but is otherwise the
     /// same as <see cref="ISpendLimitService.Retrieve(SpendLimitRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSpendLimit>> Retrieve(
@@ -133,7 +133,7 @@ public interface ISpendLimitServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/spend_limits</c>, but is otherwise the
     /// same as <see cref="ISpendLimitService.List(SpendLimitListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SpendLimitListPage>> List(
@@ -142,7 +142,7 @@ public interface ISpendLimitServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/spend_limits/{spend_limit_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/spend_limits/{spend_limit_id}</c>, but is otherwise the
     /// same as <see cref="ISpendLimitService.Delete(SpendLimitDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<SpendLimitDeleteResponse>> Delete(
@@ -158,7 +158,7 @@ public interface ISpendLimitServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limits?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/spend_limits</c>, but is otherwise the
     /// same as <see cref="ISpendLimitService.Set(SpendLimitSetParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaSpendLimit>> Set(

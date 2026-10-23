@@ -7,21 +7,22 @@ public class DeploymentRunServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaManagedAgentsDeploymentRun = await this.client.Beta.DeploymentRuns.Retrieve(
-            "deployment_run_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsDeploymentRun = await this
+            .client.WithQuery("beta=true")
+            .Beta.DeploymentRuns.Retrieve(
+                "deployment_run_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsDeploymentRun.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.DeploymentRuns.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.DeploymentRuns.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 }

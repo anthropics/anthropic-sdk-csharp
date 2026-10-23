@@ -8,70 +8,77 @@ public class RuleServiceTest : TestBase
     [Fact]
     public async Task Create_Works()
     {
-        var betaFederationRule = await this.client.Beta.Organization.Federation.Rules.Create(
-            new()
-            {
-                IssuerID = "issuer_id",
-                Match = new()
+        var betaFederationRule = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Federation.Rules.Create(
+                new()
                 {
-                    Audience = "audience",
-                    Claims = new Dictionary<string, string>() { { "foo", "string" } },
-                    Condition = "condition",
-                    SubjectPrefix = "subject_prefix",
+                    IssuerID = "issuer_id",
+                    Match = new()
+                    {
+                        Audience = "audience",
+                        Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                        Condition = "condition",
+                        SubjectPrefix = "subject_prefix",
+                    },
+                    Name = "x",
+                    OAuthScope = "x",
+                    Target = new()
+                    {
+                        ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
+                        ServiceAccountName = "service_account_name",
+                    },
                 },
-                Name = "x",
-                OAuthScope = "x",
-                Target = new()
-                {
-                    ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
-                    ServiceAccountName = "service_account_name",
-                },
-            },
-            TestContext.Current.CancellationToken
-        );
+                TestContext.Current.CancellationToken
+            );
         betaFederationRule.Validate();
     }
 
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaFederationRule = await this.client.Beta.Organization.Federation.Rules.Retrieve(
-            "federation_rule_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaFederationRule = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Federation.Rules.Retrieve(
+                "federation_rule_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaFederationRule.Validate();
     }
 
     [Fact]
     public async Task Update_Works()
     {
-        var betaFederationRule = await this.client.Beta.Organization.Federation.Rules.Update(
-            "federation_rule_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaFederationRule = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Federation.Rules.Update(
+                "federation_rule_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaFederationRule.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Federation.Rules.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Federation.Rules.List(new(), TestContext.Current.CancellationToken);
         page.Validate();
     }
 
     [Fact]
     public async Task Archive_Works()
     {
-        var betaFederationRule = await this.client.Beta.Organization.Federation.Rules.Archive(
-            "federation_rule_id",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaFederationRule = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Federation.Rules.Archive(
+                "federation_rule_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         betaFederationRule.Validate();
     }
 }

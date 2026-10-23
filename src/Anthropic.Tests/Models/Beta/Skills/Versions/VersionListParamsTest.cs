@@ -150,9 +150,7 @@ public class VersionListParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/skills/skill_id/versions?beta=true&limit=1&page=page"
-                ),
+                new Uri("https://api.anthropic.com/v1/skills/skill_id/versions?limit=1&page=page"),
                 url
             )
         );

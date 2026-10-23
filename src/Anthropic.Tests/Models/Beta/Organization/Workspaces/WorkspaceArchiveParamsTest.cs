@@ -25,7 +25,7 @@ public class WorkspaceArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/archive?beta=true"
+                    "https://api.anthropic.com/v1/organizations/workspaces/workspace_id/archive"
                 ),
                 url
             )

@@ -76,7 +76,7 @@ public interface IComplianceSettingServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/compliance_settings?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/compliance_settings</c>, but is otherwise the
     /// same as <see cref="IComplianceSettingService.Retrieve(ComplianceSettingRetrieveParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaComplianceSettings>> Retrieve(
@@ -85,7 +85,7 @@ public interface IComplianceSettingServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/compliance_settings?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/compliance_settings</c>, but is otherwise the
     /// same as <see cref="IComplianceSettingService.Update(ComplianceSettingUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaComplianceSettings>> Update(

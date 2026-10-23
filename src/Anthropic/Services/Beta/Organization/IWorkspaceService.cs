@@ -115,7 +115,7 @@ public interface IWorkspaceServiceWithRawResponse
     Workspaces::IServiceAccountServiceWithRawResponse ServiceAccounts { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Create(WorkspaceCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaWorkspace>> Create(
@@ -124,7 +124,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaWorkspace>> Retrieve(
@@ -140,7 +140,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Update(WorkspaceUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaWorkspace>> Update(
@@ -156,7 +156,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.List(WorkspaceListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<WorkspaceListPage>> List(
@@ -165,7 +165,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/archive</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Archive(WorkspaceArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaWorkspace>> Archive(

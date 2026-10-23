@@ -138,7 +138,7 @@ public class CredentialListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials?beta=true&include_archived=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/vaults/vlt_011CZkZDLs7fYzm1hXNPeRjv/credentials?include_archived=true&limit=0&page=page"
                 ),
                 url
             )

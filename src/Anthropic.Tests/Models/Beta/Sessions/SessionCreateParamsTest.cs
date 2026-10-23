@@ -302,9 +302,7 @@ public class SessionCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.True(
-            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/sessions?beta=true"), url)
-        );
+        Assert.True(TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/sessions"), url));
     }
 
     [Fact]

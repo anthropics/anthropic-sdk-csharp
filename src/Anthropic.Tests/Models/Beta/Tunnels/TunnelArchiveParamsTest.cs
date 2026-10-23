@@ -95,7 +95,7 @@ public class TunnelArchiveParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/archive?beta=true"),
+                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/archive"),
                 url
             )
         );

@@ -7,22 +7,26 @@ public class EventServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Sessions.Threads.Events.List(
-            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Threads.Events.List(
+                "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+                new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task StreamStreaming_Works()
     {
-        var stream = this.client.Beta.Sessions.Threads.Events.StreamStreaming(
-            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
-            TestContext.Current.CancellationToken
-        );
+        var stream = this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Threads.Events.StreamStreaming(
+                "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+                new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
+                TestContext.Current.CancellationToken
+            );
 
         await foreach (var betaManagedAgentsStreamSessionThreadEvents in stream)
         {

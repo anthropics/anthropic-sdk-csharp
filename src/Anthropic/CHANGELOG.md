@@ -4,6 +4,7 @@
 
 ### Chores
 
+* **client:** stop sending query params hardcoded in endpoint paths
 * **docs:** reword work queue, skill and external key descriptions
 
 ## [13.2.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.0...Anthropic-v13.2.1) (2026-10-23)

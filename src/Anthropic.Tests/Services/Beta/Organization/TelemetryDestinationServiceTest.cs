@@ -8,8 +8,9 @@ public class TelemetryDestinationServiceTest : TestBase
     [Fact]
     public async Task Create_Works()
     {
-        var betaTelemetryDestination =
-            await this.client.Beta.Organization.TelemetryDestinations.Create(
+        var betaTelemetryDestination = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.Create(
                 new()
                 {
                     EndpointUrl = "x",
@@ -23,8 +24,9 @@ public class TelemetryDestinationServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaTelemetryDestination =
-            await this.client.Beta.Organization.TelemetryDestinations.Retrieve(
+        var betaTelemetryDestination = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.Retrieve(
                 "destination_id",
                 new(),
                 TestContext.Current.CancellationToken
@@ -35,8 +37,9 @@ public class TelemetryDestinationServiceTest : TestBase
     [Fact]
     public async Task Update_Works()
     {
-        var betaTelemetryDestination =
-            await this.client.Beta.Organization.TelemetryDestinations.Update(
+        var betaTelemetryDestination = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.Update(
                 "destination_id",
                 new(),
                 TestContext.Current.CancellationToken
@@ -47,18 +50,21 @@ public class TelemetryDestinationServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.TelemetryDestinations.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.List(
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Delete_Works()
     {
-        var betaDeletedTelemetryDestination =
-            await this.client.Beta.Organization.TelemetryDestinations.Delete(
+        var betaDeletedTelemetryDestination = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.Delete(
                 "destination_id",
                 new(),
                 TestContext.Current.CancellationToken
@@ -69,8 +75,9 @@ public class TelemetryDestinationServiceTest : TestBase
     [Fact]
     public async Task Test_Works()
     {
-        var betaTelemetryDestinationTestResponse =
-            await this.client.Beta.Organization.TelemetryDestinations.Test(
+        var betaTelemetryDestinationTestResponse = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.TelemetryDestinations.Test(
                 "destination_id",
                 new(),
                 TestContext.Current.CancellationToken

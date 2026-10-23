@@ -119,7 +119,7 @@ public interface IOrganizationServiceWithRawResponse
     Organization::IWebhookServiceWithRawResponse Webhooks { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/me?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/me</c>, but is otherwise the
     /// same as <see cref="IOrganizationService.Retrieve(OrganizationRetrieveParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganization>> Retrieve(

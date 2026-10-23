@@ -116,7 +116,7 @@ public interface IWorkspaceServiceWithRawResponse
     IWorkspaceServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations/{destination_id}/workspaces?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/telemetry_destinations/{destination_id}/workspaces</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.List(WorkspaceListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<WorkspaceListPage>> List(
@@ -132,7 +132,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}/workspaces/{workspace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/telemetry_destinations/{destination_id}/workspaces/{workspace_id}</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Add(WorkspaceAddParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaTelemetryDestinationWorkspace>> Add(
@@ -148,7 +148,7 @@ public interface IWorkspaceServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/telemetry_destinations/{destination_id}/workspaces/{workspace_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/telemetry_destinations/{destination_id}/workspaces/{workspace_id}</c>, but is otherwise the
     /// same as <see cref="IWorkspaceService.Remove(WorkspaceRemoveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedTelemetryDestinationWorkspace>> Remove(

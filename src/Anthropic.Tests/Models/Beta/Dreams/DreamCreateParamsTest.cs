@@ -163,9 +163,7 @@ public class DreamCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.True(
-            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/dreams?beta=true"), url)
-        );
+        Assert.True(TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/dreams"), url));
     }
 
     [Fact]

@@ -8,81 +8,94 @@ public class CredentialServiceTest : TestBase
     [Fact]
     public async Task Create_Works()
     {
-        var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Create(
-            "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            new()
-            {
-                Auth = new BetaManagedAgentsStaticBearerCreateParams()
+        var betaManagedAgentsCredential = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.Create(
+                "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+                new()
                 {
-                    Token = "bearer_exampletoken",
-                    McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
+                    Auth = new BetaManagedAgentsStaticBearerCreateParams()
+                    {
+                        Token = "bearer_exampletoken",
+                        McpServerUrl = "https://example-server.modelcontextprotocol.io/sse",
+                    },
                 },
-            },
-            TestContext.Current.CancellationToken
-        );
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsCredential.Validate();
     }
 
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Retrieve(
-            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
-            new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsCredential = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.Retrieve(
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+                new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsCredential.Validate();
     }
 
     [Fact]
     public async Task Update_Works()
     {
-        var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Update(
-            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
-            new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsCredential = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.Update(
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+                new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsCredential.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Vaults.Credentials.List(
-            "vlt_011CZkZDLs7fYzm1hXNPeRjv",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.List(
+                "vlt_011CZkZDLs7fYzm1hXNPeRjv",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Delete_Works()
     {
-        var betaManagedAgentsDeletedCredential = await this.client.Beta.Vaults.Credentials.Delete(
-            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
-            new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsDeletedCredential = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.Delete(
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+                new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsDeletedCredential.Validate();
     }
 
     [Fact]
     public async Task Archive_Works()
     {
-        var betaManagedAgentsCredential = await this.client.Beta.Vaults.Credentials.Archive(
-            "vcrd_011CZkZEMt8gZan2iYPQfSkw",
-            new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsCredential = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.Archive(
+                "vcrd_011CZkZEMt8gZan2iYPQfSkw",
+                new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsCredential.Validate();
     }
 
     [Fact]
     public async Task McpOAuthValidate_Works()
     {
-        var betaManagedAgentsCredentialValidation =
-            await this.client.Beta.Vaults.Credentials.McpOAuthValidate(
+        var betaManagedAgentsCredentialValidation = await this
+            .client.WithQuery("beta=true")
+            .Beta.Vaults.Credentials.McpOAuthValidate(
                 "vcrd_011CZkZEMt8gZan2iYPQfSkw",
                 new() { VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv" },
                 TestContext.Current.CancellationToken

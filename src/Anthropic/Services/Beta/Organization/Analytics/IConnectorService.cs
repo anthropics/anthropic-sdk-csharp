@@ -57,7 +57,7 @@ public interface IConnectorServiceWithRawResponse
     IConnectorServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/connectors?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/connectors</c>, but is otherwise the
     /// same as <see cref="IConnectorService.List(ConnectorListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ConnectorListPage>> List(

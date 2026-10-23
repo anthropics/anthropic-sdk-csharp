@@ -125,7 +125,7 @@ public class VersionListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/versions?beta=true&limit=0&page=page"
+                    "https://api.anthropic.com/v1/agents/agent_011CZkYpogX7uDKUyvBTophP/versions?limit=0&page=page"
                 ),
                 url
             )

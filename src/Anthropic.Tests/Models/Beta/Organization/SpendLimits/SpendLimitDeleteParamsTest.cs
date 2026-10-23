@@ -24,9 +24,7 @@ public class SpendLimitDeleteParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limits/spend_limit_id?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/spend_limits/spend_limit_id"),
                 url
             )
         );

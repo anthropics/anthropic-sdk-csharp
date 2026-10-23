@@ -138,7 +138,7 @@ public class ProjectListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/apps/chat/projects?beta=true&date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=rbac_group_id&limit=1&order=asc&order_by=order_by&page=page&starting_date=2019-12-27"
+                    "https://api.anthropic.com/v1/organizations/analytics/apps/chat/projects?date=2019-12-27&ending_date=2019-12-27&filter%5b%5d=string&group_by%5b%5d=rbac_group_id&limit=1&order=asc&order_by=order_by&page=page&starting_date=2019-12-27"
                 ),
                 url
             )

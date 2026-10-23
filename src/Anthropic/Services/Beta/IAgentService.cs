@@ -107,7 +107,7 @@ public interface IAgentServiceWithRawResponse
     IVersionServiceWithRawResponse Versions { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/agents?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/agents</c>, but is otherwise the
     /// same as <see cref="IAgentService.Create(AgentCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsAgent>> Create(
@@ -116,7 +116,7 @@ public interface IAgentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/agents/{agent_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/agents/{agent_id}</c>, but is otherwise the
     /// same as <see cref="IAgentService.Retrieve(AgentRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsAgent>> Retrieve(
@@ -132,7 +132,7 @@ public interface IAgentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/agents/{agent_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/agents/{agent_id}</c>, but is otherwise the
     /// same as <see cref="IAgentService.Update(AgentUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsAgent>> Update(
@@ -148,7 +148,7 @@ public interface IAgentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/agents?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/agents</c>, but is otherwise the
     /// same as <see cref="IAgentService.List(AgentListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<AgentListPage>> List(
@@ -157,7 +157,7 @@ public interface IAgentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/agents/{agent_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/agents/{agent_id}/archive</c>, but is otherwise the
     /// same as <see cref="IAgentService.Archive(AgentArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaManagedAgentsAgent>> Archive(

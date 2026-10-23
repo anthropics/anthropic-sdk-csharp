@@ -153,9 +153,7 @@ public class WebhookUpdateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/webhooks/webhook_endpoint_id?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/webhooks/webhook_endpoint_id"),
                 url
             )
         );

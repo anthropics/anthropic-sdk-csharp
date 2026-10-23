@@ -7,10 +7,12 @@ public class ProjectServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Analytics.Apps.Chat.Projects.List(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Analytics.Apps.Chat.Projects.List(
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 }

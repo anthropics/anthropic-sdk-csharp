@@ -7,33 +7,39 @@ public class ThreadServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaManagedAgentsSessionThread = await this.client.Beta.Sessions.Threads.Retrieve(
-            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsSessionThread = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Threads.Retrieve(
+                "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+                new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsSessionThread.Validate();
     }
 
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Sessions.Threads.List(
-            "sesn_011CZkZAtmR3yMPDzynEDxu7",
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Threads.List(
+                "sesn_011CZkZAtmR3yMPDzynEDxu7",
+                new(),
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 
     [Fact]
     public async Task Archive_Works()
     {
-        var betaManagedAgentsSessionThread = await this.client.Beta.Sessions.Threads.Archive(
-            "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
-            TestContext.Current.CancellationToken
-        );
+        var betaManagedAgentsSessionThread = await this
+            .client.WithQuery("beta=true")
+            .Beta.Sessions.Threads.Archive(
+                "sthr_011CZkZVWa6oJjw1rgXZpnBt",
+                new() { SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7" },
+                TestContext.Current.CancellationToken
+            );
         betaManagedAgentsSessionThread.Validate();
     }
 }

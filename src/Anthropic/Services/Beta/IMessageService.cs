@@ -91,7 +91,7 @@ public interface IMessageServiceWithRawResponse
     IBatchServiceWithRawResponse Batches { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/messages?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages</c>, but is otherwise the
     /// same as <see cref="IMessageService.Create(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessage>> Create(
@@ -100,7 +100,7 @@ public interface IMessageServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/messages?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages</c>, but is otherwise the
     /// same as <see cref="IMessageService.CreateStreaming(MessageCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<StreamingHttpResponse<BetaRawMessageStreamEvent>> CreateStreaming(
@@ -109,7 +109,7 @@ public interface IMessageServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/messages/count_tokens?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/messages/count_tokens</c>, but is otherwise the
     /// same as <see cref="IMessageService.CountTokens(MessageCountTokensParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaMessageTokensCount>> CountTokens(

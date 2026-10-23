@@ -180,7 +180,7 @@ public interface IVersionServiceWithRawResponse
     IVersionServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}/versions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}/versions</c>, but is otherwise the
     /// same as <see cref="IVersionService.Create(VersionCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginVersion>> Create(
@@ -196,7 +196,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions/{version}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions/{version}</c>, but is otherwise the
     /// same as <see cref="IVersionService.Retrieve(VersionRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginVersion>> Retrieve(
@@ -212,7 +212,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions</c>, but is otherwise the
     /// same as <see cref="IVersionService.List(VersionListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<VersionListPage>> List(
@@ -228,7 +228,7 @@ public interface IVersionServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions/{version}/content?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/versions/{version}/content</c>, but is otherwise the
     /// same as <see cref="IVersionService.Download(VersionDownloadParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse> Download(

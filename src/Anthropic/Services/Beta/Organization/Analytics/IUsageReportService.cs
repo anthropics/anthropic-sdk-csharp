@@ -61,7 +61,7 @@ public interface IUsageReportServiceWithRawResponse
     IUsageReportServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/usage_report?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/usage_report</c>, but is otherwise the
     /// same as <see cref="IUsageReportService.List(UsageReportListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<UsageReportListPage>> List(

@@ -157,7 +157,7 @@ public class WebhookListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/webhooks?beta=true&after_id=after_id&before_id=before_id&limit=0&order=asc"
+                    "https://api.anthropic.com/v1/organizations/webhooks?after_id=after_id&before_id=before_id&limit=0&order=asc"
                 ),
                 url
             )

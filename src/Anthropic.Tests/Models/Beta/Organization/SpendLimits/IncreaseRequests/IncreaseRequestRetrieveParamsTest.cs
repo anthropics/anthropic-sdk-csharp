@@ -31,7 +31,7 @@ public class IncreaseRequestRetrieveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limit_increase_requests/spend_limit_increase_request_id?beta=true"
+                    "https://api.anthropic.com/v1/organizations/spend_limit_increase_requests/spend_limit_increase_request_id"
                 ),
                 url
             )

@@ -31,7 +31,7 @@ public class ComplianceSettingUpdateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/compliance_settings?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/compliance_settings"),
                 url
             )
         );

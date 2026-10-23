@@ -97,7 +97,7 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/plugin_marketplaces/validate_archive?beta=true"
+                    "https://api.anthropic.com/v1/organizations/plugin_marketplaces/validate_archive"
                 ),
                 url
             )

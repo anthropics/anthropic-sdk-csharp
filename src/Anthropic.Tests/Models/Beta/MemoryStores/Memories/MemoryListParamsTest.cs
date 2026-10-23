@@ -165,7 +165,7 @@ public class MemoryListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories?beta=true&depth=0&limit=0&page=page&path_prefix=path_prefix&view=basic"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories?depth=0&limit=0&page=page&path_prefix=path_prefix&view=basic"
                 ),
                 url
             )

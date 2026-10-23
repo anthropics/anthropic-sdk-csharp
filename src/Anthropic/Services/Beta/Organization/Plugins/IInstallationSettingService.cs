@@ -149,7 +149,7 @@ public interface IInstallationSettingServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/installation_settings?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/installation_settings</c>, but is otherwise the
     /// same as <see cref="IInstallationSettingService.List(InstallationSettingListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<InstallationSettingListPage>> List(
@@ -165,7 +165,7 @@ public interface IInstallationSettingServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/plugins/{plugin_id}/installation_settings/{target}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/plugins/{plugin_id}/installation_settings/{target}</c>, but is otherwise the
     /// same as <see cref="IInstallationSettingService.Remove(InstallationSettingRemoveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedPluginInstallationSetting>> Remove(
@@ -181,7 +181,7 @@ public interface IInstallationSettingServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}/installation_settings/{target}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/plugins/{plugin_id}/installation_settings/{target}</c>, but is otherwise the
     /// same as <see cref="IInstallationSettingService.Set(InstallationSettingSetParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaPluginInstallationSetting>> Set(

@@ -124,9 +124,7 @@ public class MemoryStoreCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.True(
-            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/memory_stores?beta=true"), url)
-        );
+        Assert.True(TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/memory_stores"), url));
     }
 
     [Fact]

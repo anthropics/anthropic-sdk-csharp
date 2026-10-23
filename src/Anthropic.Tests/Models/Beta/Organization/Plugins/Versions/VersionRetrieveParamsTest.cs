@@ -134,7 +134,7 @@ public class VersionRetrieveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/versions/version?beta=true&organization_id=organization_id"
+                    "https://api.anthropic.com/v1/organizations/plugins/plugin_id/versions/version?organization_id=organization_id"
                 ),
                 url
             )

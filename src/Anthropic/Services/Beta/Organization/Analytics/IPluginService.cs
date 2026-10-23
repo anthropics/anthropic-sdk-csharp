@@ -60,7 +60,7 @@ public interface IPluginServiceWithRawResponse
     IPluginServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/plugins?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/analytics/plugins</c>, but is otherwise the
     /// same as <see cref="IPluginService.List(PluginListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<PluginListPage>> List(

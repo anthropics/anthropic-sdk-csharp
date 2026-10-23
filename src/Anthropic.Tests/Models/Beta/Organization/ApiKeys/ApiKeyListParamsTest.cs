@@ -162,7 +162,7 @@ public class ApiKeyListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/api_keys?beta=true&after_id=after_id&before_id=before_id&created_by_user_id=created_by_user_id&limit=1&status=active&workspace_id=workspace_id"
+                    "https://api.anthropic.com/v1/organizations/api_keys?after_id=after_id&before_id=before_id&created_by_user_id=created_by_user_id&limit=1&status=active&workspace_id=workspace_id"
                 ),
                 url
             )

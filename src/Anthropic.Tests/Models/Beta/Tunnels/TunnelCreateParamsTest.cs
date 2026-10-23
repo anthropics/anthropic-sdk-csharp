@@ -121,9 +121,7 @@ public class TunnelCreateParamsTest : TestBase
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
-        Assert.True(
-            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/tunnels?beta=true"), url)
-        );
+        Assert.True(TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/tunnels"), url));
     }
 
     [Fact]

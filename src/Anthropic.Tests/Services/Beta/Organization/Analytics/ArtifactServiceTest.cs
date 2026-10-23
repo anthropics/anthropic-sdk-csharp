@@ -7,10 +7,12 @@ public class ArtifactServiceTest : TestBase
     [Fact]
     public async Task List_Works()
     {
-        var page = await this.client.Beta.Organization.Analytics.Artifacts.List(
-            new() { Date = "2019-12-27" },
-            TestContext.Current.CancellationToken
-        );
+        var page = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Analytics.Artifacts.List(
+                new() { Date = "2019-12-27" },
+                TestContext.Current.CancellationToken
+            );
         page.Validate();
     }
 }

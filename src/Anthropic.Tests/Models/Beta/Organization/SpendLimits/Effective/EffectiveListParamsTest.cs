@@ -140,7 +140,7 @@ public class EffectiveListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/spend_limits/effective?beta=true&limit=1&page=page&period%5b%5d=daily&user_ids%5b%5d=string"
+                    "https://api.anthropic.com/v1/organizations/spend_limits/effective?limit=1&page=page&period%5b%5d=daily&user_ids%5b%5d=string"
                 ),
                 url
             )

@@ -284,9 +284,7 @@ public class EnvironmentUpdateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/environments/env_011CZkZ9X2dpNyB7HsEFoRfW"),
                 url
             )
         );

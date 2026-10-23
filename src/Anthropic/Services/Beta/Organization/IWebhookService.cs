@@ -171,7 +171,7 @@ public interface IWebhookServiceWithRawResponse
     IWebhookServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks</c>, but is otherwise the
     /// same as <see cref="IWebhookService.Create(WebhookCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaNewOrganizationWebhookEndpoint>> Create(
@@ -180,7 +180,7 @@ public interface IWebhookServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/webhooks/{webhook_endpoint_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/webhooks/{webhook_endpoint_id}</c>, but is otherwise the
     /// same as <see cref="IWebhookService.Retrieve(WebhookRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationWebhookEndpoint>> Retrieve(
@@ -196,7 +196,7 @@ public interface IWebhookServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks/{webhook_endpoint_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks/{webhook_endpoint_id}</c>, but is otherwise the
     /// same as <see cref="IWebhookService.Update(WebhookUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationWebhookEndpoint>> Update(
@@ -212,7 +212,7 @@ public interface IWebhookServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/webhooks?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/webhooks</c>, but is otherwise the
     /// same as <see cref="IWebhookService.List(WebhookListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<WebhookListPage>> List(
@@ -221,7 +221,7 @@ public interface IWebhookServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/organizations/webhooks/{webhook_endpoint_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/organizations/webhooks/{webhook_endpoint_id}</c>, but is otherwise the
     /// same as <see cref="IWebhookService.Delete(WebhookDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaDeletedOrganizationWebhookEndpoint>> Delete(
@@ -237,7 +237,7 @@ public interface IWebhookServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks/{webhook_endpoint_id}/regenerate_signing_secret?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/organizations/webhooks/{webhook_endpoint_id}/regenerate_signing_secret</c>, but is otherwise the
     /// same as <see cref="IWebhookService.RegenerateSigningSecret(WebhookRegenerateSigningSecretParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaOrganizationWebhookEndpointSigningSecret>> RegenerateSigningSecret(

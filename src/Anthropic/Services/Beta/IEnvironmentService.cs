@@ -123,7 +123,7 @@ public interface IEnvironmentServiceWithRawResponse
     IWorkServiceWithRawResponse Work { get; }
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.Create(EnvironmentCreateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaEnvironment>> Create(
@@ -132,7 +132,7 @@ public interface IEnvironmentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments/{environment_id}</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.Retrieve(EnvironmentRetrieveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaEnvironment>> Retrieve(
@@ -148,7 +148,7 @@ public interface IEnvironmentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.Update(EnvironmentUpdateParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaEnvironment>> Update(
@@ -164,7 +164,7 @@ public interface IEnvironmentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/environments?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/environments</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.List(EnvironmentListParams?, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<EnvironmentListPage>> List(
@@ -173,7 +173,7 @@ public interface IEnvironmentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>delete /v1/environments/{environment_id}?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>delete /v1/environments/{environment_id}</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.Delete(EnvironmentDeleteParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaEnvironmentDeleteResponse>> Delete(
@@ -189,7 +189,7 @@ public interface IEnvironmentServiceWithRawResponse
     );
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/archive?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>post /v1/environments/{environment_id}/archive</c>, but is otherwise the
     /// same as <see cref="IEnvironmentService.Archive(EnvironmentArchiveParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<BetaEnvironment>> Archive(

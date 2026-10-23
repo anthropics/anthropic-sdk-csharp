@@ -109,7 +109,7 @@ public class MemoryVersionRedactParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions/memory_version_id/redact?beta=true"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memory_versions/memory_version_id/redact"
                 ),
                 url
             )

@@ -175,7 +175,7 @@ public class IssuerCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/federation_issuers?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/federation_issuers"),
                 url
             )
         );

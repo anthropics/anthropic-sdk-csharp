@@ -7,10 +7,9 @@ public class OrganizationServiceTest : TestBase
     [Fact]
     public async Task Retrieve_Works()
     {
-        var betaOrganization = await this.client.Beta.Organization.Retrieve(
-            new(),
-            TestContext.Current.CancellationToken
-        );
+        var betaOrganization = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Retrieve(new(), TestContext.Current.CancellationToken);
         betaOrganization.Validate();
     }
 }

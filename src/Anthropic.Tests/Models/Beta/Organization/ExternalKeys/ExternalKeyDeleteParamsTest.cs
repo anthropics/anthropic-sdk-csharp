@@ -24,9 +24,7 @@ public class ExternalKeyDeleteParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/organizations/external_keys/external_key_id?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/organizations/external_keys/external_key_id"),
                 url
             )
         );

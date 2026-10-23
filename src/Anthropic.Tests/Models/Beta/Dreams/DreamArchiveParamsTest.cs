@@ -94,10 +94,7 @@ public class DreamArchiveParamsTest : TestBase
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.True(
-            TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/dreams/dream_id/archive?beta=true"),
-                url
-            )
+            TestBase.UrisEqual(new Uri("https://api.anthropic.com/v1/dreams/dream_id/archive"), url)
         );
     }
 

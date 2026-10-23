@@ -95,9 +95,7 @@ public class BatchResultsParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri(
-                    "https://api.anthropic.com/v1/messages/batches/message_batch_id/results?beta=true"
-                ),
+                new Uri("https://api.anthropic.com/v1/messages/batches/message_batch_id/results"),
                 url
             )
         );

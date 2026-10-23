@@ -102,7 +102,7 @@ public class DeploymentArchiveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/archive?beta=true"
+                    "https://api.anthropic.com/v1/deployments/depl_011CZkZcDH3vPqd7xnEfwTai/archive"
                 ),
                 url
             )

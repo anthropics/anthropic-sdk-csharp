@@ -136,7 +136,7 @@ public class ServiceAccountCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/service_accounts?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/service_accounts"),
                 url
             )
         );

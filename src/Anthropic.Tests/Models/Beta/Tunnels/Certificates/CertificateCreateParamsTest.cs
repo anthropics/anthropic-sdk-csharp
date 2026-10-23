@@ -108,7 +108,7 @@ public class CertificateCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/certificates?beta=true"),
+                new Uri("https://api.anthropic.com/v1/tunnels/tunnel_id/certificates"),
                 url
             )
         );

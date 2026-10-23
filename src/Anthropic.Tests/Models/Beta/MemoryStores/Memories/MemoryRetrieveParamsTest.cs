@@ -123,7 +123,7 @@ public class MemoryRetrieveParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories/memory_id?beta=true&view=basic"
+                    "https://api.anthropic.com/v1/memory_stores/memory_store_id/memories/memory_id?view=basic"
                 ),
                 url
             )

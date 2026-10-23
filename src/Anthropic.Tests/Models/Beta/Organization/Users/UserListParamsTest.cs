@@ -127,7 +127,7 @@ public class UserListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/users?beta=true&after_id=after_id&before_id=before_id&email=dev%40stainless.com&limit=1&roles%5b%5d=string"
+                    "https://api.anthropic.com/v1/organizations/users?after_id=after_id&before_id=before_id&email=dev%40stainless.com&limit=1&roles%5b%5d=string"
                 ),
                 url
             )

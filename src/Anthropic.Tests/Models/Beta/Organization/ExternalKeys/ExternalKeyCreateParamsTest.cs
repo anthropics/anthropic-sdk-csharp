@@ -161,7 +161,7 @@ public class ExternalKeyCreateParamsTest : TestBase
 
         Assert.True(
             TestBase.UrisEqual(
-                new Uri("https://api.anthropic.com/v1/organizations/external_keys?beta=true"),
+                new Uri("https://api.anthropic.com/v1/organizations/external_keys"),
                 url
             )
         );

@@ -73,7 +73,7 @@ public interface IShareServiceWithRawResponse
     IShareServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/shares?beta=true</c>, but is otherwise the
+    /// Returns a raw HTTP response for <c>get /v1/organizations/plugins/{plugin_id}/shares</c>, but is otherwise the
     /// same as <see cref="IShareService.List(ShareListParams, CancellationToken)"/>.
     /// </summary>
     Task<HttpResponse<ShareListPage>> List(
