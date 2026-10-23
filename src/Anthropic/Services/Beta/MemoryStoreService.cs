@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -218,6 +219,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -258,6 +260,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.retrieve",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -305,6 +308,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.update",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -349,6 +353,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -383,6 +388,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.delete",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -430,6 +436,7 @@ public sealed class MemoryStoreServiceWithRawResponse : IMemoryStoreServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.archive",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -126,6 +127,7 @@ public sealed class ApiKeyServiceWithRawResponse : IApiKeyServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.api_keys.retrieve",
             SpanResourceIds = [new("anthropic.organization.api_key.id", parameters.ApiKeyID)],
         };
@@ -173,6 +175,7 @@ public sealed class ApiKeyServiceWithRawResponse : IApiKeyServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.api_keys.update",
             SpanResourceIds = [new("anthropic.organization.api_key.id", parameters.ApiKeyID)],
         };
@@ -217,6 +220,7 @@ public sealed class ApiKeyServiceWithRawResponse : IApiKeyServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.api_keys.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

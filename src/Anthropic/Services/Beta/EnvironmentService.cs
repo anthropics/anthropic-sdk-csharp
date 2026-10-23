@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -204,6 +205,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -244,6 +246,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.retrieve",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -291,6 +294,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.update",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -335,6 +339,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -369,6 +374,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.delete",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };
@@ -416,6 +422,7 @@ public sealed class EnvironmentServiceWithRawResponse : IEnvironmentServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.environments.archive",
             SpanResourceIds = [new("anthropic.environment.id", parameters.EnvironmentID)],
         };

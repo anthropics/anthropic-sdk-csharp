@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -204,6 +205,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -244,6 +246,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.retrieve",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
@@ -291,6 +294,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.update",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
@@ -333,6 +337,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -367,6 +372,7 @@ public sealed class PluginServiceWithRawResponse : IPluginServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.delete",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };

@@ -211,6 +211,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.create",
             SpanResourceIds = ApiCallSpans.IsEnabled(this._client)
                 ? ApiCallSpans.BatchesCreateAttributes(() => parameters.Requests.Count)
@@ -254,6 +255,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.retrieve",
             SpanResourceIds = [new("anthropic.message.batch.id", parameters.MessageBatchID)],
         };
@@ -304,6 +306,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -338,6 +341,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.delete",
             SpanResourceIds = [new("anthropic.message.batch.id", parameters.MessageBatchID)],
         };
@@ -385,6 +389,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.cancel",
             SpanResourceIds = [new("anthropic.message.batch.id", parameters.MessageBatchID)],
         };
@@ -432,6 +437,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.messages.batches.results",
             SpanResourceIds = [new("anthropic.message.batch.id", parameters.MessageBatchID)],
         };

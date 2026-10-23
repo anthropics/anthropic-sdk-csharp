@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -158,6 +159,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.versions.create",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
@@ -209,6 +211,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.versions.retrieve",
             SpanResourceIds =
             [
@@ -258,6 +261,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.versions.list",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
@@ -305,6 +309,7 @@ public sealed class VersionServiceWithRawResponse : IVersionServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.versions.download",
             SpanResourceIds =
             [

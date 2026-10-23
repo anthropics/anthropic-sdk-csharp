@@ -715,6 +715,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             Content = request.Params.BodyContent(),
         };
+        Qualifiers.Attach(requestMessage, request.Qualifiers);
         // Wire parity with the other SDKs: bare media type, no charset suffix
         // (JSON is UTF-8 by definition per RFC 8259).
         if (requestMessage.Content?.Headers.ContentType is { CharSet: not null } contentType)

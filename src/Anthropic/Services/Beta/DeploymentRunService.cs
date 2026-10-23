@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -117,6 +118,7 @@ public sealed class DeploymentRunServiceWithRawResponse : IDeploymentRunServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployment_runs.retrieve",
             SpanResourceIds = [new("anthropic.deployment_run.id", parameters.DeploymentRunID)],
         };
@@ -167,6 +169,7 @@ public sealed class DeploymentRunServiceWithRawResponse : IDeploymentRunServiceW
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.deployment_runs.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

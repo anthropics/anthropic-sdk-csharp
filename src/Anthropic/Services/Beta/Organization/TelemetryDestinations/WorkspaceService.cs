@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -139,6 +140,7 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.telemetry_destinations.workspaces.list",
             SpanResourceIds =
             [
@@ -189,6 +191,7 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.telemetry_destinations.workspaces.add",
             SpanResourceIds =
             [
@@ -241,6 +244,7 @@ public sealed class WorkspaceServiceWithRawResponse : IWorkspaceServiceWithRawRe
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.telemetry_destinations.workspaces.remove",
             SpanResourceIds =
             [

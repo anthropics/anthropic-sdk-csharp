@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,6 +184,7 @@ public sealed class MemoryServiceWithRawResponse : IMemoryServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memories.create",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -234,6 +236,7 @@ public sealed class MemoryServiceWithRawResponse : IMemoryServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memories.retrieve",
             SpanResourceIds =
             [
@@ -283,6 +286,7 @@ public sealed class MemoryServiceWithRawResponse : IMemoryServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memories.update",
             SpanResourceIds =
             [
@@ -332,6 +336,7 @@ public sealed class MemoryServiceWithRawResponse : IMemoryServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memories.list",
             SpanResourceIds = [new("gen_ai.memory.store.id", parameters.MemoryStoreID)],
         };
@@ -379,6 +384,7 @@ public sealed class MemoryServiceWithRawResponse : IMemoryServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.memory_stores.memories.delete",
             SpanResourceIds =
             [

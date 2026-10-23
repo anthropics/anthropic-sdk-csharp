@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -210,6 +211,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -252,6 +254,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.retrieve",
             SpanResourceIds =
             [
@@ -310,6 +313,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.update",
             SpanResourceIds =
             [
@@ -363,6 +367,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -399,6 +404,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.delete",
             SpanResourceIds =
             [
@@ -459,6 +465,7 @@ public sealed class WebhookServiceWithRawResponse : IWebhookServiceWithRawRespon
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.webhooks.regenerate_signing_secret",
             SpanResourceIds =
             [

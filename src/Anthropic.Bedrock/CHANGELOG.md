@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.0...Bedrock-v1.0.1) (2026-10-21)
+
+### Bug Fixes
+
+* **bedrock:** use the region name from the AWS config in `FromEnv()`
+
 ## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v0.14.1...Bedrock-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES

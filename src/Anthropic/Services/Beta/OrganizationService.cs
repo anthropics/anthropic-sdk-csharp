@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -326,6 +327,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.retrieve",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

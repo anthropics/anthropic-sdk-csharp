@@ -287,6 +287,56 @@ public class RetriesTest : TestBase
     }
 
     [Fact]
+    public async Task EveryAttemptHasTheQualifiers()
+    {
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .SetupSequence<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Content = new StringContent("foo"),
+                }
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("foo"),
+                }
+            );
+
+        var httpClient = new HttpClient(handlerMock.Object);
+
+        AnthropicClient client = new() { HttpClient = httpClient, MaxRetries = 2 };
+
+        await client.WithRawResponse.Execute(
+            new HttpRequest<BlankParams>
+            {
+                Method = HttpMethod.Get,
+                Params = new(),
+                Qualifiers = new Dictionary<string, string>() { ["variant"] = "b" },
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        handlerMock
+            .Protected()
+            .Verify(
+                "SendAsync",
+                Times.Exactly(2),
+                ItExpr.Is<HttpRequestMessage>((req) => Qualifiers.From(req)!["variant"] == "b"),
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+    [Fact]
     public async Task RateLimitStatus_IsRetried()
     {
         var failResponse = new HttpResponseMessage()

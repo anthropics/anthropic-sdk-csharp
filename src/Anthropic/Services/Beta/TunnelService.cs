@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -204,6 +205,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -244,6 +246,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.retrieve",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
@@ -288,6 +291,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -322,6 +326,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.archive",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
@@ -369,6 +374,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.reveal_token",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };
@@ -416,6 +422,7 @@ public sealed class TunnelServiceWithRawResponse : ITunnelServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.tunnels.rotate_token",
             SpanResourceIds = [new("anthropic.tunnel.id", parameters.TunnelID)],
         };

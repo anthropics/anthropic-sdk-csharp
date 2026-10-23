@@ -43,7 +43,7 @@ public static class AnthropicBedrockCredentialsHelper
             {
                 return null;
             }
-            region = defaultRegion.HostnameTemplate;
+            region = defaultRegion.SystemName;
         }
 
         var token = Environment.GetEnvironmentVariable(ENV_API_KEY);

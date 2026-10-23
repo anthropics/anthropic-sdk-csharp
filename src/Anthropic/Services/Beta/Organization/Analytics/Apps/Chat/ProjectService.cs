@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,6 +75,7 @@ public sealed class ProjectServiceWithRawResponse : IProjectServiceWithRawRespon
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.analytics.apps.chat.projects.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

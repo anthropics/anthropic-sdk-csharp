@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -144,6 +145,7 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.installation_settings.list",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };
@@ -191,6 +193,7 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.installation_settings.remove",
             SpanResourceIds =
             [
@@ -240,6 +243,7 @@ public sealed class InstallationSettingServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.installation_settings.set",
             SpanResourceIds =
             [

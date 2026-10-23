@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -112,6 +113,7 @@ public sealed class RateLimitServiceWithRawResponse : IRateLimitServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.rate_limits.update",
             SpanResourceIds =
             [
@@ -161,6 +163,7 @@ public sealed class RateLimitServiceWithRawResponse : IRateLimitServiceWithRawRe
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.rate_limits.list",
             SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };

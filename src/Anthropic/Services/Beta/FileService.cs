@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -156,6 +157,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.files.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -190,6 +192,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.files.delete",
             SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
@@ -237,6 +240,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.files.download",
             SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
@@ -270,6 +274,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.files.retrieve_metadata",
             SpanResourceIds = [new("anthropic.file.id", parameters.FileID)],
         };
@@ -312,6 +317,7 @@ public sealed class FileServiceWithRawResponse : IFileServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.files.upload",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -148,6 +149,7 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.users.retrieve",
             SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };
@@ -195,6 +197,7 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.users.update",
             SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };
@@ -237,6 +240,7 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.users.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -271,6 +275,7 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.users.remove",
             SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
         };

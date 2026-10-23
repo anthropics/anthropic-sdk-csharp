@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -93,6 +94,7 @@ public sealed class ActionUrlServiceWithRawResponse : IActionUrlServiceWithRawRe
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.user_profiles.action_urls.create",
             SpanResourceIds = [new("anthropic.user_profile.id", parameters.UserProfileID)],
         };

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -91,6 +92,7 @@ public sealed class ComplianceSettingServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.compliance_settings.retrieve",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -120,6 +122,7 @@ public sealed class ComplianceSettingServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.compliance_settings.update",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

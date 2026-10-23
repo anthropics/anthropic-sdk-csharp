@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -201,6 +202,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.service_accounts.retrieve",
             SpanResourceIds =
             [
@@ -259,6 +261,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.service_accounts.update",
             SpanResourceIds =
             [
@@ -317,6 +320,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.service_accounts.list",
             SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
@@ -364,6 +368,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.service_accounts.add",
             SpanResourceIds = [new("anthropic.organization.workspace.id", parameters.WorkspaceID)],
         };
@@ -415,6 +420,7 @@ public sealed class ServiceAccountServiceWithRawResponse : IServiceAccountServic
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.workspaces.service_accounts.remove",
             SpanResourceIds =
             [

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -191,6 +192,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.federation.rules.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -231,6 +233,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.federation.rules.retrieve",
             SpanResourceIds =
             [
@@ -287,6 +290,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.federation.rules.update",
             SpanResourceIds =
             [
@@ -340,6 +344,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.federation.rules.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -374,6 +379,7 @@ public sealed class RuleServiceWithRawResponse : IRuleServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.federation.rules.archive",
             SpanResourceIds =
             [

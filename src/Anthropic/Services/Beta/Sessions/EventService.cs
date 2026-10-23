@@ -159,6 +159,7 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.events.list",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -206,6 +207,7 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.events.send",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -251,6 +253,7 @@ public sealed class EventServiceWithRawResponse : IEventServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.events.stream",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };

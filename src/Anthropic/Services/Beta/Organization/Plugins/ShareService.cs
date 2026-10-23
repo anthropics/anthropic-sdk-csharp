@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -95,6 +96,7 @@ public sealed class ShareServiceWithRawResponse : IShareServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.plugins.shares.list",
             SpanResourceIds = [new("anthropic.organization.plugin.id", parameters.PluginID)],
         };

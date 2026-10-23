@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -183,6 +184,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.create",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -223,6 +225,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.retrieve",
             SpanResourceIds =
             [
@@ -273,6 +276,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.update",
             SpanResourceIds =
             [
@@ -320,6 +324,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.list",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -354,6 +359,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Delete,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.delete",
             SpanResourceIds =
             [
@@ -404,6 +410,7 @@ public sealed class ExternalKeyServiceWithRawResponse : IExternalKeyServiceWithR
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.organization.external_keys.validate",
             SpanResourceIds =
             [

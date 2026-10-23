@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
@@ -155,6 +156,7 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.threads.retrieve",
             SpanResourceIds =
             [
@@ -204,6 +206,7 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Get,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.threads.list",
             SpanResourceIds = [new("anthropic.session.id", parameters.SessionID)],
         };
@@ -251,6 +254,7 @@ public sealed class ThreadServiceWithRawResponse : IThreadServiceWithRawResponse
         {
             Method = HttpMethod.Post,
             Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.threads.archive",
             SpanResourceIds =
             [
