@@ -131,8 +131,12 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
         OpenTelemetrySource = AnthropicBedrockClient.PackageActivitySource;
     }
 
-    private AnthropicBedrockMantleClient(MantleAwsClientOptions awsOptions, ClientOptions options)
-        : base(options)
+    private AnthropicBedrockMantleClient(
+        MantleAwsClientOptions awsOptions,
+        ClientOptions options,
+        ClientOptions parentOptions
+    )
+        : base(options, parentOptions)
     {
         _awsOptions = awsOptions;
         // The options normally carry the backend adaptation handler from the original
@@ -145,7 +149,7 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicBedrockMantleClient(_awsOptions, _options.Apply(modifier));
+        return new AnthropicBedrockMantleClient(_awsOptions, _options.Apply(modifier), _options);
     }
 
     /// <summary>

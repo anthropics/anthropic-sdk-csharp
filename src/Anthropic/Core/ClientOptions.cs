@@ -510,17 +510,21 @@ public record struct ClientOptions
     }
 
     /// <summary>
-    /// Disposes <see cref="HttpClient"/> along with any attached
-    /// <see cref="Handlers"/>.
+    /// Disposes <see cref="HttpClient"/> along with any attached <see cref="Handlers"/>,
+    /// except those shared with <paramref name="parent"/>, the options it was derived from.
     /// </summary>
-    internal readonly void DisposeHttpResources()
+    internal readonly void DisposeHttpResources(ClientOptions? parent)
     {
-        if (_messageInvoker.IsValueCreated)
+        if (
+            _messageInvoker.IsValueCreated
+            && !ReferenceEquals(_messageInvoker, parent?._messageInvoker)
+        )
         {
-            // Disposes the attached handlers, which in turn dispose the HTTP client.
+            // Disposes the attached handlers. The HTTP client is disposed separately,
+            // because a derived client's handlers can wrap its parent's HTTP client.
             _messageInvoker.Value.Dispose();
         }
-        else
+        if (!ReferenceEquals(_httpClient, parent?._httpClient))
         {
             _httpClient.Dispose();
         }

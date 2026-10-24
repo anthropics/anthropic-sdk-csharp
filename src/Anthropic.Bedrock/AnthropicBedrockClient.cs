@@ -45,9 +45,10 @@ public sealed class AnthropicBedrockClient : AnthropicClient
 
     private AnthropicBedrockClient(
         IAnthropicBedrockCredentials bedrockCredentials,
-        ClientOptions clientOptions
+        ClientOptions clientOptions,
+        ClientOptions parentOptions
     )
-        : base(clientOptions)
+        : base(clientOptions, parentOptions)
     {
         _bedrockCredentials = bedrockCredentials;
         // The options normally carry the backend adaptation handler from the original
@@ -60,6 +61,10 @@ public sealed class AnthropicBedrockClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicBedrockClient(_bedrockCredentials, this._options.Apply(modifier));
+        return new AnthropicBedrockClient(
+            _bedrockCredentials,
+            this._options.Apply(modifier),
+            this._options
+        );
     }
 }

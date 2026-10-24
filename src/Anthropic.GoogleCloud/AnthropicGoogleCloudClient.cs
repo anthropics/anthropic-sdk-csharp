@@ -156,9 +156,10 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
 
     private AnthropicGoogleCloudClient(
         GoogleCloudClientOptions googleCloudConfig,
-        ClientOptions options
+        ClientOptions options,
+        ClientOptions parentOptions
     )
-        : base(options)
+        : base(options, parentOptions)
     {
         _googleCloudConfig = googleCloudConfig;
         // The options normally carry the backend adaptation handler from the original
@@ -188,7 +189,11 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
     /// <inheritdoc />
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicGoogleCloudClient(_googleCloudConfig, _options.Apply(modifier));
+        return new AnthropicGoogleCloudClient(
+            _googleCloudConfig,
+            _options.Apply(modifier),
+            _options
+        );
     }
 
     internal static string DeriveWorkspaceBaseUrl(
