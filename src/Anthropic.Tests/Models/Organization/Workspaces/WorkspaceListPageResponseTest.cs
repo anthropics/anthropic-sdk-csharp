@@ -35,6 +35,7 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "env", "prod" },
                         { "team", "platform" },
                     },
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             FirstID = "first_id",
@@ -64,6 +65,7 @@ public class WorkspaceListPageResponseTest : TestBase
                     { "env", "prod" },
                     { "team", "platform" },
                 },
+                UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             },
         ];
         string expectedFirstID = "first_id";
@@ -107,6 +109,7 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "env", "prod" },
                         { "team", "platform" },
                     },
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             FirstID = "first_id",
@@ -150,6 +153,7 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "env", "prod" },
                         { "team", "platform" },
                     },
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             FirstID = "first_id",
@@ -186,6 +190,7 @@ public class WorkspaceListPageResponseTest : TestBase
                     { "env", "prod" },
                     { "team", "platform" },
                 },
+                UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             },
         ];
         string expectedFirstID = "first_id";
@@ -229,6 +234,7 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "env", "prod" },
                         { "team", "platform" },
                     },
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             FirstID = "first_id",
@@ -266,6 +272,7 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "env", "prod" },
                         { "team", "platform" },
                     },
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             FirstID = "first_id",

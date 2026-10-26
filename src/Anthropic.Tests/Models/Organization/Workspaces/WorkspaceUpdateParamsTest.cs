@@ -22,6 +22,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "x",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string expectedWorkspaceID = "workspace_id";
@@ -38,6 +39,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             { "env", "prod" },
             { "team", "platform" },
         };
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
         Assert.Equal(expectedDataResidency, parameters.DataResidency);
@@ -52,6 +54,7 @@ public class WorkspaceUpdateParamsTest : TestBase
 
             Assert.Equal(value, parameters.Tags[item.Key]);
         }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -75,6 +78,8 @@ public class WorkspaceUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Name);
         Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -95,6 +100,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             DisplayColor = null,
             ExternalKeyID = null,
             Name = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.DisplayColor);
@@ -103,6 +109,8 @@ public class WorkspaceUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Name);
         Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -121,12 +129,14 @@ public class WorkspaceUpdateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "x",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         } with
         {
             // Null should be interpreted as omitted for these properties
             DisplayColor = null,
             ExternalKeyID = null,
             Name = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.DisplayColor);
@@ -135,6 +145,8 @@ public class WorkspaceUpdateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Name);
         Assert.False(parameters.RawBodyData.ContainsKey("name"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -146,6 +158,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "x",
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         Assert.Null(parameters.DataResidency);
@@ -163,6 +176,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "x",
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
 
             DataResidency = null,
             Tags = null,
@@ -205,6 +219,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "x",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         WorkspaceUpdateParams copied = new(parameters);

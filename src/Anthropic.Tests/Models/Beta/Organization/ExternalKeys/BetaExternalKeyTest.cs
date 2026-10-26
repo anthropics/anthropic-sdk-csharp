@@ -26,6 +26,7 @@ public class BetaExternalKeyTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string expectedID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
@@ -41,6 +42,7 @@ public class BetaExternalKeyTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("external_key");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedAttachment, model.Attachment);
@@ -50,6 +52,7 @@ public class BetaExternalKeyTest : TestBase
         Assert.Equal(expectedProviderConfig, model.ProviderConfig);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
+        Assert.Equal(expectedUserProfileID, model.UserProfileID);
     }
 
     [Fact]
@@ -70,6 +73,7 @@ public class BetaExternalKeyTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -99,6 +103,7 @@ public class BetaExternalKeyTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -121,6 +126,7 @@ public class BetaExternalKeyTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("external_key");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedAttachment, deserialized.Attachment);
@@ -130,6 +136,7 @@ public class BetaExternalKeyTest : TestBase
         Assert.Equal(expectedProviderConfig, deserialized.ProviderConfig);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
+        Assert.Equal(expectedUserProfileID, deserialized.UserProfileID);
     }
 
     [Fact]
@@ -150,6 +157,7 @@ public class BetaExternalKeyTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         model.Validate();
@@ -173,6 +181,7 @@ public class BetaExternalKeyTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         BetaExternalKey copied = new(model);

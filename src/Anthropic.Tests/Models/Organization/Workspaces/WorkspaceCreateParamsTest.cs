@@ -22,6 +22,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string expectedName = "x";
@@ -38,6 +39,7 @@ public class WorkspaceCreateParamsTest : TestBase
             { "env", "prod" },
             { "team", "platform" },
         };
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedName, parameters.Name);
         Assert.Equal(expectedDataResidency, parameters.DataResidency);
@@ -51,6 +53,7 @@ public class WorkspaceCreateParamsTest : TestBase
 
             Assert.Equal(value, parameters.Tags[item.Key]);
         }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -66,6 +69,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Tags);
         Assert.False(parameters.RawBodyData.ContainsKey("tags"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -79,6 +84,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = null,
             ExternalKeyID = null,
             Tags = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.DataResidency);
@@ -89,6 +95,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Tags);
         Assert.True(parameters.RawBodyData.ContainsKey("tags"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.True(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -122,6 +130,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         WorkspaceCreateParams copied = new(parameters);

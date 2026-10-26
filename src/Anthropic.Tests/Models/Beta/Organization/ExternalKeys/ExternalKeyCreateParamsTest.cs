@@ -22,6 +22,7 @@ public class ExternalKeyCreateParamsTest : TestBase
             },
             DisplayName = "x",
             Geo = Geo.Us,
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         ProviderConfig expectedProviderConfig = new BetaAwsExternalKeyConfig()
@@ -32,10 +33,12 @@ public class ExternalKeyCreateParamsTest : TestBase
         };
         string expectedDisplayName = "x";
         ApiEnum<string, Geo> expectedGeo = Geo.Us;
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedProviderConfig, parameters.ProviderConfig);
         Assert.Equal(expectedDisplayName, parameters.DisplayName);
         Assert.Equal(expectedGeo, parameters.Geo);
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
     }
 
     [Fact]
@@ -51,6 +54,7 @@ public class ExternalKeyCreateParamsTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             DisplayName = "x",
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         Assert.Null(parameters.Geo);
@@ -70,6 +74,7 @@ public class ExternalKeyCreateParamsTest : TestBase
                 RoleArn = "arn:aws:iam::111122223333:role/anthropic-cmek",
             },
             DisplayName = "x",
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
 
             // Null should be interpreted as omitted for these properties
             Geo = null,
@@ -93,6 +98,7 @@ public class ExternalKeyCreateParamsTest : TestBase
             },
             DisplayName = "x",
             Geo = Geo.Us,
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -120,6 +126,8 @@ public class ExternalKeyCreateParamsTest : TestBase
 
         Assert.Null(parameters.DisplayName);
         Assert.False(parameters.RawBodyData.ContainsKey("display_name"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -137,10 +145,13 @@ public class ExternalKeyCreateParamsTest : TestBase
             Geo = Geo.Us,
 
             DisplayName = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.DisplayName);
         Assert.True(parameters.RawBodyData.ContainsKey("display_name"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.True(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -181,6 +192,7 @@ public class ExternalKeyCreateParamsTest : TestBase
             },
             DisplayName = "x",
             Geo = Geo.Us,
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         ExternalKeyCreateParams copied = new(parameters);

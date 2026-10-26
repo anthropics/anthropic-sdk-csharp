@@ -25,6 +25,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -43,6 +44,7 @@ public class WorkspaceCreateParamsTest : TestBase
             { "env", "prod" },
             { "team", "platform" },
         };
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
             AnthropicBeta.MessageBatches2024_09_24,
@@ -60,6 +62,7 @@ public class WorkspaceCreateParamsTest : TestBase
 
             Assert.Equal(value, parameters.Tags[item.Key]);
         }
+        Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
         Assert.NotNull(parameters.Betas);
         Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
         for (int i = 0; i < expectedBetas.Count; i++)
@@ -84,6 +87,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         Assert.Null(parameters.Betas);
@@ -106,6 +110,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -131,6 +136,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         } with
         {
@@ -159,6 +165,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Tags);
         Assert.False(parameters.RawBodyData.ContainsKey("tags"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.False(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -173,6 +181,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = null,
             ExternalKeyID = null,
             Tags = null,
+            UserProfileID = null,
         };
 
         Assert.Null(parameters.DataResidency);
@@ -183,6 +192,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("external_key_id"));
         Assert.Null(parameters.Tags);
         Assert.True(parameters.RawBodyData.ContainsKey("tags"));
+        Assert.Null(parameters.UserProfileID);
+        Assert.True(parameters.RawBodyData.ContainsKey("user_profile_id"));
     }
 
     [Fact]
@@ -234,6 +245,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
