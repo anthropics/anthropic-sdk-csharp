@@ -6,6 +6,11 @@
 
 * **api:** add user_profile_id to External Keys and Workspaces
 
+
+### Bug Fixes
+
+* **client:** add missing ConfigureAwait(false) in Paginate
+
 ## [13.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.3.0) (2026-10-23)
 
 ### Features
