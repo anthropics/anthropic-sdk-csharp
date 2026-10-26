@@ -9,6 +9,7 @@
 
 ### Bug Fixes
 
+* **client:** throw the API exception for the status, not `InvalidOperationException`, when an error response or a stream's `error` event is JSON but not the expected object
 * **client:** add missing ConfigureAwait(false) in Paginate
 
 
