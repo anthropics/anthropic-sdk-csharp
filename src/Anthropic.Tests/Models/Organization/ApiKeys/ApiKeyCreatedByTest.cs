@@ -10,9 +10,9 @@ public class ApiKeyCreatedByTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ApiKeyCreatedBy { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = Type.User };
+        var model = new ApiKeyCreatedBy { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = Type.User };
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         ApiEnum<string, Type> expectedType = Type.User;
 
         Assert.Equal(expectedID, model.ID);
@@ -22,7 +22,7 @@ public class ApiKeyCreatedByTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ApiKeyCreatedBy { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = Type.User };
+        var model = new ApiKeyCreatedBy { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = Type.User };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiKeyCreatedBy>(
@@ -36,7 +36,7 @@ public class ApiKeyCreatedByTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ApiKeyCreatedBy { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = Type.User };
+        var model = new ApiKeyCreatedBy { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = Type.User };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiKeyCreatedBy>(
@@ -45,7 +45,7 @@ public class ApiKeyCreatedByTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         ApiEnum<string, Type> expectedType = Type.User;
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -55,7 +55,7 @@ public class ApiKeyCreatedByTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ApiKeyCreatedBy { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = Type.User };
+        var model = new ApiKeyCreatedBy { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = Type.User };
 
         model.Validate();
     }
@@ -63,7 +63,7 @@ public class ApiKeyCreatedByTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new ApiKeyCreatedBy { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = Type.User };
+        var model = new ApiKeyCreatedBy { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = Type.User };
 
         ApiKeyCreatedBy copied = new(model);
 

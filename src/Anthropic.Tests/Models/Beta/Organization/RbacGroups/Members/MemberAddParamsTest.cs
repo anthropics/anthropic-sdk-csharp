@@ -11,11 +11,11 @@ public class MemberAddParamsTest : TestBase
         var parameters = new MemberAddParams
         {
             RbacGroupID = "rbac_group_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string expectedRbacGroupID = "rbac_group_id";
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedRbacGroupID, parameters.RbacGroupID);
         Assert.Equal(expectedUserID, parameters.UserID);
@@ -27,7 +27,7 @@ public class MemberAddParamsTest : TestBase
         MemberAddParams parameters = new()
         {
             RbacGroupID = "rbac_group_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -48,7 +48,7 @@ public class MemberAddParamsTest : TestBase
         var parameters = new MemberAddParams
         {
             RbacGroupID = "rbac_group_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         MemberAddParams copied = new(parameters);

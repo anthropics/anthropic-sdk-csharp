@@ -24,7 +24,7 @@ public class MemberServiceTest : TestBase
             .client.WithQuery("beta=true")
             .Beta.Organization.RbacGroups.Members.Add(
                 "rbac_group_id",
-                new() { UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q" },
+                new() { UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu" },
                 TestContext.Current.CancellationToken
             );
         betaRbacGroupMember.Validate();

@@ -12,12 +12,12 @@ public class BetaPluginUserActorTest : TestBase
         var model = new BetaPluginUserActor
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string expectedEmailAddress = "user@example.com";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedEmailAddress, model.EmailAddress);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -30,7 +30,7 @@ public class BetaPluginUserActorTest : TestBase
         var model = new BetaPluginUserActor
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -48,7 +48,7 @@ public class BetaPluginUserActorTest : TestBase
         var model = new BetaPluginUserActor
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,7 +60,7 @@ public class BetaPluginUserActorTest : TestBase
 
         string expectedEmailAddress = "user@example.com";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedEmailAddress, deserialized.EmailAddress);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -73,7 +73,7 @@ public class BetaPluginUserActorTest : TestBase
         var model = new BetaPluginUserActor
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         model.Validate();
@@ -85,7 +85,7 @@ public class BetaPluginUserActorTest : TestBase
         var model = new BetaPluginUserActor
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         BetaPluginUserActor copied = new(model);

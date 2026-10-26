@@ -49,7 +49,7 @@ public class SpendLimitServiceTest : TestBase
                 new()
                 {
                     Amount = "50000",
-                    Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+                    Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                 },
                 TestContext.Current.CancellationToken
             );

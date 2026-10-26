@@ -123,7 +123,7 @@ public class TargetTest : TestBase
     [Fact]
     public void BetaPluginTargetOrganizationMemberValidationWorks()
     {
-        Target value = new BetaPluginTargetOrganizationMember("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Target value = new BetaPluginTargetOrganizationMember("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -150,7 +150,7 @@ public class TargetTest : TestBase
     [Fact]
     public void BetaPluginTargetOrganizationMemberSerializationRoundtripWorks()
     {
-        Target value = new BetaPluginTargetOrganizationMember("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Target value = new BetaPluginTargetOrganizationMember("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Target>(element, ModelBase.SerializerOptions);
 
@@ -174,7 +174,7 @@ public class TargetTest : TestBase
     [Fact]
     public void BetaPluginTargetOrganizationMemberTypeWorks()
     {
-        Target value = new BetaPluginTargetOrganizationMember("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Target value = new BetaPluginTargetOrganizationMember("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(TargetTypeValue.OrganizationMember, value.Type.Value());
     }
 

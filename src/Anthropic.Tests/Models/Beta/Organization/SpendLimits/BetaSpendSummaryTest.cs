@@ -17,14 +17,14 @@ public class BetaSpendSummaryTest : TestBase
                 Deleted = true,
                 EmailAddress = "email_address",
                 Name = "name",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Amount = "50000",
             Currency = "USD",
             Period = BetaSpendLimitPeriod.Daily,
             PeriodToDateSpend = "12050.5",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
-            Source = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
+            Source = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             SpendLimitID = "spend_limit_id",
         };
 
@@ -33,16 +33,16 @@ public class BetaSpendSummaryTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string expectedAmount = "50000";
         string expectedCurrency = "USD";
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Daily;
         string expectedPeriodToDateSpend = "12050.5";
         BetaSpendSummaryScope expectedScope = new BetaSpendLimitUserScope(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
-        Source expectedSource = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Source expectedSource = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string expectedSpendLimitID = "spend_limit_id";
 
         Assert.Equal(expectedActor, model.Actor);
@@ -65,14 +65,14 @@ public class BetaSpendSummaryTest : TestBase
                 Deleted = true,
                 EmailAddress = "email_address",
                 Name = "name",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Amount = "50000",
             Currency = "USD",
             Period = BetaSpendLimitPeriod.Daily,
             PeriodToDateSpend = "12050.5",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
-            Source = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
+            Source = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             SpendLimitID = "spend_limit_id",
         };
 
@@ -95,14 +95,14 @@ public class BetaSpendSummaryTest : TestBase
                 Deleted = true,
                 EmailAddress = "email_address",
                 Name = "name",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Amount = "50000",
             Currency = "USD",
             Period = BetaSpendLimitPeriod.Daily,
             PeriodToDateSpend = "12050.5",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
-            Source = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
+            Source = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             SpendLimitID = "spend_limit_id",
         };
 
@@ -118,16 +118,16 @@ public class BetaSpendSummaryTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string expectedAmount = "50000";
         string expectedCurrency = "USD";
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Daily;
         string expectedPeriodToDateSpend = "12050.5";
         BetaSpendSummaryScope expectedScope = new BetaSpendLimitUserScope(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
-        Source expectedSource = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Source expectedSource = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string expectedSpendLimitID = "spend_limit_id";
 
         Assert.Equal(expectedActor, deserialized.Actor);
@@ -150,14 +150,14 @@ public class BetaSpendSummaryTest : TestBase
                 Deleted = true,
                 EmailAddress = "email_address",
                 Name = "name",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Amount = "50000",
             Currency = "USD",
             Period = BetaSpendLimitPeriod.Daily,
             PeriodToDateSpend = "12050.5",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
-            Source = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
+            Source = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             SpendLimitID = "spend_limit_id",
         };
 
@@ -174,14 +174,14 @@ public class BetaSpendSummaryTest : TestBase
                 Deleted = true,
                 EmailAddress = "email_address",
                 Name = "name",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Amount = "50000",
             Currency = "USD",
             Period = BetaSpendLimitPeriod.Daily,
             PeriodToDateSpend = "12050.5",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
-            Source = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
+            Source = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             SpendLimitID = "spend_limit_id",
         };
 
@@ -201,7 +201,7 @@ public class ActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         value.Validate();
     }
@@ -221,7 +221,7 @@ public class ActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Actor>(element, ModelBase.SerializerOptions);
@@ -247,7 +247,7 @@ public class ActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         Assert.Equal(ActorType.UserActor, value.Type.Value());
     }
@@ -346,7 +346,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserValidationWorks()
     {
-        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -397,7 +397,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserSerializationRoundtripWorks()
     {
-        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaSpendSummaryScope>(
             element,
@@ -490,7 +490,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserTypeWorks()
     {
-        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendSummaryScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(BetaSpendSummaryScopeType.User, value.Type.Value());
     }
 
@@ -635,7 +635,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitUserScopeValidationWorks()
     {
-        Source value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Source value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -684,7 +684,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitUserScopeSerializationRoundtripWorks()
     {
-        Source value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Source value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -754,7 +754,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitUserScopeTypeWorks()
     {
-        Source value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Source value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(SourceType.User, value.Type.Value());
     }
 

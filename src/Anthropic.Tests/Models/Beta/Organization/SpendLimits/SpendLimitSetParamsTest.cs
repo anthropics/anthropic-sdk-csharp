@@ -17,13 +17,13 @@ public class SpendLimitSetParamsTest : TestBase
         var parameters = new SpendLimitSetParams
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
         string expectedAmount = "50000";
-        Scope expectedScope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Scope expectedScope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Monthly;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -47,7 +47,7 @@ public class SpendLimitSetParamsTest : TestBase
         var parameters = new SpendLimitSetParams
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
         };
 
         Assert.Null(parameters.Period);
@@ -62,7 +62,7 @@ public class SpendLimitSetParamsTest : TestBase
         var parameters = new SpendLimitSetParams
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
 
             // Null should be interpreted as omitted for these properties
             Period = null,
@@ -81,7 +81,7 @@ public class SpendLimitSetParamsTest : TestBase
         var parameters = new SpendLimitSetParams
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         } with
@@ -103,7 +103,7 @@ public class SpendLimitSetParamsTest : TestBase
         SpendLimitSetParams parameters = new()
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -123,7 +123,7 @@ public class SpendLimitSetParamsTest : TestBase
         SpendLimitSetParams parameters = new()
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
 
@@ -141,7 +141,7 @@ public class SpendLimitSetParamsTest : TestBase
         var parameters = new SpendLimitSetParams
         {
             Amount = "50000",
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -157,7 +157,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserValidationWorks()
     {
-        Scope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Scope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -178,7 +178,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserSerializationRoundtripWorks()
     {
-        Scope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Scope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Scope>(element, ModelBase.SerializerOptions);
 
@@ -208,7 +208,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserTypeWorks()
     {
-        Scope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Scope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(ScopeTypeValue.User, value.Type.Value());
     }
 

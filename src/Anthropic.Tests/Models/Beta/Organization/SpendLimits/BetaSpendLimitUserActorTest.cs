@@ -14,14 +14,14 @@ public class BetaSpendLimitUserActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         bool expectedDeleted = true;
         string expectedEmailAddress = "email_address";
         string expectedName = "name";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedDeleted, model.Deleted);
         Assert.Equal(expectedEmailAddress, model.EmailAddress);
@@ -38,7 +38,7 @@ public class BetaSpendLimitUserActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -58,7 +58,7 @@ public class BetaSpendLimitUserActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -72,7 +72,7 @@ public class BetaSpendLimitUserActorTest : TestBase
         string expectedEmailAddress = "email_address";
         string expectedName = "name";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedDeleted, deserialized.Deleted);
         Assert.Equal(expectedEmailAddress, deserialized.EmailAddress);
@@ -89,7 +89,7 @@ public class BetaSpendLimitUserActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         model.Validate();
@@ -103,7 +103,7 @@ public class BetaSpendLimitUserActorTest : TestBase
             Deleted = true,
             EmailAddress = "email_address",
             Name = "name",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         BetaSpendLimitUserActor copied = new(model);

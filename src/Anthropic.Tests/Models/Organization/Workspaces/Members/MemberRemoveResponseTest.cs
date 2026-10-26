@@ -11,12 +11,12 @@ public class MemberRemoveResponseTest : TestBase
     {
         var model = new MemberRemoveResponse
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member_deleted");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -29,7 +29,7 @@ public class MemberRemoveResponseTest : TestBase
     {
         var model = new MemberRemoveResponse
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
@@ -47,7 +47,7 @@ public class MemberRemoveResponseTest : TestBase
     {
         var model = new MemberRemoveResponse
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
@@ -59,7 +59,7 @@ public class MemberRemoveResponseTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member_deleted");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -72,7 +72,7 @@ public class MemberRemoveResponseTest : TestBase
     {
         var model = new MemberRemoveResponse
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
@@ -84,7 +84,7 @@ public class MemberRemoveResponseTest : TestBase
     {
         var model = new MemberRemoveResponse
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 

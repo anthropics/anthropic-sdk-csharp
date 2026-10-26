@@ -214,7 +214,7 @@ public class BetaPluginInstallationSettingTargetTest : TestBase
     public void BetaPluginTargetOrganizationMemberValidationWorks()
     {
         BetaPluginInstallationSettingTarget value = new BetaPluginTargetOrganizationMember(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         value.Validate();
     }
@@ -251,7 +251,7 @@ public class BetaPluginInstallationSettingTargetTest : TestBase
     public void BetaPluginTargetOrganizationMemberSerializationRoundtripWorks()
     {
         BetaPluginInstallationSettingTarget value = new BetaPluginTargetOrganizationMember(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaPluginInstallationSettingTarget>(
@@ -282,7 +282,7 @@ public class BetaPluginInstallationSettingTargetTest : TestBase
     public void BetaPluginTargetOrganizationMemberTypeWorks()
     {
         BetaPluginInstallationSettingTarget value = new BetaPluginTargetOrganizationMember(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         Assert.Equal(
             BetaPluginInstallationSettingTargetType.OrganizationMember,

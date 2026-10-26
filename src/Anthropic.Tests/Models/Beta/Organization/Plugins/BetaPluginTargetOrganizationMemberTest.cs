@@ -11,11 +11,11 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
     {
         var model = new BetaPluginTargetOrganizationMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("organization_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUserID, model.UserID);
@@ -26,7 +26,7 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
     {
         var model = new BetaPluginTargetOrganizationMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -43,7 +43,7 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
     {
         var model = new BetaPluginTargetOrganizationMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -54,7 +54,7 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("organization_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUserID, deserialized.UserID);
@@ -65,7 +65,7 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
     {
         var model = new BetaPluginTargetOrganizationMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         model.Validate();
@@ -76,7 +76,7 @@ public class BetaPluginTargetOrganizationMemberTest : TestBase
     {
         var model = new BetaPluginTargetOrganizationMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         BetaPluginTargetOrganizationMember copied = new(model);
