@@ -5,6 +5,12 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta;
 
+/// <summary>
+/// Beta names you can send in the `anthropic-beta` header.
+///
+/// <para>See [Beta headers](https://platform.claude.com/docs/en/api/beta-headers)
+/// for how to send them and where to find the name a feature needs.</para>
+/// </summary>
 [JsonConverter(typeof(AnthropicBetaConverter))]
 public enum AnthropicBeta
 {

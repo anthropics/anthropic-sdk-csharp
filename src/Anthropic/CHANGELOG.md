@@ -1,6 +1,6 @@
 # Changelog
 
-## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-26)
+## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-27)
 
 ### Features
 
@@ -16,6 +16,11 @@
 ### Chores
 
 * **docs:** clarify what disabling the Compliance API stops
+
+
+### Documentation
+
+* add a description to the AnthropicBeta type
 
 ## [13.3.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.2.1...Anthropic-v13.3.0) (2026-10-23)
 
