@@ -1,6 +1,6 @@
 # Changelog
 
-## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-27)
+## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-28)
 
 ### Features
 
@@ -16,6 +16,7 @@
 ### Chores
 
 * **docs:** clarify what disabling the Compliance API stops
+* **docs:** clarify what the capability_access_all role action grants
 
 
 ### Documentation
