@@ -60,7 +60,12 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
                 "Expected to find property model in request json but found none."
             );
 
-        bodyContent.Root.AsObject().Remove("model");
+        // rawPredict and streamRawPredict take the model from the URL, but count-tokens
+        // reads it from the body.
+        if (!isCountEndpoint)
+        {
+            bodyContent.Root.AsObject().Remove("model");
+        }
         var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
 
         var contentStream = new MemoryStream();
@@ -121,7 +126,7 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
         if (
             requestMessage.RequestUri.Segments.Length >= 4
             && requestMessage.RequestUri.Segments[2].Trim('/') is "messages"
-            && requestMessage.RequestUri.Segments[3].Trim('/') is "batches" or "count_tokens"
+            && requestMessage.RequestUri.Segments[3].Trim('/') is "batches"
         )
         {
             throw new AnthropicInvalidDataException(

@@ -2,9 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Messages;
+using Anthropic.Models.Messages;
 using Anthropic.Vertex;
 using Moq;
 using Moq.Protected;
@@ -87,5 +90,83 @@ public class VertexAdaptationUrlTests
             "/v1/projects/test-project/locations/us-east5/publishers/anthropic/models/claude-sonnet-4-5:rawPredict",
             wireUri.AbsolutePath
         );
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task CountTokens_RoutesToVertexCountTokensEndpoint(bool beta)
+    {
+        Uri? wireUri = null;
+        string? wireBody = null;
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Callback<HttpRequestMessage, CancellationToken>(
+                (req, cancellationToken) =>
+                {
+                    wireUri = req.RequestUri;
+                    wireBody = req.Content!.ReadAsStringAsync(
+#if NET
+                            cancellationToken
+#endif
+                        )
+                        .GetAwaiter()
+                        .GetResult();
+                }
+            )
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("{\"input_tokens\":12}"),
+                }
+            );
+
+        var client = new AnthropicVertexClient(new FakeVertexCredentials())
+        {
+            BaseUrl = "http://127.0.0.1:8080",
+            HttpClient = new HttpClient(handlerMock.Object),
+            Handlers = new List<DelegatingHandler>(),
+        };
+
+        long inputTokens = beta
+            ? (
+                await client.Beta.Messages.CountTokens(
+                    new()
+                    {
+                        Messages = [new BetaUserMessageParam { Content = "Hello" }],
+                        Model = "claude-sonnet-4-5",
+                    },
+                    TestContext.Current.CancellationToken
+                )
+            ).InputTokens
+            : (
+                await client.Messages.CountTokens(
+                    new()
+                    {
+                        Messages = [new UserMessageParam { Content = "Hello" }],
+                        Model = "claude-sonnet-4-5",
+                    },
+                    TestContext.Current.CancellationToken
+                )
+            ).InputTokens;
+
+        Assert.Equal(12, inputTokens);
+        Assert.NotNull(wireUri);
+        Assert.Equal(
+            "/v1/projects/test-project/locations/us-east5/publishers/anthropic/models/count-tokens:rawPredict",
+            wireUri!.AbsolutePath
+        );
+
+        // Unlike rawPredict, the count-tokens endpoint takes the model in the body.
+        var body = JsonNode.Parse(wireBody!)!;
+        Assert.Equal("claude-sonnet-4-5", (string?)body["model"]);
+        Assert.NotNull(body["anthropic_version"]);
     }
 }
