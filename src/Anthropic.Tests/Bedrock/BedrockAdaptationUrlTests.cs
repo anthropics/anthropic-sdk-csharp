@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Bedrock;
@@ -48,6 +49,28 @@ public class BedrockAdaptationUrlTests
             new StringContent("{\"model\":\"claude-sonnet-4-5\",\"max_tokens\":1024}");
     }
 
+    private record class ModelBodyParams : ParamsBase
+    {
+        public required string Model { get; init; }
+
+        internal override void AddHeadersToRequest(
+            HttpRequestMessage _request,
+            ClientOptions _options
+        )
+        {
+            // Skip default headers so ambient ANTHROPIC_* env vars can't interfere.
+        }
+
+        public override Uri Url(ClientOptions options) => new($"{options.BaseUrl}/v1/messages");
+
+        internal override HttpContent? BodyContent() =>
+            new StringContent(
+                JsonSerializer.Serialize(
+                    new Dictionary<string, object> { ["model"] = Model, ["max_tokens"] = 1024 }
+                )
+            );
+    }
+
     [Fact]
     public async Task AdaptRequest_BaseUrlWithNonDefaultPort_PreservesPort()
     {
@@ -86,5 +109,56 @@ public class BedrockAdaptationUrlTests
         Assert.Equal("127.0.0.1:8080", wireUri!.Authority);
         Assert.Equal(8080, wireUri.Port);
         Assert.Equal("/model/claude-sonnet-4-5/invoke", wireUri.AbsolutePath);
+    }
+
+    [Theory]
+    [InlineData(
+        "us.anthropic.claude-haiku-4-5-20251001-v1:0",
+        "/model/us.anthropic.claude-haiku-4-5-20251001-v1:0/invoke"
+    )]
+    [InlineData(
+        "arn:aws:bedrock:us-east-1:123456789012:application-inference-profile/abc123",
+        "/model/arn:aws:bedrock:us-east-1:123456789012:application-inference-profile%2Fabc123/invoke"
+    )]
+    public async Task AdaptRequest_EscapesModelInPath(string model, string expectedPath)
+    {
+        Uri? wireUri = null;
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .Callback<HttpRequestMessage, CancellationToken>((req, _) => wireUri = req.RequestUri)
+            .ReturnsAsync(
+                new HttpResponseMessage
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Content = new StringContent("{}"),
+                }
+            );
+
+        var client = new AnthropicBedrockClient(new FakeBedrockCredentials())
+        {
+            BaseUrl = "https://bedrock-runtime.us-east-1.amazonaws.com",
+            HttpClient = new HttpClient(handlerMock.Object),
+            Handlers = new List<DelegatingHandler>(),
+        };
+
+        await client.WithRawResponse.Execute(
+            new HttpRequest<ModelBodyParams>
+            {
+                Method = HttpMethod.Post,
+                Params = new() { Model = model },
+            },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(wireUri);
+        Assert.Equal(expectedPath, wireUri!.AbsolutePath);
+        // The model is a single path segment, so an ARN's "/" must not add a segment.
+        Assert.Equal(4, wireUri.Segments.Length);
     }
 }

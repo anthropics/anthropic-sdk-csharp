@@ -122,8 +122,12 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 "content-length",
                 contentStream.Length.ToString()
             );
+            // The model can be an ARN, such as an inference profile ARN, whose "/" would otherwise
+            // split it into several path segments. ":" stays literal so that model IDs such as
+            // "...-v1:0" are sent unchanged.
+            var modelSegment = Uri.EscapeDataString(modelValue.ToString()).Replace("%3A", ":");
             var strUri =
-                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/model/{modelSegment}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
 #if NET6_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows
