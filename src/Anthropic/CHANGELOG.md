@@ -17,6 +17,7 @@
 
 * **docs:** clarify what disabling the Compliance API stops
 * **docs:** clarify what the capability_access_all role action grants
+* **internal:** let releases set the version of Anthropic.Mcp
 
 
 ### Documentation
