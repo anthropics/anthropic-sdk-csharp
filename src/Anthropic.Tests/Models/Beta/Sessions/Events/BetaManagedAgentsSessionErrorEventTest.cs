@@ -14,23 +14,21 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
         string expectedID = "id";
-        Error expectedError = new BetaManagedAgentsRepositoryAuthenticationError()
+        Error expectedError = new BetaManagedAgentsToolUseLimitReachedError()
         {
             Message =
-                "The repository host rejected the credentials for the repository, or required credentials and received none.",
-            RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.error");
@@ -47,12 +45,11 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -72,12 +69,11 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -90,12 +86,11 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         Assert.NotNull(deserialized);
 
         string expectedID = "id";
-        Error expectedError = new BetaManagedAgentsRepositoryAuthenticationError()
+        Error expectedError = new BetaManagedAgentsToolUseLimitReachedError()
         {
             Message =
-                "The repository host rejected the credentials for the repository, or required credentials and received none.",
-            RepositoryUrl = "https://github.com/example-org/example-repo",
-            RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
         };
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.error");
@@ -112,12 +107,11 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -131,12 +125,11 @@ public class BetaManagedAgentsSessionErrorEventTest : TestBase
         var model = new BetaManagedAgentsSessionErrorEvent
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -237,6 +230,30 @@ public class ErrorTest : TestBase
             Message = "message",
             RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
             VaultID = "vault_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsToolUseLimitReachedValidationWorks()
+    {
+        Error value = new BetaManagedAgentsToolUseLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCompactionLimitReachedValidationWorks()
+    {
+        Error value = new BetaManagedAgentsCompactionLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the context was compacted the maximum number of times in a row without the model producing a message or a tool call. Nothing failed. This can happen when content sent with every request, such as a large system prompt, leaves too little room for the conversation. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
         };
         value.Validate();
     }
@@ -419,6 +436,36 @@ public class ErrorTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsToolUseLimitReachedSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsToolUseLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCompactionLimitReachedSerializationRoundtripWorks()
+    {
+        Error value = new BetaManagedAgentsCompactionLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the context was compacted the maximum number of times in a row without the model producing a message or a tool call. Nothing failed. This can happen when content sent with every request, such as a large system prompt, leaves too little room for the conversation. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<Error>(element, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaManagedAgentsRepositoryAuthenticationSerializationRoundtripWorks()
     {
         Error value = new BetaManagedAgentsRepositoryAuthenticationError()
@@ -587,6 +634,30 @@ public class ErrorTest : TestBase
     }
 
     [Fact]
+    public void BetaManagedAgentsToolUseLimitReachedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsToolUseLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
+        };
+        Assert.Equal(ErrorType.ToolUseLimitReachedError, value.Type.Value());
+    }
+
+    [Fact]
+    public void BetaManagedAgentsCompactionLimitReachedTypeWorks()
+    {
+        Error value = new BetaManagedAgentsCompactionLimitReachedError()
+        {
+            Message =
+                "This turn stopped because the context was compacted the maximum number of times in a row without the model producing a message or a tool call. Nothing failed. This can happen when content sent with every request, such as a large system prompt, leaves too little room for the conversation. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+            RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
+        };
+        Assert.Equal(ErrorType.CompactionLimitReachedError, value.Type.Value());
+    }
+
+    [Fact]
     public void BetaManagedAgentsRepositoryAuthenticationTypeWorks()
     {
         Error value = new BetaManagedAgentsRepositoryAuthenticationError()
@@ -716,6 +787,8 @@ public class ErrorTypeTest : TestBase
     [InlineData(ErrorType.McpAuthenticationFailedError)]
     [InlineData(ErrorType.BillingError)]
     [InlineData(ErrorType.CredentialHostUnreachableError)]
+    [InlineData(ErrorType.ToolUseLimitReachedError)]
+    [InlineData(ErrorType.CompactionLimitReachedError)]
     [InlineData(ErrorType.RepositoryAuthenticationError)]
     [InlineData(ErrorType.RepositoryForbiddenError)]
     [InlineData(ErrorType.RepositoryNotFoundError)]
@@ -749,6 +822,8 @@ public class ErrorTypeTest : TestBase
     [InlineData(ErrorType.McpAuthenticationFailedError)]
     [InlineData(ErrorType.BillingError)]
     [InlineData(ErrorType.CredentialHostUnreachableError)]
+    [InlineData(ErrorType.ToolUseLimitReachedError)]
+    [InlineData(ErrorType.CompactionLimitReachedError)]
     [InlineData(ErrorType.RepositoryAuthenticationError)]
     [InlineData(ErrorType.RepositoryForbiddenError)]
     [InlineData(ErrorType.RepositoryNotFoundError)]

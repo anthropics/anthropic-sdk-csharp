@@ -608,6 +608,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Events::RetryStatusType>(),
             new ApiEnumConverter<
                 string,
+                Events::BetaManagedAgentsCompactionLimitReachedErrorRetryStatusType
+            >(),
+            new ApiEnumConverter<
+                string,
                 Events::BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType
             >(),
             new ApiEnumConverter<string, Events::SourceType>(),
@@ -665,6 +669,10 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Events::Speed>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsStreamSessionEventsType>(),
+            new ApiEnumConverter<
+                string,
+                Events::BetaManagedAgentsToolUseLimitReachedErrorRetryStatusType
+            >(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsUnknownErrorRetryStatusType>(),
             new ApiEnumConverter<
                 string,
