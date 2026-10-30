@@ -26,6 +26,7 @@
 
 * **docs:** clarify what disabling the Compliance API stops
 * **docs:** clarify what the capability_access_all role action grants
+* **docs:** link Dreams model fields to the supported models section
 * **internal:** let releases set the version of Anthropic.Mcp
 
 

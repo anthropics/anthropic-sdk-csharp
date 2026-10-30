@@ -22,7 +22,7 @@ public sealed record class BetaDreamModelConfigParam : JsonModel
     ///
     /// <para>The ID can be 1 to 256 characters long.</para>
     ///
-    /// <para>The [limits table in the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#limits)
+    /// <para>The [Availability section of the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#feature-availability)
     /// lists the supported models.</para>
     /// </summary>
     public required string ID
