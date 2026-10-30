@@ -65,6 +65,7 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
 
         var contentStream = new MemoryStream();
         requestMessage.Content = new StreamContent(contentStream);
+        requestMessage.Content.Headers.ContentType = new("application/json");
         using var writer = new Utf8JsonWriter(contentStream);
         {
             bodyContent.WriteTo(writer);
