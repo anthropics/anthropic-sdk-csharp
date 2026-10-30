@@ -8,7 +8,6 @@ using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.Analytics.Cost;
 using Anthropic.Models.Beta.Organization.Analytics.Usage;
-using Anthropic.Models.Beta.Organization.Analytics.Users;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.Bundles.Targets;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
@@ -33,12 +32,10 @@ using Anthropic.Models.UserProfiles;
 using Anthropic.Models.UserProfiles.ActionUrls;
 using Agents = Anthropic.Models.Beta.Agents;
 using Analytics = Anthropic.Models.Beta.Organization.Analytics;
-using AnalyticsSkills = Anthropic.Models.Beta.Organization.Analytics.Skills;
 using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
-using Connectors = Anthropic.Models.Beta.Organization.Analytics.Connectors;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
@@ -56,12 +53,10 @@ using Models = Anthropic.Models.Beta.Models;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
-using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
 using OrganizationRateLimits = Anthropic.Models.Beta.Organization.RateLimits;
 using OrganizationServiceAccounts = Anthropic.Models.Beta.Organization.ServiceAccounts;
 using PluginMarketplaces = Anthropic.Models.Beta.Organization.PluginMarketplaces;
-using Plugins = Anthropic.Models.Beta.Organization.Analytics.Plugins;
-using Projects = Anthropic.Models.Beta.Organization.Analytics.Apps.Chat.Projects;
+using Plugins = Anthropic.Models.Beta.Organization.Plugins;
 using RateLimits = Anthropic.Models.Organization.Workspaces.RateLimits;
 using RbacGroups = Anthropic.Models.Beta.Organization.RbacGroups;
 using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
@@ -840,6 +835,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Analytics::BetaAnalyticsFederatedActorProviderType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsGroupedCostType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsInferenceGeoFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsOrder>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsPluginGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsProductFilter>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsProjectGroupBy>(),
@@ -857,11 +853,6 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemInferenceGeo>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemSpeed>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUserGroupBy>(),
-            new ApiEnumConverter<string, Order>(),
-            new ApiEnumConverter<string, Projects::Order>(),
-            new ApiEnumConverter<string, Connectors::Order>(),
-            new ApiEnumConverter<string, Plugins::Order>(),
-            new ApiEnumConverter<string, AnalyticsSkills::Order>(),
             new ApiEnumConverter<string, BetaAnalyticsUsageGroupBy>(),
             new ApiEnumConverter<string, BetaAnalyticsUsageOrderBy>(),
             new ApiEnumConverter<string, BetaAnalyticsCostGroupBy>(),
@@ -889,21 +880,19 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, SpendLimits::SourceType>(),
             new ApiEnumConverter<string, SpendLimits::ScopeType>(),
             new ApiEnumConverter<string, SpendLimits::ScopeTypeValue>(),
-            new ApiEnumConverter<string, ActorType>(),
-            new ApiEnumConverter<string, ResolvedByType>(),
+            new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestActorType>(),
+            new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestResolvedByType>(),
             new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestStatus>(),
-            new ApiEnumConverter<string, IncreaseRequestApproveResponseActorType>(),
-            new ApiEnumConverter<string, IncreaseRequestApproveResponseResolvedByType>(),
             new ApiEnumConverter<string, RbacGroups::SourceType>(),
             new ApiEnumConverter<string, ResourceType>(),
-            new ApiEnumConverter<string, OrganizationPlugins::CreatedByType>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OrganizationInstallationPreference>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OwnerTypeValue>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Reach>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Type>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Assessment>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Status>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OwnerType>(),
+            new ApiEnumConverter<string, Plugins::CreatedByType>(),
+            new ApiEnumConverter<string, Plugins::OrganizationInstallationPreference>(),
+            new ApiEnumConverter<string, Plugins::OwnerTypeValue>(),
+            new ApiEnumConverter<string, Plugins::Reach>(),
+            new ApiEnumConverter<string, Plugins::Type>(),
+            new ApiEnumConverter<string, Plugins::Assessment>(),
+            new ApiEnumConverter<string, Plugins::Status>(),
+            new ApiEnumConverter<string, Plugins::OwnerType>(),
             new ApiEnumConverter<string, CreatedByType>(),
             new ApiEnumConverter<string, Reach>(),
             new ApiEnumConverter<string, TargetTypeValue>(),

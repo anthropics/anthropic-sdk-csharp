@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Organization.Analytics;
 using Anthropic.Models.Beta.Organization.Analytics.Connectors;
 
@@ -20,7 +18,7 @@ public class ConnectorListParamsTest : TestBase
             Filter = ["string"],
             GroupBy = [BetaAnalyticsConnectorGroupBy.Product],
             Limit = 1,
-            Order = Order.Asc,
+            Order = BetaAnalyticsOrder.Asc,
             OrderBy = "order_by",
             Page = "page",
             StartingDate = "2019-12-27",
@@ -34,7 +32,7 @@ public class ConnectorListParamsTest : TestBase
             BetaAnalyticsConnectorGroupBy.Product,
         ];
         long expectedLimit = 1;
-        ApiEnum<string, Order> expectedOrder = Order.Asc;
+        ApiEnum<string, BetaAnalyticsOrder> expectedOrder = BetaAnalyticsOrder.Asc;
         string expectedOrderBy = "order_by";
         string expectedPage = "page";
         string expectedStartingDate = "2019-12-27";
@@ -131,7 +129,7 @@ public class ConnectorListParamsTest : TestBase
             Filter = ["string"],
             GroupBy = [BetaAnalyticsConnectorGroupBy.Product],
             Limit = 1,
-            Order = Order.Asc,
+            Order = BetaAnalyticsOrder.Asc,
             OrderBy = "order_by",
             Page = "page",
             StartingDate = "2019-12-27",
@@ -159,7 +157,7 @@ public class ConnectorListParamsTest : TestBase
             Filter = ["string"],
             GroupBy = [BetaAnalyticsConnectorGroupBy.Product],
             Limit = 1,
-            Order = Order.Asc,
+            Order = BetaAnalyticsOrder.Asc,
             OrderBy = "order_by",
             Page = "page",
             StartingDate = "2019-12-27",
@@ -168,63 +166,5 @@ public class ConnectorListParamsTest : TestBase
         ConnectorListParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
-    }
-}
-
-public class OrderTest : TestBase
-{
-    [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void Validation_Works(Order rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Order> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void SerializationRoundtrip_Works(Order rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Order> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }
