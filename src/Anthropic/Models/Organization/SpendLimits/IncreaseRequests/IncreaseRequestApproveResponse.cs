@@ -88,12 +88,12 @@ public sealed record class IncreaseRequestApproveResponse : JsonModel
     /// <summary>
     /// A configured spend limit: a cap on metered spend for one scope and period.
     /// </summary>
-    public required SpendLimit SpendLimit
+    public required SpendLimit? SpendLimit
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<SpendLimit>("spend_limit");
+            return this._rawData.GetNullableClass<SpendLimit>("spend_limit");
         }
         init { this._rawData.Set("spend_limit", value); }
     }
@@ -142,7 +142,7 @@ public sealed record class IncreaseRequestApproveResponse : JsonModel
         this.Period.Validate();
         _ = this.ResolvedAt;
         this.ResolvedBy?.Validate();
-        this.SpendLimit.Validate();
+        this.SpendLimit?.Validate();
         this.SpendSummary?.Validate();
         this.Status.Validate();
         if (
