@@ -16,7 +16,7 @@ AnthropicClient client = new();
 BetaMessage served = await client.Beta.Messages.Create(
     new()
     {
-        Model = Messages::Model.ClaudeFable5,
+        Model = Messages::Model.ClaudeFable5_1,
         MaxTokens = 1024,
         Messages = [new BetaUserMessageParam { Content = "Some prompt that triggers a refusal" }],
         Fallbacks = new([new(Messages::Model.ClaudeOpus4_8)]),
@@ -47,7 +47,7 @@ using (fallbackState.Use())
     var responseUpdates = fallbackClient.Beta.Messages.CreateStreaming(
         new()
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 1024,
             Messages =
             [
@@ -87,7 +87,7 @@ using (fallbackState.Use())
     message = await fallbackClient.Beta.Messages.Create(
         new()
         {
-            Model = Messages::Model.ClaudeFable5,
+            Model = Messages::Model.ClaudeFable5_1,
             MaxTokens = 1024,
             Messages =
             [

@@ -9,6 +9,9 @@
 * **api:** add types for analytics group_by and spend limit period filters
 * **api:** add user_profile_id to External Keys and Workspaces
 
+### Documentation
+
+* **examples:** use current model IDs
 
 ### Bug Fixes
 
