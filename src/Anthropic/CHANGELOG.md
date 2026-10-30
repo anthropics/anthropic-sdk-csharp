@@ -1,9 +1,10 @@
 # Changelog
 
-## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-28)
+## [13.4.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.3.0...Anthropic-v13.4.0) (2026-10-30)
 
 ### Features
 
+* **api:** add types for analytics group_by and spend limit period filters
 * **api:** add user_profile_id to External Keys and Workspaces
 
 

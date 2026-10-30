@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Organization.Analytics;
 using Anthropic.Models.Beta.Organization.Analytics.Skills;
 
 namespace Anthropic.Tests.Models.Beta.Organization.Analytics.Skills;
@@ -17,7 +18,7 @@ public class SkillListParamsTest : TestBase
             Date = "2019-12-27",
             EndingDate = "2019-12-27",
             Filter = ["string"],
-            GroupBy = [GroupBy.Product],
+            GroupBy = [BetaAnalyticsSkillGroupBy.Product],
             Limit = 1,
             Order = Order.Asc,
             OrderBy = "order_by",
@@ -28,7 +29,10 @@ public class SkillListParamsTest : TestBase
         string expectedDate = "2019-12-27";
         string expectedEndingDate = "2019-12-27";
         List<string> expectedFilter = ["string"];
-        List<ApiEnum<string, GroupBy>> expectedGroupBy = [GroupBy.Product];
+        List<ApiEnum<string, BetaAnalyticsSkillGroupBy>> expectedGroupBy =
+        [
+            BetaAnalyticsSkillGroupBy.Product,
+        ];
         long expectedLimit = 1;
         ApiEnum<string, Order> expectedOrder = Order.Asc;
         string expectedOrderBy = "order_by";
@@ -125,7 +129,7 @@ public class SkillListParamsTest : TestBase
             Date = "2019-12-27",
             EndingDate = "2019-12-27",
             Filter = ["string"],
-            GroupBy = [GroupBy.Product],
+            GroupBy = [BetaAnalyticsSkillGroupBy.Product],
             Limit = 1,
             Order = Order.Asc,
             OrderBy = "order_by",
@@ -153,7 +157,7 @@ public class SkillListParamsTest : TestBase
             Date = "2019-12-27",
             EndingDate = "2019-12-27",
             Filter = ["string"],
-            GroupBy = [GroupBy.Product],
+            GroupBy = [BetaAnalyticsSkillGroupBy.Product],
             Limit = 1,
             Order = Order.Asc,
             OrderBy = "order_by",
@@ -164,66 +168,6 @@ public class SkillListParamsTest : TestBase
         SkillListParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
-    }
-}
-
-public class GroupByTest : TestBase
-{
-    [Theory]
-    [InlineData(GroupBy.Product)]
-    [InlineData(GroupBy.RbacGroupID)]
-    [InlineData(GroupBy.UserID)]
-    public void Validation_Works(GroupBy rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, GroupBy> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, GroupBy>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(GroupBy.Product)]
-    [InlineData(GroupBy.RbacGroupID)]
-    [InlineData(GroupBy.UserID)]
-    public void SerializationRoundtrip_Works(GroupBy rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, GroupBy> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupBy>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, GroupBy>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupBy>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }
 

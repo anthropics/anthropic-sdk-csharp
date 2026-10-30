@@ -5,9 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 
@@ -65,18 +63,18 @@ public record class EffectiveListParams : ParamsBase
     /// Restrict the report to these limit periods. Omit to return one row per period
     /// each member resolves a spend limit for.
     /// </summary>
-    public IReadOnlyList<ApiEnum<string, Period>>? Period
+    public IReadOnlyList<ApiEnum<string, BetaSpendLimitPeriod>>? Period
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<ImmutableArray<ApiEnum<string, Period>>>(
-                "period"
-            );
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaSpendLimitPeriod>>
+            >("period");
         }
         init
         {
-            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, Period>>?>(
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, BetaSpendLimitPeriod>>?>(
                 "period",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -196,48 +194,5 @@ public record class EffectiveListParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
-    }
-}
-
-[JsonConverter(typeof(PeriodConverter))]
-public enum Period
-{
-    Daily,
-    Monthly,
-    Weekly,
-}
-
-sealed class PeriodConverter : JsonConverter<Period>
-{
-    public override Period Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "daily" => Period.Daily,
-            "monthly" => Period.Monthly,
-            "weekly" => Period.Weekly,
-            _ => (Period)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Period value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Period.Daily => "daily",
-                Period.Monthly => "monthly",
-                Period.Weekly => "weekly",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }

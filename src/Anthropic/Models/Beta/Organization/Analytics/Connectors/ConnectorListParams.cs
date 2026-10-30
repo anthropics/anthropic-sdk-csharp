@@ -103,18 +103,18 @@ public record class ConnectorListParams : ParamsBase
     /// UTC day, so grouped rows are not an exclusive partition and can sum above
     /// org-level totals. At most 100 entries.
     /// </summary>
-    public IReadOnlyList<ApiEnum<string, GroupBy>>? GroupBy
+    public IReadOnlyList<ApiEnum<string, BetaAnalyticsConnectorGroupBy>>? GroupBy
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<ImmutableArray<ApiEnum<string, GroupBy>>>(
-                "group_by"
-            );
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaAnalyticsConnectorGroupBy>>
+            >("group_by");
         }
         init
         {
-            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, GroupBy>>?>(
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, BetaAnalyticsConnectorGroupBy>>?>(
                 "group_by",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -306,49 +306,6 @@ public record class ConnectorListParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
-    }
-}
-
-[JsonConverter(typeof(GroupByConverter))]
-public enum GroupBy
-{
-    Product,
-    RbacGroupID,
-    UserID,
-}
-
-sealed class GroupByConverter : JsonConverter<GroupBy>
-{
-    public override GroupBy Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "product" => GroupBy.Product,
-            "rbac_group_id" => GroupBy.RbacGroupID,
-            "user_id" => GroupBy.UserID,
-            _ => (GroupBy)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, GroupBy value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                GroupBy.Product => "product",
-                GroupBy.RbacGroupID => "rbac_group_id",
-                GroupBy.UserID => "user_id",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }
 
