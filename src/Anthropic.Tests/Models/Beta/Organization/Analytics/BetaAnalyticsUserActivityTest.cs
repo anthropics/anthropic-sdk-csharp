@@ -51,17 +51,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -71,6 +71,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -118,6 +119,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
             ChatCoworkUnifiedMetrics = new()
             {
@@ -157,11 +159,9 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
-            DistinctUserCount = 0,
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
-            User = new() { ID = "id", EmailAddress = "email_address" },
         };
 
         BetaAnalyticsChatMetrics expectedChatMetrics = new()
@@ -204,17 +204,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
             ConnectorsUsedCount = 0,
             DispatchTurnCount = 0,
             DistinctConnectorsUsedCount = 0,
+            DistinctPluginsUsedCount = 0,
             DistinctSessionCount = 0,
             DistinctSkillsUsedCount = 0,
-            MessageCount = 0,
-            SkillsUsedCount = 0,
-            DistinctPluginsUsedCount = 0,
             EditToolCount = 0,
             FileEditCount = 0,
+            MessageCount = 0,
             MultiEditToolCount = 0,
             NotebookEditToolCount = 0,
             PluginsUsedCount = 0,
             SessionsWithFileEditsCount = 0,
+            SkillsUsedCount = 0,
             WriteToolCount = 0,
         };
         BetaAnalyticsDesignMetrics expectedDesignMetrics = new()
@@ -224,6 +224,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             DistinctSessionCount = 0,
             MessageCount = 0,
         };
+        long expectedDistinctUserCount = 0;
         BetaAnalyticsOfficeMetrics expectedOfficeMetrics = new()
         {
             Excel = new()
@@ -271,6 +272,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             RemoteComputeJobCount = 0,
             SkillsUsedCount = 0,
         };
+        BetaAnalyticsUser expectedUser = new() { ID = "id", EmailAddress = "email_address" };
         long expectedWebSearchCount = 0;
         BetaAnalyticsUserActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
         {
@@ -310,25 +312,23 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 WriteToolCount = 0,
             },
         };
-        long expectedDistinctUserCount = 0;
         string expectedLastActivityDate = "2019-12-27";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
-        BetaAnalyticsUser expectedUser = new() { ID = "id", EmailAddress = "email_address" };
 
         Assert.Equal(expectedChatMetrics, model.ChatMetrics);
         Assert.Equal(expectedClaudeCodeMetrics, model.ClaudeCodeMetrics);
         Assert.Equal(expectedCoworkMetrics, model.CoworkMetrics);
         Assert.Equal(expectedDesignMetrics, model.DesignMetrics);
+        Assert.Equal(expectedDistinctUserCount, model.DistinctUserCount);
         Assert.Equal(expectedOfficeMetrics, model.OfficeMetrics);
         Assert.Equal(expectedScienceMetrics, model.ScienceMetrics);
+        Assert.Equal(expectedUser, model.User);
         Assert.Equal(expectedWebSearchCount, model.WebSearchCount);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, model.ChatCoworkUnifiedMetrics);
-        Assert.Equal(expectedDistinctUserCount, model.DistinctUserCount);
         Assert.Equal(expectedLastActivityDate, model.LastActivityDate);
         Assert.Equal(expectedRbacGroupID, model.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, model.RbacGroupName);
-        Assert.Equal(expectedUser, model.User);
     }
 
     [Fact]
@@ -376,17 +376,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -396,6 +396,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -443,6 +444,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
             ChatCoworkUnifiedMetrics = new()
             {
@@ -482,11 +484,9 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
-            DistinctUserCount = 0,
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
-            User = new() { ID = "id", EmailAddress = "email_address" },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -543,17 +543,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -563,6 +563,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -610,6 +611,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
             ChatCoworkUnifiedMetrics = new()
             {
@@ -649,11 +651,9 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
-            DistinctUserCount = 0,
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
-            User = new() { ID = "id", EmailAddress = "email_address" },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -703,17 +703,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
             ConnectorsUsedCount = 0,
             DispatchTurnCount = 0,
             DistinctConnectorsUsedCount = 0,
+            DistinctPluginsUsedCount = 0,
             DistinctSessionCount = 0,
             DistinctSkillsUsedCount = 0,
-            MessageCount = 0,
-            SkillsUsedCount = 0,
-            DistinctPluginsUsedCount = 0,
             EditToolCount = 0,
             FileEditCount = 0,
+            MessageCount = 0,
             MultiEditToolCount = 0,
             NotebookEditToolCount = 0,
             PluginsUsedCount = 0,
             SessionsWithFileEditsCount = 0,
+            SkillsUsedCount = 0,
             WriteToolCount = 0,
         };
         BetaAnalyticsDesignMetrics expectedDesignMetrics = new()
@@ -723,6 +723,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             DistinctSessionCount = 0,
             MessageCount = 0,
         };
+        long expectedDistinctUserCount = 0;
         BetaAnalyticsOfficeMetrics expectedOfficeMetrics = new()
         {
             Excel = new()
@@ -770,6 +771,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             RemoteComputeJobCount = 0,
             SkillsUsedCount = 0,
         };
+        BetaAnalyticsUser expectedUser = new() { ID = "id", EmailAddress = "email_address" };
         long expectedWebSearchCount = 0;
         BetaAnalyticsUserActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
         {
@@ -809,25 +811,23 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 WriteToolCount = 0,
             },
         };
-        long expectedDistinctUserCount = 0;
         string expectedLastActivityDate = "2019-12-27";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
-        BetaAnalyticsUser expectedUser = new() { ID = "id", EmailAddress = "email_address" };
 
         Assert.Equal(expectedChatMetrics, deserialized.ChatMetrics);
         Assert.Equal(expectedClaudeCodeMetrics, deserialized.ClaudeCodeMetrics);
         Assert.Equal(expectedCoworkMetrics, deserialized.CoworkMetrics);
         Assert.Equal(expectedDesignMetrics, deserialized.DesignMetrics);
+        Assert.Equal(expectedDistinctUserCount, deserialized.DistinctUserCount);
         Assert.Equal(expectedOfficeMetrics, deserialized.OfficeMetrics);
         Assert.Equal(expectedScienceMetrics, deserialized.ScienceMetrics);
+        Assert.Equal(expectedUser, deserialized.User);
         Assert.Equal(expectedWebSearchCount, deserialized.WebSearchCount);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, deserialized.ChatCoworkUnifiedMetrics);
-        Assert.Equal(expectedDistinctUserCount, deserialized.DistinctUserCount);
         Assert.Equal(expectedLastActivityDate, deserialized.LastActivityDate);
         Assert.Equal(expectedRbacGroupID, deserialized.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, deserialized.RbacGroupName);
-        Assert.Equal(expectedUser, deserialized.User);
     }
 
     [Fact]
@@ -875,17 +875,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -895,6 +895,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -942,6 +943,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
             ChatCoworkUnifiedMetrics = new()
             {
@@ -981,11 +983,9 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
-            DistinctUserCount = 0,
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
-            User = new() { ID = "id", EmailAddress = "email_address" },
         };
 
         model.Validate();
@@ -1036,17 +1036,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -1056,6 +1056,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -1103,21 +1104,18 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
         };
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.False(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
-        Assert.Null(model.DistinctUserCount);
-        Assert.False(model.RawData.ContainsKey("distinct_user_count"));
         Assert.Null(model.LastActivityDate);
         Assert.False(model.RawData.ContainsKey("last_activity_date"));
         Assert.Null(model.RbacGroupID);
         Assert.False(model.RawData.ContainsKey("rbac_group_id"));
         Assert.Null(model.RbacGroupName);
         Assert.False(model.RawData.ContainsKey("rbac_group_name"));
-        Assert.Null(model.User);
-        Assert.False(model.RawData.ContainsKey("user"));
     }
 
     [Fact]
@@ -1165,17 +1163,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -1185,6 +1183,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -1232,6 +1231,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
         };
 
@@ -1283,17 +1283,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -1303,6 +1303,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -1350,28 +1351,23 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
 
             ChatCoworkUnifiedMetrics = null,
-            DistinctUserCount = null,
             LastActivityDate = null,
             RbacGroupID = null,
             RbacGroupName = null,
-            User = null,
         };
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.True(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
-        Assert.Null(model.DistinctUserCount);
-        Assert.True(model.RawData.ContainsKey("distinct_user_count"));
         Assert.Null(model.LastActivityDate);
         Assert.True(model.RawData.ContainsKey("last_activity_date"));
         Assert.Null(model.RbacGroupID);
         Assert.True(model.RawData.ContainsKey("rbac_group_id"));
         Assert.Null(model.RbacGroupName);
         Assert.True(model.RawData.ContainsKey("rbac_group_name"));
-        Assert.Null(model.User);
-        Assert.True(model.RawData.ContainsKey("user"));
     }
 
     [Fact]
@@ -1419,17 +1415,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -1439,6 +1435,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -1486,14 +1483,13 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
 
             ChatCoworkUnifiedMetrics = null,
-            DistinctUserCount = null,
             LastActivityDate = null,
             RbacGroupID = null,
             RbacGroupName = null,
-            User = null,
         };
 
         model.Validate();
@@ -1544,17 +1540,17 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 ConnectorsUsedCount = 0,
                 DispatchTurnCount = 0,
                 DistinctConnectorsUsedCount = 0,
+                DistinctPluginsUsedCount = 0,
                 DistinctSessionCount = 0,
                 DistinctSkillsUsedCount = 0,
-                MessageCount = 0,
-                SkillsUsedCount = 0,
-                DistinctPluginsUsedCount = 0,
                 EditToolCount = 0,
                 FileEditCount = 0,
+                MessageCount = 0,
                 MultiEditToolCount = 0,
                 NotebookEditToolCount = 0,
                 PluginsUsedCount = 0,
                 SessionsWithFileEditsCount = 0,
+                SkillsUsedCount = 0,
                 WriteToolCount = 0,
             },
             DesignMetrics = new()
@@ -1564,6 +1560,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 DistinctSessionCount = 0,
                 MessageCount = 0,
             },
+            DistinctUserCount = 0,
             OfficeMetrics = new()
             {
                 Excel = new()
@@ -1611,6 +1608,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 RemoteComputeJobCount = 0,
                 SkillsUsedCount = 0,
             },
+            User = new() { ID = "id", EmailAddress = "email_address" },
             WebSearchCount = 0,
             ChatCoworkUnifiedMetrics = new()
             {
@@ -1650,11 +1648,9 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
-            DistinctUserCount = 0,
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
-            User = new() { ID = "id", EmailAddress = "email_address" },
         };
 
         BetaAnalyticsUserActivity copied = new(model);

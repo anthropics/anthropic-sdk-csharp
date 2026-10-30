@@ -87,6 +87,22 @@ public sealed record class BetaAnalyticsCoworkMetrics : JsonModel
     }
 
     /// <summary>
+    /// Number of distinct plugins used in Cowork sessions. Null while Cowork plugin-use
+    /// metrics are not enabled for this organization. Approximate (HLL, typical
+    /// error &lt;2%) in date-range mode. Null on aggregated rows where a distinct
+    /// count cannot be computed.
+    /// </summary>
+    public required long? DistinctPluginsUsedCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("distinct_plugins_used_count");
+        }
+        init { this._rawData.Set("distinct_plugins_used_count", value); }
+    }
+
+    /// <summary>
     /// Number of distinct Cowork sessions. Approximate (HLL, typical error &lt;2%)
     /// in date-range mode. Null on aggregated rows where a distinct count cannot
     /// be computed.
@@ -117,6 +133,35 @@ public sealed record class BetaAnalyticsCoworkMetrics : JsonModel
     }
 
     /// <summary>
+    /// Number of successful Edit tool calls in Cowork sessions. Null while the file-edit
+    /// metrics are not enabled for this organization.
+    /// </summary>
+    public required long? EditToolCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("edit_tool_count");
+        }
+        init { this._rawData.Set("edit_tool_count", value); }
+    }
+
+    /// <summary>
+    /// Number of successful file-edit tool calls (Edit, MultiEdit, Write, NotebookEdit)
+    /// in Cowork sessions. Null, never 0, while the file-edit metrics are not enabled
+    /// for this organization.
+    /// </summary>
+    public required long? FileEditCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("file_edit_count");
+        }
+        init { this._rawData.Set("file_edit_count", value); }
+    }
+
+    /// <summary>
     /// Number of messages sent in Cowork sessions
     /// </summary>
     public required long MessageCount
@@ -127,6 +172,64 @@ public sealed record class BetaAnalyticsCoworkMetrics : JsonModel
             return this._rawData.GetNotNullStruct<long>("message_count");
         }
         init { this._rawData.Set("message_count", value); }
+    }
+
+    /// <summary>
+    /// Number of successful MultiEdit tool calls in Cowork sessions. Null while the
+    /// file-edit metrics are not enabled for this organization.
+    /// </summary>
+    public required long? MultiEditToolCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("multi_edit_tool_count");
+        }
+        init { this._rawData.Set("multi_edit_tool_count", value); }
+    }
+
+    /// <summary>
+    /// Number of successful NotebookEdit tool calls in Cowork sessions. Null while
+    /// the file-edit metrics are not enabled for this organization.
+    /// </summary>
+    public required long? NotebookEditToolCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("notebook_edit_tool_count");
+        }
+        init { this._rawData.Set("notebook_edit_tool_count", value); }
+    }
+
+    /// <summary>
+    /// Total number of plugin invocations in Cowork sessions. Null while Cowork plugin-use
+    /// metrics are not enabled for this organization.
+    /// </summary>
+    public required long? PluginsUsedCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("plugins_used_count");
+        }
+        init { this._rawData.Set("plugins_used_count", value); }
+    }
+
+    /// <summary>
+    /// Number of distinct Cowork sessions with at least one successful file-edit
+    /// tool call. Null while the file-edit metrics are not enabled for this organization.
+    /// Approximate (HLL, typical error &lt;2%) in date-range mode. Null on aggregated
+    /// rows where a distinct count cannot be computed.
+    /// </summary>
+    public required long? SessionsWithFileEditsCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("sessions_with_file_edits_count");
+        }
+        init { this._rawData.Set("sessions_with_file_edits_count", value); }
     }
 
     /// <summary>
@@ -143,113 +246,10 @@ public sealed record class BetaAnalyticsCoworkMetrics : JsonModel
     }
 
     /// <summary>
-    /// Number of distinct plugins used in Cowork sessions. Null while Cowork plugin-use
-    /// metrics are not enabled for this organization. Approximate (HLL, typical
-    /// error &lt;2%) in date-range mode. Null on aggregated rows where a distinct
-    /// count cannot be computed.
-    /// </summary>
-    public long? DistinctPluginsUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_plugins_used_count");
-        }
-        init { this._rawData.Set("distinct_plugins_used_count", value); }
-    }
-
-    /// <summary>
-    /// Number of successful Edit tool calls in Cowork sessions. Null while the file-edit
-    /// metrics are not enabled for this organization.
-    /// </summary>
-    public long? EditToolCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("edit_tool_count");
-        }
-        init { this._rawData.Set("edit_tool_count", value); }
-    }
-
-    /// <summary>
-    /// Number of successful file-edit tool calls (Edit, MultiEdit, Write, NotebookEdit)
-    /// in Cowork sessions. Null, never 0, while the file-edit metrics are not enabled
-    /// for this organization.
-    /// </summary>
-    public long? FileEditCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("file_edit_count");
-        }
-        init { this._rawData.Set("file_edit_count", value); }
-    }
-
-    /// <summary>
-    /// Number of successful MultiEdit tool calls in Cowork sessions. Null while the
-    /// file-edit metrics are not enabled for this organization.
-    /// </summary>
-    public long? MultiEditToolCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("multi_edit_tool_count");
-        }
-        init { this._rawData.Set("multi_edit_tool_count", value); }
-    }
-
-    /// <summary>
-    /// Number of successful NotebookEdit tool calls in Cowork sessions. Null while
-    /// the file-edit metrics are not enabled for this organization.
-    /// </summary>
-    public long? NotebookEditToolCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("notebook_edit_tool_count");
-        }
-        init { this._rawData.Set("notebook_edit_tool_count", value); }
-    }
-
-    /// <summary>
-    /// Total number of plugin invocations in Cowork sessions. Null while Cowork plugin-use
-    /// metrics are not enabled for this organization.
-    /// </summary>
-    public long? PluginsUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("plugins_used_count");
-        }
-        init { this._rawData.Set("plugins_used_count", value); }
-    }
-
-    /// <summary>
-    /// Number of distinct Cowork sessions with at least one successful file-edit
-    /// tool call. Null while the file-edit metrics are not enabled for this organization.
-    /// Approximate (HLL, typical error &lt;2%) in date-range mode. Null on aggregated
-    /// rows where a distinct count cannot be computed.
-    /// </summary>
-    public long? SessionsWithFileEditsCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("sessions_with_file_edits_count");
-        }
-        init { this._rawData.Set("sessions_with_file_edits_count", value); }
-    }
-
-    /// <summary>
     /// Number of successful Write tool calls in Cowork sessions. Null while the
     /// file-edit metrics are not enabled for this organization.
     /// </summary>
-    public long? WriteToolCount
+    public required long? WriteToolCount
     {
         get
         {
@@ -267,17 +267,17 @@ public sealed record class BetaAnalyticsCoworkMetrics : JsonModel
         _ = this.ConnectorsUsedCount;
         _ = this.DispatchTurnCount;
         _ = this.DistinctConnectorsUsedCount;
+        _ = this.DistinctPluginsUsedCount;
         _ = this.DistinctSessionCount;
         _ = this.DistinctSkillsUsedCount;
-        _ = this.MessageCount;
-        _ = this.SkillsUsedCount;
-        _ = this.DistinctPluginsUsedCount;
         _ = this.EditToolCount;
         _ = this.FileEditCount;
+        _ = this.MessageCount;
         _ = this.MultiEditToolCount;
         _ = this.NotebookEditToolCount;
         _ = this.PluginsUsedCount;
         _ = this.SessionsWithFileEditsCount;
+        _ = this.SkillsUsedCount;
         _ = this.WriteToolCount;
     }
 

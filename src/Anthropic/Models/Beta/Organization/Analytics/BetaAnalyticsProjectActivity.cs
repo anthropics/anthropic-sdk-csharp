@@ -17,6 +17,48 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 public sealed record class BetaAnalyticsProjectActivity : JsonModel
 {
     /// <summary>
+    /// Project creation timestamp in RFC 3339 format. Null if the project was deleted
+    /// before attribution was recorded.
+    /// </summary>
+    public required DateTimeOffset? CreatedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<DateTimeOffset>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// User who created the project. Null if the project was deleted before attribution
+    /// was recorded, or if the creator's account no longer exists.
+    /// </summary>
+    public required BetaAnalyticsUser? CreatedBy
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsUser>("created_by");
+        }
+        init { this._rawData.Set("created_by", value); }
+    }
+
+    /// <summary>
+    /// Number of distinct conversations in the project. Null on aggregated rows where
+    /// a distinct count cannot be computed.
+    /// </summary>
+    public required long? DistinctConversationCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("distinct_conversation_count");
+        }
+        init { this._rawData.Set("distinct_conversation_count", value); }
+    }
+
+    /// <summary>
     /// Number of distinct users who used the project on the requested day, or, in
     /// date-range mode, over the requested window — recomputed as an exact distinct
     /// count over the window's per-member daily rows, never a sum of per-day values.
@@ -71,69 +113,6 @@ public sealed record class BetaAnalyticsProjectActivity : JsonModel
     }
 
     /// <summary>
-    /// Project creation timestamp in RFC 3339 format. Null if the project was deleted
-    /// before attribution was recorded.
-    /// </summary>
-    public DateTimeOffset? CreatedAt
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<DateTimeOffset>("created_at");
-        }
-        init { this._rawData.Set("created_at", value); }
-    }
-
-    /// <summary>
-    /// User who created the project. Null if the project was deleted before attribution
-    /// was recorded, or if the creator's account no longer exists.
-    /// </summary>
-    public BetaAnalyticsUser? CreatedBy
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaAnalyticsUser>("created_by");
-        }
-        init { this._rawData.Set("created_by", value); }
-    }
-
-    /// <summary>
-    /// Number of distinct conversations in the project. Null on aggregated rows where
-    /// a distinct count cannot be computed.
-    /// </summary>
-    public long? DistinctConversationCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_conversation_count");
-        }
-        init { this._rawData.Set("distinct_conversation_count", value); }
-    }
-
-    /// <summary>
-    /// Product that produced this row's activity: one of `chat`, `claude_code`,
-    /// `cowork`, `office_agent`, or `chat_cowork_unified` (Chat and Cowork unified).
-    /// These are the canonical Cost &amp; Usage product names; an `office_agent`
-    /// row's per-surface breakdown is in its `office_metrics`. On `/plugins` only
-    /// `cowork`, `claude_code` and `chat_cowork_unified` occur (the only surfaces
-    /// with plugin attribution); on `/artifacts` only `chat`, `claude_code`, `cowork`
-    /// and `chat_cowork_unified` occur (the surfaces that create artifacts); `/apps/chat/projects`
-    /// does not support the product dimension (a `product` entry in `group_by[]`
-    /// or `filter[]` there is rejected). Present only when the request grouped by `product`.
-    /// </summary>
-    public string? Product
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("product");
-        }
-        init { this._rawData.Set("product", value); }
-    }
-
-    /// <summary>
     /// Tagged RBAC group identifier (`rbac_group_...`), matching the spend-limits
     /// API spelling. Present only when the request grouped by `rbac_group_id`.
     /// </summary>
@@ -179,14 +158,13 @@ public sealed record class BetaAnalyticsProjectActivity : JsonModel
     /// <inheritdoc/>
     public override void Validate()
     {
+        _ = this.CreatedAt;
+        this.CreatedBy?.Validate();
+        _ = this.DistinctConversationCount;
         _ = this.DistinctUserCount;
         _ = this.MessageCount;
         _ = this.ProjectID;
         _ = this.ProjectName;
-        _ = this.CreatedAt;
-        this.CreatedBy?.Validate();
-        _ = this.DistinctConversationCount;
-        _ = this.Product;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;
         _ = this.UserID;

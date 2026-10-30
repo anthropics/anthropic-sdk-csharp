@@ -10,6 +10,7 @@
 
 ### Bug Fixes
 
+* **api:** require always-sent analytics fields and drop the unused project product field
 * **client:** throw the API exception for the status, not `InvalidOperationException`, when an error response or a stream's `error` event is JSON but not the expected object
 * **client:** add missing ConfigureAwait(false) in Paginate
 

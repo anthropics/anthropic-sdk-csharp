@@ -70,6 +70,22 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
     }
 
     /// <summary>
+    /// Number of distinct active users represented by this row. Only set for grouped
+    /// rollups (`group_by[]`); null for per-user rows. In date-range mode, recomputed
+    /// as an exact distinct count of the group's active members over the requested
+    /// window, never a sum of per-day values.
+    /// </summary>
+    public required long? DistinctUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("distinct_user_count");
+        }
+        init { this._rawData.Set("distinct_user_count", value); }
+    }
+
+    /// <summary>
     /// Office Agent activity metrics for a single user on a given day, broken out
     /// by Office product.
     /// </summary>
@@ -94,6 +110,19 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
             return this._rawData.GetNotNullClass<BetaAnalyticsScienceMetrics>("science_metrics");
         }
         init { this._rawData.Set("science_metrics", value); }
+    }
+
+    /// <summary>
+    /// The user this row describes. Null on rows aggregated across users.
+    /// </summary>
+    public required BetaAnalyticsUser? User
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsUser>("user");
+        }
+        init { this._rawData.Set("user", value); }
     }
 
     /// <summary>
@@ -125,22 +154,6 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
             );
         }
         init { this._rawData.Set("chat_cowork_unified_metrics", value); }
-    }
-
-    /// <summary>
-    /// Number of distinct active users represented by this row. Only set for grouped
-    /// rollups (`group_by[]`); null for per-user rows. In date-range mode, recomputed
-    /// as an exact distinct count of the group's active members over the requested
-    /// window, never a sum of per-day values.
-    /// </summary>
-    public long? DistinctUserCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_user_count");
-        }
-        init { this._rawData.Set("distinct_user_count", value); }
     }
 
     /// <summary>
@@ -194,19 +207,6 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
         init { this._rawData.Set("rbac_group_name", value); }
     }
 
-    /// <summary>
-    /// The user this row describes. Null on rows aggregated across users.
-    /// </summary>
-    public BetaAnalyticsUser? User
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaAnalyticsUser>("user");
-        }
-        init { this._rawData.Set("user", value); }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -214,15 +214,15 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
         this.ClaudeCodeMetrics.Validate();
         this.CoworkMetrics.Validate();
         this.DesignMetrics.Validate();
+        _ = this.DistinctUserCount;
         this.OfficeMetrics.Validate();
         this.ScienceMetrics.Validate();
+        this.User?.Validate();
         _ = this.WebSearchCount;
         this.ChatCoworkUnifiedMetrics?.Validate();
-        _ = this.DistinctUserCount;
         _ = this.LastActivityDate;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;
-        this.User?.Validate();
     }
 
     public BetaAnalyticsUserActivity() { }

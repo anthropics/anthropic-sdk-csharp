@@ -95,6 +95,21 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
     }
 
     /// <summary>
+    /// Stable plugin identifier when available (e.g. `serena@claude-plugins-official`).
+    /// Null for third-party Claude Code plugins (redacted at the source) and Cowork
+    /// slash commands that carry only a hashed id.
+    /// </summary>
+    public required string? PluginID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("plugin_id");
+        }
+        init { this._rawData.Set("plugin_id", value); }
+    }
+
+    /// <summary>
     /// Name of the plugin
     /// </summary>
     public required string PluginName
@@ -123,21 +138,6 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
             );
         }
         init { this._rawData.Set("chat_cowork_unified_metrics", value); }
-    }
-
-    /// <summary>
-    /// Stable plugin identifier when available (e.g. `serena@claude-plugins-official`).
-    /// Null for third-party Claude Code plugins (redacted at the source) and Cowork
-    /// slash commands that carry only a hashed id.
-    /// </summary>
-    public string? PluginID
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("plugin_id");
-        }
-        init { this._rawData.Set("plugin_id", value); }
     }
 
     /// <summary>
@@ -212,9 +212,9 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
         _ = this.DistinctUserCount;
         _ = this.InstallCount;
         _ = this.InvocationCount;
+        _ = this.PluginID;
         _ = this.PluginName;
         this.ChatCoworkUnifiedMetrics?.Validate();
-        _ = this.PluginID;
         _ = this.Product;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;

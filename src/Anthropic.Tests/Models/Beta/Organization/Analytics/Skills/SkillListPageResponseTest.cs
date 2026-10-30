@@ -17,10 +17,15 @@ public class SkillListPageResponseTest : TestBase
             [
                 new()
                 {
+                    AttributedListPrice = "attributed_list_price",
                     ChatMetrics = new(0),
                     ClaudeCodeMetrics = new(0),
                     CoworkMetrics = new(0),
+                    Currency = "currency",
                     DistinctUserCount = 0,
+                    EnableCount = 0,
+                    EstimatedOverageSpend = "estimated_overage_spend",
+                    InvocationCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new(0),
@@ -28,18 +33,13 @@ public class SkillListPageResponseTest : TestBase
                         Powerpoint = new(0),
                         Word = new(0),
                     },
+                    ShareStatus = ShareStatus.Organization,
+                    SkillDisplayName = "skill_display_name",
                     SkillName = "skill_name",
-                    AttributedListPrice = "attributed_list_price",
                     ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                    Currency = "currency",
-                    EnableCount = 0,
-                    EstimatedOverageSpend = "estimated_overage_spend",
-                    InvocationCount = 0,
                     Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    ShareStatus = ShareStatus.Organization,
-                    SkillDisplayName = "skill_display_name",
                     UserID = "user_id",
                 },
             ],
@@ -50,10 +50,15 @@ public class SkillListPageResponseTest : TestBase
         [
             new()
             {
+                AttributedListPrice = "attributed_list_price",
                 ChatMetrics = new(0),
                 ClaudeCodeMetrics = new(0),
                 CoworkMetrics = new(0),
+                Currency = "currency",
                 DistinctUserCount = 0,
+                EnableCount = 0,
+                EstimatedOverageSpend = "estimated_overage_spend",
+                InvocationCount = 0,
                 OfficeMetrics = new()
                 {
                     Excel = new(0),
@@ -61,18 +66,13 @@ public class SkillListPageResponseTest : TestBase
                     Powerpoint = new(0),
                     Word = new(0),
                 },
+                ShareStatus = ShareStatus.Organization,
+                SkillDisplayName = "skill_display_name",
                 SkillName = "skill_name",
-                AttributedListPrice = "attributed_list_price",
                 ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                Currency = "currency",
-                EnableCount = 0,
-                EstimatedOverageSpend = "estimated_overage_spend",
-                InvocationCount = 0,
                 Product = "product",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
-                ShareStatus = ShareStatus.Organization,
-                SkillDisplayName = "skill_display_name",
                 UserID = "user_id",
             },
         ];
@@ -95,10 +95,15 @@ public class SkillListPageResponseTest : TestBase
             [
                 new()
                 {
+                    AttributedListPrice = "attributed_list_price",
                     ChatMetrics = new(0),
                     ClaudeCodeMetrics = new(0),
                     CoworkMetrics = new(0),
+                    Currency = "currency",
                     DistinctUserCount = 0,
+                    EnableCount = 0,
+                    EstimatedOverageSpend = "estimated_overage_spend",
+                    InvocationCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new(0),
@@ -106,18 +111,13 @@ public class SkillListPageResponseTest : TestBase
                         Powerpoint = new(0),
                         Word = new(0),
                     },
+                    ShareStatus = ShareStatus.Organization,
+                    SkillDisplayName = "skill_display_name",
                     SkillName = "skill_name",
-                    AttributedListPrice = "attributed_list_price",
                     ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                    Currency = "currency",
-                    EnableCount = 0,
-                    EstimatedOverageSpend = "estimated_overage_spend",
-                    InvocationCount = 0,
                     Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    ShareStatus = ShareStatus.Organization,
-                    SkillDisplayName = "skill_display_name",
                     UserID = "user_id",
                 },
             ],
@@ -142,10 +142,15 @@ public class SkillListPageResponseTest : TestBase
             [
                 new()
                 {
+                    AttributedListPrice = "attributed_list_price",
                     ChatMetrics = new(0),
                     ClaudeCodeMetrics = new(0),
                     CoworkMetrics = new(0),
+                    Currency = "currency",
                     DistinctUserCount = 0,
+                    EnableCount = 0,
+                    EstimatedOverageSpend = "estimated_overage_spend",
+                    InvocationCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new(0),
@@ -153,18 +158,13 @@ public class SkillListPageResponseTest : TestBase
                         Powerpoint = new(0),
                         Word = new(0),
                     },
+                    ShareStatus = ShareStatus.Organization,
+                    SkillDisplayName = "skill_display_name",
                     SkillName = "skill_name",
-                    AttributedListPrice = "attributed_list_price",
                     ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                    Currency = "currency",
-                    EnableCount = 0,
-                    EstimatedOverageSpend = "estimated_overage_spend",
-                    InvocationCount = 0,
                     Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    ShareStatus = ShareStatus.Organization,
-                    SkillDisplayName = "skill_display_name",
                     UserID = "user_id",
                 },
             ],
@@ -182,10 +182,15 @@ public class SkillListPageResponseTest : TestBase
         [
             new()
             {
+                AttributedListPrice = "attributed_list_price",
                 ChatMetrics = new(0),
                 ClaudeCodeMetrics = new(0),
                 CoworkMetrics = new(0),
+                Currency = "currency",
                 DistinctUserCount = 0,
+                EnableCount = 0,
+                EstimatedOverageSpend = "estimated_overage_spend",
+                InvocationCount = 0,
                 OfficeMetrics = new()
                 {
                     Excel = new(0),
@@ -193,18 +198,13 @@ public class SkillListPageResponseTest : TestBase
                     Powerpoint = new(0),
                     Word = new(0),
                 },
+                ShareStatus = ShareStatus.Organization,
+                SkillDisplayName = "skill_display_name",
                 SkillName = "skill_name",
-                AttributedListPrice = "attributed_list_price",
                 ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                Currency = "currency",
-                EnableCount = 0,
-                EstimatedOverageSpend = "estimated_overage_spend",
-                InvocationCount = 0,
                 Product = "product",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
-                ShareStatus = ShareStatus.Organization,
-                SkillDisplayName = "skill_display_name",
                 UserID = "user_id",
             },
         ];
@@ -227,10 +227,15 @@ public class SkillListPageResponseTest : TestBase
             [
                 new()
                 {
+                    AttributedListPrice = "attributed_list_price",
                     ChatMetrics = new(0),
                     ClaudeCodeMetrics = new(0),
                     CoworkMetrics = new(0),
+                    Currency = "currency",
                     DistinctUserCount = 0,
+                    EnableCount = 0,
+                    EstimatedOverageSpend = "estimated_overage_spend",
+                    InvocationCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new(0),
@@ -238,18 +243,13 @@ public class SkillListPageResponseTest : TestBase
                         Powerpoint = new(0),
                         Word = new(0),
                     },
+                    ShareStatus = ShareStatus.Organization,
+                    SkillDisplayName = "skill_display_name",
                     SkillName = "skill_name",
-                    AttributedListPrice = "attributed_list_price",
                     ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                    Currency = "currency",
-                    EnableCount = 0,
-                    EstimatedOverageSpend = "estimated_overage_spend",
-                    InvocationCount = 0,
                     Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    ShareStatus = ShareStatus.Organization,
-                    SkillDisplayName = "skill_display_name",
                     UserID = "user_id",
                 },
             ],
@@ -268,10 +268,15 @@ public class SkillListPageResponseTest : TestBase
             [
                 new()
                 {
+                    AttributedListPrice = "attributed_list_price",
                     ChatMetrics = new(0),
                     ClaudeCodeMetrics = new(0),
                     CoworkMetrics = new(0),
+                    Currency = "currency",
                     DistinctUserCount = 0,
+                    EnableCount = 0,
+                    EstimatedOverageSpend = "estimated_overage_spend",
+                    InvocationCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new(0),
@@ -279,18 +284,13 @@ public class SkillListPageResponseTest : TestBase
                         Powerpoint = new(0),
                         Word = new(0),
                     },
+                    ShareStatus = ShareStatus.Organization,
+                    SkillDisplayName = "skill_display_name",
                     SkillName = "skill_name",
-                    AttributedListPrice = "attributed_list_price",
                     ChatCoworkUnifiedMetrics = new() { Chat = new(0), Sessions = new(0) },
-                    Currency = "currency",
-                    EnableCount = 0,
-                    EstimatedOverageSpend = "estimated_overage_spend",
-                    InvocationCount = 0,
                     Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    ShareStatus = ShareStatus.Organization,
-                    SkillDisplayName = "skill_display_name",
                     UserID = "user_id",
                 },
             ],

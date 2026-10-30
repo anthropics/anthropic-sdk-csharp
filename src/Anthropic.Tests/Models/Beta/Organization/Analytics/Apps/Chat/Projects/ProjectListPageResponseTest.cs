@@ -18,14 +18,13 @@ public class ProjectListPageResponseTest : TestBase
             [
                 new()
                 {
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                    DistinctConversationCount = 0,
                     DistinctUserCount = 0,
                     MessageCount = 0,
                     ProjectID = "project_id",
                     ProjectName = "project_name",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                    DistinctConversationCount = 0,
-                    Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
                     UserID = "user_id",
@@ -38,14 +37,13 @@ public class ProjectListPageResponseTest : TestBase
         [
             new()
             {
+                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                DistinctConversationCount = 0,
                 DistinctUserCount = 0,
                 MessageCount = 0,
                 ProjectID = "project_id",
                 ProjectName = "project_name",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                DistinctConversationCount = 0,
-                Product = "product",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
                 UserID = "user_id",
@@ -70,14 +68,13 @@ public class ProjectListPageResponseTest : TestBase
             [
                 new()
                 {
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                    DistinctConversationCount = 0,
                     DistinctUserCount = 0,
                     MessageCount = 0,
                     ProjectID = "project_id",
                     ProjectName = "project_name",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                    DistinctConversationCount = 0,
-                    Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
                     UserID = "user_id",
@@ -104,14 +101,13 @@ public class ProjectListPageResponseTest : TestBase
             [
                 new()
                 {
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                    DistinctConversationCount = 0,
                     DistinctUserCount = 0,
                     MessageCount = 0,
                     ProjectID = "project_id",
                     ProjectName = "project_name",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                    DistinctConversationCount = 0,
-                    Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
                     UserID = "user_id",
@@ -131,14 +127,13 @@ public class ProjectListPageResponseTest : TestBase
         [
             new()
             {
+                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                DistinctConversationCount = 0,
                 DistinctUserCount = 0,
                 MessageCount = 0,
                 ProjectID = "project_id",
                 ProjectName = "project_name",
-                CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                DistinctConversationCount = 0,
-                Product = "product",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
                 UserID = "user_id",
@@ -163,14 +158,13 @@ public class ProjectListPageResponseTest : TestBase
             [
                 new()
                 {
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                    DistinctConversationCount = 0,
                     DistinctUserCount = 0,
                     MessageCount = 0,
                     ProjectID = "project_id",
                     ProjectName = "project_name",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                    DistinctConversationCount = 0,
-                    Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
                     UserID = "user_id",
@@ -191,14 +185,13 @@ public class ProjectListPageResponseTest : TestBase
             [
                 new()
                 {
+                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
+                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
+                    DistinctConversationCount = 0,
                     DistinctUserCount = 0,
                     MessageCount = 0,
                     ProjectID = "project_id",
                     ProjectName = "project_name",
-                    CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
-                    CreatedBy = new() { ID = "id", EmailAddress = "email_address" },
-                    DistinctConversationCount = 0,
-                    Product = "product",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
                     UserID = "user_id",

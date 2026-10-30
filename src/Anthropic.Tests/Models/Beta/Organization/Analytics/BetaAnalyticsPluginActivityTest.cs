@@ -16,9 +16,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
             ChatCoworkUnifiedMetrics = new(0),
-            PluginID = "plugin_id",
             Product = "product",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -30,11 +30,11 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         long expectedDistinctUserCount = 0;
         long expectedInstallCount = 0;
         long expectedInvocationCount = 0;
+        string expectedPluginID = "plugin_id";
         string expectedPluginName = "plugin_name";
         BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(
             0
         );
-        string expectedPluginID = "plugin_id";
         string expectedProduct = "product";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -45,9 +45,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         Assert.Equal(expectedDistinctUserCount, model.DistinctUserCount);
         Assert.Equal(expectedInstallCount, model.InstallCount);
         Assert.Equal(expectedInvocationCount, model.InvocationCount);
+        Assert.Equal(expectedPluginID, model.PluginID);
         Assert.Equal(expectedPluginName, model.PluginName);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, model.ChatCoworkUnifiedMetrics);
-        Assert.Equal(expectedPluginID, model.PluginID);
         Assert.Equal(expectedProduct, model.Product);
         Assert.Equal(expectedRbacGroupID, model.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, model.RbacGroupName);
@@ -64,9 +64,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
             ChatCoworkUnifiedMetrics = new(0),
-            PluginID = "plugin_id",
             Product = "product",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -92,9 +92,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
             ChatCoworkUnifiedMetrics = new(0),
-            PluginID = "plugin_id",
             Product = "product",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -113,11 +113,11 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         long expectedDistinctUserCount = 0;
         long expectedInstallCount = 0;
         long expectedInvocationCount = 0;
+        string expectedPluginID = "plugin_id";
         string expectedPluginName = "plugin_name";
         BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(
             0
         );
-        string expectedPluginID = "plugin_id";
         string expectedProduct = "product";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -128,9 +128,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         Assert.Equal(expectedDistinctUserCount, deserialized.DistinctUserCount);
         Assert.Equal(expectedInstallCount, deserialized.InstallCount);
         Assert.Equal(expectedInvocationCount, deserialized.InvocationCount);
+        Assert.Equal(expectedPluginID, deserialized.PluginID);
         Assert.Equal(expectedPluginName, deserialized.PluginName);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, deserialized.ChatCoworkUnifiedMetrics);
-        Assert.Equal(expectedPluginID, deserialized.PluginID);
         Assert.Equal(expectedProduct, deserialized.Product);
         Assert.Equal(expectedRbacGroupID, deserialized.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, deserialized.RbacGroupName);
@@ -147,9 +147,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
             ChatCoworkUnifiedMetrics = new(0),
-            PluginID = "plugin_id",
             Product = "product",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -169,13 +169,12 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
         };
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.False(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
-        Assert.Null(model.PluginID);
-        Assert.False(model.RawData.ContainsKey("plugin_id"));
         Assert.Null(model.Product);
         Assert.False(model.RawData.ContainsKey("product"));
         Assert.Null(model.RbacGroupID);
@@ -196,6 +195,7 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
         };
 
@@ -212,10 +212,10 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
 
             ChatCoworkUnifiedMetrics = null,
-            PluginID = null,
             Product = null,
             RbacGroupID = null,
             RbacGroupName = null,
@@ -224,8 +224,6 @@ public class BetaAnalyticsPluginActivityTest : TestBase
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.True(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
-        Assert.Null(model.PluginID);
-        Assert.True(model.RawData.ContainsKey("plugin_id"));
         Assert.Null(model.Product);
         Assert.True(model.RawData.ContainsKey("product"));
         Assert.Null(model.RbacGroupID);
@@ -246,10 +244,10 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
 
             ChatCoworkUnifiedMetrics = null,
-            PluginID = null,
             Product = null,
             RbacGroupID = null,
             RbacGroupName = null,
@@ -269,9 +267,9 @@ public class BetaAnalyticsPluginActivityTest : TestBase
             DistinctUserCount = 0,
             InstallCount = 0,
             InvocationCount = 0,
+            PluginID = "plugin_id",
             PluginName = "plugin_name",
             ChatCoworkUnifiedMetrics = new(0),
-            PluginID = "plugin_id",
             Product = "product",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
