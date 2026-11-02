@@ -5,6 +5,7 @@
 ### Chores
 
 * **docs:** clarify some API field descriptions
+* **docs:** update the telemetry destination headers description
 
 
 ### Documentation
