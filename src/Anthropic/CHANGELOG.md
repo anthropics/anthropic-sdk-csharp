@@ -2,6 +2,11 @@
 
 ## [13.4.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.4.0...Anthropic-v13.4.1) (2026-11-02)
 
+### Chores
+
+* **docs:** clarify some API field descriptions
+
+
 ### Documentation
 
 * **api:** show each field's own description for `speed`

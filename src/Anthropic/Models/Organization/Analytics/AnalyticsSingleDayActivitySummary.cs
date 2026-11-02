@@ -197,8 +197,7 @@ public sealed record class AnalyticsSingleDayActivitySummary : JsonModel
 
     /// <summary>
     /// Number of users with activity in Chat and Cowork unified on the requested
-    /// day. Omitted from the response on deployments that do not offer Chat and
-    /// Cowork unified.
+    /// day. Omitted from the response where Chat and Cowork unified is not available.
     /// </summary>
     public long? ChatCoworkUnifiedDailyActiveUserCount
     {
@@ -215,7 +214,7 @@ public sealed record class AnalyticsSingleDayActivitySummary : JsonModel
     /// <summary>
     /// Number of users with activity in Chat and Cowork unified in the 28-day rolling
     /// window (30 days when the request filters by `rbac_group_id`). Omitted from
-    /// the response on deployments that do not offer Chat and Cowork unified.
+    /// the response where Chat and Cowork unified is not available.
     /// </summary>
     public long? ChatCoworkUnifiedMonthlyActiveUserCount
     {
@@ -231,8 +230,7 @@ public sealed record class AnalyticsSingleDayActivitySummary : JsonModel
 
     /// <summary>
     /// Number of users with activity in Chat and Cowork unified in the 7-day rolling
-    /// window. Omitted from the response on deployments that do not offer Chat and
-    /// Cowork unified.
+    /// window. Omitted from the response where Chat and Cowork unified is not available.
     /// </summary>
     public long? ChatCoworkUnifiedWeeklyActiveUserCount
     {
