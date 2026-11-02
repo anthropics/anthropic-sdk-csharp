@@ -13,14 +13,14 @@ public class BetaOrganizationUserTest : TestBase
     {
         var model = new BetaOrganizationUser
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             AddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             Name = "Jane Doe",
             Role = BetaOrganizationRole.Admin,
         };
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         DateTimeOffset expectedAddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedEmail = "user@emaildomain.com";
         string expectedName = "Jane Doe";
@@ -40,7 +40,7 @@ public class BetaOrganizationUserTest : TestBase
     {
         var model = new BetaOrganizationUser
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             AddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             Name = "Jane Doe",
@@ -61,7 +61,7 @@ public class BetaOrganizationUserTest : TestBase
     {
         var model = new BetaOrganizationUser
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             AddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             Name = "Jane Doe",
@@ -75,7 +75,7 @@ public class BetaOrganizationUserTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         DateTimeOffset expectedAddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedEmail = "user@emaildomain.com";
         string expectedName = "Jane Doe";
@@ -95,7 +95,7 @@ public class BetaOrganizationUserTest : TestBase
     {
         var model = new BetaOrganizationUser
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             AddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             Name = "Jane Doe",
@@ -110,7 +110,7 @@ public class BetaOrganizationUserTest : TestBase
     {
         var model = new BetaOrganizationUser
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             AddedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             Name = "Jane Doe",

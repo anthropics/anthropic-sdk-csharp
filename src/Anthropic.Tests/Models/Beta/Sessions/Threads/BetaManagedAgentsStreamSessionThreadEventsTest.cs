@@ -228,12 +228,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
         BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSessionErrorEvent()
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -1093,12 +1092,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
         BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSessionErrorEvent()
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -2096,12 +2094,11 @@ public class BetaManagedAgentsStreamSessionThreadEventsTest : TestBase
         BetaManagedAgentsStreamSessionThreadEvents value = new BetaManagedAgentsSessionErrorEvent()
         {
             ID = "id",
-            Error = new BetaManagedAgentsRepositoryAuthenticationError()
+            Error = new BetaManagedAgentsToolUseLimitReachedError()
             {
                 Message =
-                    "The repository host rejected the credentials for the repository, or required credentials and received none.",
-                RepositoryUrl = "https://github.com/example-org/example-repo",
-                RetryStatus = new BetaManagedAgentsRetryStatusRetrying(),
+                    "This turn stopped because the agent loop reached its limit of 500 tool-use rounds since the turn started or last resumed. A round is one model response that calls tools, plus running those tools. Nothing failed. Send the session a new message to continue; nothing from the stopped turn is discarded.",
+                RetryStatus = new BetaManagedAgentsRetryStatusExhausted(),
             },
             ProcessedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };

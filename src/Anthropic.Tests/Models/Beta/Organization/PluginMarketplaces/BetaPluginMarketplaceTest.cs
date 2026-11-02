@@ -254,7 +254,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserValidationWorks()
     {
-        Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -271,7 +271,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserSerializationRoundtripWorks()
     {
-        Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Owner>(element, ModelBase.SerializerOptions);
 
@@ -288,7 +288,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserTypeWorks()
     {
-        Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(OwnerTypeValue.User, value.Type.Value());
     }
 

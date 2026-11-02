@@ -5,9 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using Anthropic.Core;
-using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Organization.Analytics.Skills;
 
@@ -100,18 +98,18 @@ public record class SkillListParams : ParamsBase
     /// UTC day, so grouped rows are not an exclusive partition and can sum above
     /// org-level totals. At most 100 entries.
     /// </summary>
-    public IReadOnlyList<ApiEnum<string, GroupBy>>? GroupBy
+    public IReadOnlyList<ApiEnum<string, BetaAnalyticsSkillGroupBy>>? GroupBy
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableStruct<ImmutableArray<ApiEnum<string, GroupBy>>>(
-                "group_by"
-            );
+            return this._rawQueryData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, BetaAnalyticsSkillGroupBy>>
+            >("group_by");
         }
         init
         {
-            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, GroupBy>>?>(
+            this._rawQueryData.Set<ImmutableArray<ApiEnum<string, BetaAnalyticsSkillGroupBy>>?>(
                 "group_by",
                 value == null ? null : ImmutableArray.ToImmutableArray(value)
             );
@@ -136,12 +134,14 @@ public record class SkillListParams : ParamsBase
     /// column and to `desc` when `order_by` names a metric (a top-N ranking). Applies
     /// to `order_by`, or to the endpoint's default sort field when `order_by` is omitted.
     /// </summary>
-    public ApiEnum<string, Order>? Order
+    public ApiEnum<string, BetaAnalyticsOrder>? Order
     {
         get
         {
             this._rawQueryData.Freeze();
-            return this._rawQueryData.GetNullableClass<ApiEnum<string, Order>>("order");
+            return this._rawQueryData.GetNullableClass<ApiEnum<string, BetaAnalyticsOrder>>(
+                "order"
+            );
         }
         init { this._rawQueryData.Set("order", value); }
     }
@@ -303,93 +303,5 @@ public record class SkillListParams : ParamsBase
     public override int GetHashCode()
     {
         return 0;
-    }
-}
-
-[JsonConverter(typeof(GroupByConverter))]
-public enum GroupBy
-{
-    Product,
-    RbacGroupID,
-    UserID,
-}
-
-sealed class GroupByConverter : JsonConverter<GroupBy>
-{
-    public override GroupBy Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "product" => GroupBy.Product,
-            "rbac_group_id" => GroupBy.RbacGroupID,
-            "user_id" => GroupBy.UserID,
-            _ => (GroupBy)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, GroupBy value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                GroupBy.Product => "product",
-                GroupBy.RbacGroupID => "rbac_group_id",
-                GroupBy.UserID => "user_id",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
-    }
-}
-
-/// <summary>
-/// Sort direction: `asc` or `desc`. Defaults to `asc` for the endpoint's sort column
-/// and to `desc` when `order_by` names a metric (a top-N ranking). Applies to `order_by`,
-/// or to the endpoint's default sort field when `order_by` is omitted.
-/// </summary>
-[JsonConverter(typeof(OrderConverter))]
-public enum Order
-{
-    Asc,
-    Desc,
-}
-
-sealed class OrderConverter : JsonConverter<Order>
-{
-    public override Order Read(
-        ref Utf8JsonReader reader,
-        Type typeToConvert,
-        JsonSerializerOptions options
-    )
-    {
-        return JsonSerializer.Deserialize<string>(ref reader, options) switch
-        {
-            "asc" => Order.Asc,
-            "desc" => Order.Desc,
-            _ => (Order)(-1),
-        };
-    }
-
-    public override void Write(Utf8JsonWriter writer, Order value, JsonSerializerOptions options)
-    {
-        JsonSerializer.Serialize(
-            writer,
-            value switch
-            {
-                Order.Asc => "asc",
-                Order.Desc => "desc",
-                _ => throw new AnthropicInvalidDataException(
-                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
-                ),
-            },
-            options
-        );
     }
 }

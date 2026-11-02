@@ -34,7 +34,7 @@ public class BetaPluginTest : TestBase
             CreatedBy = new Plugins::BetaPluginUserActor()
             {
                 EmailAddress = "user@example.com",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Description = "Reviews pull requests against your team's conventions.",
             DisplayName = "Code Review Helper",
@@ -72,7 +72,7 @@ public class BetaPluginTest : TestBase
         Plugins::CreatedBy expectedCreatedBy = new Plugins::BetaPluginUserActor()
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string expectedDescription = "Reviews pull requests against your team's conventions.";
         string expectedDisplayName = "Code Review Helper";
@@ -150,7 +150,7 @@ public class BetaPluginTest : TestBase
             CreatedBy = new Plugins::BetaPluginUserActor()
             {
                 EmailAddress = "user@example.com",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Description = "Reviews pull requests against your team's conventions.",
             DisplayName = "Code Review Helper",
@@ -202,7 +202,7 @@ public class BetaPluginTest : TestBase
             CreatedBy = new Plugins::BetaPluginUserActor()
             {
                 EmailAddress = "user@example.com",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Description = "Reviews pull requests against your team's conventions.",
             DisplayName = "Code Review Helper",
@@ -247,7 +247,7 @@ public class BetaPluginTest : TestBase
         Plugins::CreatedBy expectedCreatedBy = new Plugins::BetaPluginUserActor()
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string expectedDescription = "Reviews pull requests against your team's conventions.";
         string expectedDisplayName = "Code Review Helper";
@@ -325,7 +325,7 @@ public class BetaPluginTest : TestBase
             CreatedBy = new Plugins::BetaPluginUserActor()
             {
                 EmailAddress = "user@example.com",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Description = "Reviews pull requests against your team's conventions.",
             DisplayName = "Code Review Helper",
@@ -371,7 +371,7 @@ public class BetaPluginTest : TestBase
             CreatedBy = new Plugins::BetaPluginUserActor()
             {
                 EmailAddress = "user@example.com",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             Description = "Reviews pull requests against your team's conventions.",
             DisplayName = "Code Review Helper",
@@ -403,7 +403,7 @@ public class CreatedByTest : TestBase
         Plugins::CreatedBy value = new Plugins::BetaPluginUserActor()
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         value.Validate();
     }
@@ -423,7 +423,7 @@ public class CreatedByTest : TestBase
         Plugins::CreatedBy value = new Plugins::BetaPluginUserActor()
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Plugins::CreatedBy>(
@@ -455,7 +455,7 @@ public class CreatedByTest : TestBase
         Plugins::CreatedBy value = new Plugins::BetaPluginUserActor()
         {
             EmailAddress = "user@example.com",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         Assert.Equal(Plugins::CreatedByType.UserActor, value.Type.Value());
     }
@@ -621,7 +621,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserValidationWorks()
     {
-        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -641,7 +641,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserSerializationRoundtripWorks()
     {
-        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Plugins::Owner>(
             element,
@@ -661,7 +661,7 @@ public class OwnerTest : TestBase
     [Fact]
     public void BetaPluginOwnerUserTypeWorks()
     {
-        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        Plugins::Owner value = new Plugins::BetaPluginOwnerUser("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(Plugins::OwnerTypeValue.User, value.Type.Value());
     }
 

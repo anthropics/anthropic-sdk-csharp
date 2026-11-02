@@ -79,7 +79,9 @@ public class AnthropicExceptionFactory
         {
             using var doc = JsonDocument.Parse(jsonBody);
             if (
-                doc.RootElement.TryGetProperty("error", out var errorElement)
+                doc.RootElement.ValueKind == JsonValueKind.Object
+                && doc.RootElement.TryGetProperty("error", out var errorElement)
+                && errorElement.ValueKind == JsonValueKind.Object
                 && errorElement.TryGetProperty("type", out var typeElement)
                 && typeElement.ValueKind == JsonValueKind.String
             )

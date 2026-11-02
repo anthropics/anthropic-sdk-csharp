@@ -25,6 +25,7 @@ public class ExternalKeyTest : TestBase
                 Region = "us-east-1",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string expectedID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
@@ -39,6 +40,7 @@ public class ExternalKeyTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("external_key");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedAttachment, model.Attachment);
@@ -48,6 +50,7 @@ public class ExternalKeyTest : TestBase
         Assert.Equal(expectedProviderConfig, model.ProviderConfig);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
+        Assert.Equal(expectedUserProfileID, model.UserProfileID);
     }
 
     [Fact]
@@ -67,6 +70,7 @@ public class ExternalKeyTest : TestBase
                 Region = "us-east-1",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -95,6 +99,7 @@ public class ExternalKeyTest : TestBase
                 Region = "us-east-1",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -116,6 +121,7 @@ public class ExternalKeyTest : TestBase
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("external_key");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedAttachment, deserialized.Attachment);
@@ -125,6 +131,7 @@ public class ExternalKeyTest : TestBase
         Assert.Equal(expectedProviderConfig, deserialized.ProviderConfig);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
+        Assert.Equal(expectedUserProfileID, deserialized.UserProfileID);
     }
 
     [Fact]
@@ -144,6 +151,7 @@ public class ExternalKeyTest : TestBase
                 Region = "us-east-1",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         model.Validate();
@@ -166,6 +174,7 @@ public class ExternalKeyTest : TestBase
                 Region = "us-east-1",
             },
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         ExternalKey copied = new(model);

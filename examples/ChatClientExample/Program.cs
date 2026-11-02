@@ -3,7 +3,7 @@ using Microsoft.Extensions.AI;
 
 // Configured using the ANTHROPIC_API_KEY, ANTHROPIC_AUTH_TOKEN and ANTHROPIC_BASE_URL environment variables
 IChatClient chatClient = new AnthropicClient()
-    .AsIChatClient("claude-haiku-4-5")
+    .AsIChatClient("claude-haiku-5-5")
     .AsBuilder()
     .UseFunctionInvocation()
     .Build();

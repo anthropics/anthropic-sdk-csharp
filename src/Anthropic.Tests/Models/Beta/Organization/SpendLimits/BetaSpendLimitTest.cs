@@ -19,7 +19,7 @@ public class BetaSpendLimitTest : TestBase
             Currency = "USD",
             IsEnabled = true,
             Period = BetaSpendLimitPeriod.Daily,
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -30,7 +30,7 @@ public class BetaSpendLimitTest : TestBase
         bool expectedIsEnabled = true;
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Daily;
         BetaSpendLimitScope expectedScope = new BetaSpendLimitUserScope(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         JsonElement expectedType = JsonSerializer.SerializeToElement("spend_limit");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -57,7 +57,7 @@ public class BetaSpendLimitTest : TestBase
             Currency = "USD",
             IsEnabled = true,
             Period = BetaSpendLimitPeriod.Daily,
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -81,7 +81,7 @@ public class BetaSpendLimitTest : TestBase
             Currency = "USD",
             IsEnabled = true,
             Period = BetaSpendLimitPeriod.Daily,
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -99,7 +99,7 @@ public class BetaSpendLimitTest : TestBase
         bool expectedIsEnabled = true;
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Daily;
         BetaSpendLimitScope expectedScope = new BetaSpendLimitUserScope(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         JsonElement expectedType = JsonSerializer.SerializeToElement("spend_limit");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -126,7 +126,7 @@ public class BetaSpendLimitTest : TestBase
             Currency = "USD",
             IsEnabled = true,
             Period = BetaSpendLimitPeriod.Daily,
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -144,7 +144,7 @@ public class BetaSpendLimitTest : TestBase
             Currency = "USD",
             IsEnabled = true,
             Period = BetaSpendLimitPeriod.Daily,
-            Scope = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -159,7 +159,7 @@ public class BetaSpendLimitScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserValidationWorks()
     {
-        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -210,7 +210,7 @@ public class BetaSpendLimitScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserSerializationRoundtripWorks()
     {
-        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaSpendLimitScope>(
             element,
@@ -303,7 +303,7 @@ public class BetaSpendLimitScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitUserTypeWorks()
     {
-        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        BetaSpendLimitScope value = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(BetaSpendLimitScopeType.User, value.Type.Value());
     }
 

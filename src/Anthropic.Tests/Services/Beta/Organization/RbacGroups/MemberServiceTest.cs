@@ -24,7 +24,7 @@ public class MemberServiceTest : TestBase
             .client.WithQuery("beta=true")
             .Beta.Organization.RbacGroups.Members.Add(
                 "rbac_group_id",
-                new() { UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q" },
+                new() { UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu" },
                 TestContext.Current.CancellationToken
             );
         betaRbacGroupMember.Validate();
@@ -33,13 +33,13 @@ public class MemberServiceTest : TestBase
     [Fact]
     public async Task Remove_Works()
     {
-        var member = await this
+        var betaDeletedRbacGroupMember = await this
             .client.WithQuery("beta=true")
             .Beta.Organization.RbacGroups.Members.Remove(
                 "user_id",
                 new() { RbacGroupID = "rbac_group_id" },
                 TestContext.Current.CancellationToken
             );
-        member.Validate();
+        betaDeletedRbacGroupMember.Validate();
     }
 }

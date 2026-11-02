@@ -15,7 +15,7 @@ public class BetaAnalyticsActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         value.Validate();
     }
@@ -59,7 +59,7 @@ public class BetaAnalyticsActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAnalyticsActor>(
@@ -127,7 +127,7 @@ public class BetaAnalyticsActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         Assert.Equal(BetaAnalyticsActorTypeValue.UserActor, value.Type.Value());
     }

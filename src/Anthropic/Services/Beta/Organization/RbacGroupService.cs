@@ -116,7 +116,7 @@ public sealed class RbacGroupService : IRbacGroupService
     }
 
     /// <inheritdoc/>
-    public async Task<RbacGroupDeleteResponse> Delete(
+    public async Task<BetaDeletedRbacGroup> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -128,7 +128,7 @@ public sealed class RbacGroupService : IRbacGroupService
     }
 
     /// <inheritdoc/>
-    public Task<RbacGroupDeleteResponse> Delete(
+    public Task<BetaDeletedRbacGroup> Delete(
         string rbacGroupID,
         RbacGroupDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -329,7 +329,7 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<RbacGroupDeleteResponse>> Delete(
+    public async Task<HttpResponse<BetaDeletedRbacGroup>> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -352,20 +352,20 @@ public sealed class RbacGroupServiceWithRawResponse : IRbacGroupServiceWithRawRe
             response,
             async (token) =>
             {
-                var rbacGroup = await response
-                    .Deserialize<RbacGroupDeleteResponse>(token)
+                var betaDeletedRbacGroup = await response
+                    .Deserialize<BetaDeletedRbacGroup>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    rbacGroup.Validate();
+                    betaDeletedRbacGroup.Validate();
                 }
-                return rbacGroup;
+                return betaDeletedRbacGroup;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<RbacGroupDeleteResponse>> Delete(
+    public Task<HttpResponse<BetaDeletedRbacGroup>> Delete(
         string rbacGroupID,
         RbacGroupDeleteParams? parameters = null,
         CancellationToken cancellationToken = default

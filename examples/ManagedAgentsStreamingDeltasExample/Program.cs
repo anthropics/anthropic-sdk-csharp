@@ -23,7 +23,7 @@ var agent = await client.Beta.Agents.Create(
     new AgentCreateParams
     {
         Name = "streaming-deltas-example-agent",
-        Model = BetaManagedAgentsModel.ClaudeSonnet4_6,
+        Model = BetaManagedAgentsModel.ClaudeSonnet5_5,
     }
 );
 Console.WriteLine($"Created agent: {agent.ID}");

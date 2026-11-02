@@ -57,17 +57,17 @@ public class UserListPageResponseTest : TestBase
                         ConnectorsUsedCount = 0,
                         DispatchTurnCount = 0,
                         DistinctConnectorsUsedCount = 0,
+                        DistinctPluginsUsedCount = 0,
                         DistinctSessionCount = 0,
                         DistinctSkillsUsedCount = 0,
-                        MessageCount = 0,
-                        SkillsUsedCount = 0,
-                        DistinctPluginsUsedCount = 0,
                         EditToolCount = 0,
                         FileEditCount = 0,
+                        MessageCount = 0,
                         MultiEditToolCount = 0,
                         NotebookEditToolCount = 0,
                         PluginsUsedCount = 0,
                         SessionsWithFileEditsCount = 0,
+                        SkillsUsedCount = 0,
                         WriteToolCount = 0,
                     },
                     DesignMetrics = new()
@@ -77,6 +77,7 @@ public class UserListPageResponseTest : TestBase
                         DistinctSessionCount = 0,
                         MessageCount = 0,
                     },
+                    DistinctUserCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new()
@@ -124,6 +125,7 @@ public class UserListPageResponseTest : TestBase
                         RemoteComputeJobCount = 0,
                         SkillsUsedCount = 0,
                     },
+                    User = new() { ID = "id", EmailAddress = "email_address" },
                     WebSearchCount = 0,
                     ChatCoworkUnifiedMetrics = new()
                     {
@@ -163,11 +165,9 @@ public class UserListPageResponseTest : TestBase
                             WriteToolCount = 0,
                         },
                     },
-                    DistinctUserCount = 0,
                     LastActivityDate = "2019-12-27",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    User = new() { ID = "id", EmailAddress = "email_address" },
                 },
             ],
             NextPage = "next_page",
@@ -217,17 +217,17 @@ public class UserListPageResponseTest : TestBase
                     ConnectorsUsedCount = 0,
                     DispatchTurnCount = 0,
                     DistinctConnectorsUsedCount = 0,
+                    DistinctPluginsUsedCount = 0,
                     DistinctSessionCount = 0,
                     DistinctSkillsUsedCount = 0,
-                    MessageCount = 0,
-                    SkillsUsedCount = 0,
-                    DistinctPluginsUsedCount = 0,
                     EditToolCount = 0,
                     FileEditCount = 0,
+                    MessageCount = 0,
                     MultiEditToolCount = 0,
                     NotebookEditToolCount = 0,
                     PluginsUsedCount = 0,
                     SessionsWithFileEditsCount = 0,
+                    SkillsUsedCount = 0,
                     WriteToolCount = 0,
                 },
                 DesignMetrics = new()
@@ -237,6 +237,7 @@ public class UserListPageResponseTest : TestBase
                     DistinctSessionCount = 0,
                     MessageCount = 0,
                 },
+                DistinctUserCount = 0,
                 OfficeMetrics = new()
                 {
                     Excel = new()
@@ -284,6 +285,7 @@ public class UserListPageResponseTest : TestBase
                     RemoteComputeJobCount = 0,
                     SkillsUsedCount = 0,
                 },
+                User = new() { ID = "id", EmailAddress = "email_address" },
                 WebSearchCount = 0,
                 ChatCoworkUnifiedMetrics = new()
                 {
@@ -323,11 +325,9 @@ public class UserListPageResponseTest : TestBase
                         WriteToolCount = 0,
                     },
                 },
-                DistinctUserCount = 0,
                 LastActivityDate = "2019-12-27",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
-                User = new() { ID = "id", EmailAddress = "email_address" },
             },
         ];
         string expectedNextPage = "next_page";
@@ -389,17 +389,17 @@ public class UserListPageResponseTest : TestBase
                         ConnectorsUsedCount = 0,
                         DispatchTurnCount = 0,
                         DistinctConnectorsUsedCount = 0,
+                        DistinctPluginsUsedCount = 0,
                         DistinctSessionCount = 0,
                         DistinctSkillsUsedCount = 0,
-                        MessageCount = 0,
-                        SkillsUsedCount = 0,
-                        DistinctPluginsUsedCount = 0,
                         EditToolCount = 0,
                         FileEditCount = 0,
+                        MessageCount = 0,
                         MultiEditToolCount = 0,
                         NotebookEditToolCount = 0,
                         PluginsUsedCount = 0,
                         SessionsWithFileEditsCount = 0,
+                        SkillsUsedCount = 0,
                         WriteToolCount = 0,
                     },
                     DesignMetrics = new()
@@ -409,6 +409,7 @@ public class UserListPageResponseTest : TestBase
                         DistinctSessionCount = 0,
                         MessageCount = 0,
                     },
+                    DistinctUserCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new()
@@ -456,6 +457,7 @@ public class UserListPageResponseTest : TestBase
                         RemoteComputeJobCount = 0,
                         SkillsUsedCount = 0,
                     },
+                    User = new() { ID = "id", EmailAddress = "email_address" },
                     WebSearchCount = 0,
                     ChatCoworkUnifiedMetrics = new()
                     {
@@ -495,11 +497,9 @@ public class UserListPageResponseTest : TestBase
                             WriteToolCount = 0,
                         },
                     },
-                    DistinctUserCount = 0,
                     LastActivityDate = "2019-12-27",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    User = new() { ID = "id", EmailAddress = "email_address" },
                 },
             ],
             NextPage = "next_page",
@@ -563,17 +563,17 @@ public class UserListPageResponseTest : TestBase
                         ConnectorsUsedCount = 0,
                         DispatchTurnCount = 0,
                         DistinctConnectorsUsedCount = 0,
+                        DistinctPluginsUsedCount = 0,
                         DistinctSessionCount = 0,
                         DistinctSkillsUsedCount = 0,
-                        MessageCount = 0,
-                        SkillsUsedCount = 0,
-                        DistinctPluginsUsedCount = 0,
                         EditToolCount = 0,
                         FileEditCount = 0,
+                        MessageCount = 0,
                         MultiEditToolCount = 0,
                         NotebookEditToolCount = 0,
                         PluginsUsedCount = 0,
                         SessionsWithFileEditsCount = 0,
+                        SkillsUsedCount = 0,
                         WriteToolCount = 0,
                     },
                     DesignMetrics = new()
@@ -583,6 +583,7 @@ public class UserListPageResponseTest : TestBase
                         DistinctSessionCount = 0,
                         MessageCount = 0,
                     },
+                    DistinctUserCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new()
@@ -630,6 +631,7 @@ public class UserListPageResponseTest : TestBase
                         RemoteComputeJobCount = 0,
                         SkillsUsedCount = 0,
                     },
+                    User = new() { ID = "id", EmailAddress = "email_address" },
                     WebSearchCount = 0,
                     ChatCoworkUnifiedMetrics = new()
                     {
@@ -669,11 +671,9 @@ public class UserListPageResponseTest : TestBase
                             WriteToolCount = 0,
                         },
                     },
-                    DistinctUserCount = 0,
                     LastActivityDate = "2019-12-27",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    User = new() { ID = "id", EmailAddress = "email_address" },
                 },
             ],
             NextPage = "next_page",
@@ -730,17 +730,17 @@ public class UserListPageResponseTest : TestBase
                     ConnectorsUsedCount = 0,
                     DispatchTurnCount = 0,
                     DistinctConnectorsUsedCount = 0,
+                    DistinctPluginsUsedCount = 0,
                     DistinctSessionCount = 0,
                     DistinctSkillsUsedCount = 0,
-                    MessageCount = 0,
-                    SkillsUsedCount = 0,
-                    DistinctPluginsUsedCount = 0,
                     EditToolCount = 0,
                     FileEditCount = 0,
+                    MessageCount = 0,
                     MultiEditToolCount = 0,
                     NotebookEditToolCount = 0,
                     PluginsUsedCount = 0,
                     SessionsWithFileEditsCount = 0,
+                    SkillsUsedCount = 0,
                     WriteToolCount = 0,
                 },
                 DesignMetrics = new()
@@ -750,6 +750,7 @@ public class UserListPageResponseTest : TestBase
                     DistinctSessionCount = 0,
                     MessageCount = 0,
                 },
+                DistinctUserCount = 0,
                 OfficeMetrics = new()
                 {
                     Excel = new()
@@ -797,6 +798,7 @@ public class UserListPageResponseTest : TestBase
                     RemoteComputeJobCount = 0,
                     SkillsUsedCount = 0,
                 },
+                User = new() { ID = "id", EmailAddress = "email_address" },
                 WebSearchCount = 0,
                 ChatCoworkUnifiedMetrics = new()
                 {
@@ -836,11 +838,9 @@ public class UserListPageResponseTest : TestBase
                         WriteToolCount = 0,
                     },
                 },
-                DistinctUserCount = 0,
                 LastActivityDate = "2019-12-27",
                 RbacGroupID = "rbac_group_id",
                 RbacGroupName = "rbac_group_name",
-                User = new() { ID = "id", EmailAddress = "email_address" },
             },
         ];
         string expectedNextPage = "next_page";
@@ -902,17 +902,17 @@ public class UserListPageResponseTest : TestBase
                         ConnectorsUsedCount = 0,
                         DispatchTurnCount = 0,
                         DistinctConnectorsUsedCount = 0,
+                        DistinctPluginsUsedCount = 0,
                         DistinctSessionCount = 0,
                         DistinctSkillsUsedCount = 0,
-                        MessageCount = 0,
-                        SkillsUsedCount = 0,
-                        DistinctPluginsUsedCount = 0,
                         EditToolCount = 0,
                         FileEditCount = 0,
+                        MessageCount = 0,
                         MultiEditToolCount = 0,
                         NotebookEditToolCount = 0,
                         PluginsUsedCount = 0,
                         SessionsWithFileEditsCount = 0,
+                        SkillsUsedCount = 0,
                         WriteToolCount = 0,
                     },
                     DesignMetrics = new()
@@ -922,6 +922,7 @@ public class UserListPageResponseTest : TestBase
                         DistinctSessionCount = 0,
                         MessageCount = 0,
                     },
+                    DistinctUserCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new()
@@ -969,6 +970,7 @@ public class UserListPageResponseTest : TestBase
                         RemoteComputeJobCount = 0,
                         SkillsUsedCount = 0,
                     },
+                    User = new() { ID = "id", EmailAddress = "email_address" },
                     WebSearchCount = 0,
                     ChatCoworkUnifiedMetrics = new()
                     {
@@ -1008,11 +1010,9 @@ public class UserListPageResponseTest : TestBase
                             WriteToolCount = 0,
                         },
                     },
-                    DistinctUserCount = 0,
                     LastActivityDate = "2019-12-27",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    User = new() { ID = "id", EmailAddress = "email_address" },
                 },
             ],
             NextPage = "next_page",
@@ -1070,17 +1070,17 @@ public class UserListPageResponseTest : TestBase
                         ConnectorsUsedCount = 0,
                         DispatchTurnCount = 0,
                         DistinctConnectorsUsedCount = 0,
+                        DistinctPluginsUsedCount = 0,
                         DistinctSessionCount = 0,
                         DistinctSkillsUsedCount = 0,
-                        MessageCount = 0,
-                        SkillsUsedCount = 0,
-                        DistinctPluginsUsedCount = 0,
                         EditToolCount = 0,
                         FileEditCount = 0,
+                        MessageCount = 0,
                         MultiEditToolCount = 0,
                         NotebookEditToolCount = 0,
                         PluginsUsedCount = 0,
                         SessionsWithFileEditsCount = 0,
+                        SkillsUsedCount = 0,
                         WriteToolCount = 0,
                     },
                     DesignMetrics = new()
@@ -1090,6 +1090,7 @@ public class UserListPageResponseTest : TestBase
                         DistinctSessionCount = 0,
                         MessageCount = 0,
                     },
+                    DistinctUserCount = 0,
                     OfficeMetrics = new()
                     {
                         Excel = new()
@@ -1137,6 +1138,7 @@ public class UserListPageResponseTest : TestBase
                         RemoteComputeJobCount = 0,
                         SkillsUsedCount = 0,
                     },
+                    User = new() { ID = "id", EmailAddress = "email_address" },
                     WebSearchCount = 0,
                     ChatCoworkUnifiedMetrics = new()
                     {
@@ -1176,11 +1178,9 @@ public class UserListPageResponseTest : TestBase
                             WriteToolCount = 0,
                         },
                     },
-                    DistinctUserCount = 0,
                     LastActivityDate = "2019-12-27",
                     RbacGroupID = "rbac_group_id",
                     RbacGroupName = "rbac_group_name",
-                    User = new() { ID = "id", EmailAddress = "email_address" },
                 },
             ],
             NextPage = "next_page",

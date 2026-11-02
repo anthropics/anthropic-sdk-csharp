@@ -47,6 +47,28 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
     }
 
     /// <summary>
+    /// Human-readable display name for rows whose `connector_name` is an opaque
+    /// connector id rather than a readable name, resolved at request time from the
+    /// organization's connectors (including connectors that have since been removed).
+    /// `connector_name` remains the row's stable key for sorting and pagination,
+    /// and `filter[]=connector_name:{value}` also matches these rows by display
+    /// name. Display names are not unique, and the same connector's claude.ai usage
+    /// can appear under a separate row with a readable `connector_name`. Null when
+    /// `connector_name` is already a readable name, when the id cannot be resolved
+    /// to one of the organization's connectors, or when display-name resolution
+    /// is not enabled for this organization.
+    /// </summary>
+    public required string? ConnectorDisplayName
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("connector_display_name");
+        }
+        init { this._rawData.Set("connector_display_name", value); }
+    }
+
+    /// <summary>
     /// Name of the connector. Some rows carry an opaque connector id here instead
     /// of a readable name; `connector_display_name` holds the resolved name for those rows.
     /// </summary>
@@ -91,69 +113,13 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
     }
 
     /// <summary>
-    /// Office Agent activity metrics for a single connector on a given day, broken
-    /// out by Office product.
-    /// </summary>
-    public required BetaAnalyticsConnectorOfficeMetrics OfficeMetrics
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorOfficeMetrics>(
-                "office_metrics"
-            );
-        }
-        init { this._rawData.Set("office_metrics", value); }
-    }
-
-    /// <summary>
-    /// Connector use recorded while members had Chat and Cowork unified (Cowork's
-    /// features inside claude.ai chat) turned on, split into chat conversations and
-    /// Cowork sessions. A count is null in date-range mode where it cannot be computed.
-    /// Omitted from the response on deployments that do not offer Chat and Cowork unified.
-    /// </summary>
-    public ChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ChatCoworkUnifiedMetrics>(
-                "chat_cowork_unified_metrics"
-            );
-        }
-        init { this._rawData.Set("chat_cowork_unified_metrics", value); }
-    }
-
-    /// <summary>
-    /// Human-readable display name for rows whose `connector_name` is an opaque
-    /// connector id rather than a readable name, resolved at request time from the
-    /// organization's connectors (including connectors that have since been removed).
-    /// `connector_name` remains the row's stable key for sorting and pagination,
-    /// and `filter[]=connector_name:{value}` also matches these rows by display
-    /// name. Display names are not unique, and the same connector's claude.ai usage
-    /// can appear under a separate row with a readable `connector_name`. Null when
-    /// `connector_name` is already a readable name, when the id cannot be resolved
-    /// to one of the organization's connectors, or when display-name resolution
-    /// is not enabled for this organization.
-    /// </summary>
-    public string? ConnectorDisplayName
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<string>("connector_display_name");
-        }
-        init { this._rawData.Set("connector_display_name", value); }
-    }
-
-    /// <summary>
     /// Number of distinct users whose use of this connector on the requested day
     /// ran on their own individual credential, connected through their own consent
     /// flow. Companion bucket to `managed_auth_distinct_user_count`, which carries
     /// the measurement, attribution, and null rules. Users whose requests used no
     /// stored credential count in neither bucket.
     /// </summary>
-    public long? IndividualAuthDistinctUserCount
+    public required long? IndividualAuthDistinctUserCount
     {
         get
         {
@@ -185,7 +151,7 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
     /// mint-event rules applying with the window in place of the day; a range starting
     /// earlier reports every managed-auth field as null, never a partial-window value.
     /// </summary>
-    public long? ManagedAuthDistinctUserCount
+    public required long? ManagedAuthDistinctUserCount
     {
         get
         {
@@ -193,6 +159,100 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
             return this._rawData.GetNullableStruct<long>("managed_auth_distinct_user_count");
         }
         init { this._rawData.Set("managed_auth_distinct_user_count", value); }
+    }
+
+    /// <summary>
+    /// Office Agent activity metrics for a single connector on a given day, broken
+    /// out by Office product.
+    /// </summary>
+    public required BetaAnalyticsConnectorOfficeMetrics OfficeMetrics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorOfficeMetrics>(
+                "office_metrics"
+            );
+        }
+        init { this._rawData.Set("office_metrics", value); }
+    }
+
+    /// <summary>
+    /// Number of connector tool calls on the requested day whose trusted read-only
+    /// annotation marked them read-only. Call count, not distinct users. Every call
+    /// recorded on a classified surface lands in exactly one of `read_call_count`,
+    /// `write_call_count`, or `unclassified_call_count`, so the three sum to the
+    /// day's classified calls. Classification is forward-only per surface: claude.ai
+    /// from 2026-06-01, Claude Code from 2026-05-30, Claude in Office from 2026-05-29,
+    /// Cowork from 2026-06-02 (Cowork clients predating annotation forwarding land
+    /// in `unclassified_call_count`). Null, never 0, when the value cannot be stated:
+    /// the read/write split is not enabled for this organization, or the day predates
+    /// 2026-05-29. For a date-range total, sum the per-day values, but treat a window
+    /// that extends before 2026-05-29 as null rather than summing only its covered
+    /// days — date-range rollup mode (`starting_date`/`ending_date`) applies both
+    /// rules server-side.
+    /// </summary>
+    public required long? ReadCallCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("read_call_count");
+        }
+        init { this._rawData.Set("read_call_count", value); }
+    }
+
+    /// <summary>
+    /// Number of connector tool calls on the requested day with no trusted read-only
+    /// annotation — the annotation is optional in the MCP spec and is discarded
+    /// when connector access controls are active, so unclassified calls are common.
+    /// This field shows how much of the day's classified activity the read/write
+    /// split actually covers. Call count, not distinct users. One of the three call-classification
+    /// buckets; see `read_call_count` for the per-surface data-start dates, null
+    /// conditions, and date-range guidance.
+    /// </summary>
+    public required long? UnclassifiedCallCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("unclassified_call_count");
+        }
+        init { this._rawData.Set("unclassified_call_count", value); }
+    }
+
+    /// <summary>
+    /// Number of connector tool calls on the requested day whose trusted read-only
+    /// annotation marked them not read-only. Call count, not distinct users. One
+    /// of the three call-classification buckets; see `read_call_count` for the per-surface
+    /// data-start dates, null conditions, and date-range guidance.
+    /// </summary>
+    public required long? WriteCallCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("write_call_count");
+        }
+        init { this._rawData.Set("write_call_count", value); }
+    }
+
+    /// <summary>
+    /// Connector use recorded while members had Chat and Cowork unified (Cowork's
+    /// features inside claude.ai chat) turned on, split into chat conversations and
+    /// Cowork sessions. A count is null in date-range mode where it cannot be computed.
+    /// Omitted from the response on deployments that do not offer Chat and Cowork unified.
+    /// </summary>
+    public BetaAnalyticsConnectorChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsConnectorChatCoworkUnifiedMetrics>(
+                "chat_cowork_unified_metrics"
+            );
+        }
+        init { this._rawData.Set("chat_cowork_unified_metrics", value); }
     }
 
     /// <summary>
@@ -246,50 +306,6 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
     }
 
     /// <summary>
-    /// Number of connector tool calls on the requested day whose trusted read-only
-    /// annotation marked them read-only. Call count, not distinct users. Every call
-    /// recorded on a classified surface lands in exactly one of `read_call_count`,
-    /// `write_call_count`, or `unclassified_call_count`, so the three sum to the
-    /// day's classified calls. Classification is forward-only per surface: claude.ai
-    /// from 2026-06-01, Claude Code from 2026-05-30, Claude in Office from 2026-05-29,
-    /// Cowork from 2026-06-02 (Cowork clients predating annotation forwarding land
-    /// in `unclassified_call_count`). Null, never 0, when the value cannot be stated:
-    /// the read/write split is not enabled for this organization, or the day predates
-    /// 2026-05-29. For a date-range total, sum the per-day values, but treat a window
-    /// that extends before 2026-05-29 as null rather than summing only its covered
-    /// days — date-range rollup mode (`starting_date`/`ending_date`) applies both
-    /// rules server-side.
-    /// </summary>
-    public long? ReadCallCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("read_call_count");
-        }
-        init { this._rawData.Set("read_call_count", value); }
-    }
-
-    /// <summary>
-    /// Number of connector tool calls on the requested day with no trusted read-only
-    /// annotation — the annotation is optional in the MCP spec and is discarded
-    /// when connector access controls are active, so unclassified calls are common.
-    /// This field shows how much of the day's classified activity the read/write
-    /// split actually covers. Call count, not distinct users. One of the three call-classification
-    /// buckets; see `read_call_count` for the per-surface data-start dates, null
-    /// conditions, and date-range guidance.
-    /// </summary>
-    public long? UnclassifiedCallCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("unclassified_call_count");
-        }
-        init { this._rawData.Set("unclassified_call_count", value); }
-    }
-
-    /// <summary>
     /// Tagged user identifier (e.g. `user_...`). Present only when the request grouped
     /// by `user_id`.
     /// </summary>
@@ -303,42 +319,26 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
         init { this._rawData.Set("user_id", value); }
     }
 
-    /// <summary>
-    /// Number of connector tool calls on the requested day whose trusted read-only
-    /// annotation marked them not read-only. Call count, not distinct users. One
-    /// of the three call-classification buckets; see `read_call_count` for the per-surface
-    /// data-start dates, null conditions, and date-range guidance.
-    /// </summary>
-    public long? WriteCallCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("write_call_count");
-        }
-        init { this._rawData.Set("write_call_count", value); }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
         this.ChatMetrics.Validate();
         this.ClaudeCodeMetrics.Validate();
+        _ = this.ConnectorDisplayName;
         _ = this.ConnectorName;
         this.CoworkMetrics.Validate();
         _ = this.DistinctUserCount;
-        this.OfficeMetrics.Validate();
-        this.ChatCoworkUnifiedMetrics?.Validate();
-        _ = this.ConnectorDisplayName;
         _ = this.IndividualAuthDistinctUserCount;
         _ = this.ManagedAuthDistinctUserCount;
+        this.OfficeMetrics.Validate();
+        _ = this.ReadCallCount;
+        _ = this.UnclassifiedCallCount;
+        _ = this.WriteCallCount;
+        this.ChatCoworkUnifiedMetrics?.Validate();
         _ = this.Product;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;
-        _ = this.ReadCallCount;
-        _ = this.UnclassifiedCallCount;
         _ = this.UserID;
-        _ = this.WriteCallCount;
     }
 
     public BetaAnalyticsConnectorActivity() { }
@@ -379,92 +379,4 @@ class BetaAnalyticsConnectorActivityFromRaw : IFromRawJson<BetaAnalyticsConnecto
     public BetaAnalyticsConnectorActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsConnectorActivity.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Connector use recorded while members had Chat and Cowork unified (Cowork's features
-/// inside claude.ai chat) turned on, split into chat conversations and Cowork sessions.
-/// A count is null in date-range mode where it cannot be computed. Omitted from
-/// the response on deployments that do not offer Chat and Cowork unified.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<ChatCoworkUnifiedMetrics, ChatCoworkUnifiedMetricsFromRaw>)
-)]
-public sealed record class ChatCoworkUnifiedMetrics : JsonModel
-{
-    /// <summary>
-    /// A connector's use in chat conversations recorded while members had Chat and
-    /// Cowork unified turned on.
-    /// </summary>
-    public required BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics Chat
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics>(
-                "chat"
-            );
-        }
-        init { this._rawData.Set("chat", value); }
-    }
-
-    /// <summary>
-    /// A connector's use in Cowork sessions recorded while members had Chat and
-    /// Cowork unified turned on.
-    /// </summary>
-    public required BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics Sessions
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics>(
-                "sessions"
-            );
-        }
-        init { this._rawData.Set("sessions", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        this.Chat.Validate();
-        this.Sessions.Validate();
-    }
-
-    public ChatCoworkUnifiedMetrics() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public ChatCoworkUnifiedMetrics(ChatCoworkUnifiedMetrics chatCoworkUnifiedMetrics)
-        : base(chatCoworkUnifiedMetrics) { }
-#pragma warning restore CS8618
-
-    public ChatCoworkUnifiedMetrics(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    ChatCoworkUnifiedMetrics(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="ChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
-    public static ChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class ChatCoworkUnifiedMetricsFromRaw : IFromRawJson<ChatCoworkUnifiedMetrics>
-{
-    /// <inheritdoc/>
-    public ChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => ChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

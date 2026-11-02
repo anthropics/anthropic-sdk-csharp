@@ -45,6 +45,14 @@ public interface IOrganizationService
 
     IComplianceSettingService ComplianceSettings { get; }
 
+    IAnalyticsService Analytics { get; }
+
+    ISpendLimitService SpendLimits { get; }
+
+    IRbacGroupService RbacGroups { get; }
+
+    IRbacRoleService RbacRoles { get; }
+
     /// <summary>
     /// Retrieve information about the organization associated with the authenticated
     /// API key.
@@ -85,6 +93,14 @@ public interface IOrganizationServiceWithRawResponse
     IRateLimitServiceWithRawResponse RateLimits { get; }
 
     IComplianceSettingServiceWithRawResponse ComplianceSettings { get; }
+
+    IAnalyticsServiceWithRawResponse Analytics { get; }
+
+    ISpendLimitServiceWithRawResponse SpendLimits { get; }
+
+    IRbacGroupServiceWithRawResponse RbacGroups { get; }
+
+    IRbacRoleServiceWithRawResponse RbacRoles { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/me</c>, but is otherwise the

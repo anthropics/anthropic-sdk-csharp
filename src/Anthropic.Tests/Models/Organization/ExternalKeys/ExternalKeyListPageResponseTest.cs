@@ -29,6 +29,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                         Region = "us-east-1",
                     },
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             NextPage = "next_page",
@@ -50,6 +51,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                     Region = "us-east-1",
                 },
                 UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             },
         ];
         string expectedNextPage = "next_page";
@@ -83,6 +85,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                         Region = "us-east-1",
                     },
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             NextPage = "next_page",
@@ -118,6 +121,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                         Region = "us-east-1",
                     },
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             NextPage = "next_page",
@@ -146,6 +150,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                     Region = "us-east-1",
                 },
                 UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             },
         ];
         string expectedNextPage = "next_page";
@@ -179,6 +184,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                         Region = "us-east-1",
                     },
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             NextPage = "next_page",
@@ -208,6 +214,7 @@ public class ExternalKeyListPageResponseTest : TestBase
                         Region = "us-east-1",
                     },
                     UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
+                    UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
                 },
             ],
             NextPage = "next_page",

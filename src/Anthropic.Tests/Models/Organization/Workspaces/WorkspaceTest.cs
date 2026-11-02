@@ -27,6 +27,7 @@ public class WorkspaceTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "Workspace Name",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string expectedID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
@@ -48,6 +49,7 @@ public class WorkspaceTest : TestBase
             { "team", "platform" },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedArchivedAt, model.ArchivedAt);
@@ -65,6 +67,7 @@ public class WorkspaceTest : TestBase
             Assert.Equal(value, model.Tags[item.Key]);
         }
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
+        Assert.Equal(expectedUserProfileID, model.UserProfileID);
     }
 
     [Fact]
@@ -86,6 +89,7 @@ public class WorkspaceTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "Workspace Name",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -113,6 +117,7 @@ public class WorkspaceTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "Workspace Name",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -141,6 +146,7 @@ public class WorkspaceTest : TestBase
             { "team", "platform" },
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
+        string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedArchivedAt, deserialized.ArchivedAt);
@@ -158,6 +164,7 @@ public class WorkspaceTest : TestBase
             Assert.Equal(value, deserialized.Tags[item.Key]);
         }
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
+        Assert.Equal(expectedUserProfileID, deserialized.UserProfileID);
     }
 
     [Fact]
@@ -179,6 +186,7 @@ public class WorkspaceTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "Workspace Name",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         model.Validate();
@@ -203,6 +211,7 @@ public class WorkspaceTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Name = "Workspace Name",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
+            UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
         Workspace copied = new(model);

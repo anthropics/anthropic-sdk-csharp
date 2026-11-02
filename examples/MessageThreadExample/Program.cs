@@ -10,7 +10,7 @@ var client = new AnthropicClient();
 var thread = client.Beta.Messages.Thread(
     new()
     {
-        Model = "claude-sonnet-5",
+        Model = "claude-sonnet-5-5",
         MaxTokens = 2048,
         System = "You are a concise travel guide.",
         Messages = [],
@@ -52,7 +52,7 @@ Console.WriteLine($"The fork holds {fork.Messages.Count} messages.");
 var sights = client.Beta.Messages.Thread<Sight>(
     new()
     {
-        Model = "claude-sonnet-5",
+        Model = "claude-sonnet-5-5",
         MaxTokens = 2048,
         Messages = [],
     }

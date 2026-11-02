@@ -14,14 +14,14 @@ public class BetaAnalyticsReportUserActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         bool expectedDeleted = false;
         string expectedEmailAddress = "user@emaildomain.com";
         string expectedName = "Jane Doe";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedDeleted, model.Deleted);
         Assert.Equal(expectedEmailAddress, model.EmailAddress);
@@ -38,7 +38,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -58,7 +58,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -72,7 +72,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
         string expectedEmailAddress = "user@emaildomain.com";
         string expectedName = "Jane Doe";
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_actor");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedDeleted, deserialized.Deleted);
         Assert.Equal(expectedEmailAddress, deserialized.EmailAddress);
@@ -89,7 +89,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         model.Validate();
@@ -103,7 +103,7 @@ public class BetaAnalyticsReportUserActorTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         BetaAnalyticsReportUserActor copied = new(model);

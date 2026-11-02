@@ -65,6 +65,7 @@ public class VertexAdaptationOrderingTests
     {
         HttpRequestMessage? wireRequest = null;
         string? wireBody = null;
+        string? wireContentType = null;
         var handlerMock = new Mock<HttpMessageHandler>();
         handlerMock
             .Protected()
@@ -84,6 +85,7 @@ public class VertexAdaptationOrderingTests
                         )
                         .GetAwaiter()
                         .GetResult();
+                    wireContentType = req.Content.Headers.ContentType?.ToString();
                     var clone = new HttpRequestMessage(req.Method, req.RequestUri);
                     foreach (var header in req.Headers)
                     {
@@ -152,6 +154,7 @@ public class VertexAdaptationOrderingTests
             wireRequest!.RequestUri!.AbsolutePath
         );
         Assert.DoesNotContain("\"model\"", wireBody);
+        Assert.Equal("application/json", wireContentType);
         var wireVersion = JsonNode.Parse(wireBody!)!["anthropic_version"];
         Assert.Equal(expectedBodyVersion, (string?)wireVersion);
         Assert.False(wireRequest.Headers.Contains("anthropic-version"));

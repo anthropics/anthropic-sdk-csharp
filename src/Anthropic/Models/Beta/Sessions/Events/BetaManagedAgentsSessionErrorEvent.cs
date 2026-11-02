@@ -155,6 +155,8 @@ public record class Error : ModelBase
                 BetaManagedAgentsMcpAuthenticationFailedError x => x.Message,
                 BetaManagedAgentsBillingError x => x.Message,
                 BetaManagedAgentsCredentialHostUnreachableError x => x.Message,
+                BetaManagedAgentsToolUseLimitReachedError x => x.Message,
+                BetaManagedAgentsCompactionLimitReachedError x => x.Message,
                 BetaManagedAgentsRepositoryAuthenticationError x => x.Message,
                 BetaManagedAgentsRepositoryForbiddenError x => x.Message,
                 BetaManagedAgentsRepositoryNotFoundError x => x.Message,
@@ -181,6 +183,9 @@ public record class Error : ModelBase
                 BetaManagedAgentsBillingError _ => ErrorType.BillingError,
                 BetaManagedAgentsCredentialHostUnreachableError _ =>
                     ErrorType.CredentialHostUnreachableError,
+                BetaManagedAgentsToolUseLimitReachedError _ => ErrorType.ToolUseLimitReachedError,
+                BetaManagedAgentsCompactionLimitReachedError _ =>
+                    ErrorType.CompactionLimitReachedError,
                 BetaManagedAgentsRepositoryAuthenticationError _ =>
                     ErrorType.RepositoryAuthenticationError,
                 BetaManagedAgentsRepositoryForbiddenError _ => ErrorType.RepositoryForbiddenError,
@@ -209,6 +214,8 @@ public record class Error : ModelBase
                 BetaManagedAgentsMcpAuthenticationFailedError x => x.McpServerName,
                 BetaManagedAgentsBillingError _ => null,
                 BetaManagedAgentsCredentialHostUnreachableError _ => null,
+                BetaManagedAgentsToolUseLimitReachedError _ => null,
+                BetaManagedAgentsCompactionLimitReachedError _ => null,
                 BetaManagedAgentsRepositoryAuthenticationError _ => null,
                 BetaManagedAgentsRepositoryForbiddenError _ => null,
                 BetaManagedAgentsRepositoryNotFoundError _ => null,
@@ -236,6 +243,8 @@ public record class Error : ModelBase
                 BetaManagedAgentsMcpAuthenticationFailedError _ => null,
                 BetaManagedAgentsBillingError _ => null,
                 BetaManagedAgentsCredentialHostUnreachableError _ => null,
+                BetaManagedAgentsToolUseLimitReachedError _ => null,
+                BetaManagedAgentsCompactionLimitReachedError _ => null,
                 BetaManagedAgentsRepositoryAuthenticationError x => x.RepositoryUrl,
                 BetaManagedAgentsRepositoryForbiddenError x => x.RepositoryUrl,
                 BetaManagedAgentsRepositoryNotFoundError x => x.RepositoryUrl,
@@ -292,6 +301,18 @@ public record class Error : ModelBase
     }
 
     public Error(BetaManagedAgentsCredentialHostUnreachableError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsToolUseLimitReachedError value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Error(BetaManagedAgentsCompactionLimitReachedError value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -518,6 +539,52 @@ public record class Error : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsToolUseLimitReachedError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsToolUseLimitReached(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsToolUseLimitReachedError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsToolUseLimitReached(
+        [NotNullWhen(true)] out BetaManagedAgentsToolUseLimitReachedError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsToolUseLimitReachedError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaManagedAgentsCompactionLimitReachedError"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaManagedAgentsCompactionLimitReached(out var value)) {
+    ///     // `value` is of type `BetaManagedAgentsCompactionLimitReachedError`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaManagedAgentsCompactionLimitReached(
+        [NotNullWhen(true)] out BetaManagedAgentsCompactionLimitReachedError? value
+    )
+    {
+        value = this.Value as BetaManagedAgentsCompactionLimitReachedError;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaManagedAgentsRepositoryAuthenticationError"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -653,6 +720,8 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsBillingError value) =&gt; {...},
     ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...},
+    ///     (BetaManagedAgentsToolUseLimitReachedError value) =&gt; {...},
+    ///     (BetaManagedAgentsCompactionLimitReachedError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryAuthenticationError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryForbiddenError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryNotFoundError value) =&gt; {...},
@@ -671,6 +740,8 @@ public record class Error : ModelBase
         Action<BetaManagedAgentsMcpAuthenticationFailedError> betaManagedAgentsMcpAuthenticationFailed,
         Action<BetaManagedAgentsBillingError> betaManagedAgentsBilling,
         Action<BetaManagedAgentsCredentialHostUnreachableError> betaManagedAgentsCredentialHostUnreachable,
+        Action<BetaManagedAgentsToolUseLimitReachedError> betaManagedAgentsToolUseLimitReached,
+        Action<BetaManagedAgentsCompactionLimitReachedError> betaManagedAgentsCompactionLimitReached,
         Action<BetaManagedAgentsRepositoryAuthenticationError> betaManagedAgentsRepositoryAuthentication,
         Action<BetaManagedAgentsRepositoryForbiddenError> betaManagedAgentsRepositoryForbidden,
         Action<BetaManagedAgentsRepositoryNotFoundError> betaManagedAgentsRepositoryNotFound,
@@ -703,6 +774,12 @@ public record class Error : ModelBase
                 break;
             case BetaManagedAgentsCredentialHostUnreachableError value:
                 betaManagedAgentsCredentialHostUnreachable(value);
+                break;
+            case BetaManagedAgentsToolUseLimitReachedError value:
+                betaManagedAgentsToolUseLimitReached(value);
+                break;
+            case BetaManagedAgentsCompactionLimitReachedError value:
+                betaManagedAgentsCompactionLimitReached(value);
                 break;
             case BetaManagedAgentsRepositoryAuthenticationError value:
                 betaManagedAgentsRepositoryAuthentication(value);
@@ -747,6 +824,8 @@ public record class Error : ModelBase
     ///     (BetaManagedAgentsMcpAuthenticationFailedError value) =&gt; {...},
     ///     (BetaManagedAgentsBillingError value) =&gt; {...},
     ///     (BetaManagedAgentsCredentialHostUnreachableError value) =&gt; {...},
+    ///     (BetaManagedAgentsToolUseLimitReachedError value) =&gt; {...},
+    ///     (BetaManagedAgentsCompactionLimitReachedError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryAuthenticationError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryForbiddenError value) =&gt; {...},
     ///     (BetaManagedAgentsRepositoryNotFoundError value) =&gt; {...},
@@ -771,6 +850,11 @@ public record class Error : ModelBase
             BetaManagedAgentsCredentialHostUnreachableError,
             T
         > betaManagedAgentsCredentialHostUnreachable,
+        Func<BetaManagedAgentsToolUseLimitReachedError, T> betaManagedAgentsToolUseLimitReached,
+        Func<
+            BetaManagedAgentsCompactionLimitReachedError,
+            T
+        > betaManagedAgentsCompactionLimitReached,
         Func<
             BetaManagedAgentsRepositoryAuthenticationError,
             T
@@ -799,6 +883,11 @@ public record class Error : ModelBase
             BetaManagedAgentsBillingError value => betaManagedAgentsBilling(value),
             BetaManagedAgentsCredentialHostUnreachableError value =>
                 betaManagedAgentsCredentialHostUnreachable(value),
+            BetaManagedAgentsToolUseLimitReachedError value => betaManagedAgentsToolUseLimitReached(
+                value
+            ),
+            BetaManagedAgentsCompactionLimitReachedError value =>
+                betaManagedAgentsCompactionLimitReached(value),
             BetaManagedAgentsRepositoryAuthenticationError value =>
                 betaManagedAgentsRepositoryAuthentication(value),
             BetaManagedAgentsRepositoryForbiddenError value => betaManagedAgentsRepositoryForbidden(
@@ -835,6 +924,12 @@ public record class Error : ModelBase
     public static implicit operator Error(BetaManagedAgentsBillingError value) => new(value);
 
     public static implicit operator Error(BetaManagedAgentsCredentialHostUnreachableError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsToolUseLimitReachedError value) =>
+        new(value);
+
+    public static implicit operator Error(BetaManagedAgentsCompactionLimitReachedError value) =>
         new(value);
 
     public static implicit operator Error(BetaManagedAgentsRepositoryAuthenticationError value) =>
@@ -880,6 +975,10 @@ public record class Error : ModelBase
             (betaManagedAgentsBilling) => betaManagedAgentsBilling.Validate(),
             (betaManagedAgentsCredentialHostUnreachable) =>
                 betaManagedAgentsCredentialHostUnreachable.Validate(),
+            (betaManagedAgentsToolUseLimitReached) =>
+                betaManagedAgentsToolUseLimitReached.Validate(),
+            (betaManagedAgentsCompactionLimitReached) =>
+                betaManagedAgentsCompactionLimitReached.Validate(),
             (betaManagedAgentsRepositoryAuthentication) =>
                 betaManagedAgentsRepositoryAuthentication.Validate(),
             (betaManagedAgentsRepositoryForbidden) =>
@@ -918,11 +1017,13 @@ public record class Error : ModelBase
             BetaManagedAgentsMcpAuthenticationFailedError _ => 5,
             BetaManagedAgentsBillingError _ => 6,
             BetaManagedAgentsCredentialHostUnreachableError _ => 7,
-            BetaManagedAgentsRepositoryAuthenticationError _ => 8,
-            BetaManagedAgentsRepositoryForbiddenError _ => 9,
-            BetaManagedAgentsRepositoryNotFoundError _ => 10,
-            BetaManagedAgentsRepositoryCheckoutError _ => 11,
-            BetaManagedAgentsRepositoryCloneError _ => 12,
+            BetaManagedAgentsToolUseLimitReachedError _ => 8,
+            BetaManagedAgentsCompactionLimitReachedError _ => 9,
+            BetaManagedAgentsRepositoryAuthenticationError _ => 10,
+            BetaManagedAgentsRepositoryForbiddenError _ => 11,
+            BetaManagedAgentsRepositoryNotFoundError _ => 12,
+            BetaManagedAgentsRepositoryCheckoutError _ => 13,
+            BetaManagedAgentsRepositoryCloneError _ => 14,
             _ => -1,
         };
     }
@@ -1115,6 +1216,48 @@ sealed class ErrorConverter : JsonConverter<Error>
 
                 return new(element);
             }
+            case "tool_use_limit_reached_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsToolUseLimitReachedError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "compaction_limit_reached_error":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaManagedAgentsCompactionLimitReachedError>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "repository_authentication_error":
             {
                 try
@@ -1244,6 +1387,8 @@ public enum ErrorType
     McpAuthenticationFailedError,
     BillingError,
     CredentialHostUnreachableError,
+    ToolUseLimitReachedError,
+    CompactionLimitReachedError,
     RepositoryAuthenticationError,
     RepositoryForbiddenError,
     RepositoryNotFoundError,
@@ -1269,6 +1414,8 @@ sealed class ErrorTypeConverter : JsonConverter<ErrorType>
             "mcp_authentication_failed_error" => ErrorType.McpAuthenticationFailedError,
             "billing_error" => ErrorType.BillingError,
             "credential_host_unreachable_error" => ErrorType.CredentialHostUnreachableError,
+            "tool_use_limit_reached_error" => ErrorType.ToolUseLimitReachedError,
+            "compaction_limit_reached_error" => ErrorType.CompactionLimitReachedError,
             "repository_authentication_error" => ErrorType.RepositoryAuthenticationError,
             "repository_forbidden_error" => ErrorType.RepositoryForbiddenError,
             "repository_not_found_error" => ErrorType.RepositoryNotFoundError,
@@ -1296,6 +1443,8 @@ sealed class ErrorTypeConverter : JsonConverter<ErrorType>
                 ErrorType.McpAuthenticationFailedError => "mcp_authentication_failed_error",
                 ErrorType.BillingError => "billing_error",
                 ErrorType.CredentialHostUnreachableError => "credential_host_unreachable_error",
+                ErrorType.ToolUseLimitReachedError => "tool_use_limit_reached_error",
+                ErrorType.CompactionLimitReachedError => "compaction_limit_reached_error",
                 ErrorType.RepositoryAuthenticationError => "repository_authentication_error",
                 ErrorType.RepositoryForbiddenError => "repository_forbidden_error",
                 ErrorType.RepositoryNotFoundError => "repository_not_found_error",

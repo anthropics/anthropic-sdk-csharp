@@ -13,12 +13,12 @@ public class MemberAddParamsTest : TestBase
         var parameters = new MemberAddParams
         {
             WorkspaceID = "workspace_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
         string expectedWorkspaceID = "workspace_id";
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         ApiEnum<string, BetaNoBillingWorkspaceRole> expectedWorkspaceRole =
             BetaNoBillingWorkspaceRole.WorkspaceAdmin;
 
@@ -33,7 +33,7 @@ public class MemberAddParamsTest : TestBase
         MemberAddParams parameters = new()
         {
             WorkspaceID = "workspace_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -55,7 +55,7 @@ public class MemberAddParamsTest : TestBase
         var parameters = new MemberAddParams
         {
             WorkspaceID = "workspace_id",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
         };
 

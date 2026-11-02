@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Exceptions;
+using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 
 namespace Anthropic.Tests.Models.Beta.Organization.SpendLimits.Effective;
@@ -16,13 +15,13 @@ public class EffectiveListParamsTest : TestBase
         {
             Limit = 1,
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
         };
 
         long expectedLimit = 1;
         string expectedPage = "page";
-        List<ApiEnum<string, Period>> expectedPeriod = [Period.Daily];
+        List<ApiEnum<string, BetaSpendLimitPeriod>> expectedPeriod = [BetaSpendLimitPeriod.Daily];
         List<string> expectedUserIds = ["string"];
 
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -47,7 +46,7 @@ public class EffectiveListParamsTest : TestBase
         var parameters = new EffectiveListParams
         {
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
         };
 
@@ -61,7 +60,7 @@ public class EffectiveListParamsTest : TestBase
         var parameters = new EffectiveListParams
         {
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
 
             // Null should be interpreted as omitted for these properties
@@ -79,7 +78,7 @@ public class EffectiveListParamsTest : TestBase
         {
             Limit = 1,
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
         } with
         {
@@ -131,7 +130,7 @@ public class EffectiveListParamsTest : TestBase
         {
             Limit = 1,
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
         };
 
@@ -154,72 +153,12 @@ public class EffectiveListParamsTest : TestBase
         {
             Limit = 1,
             Page = "page",
-            Period = [Period.Daily],
+            Period = [BetaSpendLimitPeriod.Daily],
             UserIds = ["string"],
         };
 
         EffectiveListParams copied = new(parameters);
 
         Assert.Equal(parameters, copied);
-    }
-}
-
-public class PeriodTest : TestBase
-{
-    [Theory]
-    [InlineData(Period.Daily)]
-    [InlineData(Period.Monthly)]
-    [InlineData(Period.Weekly)]
-    public void Validation_Works(Period rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Period> value = rawValue;
-        value.Validate();
-    }
-
-    [Fact]
-    public void InvalidEnumValidationThrows_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Period>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-
-        Assert.NotNull(value);
-        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
-    }
-
-    [Theory]
-    [InlineData(Period.Daily)]
-    [InlineData(Period.Monthly)]
-    [InlineData(Period.Weekly)]
-    public void SerializationRoundtrip_Works(Period rawValue)
-    {
-        // force implicit conversion because Theory can't do that for us
-        ApiEnum<string, Period> value = rawValue;
-
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Period>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void InvalidEnumSerializationRoundtrip_Works()
-    {
-        var value = JsonSerializer.Deserialize<ApiEnum<string, Period>>(
-            JsonSerializer.SerializeToElement("invalid value"),
-            ModelBase.SerializerOptions
-        );
-        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Period>>(
-            json,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
     }
 }

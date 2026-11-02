@@ -12,11 +12,11 @@ public class BetaApiKeyCreatedByTest : TestBase
     {
         var model = new BetaApiKeyCreatedBy
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = Type.User,
         };
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         ApiEnum<string, Type> expectedType = Type.User;
 
         Assert.Equal(expectedID, model.ID);
@@ -28,7 +28,7 @@ public class BetaApiKeyCreatedByTest : TestBase
     {
         var model = new BetaApiKeyCreatedBy
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = Type.User,
         };
 
@@ -46,7 +46,7 @@ public class BetaApiKeyCreatedByTest : TestBase
     {
         var model = new BetaApiKeyCreatedBy
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = Type.User,
         };
 
@@ -57,7 +57,7 @@ public class BetaApiKeyCreatedByTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         ApiEnum<string, Type> expectedType = Type.User;
 
         Assert.Equal(expectedID, deserialized.ID);
@@ -69,7 +69,7 @@ public class BetaApiKeyCreatedByTest : TestBase
     {
         var model = new BetaApiKeyCreatedBy
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = Type.User,
         };
 
@@ -81,7 +81,7 @@ public class BetaApiKeyCreatedByTest : TestBase
     {
         var model = new BetaApiKeyCreatedBy
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = Type.User,
         };
 

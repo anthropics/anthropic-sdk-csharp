@@ -27,7 +27,7 @@ public static class IPageExtensions
             {
                 break;
             }
-            page = await page.Next(cancellationToken);
+            page = await page.Next(cancellationToken).ConfigureAwait(false);
         }
     }
 }

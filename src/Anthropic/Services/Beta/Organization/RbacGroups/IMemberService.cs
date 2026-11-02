@@ -69,13 +69,13 @@ public interface IMemberService
     ///
     /// <para>The RBAC Groups API is available to Claude Enterprise organizations only.</para>
     /// </summary>
-    Task<MemberRemoveResponse> Remove(
+    Task<BetaDeletedRbacGroupMember> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Remove(MemberRemoveParams, CancellationToken)"/>
-    Task<MemberRemoveResponse> Remove(
+    Task<BetaDeletedRbacGroupMember> Remove(
         string userID,
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
@@ -131,13 +131,13 @@ public interface IMemberServiceWithRawResponse
     /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}/members/{user_id}</c>, but is otherwise the
     /// same as <see cref="IMemberService.Remove(MemberRemoveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<MemberRemoveResponse>> Remove(
+    Task<HttpResponse<BetaDeletedRbacGroupMember>> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Remove(MemberRemoveParams, CancellationToken)"/>
-    Task<HttpResponse<MemberRemoveResponse>> Remove(
+    Task<HttpResponse<BetaDeletedRbacGroupMember>> Remove(
         string userID,
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default

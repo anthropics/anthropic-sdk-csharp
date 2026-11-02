@@ -20,8 +20,8 @@ namespace Anthropic.Models.Organization.ExternalKeys;
 public sealed record class ExternalKey : JsonModel
 {
     /// <summary>
-    /// Identifier of the external key config. A tagged ID prefixed `ekey_`, or —
-    /// for organizations on the Claude Platform on AWS — the AWS KMS key ARN.
+    /// Identifier of the external key config: a tagged ID prefixed `ekey_`, or,
+    /// on Claude Platform on AWS, an AWS KMS key's ARN.
     /// </summary>
     public required string ID
     {
@@ -118,6 +118,22 @@ public sealed record class ExternalKey : JsonModel
         init { this._rawData.Set("updated_at", value); }
     }
 
+    /// <summary>
+    /// ID of the user profile the key is bound to, or null if the key is not bound
+    /// to one. A key bound to a user profile can only be attached to a Workspace
+    /// that has the same user profile. A key that isn't bound can be attached to
+    /// a Workspace whatever its user profile.
+    /// </summary>
+    public required string? UserProfileID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("user_profile_id");
+        }
+        init { this._rawData.Set("user_profile_id", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -132,6 +148,7 @@ public sealed record class ExternalKey : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         _ = this.UpdatedAt;
+        _ = this.UserProfileID;
     }
 
     public ExternalKey()

@@ -11,13 +11,13 @@ public class WorkspaceMemberTest : TestBase
     {
         var model = new WorkspaceMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
         ApiEnum<string, WorkspaceRole> expectedWorkspaceRole = WorkspaceRole.WorkspaceAdmin;
 
@@ -32,7 +32,7 @@ public class WorkspaceMemberTest : TestBase
     {
         var model = new WorkspaceMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
@@ -51,7 +51,7 @@ public class WorkspaceMemberTest : TestBase
     {
         var model = new WorkspaceMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
@@ -64,7 +64,7 @@ public class WorkspaceMemberTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
         string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
         ApiEnum<string, WorkspaceRole> expectedWorkspaceRole = WorkspaceRole.WorkspaceAdmin;
 
@@ -79,7 +79,7 @@ public class WorkspaceMemberTest : TestBase
     {
         var model = new WorkspaceMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
@@ -92,7 +92,7 @@ public class WorkspaceMemberTest : TestBase
     {
         var model = new WorkspaceMember
         {
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };

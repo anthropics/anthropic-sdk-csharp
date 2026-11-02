@@ -70,6 +70,22 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
     }
 
     /// <summary>
+    /// Number of distinct active users represented by this row. Only set for grouped
+    /// rollups (`group_by[]`); null for per-user rows. In date-range mode, recomputed
+    /// as an exact distinct count of the group's active members over the requested
+    /// window, never a sum of per-day values.
+    /// </summary>
+    public required long? DistinctUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("distinct_user_count");
+        }
+        init { this._rawData.Set("distinct_user_count", value); }
+    }
+
+    /// <summary>
     /// Office Agent activity metrics for a single user on a given day, broken out
     /// by Office product.
     /// </summary>
@@ -97,6 +113,19 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
     }
 
     /// <summary>
+    /// The user this row describes. Null on rows aggregated across users.
+    /// </summary>
+    public required BetaAnalyticsUser? User
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaAnalyticsUser>("user");
+        }
+        init { this._rawData.Set("user", value); }
+    }
+
+    /// <summary>
     /// Number of web searches performed
     /// </summary>
     public required long WebSearchCount
@@ -115,32 +144,16 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
     /// (Cowork activity). Omitted from the response on deployments that do not offer
     /// Chat and Cowork unified.
     /// </summary>
-    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    public BetaAnalyticsChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaAnalyticsUserActivityChatCoworkUnifiedMetrics>(
+            return this._rawData.GetNullableClass<BetaAnalyticsChatCoworkUnifiedMetrics>(
                 "chat_cowork_unified_metrics"
             );
         }
         init { this._rawData.Set("chat_cowork_unified_metrics", value); }
-    }
-
-    /// <summary>
-    /// Number of distinct active users represented by this row. Only set for grouped
-    /// rollups (`group_by[]`); null for per-user rows. In date-range mode, recomputed
-    /// as an exact distinct count of the group's active members over the requested
-    /// window, never a sum of per-day values.
-    /// </summary>
-    public long? DistinctUserCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_user_count");
-        }
-        init { this._rawData.Set("distinct_user_count", value); }
     }
 
     /// <summary>
@@ -194,19 +207,6 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
         init { this._rawData.Set("rbac_group_name", value); }
     }
 
-    /// <summary>
-    /// The user this row describes. Null on rows aggregated across users.
-    /// </summary>
-    public BetaAnalyticsUser? User
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaAnalyticsUser>("user");
-        }
-        init { this._rawData.Set("user", value); }
-    }
-
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -214,15 +214,15 @@ public sealed record class BetaAnalyticsUserActivity : JsonModel
         this.ClaudeCodeMetrics.Validate();
         this.CoworkMetrics.Validate();
         this.DesignMetrics.Validate();
+        _ = this.DistinctUserCount;
         this.OfficeMetrics.Validate();
         this.ScienceMetrics.Validate();
+        this.User?.Validate();
         _ = this.WebSearchCount;
         this.ChatCoworkUnifiedMetrics?.Validate();
-        _ = this.DistinctUserCount;
         _ = this.LastActivityDate;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;
-        this.User?.Validate();
     }
 
     public BetaAnalyticsUserActivity() { }
@@ -261,97 +261,4 @@ class BetaAnalyticsUserActivityFromRaw : IFromRawJson<BetaAnalyticsUserActivity>
     public BetaAnalyticsUserActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsUserActivity.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Activity recorded while the member had Chat and Cowork unified (Cowork's features
-/// inside claude.ai chat) turned on, split into `chat` (chat activity) and `sessions`
-/// (Cowork activity). Omitted from the response on deployments that do not offer
-/// Chat and Cowork unified.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        BetaAnalyticsUserActivityChatCoworkUnifiedMetrics,
-        BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw
-    >)
-)]
-public sealed record class BetaAnalyticsUserActivityChatCoworkUnifiedMetrics : JsonModel
-{
-    /// <summary>
-    /// Chat activity recorded while members had Chat and Cowork unified turned on.
-    /// </summary>
-    public required BetaAnalyticsChatCoworkUnifiedChatMetrics Chat
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsChatCoworkUnifiedChatMetrics>("chat");
-        }
-        init { this._rawData.Set("chat", value); }
-    }
-
-    /// <summary>
-    /// Cowork session activity recorded while members had Chat and Cowork unified
-    /// turned on.
-    /// </summary>
-    public required BetaAnalyticsChatCoworkUnifiedSessionsMetrics Sessions
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsChatCoworkUnifiedSessionsMetrics>(
-                "sessions"
-            );
-        }
-        init { this._rawData.Set("sessions", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        this.Chat.Validate();
-        this.Sessions.Validate();
-    }
-
-    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(
-        BetaAnalyticsUserActivityChatCoworkUnifiedMetrics betaAnalyticsUserActivityChatCoworkUnifiedMetrics
-    )
-        : base(betaAnalyticsUserActivityChatCoworkUnifiedMetrics) { }
-#pragma warning restore CS8618
-
-    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaAnalyticsUserActivityChatCoworkUnifiedMetrics(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
-    public static BetaAnalyticsUserActivityChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class BetaAnalyticsUserActivityChatCoworkUnifiedMetricsFromRaw
-    : IFromRawJson<BetaAnalyticsUserActivityChatCoworkUnifiedMetrics>
-{
-    /// <inheritdoc/>
-    public BetaAnalyticsUserActivityChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaAnalyticsUserActivityChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

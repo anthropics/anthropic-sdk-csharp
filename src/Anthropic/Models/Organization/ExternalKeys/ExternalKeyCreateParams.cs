@@ -74,6 +74,22 @@ public record class ExternalKeyCreateParams : ParamsBase
         }
     }
 
+    /// <summary>
+    /// ID of a user profile to bind the key to. Omit this field for a key that isn't
+    /// bound to a user profile. Such a key can be attached to a Workspace whatever
+    /// its user profile. The binding cannot be changed later. A key bound to a user
+    /// profile can only be attached to a Workspace that has the same user profile.
+    /// </summary>
+    public string? UserProfileID
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<string>("user_profile_id");
+        }
+        init { this._rawBodyData.Set("user_profile_id", value); }
+    }
+
     public ExternalKeyCreateParams() { }
 
 #pragma warning disable CS8618

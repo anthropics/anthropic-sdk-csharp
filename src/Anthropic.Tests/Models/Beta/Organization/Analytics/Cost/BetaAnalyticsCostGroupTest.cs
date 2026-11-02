@@ -17,7 +17,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
                 Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
@@ -46,7 +46,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
             BetaAnalyticsActorType.UserActor;
@@ -109,7 +109,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
                 Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
@@ -152,7 +152,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
                 Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
@@ -188,7 +188,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             Deleted = false,
             EmailAddress = "user@emaildomain.com",
             Name = "Jane Doe",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
         ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
             BetaAnalyticsActorType.UserActor;
@@ -251,7 +251,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
                 Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
@@ -288,7 +288,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
                 Deleted = false,
                 EmailAddress = "user@emaildomain.com",
                 Name = "Jane Doe",
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",

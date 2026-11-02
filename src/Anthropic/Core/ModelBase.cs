@@ -8,14 +8,11 @@ using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.Analytics.Cost;
 using Anthropic.Models.Beta.Organization.Analytics.Usage;
-using Anthropic.Models.Beta.Organization.Analytics.Users;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.Bundles.Targets;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
 using Anthropic.Models.Beta.Organization.Plugins.Versions;
-using Anthropic.Models.Beta.Organization.RbacRoles.Permissions;
-using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Beta.Organization.TelemetryDestinations;
 using Anthropic.Models.Beta.Sessions.Resources;
@@ -25,22 +22,22 @@ using Anthropic.Models.Beta.Webhooks;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Models;
 using Anthropic.Models.Organization;
+using Anthropic.Models.Organization.Analytics;
 using Anthropic.Models.Organization.ComplianceSettings;
 using Anthropic.Models.Organization.Federation.Issuers;
 using Anthropic.Models.Organization.RateLimits;
+using Anthropic.Models.Organization.RbacRoles.Permissions;
+using Anthropic.Models.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Organization.Users;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.UserProfiles;
 using Anthropic.Models.UserProfiles.ActionUrls;
 using Agents = Anthropic.Models.Beta.Agents;
 using Analytics = Anthropic.Models.Beta.Organization.Analytics;
-using AnalyticsSkills = Anthropic.Models.Beta.Organization.Analytics.Skills;
 using ApiKeys = Anthropic.Models.Organization.ApiKeys;
-using Artifacts = Anthropic.Models.Beta.Organization.Analytics.Artifacts;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
-using Connectors = Anthropic.Models.Beta.Organization.Analytics.Connectors;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
@@ -58,19 +55,20 @@ using Models = Anthropic.Models.Beta.Models;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
-using OrganizationPlugins = Anthropic.Models.Beta.Organization.Plugins;
 using OrganizationRateLimits = Anthropic.Models.Beta.Organization.RateLimits;
+using OrganizationRbacGroups = Anthropic.Models.Beta.Organization.RbacGroups;
 using OrganizationServiceAccounts = Anthropic.Models.Beta.Organization.ServiceAccounts;
+using OrganizationSpendLimits = Anthropic.Models.Beta.Organization.SpendLimits;
+using Permissions = Anthropic.Models.Beta.Organization.RbacRoles.Permissions;
 using PluginMarketplaces = Anthropic.Models.Beta.Organization.PluginMarketplaces;
-using Plugins = Anthropic.Models.Beta.Organization.Analytics.Plugins;
-using Projects = Anthropic.Models.Beta.Organization.Analytics.Apps.Chat.Projects;
+using Plugins = Anthropic.Models.Beta.Organization.Plugins;
 using RateLimits = Anthropic.Models.Organization.Workspaces.RateLimits;
-using RbacGroups = Anthropic.Models.Beta.Organization.RbacGroups;
+using RbacGroups = Anthropic.Models.Organization.RbacGroups;
 using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
 using Sessions = Anthropic.Models.Beta.Sessions;
 using Shares = Anthropic.Models.Beta.Organization.Plugins.Shares;
 using Skills = Anthropic.Models.Skills;
-using SpendLimits = Anthropic.Models.Beta.Organization.SpendLimits;
+using SpendLimits = Anthropic.Models.Organization.SpendLimits;
 using UsageReport = Anthropic.Models.Beta.Organization.Analytics.UsageReport;
 using UserCostReport = Anthropic.Models.Beta.Organization.Analytics.UserCostReport;
 using UserProfiles = Anthropic.Models.Beta.UserProfiles;
@@ -252,6 +250,24 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, GroupType>(),
             new ApiEnumConverter<string, ComplianceSettingsStateType>(),
             new ApiEnumConverter<string, ComplianceSettingsStateParamType>(),
+            new ApiEnumConverter<string, AnalyticsArtifactGroupBy>(),
+            new ApiEnumConverter<string, AnalyticsConnectorGroupBy>(),
+            new ApiEnumConverter<string, AnalyticsOrder>(),
+            new ApiEnumConverter<string, AnalyticsPluginGroupBy>(),
+            new ApiEnumConverter<string, AnalyticsProjectGroupBy>(),
+            new ApiEnumConverter<string, ShareStatus>(),
+            new ApiEnumConverter<string, AnalyticsSkillGroupBy>(),
+            new ApiEnumConverter<string, AnalyticsUserGroupBy>(),
+            new ApiEnumConverter<string, SpendLimits::ScopeType>(),
+            new ApiEnumConverter<string, SpendLimits::SpendLimitPeriod>(),
+            new ApiEnumConverter<string, SpendLimits::ActorType>(),
+            new ApiEnumConverter<string, SpendLimits::SpendSummaryScopeType>(),
+            new ApiEnumConverter<string, SpendLimits::SourceType>(),
+            new ApiEnumConverter<string, SpendLimitIncreaseRequestActorType>(),
+            new ApiEnumConverter<string, SpendLimitIncreaseRequestResolvedByType>(),
+            new ApiEnumConverter<string, SpendLimitIncreaseRequestStatus>(),
+            new ApiEnumConverter<string, RbacGroups::SourceType>(),
+            new ApiEnumConverter<string, ResourceType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
             new ApiEnumConverter<string, BetaErrorType>(),
@@ -592,6 +608,10 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Events::RetryStatusType>(),
             new ApiEnumConverter<
                 string,
+                Events::BetaManagedAgentsCompactionLimitReachedErrorRetryStatusType
+            >(),
+            new ApiEnumConverter<
+                string,
                 Events::BetaManagedAgentsCredentialHostUnreachableErrorRetryStatusType
             >(),
             new ApiEnumConverter<string, Events::SourceType>(),
@@ -649,6 +669,10 @@ public abstract record class ModelBase
             >(),
             new ApiEnumConverter<string, Events::Speed>(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsStreamSessionEventsType>(),
+            new ApiEnumConverter<
+                string,
+                Events::BetaManagedAgentsToolUseLimitReachedErrorRetryStatusType
+            >(),
             new ApiEnumConverter<string, Events::BetaManagedAgentsUnknownErrorRetryStatusType>(),
             new ApiEnumConverter<
                 string,
@@ -830,7 +854,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, BetaComplianceSettingsStateParamType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsActorTypeValue>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsActorType>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsArtifactGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsClaudeTagCategory>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsConnectorGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsContextWindow>(),
             new ApiEnumConverter<string, Analytics::InferenceGeo>(),
             new ApiEnumConverter<string, Analytics::Speed>(),
@@ -840,9 +866,13 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Analytics::BetaAnalyticsFederatedActorProviderType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsGroupedCostType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsInferenceGeoFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsOrder>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsPluginGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsProductFilter>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsProjectGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsServiceTier>(),
             new ApiEnumConverter<string, Analytics::ShareStatus>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsSkillGroupBy>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsSpeed>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsTimeBucketWidth>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsTokenType>(),
@@ -853,17 +883,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageCostSortOrder>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemInferenceGeo>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsUsageUsersItemSpeed>(),
-            new ApiEnumConverter<string, GroupBy>(),
-            new ApiEnumConverter<string, Order>(),
-            new ApiEnumConverter<string, Projects::GroupBy>(),
-            new ApiEnumConverter<string, Projects::Order>(),
-            new ApiEnumConverter<string, Connectors::GroupBy>(),
-            new ApiEnumConverter<string, Connectors::Order>(),
-            new ApiEnumConverter<string, Plugins::GroupBy>(),
-            new ApiEnumConverter<string, Plugins::Order>(),
-            new ApiEnumConverter<string, AnalyticsSkills::GroupBy>(),
-            new ApiEnumConverter<string, AnalyticsSkills::Order>(),
-            new ApiEnumConverter<string, Artifacts::GroupBy>(),
+            new ApiEnumConverter<string, Analytics::BetaAnalyticsUserGroupBy>(),
             new ApiEnumConverter<string, BetaAnalyticsUsageGroupBy>(),
             new ApiEnumConverter<string, BetaAnalyticsUsageOrderBy>(),
             new ApiEnumConverter<string, BetaAnalyticsCostGroupBy>(),
@@ -884,29 +904,26 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserCostReport::Order>(),
             new ApiEnumConverter<string, UserCostReport::OrderBy>(),
             new ApiEnumConverter<string, UserCostReport::Speed>(),
-            new ApiEnumConverter<string, SpendLimits::BetaSpendLimitScopeType>(),
-            new ApiEnumConverter<string, SpendLimits::BetaSpendLimitPeriod>(),
-            new ApiEnumConverter<string, SpendLimits::ActorType>(),
-            new ApiEnumConverter<string, SpendLimits::BetaSpendSummaryScopeType>(),
-            new ApiEnumConverter<string, SpendLimits::SourceType>(),
-            new ApiEnumConverter<string, SpendLimits::ScopeType>(),
-            new ApiEnumConverter<string, SpendLimits::ScopeTypeValue>(),
-            new ApiEnumConverter<string, Period>(),
-            new ApiEnumConverter<string, ActorType>(),
-            new ApiEnumConverter<string, ResolvedByType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::BetaSpendLimitScopeType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::BetaSpendLimitPeriod>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::ActorType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::BetaSpendSummaryScopeType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::SourceType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::ScopeType>(),
+            new ApiEnumConverter<string, OrganizationSpendLimits::ScopeTypeValue>(),
+            new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestActorType>(),
+            new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestResolvedByType>(),
             new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestStatus>(),
-            new ApiEnumConverter<string, IncreaseRequestApproveResponseActorType>(),
-            new ApiEnumConverter<string, IncreaseRequestApproveResponseResolvedByType>(),
-            new ApiEnumConverter<string, RbacGroups::SourceType>(),
-            new ApiEnumConverter<string, ResourceType>(),
-            new ApiEnumConverter<string, OrganizationPlugins::CreatedByType>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OrganizationInstallationPreference>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OwnerTypeValue>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Reach>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Type>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Assessment>(),
-            new ApiEnumConverter<string, OrganizationPlugins::Status>(),
-            new ApiEnumConverter<string, OrganizationPlugins::OwnerType>(),
+            new ApiEnumConverter<string, OrganizationRbacGroups::SourceType>(),
+            new ApiEnumConverter<string, Permissions::ResourceType>(),
+            new ApiEnumConverter<string, Plugins::CreatedByType>(),
+            new ApiEnumConverter<string, Plugins::OrganizationInstallationPreference>(),
+            new ApiEnumConverter<string, Plugins::OwnerTypeValue>(),
+            new ApiEnumConverter<string, Plugins::Reach>(),
+            new ApiEnumConverter<string, Plugins::Type>(),
+            new ApiEnumConverter<string, Plugins::Assessment>(),
+            new ApiEnumConverter<string, Plugins::Status>(),
+            new ApiEnumConverter<string, Plugins::OwnerType>(),
             new ApiEnumConverter<string, CreatedByType>(),
             new ApiEnumConverter<string, Reach>(),
             new ApiEnumConverter<string, TargetTypeValue>(),

@@ -15,11 +15,11 @@ public class ApiKeyTest : TestBase
         {
             ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
-            CreatedBy = new() { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = ApiKeys::Type.User },
+            CreatedBy = new() { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = ApiKeys::Type.User },
             ExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Name = "Developer Key",
             PartialKeyHint = "sk-ant-api03-R2D...igAA",
-            Principal = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Principal = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Scope = new ApiKeys::ApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::ApiKeyStatus.Active,
         };
@@ -28,14 +28,14 @@ public class ApiKeyTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         ApiKeys::ApiKeyCreatedBy expectedCreatedBy = new()
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = ApiKeys::Type.User,
         };
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedName = "Developer Key";
         string expectedPartialKeyHint = "sk-ant-api03-R2D...igAA";
         ApiKeys::Principal expectedPrincipal = new ApiKeys::ApiKeyUserActor(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         ApiKeys::Scope expectedScope = new ApiKeys::ApiKeyWorkspaceScope(
             "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
@@ -62,11 +62,11 @@ public class ApiKeyTest : TestBase
         {
             ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
-            CreatedBy = new() { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = ApiKeys::Type.User },
+            CreatedBy = new() { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = ApiKeys::Type.User },
             ExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Name = "Developer Key",
             PartialKeyHint = "sk-ant-api03-R2D...igAA",
-            Principal = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Principal = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Scope = new ApiKeys::ApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::ApiKeyStatus.Active,
         };
@@ -87,11 +87,11 @@ public class ApiKeyTest : TestBase
         {
             ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
-            CreatedBy = new() { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = ApiKeys::Type.User },
+            CreatedBy = new() { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = ApiKeys::Type.User },
             ExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Name = "Developer Key",
             PartialKeyHint = "sk-ant-api03-R2D...igAA",
-            Principal = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Principal = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Scope = new ApiKeys::ApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::ApiKeyStatus.Active,
         };
@@ -107,14 +107,14 @@ public class ApiKeyTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         ApiKeys::ApiKeyCreatedBy expectedCreatedBy = new()
         {
-            ID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            ID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
             Type = ApiKeys::Type.User,
         };
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedName = "Developer Key";
         string expectedPartialKeyHint = "sk-ant-api03-R2D...igAA";
         ApiKeys::Principal expectedPrincipal = new ApiKeys::ApiKeyUserActor(
-            "user_01WCz1FkmYMm4gnmykNKUu3Q"
+            "user_01WxYzAbCdEfGhJkMnPqRsTu"
         );
         ApiKeys::Scope expectedScope = new ApiKeys::ApiKeyWorkspaceScope(
             "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
@@ -141,11 +141,11 @@ public class ApiKeyTest : TestBase
         {
             ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
-            CreatedBy = new() { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = ApiKeys::Type.User },
+            CreatedBy = new() { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = ApiKeys::Type.User },
             ExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Name = "Developer Key",
             PartialKeyHint = "sk-ant-api03-R2D...igAA",
-            Principal = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Principal = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Scope = new ApiKeys::ApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::ApiKeyStatus.Active,
         };
@@ -160,11 +160,11 @@ public class ApiKeyTest : TestBase
         {
             ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
-            CreatedBy = new() { ID = "user_01WCz1FkmYMm4gnmykNKUu3Q", Type = ApiKeys::Type.User },
+            CreatedBy = new() { ID = "user_01WxYzAbCdEfGhJkMnPqRsTu", Type = ApiKeys::Type.User },
             ExpiresAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Name = "Developer Key",
             PartialKeyHint = "sk-ant-api03-R2D...igAA",
-            Principal = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q"),
+            Principal = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Scope = new ApiKeys::ApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
             Status = ApiKeys::ApiKeyStatus.Active,
         };
@@ -180,7 +180,7 @@ public class PrincipalTest : TestBase
     [Fact]
     public void ApiKeyUserActorValidationWorks()
     {
-        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu");
         value.Validate();
     }
 
@@ -196,7 +196,7 @@ public class PrincipalTest : TestBase
     [Fact]
     public void ApiKeyUserActorSerializationRoundtripWorks()
     {
-        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiKeys::Principal>(
             element,
@@ -224,7 +224,7 @@ public class PrincipalTest : TestBase
     [Fact]
     public void ApiKeyUserActorTypeWorks()
     {
-        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WCz1FkmYMm4gnmykNKUu3Q");
+        ApiKeys::Principal value = new ApiKeys::ApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu");
         Assert.Equal(ApiKeys::PrincipalType.UserActor, value.Type.Value());
     }
 

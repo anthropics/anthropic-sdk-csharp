@@ -45,7 +45,7 @@ public class MemberServiceTest : TestBase
             "workspace_id",
             new()
             {
-                UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+                UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
                 WorkspaceRole = NoBillingWorkspaceRole.WorkspaceAdmin,
             },
             TestContext.Current.CancellationToken

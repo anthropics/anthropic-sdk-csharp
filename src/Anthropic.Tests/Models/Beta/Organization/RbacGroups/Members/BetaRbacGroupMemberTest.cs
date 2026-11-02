@@ -15,14 +15,14 @@ public class BetaRbacGroupMemberTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedEmail = "user@emaildomain.com";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         JsonElement expectedType = JsonSerializer.SerializeToElement("rbac_group_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedEmail, model.Email);
@@ -39,7 +39,7 @@ public class BetaRbacGroupMemberTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,7 +59,7 @@ public class BetaRbacGroupMemberTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -73,7 +73,7 @@ public class BetaRbacGroupMemberTest : TestBase
         string expectedEmail = "user@emaildomain.com";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         JsonElement expectedType = JsonSerializer.SerializeToElement("rbac_group_member");
-        string expectedUserID = "user_01WCz1FkmYMm4gnmykNKUu3Q";
+        string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
 
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedEmail, deserialized.Email);
@@ -90,7 +90,7 @@ public class BetaRbacGroupMemberTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         model.Validate();
@@ -104,7 +104,7 @@ public class BetaRbacGroupMemberTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             Email = "user@emaildomain.com",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
-            UserID = "user_01WCz1FkmYMm4gnmykNKUu3Q",
+            UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         BetaRbacGroupMember copied = new(model);

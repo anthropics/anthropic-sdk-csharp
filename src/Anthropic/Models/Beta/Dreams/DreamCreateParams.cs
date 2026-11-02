@@ -63,7 +63,7 @@ public record class DreamCreateParams : ParamsBase
     ///
     /// <para>In the object form, `speed` can only be `standard`.</para>
     ///
-    /// <para>The [limits table in the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#limits)
+    /// <para>The [Availability section of the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#feature-availability)
     /// lists the supported models.</para>
     /// </summary>
     public required Model Model
@@ -288,7 +288,7 @@ public record class DreamCreateParams : ParamsBase
 ///
 /// <para>In the object form, `speed` can only be `standard`.</para>
 ///
-/// <para>The [limits table in the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#limits)
+/// <para>The [Availability section of the Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#feature-availability)
 /// lists the supported models.</para>
 /// </summary>
 [JsonConverter(typeof(ModelConverter))]
