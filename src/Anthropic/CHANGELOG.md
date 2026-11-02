@@ -13,6 +13,7 @@
 
 ### Documentation
 
+* **api:** show each field's own description for `speed`
 * **examples:** use current model IDs
 
 ### Bug Fixes
