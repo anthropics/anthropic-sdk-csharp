@@ -93,13 +93,13 @@ public interface IRbacGroupService
     ///
     /// <para>The RBAC Groups API is available to Claude Enterprise organizations only.</para>
     /// </summary>
-    Task<RbacGroupDeleteResponse> Delete(
+    Task<BetaDeletedRbacGroup> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(RbacGroupDeleteParams, CancellationToken)"/>
-    Task<RbacGroupDeleteResponse> Delete(
+    Task<BetaDeletedRbacGroup> Delete(
         string rbacGroupID,
         RbacGroupDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -175,13 +175,13 @@ public interface IRbacGroupServiceWithRawResponse
     /// Returns a raw HTTP response for <c>delete /v1/organizations/rbac_groups/{rbac_group_id}</c>, but is otherwise the
     /// same as <see cref="IRbacGroupService.Delete(RbacGroupDeleteParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<RbacGroupDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedRbacGroup>> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <inheritdoc cref="Delete(RbacGroupDeleteParams, CancellationToken)"/>
-    Task<HttpResponse<RbacGroupDeleteResponse>> Delete(
+    Task<HttpResponse<BetaDeletedRbacGroup>> Delete(
         string rbacGroupID,
         RbacGroupDeleteParams? parameters = null,
         CancellationToken cancellationToken = default

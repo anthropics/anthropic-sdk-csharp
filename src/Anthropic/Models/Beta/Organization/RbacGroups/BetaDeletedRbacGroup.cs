@@ -8,8 +8,8 @@ using Anthropic.Exceptions;
 
 namespace Anthropic.Models.Beta.Organization.RbacGroups;
 
-[JsonConverter(typeof(JsonModelConverter<RbacGroupDeleteResponse, RbacGroupDeleteResponseFromRaw>))]
-public sealed record class RbacGroupDeleteResponse : JsonModel
+[JsonConverter(typeof(JsonModelConverter<BetaDeletedRbacGroup, BetaDeletedRbacGroupFromRaw>))]
+public sealed record class BetaDeletedRbacGroup : JsonModel
 {
     /// <summary>
     /// ID of the RBAC Group.
@@ -54,18 +54,18 @@ public sealed record class RbacGroupDeleteResponse : JsonModel
         }
     }
 
-    public RbacGroupDeleteResponse()
+    public BetaDeletedRbacGroup()
     {
         this.Type = JsonSerializer.SerializeToElement("rbac_group_deleted");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public RbacGroupDeleteResponse(RbacGroupDeleteResponse rbacGroupDeleteResponse)
-        : base(rbacGroupDeleteResponse) { }
+    public BetaDeletedRbacGroup(BetaDeletedRbacGroup betaDeletedRbacGroup)
+        : base(betaDeletedRbacGroup) { }
 #pragma warning restore CS8618
 
-    public RbacGroupDeleteResponse(IReadOnlyDictionary<string, JsonElement> rawData)
+    public BetaDeletedRbacGroup(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
@@ -74,14 +74,14 @@ public sealed record class RbacGroupDeleteResponse : JsonModel
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    RbacGroupDeleteResponse(FrozenDictionary<string, JsonElement> rawData)
+    BetaDeletedRbacGroup(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="RbacGroupDeleteResponseFromRaw.FromRawUnchecked"/>
-    public static RbacGroupDeleteResponse FromRawUnchecked(
+    /// <inheritdoc cref="BetaDeletedRbacGroupFromRaw.FromRawUnchecked"/>
+    public static BetaDeletedRbacGroup FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -89,17 +89,17 @@ public sealed record class RbacGroupDeleteResponse : JsonModel
     }
 
     [SetsRequiredMembers]
-    public RbacGroupDeleteResponse(string id)
+    public BetaDeletedRbacGroup(string id)
         : this()
     {
         this.ID = id;
     }
 }
 
-class RbacGroupDeleteResponseFromRaw : IFromRawJson<RbacGroupDeleteResponse>
+class BetaDeletedRbacGroupFromRaw : IFromRawJson<BetaDeletedRbacGroup>
 {
     /// <inheritdoc/>
-    public RbacGroupDeleteResponse FromRawUnchecked(
+    public BetaDeletedRbacGroup FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => RbacGroupDeleteResponse.FromRawUnchecked(rawData);
+    ) => BetaDeletedRbacGroup.FromRawUnchecked(rawData);
 }

@@ -4,12 +4,12 @@ using Anthropic.Models.Beta.Organization.RbacGroups.Members;
 
 namespace Anthropic.Tests.Models.Beta.Organization.RbacGroups.Members;
 
-public class MemberRemoveResponseTest : TestBase
+public class BetaDeletedRbacGroupMemberTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new MemberRemoveResponse
+        var model = new BetaDeletedRbacGroupMember
         {
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
@@ -27,14 +27,14 @@ public class MemberRemoveResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new MemberRemoveResponse
+        var model = new BetaDeletedRbacGroupMember
         {
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MemberRemoveResponse>(
+        var deserialized = JsonSerializer.Deserialize<BetaDeletedRbacGroupMember>(
             json,
             ModelBase.SerializerOptions
         );
@@ -45,14 +45,14 @@ public class MemberRemoveResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new MemberRemoveResponse
+        var model = new BetaDeletedRbacGroupMember
         {
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<MemberRemoveResponse>(
+        var deserialized = JsonSerializer.Deserialize<BetaDeletedRbacGroupMember>(
             element,
             ModelBase.SerializerOptions
         );
@@ -70,7 +70,7 @@ public class MemberRemoveResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new MemberRemoveResponse
+        var model = new BetaDeletedRbacGroupMember
         {
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
@@ -82,13 +82,13 @@ public class MemberRemoveResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new MemberRemoveResponse
+        var model = new BetaDeletedRbacGroupMember
         {
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
         };
 
-        MemberRemoveResponse copied = new(model);
+        BetaDeletedRbacGroupMember copied = new(model);
 
         Assert.Equal(model, copied);
     }

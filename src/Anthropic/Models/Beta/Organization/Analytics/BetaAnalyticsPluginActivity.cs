@@ -128,12 +128,12 @@ public sealed record class BetaAnalyticsPluginActivity : JsonModel
     /// it cannot be computed. Omitted from the response on deployments that do not
     /// offer Chat and Cowork unified.
     /// </summary>
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    public BetaAnalyticsPluginChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>(
+            return this._rawData.GetNullableClass<BetaAnalyticsPluginChatCoworkUnifiedMetrics>(
                 "chat_cowork_unified_metrics"
             );
         }
@@ -257,91 +257,4 @@ class BetaAnalyticsPluginActivityFromRaw : IFromRawJson<BetaAnalyticsPluginActiv
     public BetaAnalyticsPluginActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsPluginActivity.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Plugin use recorded while members had Chat and Cowork unified (Cowork's features
-/// inside claude.ai chat) turned on. A count is null in date-range mode where it
-/// cannot be computed. Omitted from the response on deployments that do not offer
-/// Chat and Cowork unified.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics,
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw
-    >)
-)]
-public sealed record class BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics : JsonModel
-{
-    /// <summary>
-    /// Same measure as `cowork_metrics.distinct_session_plugin_used_count`, for activity
-    /// recorded while members had Chat and Cowork unified turned on. Null on aggregated
-    /// rows where a distinct count cannot be computed.
-    /// </summary>
-    public required long? DistinctSessionPluginUsedCount
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<long>("distinct_session_plugin_used_count");
-        }
-        init { this._rawData.Set("distinct_session_plugin_used_count", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        _ = this.DistinctSessionPluginUsedCount;
-    }
-
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics betaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-    )
-        : base(betaAnalyticsPluginActivityChatCoworkUnifiedMetrics) { }
-#pragma warning restore CS8618
-
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(
-        FrozenDictionary<string, JsonElement> rawData
-    )
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
-    public static BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-
-    [SetsRequiredMembers]
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics(long? distinctSessionPluginUsedCount)
-        : this()
-    {
-        this.DistinctSessionPluginUsedCount = distinctSessionPluginUsedCount;
-    }
-}
-
-class BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsFromRaw
-    : IFromRawJson<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>
-{
-    /// <inheritdoc/>
-    public BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

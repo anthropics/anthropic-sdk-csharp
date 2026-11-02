@@ -82,7 +82,7 @@ public sealed class MemberService : IMemberService
     }
 
     /// <inheritdoc/>
-    public async Task<MemberRemoveResponse> Remove(
+    public async Task<BetaDeletedRbacGroupMember> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -94,7 +94,7 @@ public sealed class MemberService : IMemberService
     }
 
     /// <inheritdoc/>
-    public Task<MemberRemoveResponse> Remove(
+    public Task<BetaDeletedRbacGroupMember> Remove(
         string userID,
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
@@ -221,7 +221,7 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
     }
 
     /// <inheritdoc/>
-    public async Task<HttpResponse<MemberRemoveResponse>> Remove(
+    public async Task<HttpResponse<BetaDeletedRbacGroupMember>> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default
     )
@@ -248,20 +248,20 @@ public sealed class MemberServiceWithRawResponse : IMemberServiceWithRawResponse
             response,
             async (token) =>
             {
-                var member = await response
-                    .Deserialize<MemberRemoveResponse>(token)
+                var betaDeletedRbacGroupMember = await response
+                    .Deserialize<BetaDeletedRbacGroupMember>(token)
                     .ConfigureAwait(false);
                 if (this._client.ResponseValidation)
                 {
-                    member.Validate();
+                    betaDeletedRbacGroupMember.Validate();
                 }
-                return member;
+                return betaDeletedRbacGroupMember;
             }
         );
     }
 
     /// <inheritdoc/>
-    public Task<HttpResponse<MemberRemoveResponse>> Remove(
+    public Task<HttpResponse<BetaDeletedRbacGroupMember>> Remove(
         string userID,
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default

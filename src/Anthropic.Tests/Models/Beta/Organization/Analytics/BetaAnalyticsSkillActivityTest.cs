@@ -57,7 +57,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         ApiEnum<string, ShareStatus> expectedShareStatus = ShareStatus.Organization;
         string expectedSkillDisplayName = "skill_display_name";
         string expectedSkillName = "skill_name";
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        BetaAnalyticsSkillChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
         {
             Chat = new(0),
             Sessions = new(0),
@@ -184,7 +184,7 @@ public class BetaAnalyticsSkillActivityTest : TestBase
         ApiEnum<string, ShareStatus> expectedShareStatus = ShareStatus.Organization;
         string expectedSkillDisplayName = "skill_display_name";
         string expectedSkillName = "skill_name";
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
+        BetaAnalyticsSkillChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new()
         {
             Chat = new(0),
             Sessions = new(0),
@@ -488,93 +488,5 @@ public class ShareStatusTest : TestBase
         );
 
         Assert.Equal(value, deserialized);
-    }
-}
-
-public class BetaAnalyticsSkillActivityChatCoworkUnifiedMetricsTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
-        {
-            Chat = new(0),
-            Sessions = new(0),
-        };
-
-        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
-        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
-
-        Assert.Equal(expectedChat, model.Chat);
-        Assert.Equal(expectedSessions, model.Sessions);
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
-        {
-            Chat = new(0),
-            Sessions = new(0),
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics>(
-                json,
-                ModelBase.SerializerOptions
-            );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
-        {
-            Chat = new(0),
-            Sessions = new(0),
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        Assert.NotNull(deserialized);
-
-        BetaAnalyticsSkillChatCoworkUnifiedChatMetrics expectedChat = new(0);
-        BetaAnalyticsSkillChatCoworkUnifiedSessionsMetrics expectedSessions = new(0);
-
-        Assert.Equal(expectedChat, deserialized.Chat);
-        Assert.Equal(expectedSessions, deserialized.Sessions);
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
-        {
-            Chat = new(0),
-            Sessions = new(0),
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics
-        {
-            Chat = new(0),
-            Sessions = new(0),
-        };
-
-        BetaAnalyticsSkillActivityChatCoworkUnifiedMetrics copied = new(model);
-
-        Assert.Equal(model, copied);
     }
 }

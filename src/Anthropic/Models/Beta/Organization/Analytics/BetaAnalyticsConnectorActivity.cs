@@ -243,12 +243,12 @@ public sealed record class BetaAnalyticsConnectorActivity : JsonModel
     /// Cowork sessions. A count is null in date-range mode where it cannot be computed.
     /// Omitted from the response on deployments that do not offer Chat and Cowork unified.
     /// </summary>
-    public ChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
+    public BetaAnalyticsConnectorChatCoworkUnifiedMetrics? ChatCoworkUnifiedMetrics
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableClass<ChatCoworkUnifiedMetrics>(
+            return this._rawData.GetNullableClass<BetaAnalyticsConnectorChatCoworkUnifiedMetrics>(
                 "chat_cowork_unified_metrics"
             );
         }
@@ -379,92 +379,4 @@ class BetaAnalyticsConnectorActivityFromRaw : IFromRawJson<BetaAnalyticsConnecto
     public BetaAnalyticsConnectorActivity FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsConnectorActivity.FromRawUnchecked(rawData);
-}
-
-/// <summary>
-/// Connector use recorded while members had Chat and Cowork unified (Cowork's features
-/// inside claude.ai chat) turned on, split into chat conversations and Cowork sessions.
-/// A count is null in date-range mode where it cannot be computed. Omitted from
-/// the response on deployments that do not offer Chat and Cowork unified.
-/// </summary>
-[JsonConverter(
-    typeof(JsonModelConverter<ChatCoworkUnifiedMetrics, ChatCoworkUnifiedMetricsFromRaw>)
-)]
-public sealed record class ChatCoworkUnifiedMetrics : JsonModel
-{
-    /// <summary>
-    /// A connector's use in chat conversations recorded while members had Chat and
-    /// Cowork unified turned on.
-    /// </summary>
-    public required BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics Chat
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedChatMetrics>(
-                "chat"
-            );
-        }
-        init { this._rawData.Set("chat", value); }
-    }
-
-    /// <summary>
-    /// A connector's use in Cowork sessions recorded while members had Chat and
-    /// Cowork unified turned on.
-    /// </summary>
-    public required BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics Sessions
-    {
-        get
-        {
-            this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsConnectorChatCoworkUnifiedSessionsMetrics>(
-                "sessions"
-            );
-        }
-        init { this._rawData.Set("sessions", value); }
-    }
-
-    /// <inheritdoc/>
-    public override void Validate()
-    {
-        this.Chat.Validate();
-        this.Sessions.Validate();
-    }
-
-    public ChatCoworkUnifiedMetrics() { }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    public ChatCoworkUnifiedMetrics(ChatCoworkUnifiedMetrics chatCoworkUnifiedMetrics)
-        : base(chatCoworkUnifiedMetrics) { }
-#pragma warning restore CS8618
-
-    public ChatCoworkUnifiedMetrics(IReadOnlyDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-
-#pragma warning disable CS8618
-    [SetsRequiredMembers]
-    ChatCoworkUnifiedMetrics(FrozenDictionary<string, JsonElement> rawData)
-    {
-        this._rawData = new(rawData);
-    }
-#pragma warning restore CS8618
-
-    /// <inheritdoc cref="ChatCoworkUnifiedMetricsFromRaw.FromRawUnchecked"/>
-    public static ChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    )
-    {
-        return new(FrozenDictionary.ToFrozenDictionary(rawData));
-    }
-}
-
-class ChatCoworkUnifiedMetricsFromRaw : IFromRawJson<ChatCoworkUnifiedMetrics>
-{
-    /// <inheritdoc/>
-    public ChatCoworkUnifiedMetrics FromRawUnchecked(
-        IReadOnlyDictionary<string, JsonElement> rawData
-    ) => ChatCoworkUnifiedMetrics.FromRawUnchecked(rawData);
 }

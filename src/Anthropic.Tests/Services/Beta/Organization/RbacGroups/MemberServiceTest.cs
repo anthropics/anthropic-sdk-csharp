@@ -33,13 +33,13 @@ public class MemberServiceTest : TestBase
     [Fact]
     public async Task Remove_Works()
     {
-        var member = await this
+        var betaDeletedRbacGroupMember = await this
             .client.WithQuery("beta=true")
             .Beta.Organization.RbacGroups.Members.Remove(
                 "user_id",
                 new() { RbacGroupID = "rbac_group_id" },
                 TestContext.Current.CancellationToken
             );
-        member.Validate();
+        betaDeletedRbacGroupMember.Validate();
     }
 }

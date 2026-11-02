@@ -32,9 +32,7 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         long expectedInvocationCount = 0;
         string expectedPluginID = "plugin_id";
         string expectedPluginName = "plugin_name";
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(
-            0
-        );
+        BetaAnalyticsPluginChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(0);
         string expectedProduct = "product";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -115,9 +113,7 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         long expectedInvocationCount = 0;
         string expectedPluginID = "plugin_id";
         string expectedPluginName = "plugin_name";
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(
-            0
-        );
+        BetaAnalyticsPluginChatCoworkUnifiedMetrics expectedChatCoworkUnifiedMetrics = new(0);
         string expectedProduct = "product";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -277,88 +273,6 @@ public class BetaAnalyticsPluginActivityTest : TestBase
         };
 
         BetaAnalyticsPluginActivity copied = new(model);
-
-        Assert.Equal(model, copied);
-    }
-}
-
-public class BetaAnalyticsPluginActivityChatCoworkUnifiedMetricsTest : TestBase
-{
-    [Fact]
-    public void FieldRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-        {
-            DistinctSessionPluginUsedCount = 0,
-        };
-
-        long expectedDistinctSessionPluginUsedCount = 0;
-
-        Assert.Equal(expectedDistinctSessionPluginUsedCount, model.DistinctSessionPluginUsedCount);
-    }
-
-    [Fact]
-    public void SerializationRoundtrip_Works()
-    {
-        var model = new BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-        {
-            DistinctSessionPluginUsedCount = 0,
-        };
-
-        string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>(
-                json,
-                ModelBase.SerializerOptions
-            );
-
-        Assert.Equal(model, deserialized);
-    }
-
-    [Fact]
-    public void FieldRoundtripThroughSerialization_Works()
-    {
-        var model = new BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-        {
-            DistinctSessionPluginUsedCount = 0,
-        };
-
-        string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized =
-            JsonSerializer.Deserialize<BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics>(
-                element,
-                ModelBase.SerializerOptions
-            );
-        Assert.NotNull(deserialized);
-
-        long expectedDistinctSessionPluginUsedCount = 0;
-
-        Assert.Equal(
-            expectedDistinctSessionPluginUsedCount,
-            deserialized.DistinctSessionPluginUsedCount
-        );
-    }
-
-    [Fact]
-    public void Validation_Works()
-    {
-        var model = new BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-        {
-            DistinctSessionPluginUsedCount = 0,
-        };
-
-        model.Validate();
-    }
-
-    [Fact]
-    public void CopyConstructor_Works()
-    {
-        var model = new BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics
-        {
-            DistinctSessionPluginUsedCount = 0,
-        };
-
-        BetaAnalyticsPluginActivityChatCoworkUnifiedMetrics copied = new(model);
 
         Assert.Equal(model, copied);
     }

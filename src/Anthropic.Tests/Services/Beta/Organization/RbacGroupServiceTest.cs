@@ -54,13 +54,13 @@ public class RbacGroupServiceTest : TestBase
     [Fact]
     public async Task Delete_Works()
     {
-        var rbacGroup = await this
+        var betaDeletedRbacGroup = await this
             .client.WithQuery("beta=true")
             .Beta.Organization.RbacGroups.Delete(
                 "rbac_group_id",
                 new(),
                 TestContext.Current.CancellationToken
             );
-        rbacGroup.Validate();
+        betaDeletedRbacGroup.Validate();
     }
 }
