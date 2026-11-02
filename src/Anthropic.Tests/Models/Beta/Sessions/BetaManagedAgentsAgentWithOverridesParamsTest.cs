@@ -920,7 +920,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         value.Validate();
     }
@@ -992,7 +992,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Tool>(element, ModelBase.SerializerOptions);
@@ -1061,7 +1061,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         Assert.Equal(ToolType.Custom, value.Type.Value());
     }

@@ -21,7 +21,7 @@ public class AgentCreateParamsTest : TestBase
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -76,7 +76,9 @@ public class AgentCreateParamsTest : TestBase
         string expectedName = "My First Agent";
         string expectedDescription = "A general-purpose starter agent.";
         Agents::BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
-            new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+            new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "arn:aws:iam::228601553692:role/T"
+            );
         List<Agents::BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -175,7 +177,7 @@ public class AgentCreateParamsTest : TestBase
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
@@ -210,7 +212,7 @@ public class AgentCreateParamsTest : TestBase
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
                 [
@@ -253,7 +255,7 @@ public class AgentCreateParamsTest : TestBase
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -495,7 +497,7 @@ public class AgentCreateParamsTest : TestBase
             Name = "My First Agent",
             Description = "A general-purpose starter agent.",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -670,7 +672,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         value.Validate();
     }
@@ -748,7 +750,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Agents::Tool>(
@@ -820,7 +822,7 @@ public class ToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         Assert.Equal(Agents::ToolType.Custom, value.Type.Value());
     }

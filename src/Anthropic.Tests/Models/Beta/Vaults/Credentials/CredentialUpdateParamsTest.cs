@@ -20,7 +20,7 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                AccessToken = "x",
+                AccessToken = "access_token",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
                 {
@@ -42,7 +42,7 @@ public class CredentialUpdateParamsTest : TestBase
         string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         CredentialUpdateParamsAuth expectedAuth = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -135,7 +135,7 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                AccessToken = "x",
+                AccessToken = "access_token",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
                 {
@@ -176,7 +176,7 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                AccessToken = "x",
+                AccessToken = "access_token",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
                 {
@@ -207,7 +207,7 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                AccessToken = "x",
+                AccessToken = "access_token",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
                 {
@@ -286,7 +286,7 @@ public class CredentialUpdateParamsTest : TestBase
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             Auth = new BetaManagedAgentsMcpOAuthUpdateParams()
             {
-                AccessToken = "x",
+                AccessToken = "access_token",
                 ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Refresh = new()
                 {
@@ -317,7 +317,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -337,7 +337,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
         {
-            Token = "x",
+            Token = "token",
         };
         value.Validate();
     }
@@ -349,7 +349,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
         {
             InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretValue = "x",
+            SecretValue = "secret_value",
         };
         value.Validate();
     }
@@ -359,7 +359,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -385,7 +385,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
         {
-            Token = "x",
+            Token = "token",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<CredentialUpdateParamsAuth>(
@@ -403,7 +403,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
         {
             InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretValue = "x",
+            SecretValue = "secret_value",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<CredentialUpdateParamsAuth>(
@@ -419,7 +419,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsMcpOAuthUpdateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -439,7 +439,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
     {
         CredentialUpdateParamsAuth value = new BetaManagedAgentsStaticBearerUpdateParams()
         {
-            Token = "x",
+            Token = "token",
         };
         Assert.Equal(CredentialUpdateParamsAuthType.StaticBearer, value.Type.Value());
     }
@@ -451,7 +451,7 @@ public class CredentialUpdateParamsAuthTest : TestBase
         {
             InjectionLocation = new() { Body = true, Header = true },
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretValue = "x",
+            SecretValue = "secret_value",
         };
         Assert.Equal(CredentialUpdateParamsAuthType.EnvironmentVariable, value.Type.Value());
     }

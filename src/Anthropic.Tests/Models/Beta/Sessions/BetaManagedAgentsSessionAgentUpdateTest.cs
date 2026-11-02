@@ -453,7 +453,7 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         value.Validate();
     }
@@ -532,7 +532,7 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsSessionAgentUpdateTool>(
@@ -608,7 +608,7 @@ public class BetaManagedAgentsSessionAgentUpdateToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         Assert.Equal(BetaManagedAgentsSessionAgentUpdateToolType.Custom, value.Type.Value());
     }

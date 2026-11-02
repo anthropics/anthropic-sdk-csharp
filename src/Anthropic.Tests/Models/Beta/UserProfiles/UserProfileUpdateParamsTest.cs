@@ -22,7 +22,7 @@ public class UserProfileUpdateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-                Country = "country",
+                Country = "SE",
                 EmailHash = "x",
                 EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
                 NameHash = "x",
@@ -43,7 +43,7 @@ public class UserProfileUpdateParamsTest : TestBase
         BetaUserProfileExternalUserDetailsParams expectedExternalUserDetails = new()
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -148,7 +148,7 @@ public class UserProfileUpdateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-                Country = "country",
+                Country = "SE",
                 EmailHash = "x",
                 EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
                 NameHash = "x",
@@ -191,7 +191,7 @@ public class UserProfileUpdateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-                Country = "country",
+                Country = "SE",
                 EmailHash = "x",
                 EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
                 NameHash = "x",
@@ -221,7 +221,7 @@ public class UserProfileUpdateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-                Country = "country",
+                Country = "SE",
                 EmailHash = "x",
                 EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
                 NameHash = "x",
@@ -300,7 +300,7 @@ public class UserProfileUpdateParamsTest : TestBase
             ExternalUserDetails = new()
             {
                 AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended,
-                Country = "country",
+                Country = "SE",
                 EmailHash = "x",
                 EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
                 NameHash = "x",

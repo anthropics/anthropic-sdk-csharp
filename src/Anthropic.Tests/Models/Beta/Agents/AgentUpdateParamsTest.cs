@@ -20,7 +20,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -83,7 +83,9 @@ public class AgentUpdateParamsTest : TestBase
         string expectedAgentID = "agent_011CZkYpogX7uDKUyvBTophP";
         string expectedDescription = "updated";
         Agents::BetaManagedAgentsExecutionIdentityParams expectedExecutionIdentity =
-            new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+            new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
+                "arn:aws:iam::228601553692:role/T"
+            );
         List<Agents::BetaManagedAgentsUrlMcpServerParams> expectedMcpServers =
         [
             new()
@@ -193,7 +195,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -262,7 +264,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -338,7 +340,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -547,7 +549,7 @@ public class AgentUpdateParamsTest : TestBase
             AgentID = "agent_011CZkYpogX7uDKUyvBTophP",
             Description = "updated",
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
-                "role_arn"
+                "arn:aws:iam::228601553692:role/T"
             ),
             McpServers =
             [
@@ -732,7 +734,7 @@ public class AgentUpdateParamsToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         value.Validate();
     }
@@ -811,7 +813,7 @@ public class AgentUpdateParamsToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Agents::AgentUpdateParamsTool>(
@@ -884,7 +886,7 @@ public class AgentUpdateParamsToolTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
         Assert.Equal(Agents::AgentUpdateParamsToolType.Custom, value.Type.Value());
     }

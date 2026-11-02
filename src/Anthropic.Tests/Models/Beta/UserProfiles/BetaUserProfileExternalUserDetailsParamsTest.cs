@@ -14,7 +14,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -26,7 +26,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
             string,
             BetaUserProfileExternalUserDetailsParamsAccountStatus
         > expectedAccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active;
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedEmailHash = "x";
         ApiEnum<string, BetaUserProfileExternalUserDetailsParamsEntityType> expectedEntityType =
             BetaUserProfileExternalUserDetailsParamsEntityType.Individual;
@@ -49,7 +49,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -72,7 +72,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -91,7 +91,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
             string,
             BetaUserProfileExternalUserDetailsParamsAccountStatus
         > expectedAccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active;
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedEmailHash = "x";
         ApiEnum<string, BetaUserProfileExternalUserDetailsParamsEntityType> expectedEntityType =
             BetaUserProfileExternalUserDetailsParamsEntityType.Individual;
@@ -114,7 +114,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -131,7 +131,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -148,7 +148,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -164,7 +164,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -184,7 +184,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -206,7 +206,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",
@@ -305,7 +305,7 @@ public class BetaUserProfileExternalUserDetailsParamsTest : TestBase
         var model = new BetaUserProfileExternalUserDetailsParams
         {
             AccountStatus = BetaUserProfileExternalUserDetailsParamsAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = BetaUserProfileExternalUserDetailsParamsEntityType.Individual,
             NameHash = "x",

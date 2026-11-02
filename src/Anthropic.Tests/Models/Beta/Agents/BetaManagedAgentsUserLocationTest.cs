@@ -12,14 +12,14 @@ public class BetaManagedAgentsUserLocationTest : TestBase
         var model = new BetaManagedAgentsUserLocation
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "x";
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedRegion = "x";
         string expectedTimezone = "x";
 
@@ -36,7 +36,7 @@ public class BetaManagedAgentsUserLocationTest : TestBase
         var model = new BetaManagedAgentsUserLocation
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
@@ -56,7 +56,7 @@ public class BetaManagedAgentsUserLocationTest : TestBase
         var model = new BetaManagedAgentsUserLocation
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
@@ -70,7 +70,7 @@ public class BetaManagedAgentsUserLocationTest : TestBase
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("approximate");
         string expectedCity = "x";
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedRegion = "x";
         string expectedTimezone = "x";
 
@@ -87,7 +87,7 @@ public class BetaManagedAgentsUserLocationTest : TestBase
         var model = new BetaManagedAgentsUserLocation
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
@@ -159,7 +159,7 @@ public class BetaManagedAgentsUserLocationTest : TestBase
         var model = new BetaManagedAgentsUserLocation
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };

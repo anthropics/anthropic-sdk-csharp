@@ -12,12 +12,12 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
 
-        string expectedMemoryStoreID = "memory_store_id";
+        string expectedMemoryStoreID = "memstore_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedInstructions = "instructions";
@@ -33,7 +33,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -52,7 +52,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -64,7 +64,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedMemoryStoreID = "memory_store_id";
+        string expectedMemoryStoreID = "memstore_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedInstructions = "instructions";
@@ -80,7 +80,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -91,10 +91,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetAreNotSet_Works()
     {
-        var model = new BetaManagedAgentsMemoryStoreResourceParam
-        {
-            MemoryStoreID = "memory_store_id",
-        };
+        var model = new BetaManagedAgentsMemoryStoreResourceParam { MemoryStoreID = "memstore_c" };
 
         Assert.Null(model.Access);
         Assert.False(model.RawData.ContainsKey("access"));
@@ -105,10 +102,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     [Fact]
     public void OptionalNullablePropertiesUnsetValidation_Works()
     {
-        var model = new BetaManagedAgentsMemoryStoreResourceParam
-        {
-            MemoryStoreID = "memory_store_id",
-        };
+        var model = new BetaManagedAgentsMemoryStoreResourceParam { MemoryStoreID = "memstore_c" };
 
         model.Validate();
     }
@@ -118,7 +112,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
 
             Access = null,
             Instructions = null,
@@ -135,7 +129,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
 
             Access = null,
             Instructions = null,
@@ -149,7 +143,7 @@ public class BetaManagedAgentsMemoryStoreResourceParamTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResourceParam
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };

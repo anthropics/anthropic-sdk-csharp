@@ -43,7 +43,7 @@ public class ResourceUpdateResponseTest : TestBase
     {
         ResourceUpdateResponse value = new BetaManagedAgentsMemoryStoreResource()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -99,7 +99,7 @@ public class ResourceUpdateResponseTest : TestBase
     {
         ResourceUpdateResponse value = new BetaManagedAgentsMemoryStoreResource()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -149,7 +149,7 @@ public class ResourceUpdateResponseTest : TestBase
     {
         ResourceUpdateResponse value = new BetaManagedAgentsMemoryStoreResource()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",

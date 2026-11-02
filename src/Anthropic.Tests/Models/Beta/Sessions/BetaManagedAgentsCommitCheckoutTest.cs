@@ -9,9 +9,9 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsCommitCheckout { Sha = "xxxxxxx" };
+        var model = new BetaManagedAgentsCommitCheckout { Sha = "92aD336" };
 
-        string expectedSha = "xxxxxxx";
+        string expectedSha = "92aD336";
         JsonElement expectedType = JsonSerializer.SerializeToElement("commit");
 
         Assert.Equal(expectedSha, model.Sha);
@@ -21,7 +21,7 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsCommitCheckout { Sha = "xxxxxxx" };
+        var model = new BetaManagedAgentsCommitCheckout { Sha = "92aD336" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCommitCheckout>(
@@ -35,7 +35,7 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsCommitCheckout { Sha = "xxxxxxx" };
+        var model = new BetaManagedAgentsCommitCheckout { Sha = "92aD336" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsCommitCheckout>(
@@ -44,7 +44,7 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSha = "xxxxxxx";
+        string expectedSha = "92aD336";
         JsonElement expectedType = JsonSerializer.SerializeToElement("commit");
 
         Assert.Equal(expectedSha, deserialized.Sha);
@@ -54,7 +54,7 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsCommitCheckout { Sha = "xxxxxxx" };
+        var model = new BetaManagedAgentsCommitCheckout { Sha = "92aD336" };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class BetaManagedAgentsCommitCheckoutTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsCommitCheckout { Sha = "xxxxxxx" };
+        var model = new BetaManagedAgentsCommitCheckout { Sha = "92aD336" };
 
         BetaManagedAgentsCommitCheckout copied = new(model);
 

@@ -760,7 +760,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -808,7 +808,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -850,7 +850,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
         };

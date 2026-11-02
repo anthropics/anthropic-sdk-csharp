@@ -11,7 +11,7 @@ public class MemoryServiceTest : TestBase
             .client.WithQuery("beta=true")
             .Beta.MemoryStores.Memories.Create(
                 "memory_store_id",
-                new() { Content = "content", Path = "xx" },
+                new() { Content = "content", Path = "/P" },
                 TestContext.Current.CancellationToken
             );
         betaManagedAgentsMemory.Validate();

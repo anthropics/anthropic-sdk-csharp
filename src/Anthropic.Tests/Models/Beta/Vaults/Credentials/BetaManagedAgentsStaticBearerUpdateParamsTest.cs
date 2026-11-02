@@ -9,10 +9,10 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "token" };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("static_bearer");
-        string expectedToken = "x";
+        string expectedToken = "token";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedToken, model.Token);
@@ -21,7 +21,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "token" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerUpdateParams>(
@@ -35,7 +35,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "token" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsStaticBearerUpdateParams>(
@@ -45,7 +45,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("static_bearer");
-        string expectedToken = "x";
+        string expectedToken = "token";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedToken, deserialized.Token);
@@ -54,7 +54,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "token" };
 
         model.Validate();
     }
@@ -96,7 +96,7 @@ public class BetaManagedAgentsStaticBearerUpdateParamsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "x" };
+        var model = new BetaManagedAgentsStaticBearerUpdateParams { Token = "token" };
 
         BetaManagedAgentsStaticBearerUpdateParams copied = new(model);
 

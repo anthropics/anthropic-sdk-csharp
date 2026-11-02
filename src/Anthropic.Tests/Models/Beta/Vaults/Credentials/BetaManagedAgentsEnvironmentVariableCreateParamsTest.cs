@@ -12,15 +12,15 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
 
         BetaManagedAgentsCredentialNetworkingParams expectedNetworking =
             new BetaManagedAgentsUnrestrictedCredentialNetworkingParams();
-        string expectedSecretName = "x";
-        string expectedSecretValue = "x";
+        string expectedSecretName = "B";
+        string expectedSecretValue = "secret_value";
         JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
         BetaManagedAgentsInjectionLocationParams expectedInjectionLocation = new()
         {
@@ -41,8 +41,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
 
@@ -62,8 +62,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
 
@@ -77,8 +77,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
 
         BetaManagedAgentsCredentialNetworkingParams expectedNetworking =
             new BetaManagedAgentsUnrestrictedCredentialNetworkingParams();
-        string expectedSecretName = "x";
-        string expectedSecretValue = "x";
+        string expectedSecretName = "B";
+        string expectedSecretValue = "secret_value";
         JsonElement expectedType = JsonSerializer.SerializeToElement("environment_variable");
         BetaManagedAgentsInjectionLocationParams expectedInjectionLocation = new()
         {
@@ -99,8 +99,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
 
@@ -113,8 +113,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
         };
 
         Assert.Null(model.InjectionLocation);
@@ -127,8 +127,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
         };
 
         model.Validate();
@@ -140,8 +140,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
 
             // Null should be interpreted as omitted for these properties
             InjectionLocation = null,
@@ -157,8 +157,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         } with
         {
@@ -176,8 +176,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
 
             // Null should be interpreted as omitted for these properties
             InjectionLocation = null,
@@ -192,8 +192,8 @@ public class BetaManagedAgentsEnvironmentVariableCreateParamsTest : TestBase
         var model = new BetaManagedAgentsEnvironmentVariableCreateParams
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
 

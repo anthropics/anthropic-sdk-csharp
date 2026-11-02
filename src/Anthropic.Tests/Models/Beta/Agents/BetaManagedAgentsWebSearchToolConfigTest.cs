@@ -20,7 +20,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -36,7 +36,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         BetaManagedAgentsUserLocation expectedUserLocation = new()
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
@@ -72,7 +72,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -99,7 +99,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -122,7 +122,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
         BetaManagedAgentsUserLocation expectedUserLocation = new()
         {
             City = "x",
-            Country = "country",
+            Country = "SE",
             Region = "x",
             Timezone = "x",
         };
@@ -158,7 +158,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -177,7 +177,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -199,7 +199,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -218,7 +218,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -246,7 +246,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -273,7 +273,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },
@@ -360,7 +360,7 @@ public class BetaManagedAgentsWebSearchToolConfigTest : TestBase
             UserLocation = new()
             {
                 City = "x",
-                Country = "country",
+                Country = "SE",
                 Region = "x",
                 Timezone = "x",
             },

@@ -18,8 +18,11 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
-            Path = "xx",
-            Precondition = new() { ContentSha256 = "content_sha256" },
+            Path = "/P",
+            Precondition = new()
+            {
+                ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
+            },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -29,10 +32,10 @@ public class MemoryUpdateParamsTest : TestBase
         ApiEnum<string, BetaManagedAgentsMemoryView> expectedView =
             BetaManagedAgentsMemoryView.Basic;
         string expectedContent = "content";
-        string expectedPath = "xx";
+        string expectedPath = "/P";
         BetaManagedAgentsPrecondition expectedPrecondition = new()
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -63,7 +66,7 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
         };
 
         Assert.Null(parameters.View);
@@ -84,7 +87,7 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
 
             // Null should be interpreted as omitted for these properties
             View = null,
@@ -112,8 +115,11 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
-            Path = "xx",
-            Precondition = new() { ContentSha256 = "content_sha256" },
+            Path = "/P",
+            Precondition = new()
+            {
+                ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
+            },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -143,7 +149,10 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Precondition = new() { ContentSha256 = "content_sha256" },
+            Precondition = new()
+            {
+                ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
+            },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -162,7 +171,10 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Precondition = new() { ContentSha256 = "content_sha256" },
+            Precondition = new()
+            {
+                ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
+            },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
@@ -231,8 +243,11 @@ public class MemoryUpdateParamsTest : TestBase
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
             Content = "content",
-            Path = "xx",
-            Precondition = new() { ContentSha256 = "content_sha256" },
+            Path = "/P",
+            Precondition = new()
+            {
+                ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
+            },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

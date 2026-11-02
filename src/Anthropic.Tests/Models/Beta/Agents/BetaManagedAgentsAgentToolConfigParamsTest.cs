@@ -116,7 +116,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 UserLocation = new()
                 {
                     City = "x",
-                    Country = "country",
+                    Country = "SE",
                     Region = "x",
                     Timezone = "x",
                 },
@@ -274,7 +274,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 UserLocation = new()
                 {
                     City = "x",
-                    Country = "country",
+                    Country = "SE",
                     Region = "x",
                     Timezone = "x",
                 },
@@ -396,7 +396,7 @@ public class BetaManagedAgentsAgentToolConfigParamsTest : TestBase
                 UserLocation = new()
                 {
                     City = "x",
-                    Country = "country",
+                    Country = "SE",
                     Region = "x",
                     Timezone = "x",
                 },
