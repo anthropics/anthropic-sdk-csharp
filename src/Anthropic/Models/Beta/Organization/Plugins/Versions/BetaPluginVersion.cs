@@ -87,7 +87,9 @@ public sealed record class BetaPluginVersion : JsonModel
     }
 
     /// <summary>
-    /// The manifest's description; null when it declares none.
+    /// The manifest's description; null when it declares none. If that description
+    /// is the first 500 characters of exactly one distinct skill `description` in
+    /// `components`, that skill `description` is returned instead.
     /// </summary>
     public required string? Description
     {

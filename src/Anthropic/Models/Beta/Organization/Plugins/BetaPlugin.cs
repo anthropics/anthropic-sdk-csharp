@@ -225,9 +225,10 @@ public sealed record class BetaPlugin : JsonModel
     ///
     /// <para>`remote` means it declares an MCP server or a CLI. `privileged` means
     /// it declares no MCP server or CLI, but declares a hook, monitor, language server,
-    /// or settings, or has a skill, command, or other Markdown file whose frontmatter
-    /// pre-approves tools (`allowed-tools` with any value other than an empty one
-    /// or one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`).
+    /// Claude Code workflow (any file in a `workflows/` folder at its root counts
+    /// as one), or settings, or has a skill, command, or other Markdown file whose
+    /// frontmatter pre-approves tools (`allowed-tools` with any value other than
+    /// an empty one or one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`).
     /// Otherwise it is `contained`.</para>
     ///
     /// <para>If the frontmatter of a skill, command, or other Markdown file that
@@ -1129,7 +1130,8 @@ sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
 ///
 /// <para>`remote` means it declares an MCP server or a CLI. `privileged` means it
 /// declares no MCP server or CLI, but declares a hook, monitor, language server,
-/// or settings, or has a skill, command, or other Markdown file whose frontmatter
+/// Claude Code workflow (any file in a `workflows/` folder at its root counts as
+/// one), or settings, or has a skill, command, or other Markdown file whose frontmatter
 /// pre-approves tools (`allowed-tools` with any value other than an empty one or
 /// one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`). Otherwise
 /// it is `contained`.</para>
