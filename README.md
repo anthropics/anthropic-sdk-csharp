@@ -1,11 +1,11 @@
-# Claude SDK for C#
+# Anthropic SDK for C#
 
 [![NuGet Version](https://img.shields.io/nuget/v/Anthropic.svg)](https://www.nuget.org/packages/Anthropic)
 
 > [!IMPORTANT]
-> As of version 10+, the `Anthropic` package is now the official Claude SDK for C#. Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, update your package reference to `tryAGI.Anthropic`.
+> As of version 10+, the `Anthropic` package is now the official Anthropic SDK for C#. Package versions 3.X and below were previously used for the tryAGI community-built SDK, which has moved to [`tryAGI.Anthropic`](https://www.nuget.org/packages/tryagi.Anthropic/). If you need to continue using the former client in your project, update your package reference to `tryAGI.Anthropic`.
 
-The Claude SDK for C# provides access to the [Claude API](https://docs.anthropic.com/en/api/) from C# applications.
+The Anthropic SDK for C# provides access to the [Claude API](https://docs.anthropic.com/en/api/) from C# applications.
 
 ## Documentation
 
