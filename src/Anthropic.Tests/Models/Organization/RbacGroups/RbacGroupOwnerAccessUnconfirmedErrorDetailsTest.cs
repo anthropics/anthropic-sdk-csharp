@@ -1,18 +1,18 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Messages;
+using Anthropic.Models.Organization.RbacGroups;
 
-namespace Anthropic.Tests.Models.Messages;
+namespace Anthropic.Tests.Models.Organization.RbacGroups;
 
-public class SkillReadBlockedUndecryptableErrorDetailsTest : TestBase
+public class RbacGroupOwnerAccessUnconfirmedErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new SkillReadBlockedUndecryptableErrorDetails { };
+        var model = new RbacGroupOwnerAccessUnconfirmedErrorDetails { };
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "skill_read_blocked_undecryptable"
+            "rbac_group_owner_access_unconfirmed"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
@@ -21,10 +21,10 @@ public class SkillReadBlockedUndecryptableErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new SkillReadBlockedUndecryptableErrorDetails { };
+        var model = new RbacGroupOwnerAccessUnconfirmedErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<SkillReadBlockedUndecryptableErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<RbacGroupOwnerAccessUnconfirmedErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -35,17 +35,17 @@ public class SkillReadBlockedUndecryptableErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new SkillReadBlockedUndecryptableErrorDetails { };
+        var model = new RbacGroupOwnerAccessUnconfirmedErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<SkillReadBlockedUndecryptableErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<RbacGroupOwnerAccessUnconfirmedErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "skill_read_blocked_undecryptable"
+            "rbac_group_owner_access_unconfirmed"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
@@ -54,7 +54,7 @@ public class SkillReadBlockedUndecryptableErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new SkillReadBlockedUndecryptableErrorDetails { };
+        var model = new RbacGroupOwnerAccessUnconfirmedErrorDetails { };
 
         model.Validate();
     }
@@ -62,9 +62,9 @@ public class SkillReadBlockedUndecryptableErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new SkillReadBlockedUndecryptableErrorDetails { };
+        var model = new RbacGroupOwnerAccessUnconfirmedErrorDetails { };
 
-        SkillReadBlockedUndecryptableErrorDetails copied = new(model);
+        RbacGroupOwnerAccessUnconfirmedErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

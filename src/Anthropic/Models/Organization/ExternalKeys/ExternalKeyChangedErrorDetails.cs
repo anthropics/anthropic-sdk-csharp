@@ -6,18 +6,18 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Beta.Organization.ClaudeTag;
+namespace Anthropic.Models.Organization.ExternalKeys;
 
 /// <summary>
-/// `settings.environment_id` names no Environment within the organization's reach.
+/// The external key changed while the request was validating it. Send the request again.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
-        BetaEnvironmentNotFoundErrorDetails,
-        BetaEnvironmentNotFoundErrorDetailsFromRaw
+        ExternalKeyChangedErrorDetails,
+        ExternalKeyChangedErrorDetailsFromRaw
     >)
 )]
-public sealed record class BetaEnvironmentNotFoundErrorDetails : JsonModel
+public sealed record class ExternalKeyChangedErrorDetails : JsonModel
 {
     public JsonElement ErrorCode
     {
@@ -35,7 +35,7 @@ public sealed record class BetaEnvironmentNotFoundErrorDetails : JsonModel
         if (
             !JsonElement.DeepEquals(
                 this.ErrorCode,
-                JsonSerializer.SerializeToElement("environment_not_found")
+                JsonSerializer.SerializeToElement("external_key_changed")
             )
         )
         {
@@ -43,36 +43,36 @@ public sealed record class BetaEnvironmentNotFoundErrorDetails : JsonModel
         }
     }
 
-    public BetaEnvironmentNotFoundErrorDetails()
+    public ExternalKeyChangedErrorDetails()
     {
-        this.ErrorCode = JsonSerializer.SerializeToElement("environment_not_found");
+        this.ErrorCode = JsonSerializer.SerializeToElement("external_key_changed");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    public BetaEnvironmentNotFoundErrorDetails(
-        BetaEnvironmentNotFoundErrorDetails betaEnvironmentNotFoundErrorDetails
+    public ExternalKeyChangedErrorDetails(
+        ExternalKeyChangedErrorDetails externalKeyChangedErrorDetails
     )
-        : base(betaEnvironmentNotFoundErrorDetails) { }
+        : base(externalKeyChangedErrorDetails) { }
 #pragma warning restore CS8618
 
-    public BetaEnvironmentNotFoundErrorDetails(IReadOnlyDictionary<string, JsonElement> rawData)
+    public ExternalKeyChangedErrorDetails(IReadOnlyDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
 
-        this.ErrorCode = JsonSerializer.SerializeToElement("environment_not_found");
+        this.ErrorCode = JsonSerializer.SerializeToElement("external_key_changed");
     }
 
 #pragma warning disable CS8618
     [SetsRequiredMembers]
-    BetaEnvironmentNotFoundErrorDetails(FrozenDictionary<string, JsonElement> rawData)
+    ExternalKeyChangedErrorDetails(FrozenDictionary<string, JsonElement> rawData)
     {
         this._rawData = new(rawData);
     }
 #pragma warning restore CS8618
 
-    /// <inheritdoc cref="BetaEnvironmentNotFoundErrorDetailsFromRaw.FromRawUnchecked"/>
-    public static BetaEnvironmentNotFoundErrorDetails FromRawUnchecked(
+    /// <inheritdoc cref="ExternalKeyChangedErrorDetailsFromRaw.FromRawUnchecked"/>
+    public static ExternalKeyChangedErrorDetails FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     )
     {
@@ -80,10 +80,10 @@ public sealed record class BetaEnvironmentNotFoundErrorDetails : JsonModel
     }
 }
 
-class BetaEnvironmentNotFoundErrorDetailsFromRaw : IFromRawJson<BetaEnvironmentNotFoundErrorDetails>
+class ExternalKeyChangedErrorDetailsFromRaw : IFromRawJson<ExternalKeyChangedErrorDetails>
 {
     /// <inheritdoc/>
-    public BetaEnvironmentNotFoundErrorDetails FromRawUnchecked(
+    public ExternalKeyChangedErrorDetails FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
-    ) => BetaEnvironmentNotFoundErrorDetails.FromRawUnchecked(rawData);
+    ) => ExternalKeyChangedErrorDetails.FromRawUnchecked(rawData);
 }

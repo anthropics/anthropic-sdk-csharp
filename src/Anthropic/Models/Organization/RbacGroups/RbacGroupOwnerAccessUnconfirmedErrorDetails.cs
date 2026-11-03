@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Organization;
+namespace Anthropic.Models.Organization.RbacGroups;
 
 /// <summary>
 /// The API could not finish checking whether an RBAC Group in the request grants

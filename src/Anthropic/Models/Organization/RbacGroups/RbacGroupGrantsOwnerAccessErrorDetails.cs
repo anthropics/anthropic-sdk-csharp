@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Organization;
+namespace Anthropic.Models.Organization.RbacGroups;
 
 /// <summary>
 /// A role attached to an RBAC Group in the request grants owner access, so this API

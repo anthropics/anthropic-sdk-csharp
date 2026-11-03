@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Organization;
+namespace Anthropic.Models.UserProfiles;
 
 /// <summary>
 /// The request depends on a user profile that does not exist in the organization

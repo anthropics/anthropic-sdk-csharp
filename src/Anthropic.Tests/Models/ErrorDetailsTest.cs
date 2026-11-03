@@ -2,6 +2,7 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.Organization;
@@ -14,8 +15,11 @@ using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ApiKeys;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Invites;
+using Anthropic.Models.Organization.RbacGroups;
 using Anthropic.Models.Organization.Users;
 using Anthropic.Models.Organization.Workspaces;
+using Anthropic.Models.Skills;
+using Anthropic.Models.UserProfiles;
 
 namespace Anthropic.Tests.Models;
 

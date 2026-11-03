@@ -1,17 +1,17 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Organization.ClaudeTag;
+using Anthropic.Models.Beta;
 
-namespace Anthropic.Tests.Models.Beta.Organization.ClaudeTag;
+namespace Anthropic.Tests.Models.Beta;
 
-public class BetaEnvironmentNotFoundErrorDetailsTest : TestBase
+public class BetaUnsupportedCharsetErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaEnvironmentNotFoundErrorDetails { };
+        var model = new BetaUnsupportedCharsetErrorDetails { };
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("environment_not_found");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("unsupported_charset");
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
     }
@@ -19,10 +19,10 @@ public class BetaEnvironmentNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaEnvironmentNotFoundErrorDetails { };
+        var model = new BetaUnsupportedCharsetErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaEnvironmentNotFoundErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<BetaUnsupportedCharsetErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -33,16 +33,16 @@ public class BetaEnvironmentNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaEnvironmentNotFoundErrorDetails { };
+        var model = new BetaUnsupportedCharsetErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaEnvironmentNotFoundErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<BetaUnsupportedCharsetErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("environment_not_found");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("unsupported_charset");
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
     }
@@ -50,7 +50,7 @@ public class BetaEnvironmentNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaEnvironmentNotFoundErrorDetails { };
+        var model = new BetaUnsupportedCharsetErrorDetails { };
 
         model.Validate();
     }
@@ -58,9 +58,9 @@ public class BetaEnvironmentNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaEnvironmentNotFoundErrorDetails { };
+        var model = new BetaUnsupportedCharsetErrorDetails { };
 
-        BetaEnvironmentNotFoundErrorDetails copied = new(model);
+        BetaUnsupportedCharsetErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Organization.Invites;
+namespace Anthropic.Models.Organization;
 
 /// <summary>
 /// The organization has reached the member limit that Anthropic set for it. Pending

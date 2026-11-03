@@ -4,15 +4,15 @@ using Anthropic.Models.Organization;
 
 namespace Anthropic.Tests.Models.Organization;
 
-public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
+public class OrgMemberLimitExceededErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new OrganizationTypeNotSupportedErrorDetails { };
+        var model = new OrgMemberLimitExceededErrorDetails { };
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "organization_type_not_supported"
+            "org_member_limit_exceeded"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
@@ -21,10 +21,10 @@ public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new OrganizationTypeNotSupportedErrorDetails { };
+        var model = new OrgMemberLimitExceededErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<OrganizationTypeNotSupportedErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<OrgMemberLimitExceededErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -35,17 +35,17 @@ public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new OrganizationTypeNotSupportedErrorDetails { };
+        var model = new OrgMemberLimitExceededErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<OrganizationTypeNotSupportedErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<OrgMemberLimitExceededErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "organization_type_not_supported"
+            "org_member_limit_exceeded"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
@@ -54,7 +54,7 @@ public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new OrganizationTypeNotSupportedErrorDetails { };
+        var model = new OrgMemberLimitExceededErrorDetails { };
 
         model.Validate();
     }
@@ -62,9 +62,9 @@ public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new OrganizationTypeNotSupportedErrorDetails { };
+        var model = new OrgMemberLimitExceededErrorDetails { };
 
-        OrganizationTypeNotSupportedErrorDetails copied = new(model);
+        OrgMemberLimitExceededErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

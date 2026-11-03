@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
@@ -11,13 +12,16 @@ using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Invites;
+using Anthropic.Models.Organization.RbacGroups;
 using Anthropic.Models.Organization.Users;
 using Anthropic.Models.Organization.Workspaces;
+using Anthropic.Models.UserProfiles;
 using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Environments = Anthropic.Models.Beta.Environments;
 using Files = Anthropic.Models.Files;
 using Messages = Anthropic.Models.Messages;
 using Plugins = Anthropic.Models.Beta.Organization.Plugins;
+using Skills = Anthropic.Models.Skills;
 
 namespace Anthropic.Models;
 
@@ -49,7 +53,7 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.AvailableToolsLimitExceeded,
                 ClaudeCodeKeyCreatorNotMemberErrorDetails _ =>
                     ErrorDetailsErrorCode.ClaudeCodeKeyCreatorNotMember,
-                Messages::ClaudeCodeVersionTooOldErrorDetails _ =>
+                ClaudeCodeVersionTooOldErrorDetails _ =>
                     ErrorDetailsErrorCode.ClaudeCodeVersionTooOld,
                 CmekKeyDisabledErrorDetails _ => ErrorDetailsErrorCode.CmekKeyDisabled,
                 CmekKeyNetworkBlockedErrorDetails _ => ErrorDetailsErrorCode.CmekKeyNetworkBlocked,
@@ -86,7 +90,7 @@ public record class ErrorDetails : ModelBase
                 Messages::ToolReferenceUnresolvedErrorDetails _ =>
                     ErrorDetailsErrorCode.ToolReferenceUnresolved,
                 Messages::ThreadNotFoundErrorDetails _ => ErrorDetailsErrorCode.ThreadNotFound,
-                Messages::SkillReadBlockedUndecryptableErrorDetails _ =>
+                Skills::SkillReadBlockedUndecryptableErrorDetails _ =>
                     ErrorDetailsErrorCode.SkillReadBlockedUndecryptable,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ =>
                     ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
@@ -163,7 +167,8 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.ComplianceConfigurationRestricted,
                 BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ =>
                     ErrorDetailsErrorCode.OrganizationLevelScopedApiKeyRequired,
-                BetaEnvironmentNotFoundErrorDetails _ => ErrorDetailsErrorCode.EnvironmentNotFound,
+                Environments::BetaEnvironmentNotFoundErrorDetails _ =>
+                    ErrorDetailsErrorCode.EnvironmentNotFound,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ =>
                     ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ =>
@@ -183,7 +188,7 @@ public record class ErrorDetails : ModelBase
             {
                 Messages::AvailableToolsLimitExceededErrorDetails _ => null,
                 ClaudeCodeKeyCreatorNotMemberErrorDetails _ => null,
-                Messages::ClaudeCodeVersionTooOldErrorDetails _ => null,
+                ClaudeCodeVersionTooOldErrorDetails _ => null,
                 CmekKeyDisabledErrorDetails _ => null,
                 CmekKeyNetworkBlockedErrorDetails _ => null,
                 Messages::CompactionBlockAmbiguousErrorDetails _ => null,
@@ -204,7 +209,7 @@ public record class ErrorDetails : ModelBase
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
-                Messages::SkillReadBlockedUndecryptableErrorDetails _ => null,
+                Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -250,7 +255,7 @@ public record class ErrorDetails : ModelBase
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
                 BetaComplianceConfigurationRestrictedErrorDetails _ => null,
                 BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => null,
-                BetaEnvironmentNotFoundErrorDetails _ => null,
+                Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "plugin_id"),
@@ -266,7 +271,7 @@ public record class ErrorDetails : ModelBase
             {
                 Messages::AvailableToolsLimitExceededErrorDetails _ => null,
                 ClaudeCodeKeyCreatorNotMemberErrorDetails _ => null,
-                Messages::ClaudeCodeVersionTooOldErrorDetails _ => null,
+                ClaudeCodeVersionTooOldErrorDetails _ => null,
                 CmekKeyDisabledErrorDetails _ => null,
                 CmekKeyNetworkBlockedErrorDetails _ => null,
                 Messages::CompactionBlockAmbiguousErrorDetails _ => null,
@@ -287,7 +292,7 @@ public record class ErrorDetails : ModelBase
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
-                Messages::SkillReadBlockedUndecryptableErrorDetails _ => null,
+                Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -333,7 +338,7 @@ public record class ErrorDetails : ModelBase
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
                 BetaComplianceConfigurationRestrictedErrorDetails _ => null,
                 BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => null,
-                BetaEnvironmentNotFoundErrorDetails _ => null,
+                Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
@@ -352,7 +357,7 @@ public record class ErrorDetails : ModelBase
             {
                 Messages::AvailableToolsLimitExceededErrorDetails _ => null,
                 ClaudeCodeKeyCreatorNotMemberErrorDetails _ => null,
-                Messages::ClaudeCodeVersionTooOldErrorDetails _ => null,
+                ClaudeCodeVersionTooOldErrorDetails _ => null,
                 CmekKeyDisabledErrorDetails _ => null,
                 CmekKeyNetworkBlockedErrorDetails _ => null,
                 Messages::CompactionBlockAmbiguousErrorDetails _ => null,
@@ -373,7 +378,7 @@ public record class ErrorDetails : ModelBase
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
-                Messages::SkillReadBlockedUndecryptableErrorDetails _ => null,
+                Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -419,7 +424,7 @@ public record class ErrorDetails : ModelBase
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
                 BetaComplianceConfigurationRestrictedErrorDetails _ => null,
                 BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => null,
-                BetaEnvironmentNotFoundErrorDetails _ => null,
+                Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails x => x.SlackChannelID,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails x => x.SlackChannelID,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
@@ -448,10 +453,7 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
-    public ErrorDetails(
-        Messages::ClaudeCodeVersionTooOldErrorDetails value,
-        JsonElement? element = null
-    )
+    public ErrorDetails(ClaudeCodeVersionTooOldErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -620,7 +622,7 @@ public record class ErrorDetails : ModelBase
     }
 
     public ErrorDetails(
-        Messages::SkillReadBlockedUndecryptableErrorDetails value,
+        Skills::SkillReadBlockedUndecryptableErrorDetails value,
         JsonElement? element = null
     )
     {
@@ -952,7 +954,10 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
-    public ErrorDetails(BetaEnvironmentNotFoundErrorDetails value, JsonElement? element = null)
+    public ErrorDetails(
+        Environments::BetaEnvironmentNotFoundErrorDetails value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
@@ -1029,24 +1034,24 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="Messages::ClaudeCodeVersionTooOldErrorDetails"/>.
+    /// type <see cref="ClaudeCodeVersionTooOldErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickClaudeCodeVersionTooOld(out var value)) {
-    ///     // `value` is of type `Messages::ClaudeCodeVersionTooOldErrorDetails`
+    ///     // `value` is of type `ClaudeCodeVersionTooOldErrorDetails`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickClaudeCodeVersionTooOld(
-        [NotNullWhen(true)] out Messages::ClaudeCodeVersionTooOldErrorDetails? value
+        [NotNullWhen(true)] out ClaudeCodeVersionTooOldErrorDetails? value
     )
     {
-        value = this.Value as Messages::ClaudeCodeVersionTooOldErrorDetails;
+        value = this.Value as ClaudeCodeVersionTooOldErrorDetails;
         return value != null;
     }
 
@@ -1510,24 +1515,24 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="Messages::SkillReadBlockedUndecryptableErrorDetails"/>.
+    /// type <see cref="Skills::SkillReadBlockedUndecryptableErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickSkillReadBlockedUndecryptable(out var value)) {
-    ///     // `value` is of type `Messages::SkillReadBlockedUndecryptableErrorDetails`
+    ///     // `value` is of type `Skills::SkillReadBlockedUndecryptableErrorDetails`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickSkillReadBlockedUndecryptable(
-        [NotNullWhen(true)] out Messages::SkillReadBlockedUndecryptableErrorDetails? value
+        [NotNullWhen(true)] out Skills::SkillReadBlockedUndecryptableErrorDetails? value
     )
     {
-        value = this.Value as Messages::SkillReadBlockedUndecryptableErrorDetails;
+        value = this.Value as Skills::SkillReadBlockedUndecryptableErrorDetails;
         return value != null;
     }
 
@@ -2564,24 +2569,24 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaEnvironmentNotFoundErrorDetails"/>.
+    /// type <see cref="Environments::BetaEnvironmentNotFoundErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
     ///
     /// <example>
     /// <code>
     /// if (instance.TryPickBetaEnvironmentNotFound(out var value)) {
-    ///     // `value` is of type `BetaEnvironmentNotFoundErrorDetails`
+    ///     // `value` is of type `Environments::BetaEnvironmentNotFoundErrorDetails`
     ///     Console.WriteLine(value);
     /// }
     /// </code>
     /// </example>
     /// </summary>
     public bool TryPickBetaEnvironmentNotFound(
-        [NotNullWhen(true)] out BetaEnvironmentNotFoundErrorDetails? value
+        [NotNullWhen(true)] out Environments::BetaEnvironmentNotFoundErrorDetails? value
     )
     {
-        value = this.Value as BetaEnvironmentNotFoundErrorDetails;
+        value = this.Value as Environments::BetaEnvironmentNotFoundErrorDetails;
         return value != null;
     }
 
@@ -2647,7 +2652,7 @@ public record class ErrorDetails : ModelBase
     /// instance.Switch(
     ///     (Messages::AvailableToolsLimitExceededErrorDetails value) =&gt; {...},
     ///     (ClaudeCodeKeyCreatorNotMemberErrorDetails value) =&gt; {...},
-    ///     (Messages::ClaudeCodeVersionTooOldErrorDetails value) =&gt; {...},
+    ///     (ClaudeCodeVersionTooOldErrorDetails value) =&gt; {...},
     ///     (CmekKeyDisabledErrorDetails value) =&gt; {...},
     ///     (CmekKeyNetworkBlockedErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionBlockAmbiguousErrorDetails value) =&gt; {...},
@@ -2668,7 +2673,7 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::ToolNameConflictErrorDetails value) =&gt; {...},
     ///     (Messages::ToolReferenceUnresolvedErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
-    ///     (Messages::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
+    ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
@@ -2714,7 +2719,7 @@ public record class ErrorDetails : ModelBase
     ///     (BetaClaudeTagWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaComplianceConfigurationRestrictedErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
-    ///     (BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
+    ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
     /// );
@@ -2724,7 +2729,7 @@ public record class ErrorDetails : ModelBase
     public void Switch(
         Action<Messages::AvailableToolsLimitExceededErrorDetails> availableToolsLimitExceeded,
         Action<ClaudeCodeKeyCreatorNotMemberErrorDetails> claudeCodeKeyCreatorNotMember,
-        Action<Messages::ClaudeCodeVersionTooOldErrorDetails> claudeCodeVersionTooOld,
+        Action<ClaudeCodeVersionTooOldErrorDetails> claudeCodeVersionTooOld,
         Action<CmekKeyDisabledErrorDetails> cmekKeyDisabled,
         Action<CmekKeyNetworkBlockedErrorDetails> cmekKeyNetworkBlocked,
         Action<Messages::CompactionBlockAmbiguousErrorDetails> compactionBlockAmbiguous,
@@ -2745,7 +2750,7 @@ public record class ErrorDetails : ModelBase
         Action<Messages::ToolNameConflictErrorDetails> toolNameConflict,
         Action<Messages::ToolReferenceUnresolvedErrorDetails> toolReferenceUnresolved,
         Action<Messages::ThreadNotFoundErrorDetails> threadNotFound,
-        Action<Messages::SkillReadBlockedUndecryptableErrorDetails> skillReadBlockedUndecryptable,
+        Action<Skills::SkillReadBlockedUndecryptableErrorDetails> skillReadBlockedUndecryptable,
         Action<RequestBodyTooLargeAfterDecodingErrorDetails> requestBodyTooLargeAfterDecoding,
         Action<EnforcedSpendLimitReachedErrorDetails> enforcedSpendLimitReached,
         Action<CmekKeyUnreachableErrorDetails> cmekKeyUnreachable,
@@ -2791,7 +2796,7 @@ public record class ErrorDetails : ModelBase
         Action<BetaClaudeTagWritesNotEnabledErrorDetails> betaClaudeTagWritesNotEnabled,
         Action<BetaComplianceConfigurationRestrictedErrorDetails> betaComplianceConfigurationRestricted,
         Action<BetaOrganizationLevelScopedApiKeyRequiredErrorDetails> betaOrganizationLevelScopedApiKeyRequired,
-        Action<BetaEnvironmentNotFoundErrorDetails> betaEnvironmentNotFound,
+        Action<Environments::BetaEnvironmentNotFoundErrorDetails> betaEnvironmentNotFound,
         Action<BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails> betaSlackChannelSetUpEnvironmentNotFound,
         Action<BetaSlackChannelSetUpSettingsConflictErrorDetails> betaSlackChannelSetUpSettingsConflict
     )
@@ -2804,7 +2809,7 @@ public record class ErrorDetails : ModelBase
             case ClaudeCodeKeyCreatorNotMemberErrorDetails value:
                 claudeCodeKeyCreatorNotMember(value);
                 break;
-            case Messages::ClaudeCodeVersionTooOldErrorDetails value:
+            case ClaudeCodeVersionTooOldErrorDetails value:
                 claudeCodeVersionTooOld(value);
                 break;
             case CmekKeyDisabledErrorDetails value:
@@ -2867,7 +2872,7 @@ public record class ErrorDetails : ModelBase
             case Messages::ThreadNotFoundErrorDetails value:
                 threadNotFound(value);
                 break;
-            case Messages::SkillReadBlockedUndecryptableErrorDetails value:
+            case Skills::SkillReadBlockedUndecryptableErrorDetails value:
                 skillReadBlockedUndecryptable(value);
                 break;
             case RequestBodyTooLargeAfterDecodingErrorDetails value:
@@ -3005,7 +3010,7 @@ public record class ErrorDetails : ModelBase
             case BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value:
                 betaOrganizationLevelScopedApiKeyRequired(value);
                 break;
-            case BetaEnvironmentNotFoundErrorDetails value:
+            case Environments::BetaEnvironmentNotFoundErrorDetails value:
                 betaEnvironmentNotFound(value);
                 break;
             case BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value:
@@ -3038,7 +3043,7 @@ public record class ErrorDetails : ModelBase
     /// var result = instance.Match(
     ///     (Messages::AvailableToolsLimitExceededErrorDetails value) =&gt; {...},
     ///     (ClaudeCodeKeyCreatorNotMemberErrorDetails value) =&gt; {...},
-    ///     (Messages::ClaudeCodeVersionTooOldErrorDetails value) =&gt; {...},
+    ///     (ClaudeCodeVersionTooOldErrorDetails value) =&gt; {...},
     ///     (CmekKeyDisabledErrorDetails value) =&gt; {...},
     ///     (CmekKeyNetworkBlockedErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionBlockAmbiguousErrorDetails value) =&gt; {...},
@@ -3059,7 +3064,7 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::ToolNameConflictErrorDetails value) =&gt; {...},
     ///     (Messages::ToolReferenceUnresolvedErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
-    ///     (Messages::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
+    ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
@@ -3105,7 +3110,7 @@ public record class ErrorDetails : ModelBase
     ///     (BetaClaudeTagWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaComplianceConfigurationRestrictedErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
-    ///     (BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
+    ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
     /// );
@@ -3115,7 +3120,7 @@ public record class ErrorDetails : ModelBase
     public T Match<T>(
         Func<Messages::AvailableToolsLimitExceededErrorDetails, T> availableToolsLimitExceeded,
         Func<ClaudeCodeKeyCreatorNotMemberErrorDetails, T> claudeCodeKeyCreatorNotMember,
-        Func<Messages::ClaudeCodeVersionTooOldErrorDetails, T> claudeCodeVersionTooOld,
+        Func<ClaudeCodeVersionTooOldErrorDetails, T> claudeCodeVersionTooOld,
         Func<CmekKeyDisabledErrorDetails, T> cmekKeyDisabled,
         Func<CmekKeyNetworkBlockedErrorDetails, T> cmekKeyNetworkBlocked,
         Func<Messages::CompactionBlockAmbiguousErrorDetails, T> compactionBlockAmbiguous,
@@ -3139,7 +3144,7 @@ public record class ErrorDetails : ModelBase
         Func<Messages::ToolNameConflictErrorDetails, T> toolNameConflict,
         Func<Messages::ToolReferenceUnresolvedErrorDetails, T> toolReferenceUnresolved,
         Func<Messages::ThreadNotFoundErrorDetails, T> threadNotFound,
-        Func<Messages::SkillReadBlockedUndecryptableErrorDetails, T> skillReadBlockedUndecryptable,
+        Func<Skills::SkillReadBlockedUndecryptableErrorDetails, T> skillReadBlockedUndecryptable,
         Func<RequestBodyTooLargeAfterDecodingErrorDetails, T> requestBodyTooLargeAfterDecoding,
         Func<EnforcedSpendLimitReachedErrorDetails, T> enforcedSpendLimitReached,
         Func<CmekKeyUnreachableErrorDetails, T> cmekKeyUnreachable,
@@ -3206,7 +3211,7 @@ public record class ErrorDetails : ModelBase
             BetaOrganizationLevelScopedApiKeyRequiredErrorDetails,
             T
         > betaOrganizationLevelScopedApiKeyRequired,
-        Func<BetaEnvironmentNotFoundErrorDetails, T> betaEnvironmentNotFound,
+        Func<Environments::BetaEnvironmentNotFoundErrorDetails, T> betaEnvironmentNotFound,
         Func<
             BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails,
             T
@@ -3223,7 +3228,7 @@ public record class ErrorDetails : ModelBase
                 value
             ),
             ClaudeCodeKeyCreatorNotMemberErrorDetails value => claudeCodeKeyCreatorNotMember(value),
-            Messages::ClaudeCodeVersionTooOldErrorDetails value => claudeCodeVersionTooOld(value),
+            ClaudeCodeVersionTooOldErrorDetails value => claudeCodeVersionTooOld(value),
             CmekKeyDisabledErrorDetails value => cmekKeyDisabled(value),
             CmekKeyNetworkBlockedErrorDetails value => cmekKeyNetworkBlocked(value),
             Messages::CompactionBlockAmbiguousErrorDetails value => compactionBlockAmbiguous(value),
@@ -3255,7 +3260,7 @@ public record class ErrorDetails : ModelBase
             Messages::ToolNameConflictErrorDetails value => toolNameConflict(value),
             Messages::ToolReferenceUnresolvedErrorDetails value => toolReferenceUnresolved(value),
             Messages::ThreadNotFoundErrorDetails value => threadNotFound(value),
-            Messages::SkillReadBlockedUndecryptableErrorDetails value =>
+            Skills::SkillReadBlockedUndecryptableErrorDetails value =>
                 skillReadBlockedUndecryptable(value),
             RequestBodyTooLargeAfterDecodingErrorDetails value => requestBodyTooLargeAfterDecoding(
                 value
@@ -3320,7 +3325,9 @@ public record class ErrorDetails : ModelBase
                 betaComplianceConfigurationRestricted(value),
             BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value =>
                 betaOrganizationLevelScopedApiKeyRequired(value),
-            BetaEnvironmentNotFoundErrorDetails value => betaEnvironmentNotFound(value),
+            Environments::BetaEnvironmentNotFoundErrorDetails value => betaEnvironmentNotFound(
+                value
+            ),
             BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value =>
                 betaSlackChannelSetUpEnvironmentNotFound(value),
             BetaSlackChannelSetUpSettingsConflictErrorDetails value =>
@@ -3338,9 +3345,8 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(ClaudeCodeKeyCreatorNotMemberErrorDetails value) =>
         new(value);
 
-    public static implicit operator ErrorDetails(
-        Messages::ClaudeCodeVersionTooOldErrorDetails value
-    ) => new(value);
+    public static implicit operator ErrorDetails(ClaudeCodeVersionTooOldErrorDetails value) =>
+        new(value);
 
     public static implicit operator ErrorDetails(CmekKeyDisabledErrorDetails value) => new(value);
 
@@ -3416,7 +3422,7 @@ public record class ErrorDetails : ModelBase
         new(value);
 
     public static implicit operator ErrorDetails(
-        Messages::SkillReadBlockedUndecryptableErrorDetails value
+        Skills::SkillReadBlockedUndecryptableErrorDetails value
     ) => new(value);
 
     public static implicit operator ErrorDetails(
@@ -3569,8 +3575,9 @@ public record class ErrorDetails : ModelBase
         BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value
     ) => new(value);
 
-    public static implicit operator ErrorDetails(BetaEnvironmentNotFoundErrorDetails value) =>
-        new(value);
+    public static implicit operator ErrorDetails(
+        Environments::BetaEnvironmentNotFoundErrorDetails value
+    ) => new(value);
 
     public static implicit operator ErrorDetails(
         BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value
@@ -3703,7 +3710,7 @@ public record class ErrorDetails : ModelBase
         {
             Messages::AvailableToolsLimitExceededErrorDetails _ => 0,
             ClaudeCodeKeyCreatorNotMemberErrorDetails _ => 1,
-            Messages::ClaudeCodeVersionTooOldErrorDetails _ => 2,
+            ClaudeCodeVersionTooOldErrorDetails _ => 2,
             CmekKeyDisabledErrorDetails _ => 3,
             CmekKeyNetworkBlockedErrorDetails _ => 4,
             Messages::CompactionBlockAmbiguousErrorDetails _ => 5,
@@ -3724,7 +3731,7 @@ public record class ErrorDetails : ModelBase
             Messages::ToolNameConflictErrorDetails _ => 20,
             Messages::ToolReferenceUnresolvedErrorDetails _ => 21,
             Messages::ThreadNotFoundErrorDetails _ => 22,
-            Messages::SkillReadBlockedUndecryptableErrorDetails _ => 23,
+            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 23,
             RequestBodyTooLargeAfterDecodingErrorDetails _ => 24,
             EnforcedSpendLimitReachedErrorDetails _ => 25,
             CmekKeyUnreachableErrorDetails _ => 26,
@@ -3770,7 +3777,7 @@ public record class ErrorDetails : ModelBase
             BetaClaudeTagWritesNotEnabledErrorDetails _ => 66,
             BetaComplianceConfigurationRestrictedErrorDetails _ => 67,
             BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 68,
-            BetaEnvironmentNotFoundErrorDetails _ => 69,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 69,
             BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 70,
             BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 71,
             _ => -1,
@@ -3846,7 +3853,7 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<Messages::ClaudeCodeVersionTooOldErrorDetails>(
+                        JsonSerializer.Deserialize<ClaudeCodeVersionTooOldErrorDetails>(
                             element,
                             options
                         );
@@ -4285,7 +4292,7 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<Messages::SkillReadBlockedUndecryptableErrorDetails>(
+                        JsonSerializer.Deserialize<Skills::SkillReadBlockedUndecryptableErrorDetails>(
                             element,
                             options
                         );
@@ -5243,7 +5250,7 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 try
                 {
                     var deserialized =
-                        JsonSerializer.Deserialize<BetaEnvironmentNotFoundErrorDetails>(
+                        JsonSerializer.Deserialize<Environments::BetaEnvironmentNotFoundErrorDetails>(
                             element,
                             options
                         );

@@ -1,17 +1,19 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Organization;
+using Anthropic.Models;
 
-namespace Anthropic.Tests.Models.Organization;
+namespace Anthropic.Tests.Models;
 
-public class UserProfileNotFoundErrorDetailsTest : TestBase
+public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new UserProfileNotFoundErrorDetails { };
+        var model = new ClaudeCodeVersionTooOldErrorDetails { };
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("user_profile_not_found");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
+            "claude_code_version_too_old"
+        );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
     }
@@ -19,10 +21,10 @@ public class UserProfileNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new UserProfileNotFoundErrorDetails { };
+        var model = new ClaudeCodeVersionTooOldErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfileNotFoundErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<ClaudeCodeVersionTooOldErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -33,16 +35,18 @@ public class UserProfileNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new UserProfileNotFoundErrorDetails { };
+        var model = new ClaudeCodeVersionTooOldErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<UserProfileNotFoundErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<ClaudeCodeVersionTooOldErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("user_profile_not_found");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
+            "claude_code_version_too_old"
+        );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
     }
@@ -50,7 +54,7 @@ public class UserProfileNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new UserProfileNotFoundErrorDetails { };
+        var model = new ClaudeCodeVersionTooOldErrorDetails { };
 
         model.Validate();
     }
@@ -58,9 +62,9 @@ public class UserProfileNotFoundErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new UserProfileNotFoundErrorDetails { };
+        var model = new ClaudeCodeVersionTooOldErrorDetails { };
 
-        UserProfileNotFoundErrorDetails copied = new(model);
+        ClaudeCodeVersionTooOldErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Organization;
+namespace Anthropic.Models;
 
 /// <summary>
 /// The endpoint does not support the organization's type. Each endpoint's description

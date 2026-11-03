@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Beta.Organization;
+namespace Anthropic.Models.Beta;
 
 /// <summary>
 /// The request's `Content-Type` header names a charset other than UTF-8, ISO-8859-1

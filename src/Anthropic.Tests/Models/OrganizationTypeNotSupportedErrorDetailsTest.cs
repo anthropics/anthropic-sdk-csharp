@@ -1,18 +1,18 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Messages;
+using Anthropic.Models;
 
-namespace Anthropic.Tests.Models.Messages;
+namespace Anthropic.Tests.Models;
 
-public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
+public class OrganizationTypeNotSupportedErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ClaudeCodeVersionTooOldErrorDetails { };
+        var model = new OrganizationTypeNotSupportedErrorDetails { };
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "claude_code_version_too_old"
+            "organization_type_not_supported"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
@@ -21,10 +21,10 @@ public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ClaudeCodeVersionTooOldErrorDetails { };
+        var model = new OrganizationTypeNotSupportedErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ClaudeCodeVersionTooOldErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<OrganizationTypeNotSupportedErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -35,17 +35,17 @@ public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ClaudeCodeVersionTooOldErrorDetails { };
+        var model = new OrganizationTypeNotSupportedErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ClaudeCodeVersionTooOldErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<OrganizationTypeNotSupportedErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "claude_code_version_too_old"
+            "organization_type_not_supported"
         );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
@@ -54,7 +54,7 @@ public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ClaudeCodeVersionTooOldErrorDetails { };
+        var model = new OrganizationTypeNotSupportedErrorDetails { };
 
         model.Validate();
     }
@@ -62,9 +62,9 @@ public class ClaudeCodeVersionTooOldErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new ClaudeCodeVersionTooOldErrorDetails { };
+        var model = new OrganizationTypeNotSupportedErrorDetails { };
 
-        ClaudeCodeVersionTooOldErrorDetails copied = new(model);
+        OrganizationTypeNotSupportedErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

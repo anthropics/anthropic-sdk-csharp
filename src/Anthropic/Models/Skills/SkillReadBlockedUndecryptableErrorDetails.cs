@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Messages;
+namespace Anthropic.Models.Skills;
 
 /// <summary>
 /// A custom skill the request names is stored under an encryption key state the

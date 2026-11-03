@@ -1,19 +1,17 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Organization.Invites;
+using Anthropic.Models.Organization.ExternalKeys;
 
-namespace Anthropic.Tests.Models.Organization.Invites;
+namespace Anthropic.Tests.Models.Organization.ExternalKeys;
 
-public class OrgMemberLimitExceededErrorDetailsTest : TestBase
+public class ExternalKeyChangedErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new OrgMemberLimitExceededErrorDetails { };
+        var model = new ExternalKeyChangedErrorDetails { };
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "org_member_limit_exceeded"
-        );
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("external_key_changed");
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
     }
@@ -21,10 +19,10 @@ public class OrgMemberLimitExceededErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new OrgMemberLimitExceededErrorDetails { };
+        var model = new ExternalKeyChangedErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<OrgMemberLimitExceededErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<ExternalKeyChangedErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -35,18 +33,16 @@ public class OrgMemberLimitExceededErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new OrgMemberLimitExceededErrorDetails { };
+        var model = new ExternalKeyChangedErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<OrgMemberLimitExceededErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<ExternalKeyChangedErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
-            "org_member_limit_exceeded"
-        );
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("external_key_changed");
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
     }
@@ -54,7 +50,7 @@ public class OrgMemberLimitExceededErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new OrgMemberLimitExceededErrorDetails { };
+        var model = new ExternalKeyChangedErrorDetails { };
 
         model.Validate();
     }
@@ -62,9 +58,9 @@ public class OrgMemberLimitExceededErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new OrgMemberLimitExceededErrorDetails { };
+        var model = new ExternalKeyChangedErrorDetails { };
 
-        OrgMemberLimitExceededErrorDetails copied = new(model);
+        ExternalKeyChangedErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

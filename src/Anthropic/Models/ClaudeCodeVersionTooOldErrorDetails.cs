@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Messages;
+namespace Anthropic.Models;
 
 /// <summary>
 /// The request comes from a Claude Code version older than the minimum that the
