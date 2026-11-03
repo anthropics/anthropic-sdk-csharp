@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -60,6 +61,32 @@ public record class WorkspaceListParams : ParamsBase
             }
 
             this._rawQueryData.Set("before_id", value);
+        }
+    }
+
+    /// <summary>
+    /// Only the Workspaces with these IDs, at most 100. `include_archived` and `include_default`
+    /// still apply, and IDs of Workspaces the caller can't list are left out.
+    /// </summary>
+    public IReadOnlyList<string>? Ids
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("ids");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawQueryData.Remove("ids");
+                return;
+            }
+
+            this._rawQueryData.Set<ImmutableArray<string>?>(
+                "ids",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
         }
     }
 
@@ -211,7 +238,7 @@ public record class WorkspaceListParams : ParamsBase
     internal override string Route => "/v1/organizations/workspaces";
 
     internal override IReadOnlyList<string> QueryParams =>
-        ["after_id", "before_id", "include_archived", "include_default", "limit"];
+        ["after_id", "before_id", "ids", "include_archived", "include_default", "limit"];
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
     {
