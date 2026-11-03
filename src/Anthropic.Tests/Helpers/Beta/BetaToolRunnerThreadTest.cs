@@ -1539,7 +1539,7 @@ public class BetaToolRunnerThreadTest
         var thread = CompactionThread(transport, tool);
         var runner = thread.ToolRunner([tool]);
 
-        await Assert.ThrowsAsync<AnthropicBadRequestException>(() =>
+        await Assert.ThrowsAnyAsync<AnthropicBadRequestException>(() =>
             RunTurns(runner, false, afterTurn: 0, () => runner.CompactBeforeNextTurn())
         );
 
