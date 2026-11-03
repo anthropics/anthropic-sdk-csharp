@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Text.Json;
+using Anthropic.Core;
 using Anthropic.Models;
 
 namespace Anthropic.Exceptions;
@@ -10,6 +11,12 @@ public class AnthropicExceptionFactory
     public static AnthropicApiException CreateApiException(
         HttpStatusCode statusCode,
         string responseBody
+    ) => CreateApiException(statusCode, responseBody, null);
+
+    internal static AnthropicApiException CreateApiException(
+        HttpStatusCode statusCode,
+        string responseBody,
+        HttpResponse? response
     )
     {
         var errorType = ExtractErrorType(responseBody);
@@ -20,54 +27,72 @@ public class AnthropicExceptionFactory
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             401 => new AnthropicUnauthorizedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             403 => new AnthropicForbiddenException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             404 => new AnthropicNotFoundException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             422 => new AnthropicUnprocessableEntityException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             429 => new AnthropicRateLimitException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             >= 400 and <= 499 => new Anthropic4xxException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             >= 500 and <= 599 => new Anthropic5xxException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
             _ => new AnthropicUnexpectedStatusCodeException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
                 ErrorType = errorType,
             },
         };

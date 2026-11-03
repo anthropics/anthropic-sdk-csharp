@@ -28,6 +28,18 @@ public class AnthropicApiException : AnthropicServiceException
 
     public required string ResponseBody { get; init; }
 
+    /// <summary>
+    /// Returns the value of the <c>request-id</c> header,
+    /// or null if there's no such header in the response.
+    /// </summary>
+    public string? RequestID { get; init; }
+
+    /// <summary>
+    /// Returns the value of the <c>anthropic-workspace-id</c> header,
+    /// or null if there's no such header in the response.
+    /// </summary>
+    public string? WorkspaceID { get; init; }
+
     public override string Message
     {
         get

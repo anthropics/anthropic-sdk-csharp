@@ -535,7 +535,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 {
                     throw AnthropicExceptionFactory.CreateApiException(
                         response.StatusCode,
-                        await response.ReadAsString(cancellationToken).ConfigureAwait(false)
+                        await response.ReadAsString(cancellationToken).ConfigureAwait(false),
+                        response
                     );
                 }
                 catch (HttpRequestException e)
