@@ -1,6 +1,11 @@
 # Changelog
 
-## [13.4.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.4.0...Anthropic-v13.4.1) (2026-11-02)
+## [13.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.4.0...Anthropic-v13.5.0) (2026-11-03)
+
+### Features
+
+* **api:** add error details types and new error type values
+
 
 ### Chores
 

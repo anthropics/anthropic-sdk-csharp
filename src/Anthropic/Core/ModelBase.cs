@@ -97,6 +97,7 @@ public abstract record class ModelBase
         Converters =
         {
             new FrozenDictionaryConverterFactory(),
+            new ApiEnumConverter<string, ErrorDetailsErrorCode>(),
             new ApiEnumConverter<string, ErrorObjectType>(),
             new ApiEnumConverter<string, ErrorType>(),
             new ApiEnumConverter<string, MediaType>(),
@@ -146,6 +147,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Display>(),
             new ApiEnumConverter<string, ThinkingConfigEnabledDisplay>(),
             new ApiEnumConverter<string, ThinkingConfigParamType>(),
+            new ApiEnumConverter<string, ThreadUnsupportedFeatureName>(),
             new ApiEnumConverter<string, ToolAllowedCaller>(),
             new ApiEnumConverter<string, Type>(),
             new ApiEnumConverter<string, ToolBash20250124AllowedCaller>(),
@@ -241,6 +243,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, DataResidencyCreateConfigDefaultInferenceGeo>(),
             new ApiEnumConverter<string, DataResidencyCreateConfigWorkspaceGeo>(),
             new ApiEnumConverter<string, DataResidencyUpdateConfigDefaultInferenceGeo>(),
+            new ApiEnumConverter<string, WorkspacePolicyField>(),
             new ApiEnumConverter<string, WorkspaceRole>(),
             new ApiEnumConverter<string, RateLimits::GroupTypeValue>(),
             new ApiEnumConverter<string, RateLimits::WorkspaceRateLimitType>(),
@@ -557,6 +560,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Environments::EnvironmentUpdateParamsScope>(),
             new ApiEnumConverter<string, State>(),
             new ApiEnumConverter<string, BetaSelfHostedWorkHeartbeatResponseState>(),
+            new ApiEnumConverter<string, BetaWorkLeaseStateState>(),
             new ApiEnumConverter<string, Sessions::ToolType>(),
             new ApiEnumConverter<string, Sessions::BetaManagedAgentsDeltaType>(),
             new ApiEnumConverter<string, Sessions::CheckoutType>(),
