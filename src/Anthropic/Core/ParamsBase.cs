@@ -239,7 +239,19 @@ public abstract record class ParamsBase
                 $"'{paramName}' value \"{value}\" is a dot-segment and can't be safely passed as a path parameter"
             );
         }
-        return Uri.EscapeDataString(value);
+        var escaped = Uri.EscapeDataString(value);
+        if (escaped.IndexOf('%') < 0)
+        {
+            return escaped;
+        }
+        // RFC 3986 section 3.3 allows the characters restored below in a path segment. It allows ";" too, which stays
+        // escaped because some servers drop what follows it in a segment and would read "..;x" as "..".
+        var restored = new StringBuilder(escaped);
+        foreach (var c in "!$&'()*+,=:@")
+        {
+            restored.Replace(Uri.HexEscape(c), c.ToString());
+        }
+        return restored.ToString();
     }
 
     internal static string EncodePathSegment(JsonElement? value, string paramName)
