@@ -223,20 +223,22 @@ public sealed record class BetaPlugin : JsonModel
     /// <summary>
     /// How far the served version reaches, or `null` if it is not classified.
     ///
-    /// <para>`remote` means it declares an MCP server or a CLI. `privileged` means
-    /// it declares no MCP server or CLI, but declares a hook, monitor, language server,
-    /// Claude Code workflow (any file in a `workflows/` folder at its root counts
-    /// as one), or settings, or has a skill, command, or other Markdown file whose
-    /// frontmatter pre-approves tools (`allowed-tools` with any value other than
-    /// an empty one or one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`).
+    /// <para>`remote` means it declares an MCP server or a CLI, or something that
+    /// counts as one. `privileged` means it is not `remote`, but declares a hook
+    /// (of any type, even one that posts to a URL), monitor, language server, Claude
+    /// Code workflow (any file in a `workflows/` folder at its root counts as one),
+    /// or settings, or has a skill, command, or other Markdown file whose frontmatter
+    /// pre-approves tools (`allowed-tools` with any value other than an empty one
+    /// or one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`).
     /// Otherwise it is `contained`.</para>
     ///
     /// <para>If the frontmatter of a skill, command, or other Markdown file that
     /// could change the value could not be read, or was past a size limit, the version
-    /// is `null` or `privileged` (or `remote`, if it declares an MCP server or a
-    /// CLI), not `contained`. The value is normally worked out when a version is
-    /// stored, under the rules of that time, so an older version can be `null`, or
-    /// `contained` where the same files stored today would be `privileged` or `null`.</para>
+    /// is `null` or `privileged` (or `remote`, if something else it declares makes
+    /// it `remote`), not `contained`. The value is normally worked out when a version
+    /// is stored, under the rules of that time, so an older version can be `null`,
+    /// `contained` where the same files stored today would be `privileged`, `remote`,
+    /// or `null`, or `privileged` where they would be `remote`.</para>
     /// </summary>
     public required ApiEnum<string, Reach>? Reach
     {
@@ -1128,20 +1130,21 @@ sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
 /// <summary>
 /// How far the served version reaches, or `null` if it is not classified.
 ///
-/// <para>`remote` means it declares an MCP server or a CLI. `privileged` means it
-/// declares no MCP server or CLI, but declares a hook, monitor, language server,
-/// Claude Code workflow (any file in a `workflows/` folder at its root counts as
-/// one), or settings, or has a skill, command, or other Markdown file whose frontmatter
-/// pre-approves tools (`allowed-tools` with any value other than an empty one or
-/// one that names only `AskUserQuestion`, `TodoWrite`, and `ToolSearch`). Otherwise
-/// it is `contained`.</para>
+/// <para>`remote` means it declares an MCP server or a CLI, or something that counts
+/// as one. `privileged` means it is not `remote`, but declares a hook (of any type,
+/// even one that posts to a URL), monitor, language server, Claude Code workflow
+/// (any file in a `workflows/` folder at its root counts as one), or settings, or
+/// has a skill, command, or other Markdown file whose frontmatter pre-approves tools
+/// (`allowed-tools` with any value other than an empty one or one that names only
+/// `AskUserQuestion`, `TodoWrite`, and `ToolSearch`). Otherwise it is `contained`.</para>
 ///
 /// <para>If the frontmatter of a skill, command, or other Markdown file that could
 /// change the value could not be read, or was past a size limit, the version is `null`
-/// or `privileged` (or `remote`, if it declares an MCP server or a CLI), not `contained`.
-/// The value is normally worked out when a version is stored, under the rules of
-/// that time, so an older version can be `null`, or `contained` where the same files
-/// stored today would be `privileged` or `null`.</para>
+/// or `privileged` (or `remote`, if something else it declares makes it `remote`),
+/// not `contained`. The value is normally worked out when a version is stored, under
+/// the rules of that time, so an older version can be `null`, `contained` where
+/// the same files stored today would be `privileged`, `remote`, or `null`, or `privileged`
+/// where they would be `remote`.</para>
 /// </summary>
 [JsonConverter(typeof(ReachConverter))]
 public enum Reach
