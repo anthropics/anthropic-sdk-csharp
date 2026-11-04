@@ -1750,6 +1750,61 @@ public abstract class AnthropicClientExtensionsTestsBase
     }
 
     [Fact]
+    public async Task GetResponseAsync_WithThinkingTokens_ReportsReasoningTokenCount()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Think about it"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_thinking_tokens_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 10,
+                    "output_tokens_details": {
+                        "thinking_tokens": 7
+                    }
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Think about it",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response.Usage);
+        Assert.Equal(7, response.Usage.ReasoningTokenCount);
+
+        // thinking_tokens is a breakdown of output_tokens, not an addition to it.
+        Assert.Equal(10, response.Usage.OutputTokenCount);
+        Assert.Equal(110, response.Usage.TotalTokenCount);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_WithResponseIdAndMessageId()
     {
         VerbatimHttpHandler handler = new(
@@ -6827,6 +6882,76 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(83, usageContent.Details.InputTokenCount);
         Assert.Equal(12, usageContent.Details.OutputTokenCount);
         Assert.Equal(95, usageContent.Details.TotalTokenCount);
+    }
+
+    [Theory]
+    [InlineData("""{"output_tokens":12,"output_tokens_details":{"thinking_tokens":7}}""", 7)]
+    // A message_delta without the breakdown keeps the one from message_start.
+    [InlineData("""{"output_tokens":12}""", 0)]
+    public async Task GetStreamingResponseAsync_WithThinkingTokens_ReportsReasoningTokenCount(
+        string deltaUsage,
+        long expectedReasoningTokenCount
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: $$$$"""
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"output_tokens_details":{"thinking_tokens":0},"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{{{{deltaUsage}}}}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+
+        Assert.Equal(expectedReasoningTokenCount, usageContent.Details.ReasoningTokenCount);
+        Assert.Equal(12, usageContent.Details.OutputTokenCount);
+        Assert.Equal(20, usageContent.Details.TotalTokenCount);
     }
 
     [Fact]

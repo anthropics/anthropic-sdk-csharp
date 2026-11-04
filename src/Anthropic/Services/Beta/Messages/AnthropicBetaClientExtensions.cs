@@ -371,6 +371,7 @@ public static class AnthropicBetaClientExtensions
             long? startInputTokens = null;
             long? startCacheCreationInputTokens = null;
             long? startCacheReadInputTokens = null;
+            long? startThinkingTokens = null;
             BetaServerToolUsage? startServerToolUse = null;
             ChatFinishReason? finishReason = null;
             Dictionary<long, StreamingFunctionData>? streamingFunctions = null;
@@ -401,6 +402,7 @@ public static class AnthropicBetaClientExtensions
                             startInputTokens = usage.InputTokens;
                             startCacheCreationInputTokens = usage.CacheCreationInputTokens;
                             startCacheReadInputTokens = usage.CacheReadInputTokens;
+                            startThinkingTokens = usage.OutputTokensDetails?.ThinkingTokens;
                             startServerToolUse = usage.ServerToolUse;
                             UsageDetails current = ToUsageDetails(usage);
                             if (usageDetails is null)
@@ -426,6 +428,8 @@ public static class AnthropicBetaClientExtensions
                             usageDetails = ToUsageDetails(
                                 deltaUsage.InputTokens ?? startInputTokens,
                                 deltaUsage.OutputTokens,
+                                deltaUsage.OutputTokensDetails?.ThinkingTokens
+                                    ?? startThinkingTokens,
                                 deltaUsage.CacheCreationInputTokens
                                     ?? startCacheCreationInputTokens,
                                 deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
@@ -1684,6 +1688,7 @@ public static class AnthropicBetaClientExtensions
             ToUsageDetails(
                 usage.InputTokens,
                 usage.OutputTokens,
+                usage.OutputTokensDetails?.ThinkingTokens,
                 usage.CacheCreationInputTokens,
                 usage.CacheReadInputTokens,
                 usage.ServerToolUse
@@ -1692,6 +1697,7 @@ public static class AnthropicBetaClientExtensions
         private static UsageDetails ToUsageDetails(
             long? inputTokens,
             long? outputTokens,
+            long? thinkingTokens,
             long? cacheCreationInputTokens,
             long? cacheReadInputTokens,
             BetaServerToolUsage? serverToolUsage
@@ -1710,6 +1716,8 @@ public static class AnthropicBetaClientExtensions
                 CachedInputTokenCount = cacheReadInputTokens,
 
                 OutputTokenCount = outputTokens,
+
+                ReasoningTokenCount = thinkingTokens,
             };
 
             usageDetails.TotalTokenCount = NullableSum(
