@@ -1667,7 +1667,7 @@ public static class AnthropicClientExtensions
                                 break;
 
                             case HostedCodeInterpreterTool:
-                                (createdTools ??= []).Add(new CodeExecutionTool20250825());
+                                (createdTools ??= []).Add(new CodeExecutionTool20260521());
                                 break;
                         }
                     }

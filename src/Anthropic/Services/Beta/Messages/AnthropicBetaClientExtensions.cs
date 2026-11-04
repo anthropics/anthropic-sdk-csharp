@@ -1437,7 +1437,7 @@ public static class AnthropicBetaClientExtensions
 
                             case HostedCodeInterpreterTool:
                                 (betaHeaders ??= []).Add("code-execution-2025-08-25");
-                                (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
+                                (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                                 break;
 
                             case HostedMcpServerTool mcp:
@@ -1479,14 +1479,13 @@ public static class AnthropicBetaClientExtensions
                             Container = new BetaContainerParams() { Skills = skills },
                         };
 
-                        // Ensure code execution tool is present
-                        bool hasCodeExecutionTool =
-                            createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825)
-                            == true;
+                        // Ensure a code execution tool is present. Any version counts: the API
+                        // rejects a second tool named code_execution.
+                        bool hasCodeExecutionTool = createdTools?.Any(IsCodeExecutionTool) == true;
                         if (!hasCodeExecutionTool)
                         {
                             (betaHeaders ??= []).Add("code-execution-2025-08-25");
-                            (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
+                            (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                         }
                     }
 
@@ -2652,6 +2651,13 @@ public static class AnthropicBetaClientExtensions
 #endif
         }
     }
+
+    /// <summary>Whether the tool is a code execution tool of any version, by its name.</summary>
+    private static bool IsCodeExecutionTool(BetaToolUnion tool) =>
+        tool.Json is { ValueKind: JsonValueKind.Object } json
+        && json.TryGetProperty("name", out JsonElement name)
+        && name.ValueKind == JsonValueKind.String
+        && name.GetString() == "code_execution";
 
     private sealed class BetaToolUnionAITool(BetaToolUnion tool) : AITool
     {

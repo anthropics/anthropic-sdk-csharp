@@ -3178,7 +3178,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "stream": true
@@ -3334,7 +3334,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "stream": true
@@ -3414,7 +3414,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "stream": true
@@ -3553,7 +3553,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "stream": true
@@ -6471,7 +6471,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }]
             }
@@ -8113,7 +8113,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                     }]
                 }],
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }]
             }
@@ -9958,7 +9958,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }]
             }
@@ -10042,7 +10042,7 @@ public abstract class AnthropicClientExtensionsTestsBase
                 }],
                 "max_tokens": 1024,
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }]
             }
