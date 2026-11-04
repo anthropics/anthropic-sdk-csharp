@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.Users;
 
 namespace Anthropic.Services.Organization;
@@ -67,6 +68,14 @@ public interface IUserService
     /// <summary>
     /// Remove a member from the organization.
     /// </summary>
+    /// <exception cref="AnthropicCannotRemoveLastMemberException">
+    /// The user is the organization's only member. Add another member before removing
+    /// this one.
+    /// </exception>
+    /// <exception cref="AnthropicConcurrentMembershipChangeException">
+    /// Another change to the organization's members is in progress. Retry the request
+    /// once it completes.
+    /// </exception>
     Task<UserRemoveResponse> Remove(
         UserRemoveParams parameters,
         CancellationToken cancellationToken = default

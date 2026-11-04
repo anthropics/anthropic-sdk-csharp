@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Anthropic.Models.Beta.Organization.Workspaces;
 
 namespace Anthropic.Tests.Models.Beta.Organization.Workspaces;
@@ -12,6 +13,7 @@ public class WorkspaceListParamsTest : TestBase
         {
             AfterID = "after_id",
             BeforeID = "before_id",
+            Ids = ["string"],
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
@@ -19,12 +21,19 @@ public class WorkspaceListParamsTest : TestBase
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
+        List<string> expectedIds = ["string"];
         bool expectedIncludeArchived = true;
         bool expectedIncludeDefault = true;
         long expectedLimit = 1;
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
+        Assert.NotNull(parameters.Ids);
+        Assert.Equal(expectedIds.Count, parameters.Ids.Count);
+        for (int i = 0; i < expectedIds.Count; i++)
+        {
+            Assert.Equal(expectedIds[i], parameters.Ids[i]);
+        }
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
         Assert.Equal(expectedIncludeDefault, parameters.IncludeDefault);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -39,6 +48,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
         Assert.Null(parameters.BeforeID);
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Ids);
+        Assert.False(parameters.RawQueryData.ContainsKey("ids"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.IncludeDefault);
@@ -55,6 +66,7 @@ public class WorkspaceListParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             AfterID = null,
             BeforeID = null,
+            Ids = null,
             IncludeArchived = null,
             IncludeDefault = null,
             Limit = null,
@@ -64,6 +76,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
         Assert.Null(parameters.BeforeID);
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Ids);
+        Assert.False(parameters.RawQueryData.ContainsKey("ids"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.IncludeDefault);
@@ -79,6 +93,7 @@ public class WorkspaceListParamsTest : TestBase
         {
             AfterID = "after_id",
             BeforeID = "before_id",
+            Ids = ["string"],
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
@@ -87,6 +102,7 @@ public class WorkspaceListParamsTest : TestBase
             // Null should be interpreted as omitted for these properties
             AfterID = null,
             BeforeID = null,
+            Ids = null,
             IncludeArchived = null,
             IncludeDefault = null,
             Limit = null,
@@ -96,6 +112,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("after_id"));
         Assert.Null(parameters.BeforeID);
         Assert.False(parameters.RawQueryData.ContainsKey("before_id"));
+        Assert.Null(parameters.Ids);
+        Assert.False(parameters.RawQueryData.ContainsKey("ids"));
         Assert.Null(parameters.IncludeArchived);
         Assert.False(parameters.RawQueryData.ContainsKey("include_archived"));
         Assert.Null(parameters.IncludeDefault);
@@ -111,6 +129,7 @@ public class WorkspaceListParamsTest : TestBase
         {
             AfterID = "after_id",
             BeforeID = "before_id",
+            Ids = ["string"],
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
@@ -121,7 +140,7 @@ public class WorkspaceListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/workspaces?after_id=after_id&before_id=before_id&include_archived=true&include_default=true&limit=1"
+                    "https://api.anthropic.com/v1/organizations/workspaces?after_id=after_id&before_id=before_id&ids%5b%5d=string&include_archived=true&include_default=true&limit=1"
                 ),
                 url
             )
@@ -135,6 +154,7 @@ public class WorkspaceListParamsTest : TestBase
         {
             AfterID = "after_id",
             BeforeID = "before_id",
+            Ids = ["string"],
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,

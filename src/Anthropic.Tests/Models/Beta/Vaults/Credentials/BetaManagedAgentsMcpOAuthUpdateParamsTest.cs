@@ -12,7 +12,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMcpOAuthUpdateParams
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -26,7 +26,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_oauth");
-        string expectedAccessToken = "x";
+        string expectedAccessToken = "access_token";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         BetaManagedAgentsMcpOAuthRefreshUpdateParams expectedRefresh = new()
         {
@@ -49,7 +49,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMcpOAuthUpdateParams
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -76,7 +76,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMcpOAuthUpdateParams
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -97,7 +97,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("mcp_oauth");
-        string expectedAccessToken = "x";
+        string expectedAccessToken = "access_token";
         DateTimeOffset expectedExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         BetaManagedAgentsMcpOAuthRefreshUpdateParams expectedRefresh = new()
         {
@@ -120,7 +120,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMcpOAuthUpdateParams
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {
@@ -193,7 +193,7 @@ public class BetaManagedAgentsMcpOAuthUpdateParamsTest : TestBase
     {
         var model = new BetaManagedAgentsMcpOAuthUpdateParams
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
             {

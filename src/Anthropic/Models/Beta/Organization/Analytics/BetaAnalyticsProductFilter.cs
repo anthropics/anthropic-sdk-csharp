@@ -10,7 +10,7 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 /// product in Slack. `chat_cowork_unified` is Chat and Cowork unified, Cowork's
 /// features inside claude.ai chat: chat and Cowork usage by a member who has it
 /// turned on is reported under this value instead of `chat` or `cowork`. It is accepted
-/// as a filter only on deployments that offer Chat and Cowork unified.
+/// as a filter only where Chat and Cowork unified is available.
 /// </summary>
 [JsonConverter(typeof(BetaAnalyticsProductFilterConverter))]
 public enum BetaAnalyticsProductFilter

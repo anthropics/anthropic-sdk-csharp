@@ -51,8 +51,7 @@ public sealed record class BetaAnalyticsUserActor : JsonModel
     /// a member of the organization or its associated organizations and the organization
     /// has chosen to hide the names of removed users. Otherwise, the name stays populated
     /// for removed users. Rows for system-minted service accounts render the service
-    /// name (for example, `"Claude Security"` for usage by Anthropic's security-patching
-    /// service) or null.
+    /// name (for example, `"Claude Security"`) or null.
     /// </summary>
     public required string? Name
     {

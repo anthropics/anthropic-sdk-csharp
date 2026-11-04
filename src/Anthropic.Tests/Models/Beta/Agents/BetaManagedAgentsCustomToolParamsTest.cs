@@ -21,7 +21,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
 
         string expectedDescription = "x";
@@ -33,7 +33,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
             },
             Required = ["string"],
         };
-        string expectedName = "x";
+        string expectedName = "name";
         JsonElement expectedType = JsonSerializer.SerializeToElement("custom");
 
         Assert.Equal(expectedDescription, model.Description);
@@ -56,7 +56,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -82,7 +82,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -101,7 +101,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
             },
             Required = ["string"],
         };
-        string expectedName = "x";
+        string expectedName = "name";
         JsonElement expectedType = JsonSerializer.SerializeToElement("custom");
 
         Assert.Equal(expectedDescription, deserialized.Description);
@@ -124,7 +124,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
 
         model.Validate();
@@ -144,7 +144,7 @@ public class BetaManagedAgentsCustomToolParamsTest : TestBase
                 },
                 Required = ["string"],
             },
-            Name = "x",
+            Name = "name",
         };
 
         BetaManagedAgentsCustomToolParams copied = new(model);

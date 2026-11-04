@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Organization.ExternalKeys;
+using Anthropic.Models.UserProfiles;
 
 namespace Anthropic.Services.Organization;
 
@@ -29,6 +30,11 @@ public interface IExternalKeyService
     /// <summary>
     /// Create an external key config owned by the caller's organization.
     /// </summary>
+    /// <exception cref="AnthropicUserProfileNotFoundException">
+    /// The request depends on a user profile that does not exist in the organization or
+    /// is no longer active. The request either names this user profile by ID, or names
+    /// a resource, such as an External Key, that is bound to it.
+    /// </exception>
     Task<ExternalKey> Create(
         ExternalKeyCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -56,6 +62,10 @@ public interface IExternalKeyService
     /// changed once any workspace references this config, because previously encrypted
     /// data requires the original key identity to decrypt.</para>
     /// </summary>
+    /// <exception cref="AnthropicExternalKeyInWorkspacePolicyException">
+    /// The External Key can't be deleted or reconfigured while the organization's
+    /// Workspace Policy lists it as an allowed key.
+    /// </exception>
     Task<ExternalKey> Update(
         ExternalKeyUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -84,6 +94,10 @@ public interface IExternalKeyService
     ///
     /// <para>The request is rejected if any workspace still references this config.</para>
     /// </summary>
+    /// <exception cref="AnthropicExternalKeyInWorkspacePolicyException">
+    /// The External Key can't be deleted or reconfigured while the organization's
+    /// Workspace Policy lists it as an allowed key.
+    /// </exception>
     Task<ExternalKeyDeleteResponse> Delete(
         ExternalKeyDeleteParams parameters,
         CancellationToken cancellationToken = default

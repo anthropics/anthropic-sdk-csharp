@@ -2,7 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
+using Anthropic.Models.UserProfiles;
 using Workspaces = Anthropic.Services.Organization.Workspaces;
 
 namespace Anthropic.Services.Organization;
@@ -36,6 +38,25 @@ public interface IWorkspaceService
     /// <summary>
     /// Create Workspace
     /// </summary>
+    /// <exception cref="AnthropicKeyProfileMismatchException">
+    /// The External Key is bound to a user profile, and the Workspace does not have
+    /// that user profile. A Workspace can use only a key bound to its own user profile
+    /// or a key that isn't bound to one.
+    /// </exception>
+    /// <exception cref="AnthropicUserProfileNotFoundException">
+    /// The request depends on a user profile that does not exist in the organization or
+    /// is no longer active. The request either names this user profile by ID, or names
+    /// a resource, such as an External Key, that is bound to it.
+    /// </exception>
+    /// <exception cref="AnthropicWorkspacePolicyViolationException">
+    /// The request breaks the organization's Workspace Policy. The message says which
+    /// rule it broke; an organization admin can see and change the policy in the
+    /// Console.
+    /// </exception>
+    /// <exception cref="AnthropicExternalKeyChangedException">
+    /// The external key changed while the request was validating it. Send the request
+    /// again.
+    /// </exception>
     Task<Workspace> Create(
         WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -59,6 +80,25 @@ public interface IWorkspaceService
     /// <summary>
     /// Update Workspace
     /// </summary>
+    /// <exception cref="AnthropicKeyProfileMismatchException">
+    /// The External Key is bound to a user profile, and the Workspace does not have
+    /// that user profile. A Workspace can use only a key bound to its own user profile
+    /// or a key that isn't bound to one.
+    /// </exception>
+    /// <exception cref="AnthropicUserProfileNotFoundException">
+    /// The request depends on a user profile that does not exist in the organization or
+    /// is no longer active. The request either names this user profile by ID, or names
+    /// a resource, such as an External Key, that is bound to it.
+    /// </exception>
+    /// <exception cref="AnthropicWorkspacePolicyViolationException">
+    /// The request breaks the organization's Workspace Policy. The message says which
+    /// rule it broke; an organization admin can see and change the policy in the
+    /// Console.
+    /// </exception>
+    /// <exception cref="AnthropicExternalKeyChangedException">
+    /// The external key changed while the request was validating it. Send the request
+    /// again.
+    /// </exception>
     Task<Workspace> Update(
         WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default

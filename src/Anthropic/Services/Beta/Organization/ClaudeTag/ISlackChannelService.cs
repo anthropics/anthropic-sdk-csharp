@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Environments;
+using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.SlackChannels;
 
 namespace Anthropic.Services.Beta.Organization.ClaudeTag;
@@ -38,6 +40,36 @@ public interface ISlackChannelService
     /// stays set up with every setting unset, and the error's
     /// `details.slack_channel_id` holds the channel's identifier.
     /// </summary>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsRefusedException">
+    /// The request set the channel up, and `settings` was then refused. The channel
+    /// stays set up with every setting unset.
+    /// </exception>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
+    /// <exception cref="AnthropicBetaEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach,
+    /// and the request had set the channel up by then. The channel stays set up with
+    /// every setting unset.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsConflictException">
+    /// The request set the channel up, and something else then changed the channel or
+    /// removed it. Nothing of `settings` was stored.
+    /// </exception>
     Task<BetaClaudeTagSlackChannel> Create(
         SlackChannelCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -53,6 +85,20 @@ public interface ISlackChannelService
     /// from, so a caller tells the channel's own value from an inherited one by its
     /// source, not by whether it is null.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
     Task<BetaClaudeTagSlackChannel> Retrieve(
         SlackChannelRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -71,6 +117,32 @@ public interface ISlackChannelService
     /// inherits it. If any value is refused, no setting in the request is stored. A
     /// group direct message takes no settings and returns 400.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
+    /// <exception cref="AnthropicBetaEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach,
+    /// and the request had set the channel up by then. The channel stays set up with
+    /// every setting unset.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsConflictException">
+    /// The request set the channel up, and something else then changed the channel or
+    /// removed it. Nothing of `settings` was stored.
+    /// </exception>
     Task<BetaClaudeTagSlackChannel> Update(
         SlackChannelUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -95,6 +167,20 @@ public interface ISlackChannelService
     /// settings level that could not be read. A `page` cursor resumes only a request
     /// with the same `include_inherited`.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
     Task<SlackChannelListPage> List(
         SlackChannelListParams parameters,
         CancellationToken cancellationToken = default
@@ -116,6 +202,24 @@ public interface ISlackChannelService
     /// returns, so a repeated removal returns 404. A group direct message returns 400,
     /// and so does a channel that holds configuration this API does not manage.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsConflictException">
+    /// The request set the channel up, and something else then changed the channel or
+    /// removed it. Nothing of `settings` was stored.
+    /// </exception>
     Task<BetaClaudeTagDeletedSlackChannel> Delete(
         SlackChannelDeleteParams parameters,
         CancellationToken cancellationToken = default

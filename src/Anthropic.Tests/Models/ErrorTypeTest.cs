@@ -10,13 +10,16 @@ public class ErrorTypeTest : TestBase
     [Theory]
     [InlineData(ErrorType.InvalidRequestError)]
     [InlineData(ErrorType.AuthenticationError)]
+    [InlineData(ErrorType.BillingError)]
     [InlineData(ErrorType.PermissionError)]
     [InlineData(ErrorType.NotFoundError)]
     [InlineData(ErrorType.RateLimitError)]
     [InlineData(ErrorType.TimeoutError)]
-    [InlineData(ErrorType.OverloadedError)]
     [InlineData(ErrorType.ApiError)]
-    [InlineData(ErrorType.BillingError)]
+    [InlineData(ErrorType.OverloadedError)]
+    [InlineData(ErrorType.MemoryPreconditionFailedError)]
+    [InlineData(ErrorType.MemoryPathConflictError)]
+    [InlineData(ErrorType.ConflictError)]
     public void Validation_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -39,13 +42,16 @@ public class ErrorTypeTest : TestBase
     [Theory]
     [InlineData(ErrorType.InvalidRequestError)]
     [InlineData(ErrorType.AuthenticationError)]
+    [InlineData(ErrorType.BillingError)]
     [InlineData(ErrorType.PermissionError)]
     [InlineData(ErrorType.NotFoundError)]
     [InlineData(ErrorType.RateLimitError)]
     [InlineData(ErrorType.TimeoutError)]
-    [InlineData(ErrorType.OverloadedError)]
     [InlineData(ErrorType.ApiError)]
-    [InlineData(ErrorType.BillingError)]
+    [InlineData(ErrorType.OverloadedError)]
+    [InlineData(ErrorType.MemoryPreconditionFailedError)]
+    [InlineData(ErrorType.MemoryPathConflictError)]
+    [InlineData(ErrorType.ConflictError)]
     public void SerializationRoundtrip_Works(ErrorType rawValue)
     {
         // force implicit conversion because Theory can't do that for us

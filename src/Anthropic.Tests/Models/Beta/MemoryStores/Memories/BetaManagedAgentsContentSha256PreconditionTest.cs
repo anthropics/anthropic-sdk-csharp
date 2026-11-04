@@ -11,11 +11,12 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("content_sha256");
-        string expectedContentSha256 = "content_sha256";
+        string expectedContentSha256 =
+            "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedContentSha256, model.ContentSha256);
@@ -26,7 +27,7 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -43,7 +44,7 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -54,7 +55,8 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("content_sha256");
-        string expectedContentSha256 = "content_sha256";
+        string expectedContentSha256 =
+            "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedContentSha256, deserialized.ContentSha256);
@@ -65,7 +67,7 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
 
         model.Validate();
@@ -106,7 +108,7 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -134,7 +136,7 @@ public class BetaManagedAgentsContentSha256PreconditionTest : TestBase
     {
         var model = new BetaManagedAgentsContentSha256Precondition
         {
-            ContentSha256 = "content_sha256",
+            ContentSha256 = "210b9798eb53baa4e69d31c1071cf03d212b8ad0ca30cf321e0ea82e120aac26",
         };
 
         BetaManagedAgentsContentSha256Precondition copied = new(model);

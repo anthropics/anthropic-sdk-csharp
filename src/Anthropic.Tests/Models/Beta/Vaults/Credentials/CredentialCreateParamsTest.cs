@@ -267,7 +267,7 @@ public class AuthTest : TestBase
     {
         Auth value = new BetaManagedAgentsMcpOAuthCreateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             McpServerUrl = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -300,8 +300,8 @@ public class AuthTest : TestBase
         Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
         value.Validate();
@@ -312,7 +312,7 @@ public class AuthTest : TestBase
     {
         Auth value = new BetaManagedAgentsMcpOAuthCreateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             McpServerUrl = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -351,8 +351,8 @@ public class AuthTest : TestBase
         Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -366,7 +366,7 @@ public class AuthTest : TestBase
     {
         Auth value = new BetaManagedAgentsMcpOAuthCreateParams()
         {
-            AccessToken = "x",
+            AccessToken = "access_token",
             McpServerUrl = "x",
             ExpiresAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Refresh = new()
@@ -399,8 +399,8 @@ public class AuthTest : TestBase
         Auth value = new BetaManagedAgentsEnvironmentVariableCreateParams()
         {
             Networking = new BetaManagedAgentsUnrestrictedCredentialNetworkingParams(),
-            SecretName = "x",
-            SecretValue = "x",
+            SecretName = "B",
+            SecretValue = "secret_value",
             InjectionLocation = new() { Body = true, Header = true },
         };
         Assert.Equal(AuthType.EnvironmentVariable, value.Type.Value());

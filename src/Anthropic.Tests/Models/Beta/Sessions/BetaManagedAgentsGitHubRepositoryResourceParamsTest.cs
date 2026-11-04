@@ -266,7 +266,7 @@ public class CheckoutTest : TestBase
     [Fact]
     public void BetaManagedAgentsCommitValidationWorks()
     {
-        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
+        Checkout value = new BetaManagedAgentsCommitCheckout("92aD336");
         value.Validate();
     }
 
@@ -286,7 +286,7 @@ public class CheckoutTest : TestBase
     [Fact]
     public void BetaManagedAgentsCommitSerializationRoundtripWorks()
     {
-        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
+        Checkout value = new BetaManagedAgentsCommitCheckout("92aD336");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Checkout>(
             element,
@@ -306,7 +306,7 @@ public class CheckoutTest : TestBase
     [Fact]
     public void BetaManagedAgentsCommitTypeWorks()
     {
-        Checkout value = new BetaManagedAgentsCommitCheckout("xxxxxxx");
+        Checkout value = new BetaManagedAgentsCommitCheckout("92aD336");
         Assert.Equal(CheckoutType.Commit, value.Type.Value());
     }
 

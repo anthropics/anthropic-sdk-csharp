@@ -2,7 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Organization.Workspaces;
+using Anthropic.Models.Organization.ExternalKeys;
+using Anthropic.Models.Organization.Workspaces;
+using Anthropic.Models.UserProfiles;
+using OrganizationWorkspaces = Anthropic.Models.Beta.Organization.Workspaces;
 using Workspaces = Anthropic.Services.Beta.Organization.Workspaces;
 
 namespace Anthropic.Services.Beta.Organization;
@@ -36,61 +39,99 @@ public interface IWorkspaceService
     /// <summary>
     /// Create Workspace
     /// </summary>
-    Task<BetaWorkspace> Create(
-        WorkspaceCreateParams parameters,
+    /// <exception cref="AnthropicKeyProfileMismatchException">
+    /// The External Key is bound to a user profile, and the Workspace does not have
+    /// that user profile. A Workspace can use only a key bound to its own user profile
+    /// or a key that isn't bound to one.
+    /// </exception>
+    /// <exception cref="AnthropicUserProfileNotFoundException">
+    /// The request depends on a user profile that does not exist in the organization or
+    /// is no longer active. The request either names this user profile by ID, or names
+    /// a resource, such as an External Key, that is bound to it.
+    /// </exception>
+    /// <exception cref="AnthropicWorkspacePolicyViolationException">
+    /// The request breaks the organization's Workspace Policy. The message says which
+    /// rule it broke; an organization admin can see and change the policy in the
+    /// Console.
+    /// </exception>
+    /// <exception cref="AnthropicExternalKeyChangedException">
+    /// The external key changed while the request was validating it. Send the request
+    /// again.
+    /// </exception>
+    Task<OrganizationWorkspaces::BetaWorkspace> Create(
+        OrganizationWorkspaces::WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Get Workspace
     /// </summary>
-    Task<BetaWorkspace> Retrieve(
-        WorkspaceRetrieveParams parameters,
+    Task<OrganizationWorkspaces::BetaWorkspace> Retrieve(
+        OrganizationWorkspaces::WorkspaceRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>
-    Task<BetaWorkspace> Retrieve(
+    /// <inheritdoc cref="Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>
+    Task<OrganizationWorkspaces::BetaWorkspace> Retrieve(
         string workspaceID,
-        WorkspaceRetrieveParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Update Workspace
     /// </summary>
-    Task<BetaWorkspace> Update(
-        WorkspaceUpdateParams parameters,
+    /// <exception cref="AnthropicKeyProfileMismatchException">
+    /// The External Key is bound to a user profile, and the Workspace does not have
+    /// that user profile. A Workspace can use only a key bound to its own user profile
+    /// or a key that isn't bound to one.
+    /// </exception>
+    /// <exception cref="AnthropicUserProfileNotFoundException">
+    /// The request depends on a user profile that does not exist in the organization or
+    /// is no longer active. The request either names this user profile by ID, or names
+    /// a resource, such as an External Key, that is bound to it.
+    /// </exception>
+    /// <exception cref="AnthropicWorkspacePolicyViolationException">
+    /// The request breaks the organization's Workspace Policy. The message says which
+    /// rule it broke; an organization admin can see and change the policy in the
+    /// Console.
+    /// </exception>
+    /// <exception cref="AnthropicExternalKeyChangedException">
+    /// The external key changed while the request was validating it. Send the request
+    /// again.
+    /// </exception>
+    Task<OrganizationWorkspaces::BetaWorkspace> Update(
+        OrganizationWorkspaces::WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Update(WorkspaceUpdateParams, CancellationToken)"/>
-    Task<BetaWorkspace> Update(
+    /// <inheritdoc cref="Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>
+    Task<OrganizationWorkspaces::BetaWorkspace> Update(
         string workspaceID,
-        WorkspaceUpdateParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// List Workspaces
     /// </summary>
-    Task<WorkspaceListPage> List(
-        WorkspaceListParams? parameters = null,
+    Task<OrganizationWorkspaces::WorkspaceListPage> List(
+        OrganizationWorkspaces::WorkspaceListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Archive Workspace
     /// </summary>
-    Task<BetaWorkspace> Archive(
-        WorkspaceArchiveParams parameters,
+    Task<OrganizationWorkspaces::BetaWorkspace> Archive(
+        OrganizationWorkspaces::WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Archive(WorkspaceArchiveParams, CancellationToken)"/>
-    Task<BetaWorkspace> Archive(
+    /// <inheritdoc cref="Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>
+    Task<OrganizationWorkspaces::BetaWorkspace> Archive(
         string workspaceID,
-        WorkspaceArchiveParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceArchiveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }
@@ -116,67 +157,67 @@ public interface IWorkspaceServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Create(WorkspaceCreateParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Create(OrganizationWorkspaces::WorkspaceCreateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaWorkspace>> Create(
-        WorkspaceCreateParams parameters,
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Create(
+        OrganizationWorkspaces::WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaWorkspace>> Retrieve(
-        WorkspaceRetrieveParams parameters,
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Retrieve(
+        OrganizationWorkspaces::WorkspaceRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>
-    Task<HttpResponse<BetaWorkspace>> Retrieve(
+    /// <inheritdoc cref="Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Retrieve(
         string workspaceID,
-        WorkspaceRetrieveParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Update(WorkspaceUpdateParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaWorkspace>> Update(
-        WorkspaceUpdateParams parameters,
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Update(
+        OrganizationWorkspaces::WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Update(WorkspaceUpdateParams, CancellationToken)"/>
-    Task<HttpResponse<BetaWorkspace>> Update(
+    /// <inheritdoc cref="Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Update(
         string workspaceID,
-        WorkspaceUpdateParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.List(WorkspaceListParams?, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.List(OrganizationWorkspaces::WorkspaceListParams?, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<WorkspaceListPage>> List(
-        WorkspaceListParams? parameters = null,
+    Task<HttpResponse<OrganizationWorkspaces::WorkspaceListPage>> List(
+        OrganizationWorkspaces::WorkspaceListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/archive</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Archive(WorkspaceArchiveParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaWorkspace>> Archive(
-        WorkspaceArchiveParams parameters,
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Archive(
+        OrganizationWorkspaces::WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Archive(WorkspaceArchiveParams, CancellationToken)"/>
-    Task<HttpResponse<BetaWorkspace>> Archive(
+    /// <inheritdoc cref="Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>
+    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Archive(
         string workspaceID,
-        WorkspaceArchiveParams? parameters = null,
+        OrganizationWorkspaces::WorkspaceArchiveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }

@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using Anthropic.Core;
 
 namespace Anthropic.Exceptions;
 
@@ -26,7 +27,29 @@ public class AnthropicApiException : AnthropicServiceException
 
     public required HttpStatusCode StatusCode { get; init; }
 
-    public required string ResponseBody { get; init; }
+    public required string ResponseBody
+    {
+        get { return _responseBody; }
+        init
+        {
+            _responseBody = value;
+            Body = WrappedJsonSerializer.ParseOrDefault(value);
+        }
+    }
+
+    readonly string _responseBody = "";
+
+    /// <summary>
+    /// Returns the value of the <c>request-id</c> header,
+    /// or null if there's no such header in the response.
+    /// </summary>
+    public string? RequestID { get; init; }
+
+    /// <summary>
+    /// Returns the value of the <c>anthropic-workspace-id</c> header,
+    /// or null if there's no such header in the response.
+    /// </summary>
+    public string? WorkspaceID { get; init; }
 
     public override string Message
     {

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Skills;
 using Anthropic.Services.Skills;
 
@@ -32,11 +33,41 @@ public interface ISkillService
     /// <summary>
     /// Create Skill
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
+    /// <exception cref="AnthropicCmekContextUnavailableException">
+    /// The workspace's encryption settings could not be read, so the request was
+    /// refused. Retry in a few minutes.
+    /// </exception>
     Task<Skill> Create(SkillCreateParams parameters, CancellationToken cancellationToken = default);
 
     /// <summary>
     /// Get Skill
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<Skill> Retrieve(
         SkillRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -52,6 +83,15 @@ public interface ISkillService
     /// <summary>
     /// List Skills
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<SkillListPage> List(
         SkillListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -60,6 +100,15 @@ public interface ISkillService
     /// <summary>
     /// Delete Skill
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<DeletedSkill> Delete(
         SkillDeleteParams parameters,
         CancellationToken cancellationToken = default

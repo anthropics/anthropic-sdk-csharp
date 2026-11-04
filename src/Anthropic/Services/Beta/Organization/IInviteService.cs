@@ -2,7 +2,10 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Organization.Invites;
+using Anthropic.Models.Organization;
+using Anthropic.Models.Organization.Invites;
+using Anthropic.Models.Organization.RbacGroups;
+using Invites = Anthropic.Models.Beta.Organization.Invites;
 
 namespace Anthropic.Services.Beta.Organization;
 
@@ -34,46 +37,77 @@ public interface IInviteService
     /// there is no seat-tier parameter. When no seat is free the request fails with a
     /// 400 error rather than purchasing a seat.</para>
     /// </summary>
-    Task<BetaOrganizationInvite> Create(
-        InviteCreateParams parameters,
+    /// <exception cref="AnthropicAlreadyMemberException">
+    /// The email address already belongs to a user in the organization. The message
+    /// names the user.
+    /// </exception>
+    /// <exception cref="AnthropicCannotInviteEmailsWithUnverifiedDomainsException">
+    /// The email address's domain is not one of the verified domains of the
+    /// organization's parent organization.
+    /// </exception>
+    /// <exception cref="AnthropicEmailDomainNotAllowedException">
+    /// The organization restricts invites to an allowed list of email domains, and the
+    /// list is empty or does not include the email address's domain.
+    /// </exception>
+    /// <exception cref="AnthropicInviteAlreadyExistsException">
+    /// A pending invite already exists for the email address. The message names the
+    /// invite.
+    /// </exception>
+    /// <exception cref="AnthropicOrgMemberLimitExceededException">
+    /// The organization has reached the member limit that Anthropic set for it. Pending
+    /// invites count toward the limit.
+    /// </exception>
+    /// <exception cref="AnthropicRbacGroupGrantsOwnerAccessException">
+    /// A role attached to an RBAC Group in the request grants owner access, so this API
+    /// does not add members to that group (directly or through an invite), remove its
+    /// members, or delete it. Make the change in the organization's admin settings in
+    /// Claude.
+    /// </exception>
+    /// <exception cref="AnthropicRbacGroupOwnerAccessUnconfirmedException">
+    /// The API could not finish checking whether an RBAC Group in the request grants
+    /// owner access, so it made no change. Retrying the same request will not help.
+    /// Make the change in the organization's admin settings in Claude.
+    /// </exception>
+    Task<Invites::BetaOrganizationInvite> Create(
+        Invites::InviteCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Retrieve an invite by ID.
     /// </summary>
-    Task<BetaOrganizationInvite> Retrieve(
-        InviteRetrieveParams parameters,
+    Task<Invites::BetaOrganizationInvite> Retrieve(
+        Invites::InviteRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(InviteRetrieveParams, CancellationToken)"/>
-    Task<BetaOrganizationInvite> Retrieve(
+    /// <inheritdoc cref="Retrieve(Invites::InviteRetrieveParams, CancellationToken)"/>
+    Task<Invites::BetaOrganizationInvite> Retrieve(
         string inviteID,
-        InviteRetrieveParams? parameters = null,
+        Invites::InviteRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// List the organization's invites.
     /// </summary>
-    Task<InviteListPage> List(
-        InviteListParams? parameters = null,
+    Task<Invites::InviteListPage> List(
+        Invites::InviteListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Delete a pending invite.
     /// </summary>
-    Task<InviteDeleteResponse> Delete(
-        InviteDeleteParams parameters,
+    Task<Invites::InviteDeleteResponse> Delete(
+        Invites::InviteDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Delete(InviteDeleteParams, CancellationToken)"/>
-    Task<InviteDeleteResponse> Delete(
+    /// <inheritdoc cref="Delete(Invites::InviteDeleteParams, CancellationToken)"/>
+    Task<Invites::InviteDeleteResponse> Delete(
         string inviteID,
-        InviteDeleteParams? parameters = null,
+        Invites::InviteDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }
@@ -93,51 +127,51 @@ public interface IInviteServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/invites</c>, but is otherwise the
-    /// same as <see cref="IInviteService.Create(InviteCreateParams, CancellationToken)"/>.
+    /// same as <see cref="IInviteService.Create(Invites::InviteCreateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaOrganizationInvite>> Create(
-        InviteCreateParams parameters,
+    Task<HttpResponse<Invites::BetaOrganizationInvite>> Create(
+        Invites::InviteCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/invites/{invite_id}</c>, but is otherwise the
-    /// same as <see cref="IInviteService.Retrieve(InviteRetrieveParams, CancellationToken)"/>.
+    /// same as <see cref="IInviteService.Retrieve(Invites::InviteRetrieveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<BetaOrganizationInvite>> Retrieve(
-        InviteRetrieveParams parameters,
+    Task<HttpResponse<Invites::BetaOrganizationInvite>> Retrieve(
+        Invites::InviteRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(InviteRetrieveParams, CancellationToken)"/>
-    Task<HttpResponse<BetaOrganizationInvite>> Retrieve(
+    /// <inheritdoc cref="Retrieve(Invites::InviteRetrieveParams, CancellationToken)"/>
+    Task<HttpResponse<Invites::BetaOrganizationInvite>> Retrieve(
         string inviteID,
-        InviteRetrieveParams? parameters = null,
+        Invites::InviteRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/invites</c>, but is otherwise the
-    /// same as <see cref="IInviteService.List(InviteListParams?, CancellationToken)"/>.
+    /// same as <see cref="IInviteService.List(Invites::InviteListParams?, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<InviteListPage>> List(
-        InviteListParams? parameters = null,
+    Task<HttpResponse<Invites::InviteListPage>> List(
+        Invites::InviteListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>delete /v1/organizations/invites/{invite_id}</c>, but is otherwise the
-    /// same as <see cref="IInviteService.Delete(InviteDeleteParams, CancellationToken)"/>.
+    /// same as <see cref="IInviteService.Delete(Invites::InviteDeleteParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<InviteDeleteResponse>> Delete(
-        InviteDeleteParams parameters,
+    Task<HttpResponse<Invites::InviteDeleteResponse>> Delete(
+        Invites::InviteDeleteParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Delete(InviteDeleteParams, CancellationToken)"/>
-    Task<HttpResponse<InviteDeleteResponse>> Delete(
+    /// <inheritdoc cref="Delete(Invites::InviteDeleteParams, CancellationToken)"/>
+    Task<HttpResponse<Invites::InviteDeleteResponse>> Delete(
         string inviteID,
-        InviteDeleteParams? parameters = null,
+        Invites::InviteDeleteParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }

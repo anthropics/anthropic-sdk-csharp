@@ -16,7 +16,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -24,7 +24,7 @@ public class MemoryCreateParamsTest : TestBase
 
         string expectedMemoryStoreID = "memory_store_id";
         string expectedContent = "content";
-        string expectedPath = "xx";
+        string expectedPath = "/P";
         ApiEnum<string, BetaManagedAgentsMemoryView> expectedView =
             BetaManagedAgentsMemoryView.Basic;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
@@ -53,7 +53,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
         };
 
         Assert.Null(parameters.View);
@@ -71,7 +71,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
 
             // Null should be interpreted as omitted for these properties
             View = null,
@@ -94,7 +94,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
@@ -121,7 +121,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
             View = BetaManagedAgentsMemoryView.Basic,
         };
 
@@ -145,7 +145,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -169,7 +169,7 @@ public class MemoryCreateParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             Content = "content",
-            Path = "xx",
+            Path = "/P",
             View = BetaManagedAgentsMemoryView.Basic,
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",

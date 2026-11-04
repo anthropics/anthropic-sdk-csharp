@@ -12,7 +12,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -20,7 +20,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
             Name = "name",
         };
 
-        string expectedMemoryStoreID = "memory_store_id";
+        string expectedMemoryStoreID = "memstore_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedDescription = "description";
@@ -42,7 +42,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -64,7 +64,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -79,7 +79,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedMemoryStoreID = "memory_store_id";
+        string expectedMemoryStoreID = "memstore_c";
         JsonElement expectedType = JsonSerializer.SerializeToElement("memory_store");
         ApiEnum<string, Access> expectedAccess = Access.ReadWrite;
         string expectedDescription = "description";
@@ -101,7 +101,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -117,7 +117,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -133,7 +133,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -148,7 +148,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -167,7 +167,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",
@@ -188,7 +188,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Instructions = "instructions",
             MountPath = "mount_path",
@@ -206,7 +206,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Description = "description",
         };
 
@@ -225,7 +225,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Description = "description",
         };
 
@@ -237,7 +237,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Description = "description",
 
             Access = null,
@@ -261,7 +261,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Description = "description",
 
             Access = null,
@@ -278,7 +278,7 @@ public class BetaManagedAgentsMemoryStoreResourceTest : TestBase
     {
         var model = new BetaManagedAgentsMemoryStoreResource
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Access.ReadWrite,
             Description = "description",
             Instructions = "instructions",

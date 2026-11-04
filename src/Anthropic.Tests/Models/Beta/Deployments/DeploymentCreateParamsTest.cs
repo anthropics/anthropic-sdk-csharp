@@ -471,7 +471,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Sessions::Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -519,7 +519,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Sessions::Access.ReadWrite,
             Instructions = "instructions",
         };
@@ -561,7 +561,7 @@ public class ResourceTest : TestBase
     {
         Resource value = new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
         {
-            MemoryStoreID = "memory_store_id",
+            MemoryStoreID = "memstore_c",
             Access = Sessions::Access.ReadWrite,
             Instructions = "instructions",
         };

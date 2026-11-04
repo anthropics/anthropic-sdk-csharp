@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Organization.Workspaces;
 using Anthropic.Models.Beta.Organization.Workspaces.Members;
+using Anthropic.Models.Organization.Workspaces;
 
 namespace Anthropic.Services.Beta.Organization.Workspaces;
 
@@ -45,6 +46,9 @@ public interface IMemberService
     /// <summary>
     /// Update Workspace Member
     /// </summary>
+    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException">
+    /// The workspace has reached the member limit that Anthropic set for it.
+    /// </exception>
     Task<BetaWorkspaceMember> Update(
         MemberUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -75,6 +79,9 @@ public interface IMemberService
     /// <summary>
     /// Create Workspace Member
     /// </summary>
+    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException">
+    /// The workspace has reached the member limit that Anthropic set for it.
+    /// </exception>
     Task<BetaWorkspaceMember> Add(
         MemberAddParams parameters,
         CancellationToken cancellationToken = default

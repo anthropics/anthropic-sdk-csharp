@@ -67,5 +67,43 @@ public class ApiExceptionTest : TestBase
         Assert.Equal(HttpStatusCode.RequestEntityTooLarge, exception.StatusCode);
         Assert.Equal(body, exception.ResponseBody);
         Assert.Equal(expectedMessage, exception.Message);
+        Assert.Null(exception.RequestID);
+        Assert.Null(exception.WorkspaceID);
+    }
+
+    [Fact]
+    public async Task ResponseHeaders_Work()
+    {
+        var response = new HttpResponseMessage()
+        {
+            StatusCode = HttpStatusCode.BadRequest,
+            Content = new StringContent(""),
+        };
+        response.Headers.Add("request-id", "request_id");
+        response.Headers.Add("anthropic-workspace-id", "workspace_id");
+
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(response);
+
+        var httpClient = new HttpClient(handlerMock.Object);
+
+        AnthropicClient client = new() { HttpClient = httpClient };
+
+        var exception = await Assert.ThrowsAnyAsync<AnthropicApiException>(() =>
+            client.WithRawResponse.Execute(
+                new HttpRequest<BlankParams> { Method = HttpMethod.Get, Params = new() },
+                TestContext.Current.CancellationToken
+            )
+        );
+
+        Assert.Equal("request_id", exception.RequestID);
+        Assert.Equal("workspace_id", exception.WorkspaceID);
     }
 }

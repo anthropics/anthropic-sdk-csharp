@@ -491,7 +491,7 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value =
             new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
             {
-                MemoryStoreID = "memory_store_id",
+                MemoryStoreID = "memstore_c",
                 Access = Sessions::Access.ReadWrite,
                 Instructions = "instructions",
             };
@@ -541,7 +541,7 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value =
             new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
             {
-                MemoryStoreID = "memory_store_id",
+                MemoryStoreID = "memstore_c",
                 Access = Sessions::Access.ReadWrite,
                 Instructions = "instructions",
             };
@@ -585,7 +585,7 @@ public class DeploymentUpdateParamsResourceTest : TestBase
         DeploymentUpdateParamsResource value =
             new Sessions::BetaManagedAgentsMemoryStoreResourceParam()
             {
-                MemoryStoreID = "memory_store_id",
+                MemoryStoreID = "memstore_c",
                 Access = Sessions::Access.ReadWrite,
                 Instructions = "instructions",
             };

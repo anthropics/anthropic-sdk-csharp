@@ -13,7 +13,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -23,7 +23,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
 
         ApiEnum<string, UserProfileExternalUserAccountStatus> expectedAccountStatus =
             UserProfileExternalUserAccountStatus.Active;
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedEmailHash = "x";
         ApiEnum<string, UserProfileExternalUserEntityType> expectedEntityType =
             UserProfileExternalUserEntityType.Individual;
@@ -46,7 +46,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -69,7 +69,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -86,7 +86,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
 
         ApiEnum<string, UserProfileExternalUserAccountStatus> expectedAccountStatus =
             UserProfileExternalUserAccountStatus.Active;
-        string expectedCountry = "country";
+        string expectedCountry = "SE";
         string expectedEmailHash = "x";
         ApiEnum<string, UserProfileExternalUserEntityType> expectedEntityType =
             UserProfileExternalUserEntityType.Individual;
@@ -109,7 +109,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -126,7 +126,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -143,7 +143,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -159,7 +159,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -179,7 +179,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -201,7 +201,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",
@@ -300,7 +300,7 @@ public class UserProfileExternalUserDetailsParamsTest : TestBase
         var model = new UserProfileExternalUserDetailsParams
         {
             AccountStatus = UserProfileExternalUserAccountStatus.Active,
-            Country = "country",
+            Country = "SE",
             EmailHash = "x",
             EntityType = UserProfileExternalUserEntityType.Individual,
             NameHash = "x",

@@ -11,7 +11,7 @@ public class BetaManagedAgentsExecutionIdentityParamsTest : TestBase
     public void AwsRoleValidationWorks()
     {
         BetaManagedAgentsExecutionIdentityParams value =
-            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("arn:aws:iam::228601553692:role/T");
         value.Validate();
     }
 
@@ -27,7 +27,7 @@ public class BetaManagedAgentsExecutionIdentityParamsTest : TestBase
     public void AwsRoleSerializationRoundtripWorks()
     {
         BetaManagedAgentsExecutionIdentityParams value =
-            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("arn:aws:iam::228601553692:role/T");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaManagedAgentsExecutionIdentityParams>(
             element,
@@ -55,7 +55,7 @@ public class BetaManagedAgentsExecutionIdentityParamsTest : TestBase
     public void AwsRoleTypeWorks()
     {
         BetaManagedAgentsExecutionIdentityParams value =
-            new BetaManagedAgentsAwsRoleExecutionIdentityParams("role_arn");
+            new BetaManagedAgentsAwsRoleExecutionIdentityParams("arn:aws:iam::228601553692:role/T");
         Assert.Equal(BetaManagedAgentsExecutionIdentityParamsType.AwsRole, value.Type.Value());
     }
 

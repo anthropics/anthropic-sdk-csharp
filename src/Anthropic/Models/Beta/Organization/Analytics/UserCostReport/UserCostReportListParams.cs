@@ -16,10 +16,11 @@ namespace Anthropic.Models.Beta.Organization.Analytics.UserCostReport;
 ///
 /// <para>Returns cost per user, ranked by spend; `group_by[]` or `bucket_width`
 /// splits a user across several rows. Use this to see which users account for the
-/// most cost. Only cost attributed to a user account is included; cost with no user
-/// attributed to it, such as Code Review usage and Claude Tag usage in Slack channels,
-/// is left out. Available to organizations on a Claude Enterprise plan. Requires
-/// an API key with the `read:analytics` scope.</para>
+/// most cost. Only cost attributed to a user account is included, so cost with no
+/// user account, such as Code Review usage and Claude Tag usage in Slack channels,
+/// is left out. Claude Tag one-to-one direct messages are included, with product
+/// `claude-tag`, only for members who have connected a Claude account. Available
+/// to organizations on a Claude Enterprise plan. Requires an API key with the `read:analytics` scope.</para>
 ///
 /// <para>This endpoint is one of the legacy Claude Enterprise usage and cost reports.
 /// For new integrations, use [`GET /v1/organizations/analytics/cost`](/docs/en/api/beta/organization/analytics/cost/list)
@@ -68,9 +69,8 @@ public record class UserCostReportListParams : ParamsBase
 
     /// <summary>
     /// Filter to Claude Tag (Claude in Slack) usage in specific spend categories.
-    /// Usage with no category never matches. `dm` usage is reported under the user's
-    /// product rather than `claude-tag`, so combining this filter with `products[]=claude-tag`
-    /// excludes it. Use `group_by[]=claude_tag_category` to break out per-category values.
+    /// Usage with no category never matches. Use `group_by[]=claude_tag_category`
+    /// to break out per-category values.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, BetaAnalyticsClaudeTagCategory>>? ClaudeTagCategories
     {
