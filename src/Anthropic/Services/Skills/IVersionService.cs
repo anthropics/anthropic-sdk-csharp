@@ -48,8 +48,8 @@ public interface IVersionService
     /// code. `appeal_url`, when present, is where the organization can appeal.
     /// </exception>
     /// <exception cref="AnthropicCmekContextUnavailableException">
-    /// The request's workspace encryption context could not be resolved, so the request
-    /// was refused. Retry in a few minutes.
+    /// The workspace's encryption settings could not be read, so the request was
+    /// refused. Retry in a few minutes.
     /// </exception>
     Task<SkillVersion> Create(
         VersionCreateParams parameters,

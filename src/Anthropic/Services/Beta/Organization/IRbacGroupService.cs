@@ -102,9 +102,8 @@ public interface IRbacGroupService
     /// </exception>
     /// <exception cref="RbacGroups::AnthropicRbacGroupOwnerAccessUnconfirmedException">
     /// The API could not finish checking whether an RBAC Group in the request grants
-    /// owner access (the check reached a fixed limit), so it made no change. Retrying
-    /// the same request will not help. Make the change in the organization's admin
-    /// settings in Claude.
+    /// owner access, so it made no change. Retrying the same request will not help.
+    /// Make the change in the organization's admin settings in Claude.
     /// </exception>
     Task<BetaDeletedRbacGroup> Delete(
         RbacGroupDeleteParams parameters,
