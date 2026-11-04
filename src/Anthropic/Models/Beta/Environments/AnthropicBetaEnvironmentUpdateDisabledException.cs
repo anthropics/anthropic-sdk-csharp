@@ -1,5 +1,4 @@
 using System.Net.Http;
-using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
@@ -24,11 +23,7 @@ public sealed class AnthropicBetaEnvironmentUpdateDisabledException : AnthropicF
         get
         {
             return WrappedJsonSerializer.GetNotNullClassProperty<string>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
-                    WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                        ?? default,
-                    "details"
-                ) ?? default,
+                this.ErrorDetailsJson,
                 "error_code"
             );
         }
@@ -42,8 +37,7 @@ public sealed class AnthropicBetaEnvironmentUpdateDisabledException : AnthropicF
         get
         {
             return WrappedJsonSerializer.GetNotNullClassProperty<BetaEnvironmentUpdateDisabledErrorDetails>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                    ?? default,
+                this.ErrorJson,
                 "details"
             );
         }

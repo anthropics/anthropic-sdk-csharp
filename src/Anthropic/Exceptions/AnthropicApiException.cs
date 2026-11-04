@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using System.Net.Http;
+using Anthropic.Core;
 
 namespace Anthropic.Exceptions;
 
@@ -32,7 +33,7 @@ public class AnthropicApiException : AnthropicServiceException
         init
         {
             _responseBody = value;
-            Body = ParseBody(value);
+            Body = WrappedJsonSerializer.ParseOrDefault(value);
         }
     }
 

@@ -640,7 +640,7 @@ public class AnthropicExceptionFactory
         var errorCode = WrappedJsonSerializer.GetNullableClassProperty<string>(
             WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
                 WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
-                    AnthropicServiceException.ParseBody(responseBody),
+                    WrappedJsonSerializer.ParseOrDefault(responseBody),
                     "error"
                 ) ?? default,
                 "details"

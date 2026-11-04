@@ -27,8 +27,7 @@ public class AnthropicServiceException : AnthropicException
         get
         {
             return WrappedJsonSerializer.GetNullableClassProperty<string>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                    ?? default,
+                this.ErrorJson,
                 "message"
             );
         }
@@ -42,8 +41,7 @@ public class AnthropicServiceException : AnthropicException
         get
         {
             return WrappedJsonSerializer.GetNullableClassProperty<ApiEnum<string, ErrorType>>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                    ?? default,
+                this.ErrorJson,
                 "type"
             );
         }
@@ -57,11 +55,7 @@ public class AnthropicServiceException : AnthropicException
         get
         {
             return WrappedJsonSerializer.GetNullableClassProperty<string>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
-                    WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                        ?? default,
-                    "details"
-                ) ?? default,
+                this.ErrorDetailsJson,
                 "error_code"
             );
         }
@@ -75,8 +69,7 @@ public class AnthropicServiceException : AnthropicException
         get
         {
             return WrappedJsonSerializer.GetNullableClassProperty<ErrorDetails>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                    ?? default,
+                this.ErrorJson,
                 "details"
             );
         }
@@ -101,15 +94,23 @@ public class AnthropicServiceException : AnthropicException
 
     readonly ErrorType? _errorType;
 
-    internal static JsonElement ParseBody(string json)
+    private protected JsonElement ErrorJson
     {
-        try
+        get
         {
-            return JsonSerializer.Deserialize<JsonElement>(json);
+            return WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
+                ?? default;
         }
-        catch (JsonException)
+    }
+
+    private protected JsonElement ErrorDetailsJson
+    {
+        get
         {
-            return default;
+            return WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
+                    this.ErrorJson,
+                    "details"
+                ) ?? default;
         }
     }
 }

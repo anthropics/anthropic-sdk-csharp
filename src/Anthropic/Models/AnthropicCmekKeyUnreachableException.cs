@@ -1,5 +1,4 @@
 using System.Net.Http;
-using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
@@ -23,11 +22,7 @@ public sealed class AnthropicCmekKeyUnreachableException : AnthropicServiceUnava
         get
         {
             return WrappedJsonSerializer.GetNotNullClassProperty<string>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(
-                    WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                        ?? default,
-                    "details"
-                ) ?? default,
+                this.ErrorDetailsJson,
                 "error_code"
             );
         }
@@ -41,8 +36,7 @@ public sealed class AnthropicCmekKeyUnreachableException : AnthropicServiceUnava
         get
         {
             return WrappedJsonSerializer.GetNotNullClassProperty<CmekKeyUnreachableErrorDetails>(
-                WrappedJsonSerializer.GetNullableStructProperty<JsonElement>(this.Body, "error")
-                    ?? default,
+                this.ErrorJson,
                 "details"
             );
         }

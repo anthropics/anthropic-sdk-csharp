@@ -9,6 +9,21 @@ namespace Anthropic.Core;
 /// </summary>
 sealed class WrappedJsonSerializer
 {
+    /// <summary>
+    /// Returns <paramref name="json"/> parsed, or <c>default</c> if it isn't valid JSON.
+    /// </summary>
+    public static JsonElement ParseOrDefault(string json)
+    {
+        try
+        {
+            return JsonSerializer.Deserialize<JsonElement>(json);
+        }
+        catch (JsonException)
+        {
+            return default;
+        }
+    }
+
     public static T GetNotNullClass<T>(JsonElement element, string name)
         where T : class
     {
