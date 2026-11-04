@@ -34,20 +34,10 @@ public interface IBundleService
     /// Get one Bundle. What the Bundle grants (connectors, repositories and
     /// credentials) is never returned.
     /// </summary>
-    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
-    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
-    /// `write:claude_tag` for a change.
-    /// </exception>
-    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
-    /// Changes through the Claude Tag API are not enabled for the organization.
-    /// </exception>
-    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
-    /// The organization's compliance configuration does not let Claude Tag store
-    /// anything new.
-    /// </exception>
-    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
-    /// The credential is not a scoped API key that is bound at the organization level.
-    /// </exception>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException"/>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException"/>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException"/>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException"/>
     Task<BetaClaudeTagBundle> Retrieve(
         BundleRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -64,20 +54,10 @@ public interface IBundleService
     /// List the organization's Bundles, newest first by `created_at`. A Bundle that
     /// Claude Tag manages for itself is not listed.
     /// </summary>
-    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
-    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
-    /// `write:claude_tag` for a change.
-    /// </exception>
-    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
-    /// Changes through the Claude Tag API are not enabled for the organization.
-    /// </exception>
-    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
-    /// The organization's compliance configuration does not let Claude Tag store
-    /// anything new.
-    /// </exception>
-    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
-    /// The credential is not a scoped API key that is bound at the organization level.
-    /// </exception>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException"/>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException"/>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException"/>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException"/>
     Task<BundleListPage> List(
         BundleListParams? parameters = null,
         CancellationToken cancellationToken = default

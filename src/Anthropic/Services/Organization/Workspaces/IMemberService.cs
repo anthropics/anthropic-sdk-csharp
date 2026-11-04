@@ -45,9 +45,7 @@ public interface IMemberService
     /// <summary>
     /// Update Workspace Member
     /// </summary>
-    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException">
-    /// The workspace has reached the member limit that Anthropic set for it.
-    /// </exception>
+    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException"/>
     Task<WorkspaceMember> Update(
         MemberUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -78,9 +76,7 @@ public interface IMemberService
     /// <summary>
     /// Create Workspace Member
     /// </summary>
-    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException">
-    /// The workspace has reached the member limit that Anthropic set for it.
-    /// </exception>
+    /// <exception cref="AnthropicWorkspaceMemberLimitExceededException"/>
     Task<WorkspaceMember> Add(
         MemberAddParams parameters,
         CancellationToken cancellationToken = default

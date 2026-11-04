@@ -35,10 +35,7 @@ public interface IEffectiveService
     /// member, so a member's periods never split across pages. Supported for Claude
     /// Enterprise organizations only, not for Claude Console organizations.</para>
     /// </summary>
-    /// <exception cref="AnthropicOrganizationTypeNotSupportedException">
-    /// The endpoint does not support the organization's type. Each endpoint's
-    /// description says which organization types it supports.
-    /// </exception>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException"/>
     Task<EffectiveListPage> List(
         EffectiveListParams? parameters = null,
         CancellationToken cancellationToken = default
