@@ -19,7 +19,7 @@ namespace Anthropic.Models.Beta.Dreams;
 /// it writes its result into the input memory store instead.</para>
 ///
 /// <para>The Dreams API is in research preview: the request and response shapes
-/// are volatile and may change without the deprecation period that applies to generally-available endpoints.</para>
+/// are volatile and may change without the deprecation period that applies to stable endpoints.</para>
 ///
 /// <para>See the [Dreams guide](https://platform.claude.com/docs/en/managed-agents/dreams#how-it-works)
 /// for what a dream reads and produces.</para>
