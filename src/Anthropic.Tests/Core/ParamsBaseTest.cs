@@ -8,9 +8,12 @@ public class ParamsBaseTest : TestBase
 {
     [Theory]
     [InlineData("abc-123_x.y~z", "abc-123_x.y~z")]
-    [InlineData("card:1@x+y,z;w=v", "card:1@x+y,z%3Bw=v")]
-    [InlineData("..;", "..%3B")]
-    [InlineData("..;x", "..%3Bx")]
+    [InlineData("card:1@x+y,z;w=v", "card:1@x+y,z;w=v")]
+    [InlineData("a;b", "a;b")]
+    [InlineData("...;x", "...;x")]
+    [InlineData("a..;x", "a..;x")]
+    [InlineData("x;..", "x;..")]
+    [InlineData("a;", "a;")]
     [InlineData("it's(*)!", "it's(*)!")]
     [InlineData("a$b&c", "a$b&c")]
     [InlineData("a[0]", "a%5B0%5D")]
@@ -46,6 +49,9 @@ public class ParamsBaseTest : TestBase
     [Theory]
     [InlineData(".")]
     [InlineData("..")]
+    [InlineData(".;x")]
+    [InlineData("..;x")]
+    [InlineData("..;")]
     public void EncodePathSegment_RejectsDotSegments(string value)
     {
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
@@ -57,6 +63,8 @@ public class ParamsBaseTest : TestBase
     [Theory]
     [InlineData("")]
     [InlineData(null)]
+    [InlineData(";")]
+    [InlineData(";x")]
     public void EncodePathSegment_RejectsEmpty(string? value)
     {
         var exception = Assert.Throws<AnthropicInvalidDataException>(() =>

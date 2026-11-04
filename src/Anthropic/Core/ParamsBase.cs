@@ -226,14 +226,20 @@ public abstract record class ParamsBase
 
     internal static string EncodePathSegment(string? value, string paramName)
     {
-        if (value == null || value == "")
+        // A server may drop ";" and what follows it from a segment, so the part before the first ";" is checked too.
+        if (value == null || value == "" || value[0] == ';')
         {
             throw new AnthropicInvalidDataException(
                 $"Expected a non-empty value for `{paramName}`"
             );
         }
         // "." is unreserved, so escaping leaves it as is and the segment would still resolve as a dot-segment.
-        if (value == "." || value == "..")
+        if (
+            value == "."
+            || value == ".."
+            || value.StartsWith(".;", StringComparison.Ordinal)
+            || value.StartsWith("..;", StringComparison.Ordinal)
+        )
         {
             throw new AnthropicInvalidDataException(
                 $"'{paramName}' value \"{value}\" is a dot-segment and can't be safely passed as a path parameter"
@@ -244,10 +250,9 @@ public abstract record class ParamsBase
         {
             return escaped;
         }
-        // RFC 3986 section 3.3 allows the characters restored below in a path segment. It allows ";" too, which stays
-        // escaped because some servers drop what follows it in a segment and would read "..;x" as "..".
+        // RFC 3986 section 3.3 allows the characters restored below in a path segment.
         var restored = new StringBuilder(escaped);
-        foreach (var c in "!$&'()*+,=:@")
+        foreach (var c in "!$&'()*+,;=:@")
         {
             restored.Replace(Uri.HexEscape(c), c.ToString());
         }
