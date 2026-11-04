@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.PluginMarketplaces;
 
 namespace Anthropic.Services.Beta.Organization;
@@ -136,6 +137,10 @@ public interface IPluginMarketplaceService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicBetaUnsupportedCharsetException">
+    /// The request's `Content-Type` header names a charset other than UTF-8, ISO-8859-1
+    /// or US-ASCII. Send the request with no charset, or with one of these.
+    /// </exception>
     Task<BetaPluginMarketplaceValidationReport> ValidateArchive(
         PluginMarketplaceValidateArchiveParams parameters,
         CancellationToken cancellationToken = default

@@ -39,7 +39,7 @@ static class Sse
                         string.Format("SSE error returned from server: '{0}'", item.Data)
                     )
                     {
-                        ErrorType = AnthropicExceptionFactory.ExtractErrorType(item.Data),
+                        Body = AnthropicServiceException.ParseBody(item.Data),
                         EventData = item.Data,
                     };
                 default:

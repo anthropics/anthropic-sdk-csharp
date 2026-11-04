@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Services.Beta.Organization.Plugins;
 
@@ -70,6 +72,30 @@ public interface IPluginService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
+    /// <exception cref="AnthropicBetaUnsupportedCharsetException">
+    /// The request's `Content-Type` header names a charset other than UTF-8, ISO-8859-1
+    /// or US-ASCII. Send the request with no charset, or with one of these.
+    /// </exception>
+    /// <exception cref="AnthropicBetaPluginNameTakenException">
+    /// The marketplace already holds this name. `plugin_id` is the Plugin that holds
+    /// it, and can be absent.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSkillNameTakenException">
+    /// One of the Plugin's skills has the name of an organization skill. `skill_name`
+    /// is that name.
+    /// </exception>
+    /// <exception cref="AnthropicBetaRegistrationPendingException">
+    /// The Plugin version was stored but is not yet usable in claude.ai. `plugin_id`
+    /// and `plugin_version_id` identify what was stored.
+    /// </exception>
     Task<BetaPlugin> Create(
         PluginCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -135,6 +161,26 @@ public interface IPluginService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
+    /// <exception cref="AnthropicBetaScanFailedException">
+    /// The content scan of the version in `plugin_version_id` failed, errored or
+    /// reached no verdict, so the version cannot be served.
+    /// </exception>
+    /// <exception cref="AnthropicBetaScanPendingException">
+    /// The content scan of the version in `plugin_version_id` is still running. Retry
+    /// once the scan finishes.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSkillNameTakenException">
+    /// One of the Plugin's skills has the name of an organization skill. `skill_name`
+    /// is that name.
+    /// </exception>
     Task<BetaPlugin> Update(
         PluginUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -194,6 +240,10 @@ public interface IPluginService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
     Task<BetaDeletedPlugin> Delete(
         PluginDeleteParams parameters,
         CancellationToken cancellationToken = default

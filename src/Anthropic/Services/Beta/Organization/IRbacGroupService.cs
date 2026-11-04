@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Services.Beta.Organization.RbacGroups;
+using RbacGroups = Anthropic.Models.Organization.RbacGroups;
 
 namespace Anthropic.Services.Beta.Organization;
 
@@ -93,6 +94,18 @@ public interface IRbacGroupService
     ///
     /// <para>The RBAC Groups API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="RbacGroups::AnthropicRbacGroupGrantsOwnerAccessException">
+    /// A role attached to an RBAC Group in the request grants owner access, so this API
+    /// does not add members to that group (directly or through an invite), remove its
+    /// members, or delete it. Make the change in the organization's admin settings in
+    /// Claude.
+    /// </exception>
+    /// <exception cref="RbacGroups::AnthropicRbacGroupOwnerAccessUnconfirmedException">
+    /// The API could not finish checking whether an RBAC Group in the request grants
+    /// owner access (the check reached a fixed limit), so it made no change. Retrying
+    /// the same request will not help. Make the change in the organization's admin
+    /// settings in Claude.
+    /// </exception>
     Task<BetaDeletedRbacGroup> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default

@@ -2,6 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
+using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.Plugins.Versions;
 
 namespace Anthropic.Services.Beta.Organization.Plugins;
@@ -57,6 +60,26 @@ public interface IVersionService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
+    /// <exception cref="AnthropicBetaUnsupportedCharsetException">
+    /// The request's `Content-Type` header names a charset other than UTF-8, ISO-8859-1
+    /// or US-ASCII. Send the request with no charset, or with one of these.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSkillNameTakenException">
+    /// One of the Plugin's skills has the name of an organization skill. `skill_name`
+    /// is that name.
+    /// </exception>
+    /// <exception cref="AnthropicBetaRegistrationPendingException">
+    /// The Plugin version was stored but is not yet usable in claude.ai. `plugin_id`
+    /// and `plugin_version_id` identify what was stored.
+    /// </exception>
     Task<BetaPluginVersion> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -153,6 +176,14 @@ public interface IVersionService
     ///
     /// <para>It's the caller's responsibility to dispose the returned response.</para>
     /// </summary>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
     Task<HttpResponse> Download(
         VersionDownloadParams parameters,
         CancellationToken cancellationToken = default

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.SpendLimits.Effective;
 
 namespace Anthropic.Services.Beta.Organization.SpendLimits;
@@ -34,6 +35,10 @@ public interface IEffectiveService
     /// member, so a member's periods never split across pages. Supported for Claude
     /// Enterprise organizations only, not for Claude Console organizations.</para>
     /// </summary>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException">
+    /// The endpoint does not support the organization's type. Each endpoint's
+    /// description says which organization types it supports.
+    /// </exception>
     Task<EffectiveListPage> List(
         EffectiveListParams? parameters = null,
         CancellationToken cancellationToken = default

@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models.Beta.Environments;
+using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.SlackWorkspaces;
 
 namespace Anthropic.Services.Beta.Organization.ClaudeTag;
@@ -35,6 +37,20 @@ public interface ISlackWorkspaceService
     /// level that could not be read. Either way `sources` names the settings level each
     /// value comes from.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
     Task<BetaClaudeTagSlackWorkspace> Retrieve(
         SlackWorkspaceRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -52,6 +68,32 @@ public interface ISlackWorkspaceService
     /// left out is unchanged, and a setting sent as null is cleared, so the workspace
     /// inherits it. If any value is refused, no setting in the request is stored.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
+    /// <exception cref="AnthropicBetaEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpEnvironmentNotFoundException">
+    /// `settings.environment_id` names no Environment within the organization's reach,
+    /// and the request had set the channel up by then. The channel stays set up with
+    /// every setting unset.
+    /// </exception>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsConflictException">
+    /// The request set the channel up, and something else then changed the channel or
+    /// removed it. Nothing of `settings` was stored.
+    /// </exception>
     Task<BetaClaudeTagSlackWorkspace> Update(
         SlackWorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -74,6 +116,20 @@ public interface ISlackWorkspaceService
     /// resolve against a settings level that could not be read. A `page` cursor resumes
     /// only a request with the same `include_inherited`.
     /// </summary>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException">
+    /// The API key lacks the scope the request needs: `read:claude_tag` for a read,
+    /// `write:claude_tag` for a change.
+    /// </exception>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException">
+    /// Changes through the Claude Tag API are not enabled for the organization.
+    /// </exception>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException">
+    /// The organization's compliance configuration does not let Claude Tag store
+    /// anything new.
+    /// </exception>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException">
+    /// The credential is not a scoped API key that is bound at the organization level.
+    /// </exception>
     Task<SlackWorkspaceListPage> List(
         SlackWorkspaceListParams? parameters = null,
         CancellationToken cancellationToken = default

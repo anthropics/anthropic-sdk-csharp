@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Skills.Versions;
 
 namespace Anthropic.Services.Beta.Skills;
@@ -29,6 +30,27 @@ public interface IVersionService
     /// <summary>
     /// Create Skill Version
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyDisabledException">
+    /// The workspace's customer-managed encryption key is disabled or revoked.
+    /// Re-enable the key, then retry.
+    /// </exception>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
+    /// The key management service's network access controls blocked the request to the
+    /// workspace's customer-managed encryption key. The key itself may be healthy.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
+    /// <exception cref="AnthropicCmekContextUnavailableException">
+    /// The request's workspace encryption context could not be resolved, so the request
+    /// was refused. Retry in a few minutes.
+    /// </exception>
     Task<BetaSkillVersion> Create(
         VersionCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -44,6 +66,15 @@ public interface IVersionService
     /// <summary>
     /// Get Skill Version
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<BetaSkillVersion> Retrieve(
         VersionRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -59,6 +90,15 @@ public interface IVersionService
     /// <summary>
     /// List Skill Versions
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<VersionListPage> List(
         VersionListParams parameters,
         CancellationToken cancellationToken = default
@@ -74,6 +114,15 @@ public interface IVersionService
     /// <summary>
     /// Delete Skill Version
     /// </summary>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
+    /// The API key belongs to the Claude Code workspace, and the user who created it is
+    /// no longer a member of the organization or of that workspace.
+    /// </exception>
+    /// <exception cref="AnthropicOrganizationOnHoldException">
+    /// Anthropic has disabled the organization for trust and safety reasons. An
+    /// organization disabled for any other reason, such as billing, does not get this
+    /// code. `appeal_url`, when present, is where the organization can appeal.
+    /// </exception>
     Task<BetaDeletedSkillVersion> Delete(
         VersionDeleteParams parameters,
         CancellationToken cancellationToken = default

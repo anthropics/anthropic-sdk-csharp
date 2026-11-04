@@ -26,7 +26,17 @@ public class AnthropicApiException : AnthropicServiceException
 
     public required HttpStatusCode StatusCode { get; init; }
 
-    public required string ResponseBody { get; init; }
+    public required string ResponseBody
+    {
+        get { return _responseBody; }
+        init
+        {
+            _responseBody = value;
+            Body = ParseBody(value);
+        }
+    }
+
+    readonly string _responseBody = "";
 
     /// <summary>
     /// Returns the value of the <c>request-id</c> header,

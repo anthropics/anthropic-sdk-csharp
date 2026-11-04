@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models.Beta.Organization.ApiKeys;
+using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 
 namespace Anthropic.Services.Beta.Organization;
 
@@ -44,6 +45,12 @@ public interface IApiKeyService
     /// <summary>
     /// Update API Key
     /// </summary>
+    /// <exception cref="ApiKeys::AnthropicOrgApiKeyLimitExceededException">
+    /// The organization has reached its limit of active API keys.
+    /// </exception>
+    /// <exception cref="ApiKeys::AnthropicWorkspaceApiKeyLimitExceededException">
+    /// The workspace has reached its limit of active API keys.
+    /// </exception>
     Task<BetaApiKey> Update(
         ApiKeyUpdateParams parameters,
         CancellationToken cancellationToken = default
