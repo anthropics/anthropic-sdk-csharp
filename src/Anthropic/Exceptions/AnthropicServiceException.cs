@@ -20,7 +20,10 @@ public class AnthropicServiceException : AnthropicException
     public JsonElement Body { get; init; }
 
     /// <summary>
-    /// <c>error.message</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.
+    /// A human-readable explanation of the error. Its wording can change, so don't
+    /// match on it.
+    ///
+    /// <para><c>error.message</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.</para>
     /// </summary>
     public string? ApiMessage
     {
@@ -34,7 +37,9 @@ public class AnthropicServiceException : AnthropicException
     }
 
     /// <summary>
-    /// <c>error.type</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.
+    /// The broad category of the error.
+    ///
+    /// <para><c>error.type</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.</para>
     /// </summary>
     public ApiEnum<string, ErrorType>? Type
     {
@@ -48,7 +53,9 @@ public class AnthropicServiceException : AnthropicException
     }
 
     /// <summary>
-    /// <c>error.details.error_code</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.
+    /// A stable code that names the cause.
+    ///
+    /// <para><c>error.details.error_code</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.</para>
     /// </summary>
     public string? ErrorCode
     {
@@ -62,7 +69,11 @@ public class AnthropicServiceException : AnthropicException
     }
 
     /// <summary>
-    /// <c>error.details</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.
+    /// Machine-readable detail about the cause of the error. `error_code` names the
+    /// cause; branch on it rather than on `message`. Absent when the error has no code.
+    /// Treat an unrecognized `error_code` as the bare `type`.
+    ///
+    /// <para><c>error.details</c> of <see cref="AnthropicServiceException.Body"/>, or null if it can't be read as this type.</para>
     /// </summary>
     public ErrorDetails? Details
     {
