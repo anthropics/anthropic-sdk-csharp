@@ -38,6 +38,17 @@ namespace System.Diagnostics.CodeAnalysis
         public MaybeNullWhenAttribute(bool returnValue) { }
     }
 
+    // Allow `[NotNullIfNotNull(...)]` to compile when targeting .NET Standard 2.0.
+    [AttributeUsage(
+        AttributeTargets.Parameter | AttributeTargets.Property | AttributeTargets.ReturnValue,
+        AllowMultiple = true,
+        Inherited = false
+    )]
+    internal sealed class NotNullIfNotNullAttribute : Attribute
+    {
+        public NotNullIfNotNullAttribute(string parameterName) { }
+    }
+
     // Allow `[NotNullWhen(...)]` to compile when targeting .NET Standard 2.0.
     [AttributeUsage(AttributeTargets.Parameter, AllowMultiple = false, Inherited = false)]
     internal sealed class NotNullWhenAttribute : Attribute
