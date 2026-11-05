@@ -211,6 +211,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void RampLimitExceededValidationWorks()
+    {
+        ErrorDetails value = new RampLimitExceededErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void CmekKeyUnreachableValidationWorks()
     {
         ErrorDetails value = new CmekKeyUnreachableErrorDetails();
@@ -884,6 +891,19 @@ public class ErrorDetailsTest : TestBase
     public void EnforcedSpendLimitReachedSerializationRoundtripWorks()
     {
         ErrorDetails value = new EnforcedSpendLimitReachedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RampLimitExceededSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new RampLimitExceededErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -1703,6 +1723,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void RampLimitExceededErrorCodeWorks()
+    {
+        ErrorDetails value = new RampLimitExceededErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RampLimitExceeded, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void CmekKeyUnreachableErrorCodeWorks()
     {
         ErrorDetails value = new CmekKeyUnreachableErrorDetails();
@@ -2156,6 +2183,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
     [InlineData(ErrorDetailsErrorCode.EnforcedSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]
     [InlineData(ErrorDetailsErrorCode.CompactionUnavailable)]
     [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded)]
@@ -2248,6 +2276,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
     [InlineData(ErrorDetailsErrorCode.EnforcedSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]
     [InlineData(ErrorDetailsErrorCode.CompactionUnavailable)]
     [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded)]

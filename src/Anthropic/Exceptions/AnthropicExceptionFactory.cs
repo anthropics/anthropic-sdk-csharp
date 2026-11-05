@@ -592,6 +592,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(429, "ramp_limit_exceeded")] = (statusCode, responseBody, response) =>
+            new AnthropicRampLimitExceededException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(503, "cmek_context_unavailable")] = (statusCode, responseBody, response) =>
             new AnthropicCmekContextUnavailableException()
             {

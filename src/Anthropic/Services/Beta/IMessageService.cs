@@ -69,6 +69,7 @@ public interface IMessageService
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
+    /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>
     /// <exception cref="AnthropicCompactionUnavailableException"/>
     Task<Messages::BetaMessage> Create(
@@ -112,6 +113,7 @@ public interface IMessageService
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
+    /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>
     /// <exception cref="AnthropicCompactionUnavailableException"/>
     IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(

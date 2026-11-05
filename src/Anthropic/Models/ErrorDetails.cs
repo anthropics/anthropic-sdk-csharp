@@ -96,6 +96,7 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
                 EnforcedSpendLimitReachedErrorDetails _ =>
                     ErrorDetailsErrorCode.EnforcedSpendLimitReached,
+                RampLimitExceededErrorDetails _ => ErrorDetailsErrorCode.RampLimitExceeded,
                 CmekKeyUnreachableErrorDetails _ => ErrorDetailsErrorCode.CmekKeyUnreachable,
                 Messages::CompactionUnavailableErrorDetails _ =>
                     ErrorDetailsErrorCode.CompactionUnavailable,
@@ -212,6 +213,7 @@ public record class ErrorDetails : ModelBase
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
+                RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
@@ -295,6 +297,7 @@ public record class ErrorDetails : ModelBase
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
+                RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
@@ -381,6 +384,7 @@ public record class ErrorDetails : ModelBase
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
+                RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
@@ -640,6 +644,12 @@ public record class ErrorDetails : ModelBase
     }
 
     public ErrorDetails(EnforcedSpendLimitReachedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(RampLimitExceededErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1579,6 +1589,29 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as EnforcedSpendLimitReachedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="RampLimitExceededErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRampLimitExceeded(out var value)) {
+    ///     // `value` is of type `RampLimitExceededErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRampLimitExceeded(
+        [NotNullWhen(true)] out RampLimitExceededErrorDetails? value
+    )
+    {
+        value = this.Value as RampLimitExceededErrorDetails;
         return value != null;
     }
 
@@ -2676,6 +2709,7 @@ public record class ErrorDetails : ModelBase
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
@@ -2753,6 +2787,7 @@ public record class ErrorDetails : ModelBase
         Action<Skills::SkillReadBlockedUndecryptableErrorDetails> skillReadBlockedUndecryptable,
         Action<RequestBodyTooLargeAfterDecodingErrorDetails> requestBodyTooLargeAfterDecoding,
         Action<EnforcedSpendLimitReachedErrorDetails> enforcedSpendLimitReached,
+        Action<RampLimitExceededErrorDetails> rampLimitExceeded,
         Action<CmekKeyUnreachableErrorDetails> cmekKeyUnreachable,
         Action<Messages::CompactionUnavailableErrorDetails> compactionUnavailable,
         Action<Files::StorageQuotaExceededErrorDetails> storageQuotaExceeded,
@@ -2880,6 +2915,9 @@ public record class ErrorDetails : ModelBase
                 break;
             case EnforcedSpendLimitReachedErrorDetails value:
                 enforcedSpendLimitReached(value);
+                break;
+            case RampLimitExceededErrorDetails value:
+                rampLimitExceeded(value);
                 break;
             case CmekKeyUnreachableErrorDetails value:
                 cmekKeyUnreachable(value);
@@ -3067,6 +3105,7 @@ public record class ErrorDetails : ModelBase
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
@@ -3147,6 +3186,7 @@ public record class ErrorDetails : ModelBase
         Func<Skills::SkillReadBlockedUndecryptableErrorDetails, T> skillReadBlockedUndecryptable,
         Func<RequestBodyTooLargeAfterDecodingErrorDetails, T> requestBodyTooLargeAfterDecoding,
         Func<EnforcedSpendLimitReachedErrorDetails, T> enforcedSpendLimitReached,
+        Func<RampLimitExceededErrorDetails, T> rampLimitExceeded,
         Func<CmekKeyUnreachableErrorDetails, T> cmekKeyUnreachable,
         Func<Messages::CompactionUnavailableErrorDetails, T> compactionUnavailable,
         Func<Files::StorageQuotaExceededErrorDetails, T> storageQuotaExceeded,
@@ -3266,6 +3306,7 @@ public record class ErrorDetails : ModelBase
                 value
             ),
             EnforcedSpendLimitReachedErrorDetails value => enforcedSpendLimitReached(value),
+            RampLimitExceededErrorDetails value => rampLimitExceeded(value),
             CmekKeyUnreachableErrorDetails value => cmekKeyUnreachable(value),
             Messages::CompactionUnavailableErrorDetails value => compactionUnavailable(value),
             Files::StorageQuotaExceededErrorDetails value => storageQuotaExceeded(value),
@@ -3431,6 +3472,8 @@ public record class ErrorDetails : ModelBase
 
     public static implicit operator ErrorDetails(EnforcedSpendLimitReachedErrorDetails value) =>
         new(value);
+
+    public static implicit operator ErrorDetails(RampLimitExceededErrorDetails value) => new(value);
 
     public static implicit operator ErrorDetails(CmekKeyUnreachableErrorDetails value) =>
         new(value);
@@ -3632,6 +3675,7 @@ public record class ErrorDetails : ModelBase
             (skillReadBlockedUndecryptable) => skillReadBlockedUndecryptable.Validate(),
             (requestBodyTooLargeAfterDecoding) => requestBodyTooLargeAfterDecoding.Validate(),
             (enforcedSpendLimitReached) => enforcedSpendLimitReached.Validate(),
+            (rampLimitExceeded) => rampLimitExceeded.Validate(),
             (cmekKeyUnreachable) => cmekKeyUnreachable.Validate(),
             (compactionUnavailable) => compactionUnavailable.Validate(),
             (storageQuotaExceeded) => storageQuotaExceeded.Validate(),
@@ -3734,52 +3778,53 @@ public record class ErrorDetails : ModelBase
             Skills::SkillReadBlockedUndecryptableErrorDetails _ => 23,
             RequestBodyTooLargeAfterDecodingErrorDetails _ => 24,
             EnforcedSpendLimitReachedErrorDetails _ => 25,
-            CmekKeyUnreachableErrorDetails _ => 26,
-            Messages::CompactionUnavailableErrorDetails _ => 27,
-            Files::StorageQuotaExceededErrorDetails _ => 28,
-            Files::FileNotDownloadableErrorDetails _ => 29,
-            Files::FileExpiredErrorDetails _ => 30,
-            CmekContextUnavailableErrorDetails _ => 31,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 32,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 33,
-            UserProfileNotFoundErrorDetails _ => 34,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 35,
-            AlreadyMemberErrorDetails _ => 36,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 37,
-            EmailDomainNotAllowedErrorDetails _ => 38,
-            InviteAlreadyExistsErrorDetails _ => 39,
-            OrgMemberLimitExceededErrorDetails _ => 40,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 41,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 42,
-            CannotRemoveLastMemberErrorDetails _ => 43,
-            ConcurrentMembershipChangeErrorDetails _ => 44,
-            KeyProfileMismatchErrorDetails _ => 45,
-            WorkspacePolicyViolationErrorDetails _ => 46,
-            ExternalKeyChangedErrorDetails _ => 47,
-            WorkspaceMemberLimitExceededErrorDetails _ => 48,
-            OrganizationTypeNotSupportedErrorDetails _ => 49,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 50,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 51,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 52,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 53,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 54,
-            Environments::BetaInvalidMetadataErrorDetails _ => 55,
-            BetaBillingFrozenErrorDetails _ => 56,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 57,
-            BetaUnsupportedCharsetErrorDetails _ => 58,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 59,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 60,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 61,
-            Plugins::BetaScanFailedErrorDetails _ => 62,
-            Plugins::BetaScanPendingErrorDetails _ => 63,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 64,
-            BetaApiKeyScopeMissingErrorDetails _ => 65,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 66,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 67,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 68,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 69,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 70,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 71,
+            RampLimitExceededErrorDetails _ => 26,
+            CmekKeyUnreachableErrorDetails _ => 27,
+            Messages::CompactionUnavailableErrorDetails _ => 28,
+            Files::StorageQuotaExceededErrorDetails _ => 29,
+            Files::FileNotDownloadableErrorDetails _ => 30,
+            Files::FileExpiredErrorDetails _ => 31,
+            CmekContextUnavailableErrorDetails _ => 32,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 33,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 34,
+            UserProfileNotFoundErrorDetails _ => 35,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 36,
+            AlreadyMemberErrorDetails _ => 37,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 38,
+            EmailDomainNotAllowedErrorDetails _ => 39,
+            InviteAlreadyExistsErrorDetails _ => 40,
+            OrgMemberLimitExceededErrorDetails _ => 41,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 42,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 43,
+            CannotRemoveLastMemberErrorDetails _ => 44,
+            ConcurrentMembershipChangeErrorDetails _ => 45,
+            KeyProfileMismatchErrorDetails _ => 46,
+            WorkspacePolicyViolationErrorDetails _ => 47,
+            ExternalKeyChangedErrorDetails _ => 48,
+            WorkspaceMemberLimitExceededErrorDetails _ => 49,
+            OrganizationTypeNotSupportedErrorDetails _ => 50,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 51,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 52,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 53,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 54,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 55,
+            Environments::BetaInvalidMetadataErrorDetails _ => 56,
+            BetaBillingFrozenErrorDetails _ => 57,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 58,
+            BetaUnsupportedCharsetErrorDetails _ => 59,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 60,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 61,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 62,
+            Plugins::BetaScanFailedErrorDetails _ => 63,
+            Plugins::BetaScanPendingErrorDetails _ => 64,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 65,
+            BetaApiKeyScopeMissingErrorDetails _ => 66,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 67,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 68,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 69,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 70,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 71,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 72,
             _ => -1,
         };
     }
@@ -4338,6 +4383,26 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                             element,
                             options
                         );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "ramp_limit_exceeded":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RampLimitExceededErrorDetails>(
+                        element,
+                        options
+                    );
                     if (deserialized != null)
                     {
                         return new(deserialized, element);
@@ -5354,6 +5419,7 @@ public enum ErrorDetailsErrorCode
     SkillReadBlockedUndecryptable,
     RequestBodyTooLargeAfterDecoding,
     EnforcedSpendLimitReached,
+    RampLimitExceeded,
     CmekKeyUnreachable,
     CompactionUnavailable,
     StorageQuotaExceeded,
@@ -5444,6 +5510,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "request_body_too_large_after_decoding" =>
                 ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
             "enforced_spend_limit_reached" => ErrorDetailsErrorCode.EnforcedSpendLimitReached,
+            "ramp_limit_exceeded" => ErrorDetailsErrorCode.RampLimitExceeded,
             "cmek_key_unreachable" => ErrorDetailsErrorCode.CmekKeyUnreachable,
             "compaction_unavailable" => ErrorDetailsErrorCode.CompactionUnavailable,
             "storage_quota_exceeded" => ErrorDetailsErrorCode.StorageQuotaExceeded,
@@ -5548,6 +5615,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding =>
                     "request_body_too_large_after_decoding",
                 ErrorDetailsErrorCode.EnforcedSpendLimitReached => "enforced_spend_limit_reached",
+                ErrorDetailsErrorCode.RampLimitExceeded => "ramp_limit_exceeded",
                 ErrorDetailsErrorCode.CmekKeyUnreachable => "cmek_key_unreachable",
                 ErrorDetailsErrorCode.CompactionUnavailable => "compaction_unavailable",
                 ErrorDetailsErrorCode.StorageQuotaExceeded => "storage_quota_exceeded",
