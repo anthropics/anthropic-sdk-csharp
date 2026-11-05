@@ -116,6 +116,30 @@ public sealed class UserService : IUserService
 
         return this.Remove(parameters with { UserID = userID }, cancellationToken);
     }
+
+    /// <inheritdoc/>
+    public async Task<BetaOrganizationUser> SignOut(
+        UserSignOutParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.SignOut(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<BetaOrganizationUser> SignOut(
+        string userID,
+        UserSignOutParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.SignOut(parameters with { UserID = userID }, cancellationToken);
+    }
 }
 
 /// <inheritdoc/>
@@ -306,5 +330,53 @@ public sealed class UserServiceWithRawResponse : IUserServiceWithRawResponse
         parameters ??= new();
 
         return this.Remove(parameters with { UserID = userID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaOrganizationUser>> SignOut(
+        UserSignOutParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.UserID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.UserID' cannot be null");
+        }
+
+        HttpRequest<UserSignOutParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
+            SpanName = "anthropic.organization.users.sign_out",
+            SpanResourceIds = [new("anthropic.organization.user.id", parameters.UserID)],
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaOrganizationUser = await response
+                    .Deserialize<BetaOrganizationUser>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaOrganizationUser.Validate();
+                }
+                return betaOrganizationUser;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaOrganizationUser>> SignOut(
+        string userID,
+        UserSignOutParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.SignOut(parameters with { UserID = userID }, cancellationToken);
     }
 }

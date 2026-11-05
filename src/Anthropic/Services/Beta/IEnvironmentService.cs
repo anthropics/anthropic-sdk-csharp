@@ -33,19 +33,9 @@ public interface IEnvironmentService
     /// <summary>
     /// Create a new environment with the specified configuration.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicBetaEnvironmentCreateDisabledException">
-    /// Anthropic has turned off creating environments for this organization. Existing
-    /// environments still work.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicBetaEnvironmentCreateDisabledException"/>
     Task<BetaEnvironment> Create(
         EnvironmentCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -54,15 +44,8 @@ public interface IEnvironmentService
     /// <summary>
     /// Retrieve a specific environment by ID.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaEnvironment> Retrieve(
         EnvironmentRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -78,26 +61,11 @@ public interface IEnvironmentService
     /// <summary>
     /// Update an existing environment's configuration.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicBetaEnvironmentArchivedException">
-    /// The environment is archived, so it cannot be updated.
-    /// </exception>
-    /// <exception cref="AnthropicBetaInvalidConfigTypeChangeException">
-    /// `config.type` differs from the environment's stored type, which cannot change
-    /// after creation.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicBetaEnvironmentUpdateDisabledException">
-    /// Anthropic has turned off updating environments for this organization. Existing
-    /// environments still work as they are.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicBetaEnvironmentArchivedException"/>
+    /// <exception cref="AnthropicBetaInvalidConfigTypeChangeException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicBetaEnvironmentUpdateDisabledException"/>
     Task<BetaEnvironment> Update(
         EnvironmentUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -113,15 +81,8 @@ public interface IEnvironmentService
     /// <summary>
     /// List environments with pagination support.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<EnvironmentListPage> List(
         EnvironmentListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -130,15 +91,8 @@ public interface IEnvironmentService
     /// <summary>
     /// Delete an environment by ID. Returns a confirmation of the deletion.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaEnvironmentDeleteResponse> Delete(
         EnvironmentDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -155,15 +109,8 @@ public interface IEnvironmentService
     /// Archive an environment by ID. Archived environments cannot be used to create new
     /// sessions.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaEnvironment> Archive(
         EnvironmentArchiveParams parameters,
         CancellationToken cancellationToken = default

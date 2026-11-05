@@ -43,118 +43,35 @@ public interface IMessageService
     /// <para>Learn more about the Messages API in our [user
     /// guide](https://platform.claude.com/docs/en/get-started)</para>
     /// </summary>
-    /// <exception cref="AnthropicAvailableToolsLimitExceededException">
-    /// The tools available after a message exceed a limit on their number or their
-    /// size.
-    /// </exception>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicClaudeCodeVersionTooOldException">
-    /// The request comes from a Claude Code version older than the minimum that the
-    /// requested model or the organization requires. Update Claude Code, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyDisabledException">
-    /// The workspace's customer-managed encryption key is disabled or revoked.
-    /// Re-enable the key, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
-    /// The key management service's network access controls blocked the request to the
-    /// workspace's customer-managed encryption key. The key itself may be healthy.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockAmbiguousException">
-    /// `messages` holds more than one `compaction` block with content. Send only the
-    /// block the conversation returned last.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockMisplacedException">
-    /// The `compaction` block is not the first block of the conversation, or is in a
-    /// `system` message.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionContentMismatchException">
-    /// The `compaction` block's `content` differs from the text its `signature`
-    /// recorded.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionIncompleteTurnException">
-    /// The compaction request ends on an `assistant` turn that is not finished.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionNothingToSummarizeException">
-    /// `messages` holds no `user` or `assistant` content to summarize or adopt.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionSignatureInvalidException">
-    /// The `compaction` block's `signature` does not verify.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionTooManyToolReferencesException">
-    /// The conversation references more distinct tools than a `compaction` block can
-    /// record.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionToolChangesMismatchException">
-    /// The `compaction` block's `tool_changes` differs from what was returned with the
-    /// block.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingInvalidException">
-    /// The request body is not valid for its `Content-Encoding`.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException">
-    /// The request's `Content-Encoding` is not supported.
-    /// </exception>
-    /// <exception cref="AnthropicThreadAlreadyContinuedException">
-    /// The response that `previous_message_id` names has already been continued, and
-    /// each response can be continued only once. Continue from the Thread's most recent
-    /// response `id`.
-    /// </exception>
-    /// <exception cref="AnthropicThreadContinueInFlightException">
-    /// Another request is still continuing from the same `previous_message_id`. Wait
-    /// for it to complete and continue from its response `id`, or replay the full
-    /// conversation with `thread: {"type": "create"}`.
-    /// </exception>
-    /// <exception cref="AnthropicThreadFingerprintMismatchException">
-    /// A field that must stay the same across a Thread's turns differs from the value
-    /// stored with the Thread; the message names each such field. Send the stored
-    /// values, or replay the full conversation with `thread: {"type": "create"}` to
-    /// change them.
-    /// </exception>
-    /// <exception cref="AnthropicThreadUnsupportedRequestException">
-    /// The request combines `thread` with a request field or an organization setting
-    /// that Threads do not support; `unsupported`, when present, names it. Send the
-    /// full conversation without `thread`, or change that field.
-    /// </exception>
-    /// <exception cref="AnthropicToolNameConflictException">
-    /// A tool made available in `messages` takes a name that an available tool of
-    /// another kind, or of another MCP server, already holds.
-    /// </exception>
-    /// <exception cref="AnthropicToolReferenceUnresolvedException">
-    /// A tool change or MCP tool listing references a tool or MCP server that is not
-    /// defined at that position in the conversation.
-    /// </exception>
-    /// <exception cref="AnthropicThreadNotFoundException">
-    /// No usable Thread state was found for `previous_message_id`. Replay the full
-    /// conversation with `thread: {"type": "create"}` to start a new Thread.
-    /// </exception>
-    /// <exception cref="AnthropicSkillReadBlockedUndecryptableException">
-    /// A custom skill the request names is stored under an encryption key state the
-    /// workspace cannot currently decrypt.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException">
-    /// The compressed request body exceeds the request size limit once decoded.
-    /// </exception>
-    /// <exception cref="AnthropicEnforcedSpendLimitReachedException">
-    /// The organization has crossed the monthly API usage threshold of its API tier.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyUnreachableException">
-    /// The workspace's customer-managed encryption key could not be reached. Retry the
-    /// request; if this continues, check that the key is available in your key
-    /// management service, or contact Anthropic support.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionUnavailableException">
-    /// The compaction could not be completed for a transient server reason. Retry the
-    /// request.
-    /// </exception>
+    /// <exception cref="AnthropicAvailableToolsLimitExceededException"/>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicClaudeCodeVersionTooOldException"/>
+    /// <exception cref="AnthropicCmekKeyDisabledException"/>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
+    /// <exception cref="AnthropicCompactionBlockAmbiguousException"/>
+    /// <exception cref="AnthropicCompactionBlockMisplacedException"/>
+    /// <exception cref="AnthropicCompactionContentMismatchException"/>
+    /// <exception cref="AnthropicCompactionIncompleteTurnException"/>
+    /// <exception cref="AnthropicCompactionNothingToSummarizeException"/>
+    /// <exception cref="AnthropicCompactionSignatureInvalidException"/>
+    /// <exception cref="AnthropicCompactionTooManyToolReferencesException"/>
+    /// <exception cref="AnthropicCompactionToolChangesMismatchException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingInvalidException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException"/>
+    /// <exception cref="AnthropicThreadAlreadyContinuedException"/>
+    /// <exception cref="AnthropicThreadContinueInFlightException"/>
+    /// <exception cref="AnthropicThreadFingerprintMismatchException"/>
+    /// <exception cref="AnthropicThreadUnsupportedRequestException"/>
+    /// <exception cref="AnthropicToolNameConflictException"/>
+    /// <exception cref="AnthropicToolReferenceUnresolvedException"/>
+    /// <exception cref="AnthropicThreadNotFoundException"/>
+    /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
+    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
+    /// <exception cref="AnthropicRampLimitExceededException"/>
+    /// <exception cref="AnthropicCmekKeyUnreachableException"/>
+    /// <exception cref="AnthropicCompactionUnavailableException"/>
     Task<Messages::BetaMessage> Create(
         Messages::MessageCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -170,118 +87,35 @@ public interface IMessageService
     /// <para>Learn more about the Messages API in our [user
     /// guide](https://platform.claude.com/docs/en/get-started)</para>
     /// </summary>
-    /// <exception cref="AnthropicAvailableToolsLimitExceededException">
-    /// The tools available after a message exceed a limit on their number or their
-    /// size.
-    /// </exception>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicClaudeCodeVersionTooOldException">
-    /// The request comes from a Claude Code version older than the minimum that the
-    /// requested model or the organization requires. Update Claude Code, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyDisabledException">
-    /// The workspace's customer-managed encryption key is disabled or revoked.
-    /// Re-enable the key, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyNetworkBlockedException">
-    /// The key management service's network access controls blocked the request to the
-    /// workspace's customer-managed encryption key. The key itself may be healthy.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockAmbiguousException">
-    /// `messages` holds more than one `compaction` block with content. Send only the
-    /// block the conversation returned last.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockMisplacedException">
-    /// The `compaction` block is not the first block of the conversation, or is in a
-    /// `system` message.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionContentMismatchException">
-    /// The `compaction` block's `content` differs from the text its `signature`
-    /// recorded.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionIncompleteTurnException">
-    /// The compaction request ends on an `assistant` turn that is not finished.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionNothingToSummarizeException">
-    /// `messages` holds no `user` or `assistant` content to summarize or adopt.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionSignatureInvalidException">
-    /// The `compaction` block's `signature` does not verify.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionTooManyToolReferencesException">
-    /// The conversation references more distinct tools than a `compaction` block can
-    /// record.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionToolChangesMismatchException">
-    /// The `compaction` block's `tool_changes` differs from what was returned with the
-    /// block.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingInvalidException">
-    /// The request body is not valid for its `Content-Encoding`.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException">
-    /// The request's `Content-Encoding` is not supported.
-    /// </exception>
-    /// <exception cref="AnthropicThreadAlreadyContinuedException">
-    /// The response that `previous_message_id` names has already been continued, and
-    /// each response can be continued only once. Continue from the Thread's most recent
-    /// response `id`.
-    /// </exception>
-    /// <exception cref="AnthropicThreadContinueInFlightException">
-    /// Another request is still continuing from the same `previous_message_id`. Wait
-    /// for it to complete and continue from its response `id`, or replay the full
-    /// conversation with `thread: {"type": "create"}`.
-    /// </exception>
-    /// <exception cref="AnthropicThreadFingerprintMismatchException">
-    /// A field that must stay the same across a Thread's turns differs from the value
-    /// stored with the Thread; the message names each such field. Send the stored
-    /// values, or replay the full conversation with `thread: {"type": "create"}` to
-    /// change them.
-    /// </exception>
-    /// <exception cref="AnthropicThreadUnsupportedRequestException">
-    /// The request combines `thread` with a request field or an organization setting
-    /// that Threads do not support; `unsupported`, when present, names it. Send the
-    /// full conversation without `thread`, or change that field.
-    /// </exception>
-    /// <exception cref="AnthropicToolNameConflictException">
-    /// A tool made available in `messages` takes a name that an available tool of
-    /// another kind, or of another MCP server, already holds.
-    /// </exception>
-    /// <exception cref="AnthropicToolReferenceUnresolvedException">
-    /// A tool change or MCP tool listing references a tool or MCP server that is not
-    /// defined at that position in the conversation.
-    /// </exception>
-    /// <exception cref="AnthropicThreadNotFoundException">
-    /// No usable Thread state was found for `previous_message_id`. Replay the full
-    /// conversation with `thread: {"type": "create"}` to start a new Thread.
-    /// </exception>
-    /// <exception cref="AnthropicSkillReadBlockedUndecryptableException">
-    /// A custom skill the request names is stored under an encryption key state the
-    /// workspace cannot currently decrypt.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException">
-    /// The compressed request body exceeds the request size limit once decoded.
-    /// </exception>
-    /// <exception cref="AnthropicEnforcedSpendLimitReachedException">
-    /// The organization has crossed the monthly API usage threshold of its API tier.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyUnreachableException">
-    /// The workspace's customer-managed encryption key could not be reached. Retry the
-    /// request; if this continues, check that the key is available in your key
-    /// management service, or contact Anthropic support.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionUnavailableException">
-    /// The compaction could not be completed for a transient server reason. Retry the
-    /// request.
-    /// </exception>
+    /// <exception cref="AnthropicAvailableToolsLimitExceededException"/>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicClaudeCodeVersionTooOldException"/>
+    /// <exception cref="AnthropicCmekKeyDisabledException"/>
+    /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
+    /// <exception cref="AnthropicCompactionBlockAmbiguousException"/>
+    /// <exception cref="AnthropicCompactionBlockMisplacedException"/>
+    /// <exception cref="AnthropicCompactionContentMismatchException"/>
+    /// <exception cref="AnthropicCompactionIncompleteTurnException"/>
+    /// <exception cref="AnthropicCompactionNothingToSummarizeException"/>
+    /// <exception cref="AnthropicCompactionSignatureInvalidException"/>
+    /// <exception cref="AnthropicCompactionTooManyToolReferencesException"/>
+    /// <exception cref="AnthropicCompactionToolChangesMismatchException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingInvalidException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException"/>
+    /// <exception cref="AnthropicThreadAlreadyContinuedException"/>
+    /// <exception cref="AnthropicThreadContinueInFlightException"/>
+    /// <exception cref="AnthropicThreadFingerprintMismatchException"/>
+    /// <exception cref="AnthropicThreadUnsupportedRequestException"/>
+    /// <exception cref="AnthropicToolNameConflictException"/>
+    /// <exception cref="AnthropicToolReferenceUnresolvedException"/>
+    /// <exception cref="AnthropicThreadNotFoundException"/>
+    /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
+    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
+    /// <exception cref="AnthropicRampLimitExceededException"/>
+    /// <exception cref="AnthropicCmekKeyUnreachableException"/>
+    /// <exception cref="AnthropicCompactionUnavailableException"/>
     IAsyncEnumerable<Messages::BetaRawMessageStreamEvent> CreateStreaming(
         Messages::MessageCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -296,65 +130,22 @@ public interface IMessageService
     /// <para>Learn more about token counting in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/token-counting)</para>
     /// </summary>
-    /// <exception cref="AnthropicAvailableToolsLimitExceededException">
-    /// The tools available after a message exceed a limit on their number or their
-    /// size.
-    /// </exception>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockAmbiguousException">
-    /// `messages` holds more than one `compaction` block with content. Send only the
-    /// block the conversation returned last.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionBlockMisplacedException">
-    /// The `compaction` block is not the first block of the conversation, or is in a
-    /// `system` message.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionContentMismatchException">
-    /// The `compaction` block's `content` differs from the text its `signature`
-    /// recorded.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionNothingToSummarizeException">
-    /// `messages` holds no `user` or `assistant` content to summarize or adopt.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionSignatureInvalidException">
-    /// The `compaction` block's `signature` does not verify.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionToolChangesMismatchException">
-    /// The `compaction` block's `tool_changes` differs from what was returned with the
-    /// block.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingInvalidException">
-    /// The request body is not valid for its `Content-Encoding`.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException">
-    /// The request's `Content-Encoding` is not supported.
-    /// </exception>
-    /// <exception cref="AnthropicToolNameConflictException">
-    /// A tool made available in `messages` takes a name that an available tool of
-    /// another kind, or of another MCP server, already holds.
-    /// </exception>
-    /// <exception cref="AnthropicToolReferenceUnresolvedException">
-    /// A tool change or MCP tool listing references a tool or MCP server that is not
-    /// defined at that position in the conversation.
-    /// </exception>
-    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException">
-    /// The compressed request body exceeds the request size limit once decoded.
-    /// </exception>
-    /// <exception cref="AnthropicEnforcedSpendLimitReachedException">
-    /// The organization has crossed the monthly API usage threshold of its API tier.
-    /// </exception>
-    /// <exception cref="AnthropicCompactionUnavailableException">
-    /// The compaction could not be completed for a transient server reason. Retry the
-    /// request.
-    /// </exception>
+    /// <exception cref="AnthropicAvailableToolsLimitExceededException"/>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicCompactionBlockAmbiguousException"/>
+    /// <exception cref="AnthropicCompactionBlockMisplacedException"/>
+    /// <exception cref="AnthropicCompactionContentMismatchException"/>
+    /// <exception cref="AnthropicCompactionNothingToSummarizeException"/>
+    /// <exception cref="AnthropicCompactionSignatureInvalidException"/>
+    /// <exception cref="AnthropicCompactionToolChangesMismatchException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingInvalidException"/>
+    /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException"/>
+    /// <exception cref="AnthropicToolNameConflictException"/>
+    /// <exception cref="AnthropicToolReferenceUnresolvedException"/>
+    /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
+    /// <exception cref="AnthropicCompactionUnavailableException"/>
     Task<Messages::BetaMessageTokensCount> CountTokens(
         Messages::MessageCountTokensParams parameters,
         CancellationToken cancellationToken = default

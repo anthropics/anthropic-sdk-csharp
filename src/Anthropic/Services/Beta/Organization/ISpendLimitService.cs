@@ -36,10 +36,7 @@ public interface ISpendLimitService
     /// <summary>
     /// Retrieve a spend limit by ID.
     /// </summary>
-    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException">
-    /// The organization cannot retrieve, set or delete spend limits with an Admin API
-    /// credential.
-    /// </exception>
+    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException"/>
     Task<BetaSpendLimit> Retrieve(
         SpendLimitRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -62,10 +59,7 @@ public interface ISpendLimitService
     /// `organization`, `seat_tier`, `rbac_group`, `organization_service`, `user`;
     /// within a type they come in a fixed order that is not creation order.</para>
     /// </summary>
-    /// <exception cref="AnthropicOrganizationTypeNotSupportedException">
-    /// The endpoint does not support the organization's type. Each endpoint's
-    /// description says which organization types it supports.
-    /// </exception>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException"/>
     Task<SpendLimitListPage> List(
         SpendLimitListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -81,14 +75,8 @@ public interface ISpendLimitService
     /// limits, but not its `usage_tier` limit. Deleting organization and workspace
     /// limits through the API is in an early access preview.</para>
     /// </summary>
-    /// <exception cref="AnthropicBetaBillingFrozenException">
-    /// Anthropic has temporarily disabled billing changes for the user account the
-    /// credential belongs to. Contact support.
-    /// </exception>
-    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException">
-    /// The organization cannot retrieve, set or delete spend limits with an Admin API
-    /// credential.
-    /// </exception>
+    /// <exception cref="AnthropicBetaBillingFrozenException"/>
+    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException"/>
     Task<SpendLimitDeleteResponse> Delete(
         SpendLimitDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -111,14 +99,8 @@ public interface ISpendLimitService
     /// are monthly and always carry an amount. Setting those limits is in an early
     /// access preview. To request access, contact your Anthropic account team.</para>
     /// </summary>
-    /// <exception cref="AnthropicBetaBillingFrozenException">
-    /// Anthropic has temporarily disabled billing changes for the user account the
-    /// credential belongs to. Contact support.
-    /// </exception>
-    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException">
-    /// The organization cannot retrieve, set or delete spend limits with an Admin API
-    /// credential.
-    /// </exception>
+    /// <exception cref="AnthropicBetaBillingFrozenException"/>
+    /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException"/>
     Task<BetaSpendLimit> Set(
         SpendLimitSetParams parameters,
         CancellationToken cancellationToken = default

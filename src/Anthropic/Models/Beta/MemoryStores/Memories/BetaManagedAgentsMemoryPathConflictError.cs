@@ -16,6 +16,9 @@ namespace Anthropic.Models.Beta.MemoryStores.Memories;
 /// and `/notes/todo.md`. To free the path, rename or delete the memory that `conflicting_memory_id`
 /// references, then retry. To change that memory instead of creating a new one,
 /// update it.</para>
+///
+/// <para>To handle the error in code, use `conflicting_path` and `conflicting_memory_id`
+/// instead of `message`.</para>
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
@@ -83,10 +86,6 @@ public sealed record class BetaManagedAgentsMemoryPathConflictError : JsonModel
         }
     }
 
-    /// <summary>
-    /// A human-readable explanation of the conflict. To handle the error in code,
-    /// use `conflicting_path` and `conflicting_memory_id` instead.
-    /// </summary>
     public string? Message
     {
         get

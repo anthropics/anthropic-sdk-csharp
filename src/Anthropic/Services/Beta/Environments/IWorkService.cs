@@ -36,15 +36,8 @@ public interface IWorkService
     ///
     /// <para>Retrieve detailed information about a specific work item.</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaSelfHostedWork> Retrieve(
         WorkRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -65,19 +58,9 @@ public interface IWorkService
     ///
     /// <para>Update work item metadata with merge semantics.</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicBetaInvalidMetadataException">
-    /// `metadata` has too many keys, a key or value that is too long, or a reserved
-    /// key. The message names each problem.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicBetaInvalidMetadataException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaSelfHostedWork> Update(
         WorkUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -139,10 +122,7 @@ public interface IWorkService
     ///
     /// <para>Record a heartbeat for a work item to maintain the lease.</para>
     /// </summary>
-    /// <exception cref="AnthropicBetaHeartbeatPreconditionFailedException">
-    /// `expected_last_heartbeat` does not match the stored heartbeat, so another worker
-    /// may hold the lease.
-    /// </exception>
+    /// <exception cref="AnthropicBetaHeartbeatPreconditionFailedException"/>
     Task<BetaSelfHostedWorkHeartbeatResponse> Heartbeat(
         WorkHeartbeatParams parameters,
         CancellationToken cancellationToken = default
@@ -178,15 +158,8 @@ public interface IWorkService
     /// <summary>
     /// Get statistics about the work queue for an environment.
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaSelfHostedWorkQueueStats> Stats(
         WorkStatsParams parameters,
         CancellationToken cancellationToken = default
@@ -207,15 +180,8 @@ public interface IWorkService
     ///
     /// <para>Stop a work item, initiating graceful or forced shutdown.</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BetaSelfHostedWork> Stop(
         WorkStopParams parameters,
         CancellationToken cancellationToken = default

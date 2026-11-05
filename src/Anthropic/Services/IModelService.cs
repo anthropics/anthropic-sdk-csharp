@@ -33,15 +33,8 @@ public interface IModelService
     /// <para>The Models API response can be used to determine information about a
     /// specific model or resolve a model alias to a model ID.</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<ModelInfo> Retrieve(
         ModelRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -60,15 +53,8 @@ public interface IModelService
     /// <para>The Models API response can be used to determine which models are
     /// available for use in the API. More recently released models are listed first.</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<ModelListPage> List(
         ModelListParams? parameters = null,
         CancellationToken cancellationToken = default

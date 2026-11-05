@@ -52,4 +52,17 @@ public class UserServiceTest : TestBase
             );
         user.Validate();
     }
+
+    [Fact]
+    public async Task SignOut_Works()
+    {
+        var betaOrganizationUser = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.Users.SignOut(
+                "user_id",
+                new(),
+                TestContext.Current.CancellationToken
+            );
+        betaOrganizationUser.Validate();
+    }
 }

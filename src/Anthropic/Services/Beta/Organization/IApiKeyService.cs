@@ -45,12 +45,8 @@ public interface IApiKeyService
     /// <summary>
     /// Update API Key
     /// </summary>
-    /// <exception cref="ApiKeys::AnthropicOrgApiKeyLimitExceededException">
-    /// The organization has reached its limit of active API keys.
-    /// </exception>
-    /// <exception cref="ApiKeys::AnthropicWorkspaceApiKeyLimitExceededException">
-    /// The workspace has reached its limit of active API keys.
-    /// </exception>
+    /// <exception cref="ApiKeys::AnthropicOrgApiKeyLimitExceededException"/>
+    /// <exception cref="ApiKeys::AnthropicWorkspaceApiKeyLimitExceededException"/>
     Task<BetaApiKey> Update(
         ApiKeyUpdateParams parameters,
         CancellationToken cancellationToken = default

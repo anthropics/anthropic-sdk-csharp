@@ -11,6 +11,7 @@ using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
+using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Organization;
@@ -62,6 +63,22 @@ public class AnthropicExceptionFactory
             },
         [(400, "cannot_remove_last_member")] = (statusCode, responseBody, response) =>
             new AnthropicCannotRemoveLastMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "cannot_sign_out_primary_owner")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutPrimaryOwnerException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "cannot_sign_out_self")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutSelfException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -188,6 +205,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "external_key_validation_failed")] = (statusCode, responseBody, response) =>
+            new AnthropicExternalKeyValidationFailedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "external_key_validation_timed_out")] = (statusCode, responseBody, response) =>
+            new AnthropicExternalKeyValidationTimedOutException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "file_not_downloadable")] = (statusCode, responseBody, response) =>
             new AnthropicFileNotDownloadableException()
             {
@@ -238,6 +271,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "org_member_limit_exceeded")] = (statusCode, responseBody, response) =>
             new AnthropicOrgMemberLimitExceededException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "organization_not_enrolled_in_beta")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaOrganizationNotEnrolledInBetaException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -420,6 +461,38 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(403, "cannot_sign_out_managed_member")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutManagedMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_membership_admin")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutMembershipAdminException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_owner")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutOwnerException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_privileged_member")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutPrivilegedMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(403, "claude_tag_writes_not_enabled")] = (statusCode, responseBody, response) =>
             new AnthropicBetaClaudeTagWritesNotEnabledException()
             {
@@ -586,6 +659,14 @@ public class AnthropicExceptionFactory
             },
         [(429, "enforced_spend_limit_reached")] = (statusCode, responseBody, response) =>
             new AnthropicEnforcedSpendLimitReachedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(429, "ramp_limit_exceeded")] = (statusCode, responseBody, response) =>
+            new AnthropicRampLimitExceededException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

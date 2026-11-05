@@ -11,6 +11,10 @@ namespace Anthropic.Models;
 [JsonConverter(typeof(JsonModelConverter<InvalidRequestError, InvalidRequestErrorFromRaw>))]
 public sealed record class InvalidRequestError : JsonModel
 {
+    /// <summary>
+    /// A human-readable explanation of the error. Its wording can change, so don't
+    /// match on it.
+    /// </summary>
     public required string Message
     {
         get
@@ -21,6 +25,9 @@ public sealed record class InvalidRequestError : JsonModel
         init { this._rawData.Set("message", value); }
     }
 
+    /// <summary>
+    /// The broad category of the error.
+    /// </summary>
     public JsonElement Type
     {
         get

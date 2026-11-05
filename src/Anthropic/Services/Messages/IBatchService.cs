@@ -38,22 +38,10 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyDisabledException">
-    /// The workspace's customer-managed encryption key is disabled or revoked.
-    /// Re-enable the key, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
-    /// <exception cref="AnthropicEnforcedSpendLimitReachedException">
-    /// The organization has crossed the monthly API usage threshold of its API tier.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicCmekKeyDisabledException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     Task<MessageBatch> Create(
         BatchCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -67,15 +55,8 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<MessageBatch> Retrieve(
         BatchRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -95,15 +76,8 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<BatchListPage> List(
         BatchListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -118,15 +92,8 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<DeletedMessageBatch> Delete(
         BatchDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -153,15 +120,8 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     Task<MessageBatch> Cancel(
         BatchCancelParams parameters,
         CancellationToken cancellationToken = default
@@ -184,19 +144,9 @@ public interface IBatchService
     /// <para>Learn more about the Message Batches API in our [user
     /// guide](https://platform.claude.com/docs/en/build-with-claude/batch-processing)</para>
     /// </summary>
-    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException">
-    /// The API key belongs to the Claude Code workspace, and the user who created it is
-    /// no longer a member of the organization or of that workspace.
-    /// </exception>
-    /// <exception cref="AnthropicCmekKeyDisabledException">
-    /// The workspace's customer-managed encryption key is disabled or revoked.
-    /// Re-enable the key, then retry.
-    /// </exception>
-    /// <exception cref="AnthropicOrganizationOnHoldException">
-    /// Anthropic has disabled the organization for trust and safety reasons. An
-    /// organization disabled for any other reason, such as billing, does not get this
-    /// code. `appeal_url`, when present, is where the organization can appeal.
-    /// </exception>
+    /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
+    /// <exception cref="AnthropicCmekKeyDisabledException"/>
+    /// <exception cref="AnthropicOrganizationOnHoldException"/>
     IAsyncEnumerable<MessageBatchIndividualResponse> ResultsStreaming(
         BatchResultsParams parameters,
         CancellationToken cancellationToken = default

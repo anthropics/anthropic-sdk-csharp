@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Exceptions;
@@ -112,7 +113,9 @@ public record class ApiEnum<TRaw, TEnum>
         return 0;
     }
 
-    public static implicit operator TRaw(ApiEnum<TRaw, TEnum> value) => value.Raw();
+    [return: NotNullIfNotNull("value")]
+    public static implicit operator TRaw?(ApiEnum<TRaw, TEnum>? value) =>
+        value is null ? default : value.Raw();
 
     public static implicit operator TEnum(ApiEnum<TRaw, TEnum> value) => value.Value();
 
