@@ -35,10 +35,6 @@ public sealed record class BetaTargetStoreHeldError : JsonModel
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// A human-readable explanation of why the memory store can't be used yet, with
-    /// the ID of the dream that is using it when the server can identify it.
-    /// </summary>
     public string? Message
     {
         get

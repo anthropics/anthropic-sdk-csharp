@@ -37,9 +37,6 @@ public sealed record class BetaManagedAgentsMemoryPreconditionFailedError : Json
         init { this._rawData.Set("type", value); }
     }
 
-    /// <summary>
-    /// A human-readable explanation of why the precondition failed.
-    /// </summary>
     public string? Message
     {
         get
