@@ -351,6 +351,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ExternalKeyValidationFailedValidationWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationFailedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void ExternalKeyValidationTimedOutValidationWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationTimedOutErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void KeyProfileMismatchValidationWorks()
     {
         ErrorDetails value = new KeyProfileMismatchErrorDetails();
@@ -1161,6 +1175,32 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ExternalKeyValidationFailedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationFailedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ExternalKeyValidationTimedOutSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationTimedOutErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void KeyProfileMismatchSerializationRoundtripWorks()
     {
         ErrorDetails value = new KeyProfileMismatchErrorDetails();
@@ -1869,6 +1909,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ExternalKeyValidationFailedErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationFailedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalKeyValidationFailed, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void ExternalKeyValidationTimedOutErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalKeyValidationTimedOutErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalKeyValidationTimedOut, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void KeyProfileMismatchErrorCodeWorks()
     {
         ErrorDetails value = new KeyProfileMismatchErrorDetails();
@@ -2203,6 +2257,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RbacGroupOwnerAccessUnconfirmed)]
     [InlineData(ErrorDetailsErrorCode.CannotRemoveLastMember)]
     [InlineData(ErrorDetailsErrorCode.ConcurrentMembershipChange)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationFailed)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationTimedOut)]
     [InlineData(ErrorDetailsErrorCode.KeyProfileMismatch)]
     [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
@@ -2296,6 +2352,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RbacGroupOwnerAccessUnconfirmed)]
     [InlineData(ErrorDetailsErrorCode.CannotRemoveLastMember)]
     [InlineData(ErrorDetailsErrorCode.ConcurrentMembershipChange)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationFailed)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationTimedOut)]
     [InlineData(ErrorDetailsErrorCode.KeyProfileMismatch)]
     [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]

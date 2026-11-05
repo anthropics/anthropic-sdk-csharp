@@ -39,6 +39,8 @@ public interface IWorkspaceService
     /// <summary>
     /// Create Workspace
     /// </summary>
+    /// <exception cref="AnthropicExternalKeyValidationFailedException"/>
+    /// <exception cref="AnthropicExternalKeyValidationTimedOutException"/>
     /// <exception cref="AnthropicKeyProfileMismatchException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
@@ -66,6 +68,8 @@ public interface IWorkspaceService
     /// <summary>
     /// Update Workspace
     /// </summary>
+    /// <exception cref="AnthropicExternalKeyValidationFailedException"/>
+    /// <exception cref="AnthropicExternalKeyValidationTimedOutException"/>
     /// <exception cref="AnthropicKeyProfileMismatchException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>

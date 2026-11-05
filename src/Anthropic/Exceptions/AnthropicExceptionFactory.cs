@@ -188,6 +188,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "external_key_validation_failed")] = (statusCode, responseBody, response) =>
+            new AnthropicExternalKeyValidationFailedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "external_key_validation_timed_out")] = (statusCode, responseBody, response) =>
+            new AnthropicExternalKeyValidationTimedOutException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "file_not_downloadable")] = (statusCode, responseBody, response) =>
             new AnthropicFileNotDownloadableException()
             {

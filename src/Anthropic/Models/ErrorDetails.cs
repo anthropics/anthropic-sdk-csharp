@@ -129,6 +129,10 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.CannotRemoveLastMember,
                 ConcurrentMembershipChangeErrorDetails _ =>
                     ErrorDetailsErrorCode.ConcurrentMembershipChange,
+                ExternalKeyValidationFailedErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalKeyValidationFailed,
+                ExternalKeyValidationTimedOutErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalKeyValidationTimedOut,
                 KeyProfileMismatchErrorDetails _ => ErrorDetailsErrorCode.KeyProfileMismatch,
                 WorkspacePolicyViolationErrorDetails _ =>
                     ErrorDetailsErrorCode.WorkspacePolicyViolation,
@@ -233,6 +237,8 @@ public record class ErrorDetails : ModelBase
                 RbacGroupOwnerAccessUnconfirmedErrorDetails _ => null,
                 CannotRemoveLastMemberErrorDetails _ => null,
                 ConcurrentMembershipChangeErrorDetails _ => null,
+                ExternalKeyValidationFailedErrorDetails _ => null,
+                ExternalKeyValidationTimedOutErrorDetails _ => null,
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
@@ -317,6 +323,8 @@ public record class ErrorDetails : ModelBase
                 RbacGroupOwnerAccessUnconfirmedErrorDetails _ => null,
                 CannotRemoveLastMemberErrorDetails _ => null,
                 ConcurrentMembershipChangeErrorDetails _ => null,
+                ExternalKeyValidationFailedErrorDetails _ => null,
+                ExternalKeyValidationTimedOutErrorDetails _ => null,
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
@@ -404,6 +412,8 @@ public record class ErrorDetails : ModelBase
                 RbacGroupOwnerAccessUnconfirmedErrorDetails _ => null,
                 CannotRemoveLastMemberErrorDetails _ => null,
                 ConcurrentMembershipChangeErrorDetails _ => null,
+                ExternalKeyValidationFailedErrorDetails _ => null,
+                ExternalKeyValidationTimedOutErrorDetails _ => null,
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
@@ -779,6 +789,21 @@ public record class ErrorDetails : ModelBase
     }
 
     public ErrorDetails(ConcurrentMembershipChangeErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(ExternalKeyValidationFailedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        ExternalKeyValidationTimedOutErrorDetails value,
+        JsonElement? element = null
+    )
     {
         this.Value = value;
         this._element = element;
@@ -2050,6 +2075,52 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ExternalKeyValidationFailedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickExternalKeyValidationFailed(out var value)) {
+    ///     // `value` is of type `ExternalKeyValidationFailedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickExternalKeyValidationFailed(
+        [NotNullWhen(true)] out ExternalKeyValidationFailedErrorDetails? value
+    )
+    {
+        value = this.Value as ExternalKeyValidationFailedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ExternalKeyValidationTimedOutErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickExternalKeyValidationTimedOut(out var value)) {
+    ///     // `value` is of type `ExternalKeyValidationTimedOutErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickExternalKeyValidationTimedOut(
+        [NotNullWhen(true)] out ExternalKeyValidationTimedOutErrorDetails? value
+    )
+    {
+        value = this.Value as ExternalKeyValidationTimedOutErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="KeyProfileMismatchErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2729,6 +2800,8 @@ public record class ErrorDetails : ModelBase
     ///     (RbacGroupOwnerAccessUnconfirmedErrorDetails value) =&gt; {...},
     ///     (CannotRemoveLastMemberErrorDetails value) =&gt; {...},
     ///     (ConcurrentMembershipChangeErrorDetails value) =&gt; {...},
+    ///     (ExternalKeyValidationFailedErrorDetails value) =&gt; {...},
+    ///     (ExternalKeyValidationTimedOutErrorDetails value) =&gt; {...},
     ///     (KeyProfileMismatchErrorDetails value) =&gt; {...},
     ///     (WorkspacePolicyViolationErrorDetails value) =&gt; {...},
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
@@ -2807,6 +2880,8 @@ public record class ErrorDetails : ModelBase
         Action<RbacGroupOwnerAccessUnconfirmedErrorDetails> rbacGroupOwnerAccessUnconfirmed,
         Action<CannotRemoveLastMemberErrorDetails> cannotRemoveLastMember,
         Action<ConcurrentMembershipChangeErrorDetails> concurrentMembershipChange,
+        Action<ExternalKeyValidationFailedErrorDetails> externalKeyValidationFailed,
+        Action<ExternalKeyValidationTimedOutErrorDetails> externalKeyValidationTimedOut,
         Action<KeyProfileMismatchErrorDetails> keyProfileMismatch,
         Action<WorkspacePolicyViolationErrorDetails> workspacePolicyViolation,
         Action<ExternalKeyChangedErrorDetails> externalKeyChanged,
@@ -2976,6 +3051,12 @@ public record class ErrorDetails : ModelBase
             case ConcurrentMembershipChangeErrorDetails value:
                 concurrentMembershipChange(value);
                 break;
+            case ExternalKeyValidationFailedErrorDetails value:
+                externalKeyValidationFailed(value);
+                break;
+            case ExternalKeyValidationTimedOutErrorDetails value:
+                externalKeyValidationTimedOut(value);
+                break;
             case KeyProfileMismatchErrorDetails value:
                 keyProfileMismatch(value);
                 break;
@@ -3125,6 +3206,8 @@ public record class ErrorDetails : ModelBase
     ///     (RbacGroupOwnerAccessUnconfirmedErrorDetails value) =&gt; {...},
     ///     (CannotRemoveLastMemberErrorDetails value) =&gt; {...},
     ///     (ConcurrentMembershipChangeErrorDetails value) =&gt; {...},
+    ///     (ExternalKeyValidationFailedErrorDetails value) =&gt; {...},
+    ///     (ExternalKeyValidationTimedOutErrorDetails value) =&gt; {...},
     ///     (KeyProfileMismatchErrorDetails value) =&gt; {...},
     ///     (WorkspacePolicyViolationErrorDetails value) =&gt; {...},
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
@@ -3209,6 +3292,8 @@ public record class ErrorDetails : ModelBase
         Func<RbacGroupOwnerAccessUnconfirmedErrorDetails, T> rbacGroupOwnerAccessUnconfirmed,
         Func<CannotRemoveLastMemberErrorDetails, T> cannotRemoveLastMember,
         Func<ConcurrentMembershipChangeErrorDetails, T> concurrentMembershipChange,
+        Func<ExternalKeyValidationFailedErrorDetails, T> externalKeyValidationFailed,
+        Func<ExternalKeyValidationTimedOutErrorDetails, T> externalKeyValidationTimedOut,
         Func<KeyProfileMismatchErrorDetails, T> keyProfileMismatch,
         Func<WorkspacePolicyViolationErrorDetails, T> workspacePolicyViolation,
         Func<ExternalKeyChangedErrorDetails, T> externalKeyChanged,
@@ -3331,6 +3416,8 @@ public record class ErrorDetails : ModelBase
             ),
             CannotRemoveLastMemberErrorDetails value => cannotRemoveLastMember(value),
             ConcurrentMembershipChangeErrorDetails value => concurrentMembershipChange(value),
+            ExternalKeyValidationFailedErrorDetails value => externalKeyValidationFailed(value),
+            ExternalKeyValidationTimedOutErrorDetails value => externalKeyValidationTimedOut(value),
             KeyProfileMismatchErrorDetails value => keyProfileMismatch(value),
             WorkspacePolicyViolationErrorDetails value => workspacePolicyViolation(value),
             ExternalKeyChangedErrorDetails value => externalKeyChanged(value),
@@ -3536,6 +3623,12 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(ConcurrentMembershipChangeErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(ExternalKeyValidationFailedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(ExternalKeyValidationTimedOutErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(KeyProfileMismatchErrorDetails value) =>
         new(value);
 
@@ -3696,6 +3789,8 @@ public record class ErrorDetails : ModelBase
             (rbacGroupOwnerAccessUnconfirmed) => rbacGroupOwnerAccessUnconfirmed.Validate(),
             (cannotRemoveLastMember) => cannotRemoveLastMember.Validate(),
             (concurrentMembershipChange) => concurrentMembershipChange.Validate(),
+            (externalKeyValidationFailed) => externalKeyValidationFailed.Validate(),
+            (externalKeyValidationTimedOut) => externalKeyValidationTimedOut.Validate(),
             (keyProfileMismatch) => keyProfileMismatch.Validate(),
             (workspacePolicyViolation) => workspacePolicyViolation.Validate(),
             (externalKeyChanged) => externalKeyChanged.Validate(),
@@ -3798,33 +3893,35 @@ public record class ErrorDetails : ModelBase
             RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 43,
             CannotRemoveLastMemberErrorDetails _ => 44,
             ConcurrentMembershipChangeErrorDetails _ => 45,
-            KeyProfileMismatchErrorDetails _ => 46,
-            WorkspacePolicyViolationErrorDetails _ => 47,
-            ExternalKeyChangedErrorDetails _ => 48,
-            WorkspaceMemberLimitExceededErrorDetails _ => 49,
-            OrganizationTypeNotSupportedErrorDetails _ => 50,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 51,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 52,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 53,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 54,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 55,
-            Environments::BetaInvalidMetadataErrorDetails _ => 56,
-            BetaBillingFrozenErrorDetails _ => 57,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 58,
-            BetaUnsupportedCharsetErrorDetails _ => 59,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 60,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 61,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 62,
-            Plugins::BetaScanFailedErrorDetails _ => 63,
-            Plugins::BetaScanPendingErrorDetails _ => 64,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 65,
-            BetaApiKeyScopeMissingErrorDetails _ => 66,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 67,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 68,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 69,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 70,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 71,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 72,
+            ExternalKeyValidationFailedErrorDetails _ => 46,
+            ExternalKeyValidationTimedOutErrorDetails _ => 47,
+            KeyProfileMismatchErrorDetails _ => 48,
+            WorkspacePolicyViolationErrorDetails _ => 49,
+            ExternalKeyChangedErrorDetails _ => 50,
+            WorkspaceMemberLimitExceededErrorDetails _ => 51,
+            OrganizationTypeNotSupportedErrorDetails _ => 52,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 53,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 54,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 55,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 56,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 57,
+            Environments::BetaInvalidMetadataErrorDetails _ => 58,
+            BetaBillingFrozenErrorDetails _ => 59,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 60,
+            BetaUnsupportedCharsetErrorDetails _ => 61,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 62,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 63,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 64,
+            Plugins::BetaScanFailedErrorDetails _ => 65,
+            Plugins::BetaScanPendingErrorDetails _ => 66,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 67,
+            BetaApiKeyScopeMissingErrorDetails _ => 68,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 69,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 70,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 71,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 72,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 73,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 74,
             _ => -1,
         };
     }
@@ -4809,6 +4906,48 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "external_key_validation_failed":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<ExternalKeyValidationFailedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_key_validation_timed_out":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<ExternalKeyValidationTimedOutErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "key_profile_mismatch":
             {
                 try
@@ -5439,6 +5578,8 @@ public enum ErrorDetailsErrorCode
     RbacGroupOwnerAccessUnconfirmed,
     CannotRemoveLastMember,
     ConcurrentMembershipChange,
+    ExternalKeyValidationFailed,
+    ExternalKeyValidationTimedOut,
     KeyProfileMismatch,
     WorkspacePolicyViolation,
     ExternalKeyChanged,
@@ -5534,6 +5675,9 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.RbacGroupOwnerAccessUnconfirmed,
             "cannot_remove_last_member" => ErrorDetailsErrorCode.CannotRemoveLastMember,
             "concurrent_membership_change" => ErrorDetailsErrorCode.ConcurrentMembershipChange,
+            "external_key_validation_failed" => ErrorDetailsErrorCode.ExternalKeyValidationFailed,
+            "external_key_validation_timed_out" =>
+                ErrorDetailsErrorCode.ExternalKeyValidationTimedOut,
             "key_profile_mismatch" => ErrorDetailsErrorCode.KeyProfileMismatch,
             "workspace_policy_violation" => ErrorDetailsErrorCode.WorkspacePolicyViolation,
             "external_key_changed" => ErrorDetailsErrorCode.ExternalKeyChanged,
@@ -5640,6 +5784,10 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "rbac_group_owner_access_unconfirmed",
                 ErrorDetailsErrorCode.CannotRemoveLastMember => "cannot_remove_last_member",
                 ErrorDetailsErrorCode.ConcurrentMembershipChange => "concurrent_membership_change",
+                ErrorDetailsErrorCode.ExternalKeyValidationFailed =>
+                    "external_key_validation_failed",
+                ErrorDetailsErrorCode.ExternalKeyValidationTimedOut =>
+                    "external_key_validation_timed_out",
                 ErrorDetailsErrorCode.KeyProfileMismatch => "key_profile_mismatch",
                 ErrorDetailsErrorCode.WorkspacePolicyViolation => "workspace_policy_violation",
                 ErrorDetailsErrorCode.ExternalKeyChanged => "external_key_changed",
