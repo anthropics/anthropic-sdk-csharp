@@ -4141,6 +4141,80 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(25L, response.Usage.CachedInputTokenCount);
     }
 
+    [Theory]
+    [InlineData(148L, 100L)]
+    // A TTL that wrote nothing is left out, like the other zero counts.
+    [InlineData(248L, null)]
+    [InlineData(null, 248L)]
+    public async Task GetResponseAsync_WithCacheCreationBreakdown_ReportsWritesPerTtl(
+        long? expectedFiveMinuteTokens,
+        long? expectedOneHourTokens
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Test with caching"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_cache_ttl_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response with cache writes"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 20,
+                    "cache_creation_input_tokens": 248,
+                    "cache_read_input_tokens": 25,
+                    "cache_creation": {
+                        "ephemeral_5m_input_tokens": {{expectedFiveMinuteTokens ?? 0}},
+                        "ephemeral_1h_input_tokens": {{expectedOneHourTokens ?? 0}}
+                    }
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Test with caching",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response.Usage);
+        Assert.Equal(248L, GetAdditionalCount(response.Usage, "CacheCreationInputTokens"));
+        Assert.Equal(
+            expectedFiveMinuteTokens,
+            GetAdditionalCount(response.Usage, "Ephemeral5mInputTokens")
+        );
+        Assert.Equal(
+            expectedOneHourTokens,
+            GetAdditionalCount(response.Usage, "Ephemeral1hInputTokens")
+        );
+    }
+
+    private static long? GetAdditionalCount(UsageDetails usage, string key) =>
+        usage.AdditionalCounts is { } counts && counts.TryGetValue(key, out long count)
+            ? count
+            : null;
+
     [Fact]
     public async Task GetResponseAsync_WithNullFinishReason()
     {
@@ -6882,6 +6956,85 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(83, usageContent.Details.InputTokenCount);
         Assert.Equal(12, usageContent.Details.OutputTokenCount);
         Assert.Equal(95, usageContent.Details.TotalTokenCount);
+    }
+
+    [Theory]
+    // The terminal message_delta usually leaves the cache fields out.
+    [InlineData("""{"output_tokens":12}""", 248L)]
+    // With server tools it carries the cumulative cache totals, but never the breakdown,
+    // so the breakdown stays the one message_start reported.
+    [InlineData(
+        """{"input_tokens":8,"cache_creation_input_tokens":300,"cache_read_input_tokens":25,"output_tokens":12}""",
+        300L
+    )]
+    public async Task GetStreamingResponseAsync_WithCacheCreationBreakdown_KeepsStartBreakdown(
+        string deltaUsage,
+        long expectedCacheCreationTokens
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: $$$$"""
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"cache_creation_input_tokens":248,"cache_read_input_tokens":25,"cache_creation":{"ephemeral_5m_input_tokens":148,"ephemeral_1h_input_tokens":100},"output_tokens":1}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{{{{deltaUsage}}}}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+
+        Assert.NotNull(usageContent.Details.AdditionalCounts);
+        Assert.Equal(
+            expectedCacheCreationTokens,
+            usageContent.Details.AdditionalCounts["CacheCreationInputTokens"]
+        );
+        Assert.Equal(148L, usageContent.Details.AdditionalCounts["Ephemeral5mInputTokens"]);
+        Assert.Equal(100L, usageContent.Details.AdditionalCounts["Ephemeral1hInputTokens"]);
     }
 
     [Theory]
