@@ -37,7 +37,6 @@ public static class AnthropicBetaClientExtensions
     /// When this tool is included in <see cref="ChatOptions.Tools"/>, the <see cref="IChatClient"/> will automatically:
     /// <list type="bullet">
     /// <item><description>Configure the container with the skill(s)</description></item>
-    /// <item><description>Add the required beta headers (<c>code-execution-2025-08-25</c> and <c>skills-2025-10-02</c>)</description></item>
     /// <item><description>Add the code execution tool if not already present</description></item>
     /// </list>
     /// </para>
@@ -1354,9 +1353,6 @@ public static class AnthropicBetaClientExtensions
                         switch (tool)
                         {
                             case BetaSkillsParamsAITool skillTool:
-                                (betaHeaders ??= []).Add("skills-2025-10-02");
-                                betaHeaders.Add("code-execution-2025-08-25");
-
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
 
@@ -1436,7 +1432,6 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case HostedCodeInterpreterTool:
-                                (betaHeaders ??= []).Add("code-execution-2025-08-25");
                                 (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                                 break;
 
@@ -1484,7 +1479,6 @@ public static class AnthropicBetaClientExtensions
                         bool hasCodeExecutionTool = createdTools?.Any(IsCodeExecutionTool) == true;
                         if (!hasCodeExecutionTool)
                         {
-                            (betaHeaders ??= []).Add("code-execution-2025-08-25");
                             (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                         }
                     }

@@ -1538,7 +1538,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
-    public async Task GetResponseAsync_WithHostedTools_AddsBetaHeaders()
+    public async Task GetResponseAsync_WithHostedTools_AddsOnlyNeededBetaHeaders()
     {
         IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
@@ -1606,8 +1606,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
         string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
-        Assert.Contains("code-execution-2025-08-25", betas);
-        Assert.Contains("mcp-client-2025-11-20", betas);
+        // Code execution needs no beta header.
+        Assert.Equal(["mcp-client-2025-11-20"], betas);
     }
 
     [Fact]
@@ -1669,7 +1669,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 MaxTokens = 1024,
                 Model = "claude-haiku-4-5",
                 Messages = [],
-                Betas = ["custom-beta-feature", "code-execution-2025-08-25"],
+                Betas = ["custom-beta-feature", "mcp-client-2025-11-20"],
             },
             Tools =
             [
@@ -1686,15 +1686,15 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
         string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
-        Assert.Equal(3, betas.Length);
+        Assert.Equal(2, betas.Length);
         Assert.Contains("custom-beta-feature", betas);
-        Assert.Contains("code-execution-2025-08-25", betas);
         Assert.Contains("mcp-client-2025-11-20", betas);
     }
 
     [Fact]
     public async Task GetResponseAsync_WithSkills_AddsCurrentCodeExecutionTool()
     {
+        IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
             expectedRequest: """
             {
@@ -1721,7 +1721,11 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             }
             """,
             actualResponse: SkillsResponse
-        );
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
 
         IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
 
@@ -1733,6 +1737,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
+        // Neither Skills nor code execution needs a beta header.
+        Assert.Null(capturedBetaHeaders);
     }
 
     [Fact]
