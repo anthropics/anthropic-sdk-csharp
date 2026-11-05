@@ -9,6 +9,7 @@ using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.SpendLimits;
+using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Invites;
@@ -153,6 +154,18 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.HeartbeatPreconditionFailed,
                 Environments::BetaInvalidMetadataErrorDetails _ =>
                     ErrorDetailsErrorCode.InvalidMetadata,
+                BetaCannotSignOutPrimaryOwnerErrorDetails _ =>
+                    ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
+                BetaCannotSignOutSelfErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutSelf,
+                BetaOrganizationNotEnrolledInBetaErrorDetails _ =>
+                    ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta,
+                BetaCannotSignOutManagedMemberErrorDetails _ =>
+                    ErrorDetailsErrorCode.CannotSignOutManagedMember,
+                BetaCannotSignOutMembershipAdminErrorDetails _ =>
+                    ErrorDetailsErrorCode.CannotSignOutMembershipAdmin,
+                BetaCannotSignOutOwnerErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutOwner,
+                BetaCannotSignOutPrivilegedMemberErrorDetails _ =>
+                    ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
                 BetaBillingFrozenErrorDetails _ => ErrorDetailsErrorCode.BillingFrozen,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ =>
                     ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
@@ -250,6 +263,13 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
+                BetaCannotSignOutSelfErrorDetails _ => null,
+                BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
+                BetaCannotSignOutManagedMemberErrorDetails _ => null,
+                BetaCannotSignOutMembershipAdminErrorDetails _ => null,
+                BetaCannotSignOutOwnerErrorDetails _ => null,
+                BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
                 BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
@@ -336,6 +356,13 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
+                BetaCannotSignOutSelfErrorDetails _ => null,
+                BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
+                BetaCannotSignOutManagedMemberErrorDetails _ => null,
+                BetaCannotSignOutMembershipAdminErrorDetails _ => null,
+                BetaCannotSignOutOwnerErrorDetails _ => null,
+                BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
                 BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
@@ -425,6 +452,13 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
+                BetaCannotSignOutSelfErrorDetails _ => null,
+                BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
+                BetaCannotSignOutManagedMemberErrorDetails _ => null,
+                BetaCannotSignOutMembershipAdminErrorDetails _ => null,
+                BetaCannotSignOutOwnerErrorDetails _ => null,
+                BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
                 BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
@@ -886,6 +920,63 @@ public record class ErrorDetails : ModelBase
 
     public ErrorDetails(
         Environments::BetaInvalidMetadataErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaCannotSignOutPrimaryOwnerErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaCannotSignOutSelfErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaOrganizationNotEnrolledInBetaErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaCannotSignOutManagedMemberErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaCannotSignOutMembershipAdminErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaCannotSignOutOwnerErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaCannotSignOutPrivilegedMemberErrorDetails value,
         JsonElement? element = null
     )
     {
@@ -2374,6 +2465,167 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutPrimaryOwnerErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutPrimaryOwner(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutPrimaryOwnerErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutPrimaryOwner(
+        [NotNullWhen(true)] out BetaCannotSignOutPrimaryOwnerErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutPrimaryOwnerErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutSelfErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutSelf(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutSelfErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutSelf(
+        [NotNullWhen(true)] out BetaCannotSignOutSelfErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutSelfErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaOrganizationNotEnrolledInBetaErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaOrganizationNotEnrolledInBeta(out var value)) {
+    ///     // `value` is of type `BetaOrganizationNotEnrolledInBetaErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaOrganizationNotEnrolledInBeta(
+        [NotNullWhen(true)] out BetaOrganizationNotEnrolledInBetaErrorDetails? value
+    )
+    {
+        value = this.Value as BetaOrganizationNotEnrolledInBetaErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutManagedMemberErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutManagedMember(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutManagedMemberErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutManagedMember(
+        [NotNullWhen(true)] out BetaCannotSignOutManagedMemberErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutManagedMemberErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutMembershipAdminErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutMembershipAdmin(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutMembershipAdminErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutMembershipAdmin(
+        [NotNullWhen(true)] out BetaCannotSignOutMembershipAdminErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutMembershipAdminErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutOwnerErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutOwner(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutOwnerErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutOwner(
+        [NotNullWhen(true)] out BetaCannotSignOutOwnerErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutOwnerErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCannotSignOutPrivilegedMemberErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCannotSignOutPrivilegedMember(out var value)) {
+    ///     // `value` is of type `BetaCannotSignOutPrivilegedMemberErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCannotSignOutPrivilegedMember(
+        [NotNullWhen(true)] out BetaCannotSignOutPrivilegedMemberErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCannotSignOutPrivilegedMemberErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaBillingFrozenErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2813,6 +3065,13 @@ public record class ErrorDetails : ModelBase
     ///     (Environments::BetaEnvironmentUpdateDisabledErrorDetails value) =&gt; {...},
     ///     (BetaHeartbeatPreconditionFailedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidMetadataErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
+    ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutManagedMemberErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
     ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
@@ -2893,6 +3152,13 @@ public record class ErrorDetails : ModelBase
         Action<Environments::BetaEnvironmentUpdateDisabledErrorDetails> betaEnvironmentUpdateDisabled,
         Action<BetaHeartbeatPreconditionFailedErrorDetails> betaHeartbeatPreconditionFailed,
         Action<Environments::BetaInvalidMetadataErrorDetails> betaInvalidMetadata,
+        Action<BetaCannotSignOutPrimaryOwnerErrorDetails> betaCannotSignOutPrimaryOwner,
+        Action<BetaCannotSignOutSelfErrorDetails> betaCannotSignOutSelf,
+        Action<BetaOrganizationNotEnrolledInBetaErrorDetails> betaOrganizationNotEnrolledInBeta,
+        Action<BetaCannotSignOutManagedMemberErrorDetails> betaCannotSignOutManagedMember,
+        Action<BetaCannotSignOutMembershipAdminErrorDetails> betaCannotSignOutMembershipAdmin,
+        Action<BetaCannotSignOutOwnerErrorDetails> betaCannotSignOutOwner,
+        Action<BetaCannotSignOutPrivilegedMemberErrorDetails> betaCannotSignOutPrivilegedMember,
         Action<BetaBillingFrozenErrorDetails> betaBillingFrozen,
         Action<BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails> betaSpendLimitsAdminApiWritesNotEnabled,
         Action<BetaUnsupportedCharsetErrorDetails> betaUnsupportedCharset,
@@ -3090,6 +3356,27 @@ public record class ErrorDetails : ModelBase
             case Environments::BetaInvalidMetadataErrorDetails value:
                 betaInvalidMetadata(value);
                 break;
+            case BetaCannotSignOutPrimaryOwnerErrorDetails value:
+                betaCannotSignOutPrimaryOwner(value);
+                break;
+            case BetaCannotSignOutSelfErrorDetails value:
+                betaCannotSignOutSelf(value);
+                break;
+            case BetaOrganizationNotEnrolledInBetaErrorDetails value:
+                betaOrganizationNotEnrolledInBeta(value);
+                break;
+            case BetaCannotSignOutManagedMemberErrorDetails value:
+                betaCannotSignOutManagedMember(value);
+                break;
+            case BetaCannotSignOutMembershipAdminErrorDetails value:
+                betaCannotSignOutMembershipAdmin(value);
+                break;
+            case BetaCannotSignOutOwnerErrorDetails value:
+                betaCannotSignOutOwner(value);
+                break;
+            case BetaCannotSignOutPrivilegedMemberErrorDetails value:
+                betaCannotSignOutPrivilegedMember(value);
+                break;
             case BetaBillingFrozenErrorDetails value:
                 betaBillingFrozen(value);
                 break;
@@ -3219,6 +3506,13 @@ public record class ErrorDetails : ModelBase
     ///     (Environments::BetaEnvironmentUpdateDisabledErrorDetails value) =&gt; {...},
     ///     (BetaHeartbeatPreconditionFailedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidMetadataErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
+    ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutManagedMemberErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
+    ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
     ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
@@ -3311,6 +3605,13 @@ public record class ErrorDetails : ModelBase
         > betaEnvironmentUpdateDisabled,
         Func<BetaHeartbeatPreconditionFailedErrorDetails, T> betaHeartbeatPreconditionFailed,
         Func<Environments::BetaInvalidMetadataErrorDetails, T> betaInvalidMetadata,
+        Func<BetaCannotSignOutPrimaryOwnerErrorDetails, T> betaCannotSignOutPrimaryOwner,
+        Func<BetaCannotSignOutSelfErrorDetails, T> betaCannotSignOutSelf,
+        Func<BetaOrganizationNotEnrolledInBetaErrorDetails, T> betaOrganizationNotEnrolledInBeta,
+        Func<BetaCannotSignOutManagedMemberErrorDetails, T> betaCannotSignOutManagedMember,
+        Func<BetaCannotSignOutMembershipAdminErrorDetails, T> betaCannotSignOutMembershipAdmin,
+        Func<BetaCannotSignOutOwnerErrorDetails, T> betaCannotSignOutOwner,
+        Func<BetaCannotSignOutPrivilegedMemberErrorDetails, T> betaCannotSignOutPrivilegedMember,
         Func<BetaBillingFrozenErrorDetails, T> betaBillingFrozen,
         Func<
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails,
@@ -3436,6 +3737,19 @@ public record class ErrorDetails : ModelBase
                 value
             ),
             Environments::BetaInvalidMetadataErrorDetails value => betaInvalidMetadata(value),
+            BetaCannotSignOutPrimaryOwnerErrorDetails value => betaCannotSignOutPrimaryOwner(value),
+            BetaCannotSignOutSelfErrorDetails value => betaCannotSignOutSelf(value),
+            BetaOrganizationNotEnrolledInBetaErrorDetails value =>
+                betaOrganizationNotEnrolledInBeta(value),
+            BetaCannotSignOutManagedMemberErrorDetails value => betaCannotSignOutManagedMember(
+                value
+            ),
+            BetaCannotSignOutMembershipAdminErrorDetails value => betaCannotSignOutMembershipAdmin(
+                value
+            ),
+            BetaCannotSignOutOwnerErrorDetails value => betaCannotSignOutOwner(value),
+            BetaCannotSignOutPrivilegedMemberErrorDetails value =>
+                betaCannotSignOutPrivilegedMember(value),
             BetaBillingFrozenErrorDetails value => betaBillingFrozen(value),
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value =>
                 betaSpendLimitsAdminApiWritesNotEnabled(value),
@@ -3668,6 +3982,31 @@ public record class ErrorDetails : ModelBase
         Environments::BetaInvalidMetadataErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(BetaCannotSignOutPrimaryOwnerErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaCannotSignOutSelfErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaOrganizationNotEnrolledInBetaErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaCannotSignOutManagedMemberErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaCannotSignOutMembershipAdminErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaCannotSignOutOwnerErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaCannotSignOutPrivilegedMemberErrorDetails value
+    ) => new(value);
+
     public static implicit operator ErrorDetails(BetaBillingFrozenErrorDetails value) => new(value);
 
     public static implicit operator ErrorDetails(
@@ -3802,6 +4141,13 @@ public record class ErrorDetails : ModelBase
             (betaEnvironmentUpdateDisabled) => betaEnvironmentUpdateDisabled.Validate(),
             (betaHeartbeatPreconditionFailed) => betaHeartbeatPreconditionFailed.Validate(),
             (betaInvalidMetadata) => betaInvalidMetadata.Validate(),
+            (betaCannotSignOutPrimaryOwner) => betaCannotSignOutPrimaryOwner.Validate(),
+            (betaCannotSignOutSelf) => betaCannotSignOutSelf.Validate(),
+            (betaOrganizationNotEnrolledInBeta) => betaOrganizationNotEnrolledInBeta.Validate(),
+            (betaCannotSignOutManagedMember) => betaCannotSignOutManagedMember.Validate(),
+            (betaCannotSignOutMembershipAdmin) => betaCannotSignOutMembershipAdmin.Validate(),
+            (betaCannotSignOutOwner) => betaCannotSignOutOwner.Validate(),
+            (betaCannotSignOutPrivilegedMember) => betaCannotSignOutPrivilegedMember.Validate(),
             (betaBillingFrozen) => betaBillingFrozen.Validate(),
             (betaSpendLimitsAdminApiWritesNotEnabled) =>
                 betaSpendLimitsAdminApiWritesNotEnabled.Validate(),
@@ -3906,22 +4252,29 @@ public record class ErrorDetails : ModelBase
             Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 56,
             BetaHeartbeatPreconditionFailedErrorDetails _ => 57,
             Environments::BetaInvalidMetadataErrorDetails _ => 58,
-            BetaBillingFrozenErrorDetails _ => 59,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 60,
-            BetaUnsupportedCharsetErrorDetails _ => 61,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 62,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 63,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 64,
-            Plugins::BetaScanFailedErrorDetails _ => 65,
-            Plugins::BetaScanPendingErrorDetails _ => 66,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 67,
-            BetaApiKeyScopeMissingErrorDetails _ => 68,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 69,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 70,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 71,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 72,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 73,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 74,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 59,
+            BetaCannotSignOutSelfErrorDetails _ => 60,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 61,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 62,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 63,
+            BetaCannotSignOutOwnerErrorDetails _ => 64,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 65,
+            BetaBillingFrozenErrorDetails _ => 66,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 67,
+            BetaUnsupportedCharsetErrorDetails _ => 68,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 69,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 70,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 71,
+            Plugins::BetaScanFailedErrorDetails _ => 72,
+            Plugins::BetaScanPendingErrorDetails _ => 73,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 74,
+            BetaApiKeyScopeMissingErrorDetails _ => 75,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 76,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 77,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 78,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 79,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 80,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 81,
             _ => -1,
         };
     }
@@ -5177,6 +5530,153 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "cannot_sign_out_primary_owner":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutPrimaryOwnerErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cannot_sign_out_self":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutSelfErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "organization_not_enrolled_in_beta":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaOrganizationNotEnrolledInBetaErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cannot_sign_out_managed_member":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutManagedMemberErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cannot_sign_out_membership_admin":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutMembershipAdminErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cannot_sign_out_owner":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutOwnerErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cannot_sign_out_privileged_member":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCannotSignOutPrivilegedMemberErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "billing_frozen":
             {
                 try
@@ -5591,6 +6091,13 @@ public enum ErrorDetailsErrorCode
     EnvironmentUpdateDisabled,
     HeartbeatPreconditionFailed,
     InvalidMetadata,
+    CannotSignOutPrimaryOwner,
+    CannotSignOutSelf,
+    OrganizationNotEnrolledInBeta,
+    CannotSignOutManagedMember,
+    CannotSignOutMembershipAdmin,
+    CannotSignOutOwner,
+    CannotSignOutPrivilegedMember,
     BillingFrozen,
     SpendLimitsAdminApiWritesNotEnabled,
     UnsupportedCharset,
@@ -5689,6 +6196,16 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "environment_update_disabled" => ErrorDetailsErrorCode.EnvironmentUpdateDisabled,
             "heartbeat_precondition_failed" => ErrorDetailsErrorCode.HeartbeatPreconditionFailed,
             "invalid_metadata" => ErrorDetailsErrorCode.InvalidMetadata,
+            "cannot_sign_out_primary_owner" => ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
+            "cannot_sign_out_self" => ErrorDetailsErrorCode.CannotSignOutSelf,
+            "organization_not_enrolled_in_beta" =>
+                ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta,
+            "cannot_sign_out_managed_member" => ErrorDetailsErrorCode.CannotSignOutManagedMember,
+            "cannot_sign_out_membership_admin" =>
+                ErrorDetailsErrorCode.CannotSignOutMembershipAdmin,
+            "cannot_sign_out_owner" => ErrorDetailsErrorCode.CannotSignOutOwner,
+            "cannot_sign_out_privileged_member" =>
+                ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
             "billing_frozen" => ErrorDetailsErrorCode.BillingFrozen,
             "spend_limits_admin_api_writes_not_enabled" =>
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
@@ -5802,6 +6319,17 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.HeartbeatPreconditionFailed =>
                     "heartbeat_precondition_failed",
                 ErrorDetailsErrorCode.InvalidMetadata => "invalid_metadata",
+                ErrorDetailsErrorCode.CannotSignOutPrimaryOwner => "cannot_sign_out_primary_owner",
+                ErrorDetailsErrorCode.CannotSignOutSelf => "cannot_sign_out_self",
+                ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta =>
+                    "organization_not_enrolled_in_beta",
+                ErrorDetailsErrorCode.CannotSignOutManagedMember =>
+                    "cannot_sign_out_managed_member",
+                ErrorDetailsErrorCode.CannotSignOutMembershipAdmin =>
+                    "cannot_sign_out_membership_admin",
+                ErrorDetailsErrorCode.CannotSignOutOwner => "cannot_sign_out_owner",
+                ErrorDetailsErrorCode.CannotSignOutPrivilegedMember =>
+                    "cannot_sign_out_privileged_member",
                 ErrorDetailsErrorCode.BillingFrozen => "billing_frozen",
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled =>
                     "spend_limits_admin_api_writes_not_enabled",

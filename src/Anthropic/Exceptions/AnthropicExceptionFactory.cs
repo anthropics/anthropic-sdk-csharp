@@ -11,6 +11,7 @@ using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
+using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Organization;
@@ -62,6 +63,22 @@ public class AnthropicExceptionFactory
             },
         [(400, "cannot_remove_last_member")] = (statusCode, responseBody, response) =>
             new AnthropicCannotRemoveLastMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "cannot_sign_out_primary_owner")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutPrimaryOwnerException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "cannot_sign_out_self")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutSelfException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -260,6 +277,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "organization_not_enrolled_in_beta")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaOrganizationNotEnrolledInBetaException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "organization_on_hold")] = (statusCode, responseBody, response) =>
             new AnthropicOrganizationOnHoldException()
             {
@@ -430,6 +455,38 @@ public class AnthropicExceptionFactory
             },
         [(403, "billing_frozen")] = (statusCode, responseBody, response) =>
             new AnthropicBetaBillingFrozenException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_managed_member")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutManagedMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_membership_admin")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutMembershipAdminException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_owner")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutOwnerException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "cannot_sign_out_privileged_member")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCannotSignOutPrivilegedMemberException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

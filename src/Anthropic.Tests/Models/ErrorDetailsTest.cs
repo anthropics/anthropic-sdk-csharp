@@ -9,6 +9,7 @@ using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
+using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Organization;
@@ -448,6 +449,55 @@ public class ErrorDetailsTest : TestBase
     public void BetaInvalidMetadataValidationWorks()
     {
         ErrorDetails value = new BetaInvalidMetadataErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutPrimaryOwnerValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutSelfValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutSelfErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEnrolledInBetaValidationWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEnrolledInBetaErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutManagedMemberValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutManagedMemberErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutMembershipAdminValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutMembershipAdminErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutOwnerValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutOwnerErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCannotSignOutPrivilegedMemberValidationWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
         value.Validate();
     }
 
@@ -1354,6 +1404,97 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaCannotSignOutPrimaryOwnerSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCannotSignOutSelfSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutSelfErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEnrolledInBetaSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEnrolledInBetaErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCannotSignOutManagedMemberSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutManagedMemberErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCannotSignOutMembershipAdminSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutMembershipAdminErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCannotSignOutOwnerSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutOwnerErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCannotSignOutPrivilegedMemberSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaBillingFrozenSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaBillingFrozenErrorDetails();
@@ -2010,6 +2151,55 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaCannotSignOutPrimaryOwnerErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCannotSignOutSelfErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutSelfErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutSelf, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEnrolledInBetaErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEnrolledInBetaErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCannotSignOutManagedMemberErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutManagedMemberErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutManagedMember, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCannotSignOutMembershipAdminErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutMembershipAdminErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCannotSignOutOwnerErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutOwnerErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutOwner, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCannotSignOutPrivilegedMemberErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaBillingFrozenErrorCodeWorks()
     {
         ErrorDetails value = new BetaBillingFrozenErrorDetails();
@@ -2270,6 +2460,13 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentUpdateDisabled)]
     [InlineData(ErrorDetailsErrorCode.HeartbeatPreconditionFailed)]
     [InlineData(ErrorDetailsErrorCode.InvalidMetadata)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf)]
+    [InlineData(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutManagedMember)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
     [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
@@ -2365,6 +2562,13 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentUpdateDisabled)]
     [InlineData(ErrorDetailsErrorCode.HeartbeatPreconditionFailed)]
     [InlineData(ErrorDetailsErrorCode.InvalidMetadata)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf)]
+    [InlineData(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutManagedMember)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
     [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
