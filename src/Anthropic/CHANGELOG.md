@@ -1,5 +1,29 @@
 # Changelog
 
+## [13.6.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.5.0...Anthropic-v13.6.0) (2026-11-05)
+
+### Features
+
+* **api:** add error code for ramp limit errors
+* **api:** add error codes for External Key validation failures
+* **api:** add support for signing organization members out everywhere
+
+
+### Bug Fixes
+
+* **client:** return null when a null enum converts to its raw value
+
+
+### Chores
+
+* **docs:** describe the type and message of API errors
+
+
+### Documentation
+
+* **client:** describe the type, message, code and details of API errors
+* **client:** list each method's errors without their descriptions
+
 ## [13.5.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.4.0...Anthropic-v13.5.0) (2026-11-04)
 
 ### Features
