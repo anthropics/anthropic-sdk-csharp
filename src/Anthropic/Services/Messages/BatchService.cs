@@ -206,7 +206,7 @@ public sealed class BatchServiceWithRawResponse : IBatchServiceWithRawResponse
             Params = parameters,
             SpanName = "anthropic.messages.batches.create",
             SpanResourceIds = ApiCallSpans.IsEnabled(this._client)
-                ? ApiCallSpans.BatchesCreateAttributes(() => parameters.Requests.Count)
+                ? ApiCallSpans.BatchesCreateAttributes(parameters.RawBodyData)
                 : null,
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);

@@ -77,10 +77,12 @@ public class ApiCallSpansTest : TracingTestBase
     }
 
     [Theory]
-    [InlineData(OpenTelemetryContentMode.MetadataOnly)]
-    [InlineData(OpenTelemetryContentMode.Content)]
+    [InlineData(OpenTelemetryContentMode.MetadataOnly, true)]
+    [InlineData(OpenTelemetryContentMode.Content, true)]
+    [InlineData(OpenTelemetryContentMode.MetadataOnly, false)]
     public async Task MessagesCreate_WithCompactions_HasTheirTokensApartFromItsOwn(
-        OpenTelemetryContentMode contentMode
+        OpenTelemetryContentMode contentMode,
+        bool beta
     )
     {
         using var trace = new RecordedTrace();
@@ -104,7 +106,14 @@ public class ApiCallSpansTest : TracingTestBase
             new() { Traces = new() { ContentMode = contentMode } }
         );
 
-        await client.Beta.Messages.Create(BetaParams(), TestContext.Current.CancellationToken);
+        if (beta)
+        {
+            await client.Beta.Messages.Create(BetaParams(), TestContext.Current.CancellationToken);
+        }
+        else
+        {
+            await client.Messages.Create(MessageParams(), TestContext.Current.CancellationToken);
+        }
 
         var span = trace.Single("anthropic.messages.create");
         Assert.Equal(325L, span.GetTagItem("anthropic.usage.compaction.input_tokens"));
@@ -516,7 +525,35 @@ public class ApiCallSpansTest : TracingTestBase
     }
 
     [Fact]
-    public async Task BetaHeaders_OfTheParamsAndTheClient_AreRecorded()
+    public async Task OutputFormat_OfTheDeprecatedParameterInAStableRequest_SetsTheOutputType()
+    {
+        using var trace = new RecordedTrace();
+        var handler = new ScriptedHandler().RespondJson(Fixtures.MessageJson);
+        var client = Fixtures.Client(handler);
+        var typed = MessageParams();
+        var body = typed.RawBodyData.ToDictionary(field => field.Key, field => field.Value);
+        body["output_format"] = JsonSerializer.SerializeToElement(
+            new { type = "json_schema", schema = new { type = "object" } }
+        );
+
+        await client.Messages.Create(
+            MessageCreateParams.FromRawUnchecked(typed.RawHeaderData, typed.RawQueryData, body),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Equal(
+            "json",
+            trace.Single("anthropic.messages.create").GetTagItem("gen_ai.output.type")
+        );
+    }
+
+    [Theory]
+    [InlineData("anthropic-beta", "anthropic-beta")]
+    [InlineData("Anthropic-Beta", "ANTHROPIC-BETA")]
+    public async Task BetaHeaders_OfTheParamsAndTheClient_AreRecorded(
+        string paramsHeader,
+        string clientHeader
+    )
     {
         using var trace = new RecordedTrace();
         var handler = new ScriptedHandler().RespondJson(Fixtures.MessageJson);
@@ -527,16 +564,23 @@ public class ApiCallSpansTest : TracingTestBase
                 {
                     ExtraHeaders = new Dictionary<string, string>
                     {
-                        ["anthropic-beta"] = "extended-cache-ttl-2025-04-11",
+                        [clientHeader] = "extended-cache-ttl-2025-04-11",
                     },
                 }
             );
+        var typed = BetaParams();
 
         await client.Beta.Messages.Create(
-            BetaParams() with
-            {
-                Betas = [Anthropic.Models.Beta.AnthropicBeta.FilesApi2025_04_14],
-            },
+            Beta.MessageCreateParams.FromRawUnchecked(
+                new Dictionary<string, JsonElement>
+                {
+                    [paramsHeader] = JsonSerializer.Deserialize<JsonElement>(
+                        """["files-api-2025-04-14"]"""
+                    ),
+                },
+                typed.RawQueryData,
+                typed.RawBodyData
+            ),
             TestContext.Current.CancellationToken
         );
 

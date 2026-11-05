@@ -135,8 +135,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         );
         var (span, requestContent) = RequestAttributes.StartMessagesCreateSpan(
             this._client,
-            parameters,
-            stream: false
+            parameters
         );
         HttpRequest<MessageCreateParams> request = new()
         {
@@ -200,8 +199,7 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
         );
         var (span, requestContent) = RequestAttributes.StartMessagesCreateSpan(
             this._client,
-            parameters,
-            stream: true
+            parameters
         );
         // The time to the first chunk runs from here, on the monotonic clock.
         var startTimestamp = Stopwatch.GetTimestamp();
@@ -259,16 +257,11 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
     {
         MessageServiceHelpers.WarnIfDeprecatedThinkingConfig(parameters);
 
-        var span = RequestAttributes.StartCountTokensSpan(
-            this._client,
-            parameters,
-            parameters.RawBodyData
-        );
         HttpRequest<MessageCountTokensParams> request = new()
         {
             Method = HttpMethod.Post,
             Params = parameters,
-            Span = span,
+            SpanName = "anthropic.messages.count_tokens",
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
         return new(
@@ -282,7 +275,6 @@ public sealed class MessageServiceWithRawResponse : IMessageServiceWithRawRespon
                 {
                     messageTokensCount.Validate();
                 }
-                ResponseAttributes.SetCountTokensResponseAttributes(span, messageTokensCount);
                 return messageTokensCount;
             }
         );

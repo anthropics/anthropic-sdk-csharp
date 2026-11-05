@@ -215,6 +215,10 @@ public sealed class HttpResponse<T> : HttpResponse
             Tracing.EndApiCallSpan(span, e, cts.Token);
             throw;
         }
+        if (value is JsonModel model)
+        {
+            SpanAttributes.SetResponseAttributes(span, model.RawData);
+        }
         Tracing.EndApiCallSpan(span);
         return value;
     }
