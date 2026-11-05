@@ -1737,8 +1737,10 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
             TestContext.Current.CancellationToken
         );
         Assert.NotNull(response);
-        // Neither Skills nor code execution needs a beta header.
-        Assert.Null(capturedBetaHeaders);
+        Assert.NotNull(capturedBetaHeaders);
+        string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
+        // Code execution needs no beta header.
+        Assert.Equal(["skills-2025-10-02"], betas);
     }
 
     [Fact]

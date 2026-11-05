@@ -37,6 +37,7 @@ public static class AnthropicBetaClientExtensions
     /// When this tool is included in <see cref="ChatOptions.Tools"/>, the <see cref="IChatClient"/> will automatically:
     /// <list type="bullet">
     /// <item><description>Configure the container with the skill(s)</description></item>
+    /// <item><description>Add the <c>skills-2025-10-02</c> beta header</description></item>
     /// <item><description>Add the code execution tool if not already present</description></item>
     /// </list>
     /// </para>
@@ -1353,6 +1354,11 @@ public static class AnthropicBetaClientExtensions
                         switch (tool)
                         {
                             case BetaSkillsParamsAITool skillTool:
+                                // Skills no longer need a beta header, but under this one a custom
+                                // skill's version may be an epoch-microsecond string (the beta's
+                                // version identifier) rather than a skver_ ID.
+                                (betaHeaders ??= []).Add("skills-2025-10-02");
+
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
 
