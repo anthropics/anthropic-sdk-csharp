@@ -17,12 +17,12 @@ public sealed record class BetaAnalyticsCostUsersItem : JsonModel
     /// <summary>
     /// The user this row's usage or cost is attributed to. Always a `user_actor`.
     /// </summary>
-    public required BetaAnalyticsUserActor Actor
+    public required Actor Actor
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNotNullClass<BetaAnalyticsUserActor>("actor");
+            return this._rawData.GetNotNullClass<Actor>("actor");
         }
         init { this._rawData.Set("actor", value); }
     }
@@ -364,6 +364,276 @@ class BetaAnalyticsCostUsersItemFromRaw : IFromRawJson<BetaAnalyticsCostUsersIte
     public BetaAnalyticsCostUsersItem FromRawUnchecked(
         IReadOnlyDictionary<string, JsonElement> rawData
     ) => BetaAnalyticsCostUsersItem.FromRawUnchecked(rawData);
+}
+
+/// <summary>
+/// The user this row's usage or cost is attributed to. Always a `user_actor`.
+/// </summary>
+[JsonConverter(typeof(ActorConverter))]
+public record class Actor : ModelBase
+{
+    public object? Value { get; } = null;
+
+    JsonElement? _element = null;
+
+    public JsonElement Json
+    {
+        get
+        {
+            return this._element ??= JsonSerializer.SerializeToElement(
+                this.Value,
+                ModelBase.SerializerOptions
+            );
+        }
+    }
+
+    public ApiEnum<string, ActorType> Type
+    {
+        get
+        {
+            return this.Value switch
+            {
+                BetaAnalyticsUserActor _ => ActorType.UserActor,
+                _ => WrappedJsonSerializer.GetNotNullClassProperty<ApiEnum<string, ActorType>>(
+                    this.Json,
+                    "type"
+                ),
+            };
+        }
+    }
+
+    public Actor(BetaAnalyticsUserActor value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public Actor(JsonElement element)
+    {
+        this._element = element;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAnalyticsUserActor"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaAnalyticsUser(out var value)) {
+    ///     // `value` is of type `BetaAnalyticsUserActor`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaAnalyticsUser([NotNullWhen(true)] out BetaAnalyticsUserActor? value)
+    {
+        value = this.Value as BetaAnalyticsUserActor;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
+    /// if you need your function parameters to return something.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// instance.Switch(
+    ///     (BetaAnalyticsUserActor value) =&gt; {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public void Switch(Action<BetaAnalyticsUserActor> betaAnalyticsUser)
+    {
+        switch (this.Value)
+        {
+            case BetaAnalyticsUserActor value:
+                betaAnalyticsUser(value);
+                break;
+            default:
+                throw new AnthropicInvalidDataException("Data did not match any variant of Actor");
+        }
+    }
+
+    /// <summary>
+    /// Calls the function parameter corresponding to the variant the instance was constructed with and
+    /// returns its result.
+    ///
+    /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Switch"/>
+    /// if you don't need your function parameters to return a value.</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance was constructed with an unknown variant (e.g. deserialized from raw data
+    /// that doesn't match any variant's expected shape).
+    /// </exception>
+    ///
+    /// <example>
+    /// <code>
+    /// var result = instance.Match(
+    ///     (BetaAnalyticsUserActor value) =&gt; {...}
+    /// );
+    /// </code>
+    /// </example>
+    /// </summary>
+    public T Match<T>(Func<BetaAnalyticsUserActor, T> betaAnalyticsUser)
+    {
+        return this.Value switch
+        {
+            BetaAnalyticsUserActor value => betaAnalyticsUser(value),
+            _ => throw new AnthropicInvalidDataException("Data did not match any variant of Actor"),
+        };
+    }
+
+    public static implicit operator Actor(BetaAnalyticsUserActor value) => new(value);
+
+    /// <summary>
+    /// Validates that the instance was constructed with a known variant and that this variant is valid
+    /// (based on its own <c>Validate</c> method).
+    ///
+    /// <para>This is useful for instances constructed from raw JSON data (e.g. deserialized from an API response).</para>
+    ///
+    /// <exception cref="AnthropicInvalidDataException">
+    /// Thrown when the instance does not pass validation.
+    /// </exception>
+    /// </summary>
+    public override void Validate()
+    {
+        if (this.Value == null)
+        {
+            throw new AnthropicInvalidDataException("Data did not match any variant of Actor");
+        }
+        this.Switch((betaAnalyticsUser) => betaAnalyticsUser.Validate());
+    }
+
+    public virtual bool Equals(Actor? other) =>
+        other != null
+        && this.VariantIndex() == other.VariantIndex()
+        && JsonElement.DeepEquals(this.Json, other.Json);
+
+    public override int GetHashCode()
+    {
+        return 0;
+    }
+
+    public override string ToString() =>
+        JsonSerializer.Serialize(
+            FriendlyJsonPrinter.PrintValue(this.Json),
+            ModelBase.ToStringSerializerOptions
+        );
+
+    int VariantIndex()
+    {
+        return this.Value switch
+        {
+            BetaAnalyticsUserActor _ => 0,
+            _ => -1,
+        };
+    }
+}
+
+sealed class ActorConverter : JsonConverter<Actor>
+{
+    public override Actor? Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
+        try
+        {
+            type = element.GetProperty("type").GetString();
+        }
+        catch
+        {
+            type = null;
+        }
+
+        switch (type)
+        {
+            case "user_actor":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAnalyticsUserActor>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                return new Actor(element);
+            }
+        }
+    }
+
+    public override void Write(Utf8JsonWriter writer, Actor value, JsonSerializerOptions options)
+    {
+        JsonSerializer.Serialize(writer, value.Json, options);
+    }
+}
+
+[JsonConverter(typeof(ActorTypeConverter))]
+public enum ActorType
+{
+    UserActor,
+}
+
+sealed class ActorTypeConverter : JsonConverter<ActorType>
+{
+    public override ActorType Read(
+        ref Utf8JsonReader reader,
+        Type typeToConvert,
+        JsonSerializerOptions options
+    )
+    {
+        return JsonSerializer.Deserialize<string>(ref reader, options) switch
+        {
+            "user_actor" => ActorType.UserActor,
+            _ => (ActorType)(-1),
+        };
+    }
+
+    public override void Write(
+        Utf8JsonWriter writer,
+        ActorType value,
+        JsonSerializerOptions options
+    )
+    {
+        JsonSerializer.Serialize(
+            writer,
+            value switch
+            {
+                ActorType.UserActor => "user_actor",
+                _ => throw new AnthropicInvalidDataException(
+                    string.Format("Invalid value '{0}' in {1}", value, nameof(value))
+                ),
+            },
+            options
+        );
+    }
 }
 
 /// <summary>

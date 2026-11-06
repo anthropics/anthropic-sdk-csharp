@@ -14,7 +14,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageUsersItem
         {
-            Actor = new()
+            Actor = new BetaAnalyticsUserActor()
             {
                 Deleted = true,
                 EmailAddress = "jane@example.com",
@@ -41,7 +41,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
             UncachedInputTokens = 1284500,
         };
 
-        BetaAnalyticsUserActor expectedActor = new()
+        BetaAnalyticsUsageUsersItemActor expectedActor = new BetaAnalyticsUserActor()
         {
             Deleted = true,
             EmailAddress = "jane@example.com",
@@ -101,7 +101,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageUsersItem
         {
-            Actor = new()
+            Actor = new BetaAnalyticsUserActor()
             {
                 Deleted = true,
                 EmailAddress = "jane@example.com",
@@ -142,7 +142,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageUsersItem
         {
-            Actor = new()
+            Actor = new BetaAnalyticsUserActor()
             {
                 Deleted = true,
                 EmailAddress = "jane@example.com",
@@ -176,7 +176,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        BetaAnalyticsUserActor expectedActor = new()
+        BetaAnalyticsUsageUsersItemActor expectedActor = new BetaAnalyticsUserActor()
         {
             Deleted = true,
             EmailAddress = "jane@example.com",
@@ -236,7 +236,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageUsersItem
         {
-            Actor = new()
+            Actor = new BetaAnalyticsUserActor()
             {
                 Deleted = true,
                 EmailAddress = "jane@example.com",
@@ -271,7 +271,7 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
     {
         var model = new BetaAnalyticsUsageUsersItem
         {
-            Actor = new()
+            Actor = new BetaAnalyticsUserActor()
             {
                 Deleted = true,
                 EmailAddress = "jane@example.com",
@@ -301,6 +301,132 @@ public class BetaAnalyticsUsageUsersItemTest : TestBase
         BetaAnalyticsUsageUsersItem copied = new(model);
 
         Assert.Equal(model, copied);
+    }
+}
+
+public class BetaAnalyticsUsageUsersItemActorTest : TestBase
+{
+    [Fact]
+    public void BetaAnalyticsUserValidationWorks()
+    {
+        BetaAnalyticsUsageUsersItemActor value = new BetaAnalyticsUserActor()
+        {
+            Deleted = true,
+            EmailAddress = "jane@example.com",
+            Name = "Jane Smith",
+            UserID = "user_01AbCdEfGhIjKlMnOpQrSt",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaAnalyticsUserSerializationRoundtripWorks()
+    {
+        BetaAnalyticsUsageUsersItemActor value = new BetaAnalyticsUserActor()
+        {
+            Deleted = true,
+            EmailAddress = "jane@example.com",
+            Name = "Jane Smith",
+            UserID = "user_01AbCdEfGhIjKlMnOpQrSt",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaAnalyticsUsageUsersItemActor>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaAnalyticsUserTypeWorks()
+    {
+        BetaAnalyticsUsageUsersItemActor value = new BetaAnalyticsUserActor()
+        {
+            Deleted = true,
+            EmailAddress = "jane@example.com",
+            Name = "Jane Smith",
+            UserID = "user_01AbCdEfGhIjKlMnOpQrSt",
+        };
+        Assert.Equal(BetaAnalyticsUsageUsersItemActorType.UserActor, value.Type.Value());
+    }
+
+    [Fact]
+    public void UnknownVariantCommonProperties_Works()
+    {
+        BetaAnalyticsUsageUsersItemActor value = new(
+            JsonSerializer.Deserialize<JsonElement>(
+                """
+                {
+                  "type": "user_actor"
+                }
+                """
+            )
+        );
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+
+        ApiEnum<string, BetaAnalyticsUsageUsersItemActorType> expectedType =
+            BetaAnalyticsUsageUsersItemActorType.UserActor;
+
+        Assert.Equal(expectedType, value.Type);
+
+        BetaAnalyticsUsageUsersItemActor emptyValue = new(
+            JsonSerializer.Deserialize<JsonElement>("{}")
+        );
+
+        Assert.Throws<AnthropicInvalidDataException>(() => emptyValue.Type);
+    }
+}
+
+public class BetaAnalyticsUsageUsersItemActorTypeTest : TestBase
+{
+    [Theory]
+    [InlineData(BetaAnalyticsUsageUsersItemActorType.UserActor)]
+    public void Validation_Works(BetaAnalyticsUsageUsersItemActorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaAnalyticsUsageUsersItemActorType> value = rawValue;
+        value.Validate();
+    }
+
+    [Fact]
+    public void InvalidEnumValidationThrows_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaAnalyticsUsageUsersItemActorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+
+        Assert.NotNull(value);
+        Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
+    }
+
+    [Theory]
+    [InlineData(BetaAnalyticsUsageUsersItemActorType.UserActor)]
+    public void SerializationRoundtrip_Works(BetaAnalyticsUsageUsersItemActorType rawValue)
+    {
+        // force implicit conversion because Theory can't do that for us
+        ApiEnum<string, BetaAnalyticsUsageUsersItemActorType> value = rawValue;
+
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaAnalyticsUsageUsersItemActorType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void InvalidEnumSerializationRoundtrip_Works()
+    {
+        var value = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaAnalyticsUsageUsersItemActorType>
+        >(JsonSerializer.SerializeToElement("invalid value"), ModelBase.SerializerOptions);
+        string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<
+            ApiEnum<string, BetaAnalyticsUsageUsersItemActorType>
+        >(json, ModelBase.SerializerOptions);
+
+        Assert.Equal(value, deserialized);
     }
 }
 
