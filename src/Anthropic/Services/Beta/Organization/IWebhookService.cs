@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Webhooks;
 
 namespace Anthropic.Services.Beta.Organization;
@@ -121,6 +122,7 @@ public interface IWebhookService
     /// webhook endpoints are in beta and are not available to organizations with HIPAA
     /// readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaDeletedOrganizationWebhookEndpoint> Delete(
         WebhookDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -144,6 +146,7 @@ public interface IWebhookService
     /// webhook endpoints are in beta and are not available to organizations with HIPAA
     /// readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaOrganizationWebhookEndpointSigningSecret> RegenerateSigningSecret(
         WebhookRegenerateSigningSecretParams parameters,
         CancellationToken cancellationToken = default

@@ -528,6 +528,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(403, "sandbox_egress_restricted")] = (statusCode, responseBody, response) =>
+            new AnthropicSandboxEgressRestrictedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(403, "spend_limits_admin_api_writes_not_enabled")] = (
             statusCode,
             responseBody,

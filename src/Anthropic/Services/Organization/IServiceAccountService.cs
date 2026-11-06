@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.ServiceAccounts;
 using ServiceAccounts = Anthropic.Services.Organization.ServiceAccounts;
 
@@ -44,6 +45,7 @@ public interface IServiceAccountService
     /// requires an interactive credential (a user OAuth token or a Console session) — a
     /// workload may only create `developer`-role service accounts.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccount> Create(
         ServiceAccountCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -82,6 +84,7 @@ public interface IServiceAccountService
     /// `organization_role` to `admin` (even when unchanged) requires an interactive
     /// credential (a user OAuth token or a Console session).</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccount> Update(
         ServiceAccountUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -124,6 +127,7 @@ public interface IServiceAccountService
     /// still targets this service account, same as issuer archival; archive those rules
     /// first or change their target to another service account.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccount> Archive(
         ServiceAccountArchiveParams parameters,
         CancellationToken cancellationToken = default

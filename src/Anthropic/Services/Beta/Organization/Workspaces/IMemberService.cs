@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Workspaces;
 using Anthropic.Models.Beta.Organization.Workspaces.Members;
 using Anthropic.Models.Organization.Workspaces;
@@ -47,6 +48,7 @@ public interface IMemberService
     /// Update Workspace Member
     /// </summary>
     /// <exception cref="AnthropicWorkspaceMemberLimitExceededException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaWorkspaceMember> Update(
         MemberUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -78,6 +80,7 @@ public interface IMemberService
     /// Create Workspace Member
     /// </summary>
     /// <exception cref="AnthropicWorkspaceMemberLimitExceededException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaWorkspaceMember> Add(
         MemberAddParams parameters,
         CancellationToken cancellationToken = default
@@ -93,6 +96,7 @@ public interface IMemberService
     /// <summary>
     /// Delete Workspace Member
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<MemberRemoveResponse> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default

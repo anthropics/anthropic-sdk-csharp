@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.SpendLimits.IncreaseRequests;
 
 namespace Anthropic.Services.Organization.SpendLimits;
@@ -63,6 +64,7 @@ public interface IIncreaseRequestService
     /// member was blocked on. Anthropic emails the requester unless
     /// `suppress_notification` is set.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<IncreaseRequestApproveResponse> Approve(
         IncreaseRequestApproveParams parameters,
         CancellationToken cancellationToken = default
@@ -81,6 +83,7 @@ public interface IIncreaseRequestService
     /// <para>Idempotent on `denied`; denying an already-`approved` request returns 400.
     /// Anthropic emails the requester unless `suppress_notification` is set.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<SpendLimitIncreaseRequest> Deny(
         IncreaseRequestDenyParams parameters,
         CancellationToken cancellationToken = default

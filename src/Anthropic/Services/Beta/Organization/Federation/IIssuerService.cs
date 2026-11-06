@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Federation.Issuers;
 
 namespace Anthropic.Services.Beta.Organization.Federation;
@@ -44,6 +45,7 @@ public interface IIssuerService
     /// modes the issuer URL is only matched as the JWT's `iss` claim and is not
     /// fetched.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationIssuer> Create(
         IssuerCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -83,6 +85,7 @@ public interface IIssuerService
     /// <para>Updating an issuer that backs a rule with a scope outside
     /// `workspace:developer` or `workspace:inference` requires a Console session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationIssuer> Update(
         IssuerUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -123,6 +126,7 @@ public interface IIssuerService
     /// still references the issuer; archive those rules first (a rule's issuer cannot
     /// be changed), or recreate them against another issuer.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationIssuer> Archive(
         IssuerArchiveParams parameters,
         CancellationToken cancellationToken = default

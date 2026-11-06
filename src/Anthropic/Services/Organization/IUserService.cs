@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.Users;
 
@@ -45,6 +46,7 @@ public interface IUserService
     /// <summary>
     /// Update a member's organization role.
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<OrganizationUser> Update(
         UserUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -69,6 +71,7 @@ public interface IUserService
     /// Remove a member from the organization.
     /// </summary>
     /// <exception cref="AnthropicCannotRemoveLastMemberException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicConcurrentMembershipChangeException"/>
     Task<UserRemoveResponse> Remove(
         UserRemoveParams parameters,

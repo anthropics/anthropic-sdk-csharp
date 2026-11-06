@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.RbacGroups;
 using Anthropic.Models.Organization.RbacGroups.Members;
 
@@ -53,6 +54,7 @@ public interface IMemberService
     /// </summary>
     /// <exception cref="AnthropicRbacGroupGrantsOwnerAccessException"/>
     /// <exception cref="AnthropicRbacGroupOwnerAccessUnconfirmedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<RbacGroupMember> Add(
         MemberAddParams parameters,
         CancellationToken cancellationToken = default
@@ -74,6 +76,7 @@ public interface IMemberService
     /// </summary>
     /// <exception cref="AnthropicRbacGroupGrantsOwnerAccessException"/>
     /// <exception cref="AnthropicRbacGroupOwnerAccessUnconfirmedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<DeletedRbacGroupMember> Remove(
         MemberRemoveParams parameters,
         CancellationToken cancellationToken = default

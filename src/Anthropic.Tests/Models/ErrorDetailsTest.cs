@@ -274,6 +274,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void SandboxEgressRestrictedValidationWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void UserProfileNotFoundValidationWorks()
     {
         ErrorDetails value = new UserProfileNotFoundErrorDetails();
@@ -1064,6 +1071,19 @@ public class ErrorDetailsTest : TestBase
     public void WorkspaceApiKeyLimitExceededSerializationRoundtripWorks()
     {
         ErrorDetails value = new WorkspaceApiKeyLimitExceededErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void SandboxEgressRestrictedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -1946,6 +1966,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void SandboxEgressRestrictedErrorCodeWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.SandboxEgressRestricted, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void UserProfileNotFoundErrorCodeWorks()
     {
         ErrorDetails value = new UserProfileNotFoundErrorDetails();
@@ -2408,6 +2435,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable)]
     [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotFound)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy)]
     [InlineData(ErrorDetailsErrorCode.AlreadyMember)]
@@ -2509,6 +2537,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable)]
     [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotFound)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy)]
     [InlineData(ErrorDetailsErrorCode.AlreadyMember)]

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.ComplianceSettings;
 
 namespace Anthropic.Services.Organization;
@@ -57,6 +58,7 @@ public interface IComplianceSettingService
     /// re-enables the Compliance API even after a `disabled` request. Automated
     /// provisioning never disables compliance settings.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<OrganizationComplianceSettings> Update(
         ComplianceSettingUpdateParams parameters,
         CancellationToken cancellationToken = default

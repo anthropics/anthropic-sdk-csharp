@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Federation.Rules;
 using Rules = Anthropic.Services.Beta.Organization.Federation.Rules;
 
@@ -50,6 +51,7 @@ public interface IRuleService
     /// only manage rules whose `oauth_scope` is `workspace:developer` or
     /// `workspace:inference`; other scopes require a Console session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationRule> Create(
         RuleCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -98,6 +100,7 @@ public interface IRuleService
     /// `workspace:developer` or `workspace:inference`; other scopes require a Console
     /// session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationRule> Update(
         RuleUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -141,6 +144,7 @@ public interface IRuleService
     /// callers may only manage rules whose `oauth_scope` is `workspace:developer` or
     /// `workspace:inference`; other scopes require a Console session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationRule> Archive(
         RuleArchiveParams parameters,
         CancellationToken cancellationToken = default

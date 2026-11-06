@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.RbacGroups;
 using Anthropic.Services.Organization.RbacGroups;
 
@@ -35,6 +36,7 @@ public interface IRbacGroupService
     ///
     /// <para>The RBAC Groups API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<RbacGroup> Create(
         RbacGroupCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -64,6 +66,7 @@ public interface IRbacGroupService
     ///
     /// <para>The RBAC Groups API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<RbacGroup> Update(
         RbacGroupUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -95,6 +98,7 @@ public interface IRbacGroupService
     /// </summary>
     /// <exception cref="AnthropicRbacGroupGrantsOwnerAccessException"/>
     /// <exception cref="AnthropicRbacGroupOwnerAccessUnconfirmedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<DeletedRbacGroup> Delete(
         RbacGroupDeleteParams parameters,
         CancellationToken cancellationToken = default

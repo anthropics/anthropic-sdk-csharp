@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Organization;
@@ -47,6 +48,7 @@ public interface IUserService
     /// <summary>
     /// Update a member's organization role.
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaOrganizationUser> Update(
         UserUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -71,6 +73,7 @@ public interface IUserService
     /// Remove a member from the organization.
     /// </summary>
     /// <exception cref="Users::AnthropicCannotRemoveLastMemberException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicConcurrentMembershipChangeException"/>
     Task<UserRemoveResponse> Remove(
         UserRemoveParams parameters,
@@ -118,6 +121,7 @@ public interface IUserService
     /// <exception cref="AnthropicBetaCannotSignOutMembershipAdminException"/>
     /// <exception cref="AnthropicBetaCannotSignOutOwnerException"/>
     /// <exception cref="AnthropicBetaCannotSignOutPrivilegedMemberException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaOrganizationUser> SignOut(
         UserSignOutParams parameters,
         CancellationToken cancellationToken = default

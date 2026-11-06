@@ -74,6 +74,7 @@ public interface ISpendLimitService
     /// limits, but not its `usage_tier` limit. Deleting organization and workspace
     /// limits through the API is in an early access preview.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException"/>
     Task<SpendLimitDeleteResponse> Delete(
         SpendLimitDeleteParams parameters,
@@ -97,6 +98,7 @@ public interface ISpendLimitService
     /// are monthly and always carry an amount. Setting those limits is in an early
     /// access preview. To request access, contact your Anthropic account team.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException"/>
     Task<BetaSpendLimit> Set(
         SpendLimitSetParams parameters,
