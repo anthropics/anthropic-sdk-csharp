@@ -5,7 +5,6 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
@@ -498,13 +497,6 @@ public class ErrorDetailsTest : TestBase
     public void BetaCannotSignOutPrivilegedMemberValidationWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaBillingFrozenValidationWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
         value.Validate();
     }
 
@@ -1495,19 +1487,6 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
-    public void BetaBillingFrozenSerializationRoundtripWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
     public void BetaSpendLimitsAdminApiWritesNotEnabledSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails();
@@ -2200,13 +2179,6 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
-    public void BetaBillingFrozenErrorCodeWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
-        Assert.Equal(ErrorDetailsErrorCode.BillingFrozen, value.ErrorCode.Value());
-    }
-
-    [Fact]
     public void BetaSpendLimitsAdminApiWritesNotEnabledErrorCodeWorks()
     {
         ErrorDetails value = new BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails();
@@ -2467,7 +2439,6 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
-    [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
     [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]
@@ -2569,7 +2540,6 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
-    [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
     [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]

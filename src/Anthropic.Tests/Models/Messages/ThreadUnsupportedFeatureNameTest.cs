@@ -14,7 +14,6 @@ public class ThreadUnsupportedFeatureNameTest : TestBase
     [InlineData(ThreadUnsupportedFeatureName.Hipaa)]
     [InlineData(ThreadUnsupportedFeatureName.InferenceHooks)]
     [InlineData(ThreadUnsupportedFeatureName.Thinking)]
-    [InlineData(ThreadUnsupportedFeatureName.Zdr)]
     public void Validation_Works(ThreadUnsupportedFeatureName rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -41,7 +40,6 @@ public class ThreadUnsupportedFeatureNameTest : TestBase
     [InlineData(ThreadUnsupportedFeatureName.Hipaa)]
     [InlineData(ThreadUnsupportedFeatureName.InferenceHooks)]
     [InlineData(ThreadUnsupportedFeatureName.Thinking)]
-    [InlineData(ThreadUnsupportedFeatureName.Zdr)]
     public void SerializationRoundtrip_Works(ThreadUnsupportedFeatureName rawValue)
     {
         // force implicit conversion because Theory can't do that for us

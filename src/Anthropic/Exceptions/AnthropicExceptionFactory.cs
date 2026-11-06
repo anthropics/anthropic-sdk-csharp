@@ -7,7 +7,6 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
@@ -447,14 +446,6 @@ public class AnthropicExceptionFactory
             },
         [(403, "api_key_scope_missing")] = (statusCode, responseBody, response) =>
             new AnthropicBetaApiKeyScopeMissingException()
-            {
-                StatusCode = statusCode,
-                ResponseBody = responseBody,
-                RequestID = response?.RequestID,
-                WorkspaceID = response?.WorkspaceID,
-            },
-        [(403, "billing_frozen")] = (statusCode, responseBody, response) =>
-            new AnthropicBetaBillingFrozenException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

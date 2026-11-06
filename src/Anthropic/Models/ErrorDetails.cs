@@ -6,7 +6,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
@@ -166,7 +165,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutOwnerErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutOwner,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ =>
                     ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
-                BetaBillingFrozenErrorDetails _ => ErrorDetailsErrorCode.BillingFrozen,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ =>
                     ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
                 BetaUnsupportedCharsetErrorDetails _ => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -270,7 +268,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails x => x.PluginID,
@@ -363,7 +360,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -459,7 +455,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -979,12 +974,6 @@ public record class ErrorDetails : ModelBase
         BetaCannotSignOutPrivilegedMemberErrorDetails value,
         JsonElement? element = null
     )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public ErrorDetails(BetaBillingFrozenErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -2626,29 +2615,6 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBillingFrozenErrorDetails"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickBetaBillingFrozen(out var value)) {
-    ///     // `value` is of type `BetaBillingFrozenErrorDetails`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickBetaBillingFrozen(
-        [NotNullWhen(true)] out BetaBillingFrozenErrorDetails? value
-    )
-    {
-        value = this.Value as BetaBillingFrozenErrorDetails;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -3072,7 +3038,6 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
-    ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -3159,7 +3124,6 @@ public record class ErrorDetails : ModelBase
         Action<BetaCannotSignOutMembershipAdminErrorDetails> betaCannotSignOutMembershipAdmin,
         Action<BetaCannotSignOutOwnerErrorDetails> betaCannotSignOutOwner,
         Action<BetaCannotSignOutPrivilegedMemberErrorDetails> betaCannotSignOutPrivilegedMember,
-        Action<BetaBillingFrozenErrorDetails> betaBillingFrozen,
         Action<BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails> betaSpendLimitsAdminApiWritesNotEnabled,
         Action<BetaUnsupportedCharsetErrorDetails> betaUnsupportedCharset,
         Action<Plugins::BetaPluginNameTakenErrorDetails> betaPluginNameTaken,
@@ -3377,9 +3341,6 @@ public record class ErrorDetails : ModelBase
             case BetaCannotSignOutPrivilegedMemberErrorDetails value:
                 betaCannotSignOutPrivilegedMember(value);
                 break;
-            case BetaBillingFrozenErrorDetails value:
-                betaBillingFrozen(value);
-                break;
             case BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value:
                 betaSpendLimitsAdminApiWritesNotEnabled(value);
                 break;
@@ -3513,7 +3474,6 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
-    ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -3612,7 +3572,6 @@ public record class ErrorDetails : ModelBase
         Func<BetaCannotSignOutMembershipAdminErrorDetails, T> betaCannotSignOutMembershipAdmin,
         Func<BetaCannotSignOutOwnerErrorDetails, T> betaCannotSignOutOwner,
         Func<BetaCannotSignOutPrivilegedMemberErrorDetails, T> betaCannotSignOutPrivilegedMember,
-        Func<BetaBillingFrozenErrorDetails, T> betaBillingFrozen,
         Func<
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails,
             T
@@ -3750,7 +3709,6 @@ public record class ErrorDetails : ModelBase
             BetaCannotSignOutOwnerErrorDetails value => betaCannotSignOutOwner(value),
             BetaCannotSignOutPrivilegedMemberErrorDetails value =>
                 betaCannotSignOutPrivilegedMember(value),
-            BetaBillingFrozenErrorDetails value => betaBillingFrozen(value),
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value =>
                 betaSpendLimitsAdminApiWritesNotEnabled(value),
             BetaUnsupportedCharsetErrorDetails value => betaUnsupportedCharset(value),
@@ -4007,8 +3965,6 @@ public record class ErrorDetails : ModelBase
         BetaCannotSignOutPrivilegedMemberErrorDetails value
     ) => new(value);
 
-    public static implicit operator ErrorDetails(BetaBillingFrozenErrorDetails value) => new(value);
-
     public static implicit operator ErrorDetails(
         BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value
     ) => new(value);
@@ -4148,7 +4104,6 @@ public record class ErrorDetails : ModelBase
             (betaCannotSignOutMembershipAdmin) => betaCannotSignOutMembershipAdmin.Validate(),
             (betaCannotSignOutOwner) => betaCannotSignOutOwner.Validate(),
             (betaCannotSignOutPrivilegedMember) => betaCannotSignOutPrivilegedMember.Validate(),
-            (betaBillingFrozen) => betaBillingFrozen.Validate(),
             (betaSpendLimitsAdminApiWritesNotEnabled) =>
                 betaSpendLimitsAdminApiWritesNotEnabled.Validate(),
             (betaUnsupportedCharset) => betaUnsupportedCharset.Validate(),
@@ -4259,22 +4214,21 @@ public record class ErrorDetails : ModelBase
             BetaCannotSignOutMembershipAdminErrorDetails _ => 63,
             BetaCannotSignOutOwnerErrorDetails _ => 64,
             BetaCannotSignOutPrivilegedMemberErrorDetails _ => 65,
-            BetaBillingFrozenErrorDetails _ => 66,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 67,
-            BetaUnsupportedCharsetErrorDetails _ => 68,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 69,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 70,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 71,
-            Plugins::BetaScanFailedErrorDetails _ => 72,
-            Plugins::BetaScanPendingErrorDetails _ => 73,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 74,
-            BetaApiKeyScopeMissingErrorDetails _ => 75,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 76,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 77,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 78,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 79,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 80,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 81,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 66,
+            BetaUnsupportedCharsetErrorDetails _ => 67,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 68,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 69,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 70,
+            Plugins::BetaScanFailedErrorDetails _ => 71,
+            Plugins::BetaScanPendingErrorDetails _ => 72,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 73,
+            BetaApiKeyScopeMissingErrorDetails _ => 74,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 75,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 76,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 77,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 78,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 79,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 80,
             _ => -1,
         };
     }
@@ -5677,26 +5631,6 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
-            case "billing_frozen":
-            {
-                try
-                {
-                    var deserialized = JsonSerializer.Deserialize<BetaBillingFrozenErrorDetails>(
-                        element,
-                        options
-                    );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
             case "spend_limits_admin_api_writes_not_enabled":
             {
                 try
@@ -6098,7 +6032,6 @@ public enum ErrorDetailsErrorCode
     CannotSignOutMembershipAdmin,
     CannotSignOutOwner,
     CannotSignOutPrivilegedMember,
-    BillingFrozen,
     SpendLimitsAdminApiWritesNotEnabled,
     UnsupportedCharset,
     PluginNameTaken,
@@ -6206,7 +6139,6 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "cannot_sign_out_owner" => ErrorDetailsErrorCode.CannotSignOutOwner,
             "cannot_sign_out_privileged_member" =>
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
-            "billing_frozen" => ErrorDetailsErrorCode.BillingFrozen,
             "spend_limits_admin_api_writes_not_enabled" =>
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
             "unsupported_charset" => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -6330,7 +6262,6 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.CannotSignOutOwner => "cannot_sign_out_owner",
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember =>
                     "cannot_sign_out_privileged_member",
-                ErrorDetailsErrorCode.BillingFrozen => "billing_frozen",
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled =>
                     "spend_limits_admin_api_writes_not_enabled",
                 ErrorDetailsErrorCode.UnsupportedCharset => "unsupported_charset",
