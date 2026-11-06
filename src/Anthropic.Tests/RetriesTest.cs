@@ -1019,4 +1019,112 @@ public class RetriesTest : TestBase
         var body = Assert.Single(bodies);
         Assert.Contains("file contents", body);
     }
+
+    record class OptionsParams : ParamsBase
+    {
+        internal override void AddHeadersToRequest(
+            HttpRequestMessage _request,
+            ClientOptions _options
+        )
+        {
+            // do nothing
+        }
+
+        public override Uri Url(ClientOptions options)
+        {
+            return new Uri(options.BaseUrl + "/something");
+        }
+    }
+
+    [Fact]
+    public async Task RawClient_UsesOptionsFromObjectInitializer()
+    {
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(() =>
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Content = new StringContent("foo"),
+                }
+            );
+
+        using var client = new AnthropicClientWithRawResponse()
+        {
+            HttpClient = new HttpClient(handlerMock.Object),
+            BaseUrl = "http://options.test",
+            MaxRetries = 0,
+            ApiKey = "my-anthropic-api-key",
+        };
+
+        await Assert.ThrowsAnyAsync<AnthropicApiException>(() =>
+            client.Execute(
+                new HttpRequest<OptionsParams> { Method = HttpMethod.Get, Params = new() },
+                TestContext.Current.CancellationToken
+            )
+        );
+
+        handlerMock
+            .Protected()
+            .Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(
+                    (req) => req.RequestUri == new Uri("http://options.test/something")
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
+
+    [Fact]
+    public async Task Client_UsesOptionsFromObjectInitializer()
+    {
+        var handlerMock = new Mock<HttpMessageHandler>();
+        handlerMock
+            .Protected()
+            .Setup<Task<HttpResponseMessage>>(
+                "SendAsync",
+                ItExpr.IsAny<HttpRequestMessage>(),
+                ItExpr.IsAny<CancellationToken>()
+            )
+            .ReturnsAsync(() =>
+                new HttpResponseMessage()
+                {
+                    StatusCode = HttpStatusCode.ServiceUnavailable,
+                    Content = new StringContent("foo"),
+                }
+            );
+
+        using var client = new AnthropicClient()
+        {
+            HttpClient = new HttpClient(handlerMock.Object),
+            BaseUrl = "http://options.test",
+            MaxRetries = 0,
+            ApiKey = "my-anthropic-api-key",
+        };
+
+        await Assert.ThrowsAnyAsync<AnthropicApiException>(() =>
+            client.WithRawResponse.Execute(
+                new HttpRequest<OptionsParams> { Method = HttpMethod.Get, Params = new() },
+                TestContext.Current.CancellationToken
+            )
+        );
+
+        handlerMock
+            .Protected()
+            .Verify(
+                "SendAsync",
+                Times.Exactly(1),
+                ItExpr.Is<HttpRequestMessage>(
+                    (req) => req.RequestUri == new Uri("http://options.test/something")
+                ),
+                ItExpr.IsAny<CancellationToken>()
+            );
+    }
 }
