@@ -266,6 +266,7 @@ public enum EnabledEvent
 {
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
+    UserProfileProgramStatusUpdated,
 }
 
 sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
@@ -282,6 +283,7 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
                 EnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
                 EnabledEvent.UserProfileEnforcementActionResolved,
+            "user_profile.program_status_updated" => EnabledEvent.UserProfileProgramStatusUpdated,
             _ => (EnabledEvent)(-1),
         };
     }
@@ -300,6 +302,8 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
                     "user_profile.enforcement_action_opened",
                 EnabledEvent.UserProfileEnforcementActionResolved =>
                     "user_profile.enforcement_action_resolved",
+                EnabledEvent.UserProfileProgramStatusUpdated =>
+                    "user_profile.program_status_updated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

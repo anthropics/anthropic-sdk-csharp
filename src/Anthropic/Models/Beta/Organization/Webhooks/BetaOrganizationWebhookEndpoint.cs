@@ -212,6 +212,7 @@ public enum BetaOrganizationWebhookEndpointEnabledEvent
 {
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
+    UserProfileProgramStatusUpdated,
 }
 
 sealed class BetaOrganizationWebhookEndpointEnabledEventConverter
@@ -229,6 +230,8 @@ sealed class BetaOrganizationWebhookEndpointEnabledEventConverter
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved,
+            "user_profile.program_status_updated" =>
+                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated,
             _ => (BetaOrganizationWebhookEndpointEnabledEvent)(-1),
         };
     }
@@ -247,6 +250,8 @@ sealed class BetaOrganizationWebhookEndpointEnabledEventConverter
                     "user_profile.enforcement_action_opened",
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved =>
                     "user_profile.enforcement_action_resolved",
+                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated =>
+                    "user_profile.program_status_updated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
