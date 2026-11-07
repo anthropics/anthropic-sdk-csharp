@@ -30,6 +30,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             EnvironmentID = "env_017oTjuGedHtjhJauVC5xGJD",
             InferenceGeo = BetaAnalyticsUsageCostInferenceGeo.Global,
             Model = "claude-opus-5-5",
+            OrganizationID = "12345678-1234-5678-1234-567812345678",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             ServiceTier = BetaAnalyticsServiceTier.Standard,
@@ -64,6 +65,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
         ApiEnum<string, BetaAnalyticsUsageCostInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageCostInferenceGeo.Global;
         string expectedModel = "claude-opus-5-5";
+        string expectedOrganizationID = "12345678-1234-5678-1234-567812345678";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         ApiEnum<string, BetaAnalyticsServiceTier> expectedServiceTier =
@@ -88,6 +90,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
         Assert.Equal(expectedEnvironmentID, model.EnvironmentID);
         Assert.Equal(expectedInferenceGeo, model.InferenceGeo);
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedOrganizationID, model.OrganizationID);
         Assert.Equal(expectedProduct, model.Product);
         Assert.Equal(expectedRbacGroupID, model.RbacGroupID);
         Assert.Equal(expectedServiceTier, model.ServiceTier);
@@ -122,6 +125,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             EnvironmentID = "env_017oTjuGedHtjhJauVC5xGJD",
             InferenceGeo = BetaAnalyticsUsageCostInferenceGeo.Global,
             Model = "claude-opus-5-5",
+            OrganizationID = "12345678-1234-5678-1234-567812345678",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             ServiceTier = BetaAnalyticsServiceTier.Standard,
@@ -165,6 +169,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             EnvironmentID = "env_017oTjuGedHtjhJauVC5xGJD",
             InferenceGeo = BetaAnalyticsUsageCostInferenceGeo.Global,
             Model = "claude-opus-5-5",
+            OrganizationID = "12345678-1234-5678-1234-567812345678",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             ServiceTier = BetaAnalyticsServiceTier.Standard,
@@ -206,6 +211,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
         ApiEnum<string, BetaAnalyticsUsageCostInferenceGeo> expectedInferenceGeo =
             BetaAnalyticsUsageCostInferenceGeo.Global;
         string expectedModel = "claude-opus-5-5";
+        string expectedOrganizationID = "12345678-1234-5678-1234-567812345678";
         string expectedProduct = "chat";
         string expectedRbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF";
         ApiEnum<string, BetaAnalyticsServiceTier> expectedServiceTier =
@@ -230,6 +236,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
         Assert.Equal(expectedEnvironmentID, deserialized.EnvironmentID);
         Assert.Equal(expectedInferenceGeo, deserialized.InferenceGeo);
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedOrganizationID, deserialized.OrganizationID);
         Assert.Equal(expectedProduct, deserialized.Product);
         Assert.Equal(expectedRbacGroupID, deserialized.RbacGroupID);
         Assert.Equal(expectedServiceTier, deserialized.ServiceTier);
@@ -264,6 +271,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             EnvironmentID = "env_017oTjuGedHtjhJauVC5xGJD",
             InferenceGeo = BetaAnalyticsUsageCostInferenceGeo.Global,
             Model = "claude-opus-5-5",
+            OrganizationID = "12345678-1234-5678-1234-567812345678",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             ServiceTier = BetaAnalyticsServiceTier.Standard,
@@ -301,6 +309,7 @@ public class BetaAnalyticsCostGroupTest : TestBase
             EnvironmentID = "env_017oTjuGedHtjhJauVC5xGJD",
             InferenceGeo = BetaAnalyticsUsageCostInferenceGeo.Global,
             Model = "claude-opus-5-5",
+            OrganizationID = "12345678-1234-5678-1234-567812345678",
             Product = "chat",
             RbacGroupID = "rbac_group_012rppKaSVsmTo6NqRDXQXNF",
             ServiceTier = BetaAnalyticsServiceTier.Standard,
