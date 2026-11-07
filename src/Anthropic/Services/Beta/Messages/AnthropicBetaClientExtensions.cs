@@ -37,7 +37,7 @@ public static class AnthropicBetaClientExtensions
     /// When this tool is included in <see cref="ChatOptions.Tools"/>, the <see cref="IChatClient"/> will automatically:
     /// <list type="bullet">
     /// <item><description>Configure the container with the skill(s)</description></item>
-    /// <item><description>Add the required beta headers (<c>code-execution-2025-08-25</c> and <c>skills-2025-10-02</c>)</description></item>
+    /// <item><description>Add the <c>skills-2025-10-02</c> beta header</description></item>
     /// <item><description>Add the code execution tool if not already present</description></item>
     /// </list>
     /// </para>
@@ -1354,8 +1354,10 @@ public static class AnthropicBetaClientExtensions
                         switch (tool)
                         {
                             case BetaSkillsParamsAITool skillTool:
+                                // Skills no longer need a beta header, but under this one a custom
+                                // skill's version may be an epoch-microsecond string (the beta's
+                                // version identifier) rather than a skver_ ID.
                                 (betaHeaders ??= []).Add("skills-2025-10-02");
-                                betaHeaders.Add("code-execution-2025-08-25");
 
                                 (skills ??= []).Add(skillTool.SkillParams);
                                 break;
@@ -1436,8 +1438,7 @@ public static class AnthropicBetaClientExtensions
                                 break;
 
                             case HostedCodeInterpreterTool:
-                                (betaHeaders ??= []).Add("code-execution-2025-08-25");
-                                (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
+                                (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                                 break;
 
                             case HostedMcpServerTool mcp:
@@ -1479,14 +1480,12 @@ public static class AnthropicBetaClientExtensions
                             Container = new BetaContainerParams() { Skills = skills },
                         };
 
-                        // Ensure code execution tool is present
-                        bool hasCodeExecutionTool =
-                            createdTools?.Any(t => t.Value is BetaCodeExecutionTool20250825)
-                            == true;
+                        // Ensure a code execution tool is present. Any version counts: the API
+                        // rejects a second tool named code_execution.
+                        bool hasCodeExecutionTool = createdTools?.Any(IsCodeExecutionTool) == true;
                         if (!hasCodeExecutionTool)
                         {
-                            (betaHeaders ??= []).Add("code-execution-2025-08-25");
-                            (createdTools ??= []).Add(new BetaCodeExecutionTool20250825());
+                            (createdTools ??= []).Add(new BetaCodeExecutionTool20260521());
                         }
                     }
 
@@ -2652,6 +2651,13 @@ public static class AnthropicBetaClientExtensions
 #endif
         }
     }
+
+    /// <summary>Whether the tool is a code execution tool of any version, by its name.</summary>
+    private static bool IsCodeExecutionTool(BetaToolUnion tool) =>
+        tool.Json is { ValueKind: JsonValueKind.Object } json
+        && json.TryGetProperty("name", out JsonElement name)
+        && name.ValueKind == JsonValueKind.String
+        && name.GetString() == "code_execution";
 
     private sealed class BetaToolUnionAITool(BetaToolUnion tool) : AITool
     {
