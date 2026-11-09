@@ -254,6 +254,7 @@ static class Tracing
     {
         var tags = ApiCallSpans.StartAttributes(options, request.SpanResourceIds);
         AddRequestAttributes(tags, request.Method, request.Params);
+        SpanAttributes.AddRequestAttributes(tags, request.SpanName, request.Params);
         return tags;
     }
 

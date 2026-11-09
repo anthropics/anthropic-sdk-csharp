@@ -319,6 +319,7 @@ public enum WebhookUpdateParamsEnabledEvent
 {
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
+    UserProfileProgramStatusUpdated,
 }
 
 sealed class WebhookUpdateParamsEnabledEventConverter
@@ -336,6 +337,8 @@ sealed class WebhookUpdateParamsEnabledEventConverter
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved,
+            "user_profile.program_status_updated" =>
+                WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated,
             _ => (WebhookUpdateParamsEnabledEvent)(-1),
         };
     }
@@ -354,6 +357,8 @@ sealed class WebhookUpdateParamsEnabledEventConverter
                     "user_profile.enforcement_action_opened",
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved =>
                     "user_profile.enforcement_action_resolved",
+                WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated =>
+                    "user_profile.program_status_updated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

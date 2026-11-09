@@ -14,7 +14,6 @@ public enum ThreadUnsupportedFeatureName
     Hipaa,
     InferenceHooks,
     Thinking,
-    Zdr,
 }
 
 sealed class ThreadUnsupportedFeatureNameConverter : JsonConverter<ThreadUnsupportedFeatureName>
@@ -33,7 +32,6 @@ sealed class ThreadUnsupportedFeatureNameConverter : JsonConverter<ThreadUnsuppo
             "hipaa" => ThreadUnsupportedFeatureName.Hipaa,
             "inference_hooks" => ThreadUnsupportedFeatureName.InferenceHooks,
             "thinking" => ThreadUnsupportedFeatureName.Thinking,
-            "zdr" => ThreadUnsupportedFeatureName.Zdr,
             _ => (ThreadUnsupportedFeatureName)(-1),
         };
     }
@@ -54,7 +52,6 @@ sealed class ThreadUnsupportedFeatureNameConverter : JsonConverter<ThreadUnsuppo
                 ThreadUnsupportedFeatureName.Hipaa => "hipaa",
                 ThreadUnsupportedFeatureName.InferenceHooks => "inference_hooks",
                 ThreadUnsupportedFeatureName.Thinking => "thinking",
-                ThreadUnsupportedFeatureName.Zdr => "zdr",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

@@ -123,6 +123,79 @@ sealed class StreamedMessage<T>(
     }
 
     /// <summary>
+    /// The Message as far as the events delivered it, as the JSON of a Message that was read
+    /// whole: the message of <c>message_start</c>, with the model that a <c>fallback</c> content
+    /// block named, the usage as the <c>message_delta</c> events changed it, and their stop
+    /// reason. Until a <c>message_delta</c> arrived, nothing says how the output went, so it
+    /// leaves out what only that event says of it
+    /// (<see cref="ResponseAttributes.FinalFromMessageDelta"/>). Null before
+    /// <c>message_start</c> arrived.
+    /// </summary>
+    internal Dictionary<string, JsonElement>? Snapshot()
+    {
+        if (Start is not { ValueKind: JsonValueKind.Object } start)
+        {
+            return null;
+        }
+        var message = new Dictionary<string, JsonElement>();
+        foreach (var field in start.EnumerateObject())
+        {
+            message[field.Name] = field.Value;
+        }
+        if (StopReason != null)
+        {
+            message["stop_reason"] = ToJson(StopReason);
+        }
+        else
+        {
+            message.Remove("stop_reason");
+        }
+        if (FallbackModel != null)
+        {
+            message["model"] = ToJson(FallbackModel);
+        }
+        message["usage"] = ToJson(Usage);
+        if (!ReachedMessageDelta)
+        {
+            foreach (var path in ResponseAttributes.FinalFromMessageDelta)
+            {
+                Remove(message, path, 0);
+            }
+        }
+        return message;
+    }
+
+    /// <summary>
+    /// Removes from <paramref name="json"/> the property that <paramref name="path"/> leads to
+    /// from its part at <paramref name="index"/> on, if the properties on the way are objects.
+    /// </summary>
+    static void Remove(Dictionary<string, JsonElement> json, string[] path, int index)
+    {
+        if (index == path.Length - 1)
+        {
+            json.Remove(path[index]);
+            return;
+        }
+        if (
+            !json.TryGetValue(path[index], out var child)
+            || child.ValueKind != JsonValueKind.Object
+        )
+        {
+            return;
+        }
+        var fields = new Dictionary<string, JsonElement>();
+        foreach (var field in child.EnumerateObject())
+        {
+            fields[field.Name] = field.Value;
+        }
+        Remove(fields, path, index + 1);
+        json[path[index]] = ToJson(fields);
+    }
+
+    static JsonElement ToJson<TValue>(TValue value) =>
+        JsonSerializer.SerializeToElement(value, ModelBase.SerializerOptions);
+
+    /// <summary>
     /// Takes the fields of <paramref name="usage"/> that are not null. A <c>message_delta</c> event
     /// does not change the cache writes by lifetime: the span reports the ones from
     /// <c>message_start</c>.

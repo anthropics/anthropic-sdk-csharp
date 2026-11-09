@@ -222,6 +222,78 @@ public class StreamingTest : TracingTestBase
         );
     }
 
+    /// <summary>
+    /// The paths of the response attributes of a Messages create span that the
+    /// <c>message_start</c> of a stream already has the value of.
+    /// </summary>
+    static readonly string[][] KnownAtMessageStart =
+    [
+        ["id"],
+        ["model"],
+        ["usage", "cache_creation_input_tokens"],
+        ["usage", "cache_read_input_tokens"],
+        ["usage", "cache_creation", "ephemeral_5m_input_tokens"],
+        ["usage", "cache_creation", "ephemeral_1h_input_tokens"],
+        ["usage", "service_tier"],
+    ];
+
+    /// <summary>
+    /// Asserts nothing of the spans: fails when the response attributes of the SDK's configuration
+    /// and the lists that say which of them a stream knows before its <c>message_delta</c> no
+    /// longer agree.
+    /// </summary>
+    [Fact]
+    public void MessagesCreateResponseAttributes_AreAllClassifiedForAStreamThatEndsEarly()
+    {
+        var paths = SpanAttributes
+            .Tables["anthropic.messages.create"]
+            .Response.Select(row => row.Path)
+            .ToArray();
+        var final = ResponseAttributes.FinalFromMessageDelta;
+        // The token sums read it, which no row of the table does.
+        string[][] readOutsideTheTable =
+        [
+            ["usage", "iterations"],
+        ];
+
+        Assert.All(
+            paths,
+            path =>
+                Assert.True(
+                    final.Any(listed => StartsWith(path, listed))
+                        != KnownAtMessageStart.Any(listed => listed.SequenceEqual(path)),
+                    $"The response attribute at '{string.Join(".", path)}' needs to be in exactly "
+                        + "one list: ResponseAttributes.FinalFromMessageDelta when the "
+                        + "message_start of a stream has a placeholder there, or else "
+                        + "KnownAtMessageStart in this test."
+                )
+        );
+        Assert.All(
+            KnownAtMessageStart,
+            listed =>
+                Assert.True(
+                    paths.Any(path => path.SequenceEqual(listed)),
+                    $"No response attribute comes from '{string.Join(".", listed)}' any more: "
+                        + "remove it from KnownAtMessageStart in this test."
+                )
+        );
+        Assert.All(
+            final,
+            listed =>
+                Assert.True(
+                    paths.Any(path => StartsWith(path, listed))
+                        || readOutsideTheTable.Any(read => read.SequenceEqual(listed)),
+                    $"No response attribute comes from '{string.Join(".", listed)}' any more: "
+                        + "remove it from ResponseAttributes.FinalFromMessageDelta, unless "
+                        + "hand-written code reads it, which readOutsideTheTable in this test "
+                        + "then says."
+                )
+        );
+
+        static bool StartsWith(string[] path, string[] prefix) =>
+            path.Length >= prefix.Length && path.Take(prefix.Length).SequenceEqual(prefix);
+    }
+
     [Fact]
     public async Task MessagesCreateStreaming_ClosedEarly_LeavesStatusUnset()
     {

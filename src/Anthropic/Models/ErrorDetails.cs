@@ -6,7 +6,6 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
@@ -112,6 +111,8 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.OrgApiKeyLimitExceeded,
                 ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ =>
                     ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded,
+                SandboxEgressRestrictedErrorDetails _ =>
+                    ErrorDetailsErrorCode.SandboxEgressRestricted,
                 UserProfileNotFoundErrorDetails _ => ErrorDetailsErrorCode.UserProfileNotFound,
                 ExternalKeyInWorkspacePolicyErrorDetails _ =>
                     ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy,
@@ -166,7 +167,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutOwnerErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutOwner,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ =>
                     ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
-                BetaBillingFrozenErrorDetails _ => ErrorDetailsErrorCode.BillingFrozen,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ =>
                     ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
                 BetaUnsupportedCharsetErrorDetails _ => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -239,6 +239,7 @@ public record class ErrorDetails : ModelBase
                 CmekContextUnavailableErrorDetails _ => null,
                 ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => null,
                 ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => null,
+                SandboxEgressRestrictedErrorDetails _ => null,
                 UserProfileNotFoundErrorDetails _ => null,
                 ExternalKeyInWorkspacePolicyErrorDetails _ => null,
                 AlreadyMemberErrorDetails _ => null,
@@ -270,7 +271,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails x => x.PluginID,
@@ -332,6 +332,7 @@ public record class ErrorDetails : ModelBase
                 CmekContextUnavailableErrorDetails _ => null,
                 ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => null,
                 ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => null,
+                SandboxEgressRestrictedErrorDetails _ => null,
                 UserProfileNotFoundErrorDetails _ => null,
                 ExternalKeyInWorkspacePolicyErrorDetails _ => null,
                 AlreadyMemberErrorDetails _ => null,
@@ -363,7 +364,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -428,6 +428,7 @@ public record class ErrorDetails : ModelBase
                 CmekContextUnavailableErrorDetails _ => null,
                 ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => null,
                 ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => null,
+                SandboxEgressRestrictedErrorDetails _ => null,
                 UserProfileNotFoundErrorDetails _ => null,
                 ExternalKeyInWorkspacePolicyErrorDetails _ => null,
                 AlreadyMemberErrorDetails _ => null,
@@ -459,7 +460,6 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
-                BetaBillingFrozenErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -756,6 +756,12 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(SandboxEgressRestrictedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(UserProfileNotFoundErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
@@ -979,12 +985,6 @@ public record class ErrorDetails : ModelBase
         BetaCannotSignOutPrivilegedMemberErrorDetails value,
         JsonElement? element = null
     )
-    {
-        this.Value = value;
-        this._element = element;
-    }
-
-    public ErrorDetails(BetaBillingFrozenErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1915,6 +1915,29 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="SandboxEgressRestrictedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickSandboxEgressRestricted(out var value)) {
+    ///     // `value` is of type `SandboxEgressRestrictedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickSandboxEgressRestricted(
+        [NotNullWhen(true)] out SandboxEgressRestrictedErrorDetails? value
+    )
+    {
+        value = this.Value as SandboxEgressRestrictedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="UserProfileNotFoundErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2626,29 +2649,6 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
-    /// type <see cref="BetaBillingFrozenErrorDetails"/>.
-    ///
-    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
-    ///
-    /// <example>
-    /// <code>
-    /// if (instance.TryPickBetaBillingFrozen(out var value)) {
-    ///     // `value` is of type `BetaBillingFrozenErrorDetails`
-    ///     Console.WriteLine(value);
-    /// }
-    /// </code>
-    /// </example>
-    /// </summary>
-    public bool TryPickBetaBillingFrozen(
-        [NotNullWhen(true)] out BetaBillingFrozenErrorDetails? value
-    )
-    {
-        value = this.Value as BetaBillingFrozenErrorDetails;
-        return value != null;
-    }
-
-    /// <summary>
-    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -3041,6 +3041,7 @@ public record class ErrorDetails : ModelBase
     ///     (CmekContextUnavailableErrorDetails value) =&gt; {...},
     ///     (ApiKeys::OrgApiKeyLimitExceededErrorDetails value) =&gt; {...},
     ///     (ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails value) =&gt; {...},
+    ///     (SandboxEgressRestrictedErrorDetails value) =&gt; {...},
     ///     (UserProfileNotFoundErrorDetails value) =&gt; {...},
     ///     (ExternalKeyInWorkspacePolicyErrorDetails value) =&gt; {...},
     ///     (AlreadyMemberErrorDetails value) =&gt; {...},
@@ -3072,7 +3073,6 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
-    ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -3128,6 +3128,7 @@ public record class ErrorDetails : ModelBase
         Action<CmekContextUnavailableErrorDetails> cmekContextUnavailable,
         Action<ApiKeys::OrgApiKeyLimitExceededErrorDetails> orgApiKeyLimitExceeded,
         Action<ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails> workspaceApiKeyLimitExceeded,
+        Action<SandboxEgressRestrictedErrorDetails> sandboxEgressRestricted,
         Action<UserProfileNotFoundErrorDetails> userProfileNotFound,
         Action<ExternalKeyInWorkspacePolicyErrorDetails> externalKeyInWorkspacePolicy,
         Action<AlreadyMemberErrorDetails> alreadyMember,
@@ -3159,7 +3160,6 @@ public record class ErrorDetails : ModelBase
         Action<BetaCannotSignOutMembershipAdminErrorDetails> betaCannotSignOutMembershipAdmin,
         Action<BetaCannotSignOutOwnerErrorDetails> betaCannotSignOutOwner,
         Action<BetaCannotSignOutPrivilegedMemberErrorDetails> betaCannotSignOutPrivilegedMember,
-        Action<BetaBillingFrozenErrorDetails> betaBillingFrozen,
         Action<BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails> betaSpendLimitsAdminApiWritesNotEnabled,
         Action<BetaUnsupportedCharsetErrorDetails> betaUnsupportedCharset,
         Action<Plugins::BetaPluginNameTakenErrorDetails> betaPluginNameTaken,
@@ -3284,6 +3284,9 @@ public record class ErrorDetails : ModelBase
             case ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails value:
                 workspaceApiKeyLimitExceeded(value);
                 break;
+            case SandboxEgressRestrictedErrorDetails value:
+                sandboxEgressRestricted(value);
+                break;
             case UserProfileNotFoundErrorDetails value:
                 userProfileNotFound(value);
                 break;
@@ -3376,9 +3379,6 @@ public record class ErrorDetails : ModelBase
                 break;
             case BetaCannotSignOutPrivilegedMemberErrorDetails value:
                 betaCannotSignOutPrivilegedMember(value);
-                break;
-            case BetaBillingFrozenErrorDetails value:
-                betaBillingFrozen(value);
                 break;
             case BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value:
                 betaSpendLimitsAdminApiWritesNotEnabled(value);
@@ -3482,6 +3482,7 @@ public record class ErrorDetails : ModelBase
     ///     (CmekContextUnavailableErrorDetails value) =&gt; {...},
     ///     (ApiKeys::OrgApiKeyLimitExceededErrorDetails value) =&gt; {...},
     ///     (ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails value) =&gt; {...},
+    ///     (SandboxEgressRestrictedErrorDetails value) =&gt; {...},
     ///     (UserProfileNotFoundErrorDetails value) =&gt; {...},
     ///     (ExternalKeyInWorkspacePolicyErrorDetails value) =&gt; {...},
     ///     (AlreadyMemberErrorDetails value) =&gt; {...},
@@ -3513,7 +3514,6 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
-    ///     (BetaBillingFrozenErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -3572,6 +3572,7 @@ public record class ErrorDetails : ModelBase
         Func<CmekContextUnavailableErrorDetails, T> cmekContextUnavailable,
         Func<ApiKeys::OrgApiKeyLimitExceededErrorDetails, T> orgApiKeyLimitExceeded,
         Func<ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails, T> workspaceApiKeyLimitExceeded,
+        Func<SandboxEgressRestrictedErrorDetails, T> sandboxEgressRestricted,
         Func<UserProfileNotFoundErrorDetails, T> userProfileNotFound,
         Func<ExternalKeyInWorkspacePolicyErrorDetails, T> externalKeyInWorkspacePolicy,
         Func<AlreadyMemberErrorDetails, T> alreadyMember,
@@ -3612,7 +3613,6 @@ public record class ErrorDetails : ModelBase
         Func<BetaCannotSignOutMembershipAdminErrorDetails, T> betaCannotSignOutMembershipAdmin,
         Func<BetaCannotSignOutOwnerErrorDetails, T> betaCannotSignOutOwner,
         Func<BetaCannotSignOutPrivilegedMemberErrorDetails, T> betaCannotSignOutPrivilegedMember,
-        Func<BetaBillingFrozenErrorDetails, T> betaBillingFrozen,
         Func<
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails,
             T
@@ -3703,6 +3703,7 @@ public record class ErrorDetails : ModelBase
             ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails value => workspaceApiKeyLimitExceeded(
                 value
             ),
+            SandboxEgressRestrictedErrorDetails value => sandboxEgressRestricted(value),
             UserProfileNotFoundErrorDetails value => userProfileNotFound(value),
             ExternalKeyInWorkspacePolicyErrorDetails value => externalKeyInWorkspacePolicy(value),
             AlreadyMemberErrorDetails value => alreadyMember(value),
@@ -3750,7 +3751,6 @@ public record class ErrorDetails : ModelBase
             BetaCannotSignOutOwnerErrorDetails value => betaCannotSignOutOwner(value),
             BetaCannotSignOutPrivilegedMemberErrorDetails value =>
                 betaCannotSignOutPrivilegedMember(value),
-            BetaBillingFrozenErrorDetails value => betaBillingFrozen(value),
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value =>
                 betaSpendLimitsAdminApiWritesNotEnabled(value),
             BetaUnsupportedCharsetErrorDetails value => betaUnsupportedCharset(value),
@@ -3903,6 +3903,9 @@ public record class ErrorDetails : ModelBase
         ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(SandboxEgressRestrictedErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(UserProfileNotFoundErrorDetails value) =>
         new(value);
 
@@ -4006,8 +4009,6 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(
         BetaCannotSignOutPrivilegedMemberErrorDetails value
     ) => new(value);
-
-    public static implicit operator ErrorDetails(BetaBillingFrozenErrorDetails value) => new(value);
 
     public static implicit operator ErrorDetails(
         BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value
@@ -4116,6 +4117,7 @@ public record class ErrorDetails : ModelBase
             (cmekContextUnavailable) => cmekContextUnavailable.Validate(),
             (orgApiKeyLimitExceeded) => orgApiKeyLimitExceeded.Validate(),
             (workspaceApiKeyLimitExceeded) => workspaceApiKeyLimitExceeded.Validate(),
+            (sandboxEgressRestricted) => sandboxEgressRestricted.Validate(),
             (userProfileNotFound) => userProfileNotFound.Validate(),
             (externalKeyInWorkspacePolicy) => externalKeyInWorkspacePolicy.Validate(),
             (alreadyMember) => alreadyMember.Validate(),
@@ -4148,7 +4150,6 @@ public record class ErrorDetails : ModelBase
             (betaCannotSignOutMembershipAdmin) => betaCannotSignOutMembershipAdmin.Validate(),
             (betaCannotSignOutOwner) => betaCannotSignOutOwner.Validate(),
             (betaCannotSignOutPrivilegedMember) => betaCannotSignOutPrivilegedMember.Validate(),
-            (betaBillingFrozen) => betaBillingFrozen.Validate(),
             (betaSpendLimitsAdminApiWritesNotEnabled) =>
                 betaSpendLimitsAdminApiWritesNotEnabled.Validate(),
             (betaUnsupportedCharset) => betaUnsupportedCharset.Validate(),
@@ -4228,38 +4229,38 @@ public record class ErrorDetails : ModelBase
             CmekContextUnavailableErrorDetails _ => 32,
             ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 33,
             ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 34,
-            UserProfileNotFoundErrorDetails _ => 35,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 36,
-            AlreadyMemberErrorDetails _ => 37,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 38,
-            EmailDomainNotAllowedErrorDetails _ => 39,
-            InviteAlreadyExistsErrorDetails _ => 40,
-            OrgMemberLimitExceededErrorDetails _ => 41,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 42,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 43,
-            CannotRemoveLastMemberErrorDetails _ => 44,
-            ConcurrentMembershipChangeErrorDetails _ => 45,
-            ExternalKeyValidationFailedErrorDetails _ => 46,
-            ExternalKeyValidationTimedOutErrorDetails _ => 47,
-            KeyProfileMismatchErrorDetails _ => 48,
-            WorkspacePolicyViolationErrorDetails _ => 49,
-            ExternalKeyChangedErrorDetails _ => 50,
-            WorkspaceMemberLimitExceededErrorDetails _ => 51,
-            OrganizationTypeNotSupportedErrorDetails _ => 52,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 53,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 54,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 55,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 56,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 57,
-            Environments::BetaInvalidMetadataErrorDetails _ => 58,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 59,
-            BetaCannotSignOutSelfErrorDetails _ => 60,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 61,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 62,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 63,
-            BetaCannotSignOutOwnerErrorDetails _ => 64,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 65,
-            BetaBillingFrozenErrorDetails _ => 66,
+            SandboxEgressRestrictedErrorDetails _ => 35,
+            UserProfileNotFoundErrorDetails _ => 36,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 37,
+            AlreadyMemberErrorDetails _ => 38,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 39,
+            EmailDomainNotAllowedErrorDetails _ => 40,
+            InviteAlreadyExistsErrorDetails _ => 41,
+            OrgMemberLimitExceededErrorDetails _ => 42,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 43,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 44,
+            CannotRemoveLastMemberErrorDetails _ => 45,
+            ConcurrentMembershipChangeErrorDetails _ => 46,
+            ExternalKeyValidationFailedErrorDetails _ => 47,
+            ExternalKeyValidationTimedOutErrorDetails _ => 48,
+            KeyProfileMismatchErrorDetails _ => 49,
+            WorkspacePolicyViolationErrorDetails _ => 50,
+            ExternalKeyChangedErrorDetails _ => 51,
+            WorkspaceMemberLimitExceededErrorDetails _ => 52,
+            OrganizationTypeNotSupportedErrorDetails _ => 53,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 54,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 55,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 56,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 57,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 58,
+            Environments::BetaInvalidMetadataErrorDetails _ => 59,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 60,
+            BetaCannotSignOutSelfErrorDetails _ => 61,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 62,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 63,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 64,
+            BetaCannotSignOutOwnerErrorDetails _ => 65,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 66,
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 67,
             BetaUnsupportedCharsetErrorDetails _ => 68,
             Plugins::BetaPluginNameTakenErrorDetails _ => 69,
@@ -5031,6 +5032,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "sandbox_egress_restricted":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<SandboxEgressRestrictedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "user_profile_not_found":
             {
                 try
@@ -5677,26 +5699,6 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
-            case "billing_frozen":
-            {
-                try
-                {
-                    var deserialized = JsonSerializer.Deserialize<BetaBillingFrozenErrorDetails>(
-                        element,
-                        options
-                    );
-                    if (deserialized != null)
-                    {
-                        return new(deserialized, element);
-                    }
-                }
-                catch (JsonException)
-                {
-                    // ignore
-                }
-
-                return new(element);
-            }
             case "spend_limits_admin_api_writes_not_enabled":
             {
                 try
@@ -6067,6 +6069,7 @@ public enum ErrorDetailsErrorCode
     CmekContextUnavailable,
     OrgApiKeyLimitExceeded,
     WorkspaceApiKeyLimitExceeded,
+    SandboxEgressRestricted,
     UserProfileNotFound,
     ExternalKeyInWorkspacePolicy,
     AlreadyMember,
@@ -6098,7 +6101,6 @@ public enum ErrorDetailsErrorCode
     CannotSignOutMembershipAdmin,
     CannotSignOutOwner,
     CannotSignOutPrivilegedMember,
-    BillingFrozen,
     SpendLimitsAdminApiWritesNotEnabled,
     UnsupportedCharset,
     PluginNameTaken,
@@ -6168,6 +6170,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "org_api_key_limit_exceeded" => ErrorDetailsErrorCode.OrgApiKeyLimitExceeded,
             "workspace_api_key_limit_exceeded" =>
                 ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded,
+            "sandbox_egress_restricted" => ErrorDetailsErrorCode.SandboxEgressRestricted,
             "user_profile_not_found" => ErrorDetailsErrorCode.UserProfileNotFound,
             "external_key_in_workspace_policy" =>
                 ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy,
@@ -6206,7 +6209,6 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "cannot_sign_out_owner" => ErrorDetailsErrorCode.CannotSignOutOwner,
             "cannot_sign_out_privileged_member" =>
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
-            "billing_frozen" => ErrorDetailsErrorCode.BillingFrozen,
             "spend_limits_admin_api_writes_not_enabled" =>
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
             "unsupported_charset" => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -6286,6 +6288,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.OrgApiKeyLimitExceeded => "org_api_key_limit_exceeded",
                 ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded =>
                     "workspace_api_key_limit_exceeded",
+                ErrorDetailsErrorCode.SandboxEgressRestricted => "sandbox_egress_restricted",
                 ErrorDetailsErrorCode.UserProfileNotFound => "user_profile_not_found",
                 ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy =>
                     "external_key_in_workspace_policy",
@@ -6330,7 +6333,6 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.CannotSignOutOwner => "cannot_sign_out_owner",
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember =>
                     "cannot_sign_out_privileged_member",
-                ErrorDetailsErrorCode.BillingFrozen => "billing_frozen",
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled =>
                     "spend_limits_admin_api_writes_not_enabled",
                 ErrorDetailsErrorCode.UnsupportedCharset => "unsupported_charset",

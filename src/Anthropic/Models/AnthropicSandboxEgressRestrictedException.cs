@@ -2,15 +2,16 @@ using System.Net.Http;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
-namespace Anthropic.Models.Beta.Organization;
+namespace Anthropic.Models;
 
 /// <summary>
-/// Anthropic has temporarily disabled billing changes for the user account the credential
-/// belongs to. Contact support.
+/// The request came from a Claude sandbox with restricted network access, which
+/// is not allowed to make this change. Send it from outside the sandbox, or from
+/// a sandbox with unrestricted network access.
 /// </summary>
-public sealed class AnthropicBetaBillingFrozenException : AnthropicForbiddenException
+public sealed class AnthropicSandboxEgressRestrictedException : AnthropicForbiddenException
 {
-    public AnthropicBetaBillingFrozenException(HttpRequestException? innerException = null)
+    public AnthropicSandboxEgressRestrictedException(HttpRequestException? innerException = null)
         : base(innerException) { }
 
     /// <summary>
@@ -30,11 +31,11 @@ public sealed class AnthropicBetaBillingFrozenException : AnthropicForbiddenExce
     /// <summary>
     /// <c>error.details</c> of <see cref="AnthropicServiceException.Body"/>.
     /// </summary>
-    public new BetaBillingFrozenErrorDetails Details
+    public new SandboxEgressRestrictedErrorDetails Details
     {
         get
         {
-            return WrappedJsonSerializer.GetNotNullClassProperty<BetaBillingFrozenErrorDetails>(
+            return WrappedJsonSerializer.GetNotNullClassProperty<SandboxEgressRestrictedErrorDetails>(
                 this.ErrorJson,
                 "details"
             );

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.ApiKeys;
 using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 
@@ -47,6 +48,7 @@ public interface IApiKeyService
     /// </summary>
     /// <exception cref="ApiKeys::AnthropicOrgApiKeyLimitExceededException"/>
     /// <exception cref="ApiKeys::AnthropicWorkspaceApiKeyLimitExceededException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaApiKey> Update(
         ApiKeyUpdateParams parameters,
         CancellationToken cancellationToken = default

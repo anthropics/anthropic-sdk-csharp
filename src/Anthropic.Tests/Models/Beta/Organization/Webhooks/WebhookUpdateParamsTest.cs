@@ -202,6 +202,7 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     [Theory]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]
     public void Validation_Works(WebhookUpdateParamsEnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -224,6 +225,7 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     [Theory]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]
     public void SerializationRoundtrip_Works(WebhookUpdateParamsEnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us

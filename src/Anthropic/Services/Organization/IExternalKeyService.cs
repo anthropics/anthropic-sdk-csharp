@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.UserProfiles;
 
@@ -31,6 +32,7 @@ public interface IExternalKeyService
     /// Create an external key config owned by the caller's organization.
     /// </summary>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ExternalKey> Create(
         ExternalKeyCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -59,6 +61,7 @@ public interface IExternalKeyService
     /// data requires the original key identity to decrypt.</para>
     /// </summary>
     /// <exception cref="AnthropicExternalKeyInWorkspacePolicyException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ExternalKey> Update(
         ExternalKeyUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -88,6 +91,7 @@ public interface IExternalKeyService
     /// <para>The request is rejected if any workspace still references this config.</para>
     /// </summary>
     /// <exception cref="AnthropicExternalKeyInWorkspacePolicyException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ExternalKeyDeleteResponse> Delete(
         ExternalKeyDeleteParams parameters,
         CancellationToken cancellationToken = default
@@ -108,6 +112,7 @@ public interface IExternalKeyService
     /// if the roundtrip succeeded, or `failure` with an error message if it failed or
     /// timed out.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ExternalKeyValidateResponse> Validate(
         ExternalKeyValidateParams parameters,
         CancellationToken cancellationToken = default

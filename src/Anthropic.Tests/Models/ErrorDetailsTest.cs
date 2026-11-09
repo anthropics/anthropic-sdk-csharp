@@ -5,7 +5,6 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
@@ -275,6 +274,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void SandboxEgressRestrictedValidationWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void UserProfileNotFoundValidationWorks()
     {
         ErrorDetails value = new UserProfileNotFoundErrorDetails();
@@ -498,13 +504,6 @@ public class ErrorDetailsTest : TestBase
     public void BetaCannotSignOutPrivilegedMemberValidationWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
-        value.Validate();
-    }
-
-    [Fact]
-    public void BetaBillingFrozenValidationWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
         value.Validate();
     }
 
@@ -1082,6 +1081,19 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void SandboxEgressRestrictedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void UserProfileNotFoundSerializationRoundtripWorks()
     {
         ErrorDetails value = new UserProfileNotFoundErrorDetails();
@@ -1485,19 +1497,6 @@ public class ErrorDetailsTest : TestBase
     public void BetaCannotSignOutPrivilegedMemberSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
-        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
-            element,
-            ModelBase.SerializerOptions
-        );
-
-        Assert.Equal(value, deserialized);
-    }
-
-    [Fact]
-    public void BetaBillingFrozenSerializationRoundtripWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -1967,6 +1966,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void SandboxEgressRestrictedErrorCodeWorks()
+    {
+        ErrorDetails value = new SandboxEgressRestrictedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.SandboxEgressRestricted, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void UserProfileNotFoundErrorCodeWorks()
     {
         ErrorDetails value = new UserProfileNotFoundErrorDetails();
@@ -2200,13 +2206,6 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
-    public void BetaBillingFrozenErrorCodeWorks()
-    {
-        ErrorDetails value = new BetaBillingFrozenErrorDetails();
-        Assert.Equal(ErrorDetailsErrorCode.BillingFrozen, value.ErrorCode.Value());
-    }
-
-    [Fact]
     public void BetaSpendLimitsAdminApiWritesNotEnabledErrorCodeWorks()
     {
         ErrorDetails value = new BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails();
@@ -2436,6 +2435,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable)]
     [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotFound)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy)]
     [InlineData(ErrorDetailsErrorCode.AlreadyMember)]
@@ -2467,7 +2467,6 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
-    [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
     [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]
@@ -2538,6 +2537,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable)]
     [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotFound)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy)]
     [InlineData(ErrorDetailsErrorCode.AlreadyMember)]
@@ -2569,7 +2569,6 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
-    [InlineData(ErrorDetailsErrorCode.BillingFrozen)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
     [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]

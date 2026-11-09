@@ -1,4 +1,3 @@
-using System;
 using System.Net;
 using System.Net.Http;
 using Anthropic.Core;
@@ -7,16 +6,9 @@ namespace Anthropic.Exceptions;
 
 public class AnthropicApiException : AnthropicServiceException
 {
-    public new HttpRequestException InnerException
+    public new HttpRequestException? InnerException
     {
-        get
-        {
-            if (base.InnerException == null)
-            {
-                throw new ArgumentNullException();
-            }
-            return (HttpRequestException)base.InnerException;
-        }
+        get { return (HttpRequestException?)base.InnerException; }
     }
 
     public AnthropicApiException(string message, HttpRequestException? innerException = null)

@@ -77,6 +77,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData x => x.ID,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData x => x.ID,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData x => x.ID,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData x => x.ID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "id"),
             };
         }
@@ -134,6 +135,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData x => x.OrganizationID,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData x => x.OrganizationID,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData x => x.OrganizationID,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData x => x.OrganizationID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(
                     this.Json,
                     "organization_id"
@@ -225,6 +227,8 @@ public record class BetaWebhookEventData : ModelBase
                     BetaWebhookEventDataType.UserProfileEnforcementActionOpened,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData _ =>
                     BetaWebhookEventDataType.UserProfileEnforcementActionResolved,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData _ =>
+                    BetaWebhookEventDataType.UserProfileProgramStatusUpdated,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<
                     ApiEnum<string, BetaWebhookEventDataType>
                 >(this.Json, "type"),
@@ -284,6 +288,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData x => x.WorkspaceID,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData _ => null,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "workspace_id"
@@ -344,6 +349,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData _ => null,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "session_thread_id"
@@ -404,6 +410,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData _ => null,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "vault_id"),
             };
         }
@@ -461,6 +468,7 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookSessionBudgetReachedEventData _ => null,
                 BetaWebhookUserProfileEnforcementActionOpenedEventData x => x.EnforcementActionID,
                 BetaWebhookUserProfileEnforcementActionResolvedEventData x => x.EnforcementActionID,
+                BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "enforcement_action_id"
@@ -858,6 +866,15 @@ public record class BetaWebhookEventData : ModelBase
 
     public BetaWebhookEventData(
         BetaWebhookUserProfileEnforcementActionResolvedEventData value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaWebhookEventData(
+        BetaWebhookUserProfileProgramStatusUpdatedEventData value,
         JsonElement? element = null
     )
     {
@@ -1917,6 +1934,29 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebhookUserProfileProgramStatusUpdatedEventData"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserProfileProgramStatusUpdated(out var value)) {
+    ///     // `value` is of type `BetaWebhookUserProfileProgramStatusUpdatedEventData`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserProfileProgramStatusUpdated(
+        [NotNullWhen(true)] out BetaWebhookUserProfileProgramStatusUpdatedEventData? value
+    )
+    {
+        value = this.Value as BetaWebhookUserProfileProgramStatusUpdatedEventData;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -1975,7 +2015,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionBudgetReachedEventData value) =&gt; {...},
     ///     (BetaWebhookUserProfileEnforcementActionOpenedEventData value) =&gt; {...},
-    ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...}
+    ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...},
+    ///     (BetaWebhookUserProfileProgramStatusUpdatedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2026,7 +2067,8 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookMemoryStoreDeletedEventData> memoryStoreDeleted,
         Action<BetaWebhookSessionBudgetReachedEventData> sessionBudgetReached,
         Action<BetaWebhookUserProfileEnforcementActionOpenedEventData> userProfileEnforcementActionOpened,
-        Action<BetaWebhookUserProfileEnforcementActionResolvedEventData> userProfileEnforcementActionResolved
+        Action<BetaWebhookUserProfileEnforcementActionResolvedEventData> userProfileEnforcementActionResolved,
+        Action<BetaWebhookUserProfileProgramStatusUpdatedEventData> userProfileProgramStatusUpdated
     )
     {
         switch (this.Value)
@@ -2169,6 +2211,9 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookUserProfileEnforcementActionResolvedEventData value:
                 userProfileEnforcementActionResolved(value);
                 break;
+            case BetaWebhookUserProfileProgramStatusUpdatedEventData value:
+                userProfileProgramStatusUpdated(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaWebhookEventData"
@@ -2236,7 +2281,8 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookMemoryStoreDeletedEventData value) =&gt; {...},
     ///     (BetaWebhookSessionBudgetReachedEventData value) =&gt; {...},
     ///     (BetaWebhookUserProfileEnforcementActionOpenedEventData value) =&gt; {...},
-    ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...}
+    ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...},
+    ///     (BetaWebhookUserProfileProgramStatusUpdatedEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2293,7 +2339,8 @@ public record class BetaWebhookEventData : ModelBase
         Func<
             BetaWebhookUserProfileEnforcementActionResolvedEventData,
             T
-        > userProfileEnforcementActionResolved
+        > userProfileEnforcementActionResolved,
+        Func<BetaWebhookUserProfileProgramStatusUpdatedEventData, T> userProfileProgramStatusUpdated
     )
     {
         return this.Value switch
@@ -2349,6 +2396,8 @@ public record class BetaWebhookEventData : ModelBase
                 userProfileEnforcementActionOpened(value),
             BetaWebhookUserProfileEnforcementActionResolvedEventData value =>
                 userProfileEnforcementActionResolved(value),
+            BetaWebhookUserProfileProgramStatusUpdatedEventData value =>
+                userProfileProgramStatusUpdated(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebhookEventData"
             ),
@@ -2531,6 +2580,10 @@ public record class BetaWebhookEventData : ModelBase
         BetaWebhookUserProfileEnforcementActionResolvedEventData value
     ) => new(value);
 
+    public static implicit operator BetaWebhookEventData(
+        BetaWebhookUserProfileProgramStatusUpdatedEventData value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2596,7 +2649,8 @@ public record class BetaWebhookEventData : ModelBase
             (sessionBudgetReached) => sessionBudgetReached.Validate(),
             (userProfileEnforcementActionOpened) => userProfileEnforcementActionOpened.Validate(),
             (userProfileEnforcementActionResolved) =>
-                userProfileEnforcementActionResolved.Validate()
+                userProfileEnforcementActionResolved.Validate(),
+            (userProfileProgramStatusUpdated) => userProfileProgramStatusUpdated.Validate()
         );
     }
 
@@ -2666,6 +2720,7 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookSessionBudgetReachedEventData _ => 43,
             BetaWebhookUserProfileEnforcementActionOpenedEventData _ => 44,
             BetaWebhookUserProfileEnforcementActionResolvedEventData _ => 45,
+            BetaWebhookUserProfileProgramStatusUpdatedEventData _ => 46,
             _ => -1,
         };
     }
@@ -3652,6 +3707,27 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
 
                 return new(element);
             }
+            case "user_profile.program_status_updated":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaWebhookUserProfileProgramStatusUpdatedEventData>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
                 return new BetaWebhookEventData(element);
@@ -3718,6 +3794,7 @@ public enum BetaWebhookEventDataType
     SessionBudgetReached,
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
+    UserProfileProgramStatusUpdated,
 }
 
 sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventDataType>
@@ -3780,6 +3857,8 @@ sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventD
                 BetaWebhookEventDataType.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
                 BetaWebhookEventDataType.UserProfileEnforcementActionResolved,
+            "user_profile.program_status_updated" =>
+                BetaWebhookEventDataType.UserProfileProgramStatusUpdated,
             _ => (BetaWebhookEventDataType)(-1),
         };
     }
@@ -3844,6 +3923,8 @@ sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventD
                     "user_profile.enforcement_action_opened",
                 BetaWebhookEventDataType.UserProfileEnforcementActionResolved =>
                     "user_profile.enforcement_action_resolved",
+                BetaWebhookEventDataType.UserProfileProgramStatusUpdated =>
+                    "user_profile.program_status_updated",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

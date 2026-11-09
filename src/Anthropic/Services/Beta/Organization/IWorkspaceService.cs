@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.UserProfiles;
@@ -44,6 +45,7 @@ public interface IWorkspaceService
     /// <exception cref="AnthropicKeyProfileMismatchException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
     Task<OrganizationWorkspaces::BetaWorkspace> Create(
         OrganizationWorkspaces::WorkspaceCreateParams parameters,
@@ -73,6 +75,7 @@ public interface IWorkspaceService
     /// <exception cref="AnthropicKeyProfileMismatchException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
     Task<OrganizationWorkspaces::BetaWorkspace> Update(
         OrganizationWorkspaces::WorkspaceUpdateParams parameters,
@@ -97,6 +100,7 @@ public interface IWorkspaceService
     /// <summary>
     /// Archive Workspace
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<OrganizationWorkspaces::BetaWorkspace> Archive(
         OrganizationWorkspaces::WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default

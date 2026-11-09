@@ -1,17 +1,19 @@
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Organization;
+using Anthropic.Models;
 
-namespace Anthropic.Tests.Models.Beta.Organization;
+namespace Anthropic.Tests.Models;
 
-public class BetaBillingFrozenErrorDetailsTest : TestBase
+public class SandboxEgressRestrictedErrorDetailsTest : TestBase
 {
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaBillingFrozenErrorDetails { };
+        var model = new SandboxEgressRestrictedErrorDetails { };
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("billing_frozen");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
+            "sandbox_egress_restricted"
+        );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
     }
@@ -19,10 +21,10 @@ public class BetaBillingFrozenErrorDetailsTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaBillingFrozenErrorDetails { };
+        var model = new SandboxEgressRestrictedErrorDetails { };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaBillingFrozenErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<SandboxEgressRestrictedErrorDetails>(
             json,
             ModelBase.SerializerOptions
         );
@@ -33,16 +35,18 @@ public class BetaBillingFrozenErrorDetailsTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaBillingFrozenErrorDetails { };
+        var model = new SandboxEgressRestrictedErrorDetails { };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<BetaBillingFrozenErrorDetails>(
+        var deserialized = JsonSerializer.Deserialize<SandboxEgressRestrictedErrorDetails>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement("billing_frozen");
+        JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
+            "sandbox_egress_restricted"
+        );
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
     }
@@ -50,7 +54,7 @@ public class BetaBillingFrozenErrorDetailsTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaBillingFrozenErrorDetails { };
+        var model = new SandboxEgressRestrictedErrorDetails { };
 
         model.Validate();
     }
@@ -58,9 +62,9 @@ public class BetaBillingFrozenErrorDetailsTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaBillingFrozenErrorDetails { };
+        var model = new SandboxEgressRestrictedErrorDetails { };
 
-        BetaBillingFrozenErrorDetails copied = new(model);
+        SandboxEgressRestrictedErrorDetails copied = new(model);
 
         Assert.Equal(model, copied);
     }

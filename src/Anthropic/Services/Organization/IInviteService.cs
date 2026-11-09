@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.Invites;
 using Anthropic.Models.Organization.RbacGroups;
@@ -43,6 +44,7 @@ public interface IInviteService
     /// <exception cref="AnthropicOrgMemberLimitExceededException"/>
     /// <exception cref="AnthropicRbacGroupGrantsOwnerAccessException"/>
     /// <exception cref="AnthropicRbacGroupOwnerAccessUnconfirmedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<OrganizationInvite> Create(
         InviteCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -74,6 +76,7 @@ public interface IInviteService
     /// <summary>
     /// Delete a pending invite.
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<InviteDeleteResponse> Delete(
         InviteDeleteParams parameters,
         CancellationToken cancellationToken = default

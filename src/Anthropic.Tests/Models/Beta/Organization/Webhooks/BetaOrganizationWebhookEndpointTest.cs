@@ -192,6 +192,7 @@ public class BetaOrganizationWebhookEndpointEnabledEventTest : TestBase
     [Theory]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated)]
     public void Validation_Works(BetaOrganizationWebhookEndpointEnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -213,6 +214,7 @@ public class BetaOrganizationWebhookEndpointEnabledEventTest : TestBase
     [Theory]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated)]
     public void SerializationRoundtrip_Works(BetaOrganizationWebhookEndpointEnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us

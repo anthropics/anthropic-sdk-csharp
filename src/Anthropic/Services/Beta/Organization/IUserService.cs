@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Organization;
@@ -47,6 +48,7 @@ public interface IUserService
     /// <summary>
     /// Update a member's organization role.
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaOrganizationUser> Update(
         UserUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -71,6 +73,7 @@ public interface IUserService
     /// Remove a member from the organization.
     /// </summary>
     /// <exception cref="Users::AnthropicCannotRemoveLastMemberException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicConcurrentMembershipChangeException"/>
     Task<UserRemoveResponse> Remove(
         UserRemoveParams parameters,
@@ -106,10 +109,10 @@ public interface IUserService
     ///
     /// <para>Every request must include the beta header `anthropic-beta:
     /// admin-user-sign-out-2026-10-08`. A request without it returns `400`. Sign-out is
-    /// in beta. Anthropic turns it on for each organization and has turned it on for
-    /// every Claude Enterprise organization; until yours is on, requests also return
-    /// `400`. In a Claude Enterprise organization, an API key needs the `write:members`
-    /// scope; a key without it gets `403`.</para>
+    /// in beta for Claude Enterprise organizations. In an organization where it is not
+    /// enabled, a request returns `400` with `error_code`
+    /// `organization_not_enrolled_in_beta`. In a Claude Enterprise organization, an API
+    /// key needs the `write:members` scope; a key without it gets `403`.</para>
     /// </summary>
     /// <exception cref="AnthropicBetaCannotSignOutPrimaryOwnerException"/>
     /// <exception cref="AnthropicBetaCannotSignOutSelfException"/>
@@ -118,6 +121,7 @@ public interface IUserService
     /// <exception cref="AnthropicBetaCannotSignOutMembershipAdminException"/>
     /// <exception cref="AnthropicBetaCannotSignOutOwnerException"/>
     /// <exception cref="AnthropicBetaCannotSignOutPrivilegedMemberException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaOrganizationUser> SignOut(
         UserSignOutParams parameters,
         CancellationToken cancellationToken = default

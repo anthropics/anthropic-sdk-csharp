@@ -665,6 +665,8 @@ public record class ThreadSendParams : ParamsBase
 
     internal override string Route => "/v1/messages";
 
+    internal override IReadOnlyDictionary<string, JsonElement>? SpanBody => this.RawBodyData;
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

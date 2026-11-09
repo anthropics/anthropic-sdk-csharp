@@ -1,9 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using Anthropic.Models.Beta.Sessions;
+using System.Text.Json;
 using static Anthropic.Core.Telemetry.ActivityTags;
 using static Anthropic.Core.Telemetry.SemanticConventions;
 
@@ -14,24 +11,14 @@ namespace Anthropic.Core.Telemetry;
 /// method. The span starts with those of the client's options and the resource IDs that the
 /// method names on its request (<see cref="StartAttributes"/>), so that a sampler sees them. The
 /// client sets those of the response headers when the response of the final attempt arrives
-/// (<see cref="SetResponseHeaderAttributes"/>), and a method that creates an object sets the
-/// object's ID from its response (<see cref="Tracing.SetCreatedId{T}"/>). What else a method knows
-/// of its own request and response it gives the span it starts: the Messages methods do
-/// (<see cref="RequestAttributes"/>, <see cref="ResponseAttributes"/>,
+/// (<see cref="SpanAttributes.SetResponseHeaderAttributes"/>), and a method that creates an
+/// object sets the object's ID from its response (<see cref="Tracing.SetCreatedId{T}"/>). What a
+/// method computes from its own request and response it gives the span it starts: the Messages
+/// create methods do (<see cref="RequestAttributes"/>, <see cref="ResponseAttributes"/>,
 /// <see cref="StreamRecording"/>).
 /// </summary>
 static class ApiCallSpans
 {
-    /// <summary>
-    /// The attributes that come from response headers, each with its header.
-    /// </summary>
-    static readonly KeyValuePair<string, string>[] ResponseHeaderAttributes =
-    [
-        new(AttributeAnthropicRequestId, "request-id"),
-        new(AttributeAnthropicOrganizationId, "anthropic-organization-id"),
-        new(AttributeAnthropicWorkspaceId, "anthropic-workspace-id"),
-    ];
-
     const string AttributeAnthropicSessionThreadId = "anthropic.session.thread.id";
 
     /// <summary>
@@ -107,92 +94,30 @@ static class ApiCallSpans
     }
 
     /// <summary>
-    /// The attributes that the call span of a Message Batches create call, stable or beta, starts
-    /// with besides those of every call span: the number of requests in the batch, which
-    /// <paramref name="requestCount"/> reads from the method's parameters.
+    /// The attributes that the call span of a Message Batches create call, stable or beta, whose
+    /// request has <paramref name="body"/>, starts with besides those of every call span: the
+    /// number of requests in the batch.
     /// </summary>
     internal static List<KeyValuePair<string, object?>> BatchesCreateAttributes(
-        Func<int> requestCount
-    )
-    {
-        // A model throws for a required field that the parameters do not have.
-        try
-        {
-            return [new("anthropic.message.batch.request_count", requestCount())];
-        }
-        catch (Exception)
-        {
-            return [];
-        }
-    }
+        IReadOnlyDictionary<string, JsonElement> body
+    ) =>
+        body.Property("requests") is { ValueKind: JsonValueKind.Array } requests
+            ? [new("anthropic.message.batch.request_count", requests.GetArrayLength())]
+            : [];
 
     /// <summary>
-    /// The resource IDs that the call span of a Sessions create call with
-    /// <paramref name="parameters"/> starts with: the agent and the environment that the request
-    /// names, which the API's span of the same name has too.
+    /// The resource ID that the call span of a Sessions create call whose request has
+    /// <paramref name="body"/> starts with besides those that the SDK's configuration names: the
+    /// agent, which the request names by its ID or with an object that has the ID.
     /// </summary>
     internal static List<KeyValuePair<string, object?>> SessionsCreateIds(
-        SessionCreateParams parameters
+        IReadOnlyDictionary<string, JsonElement> body
     )
     {
         List<KeyValuePair<string, object?>> ids = [];
-        // A model throws for a required field that the parameters do not have.
-        try
-        {
-            var agent = parameters.Agent;
-            ids.Add(new("gen_ai.agent.id", agent.TryPickString(out var id) ? id : agent.ID));
-            ids.Add(new("anthropic.session.environment.id", parameters.EnvironmentID));
-        }
-        catch (Exception) { }
+        var agent = body.Property("agent");
+        ids.AddTag("gen_ai.agent.id", agent?.StringValue() ?? agent?.Text("id"));
         return ids;
-    }
-
-    /// <summary>
-    /// Sets on <paramref name="span"/>, the call span of a Sessions create call, the name and the
-    /// model of the agent of <paramref name="created"/>. The model is the one that the Session
-    /// resolved, which an override in the request can differ from.
-    /// </summary>
-    internal static void SetSessionAgent(Activity? span, BetaManagedAgentsSession created) =>
-        Record(
-            span,
-            recordingSpan =>
-            {
-                var agent = created.Agent;
-                SetTag(recordingSpan, "gen_ai.agent.name", agent.Name);
-                SetTag(recordingSpan, AttributeGenAiRequestModel, agent.Model.ID.Raw());
-            }
-        );
-
-    /// <summary>
-    /// Sets on <paramref name="span"/>, the call span of an API call, the IDs that the headers of
-    /// <paramref name="response"/> carry, the response of the call's final attempt. Does nothing
-    /// to a span that is not recording.
-    /// </summary>
-    internal static void SetResponseHeaderAttributes(Activity span, HttpResponseMessage response)
-    {
-        if (!span.IsAllDataRequested)
-        {
-            return;
-        }
-        foreach (var attribute in ResponseHeaderAttributes)
-        {
-            SetTag(span, attribute.Key, FirstValue(response.Headers, attribute.Value));
-        }
-    }
-
-    static string? FirstValue(HttpResponseHeaders headers, string name)
-    {
-        if (headers.TryGetValues(name, out var values))
-        {
-            foreach (var value in values)
-            {
-                if (!string.IsNullOrEmpty(value))
-                {
-                    return value;
-                }
-            }
-        }
-        return null;
     }
 
     static string? NonEmpty(string? value) => string.IsNullOrEmpty(value) ? null : value;

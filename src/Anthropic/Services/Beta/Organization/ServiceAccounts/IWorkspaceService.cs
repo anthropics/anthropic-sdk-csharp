@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.ServiceAccounts;
 using Anthropic.Models.Beta.Organization.ServiceAccounts.Workspaces;
 
@@ -73,6 +74,7 @@ public interface IWorkspaceService
     /// replaced with the value supplied here. Archived workspaces return 400. Archived
     /// service accounts cannot be added and are rejected.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaServiceAccountWorkspaceMember> Add(
         WorkspaceAddParams parameters,
         CancellationToken cancellationToken = default
@@ -101,6 +103,7 @@ public interface IWorkspaceService
     /// explicit default-workspace row reverts to the implicit `workspace_user`
     /// membership. Archived workspaces return 400.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<WorkspaceRemoveResponse> Remove(
         WorkspaceRemoveParams parameters,
         CancellationToken cancellationToken = default

@@ -523,8 +523,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
                 if (span != null)
                 {
                     // The span records the final attempt's response.
+                    SpanAttributes.SetResponseHeaderAttributes(span, response.RawMessage);
                     Tracing.SetResponseStatusCode(span, response.RawMessage);
-                    ApiCallSpans.SetResponseHeaderAttributes(span, response.RawMessage);
                 }
                 if (response.IsSuccessStatusCode)
                 {

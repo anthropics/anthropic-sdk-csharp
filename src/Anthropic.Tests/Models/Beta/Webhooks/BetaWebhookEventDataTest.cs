@@ -567,6 +567,17 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void UserProfileProgramStatusUpdatedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileProgramStatusUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionCreatedSerializationRoundtripWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -1402,6 +1413,23 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void UserProfileProgramStatusUpdatedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileProgramStatusUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SessionCreatedTypeWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -1967,6 +1995,17 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void UserProfileProgramStatusUpdatedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookUserProfileProgramStatusUpdatedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.UserProfileProgramStatusUpdated, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaWebhookEventData value = new(
@@ -2098,6 +2137,7 @@ public class BetaWebhookEventDataTypeTest : TestBase
     [InlineData(BetaWebhookEventDataType.SessionBudgetReached)]
     [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionOpened)]
     [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionResolved)]
+    [InlineData(BetaWebhookEventDataType.UserProfileProgramStatusUpdated)]
     public void Validation_Works(BetaWebhookEventDataType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -2164,6 +2204,7 @@ public class BetaWebhookEventDataTypeTest : TestBase
     [InlineData(BetaWebhookEventDataType.SessionBudgetReached)]
     [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionOpened)]
     [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionResolved)]
+    [InlineData(BetaWebhookEventDataType.UserProfileProgramStatusUpdated)]
     public void SerializationRoundtrip_Works(BetaWebhookEventDataType rawValue)
     {
         // force implicit conversion because Theory can't do that for us

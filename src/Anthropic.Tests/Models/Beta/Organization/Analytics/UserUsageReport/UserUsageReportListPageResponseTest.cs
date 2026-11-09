@@ -18,7 +18,7 @@ public class UserUsageReportListPageResponseTest : TestBase
             [
                 new()
                 {
-                    Actor = new()
+                    Actor = new BetaAnalyticsUserActor()
                     {
                         Deleted = true,
                         EmailAddress = "jane@example.com",
@@ -59,7 +59,7 @@ public class UserUsageReportListPageResponseTest : TestBase
         [
             new()
             {
-                Actor = new()
+                Actor = new BetaAnalyticsUserActor()
                 {
                     Deleted = true,
                     EmailAddress = "jane@example.com",
@@ -111,7 +111,7 @@ public class UserUsageReportListPageResponseTest : TestBase
             [
                 new()
                 {
-                    Actor = new()
+                    Actor = new BetaAnalyticsUserActor()
                     {
                         Deleted = true,
                         EmailAddress = "jane@example.com",
@@ -166,7 +166,7 @@ public class UserUsageReportListPageResponseTest : TestBase
             [
                 new()
                 {
-                    Actor = new()
+                    Actor = new BetaAnalyticsUserActor()
                     {
                         Deleted = true,
                         EmailAddress = "jane@example.com",
@@ -214,7 +214,7 @@ public class UserUsageReportListPageResponseTest : TestBase
         [
             new()
             {
-                Actor = new()
+                Actor = new BetaAnalyticsUserActor()
                 {
                     Deleted = true,
                     EmailAddress = "jane@example.com",
@@ -266,7 +266,7 @@ public class UserUsageReportListPageResponseTest : TestBase
             [
                 new()
                 {
-                    Actor = new()
+                    Actor = new BetaAnalyticsUserActor()
                     {
                         Deleted = true,
                         EmailAddress = "jane@example.com",
@@ -315,7 +315,7 @@ public class UserUsageReportListPageResponseTest : TestBase
             [
                 new()
                 {
-                    Actor = new()
+                    Actor = new BetaAnalyticsUserActor()
                     {
                         Deleted = true,
                         EmailAddress = "jane@example.com",

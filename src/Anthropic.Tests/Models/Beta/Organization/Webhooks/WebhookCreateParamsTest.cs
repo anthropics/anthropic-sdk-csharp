@@ -174,6 +174,7 @@ public class EnabledEventTest : TestBase
     [Theory]
     [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]
     public void Validation_Works(EnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -196,6 +197,7 @@ public class EnabledEventTest : TestBase
     [Theory]
     [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
+    [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]
     public void SerializationRoundtrip_Works(EnabledEvent rawValue)
     {
         // force implicit conversion because Theory can't do that for us

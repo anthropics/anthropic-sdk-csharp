@@ -462,6 +462,8 @@ public record class MessageCountTokensParams : ParamsBase
 
     internal override string Route => "/v1/messages/count_tokens";
 
+    internal override IReadOnlyDictionary<string, JsonElement>? SpanBody => this.RawBodyData;
+
     internal override HttpContent? BodyContent()
     {
         return new StringContent(

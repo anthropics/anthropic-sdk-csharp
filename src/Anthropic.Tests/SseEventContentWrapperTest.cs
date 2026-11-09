@@ -186,9 +186,10 @@ public class SseEventContentWrapperTest
 
         Assert.Equal(["message_start", "content_block_start"], eventTypes);
         Assert.Equal(
-            "SSE error returned from server: '{\"type\":\"error\",\"error\":{\"type\":\"throttlingException\",\"message\":\"Too many requests, please wait before trying again.\"}}'",
-            exception.Message
+            "{\"type\":\"error\",\"error\":{\"type\":\"throttlingException\",\"message\":\"Too many requests, please wait before trying again.\"}}",
+            exception.EventData
         );
+        Assert.Contains("Too many requests, please wait before trying again.", exception.Message);
     }
 
     [Fact]
@@ -212,9 +213,10 @@ public class SseEventContentWrapperTest
 
         Assert.Equal(["message_start"], eventTypes);
         Assert.Equal(
-            "SSE error returned from server: '{\"type\":\"error\",\"error\":{\"type\":\"InternalFailure\",\"message\":\"An internal error occurred.\"}}'",
-            exception.Message
+            "{\"type\":\"error\",\"error\":{\"type\":\"InternalFailure\",\"message\":\"An internal error occurred.\"}}",
+            exception.EventData
         );
+        Assert.Contains("An internal error occurred.", exception.Message);
     }
 
     [Fact]

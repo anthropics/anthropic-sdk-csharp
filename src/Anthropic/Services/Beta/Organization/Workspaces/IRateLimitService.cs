@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
 namespace Anthropic.Services.Beta.Organization.Workspaces;
@@ -38,6 +39,7 @@ public interface IRateLimitService
     /// `GET /v1/organizations/workspaces/{workspace_id}/rate_limits` returns. Changes
     /// take effect within about an hour.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaWorkspaceRateLimit> Update(
         RateLimitUpdateParams parameters,
         CancellationToken cancellationToken = default

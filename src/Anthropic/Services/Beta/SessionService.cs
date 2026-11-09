@@ -235,7 +235,7 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
             Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
             SpanName = "anthropic.sessions.create",
             SpanResourceIds = ApiCallSpans.IsEnabled(this._client)
-                ? ApiCallSpans.SessionsCreateIds(parameters)
+                ? ApiCallSpans.SessionsCreateIds(parameters.RawBodyData)
                 : null,
         };
         var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
@@ -256,7 +256,6 @@ public sealed class SessionServiceWithRawResponse : ISessionServiceWithRawRespon
                     betaManagedAgentsSession,
                     static created => created.ID
                 );
-                ApiCallSpans.SetSessionAgent(response.Span, betaManagedAgentsSession);
                 return betaManagedAgentsSession;
             }
         );

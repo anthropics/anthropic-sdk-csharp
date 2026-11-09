@@ -430,6 +430,28 @@ public record class CostListParams : ParamsBase
     }
 
     /// <summary>
+    /// Filter a parent organization's report to specific child organizations, by
+    /// organization UUID or `org_` ID; an ID that is not one of its child organizations
+    /// matches nothing. Requires an API key created at the parent organization level.
+    /// Use `group_by[]=organization_id` to break out per-organization values.
+    /// </summary>
+    public IReadOnlyList<string>? OrganizationIds
+    {
+        get
+        {
+            this._rawQueryData.Freeze();
+            return this._rawQueryData.GetNullableStruct<ImmutableArray<string>>("organization_ids");
+        }
+        init
+        {
+            this._rawQueryData.Set<ImmutableArray<string>?>(
+                "organization_ids",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
+    }
+
+    /// <summary>
     /// Opaque cursor from a previous response's `next_page` field.
     /// </summary>
     public string? Page
@@ -760,6 +782,7 @@ public record class CostListParams : ParamsBase
             "models",
             "order",
             "order_by",
+            "organization_ids",
             "page",
             "products",
             "rbac_group_ids",

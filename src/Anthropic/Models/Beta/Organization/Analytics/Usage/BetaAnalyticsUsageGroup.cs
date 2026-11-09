@@ -196,6 +196,20 @@ public sealed record class BetaAnalyticsUsageGroup : JsonModel
     }
 
     /// <summary>
+    /// UUID of the child organization the usage belongs to, on a parent organization's
+    /// report across its children. Null unless `organization_id` is in `group_by[]`.
+    /// </summary>
+    public required string? OrganizationID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("organization_id");
+        }
+        init { this._rawData.Set("organization_id", value); }
+    }
+
+    /// <summary>
     /// Product surface that produced the usage or cost. Null unless product is in
     /// `group_by[]`; it can also be null on grouped rows whose usage cannot be attributed
     /// to a known surface. Values include `chat`, `claude_code`, `cowork`, `office_agent`,
@@ -342,6 +356,7 @@ public sealed record class BetaAnalyticsUsageGroup : JsonModel
         _ = this.EnvironmentID;
         this.InferenceGeo?.Validate();
         _ = this.Model;
+        _ = this.OrganizationID;
         _ = this.Product;
         _ = this.RbacGroupID;
         this.ServiceTier?.Validate();

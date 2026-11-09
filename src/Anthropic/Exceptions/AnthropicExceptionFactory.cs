@@ -7,7 +7,6 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
-using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.SpendLimits;
@@ -453,14 +452,6 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
-        [(403, "billing_frozen")] = (statusCode, responseBody, response) =>
-            new AnthropicBetaBillingFrozenException()
-            {
-                StatusCode = statusCode,
-                ResponseBody = responseBody,
-                RequestID = response?.RequestID,
-                WorkspaceID = response?.WorkspaceID,
-            },
         [(403, "cannot_sign_out_managed_member")] = (statusCode, responseBody, response) =>
             new AnthropicBetaCannotSignOutManagedMemberException()
             {
@@ -531,6 +522,14 @@ public class AnthropicExceptionFactory
             response
         ) =>
             new AnthropicBetaOrganizationLevelScopedApiKeyRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "sandbox_egress_restricted")] = (statusCode, responseBody, response) =>
+            new AnthropicSandboxEgressRestrictedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Federation.Rules;
 using Anthropic.Models.Beta.Organization.Federation.Rules.Workspaces;
 
@@ -69,6 +70,7 @@ public interface IWorkspaceService
     /// callers may only manage rules whose `oauth_scope` is `workspace:developer` or
     /// `workspace:inference`; other scopes require a Console session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaFederationRuleWorkspace> Add(
         WorkspaceAddParams parameters,
         CancellationToken cancellationToken = default
@@ -93,6 +95,7 @@ public interface IWorkspaceService
     /// callers may only manage rules whose `oauth_scope` is `workspace:developer` or
     /// `workspace:inference`; other scopes require a Console session.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<WorkspaceRemoveResponse> Remove(
         WorkspaceRemoveParams parameters,
         CancellationToken cancellationToken = default

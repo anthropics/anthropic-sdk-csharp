@@ -7888,6 +7888,83 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Contains("76", textContent.Text);
     }
 
+    private sealed class PersonWithSettableProperties
+    {
+        public string Name { get; set; } = "";
+
+        public int Age { get; set; }
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithResponseFormatSchemaWithoutRequired_SendsOutputFormat()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-sonnet-4-5-20250929",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Tell me about Albert Einstein. Respond with his name and age at death."
+                    }]
+                }],
+                "output_config": {
+                    "format": {
+                        "type": "json_schema",
+                        "schema": {
+                            "description": "{$schema: \"https://json-schema.org/draft/2020-12/schema\"}",
+                            "type": "object",
+                            "properties": {
+                                "name": { "type": "string" },
+                                "age": { "type": "integer" }
+                            },
+                            "additionalProperties": false
+                        }
+                    }
+                }
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_format_04",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-sonnet-4-5-20250929",
+                "content": [{
+                    "type": "text",
+                    "text": "{\"name\":\"Albert Einstein\",\"age\":76}"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 25,
+                    "output_tokens": 15
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-sonnet-4-5-20250929");
+
+        // The schema of a class whose properties are all settable has no "required" array.
+        ChatOptions options = new()
+        {
+            ResponseFormat = ChatResponseFormat.ForJsonSchema<PersonWithSettableProperties>(),
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Tell me about Albert Einstein. Respond with his name and age at death.",
+            options,
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response);
+        TextContent textContent = Assert.IsType<TextContent>(response.Messages[0].Contents[0]);
+        Assert.Contains("Einstein", textContent.Text);
+        Assert.Contains("76", textContent.Text);
+    }
+
     [Fact]
     public async Task GetResponseAsync_WithNestedObjectSchema_ReturnsStructuredJSON()
     {

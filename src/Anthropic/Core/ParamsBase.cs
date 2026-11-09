@@ -87,6 +87,12 @@ public abstract record class ParamsBase
     /// <summary>The query parameters whose value is content on this endpoint only.</summary>
     internal virtual IReadOnlyList<string> ContentQueryParams => [];
 
+    /// <summary>
+    /// The JSON body of the request, for the attributes that the call span takes from it. Null
+    /// for an endpoint whose spans take none, and for one whose body is not a JSON object.
+    /// </summary>
+    internal virtual IReadOnlyDictionary<string, JsonElement>? SpanBody => null;
+
     protected static void AddQueryElementToCollection(
         NameValueCollection collection,
         string key,

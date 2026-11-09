@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Organization.Workspaces.ServiceAccounts;
 using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
 
@@ -67,6 +68,7 @@ public interface IServiceAccountService
     /// /workspaces/{workspace_id}/service_accounts`. Archived workspaces return 400.
     /// Archived service accounts cannot be updated and are rejected.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccounts::ServiceAccountWorkspaceMember> Update(
         ServiceAccountUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -121,6 +123,7 @@ public interface IServiceAccountService
     /// `workspace_role` is replaced with the value supplied here. Archived workspaces
     /// return 400. Archived service accounts cannot be added and are rejected.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccounts::ServiceAccountWorkspaceMember> Add(
         ServiceAccountAddParams parameters,
         CancellationToken cancellationToken = default
@@ -147,6 +150,7 @@ public interface IServiceAccountService
     /// default-workspace row reverts to the implicit `workspace_user` membership.
     /// Archived workspaces return 400.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<ServiceAccountRemoveResponse> Remove(
         ServiceAccountRemoveParams parameters,
         CancellationToken cancellationToken = default
