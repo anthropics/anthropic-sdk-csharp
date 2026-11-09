@@ -428,8 +428,8 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeHaiku5_5),
-            To = new(Messages::Model.ClaudeHaiku5_5),
+            From = new(Messages::Model.ClaudeFable5_2),
+            To = new(Messages::Model.ClaudeFable5_2),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         value.Validate();
@@ -777,8 +777,8 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeHaiku5_5),
-            To = new(Messages::Model.ClaudeHaiku5_5),
+            From = new(Messages::Model.ClaudeFable5_2),
+            To = new(Messages::Model.ClaudeFable5_2),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1042,8 +1042,8 @@ public class ContentBlockTest : TestBase
     {
         ContentBlock value = new BetaFallbackBlock()
         {
-            From = new(Messages::Model.ClaudeHaiku5_5),
-            To = new(Messages::Model.ClaudeHaiku5_5),
+            From = new(Messages::Model.ClaudeFable5_2),
+            To = new(Messages::Model.ClaudeFable5_2),
             Trigger = new(BetaFallbackRefusalTriggerCategory.Cyber),
         };
         Assert.Equal(ContentBlockType.Fallback, value.Type.Value());

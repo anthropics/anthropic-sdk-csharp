@@ -15,6 +15,18 @@ namespace Anthropic.Models.Messages;
 public enum Model
 {
     /// <summary>
+    /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
+    /// and enterprise workflows
+    /// </summary>
+    ClaudeFable5_2,
+
+    /// <summary>
+    /// Our most capable model for cybersecurity and biology research, available
+    /// through trusted access programs
+    /// </summary>
+    ClaudeMythos5_2,
+
+    /// <summary>
     /// Fastest model for high-volume, real-time tasks
     /// </summary>
     ClaudeHaiku5_5,
@@ -128,6 +140,8 @@ sealed class ModelConverter : JsonConverter<Model>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "claude-fable-5-2" => Model.ClaudeFable5_2,
+            "claude-mythos-5-2" => Model.ClaudeMythos5_2,
             "claude-haiku-5-5" => Model.ClaudeHaiku5_5,
             "claude-sonnet-5-5" => Model.ClaudeSonnet5_5,
             "claude-fable-5-1" => Model.ClaudeFable5_1,
@@ -158,6 +172,8 @@ sealed class ModelConverter : JsonConverter<Model>
             writer,
             value switch
             {
+                Model.ClaudeFable5_2 => "claude-fable-5-2",
+                Model.ClaudeMythos5_2 => "claude-mythos-5-2",
                 Model.ClaudeHaiku5_5 => "claude-haiku-5-5",
                 Model.ClaudeSonnet5_5 => "claude-sonnet-5-5",
                 Model.ClaudeFable5_1 => "claude-fable-5-1",
