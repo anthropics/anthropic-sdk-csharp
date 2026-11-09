@@ -15,8 +15,8 @@ namespace Anthropic.Models.Beta.Agents;
 public enum BetaManagedAgentsModel
 {
     /// <summary>
-    /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
-    /// and enterprise workflows
+    /// Frontier intelligence for ambitious work in coding, enterprise workflows,
+    /// and the sciences
     /// </summary>
     ClaudeFable5_2,
 
