@@ -23,6 +23,7 @@ public class SlackChannelCreateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -39,6 +40,7 @@ public class SlackChannelCreateParamsTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -100,6 +102,7 @@ public class SlackChannelCreateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         } with
@@ -164,6 +167,7 @@ public class SlackChannelCreateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };

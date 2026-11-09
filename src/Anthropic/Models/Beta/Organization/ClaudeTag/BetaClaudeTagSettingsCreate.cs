@@ -85,6 +85,24 @@ public sealed record class BetaClaudeTagSettingsCreate : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// How Claude takes part in the channel: `automatic`, `mention_only`, `always_awake`
+    /// or `thread`. Only a channel takes one: an update of a workspace that sends
+    /// a value is refused, and one that sends null changes nothing. Null never clears
+    /// it: sent to a channel that stores none it changes nothing, and sent to a channel
+    /// that stores one it is refused, because a stored reply mode can be changed
+    /// but never cleared; a caller that wants Claude's default behavior sends `automatic`.
+    /// </summary>
+    public BetaClaudeTagReplyMode? ReplyMode
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaClaudeTagReplyMode>("reply_mode");
+        }
+        init { this._rawData.Set("reply_mode", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -93,6 +111,7 @@ public sealed record class BetaClaudeTagSettingsCreate : JsonModel
         this.GuestPolicy?.Validate();
         _ = this.Instructions;
         _ = this.Model;
+        this.ReplyMode?.Validate();
     }
 
     public BetaClaudeTagSettingsCreate() { }

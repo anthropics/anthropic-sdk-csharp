@@ -10,8 +10,9 @@ namespace Anthropic.Models.Beta.Organization.ClaudeTag;
 /// <summary>
 /// Claude Tag settings. Without `include_inherited`, a setting that is null is not
 /// set on the settings level and is inherited. With it, `enabled` and `guest_policy`
-/// are never null, and `instructions`, `model` and `environment_id` are null when
-/// no settings level sets them.
+/// are never null, `instructions`, `model` and `environment_id` are null when no
+/// settings level sets them, and `reply_mode` is null unless the channel itself
+/// stores one.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaClaudeTagSettings, BetaClaudeTagSettingsFromRaw>))]
 public sealed record class BetaClaudeTagSettings : JsonModel
@@ -87,6 +88,23 @@ public sealed record class BetaClaudeTagSettings : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// How Claude takes part in the channel. Only a channel stores one, and no settings
+    /// level passes one on, so it is always null on a workspace. Null on a channel
+    /// means the channel stores none yet: Claude then follows the reply mode chosen
+    /// in Slack, if one was, else `automatic`. A stored reply mode can be changed
+    /// but never cleared.
+    /// </summary>
+    public required BetaClaudeTagReplyMode? ReplyMode
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaClaudeTagReplyMode>("reply_mode");
+        }
+        init { this._rawData.Set("reply_mode", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -95,6 +113,7 @@ public sealed record class BetaClaudeTagSettings : JsonModel
         this.GuestPolicy?.Validate();
         _ = this.Instructions;
         _ = this.Model;
+        this.ReplyMode?.Validate();
     }
 
     public BetaClaudeTagSettings() { }

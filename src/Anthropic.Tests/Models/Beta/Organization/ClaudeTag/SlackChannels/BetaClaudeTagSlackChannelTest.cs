@@ -22,6 +22,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "model",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
             Sources = new()
@@ -31,6 +32,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
                 Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
                 Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+                ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             },
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -44,6 +46,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "model",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
@@ -57,6 +60,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_channel");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -84,6 +88,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "model",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
             Sources = new()
@@ -93,6 +98,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
                 Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
                 Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+                ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             },
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -120,6 +126,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "model",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
             Sources = new()
@@ -129,6 +136,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
                 Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
                 Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+                ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             },
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -149,6 +157,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "model",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
@@ -162,6 +171,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_channel");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
@@ -189,6 +199,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "model",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
             Sources = new()
@@ -198,6 +209,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
                 Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
                 Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+                ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             },
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
@@ -219,6 +231,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "model",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
             Sources = new()
@@ -228,6 +241,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
                 Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
                 Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+                ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             },
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };

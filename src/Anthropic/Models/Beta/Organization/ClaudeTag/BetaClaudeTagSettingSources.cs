@@ -94,6 +94,20 @@ public sealed record class BetaClaudeTagSettingSources : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// The settings level `reply_mode` comes from: the channel when it stores one.
+    /// With `include_inherited=true` and no stored mode it is `default`.
+    /// </summary>
+    public required BetaClaudeTagSettingSource? ReplyMode
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaClaudeTagSettingSource>("reply_mode");
+        }
+        init { this._rawData.Set("reply_mode", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -105,6 +119,7 @@ public sealed record class BetaClaudeTagSettingSources : JsonModel
             item.Validate();
         }
         this.Model?.Validate();
+        this.ReplyMode?.Validate();
     }
 
     public BetaClaudeTagSettingSources() { }

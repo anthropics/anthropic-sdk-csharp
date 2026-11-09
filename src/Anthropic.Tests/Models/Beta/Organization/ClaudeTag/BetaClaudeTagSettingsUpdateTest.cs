@@ -16,6 +16,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
 
         bool expectedEnabled = true;
@@ -23,12 +24,14 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
         BetaClaudeTagGuestPolicy expectedGuestPolicy = new BetaClaudeTagGuestPolicyAllow();
         string expectedInstructions = "instructions";
         string expectedModel = "x";
+        BetaClaudeTagReplyMode expectedReplyMode = new BetaClaudeTagReplyModeAutomatic();
 
         Assert.Equal(expectedEnabled, model.Enabled);
         Assert.Equal(expectedEnvironmentID, model.EnvironmentID);
         Assert.Equal(expectedGuestPolicy, model.GuestPolicy);
         Assert.Equal(expectedInstructions, model.Instructions);
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedReplyMode, model.ReplyMode);
     }
 
     [Fact]
@@ -41,6 +44,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -62,6 +66,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -76,12 +81,14 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
         BetaClaudeTagGuestPolicy expectedGuestPolicy = new BetaClaudeTagGuestPolicyAllow();
         string expectedInstructions = "instructions";
         string expectedModel = "x";
+        BetaClaudeTagReplyMode expectedReplyMode = new BetaClaudeTagReplyModeAutomatic();
 
         Assert.Equal(expectedEnabled, deserialized.Enabled);
         Assert.Equal(expectedEnvironmentID, deserialized.EnvironmentID);
         Assert.Equal(expectedGuestPolicy, deserialized.GuestPolicy);
         Assert.Equal(expectedInstructions, deserialized.Instructions);
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedReplyMode, deserialized.ReplyMode);
     }
 
     [Fact]
@@ -94,6 +101,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
 
         model.Validate();
@@ -114,6 +122,8 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
         Assert.False(model.RawData.ContainsKey("instructions"));
         Assert.Null(model.Model);
         Assert.False(model.RawData.ContainsKey("model"));
+        Assert.Null(model.ReplyMode);
+        Assert.False(model.RawData.ContainsKey("reply_mode"));
     }
 
     [Fact]
@@ -134,6 +144,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = null,
             Instructions = null,
             Model = null,
+            ReplyMode = null,
         };
 
         Assert.Null(model.Enabled);
@@ -146,6 +157,8 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
         Assert.True(model.RawData.ContainsKey("instructions"));
         Assert.Null(model.Model);
         Assert.True(model.RawData.ContainsKey("model"));
+        Assert.Null(model.ReplyMode);
+        Assert.True(model.RawData.ContainsKey("reply_mode"));
     }
 
     [Fact]
@@ -158,6 +171,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = null,
             Instructions = null,
             Model = null,
+            ReplyMode = null,
         };
 
         model.Validate();
@@ -173,6 +187,7 @@ public class BetaClaudeTagSettingsUpdateTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
 
         BetaClaudeTagSettingsUpdate copied = new(model);
