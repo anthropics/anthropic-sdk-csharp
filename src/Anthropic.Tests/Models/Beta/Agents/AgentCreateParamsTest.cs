@@ -32,12 +32,29 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            },
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
@@ -89,12 +106,29 @@ public class AgentCreateParamsTest : TestBase
         ];
         Dictionary<string, string> expectedMetadata = new() { { "foo", "bar" } };
         BetaManagedAgentsMultiagentParams expectedMultiagent =
-            new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            );
+            new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            };
         List<Agents::BetaManagedAgentsSkillParams> expectedSkills =
         [
             new Agents::BetaManagedAgentsAnthropicSkillParams() { SkillID = "xlsx", Version = "1" },
@@ -179,12 +213,29 @@ public class AgentCreateParamsTest : TestBase
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
                 "arn:aws:iam::228601553692:role/T"
             ),
-            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
         };
@@ -214,12 +265,29 @@ public class AgentCreateParamsTest : TestBase
             ExecutionIdentity = new Agents::BetaManagedAgentsAwsRoleExecutionIdentityParams(
                 "arn:aws:iam::228601553692:role/T"
             ),
-            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            },
             System =
                 "You are a general-purpose agent that can research, write code, run commands, and use connected tools to complete the user's task end to end.",
 
@@ -266,12 +334,29 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            },
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
@@ -508,12 +593,29 @@ public class AgentCreateParamsTest : TestBase
                 },
             ],
             Metadata = new Dictionary<string, string>() { { "foo", "bar" } },
-            Multiagent = new Agents::BetaManagedAgentsMultiagentCoordinatorParams(
-                [
-                    "agent_011CZkYqphY8vELVzwCUpqiQ",
-                    new Agents::BetaManagedAgentsMultiagentSelfParams(),
-                ]
-            ),
+            Multiagent = new Agents::BetaManagedAgentsMultiagent20261001Params()
+            {
+                Advisor = new Agents::BetaManagedAgentsMultiagentAdvisorDisabledParams(),
+                Subagents = new Agents::BetaManagedAgentsMultiagentSubagentsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents = ["agent_011CZkYqphY8vELVzwCUpqiQ"],
+                },
+                Workflows = new Agents::BetaManagedAgentsMultiagentWorkflowsEnabledParams()
+                {
+                    InlineAgents =
+                        new Agents::BetaManagedAgentsMultiagentInlineAgentsDisabledParams(),
+                    PredefinedAgents =
+                    [
+                        new BetaManagedAgentsAgentParams()
+                        {
+                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
+                            Version = 1,
+                        },
+                    ],
+                },
+            },
             Skills =
             [
                 new Agents::BetaManagedAgentsAnthropicSkillParams()
