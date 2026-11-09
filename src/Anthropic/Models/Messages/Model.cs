@@ -15,13 +15,12 @@ namespace Anthropic.Models.Messages;
 public enum Model
 {
     /// <summary>
-    /// Frontier intelligence for ambitious work in coding, enterprise workflows,
-    /// and the sciences
+    /// Built for the most ambitious work in coding, enterprise workflows, and the sciences
     /// </summary>
     ClaudeFable5_2,
 
     /// <summary>
-    /// Frontier intelligence for cybersecurity and life sciences research, available
+    /// Built for the most demanding cybersecurity and life sciences research, available
     /// through verification programs
     /// </summary>
     ClaudeMythos5_2,
