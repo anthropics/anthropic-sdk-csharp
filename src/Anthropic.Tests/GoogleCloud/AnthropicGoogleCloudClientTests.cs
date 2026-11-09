@@ -423,6 +423,127 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         );
     }
 
+    [Theory]
+    [InlineData(
+        "my-project",
+        "global",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/my-project/locations/global/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "example.com:my-project",
+        "us-central1",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/example.com:my-project/locations/us-central1/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "a/b",
+        "global",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/a%2Fb/locations/global/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "my-project",
+        "../x",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/my-project/locations/..%2Fx/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "my-project",
+        "global",
+        "w/../../x",
+        "/v1/projects/my-project/locations/global/workspaces/w%2F..%2F..%2Fx/invoke"
+    )]
+    [InlineData(
+        "a;b",
+        "global",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/a;b/locations/global/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "my-project",
+        "a;b",
+        "wrkspc_01AbCdEf",
+        "/v1/projects/my-project/locations/a;b/workspaces/wrkspc_01AbCdEf/invoke"
+    )]
+    [InlineData(
+        "my-project",
+        "global",
+        "a;b",
+        "/v1/projects/my-project/locations/global/workspaces/a;b/invoke"
+    )]
+    [InlineData(
+        "...;x",
+        "x;..",
+        "a..;x",
+        "/v1/projects/...;x/locations/x;../workspaces/a..;x/invoke"
+    )]
+    public async Task BaseUrl_Derived_EachValueIsOnePathSegment(
+        string project,
+        string location,
+        string workspaceId,
+        string expectedBasePath
+    )
+    {
+        var client = NewClient(
+            new()
+            {
+                TokenProvider = StaticToken("tok"),
+                Project = project,
+                Location = location,
+                WorkspaceId = workspaceId,
+            }
+        );
+
+        var req = await SendOneRequest(client);
+
+        Assert.Equal(
+            $"https://claude.googleapis.com{expectedBasePath}/v1/messages",
+            req.RequestUri!.AbsoluteUri
+        );
+    }
+
+    [Theory]
+    [InlineData(".", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData("..", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData("", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData("my-project", ".", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", "..", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", "", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", "global", ".", "WorkspaceId")]
+    [InlineData("my-project", "global", "..", "WorkspaceId")]
+    [InlineData("my-project", "global", "", "WorkspaceId")]
+    // A server may drop ";" and what follows it, which leaves the part before it as the segment.
+    [InlineData(";x", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData(".;x", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData("..;x", "global", "wrkspc_01AbCdEf", "Project")]
+    [InlineData("my-project", ";x", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", ".;x", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", "..;x", "wrkspc_01AbCdEf", "Location")]
+    [InlineData("my-project", "global", ";x", "WorkspaceId")]
+    [InlineData("my-project", "global", ".;x", "WorkspaceId")]
+    [InlineData("my-project", "global", "..;x", "WorkspaceId")]
+    public void BaseUrl_Derived_DotSegmentOrEmptyValue_Throws(
+        string project,
+        string location,
+        string workspaceId,
+        string expectedName
+    )
+    {
+        var exception = Assert.Throws<AnthropicInvalidDataException>(() =>
+            NewClient(
+                new()
+                {
+                    TokenProvider = StaticToken("tok"),
+                    Project = project,
+                    Location = location,
+                    WorkspaceId = workspaceId,
+                }
+            )
+        );
+        Assert.Contains(expectedName, exception.Message);
+    }
+
     [Fact]
     public void BaseUrl_ExplicitNeedsNoLocationOrProject()
     {
@@ -715,6 +836,31 @@ public class AnthropicGoogleCloudClientTests : IDisposable
         );
         Assert.Equal("Bearer tok", req.Headers.GetValues("Authorization").Single());
         Assert.False(req.Headers.Contains("X-Api-Key"));
+    }
+
+    [Fact]
+    public async Task OrganizationRoute_PercentEncodedBase_SentToOrganizationBase()
+    {
+        var (httpClient, captured) = CreateCapturingClient();
+        var client = NewClient(
+            new()
+            {
+                TokenProvider = StaticToken("tok"),
+                Project = "a/b",
+                Location = "us-central1",
+                WorkspaceId = "w/x",
+                ClientOptions = new() { HttpClient = httpClient },
+            }
+        );
+
+        await SendOrganizationRequest(client);
+
+        var req = Assert.Single(captured);
+        Assert.Equal(
+            "https://claude.googleapis.com/v1/projects/a%2Fb/locations/us-central1"
+                + "/claudeOrganization/invoke/v1/organizations/workspaces",
+            req.RequestUri!.AbsoluteUri
+        );
     }
 
     [Fact]

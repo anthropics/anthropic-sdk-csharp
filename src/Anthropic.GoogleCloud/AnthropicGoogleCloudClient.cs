@@ -195,11 +195,12 @@ public sealed class AnthropicGoogleCloudClient : AnthropicClient
         string location,
         string project,
         string workspaceId
-    ) => $"{DeriveLocationUrl(location, project)}/workspaces/{workspaceId}/invoke";
+    ) =>
+        $"{DeriveLocationUrl(location, project)}/workspaces/{ParamsBase.EncodePathSegment(workspaceId, nameof(GoogleCloudClientOptions.WorkspaceId))}/invoke";
 
     internal static string DeriveOrganizationBaseUrl(string location, string project) =>
         $"{DeriveLocationUrl(location, project)}/claudeOrganization/invoke";
 
     private static string DeriveLocationUrl(string location, string project) =>
-        $"https://claude.googleapis.com/v1/projects/{project}/locations/{location}";
+        $"https://claude.googleapis.com/v1/projects/{ParamsBase.EncodePathSegment(project, nameof(GoogleCloudClientOptions.Project))}/locations/{ParamsBase.EncodePathSegment(location, nameof(GoogleCloudClientOptions.Location))}";
 }

@@ -1,5 +1,6 @@
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Bedrock;
@@ -105,6 +106,7 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 ?? throw new AnthropicInvalidDataException(
                     "Expected to find property model in request json but found none."
                 );
+            var model = ParamsBase.EncodePathSegment(modelValue.ToString(), "model");
             bodyContent.Root.AsObject().Remove("model");
             var parsedStreamValue = ((bool?)bodyContent["stream"]?.AsValue()) ?? false;
             bodyContent.Root.AsObject().Remove("stream");
@@ -123,7 +125,7 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
                 contentStream.Length.ToString()
             );
             var strUri =
-                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/model/{modelValue}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
+                $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/model/{model}/{(parsedStreamValue ? "invoke-with-response-stream" : "invoke")}";
 
 #if NET6_0_OR_GREATER
             // The UriCreationOptions and DangerousDisablePathAndQueryCanonicalization were added in .NET 6 and allows

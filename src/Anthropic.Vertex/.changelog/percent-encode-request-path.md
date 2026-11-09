@@ -1,0 +1,1 @@
+fix(vertex): percent-encode the project ID, region and model in the request path, so one with a `/` in it can't send the request to a different path, and throw on an empty project ID or region or one of `"."` or `".."`
