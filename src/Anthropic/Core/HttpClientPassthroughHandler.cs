@@ -8,6 +8,7 @@ namespace Anthropic.Core;
 /// An HTTP message handler that forwards requests to an <see cref="HttpClient"/>.
 ///
 /// <para>Used as the innermost handler of the handler chain that requests are sent through.</para>
+/// <para>Does not dispose the HTTP client, which other handler chains may share.</para>
 /// </summary>
 sealed class HttpClientPassthroughHandler : HttpMessageHandler
 {
@@ -29,15 +30,5 @@ sealed class HttpClientPassthroughHandler : HttpMessageHandler
             HttpCompletionOption.ResponseHeadersRead,
             cancellationToken
         );
-    }
-
-    protected override void Dispose(bool disposing)
-    {
-        if (disposing)
-        {
-            _httpClient.Dispose();
-        }
-
-        base.Dispose(disposing);
     }
 }
