@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -47,7 +48,7 @@ internal static class MantleAwsSigner
         const string Algorithm = "AWS4-HMAC-SHA256";
 
         var amzDate = ToAmzDate(request.Now);
-        var datestamp = request.Now.ToString("yyyyMMdd");
+        var datestamp = request.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
 
         var canonicalQuerystring = CanonicalizeQueryString(request.Uri);
         var canonicalHeaders = CanonicalizeHeaders(request.Headers);
@@ -79,7 +80,7 @@ internal static class MantleAwsSigner
 
     public static string ToAmzDate(DateTime date)
     {
-        return date.ToString("yyyyMMddTHHmmssZ");
+        return date.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture);
     }
 
     // SigV4 requires query parameters to be sorted by key, then value, and

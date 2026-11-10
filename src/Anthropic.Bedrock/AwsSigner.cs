@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
@@ -53,7 +54,7 @@ public static class AWSSigner
         var ALGORITHM = "AWS4-HMAC-SHA256";
 
         var amzDate = ToAmzDate(now);
-        var datestamp = now.ToString("yyyyMMdd");
+        var datestamp = now.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
         headers["host"] = uri.Host;
         headers["x-amz-date"] = amzDate;
         if (!string.IsNullOrWhiteSpace(awsSessionToken))
@@ -83,7 +84,7 @@ public static class AWSSigner
 
     public static string ToAmzDate(DateTime date)
     {
-        return date.ToString("yyyyMMddTHHmmssZ");
+        return date.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture);
     }
 
     static string CanonicalizeHeaderNames(IDictionary<string, string> headers)
@@ -96,7 +97,7 @@ public static class AWSSigner
         {
             if (sb.Length > 0)
                 sb.Append(';');
-            sb.Append(header.ToLower());
+            sb.Append(header.ToLowerInvariant());
         }
         return sb.ToString();
     }
