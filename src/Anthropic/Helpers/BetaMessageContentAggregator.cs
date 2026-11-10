@@ -248,9 +248,13 @@ public sealed class BetaMessageContentAggregator
             {
                 Text = StringJoinHelper(start.Text, Of<BetaTextDelta>(), e => e.Text),
             };
+            // A citation type this SDK version doesn't model stays raw JSON, as it does in a
+            // non-streaming response.
             var citations = Of<BetaCitationsDelta>()
                 .Select(e =>
-                    e.Citation.Match<BetaTextCitation>(f => f, f => f, f => f, f => f, f => f)
+                    e.Citation.Value is null
+                        ? new BetaTextCitation(e.Citation.Json)
+                        : e.Citation.Match<BetaTextCitation>(f => f, f => f, f => f, f => f, f => f)
                 )
                 .ToList();
             return citations.Count == 0
