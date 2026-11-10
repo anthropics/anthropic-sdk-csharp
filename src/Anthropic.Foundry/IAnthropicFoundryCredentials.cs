@@ -36,13 +36,15 @@ public class DefaultAnthropicFoundryCredentials
     /// <returns></returns>
     public static IAnthropicFoundryCredentials? FromEnv(string? resourceName = null)
     {
+        // The argument comes first; the environment variable is only the fallback.
         if (
-            Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_RESOURCE")
-                is not string envResourceName
-            || (
+            (
                 string.IsNullOrWhiteSpace(resourceName)
-                && string.IsNullOrWhiteSpace(envResourceName)
+                    ? Environment.GetEnvironmentVariable("ANTHROPIC_FOUNDRY_RESOURCE")
+                    : resourceName
             )
+                is not string resolvedResourceName
+            || string.IsNullOrWhiteSpace(resolvedResourceName)
         )
         {
             return null;
@@ -53,12 +55,12 @@ public class DefaultAnthropicFoundryCredentials
             && !string.IsNullOrWhiteSpace(apiKey)
         )
         {
-            return new AnthropicFoundryApiKeyCredentials(apiKey, resourceName ?? envResourceName);
+            return new AnthropicFoundryApiKeyCredentials(apiKey, resolvedResourceName);
         }
 
         return new AnthropicFoundryIdentityTokenCredentials(
             new DefaultAzureCredential(),
-            resourceName ?? envResourceName
+            resolvedResourceName
         );
     }
 }
