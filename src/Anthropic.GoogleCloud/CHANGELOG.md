@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/GoogleCloud-v1.0.1...GoogleCloud-v1.0.2) (2026-11-10)
+
+### Bug Fixes
+
+* **google-cloud:** percent-encode the project, location and workspace ID in the derived base URL, so one with a `/` in it can't send the request to a different path, and throw on an empty value or one of `"."` or `".."`
+
 ## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/GoogleCloud-v1.0.0...GoogleCloud-v1.0.1) (2026-10-22)
 
 ### Bug Fixes
