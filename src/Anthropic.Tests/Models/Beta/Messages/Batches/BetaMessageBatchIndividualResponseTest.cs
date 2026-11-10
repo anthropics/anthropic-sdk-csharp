@@ -37,18 +37,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new Messages::BetaTextBlock()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "My Document",
-                                    EndCharIndex = 0,
-                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                    StartCharIndex = 0,
-                                },
-                            ],
+                            Citations = null,
                             Text = "Hi! My name is Claude.",
                         },
                     ],
@@ -61,17 +50,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                    Diagnostics = null,
                     Model = Model.ClaudeOpus5_5,
-                    StopDetails = new()
-                    {
-                        Category = Messages::Category.Cyber,
-                        Explanation =
-                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                        FallbackHasPrefillClaim = true,
-                        RecommendedModel = "claude-opus-4-8",
-                    },
+                    StopDetails = null,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -144,18 +125,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 [
                     new Messages::BetaTextBlock()
                     {
-                        Citations =
-                        [
-                            new Messages::BetaCitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
+                        Citations = null,
                         Text = "Hi! My name is Claude.",
                     },
                 ],
@@ -168,17 +138,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Messages::Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                    FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-opus-4-8",
-                },
+                StopDetails = null,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -259,18 +221,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new Messages::BetaTextBlock()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "My Document",
-                                    EndCharIndex = 0,
-                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                    StartCharIndex = 0,
-                                },
-                            ],
+                            Citations = null,
                             Text = "Hi! My name is Claude.",
                         },
                     ],
@@ -283,17 +234,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                    Diagnostics = null,
                     Model = Model.ClaudeOpus5_5,
-                    StopDetails = new()
-                    {
-                        Category = Messages::Category.Cyber,
-                        Explanation =
-                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                        FallbackHasPrefillClaim = true,
-                        RecommendedModel = "claude-opus-4-8",
-                    },
+                    StopDetails = null,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -380,18 +323,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new Messages::BetaTextBlock()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "My Document",
-                                    EndCharIndex = 0,
-                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                    StartCharIndex = 0,
-                                },
-                            ],
+                            Citations = null,
                             Text = "Hi! My name is Claude.",
                         },
                     ],
@@ -404,17 +336,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                    Diagnostics = null,
                     Model = Model.ClaudeOpus5_5,
-                    StopDetails = new()
-                    {
-                        Category = Messages::Category.Cyber,
-                        Explanation =
-                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                        FallbackHasPrefillClaim = true,
-                        RecommendedModel = "claude-opus-4-8",
-                    },
+                    StopDetails = null,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -494,18 +418,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                 [
                     new Messages::BetaTextBlock()
                     {
-                        Citations =
-                        [
-                            new Messages::BetaCitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
+                        Citations = null,
                         Text = "Hi! My name is Claude.",
                     },
                 ],
@@ -518,17 +431,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                         },
                     ]
                 ),
-                Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Messages::Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                    FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                    FallbackHasPrefillClaim = true,
-                    RecommendedModel = "claude-opus-4-8",
-                },
+                StopDetails = null,
                 StopReason = Messages::BetaStopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -609,18 +514,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new Messages::BetaTextBlock()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "My Document",
-                                    EndCharIndex = 0,
-                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                    StartCharIndex = 0,
-                                },
-                            ],
+                            Citations = null,
                             Text = "Hi! My name is Claude.",
                         },
                     ],
@@ -633,17 +527,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                    Diagnostics = null,
                     Model = Model.ClaudeOpus5_5,
-                    StopDetails = new()
-                    {
-                        Category = Messages::Category.Cyber,
-                        Explanation =
-                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                        FallbackHasPrefillClaim = true,
-                        RecommendedModel = "claude-opus-4-8",
-                    },
+                    StopDetails = null,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()
@@ -724,18 +610,7 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                     [
                         new Messages::BetaTextBlock()
                         {
-                            Citations =
-                            [
-                                new Messages::BetaCitationCharLocation()
-                                {
-                                    CitedText = "The grass is green. The sky is blue.",
-                                    DocumentIndex = 0,
-                                    DocumentTitle = "My Document",
-                                    EndCharIndex = 0,
-                                    FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                    StartCharIndex = 0,
-                                },
-                            ],
+                            Citations = null,
                             Text = "Hi! My name is Claude.",
                         },
                     ],
@@ -748,17 +623,9 @@ public class BetaMessageBatchIndividualResponseTest : TestBase
                             },
                         ]
                     ),
-                    Diagnostics = new(new Messages::BetaCacheMissModelChanged(0)),
+                    Diagnostics = null,
                     Model = Model.ClaudeOpus5_5,
-                    StopDetails = new()
-                    {
-                        Category = Messages::Category.Cyber,
-                        Explanation =
-                            "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                        FallbackCreditToken = "QW50aHJvcGljL0NsYXVkZQ==",
-                        FallbackHasPrefillClaim = true,
-                        RecommendedModel = "claude-opus-4-8",
-                    },
+                    StopDetails = null,
                     StopReason = Messages::BetaStopReason.EndTurn,
                     StopSequence = null,
                     Usage = new()

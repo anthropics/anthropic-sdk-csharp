@@ -436,7 +436,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 AgentName = "Researcher",
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = null,
                 StopReason = new BetaManagedAgentsSessionEndTurn(),
             };
         value.Validate();
@@ -512,65 +512,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
-                    [
-                        new Agents::BetaManagedAgentsSessionThreadAgent()
-                        {
-                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Description = "A focused research subagent.",
-                            ExecutionIdentity =
-                                new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-                            McpServers =
-                            [
-                                new()
-                                {
-                                    Name = "example-mcp",
-                                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                                },
-                            ],
-                            Model = new()
-                            {
-                                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new Agents::BetaManagedAgentsEffortLow(),
-                                InferenceGeo = "inference_geo",
-                                Speed = Agents::Speed.Standard,
-                            },
-                            Name = "Researcher",
-                            Skills =
-                            [
-                                new Agents::BetaManagedAgentsAnthropicSkill()
-                                {
-                                    SkillID = "xlsx",
-                                    Version = "1",
-                                },
-                            ],
-                            System =
-                                "You are a research subagent that gathers and summarises sources for the coordinating agent.",
-                            Tools =
-                            [
-                                new Agents::BetaManagedAgentsAgentToolset20260401()
-                                {
-                                    Configs =
-                                    [
-                                        new Agents::BetaManagedAgentsBashToolConfig()
-                                        {
-                                            Enabled = true,
-                                            PermissionPolicy =
-                                                new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                                        },
-                                    ],
-                                    DefaultConfig = new()
-                                    {
-                                        Enabled = true,
-                                        PermissionPolicy =
-                                            new Agents::BetaManagedAgentsAlwaysAskPolicy(),
-                                    },
-                                },
-                            ],
-                            Version = 1,
-                        },
-                    ]
-                ),
+                Multiagent = null,
                 Name = "My First Agent",
                 Skills =
                 [
@@ -591,14 +533,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 [
                     new Agents::BetaManagedAgentsAgentToolset20260401()
                     {
-                        Configs =
-                        [
-                            new Agents::BetaManagedAgentsBashToolConfig()
-                            {
-                                Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                            },
-                        ],
+                        Configs = [],
                         DefaultConfig = new()
                         {
                             Enabled = true,
@@ -1366,7 +1301,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 AgentName = "Researcher",
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = null,
                 StopReason = new BetaManagedAgentsSessionEndTurn(),
             };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -1466,65 +1401,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
-                    [
-                        new Agents::BetaManagedAgentsSessionThreadAgent()
-                        {
-                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Description = "A focused research subagent.",
-                            ExecutionIdentity =
-                                new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-                            McpServers =
-                            [
-                                new()
-                                {
-                                    Name = "example-mcp",
-                                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                                },
-                            ],
-                            Model = new()
-                            {
-                                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new Agents::BetaManagedAgentsEffortLow(),
-                                InferenceGeo = "inference_geo",
-                                Speed = Agents::Speed.Standard,
-                            },
-                            Name = "Researcher",
-                            Skills =
-                            [
-                                new Agents::BetaManagedAgentsAnthropicSkill()
-                                {
-                                    SkillID = "xlsx",
-                                    Version = "1",
-                                },
-                            ],
-                            System =
-                                "You are a research subagent that gathers and summarises sources for the coordinating agent.",
-                            Tools =
-                            [
-                                new Agents::BetaManagedAgentsAgentToolset20260401()
-                                {
-                                    Configs =
-                                    [
-                                        new Agents::BetaManagedAgentsBashToolConfig()
-                                        {
-                                            Enabled = true,
-                                            PermissionPolicy =
-                                                new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                                        },
-                                    ],
-                                    DefaultConfig = new()
-                                    {
-                                        Enabled = true,
-                                        PermissionPolicy =
-                                            new Agents::BetaManagedAgentsAlwaysAskPolicy(),
-                                    },
-                                },
-                            ],
-                            Version = 1,
-                        },
-                    ]
-                ),
+                Multiagent = null,
                 Name = "My First Agent",
                 Skills =
                 [
@@ -1545,14 +1422,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 [
                     new Agents::BetaManagedAgentsAgentToolset20260401()
                     {
-                        Configs =
-                        [
-                            new Agents::BetaManagedAgentsBashToolConfig()
-                            {
-                                Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                            },
-                        ],
+                        Configs = [],
                         DefaultConfig = new()
                         {
                             Enabled = true,
@@ -2281,7 +2151,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 AgentName = "Researcher",
                 ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
                 SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-                StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+                StopDetails = null,
                 StopReason = new BetaManagedAgentsSessionEndTurn(),
             };
         Assert.Equal(
@@ -2366,65 +2236,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                     InferenceGeo = "inference_geo",
                     Speed = Agents::Speed.Standard,
                 },
-                Multiagent = new BetaManagedAgentsSessionMultiagentCoordinator(
-                    [
-                        new Agents::BetaManagedAgentsSessionThreadAgent()
-                        {
-                            ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
-                            Description = "A focused research subagent.",
-                            ExecutionIdentity =
-                                new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-                            McpServers =
-                            [
-                                new()
-                                {
-                                    Name = "example-mcp",
-                                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                                },
-                            ],
-                            Model = new()
-                            {
-                                ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
-                                Effort = new Agents::BetaManagedAgentsEffortLow(),
-                                InferenceGeo = "inference_geo",
-                                Speed = Agents::Speed.Standard,
-                            },
-                            Name = "Researcher",
-                            Skills =
-                            [
-                                new Agents::BetaManagedAgentsAnthropicSkill()
-                                {
-                                    SkillID = "xlsx",
-                                    Version = "1",
-                                },
-                            ],
-                            System =
-                                "You are a research subagent that gathers and summarises sources for the coordinating agent.",
-                            Tools =
-                            [
-                                new Agents::BetaManagedAgentsAgentToolset20260401()
-                                {
-                                    Configs =
-                                    [
-                                        new Agents::BetaManagedAgentsBashToolConfig()
-                                        {
-                                            Enabled = true,
-                                            PermissionPolicy =
-                                                new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                                        },
-                                    ],
-                                    DefaultConfig = new()
-                                    {
-                                        Enabled = true,
-                                        PermissionPolicy =
-                                            new Agents::BetaManagedAgentsAlwaysAskPolicy(),
-                                    },
-                                },
-                            ],
-                            Version = 1,
-                        },
-                    ]
-                ),
+                Multiagent = null,
                 Name = "My First Agent",
                 Skills =
                 [
@@ -2445,14 +2257,7 @@ public class BetaManagedAgentsStreamSessionEventsTest : TestBase
                 [
                     new Agents::BetaManagedAgentsAgentToolset20260401()
                     {
-                        Configs =
-                        [
-                            new Agents::BetaManagedAgentsBashToolConfig()
-                            {
-                                Enabled = true,
-                                PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                            },
-                        ],
+                        Configs = [],
                         DefaultConfig = new()
                         {
                             Enabled = true,

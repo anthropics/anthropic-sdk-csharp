@@ -17,7 +17,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = null,
             StopReason = new BetaManagedAgentsSessionEndTurn(),
         };
 
@@ -25,11 +25,6 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
-        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
-        {
-            Category = Category.Cyber,
-            Explanation = "explanation",
-        };
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason expectedStopReason =
             new BetaManagedAgentsSessionEndTurn();
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.thread_status_idle");
@@ -38,7 +33,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         Assert.Equal(expectedAgentName, model.AgentName);
         Assert.Equal(expectedProcessedAt, model.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, model.SessionThreadID);
-        Assert.Equal(expectedStopDetails, model.StopDetails);
+        Assert.Null(model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
     }
@@ -52,7 +47,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = null,
             StopReason = new BetaManagedAgentsSessionEndTurn(),
         };
 
@@ -75,7 +70,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = null,
             StopReason = new BetaManagedAgentsSessionEndTurn(),
         };
 
@@ -91,11 +86,6 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         string expectedAgentName = "Researcher";
         DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
         string expectedSessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt";
-        BetaManagedAgentsSessionRefusalStopDetails expectedStopDetails = new()
-        {
-            Category = Category.Cyber,
-            Explanation = "explanation",
-        };
         BetaManagedAgentsSessionThreadStatusIdleEventStopReason expectedStopReason =
             new BetaManagedAgentsSessionEndTurn();
         JsonElement expectedType = JsonSerializer.SerializeToElement("session.thread_status_idle");
@@ -104,7 +94,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
         Assert.Equal(expectedAgentName, deserialized.AgentName);
         Assert.Equal(expectedProcessedAt, deserialized.ProcessedAt);
         Assert.Equal(expectedSessionThreadID, deserialized.SessionThreadID);
-        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
+        Assert.Null(deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
     }
@@ -118,7 +108,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = null,
             StopReason = new BetaManagedAgentsSessionEndTurn(),
         };
 
@@ -134,7 +124,7 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventTest : TestBase
             AgentName = "Researcher",
             ProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             SessionThreadID = "sthr_011CZkZVWa6oJjw1rgXZpnBt",
-            StopDetails = new() { Category = Category.Cyber, Explanation = "explanation" },
+            StopDetails = null,
             StopReason = new BetaManagedAgentsSessionEndTurn(),
         };
 

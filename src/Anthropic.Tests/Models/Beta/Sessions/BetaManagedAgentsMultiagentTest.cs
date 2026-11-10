@@ -37,7 +37,7 @@ public class BetaManagedAgentsMultiagentTest : TestBase
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
+                PredefinedAgents = [],
             },
         };
         value.Validate();
@@ -78,7 +78,7 @@ public class BetaManagedAgentsMultiagentTest : TestBase
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
+                PredefinedAgents = [],
             },
         };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
@@ -119,7 +119,7 @@ public class BetaManagedAgentsMultiagentTest : TestBase
             Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
             {
                 InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                PredefinedAgents = [new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 }],
+                PredefinedAgents = [],
             },
         };
         Assert.Equal(BetaManagedAgentsMultiagentType.Multiagent20261001, value.Type.Value());

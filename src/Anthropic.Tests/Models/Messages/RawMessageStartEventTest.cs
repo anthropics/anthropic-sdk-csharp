@@ -29,33 +29,10 @@ public class RawMessageStartEventTest : TestBase
                         },
                     ],
                 },
-                Content =
-                [
-                    new TextBlock()
-                    {
-                        Citations =
-                        [
-                            new CitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
-                        Text = "Hi! My name is Claude.",
-                    },
-                ],
-                Diagnostics = new(new CacheMissModelChanged(0)),
+                Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                },
+                StopDetails = null,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -95,33 +72,10 @@ public class RawMessageStartEventTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -166,33 +120,10 @@ public class RawMessageStartEventTest : TestBase
                         },
                     ],
                 },
-                Content =
-                [
-                    new TextBlock()
-                    {
-                        Citations =
-                        [
-                            new CitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
-                        Text = "Hi! My name is Claude.",
-                    },
-                ],
-                Diagnostics = new(new CacheMissModelChanged(0)),
+                Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                },
+                StopDetails = null,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -246,33 +177,10 @@ public class RawMessageStartEventTest : TestBase
                         },
                     ],
                 },
-                Content =
-                [
-                    new TextBlock()
-                    {
-                        Citations =
-                        [
-                            new CitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
-                        Text = "Hi! My name is Claude.",
-                    },
-                ],
-                Diagnostics = new(new CacheMissModelChanged(0)),
+                Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                },
+                StopDetails = null,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -319,33 +227,10 @@ public class RawMessageStartEventTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -390,33 +275,10 @@ public class RawMessageStartEventTest : TestBase
                         },
                     ],
                 },
-                Content =
-                [
-                    new TextBlock()
-                    {
-                        Citations =
-                        [
-                            new CitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
-                        Text = "Hi! My name is Claude.",
-                    },
-                ],
-                Diagnostics = new(new CacheMissModelChanged(0)),
+                Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                },
+                StopDetails = null,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()
@@ -464,33 +326,10 @@ public class RawMessageStartEventTest : TestBase
                         },
                     ],
                 },
-                Content =
-                [
-                    new TextBlock()
-                    {
-                        Citations =
-                        [
-                            new CitationCharLocation()
-                            {
-                                CitedText = "The grass is green. The sky is blue.",
-                                DocumentIndex = 0,
-                                DocumentTitle = "My Document",
-                                EndCharIndex = 0,
-                                FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                                StartCharIndex = 0,
-                            },
-                        ],
-                        Text = "Hi! My name is Claude.",
-                    },
-                ],
-                Diagnostics = new(new CacheMissModelChanged(0)),
+                Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+                Diagnostics = null,
                 Model = Model.ClaudeOpus5_5,
-                StopDetails = new()
-                {
-                    Category = Category.Cyber,
-                    Explanation =
-                        "This request was declined because it conflicts with Anthropic's Usage Policy.",
-                },
+                StopDetails = null,
                 StopReason = StopReason.EndTurn,
                 StopSequence = null,
                 Usage = new()

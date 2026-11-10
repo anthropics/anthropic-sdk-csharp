@@ -16,17 +16,7 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            EnforcementActions =
-            [
-                new UserProfileEnforcementActionRestriction()
-                {
-                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                    Action = UserProfileEnforcementActionNextStep.Verify,
-                    ExpiresAt = null,
-                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-                },
-            ],
+            EnforcementActions = [],
             EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
@@ -44,7 +34,7 @@ public class UserProfileTest : TestBase
             {
                 Cyber = new()
                 {
-                    Requirements = new() { DataRetention = true, HumanReview = true },
+                    Requirements = null,
                     Status = UserProfileProgramStatus.Active,
                     Tiers = new Dictionary<string, UserProfileCyberTier>()
                     {
@@ -53,16 +43,7 @@ public class UserProfileTest : TestBase
                         { "c", new(Status.Inactive) },
                     },
                 },
-                Efs = new()
-                {
-                    Features = new Dictionary<string, UserProfileEfsFeature>()
-                    {
-                        { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                        { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                        { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                    },
-                    Status = UserProfileProgramStatus.Active,
-                },
+                Efs = null,
             },
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
@@ -71,17 +52,7 @@ public class UserProfileTest : TestBase
         ApiEnum<string, UserProfileAccessType> expectedAccessType =
             UserProfileAccessType.Application;
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        List<UserProfileEnforcementAction> expectedEnforcementActions =
-        [
-            new UserProfileEnforcementActionRestriction()
-            {
-                ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                Action = UserProfileEnforcementActionNextStep.Verify,
-                ExpiresAt = null,
-                OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-            },
-        ];
+        List<UserProfileEnforcementAction> expectedEnforcementActions = [];
         ApiEnum<string, UserProfileEnforcementStatus> expectedEnforcementStatus =
             UserProfileEnforcementStatus.Unrestricted;
         UserProfileExternalUserDetails expectedExternalUserDetails = new()
@@ -100,7 +71,7 @@ public class UserProfileTest : TestBase
         {
             Cyber = new()
             {
-                Requirements = new() { DataRetention = true, HumanReview = true },
+                Requirements = null,
                 Status = UserProfileProgramStatus.Active,
                 Tiers = new Dictionary<string, UserProfileCyberTier>()
                 {
@@ -109,16 +80,7 @@ public class UserProfileTest : TestBase
                     { "c", new(Status.Inactive) },
                 },
             },
-            Efs = new()
-            {
-                Features = new Dictionary<string, UserProfileEfsFeature>()
-                {
-                    { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                    { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                    { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                },
-                Status = UserProfileProgramStatus.Active,
-            },
+            Efs = null,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_profile");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
@@ -154,17 +116,7 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            EnforcementActions =
-            [
-                new UserProfileEnforcementActionRestriction()
-                {
-                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                    Action = UserProfileEnforcementActionNextStep.Verify,
-                    ExpiresAt = null,
-                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-                },
-            ],
+            EnforcementActions = [],
             EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
@@ -182,7 +134,7 @@ public class UserProfileTest : TestBase
             {
                 Cyber = new()
                 {
-                    Requirements = new() { DataRetention = true, HumanReview = true },
+                    Requirements = null,
                     Status = UserProfileProgramStatus.Active,
                     Tiers = new Dictionary<string, UserProfileCyberTier>()
                     {
@@ -191,16 +143,7 @@ public class UserProfileTest : TestBase
                         { "c", new(Status.Inactive) },
                     },
                 },
-                Efs = new()
-                {
-                    Features = new Dictionary<string, UserProfileEfsFeature>()
-                    {
-                        { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                        { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                        { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                    },
-                    Status = UserProfileProgramStatus.Active,
-                },
+                Efs = null,
             },
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
@@ -222,17 +165,7 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            EnforcementActions =
-            [
-                new UserProfileEnforcementActionRestriction()
-                {
-                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                    Action = UserProfileEnforcementActionNextStep.Verify,
-                    ExpiresAt = null,
-                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-                },
-            ],
+            EnforcementActions = [],
             EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
@@ -250,7 +183,7 @@ public class UserProfileTest : TestBase
             {
                 Cyber = new()
                 {
-                    Requirements = new() { DataRetention = true, HumanReview = true },
+                    Requirements = null,
                     Status = UserProfileProgramStatus.Active,
                     Tiers = new Dictionary<string, UserProfileCyberTier>()
                     {
@@ -259,16 +192,7 @@ public class UserProfileTest : TestBase
                         { "c", new(Status.Inactive) },
                     },
                 },
-                Efs = new()
-                {
-                    Features = new Dictionary<string, UserProfileEfsFeature>()
-                    {
-                        { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                        { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                        { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                    },
-                    Status = UserProfileProgramStatus.Active,
-                },
+                Efs = null,
             },
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
@@ -284,17 +208,7 @@ public class UserProfileTest : TestBase
         ApiEnum<string, UserProfileAccessType> expectedAccessType =
             UserProfileAccessType.Application;
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
-        List<UserProfileEnforcementAction> expectedEnforcementActions =
-        [
-            new UserProfileEnforcementActionRestriction()
-            {
-                ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                Action = UserProfileEnforcementActionNextStep.Verify,
-                ExpiresAt = null,
-                OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-            },
-        ];
+        List<UserProfileEnforcementAction> expectedEnforcementActions = [];
         ApiEnum<string, UserProfileEnforcementStatus> expectedEnforcementStatus =
             UserProfileEnforcementStatus.Unrestricted;
         UserProfileExternalUserDetails expectedExternalUserDetails = new()
@@ -313,7 +227,7 @@ public class UserProfileTest : TestBase
         {
             Cyber = new()
             {
-                Requirements = new() { DataRetention = true, HumanReview = true },
+                Requirements = null,
                 Status = UserProfileProgramStatus.Active,
                 Tiers = new Dictionary<string, UserProfileCyberTier>()
                 {
@@ -322,16 +236,7 @@ public class UserProfileTest : TestBase
                     { "c", new(Status.Inactive) },
                 },
             },
-            Efs = new()
-            {
-                Features = new Dictionary<string, UserProfileEfsFeature>()
-                {
-                    { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                    { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                    { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                },
-                Status = UserProfileProgramStatus.Active,
-            },
+            Efs = null,
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("user_profile");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
@@ -367,17 +272,7 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            EnforcementActions =
-            [
-                new UserProfileEnforcementActionRestriction()
-                {
-                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                    Action = UserProfileEnforcementActionNextStep.Verify,
-                    ExpiresAt = null,
-                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-                },
-            ],
+            EnforcementActions = [],
             EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
@@ -395,7 +290,7 @@ public class UserProfileTest : TestBase
             {
                 Cyber = new()
                 {
-                    Requirements = new() { DataRetention = true, HumanReview = true },
+                    Requirements = null,
                     Status = UserProfileProgramStatus.Active,
                     Tiers = new Dictionary<string, UserProfileCyberTier>()
                     {
@@ -404,16 +299,7 @@ public class UserProfileTest : TestBase
                         { "c", new(Status.Inactive) },
                     },
                 },
-                Efs = new()
-                {
-                    Features = new Dictionary<string, UserProfileEfsFeature>()
-                    {
-                        { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                        { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                        { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                    },
-                    Status = UserProfileProgramStatus.Active,
-                },
+                Efs = null,
             },
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
@@ -429,17 +315,7 @@ public class UserProfileTest : TestBase
             ID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             AccessType = UserProfileAccessType.Application,
             CreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
-            EnforcementActions =
-            [
-                new UserProfileEnforcementActionRestriction()
-                {
-                    ID = "enac_011CZkZCu8hGbp5mYRQgUmz9",
-                    Action = UserProfileEnforcementActionNextStep.Verify,
-                    ExpiresAt = null,
-                    OpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z"),
-                    Reason = UserProfileEnforcementActionReason.FraudOrAbuse,
-                },
-            ],
+            EnforcementActions = [],
             EnforcementStatus = UserProfileEnforcementStatus.Unrestricted,
             ExternalUserDetails = new()
             {
@@ -457,7 +333,7 @@ public class UserProfileTest : TestBase
             {
                 Cyber = new()
                 {
-                    Requirements = new() { DataRetention = true, HumanReview = true },
+                    Requirements = null,
                     Status = UserProfileProgramStatus.Active,
                     Tiers = new Dictionary<string, UserProfileCyberTier>()
                     {
@@ -466,16 +342,7 @@ public class UserProfileTest : TestBase
                         { "c", new(Status.Inactive) },
                     },
                 },
-                Efs = new()
-                {
-                    Features = new Dictionary<string, UserProfileEfsFeature>()
-                    {
-                        { "data_retention_exemption", new(UserProfileEfsFeatureStatus.Inactive) },
-                        { "cmek", new(UserProfileEfsFeatureStatus.Active) },
-                        { "storage", new(UserProfileEfsFeatureStatus.Inactive) },
-                    },
-                    Status = UserProfileProgramStatus.Active,
-                },
+                Efs = null,
             },
             UpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
         };
