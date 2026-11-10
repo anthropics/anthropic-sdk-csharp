@@ -1061,7 +1061,8 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
 
     /// <summary>
     /// Executes <paramref name="tool"/> for <paramref name="toolUse"/> and makes the result to
-    /// send back. An error the tool throws becomes an error result.
+    /// send back. An error the tool throws becomes an error result, a timeout of its own included:
+    /// only the cancellation of <paramref name="cancellationToken"/> ends the run.
     /// </summary>
     private static async Task<BetaToolResultBlockParam> RunToolAsync(
         IBetaRunnableTool tool,
@@ -1074,7 +1075,7 @@ public class BetaToolRunner : IAsyncEnumerable<BetaMessage>
             var content = await tool.ExecuteAsync(toolUse, cancellationToken).ConfigureAwait(false);
             return new BetaToolResultBlockParam(toolUse.ID) { Content = content };
         }
-        catch (OperationCanceledException)
+        catch (OperationCanceledException) when (cancellationToken.IsCancellationRequested)
         {
             throw;
         }
