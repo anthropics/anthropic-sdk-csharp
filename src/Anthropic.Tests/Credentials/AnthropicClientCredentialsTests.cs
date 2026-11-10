@@ -1,5 +1,6 @@
 #pragma warning disable xUnit1051
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -1463,6 +1464,133 @@ public class AnthropicClientCredentialsTests
 
         Assert.Equal(2, handler.Requests.Count);
         Assert.Equal(1, creds.ForceRefreshCount);
+    }
+
+    // Holds the first two requests until the test releases each one with a status code;
+    // later requests (the retries) get 200.
+    private sealed class GatedHandler : HttpMessageHandler
+    {
+        private readonly TaskCompletionSource<HttpStatusCode>[] _gates =
+        [
+            new TaskCompletionSource<HttpStatusCode>(
+                TaskCreationOptions.RunContinuationsAsynchronously
+            ),
+            new TaskCompletionSource<HttpStatusCode>(
+                TaskCreationOptions.RunContinuationsAsynchronously
+            ),
+        ];
+        private int _count;
+
+        public TaskCompletionSource<bool> BothHeld { get; } =
+            new(TaskCreationOptions.RunContinuationsAsynchronously);
+        public ConcurrentQueue<string?> SentTokens { get; } = new();
+
+        public void Release(int index, HttpStatusCode statusCode) =>
+            _gates[index].SetResult(statusCode);
+
+        protected override async Task<HttpResponseMessage> SendAsync(
+            HttpRequestMessage request,
+            CancellationToken cancellationToken
+        )
+        {
+            SentTokens.Enqueue(request.Headers.Authorization?.Parameter);
+            var index = Interlocked.Increment(ref _count) - 1;
+            if (index >= _gates.Length)
+            {
+                return OkMessageResponse();
+            }
+            if (index == _gates.Length - 1)
+            {
+                BothHeld.SetResult(true);
+            }
+            var statusCode = await _gates[index].Task.ConfigureAwait(false);
+            return new HttpResponseMessage(statusCode)
+            {
+                Content = new StringContent("{}", Encoding.UTF8, "application/json"),
+            };
+        }
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task UnauthorizedResponse_ConcurrentRequests_RetryWithAlreadyRefreshedToken(
+        bool rotatingProvider
+    )
+    {
+        // Both requests are sent with token-A. The first 401 refreshes to token-B; the second
+        // 401 then arrives for token-A, which the cache has already replaced. A forced refresh
+        // returns token-B again, or token-C from a rotating provider.
+        var creds = new FakeCredentials(
+            (n, _) =>
+                new AccessToken(
+                    n == 1 ? "token-A"
+                        : rotatingProvider && n > 2 ? "token-C"
+                        : "token-B",
+                    expiresAt: null
+                )
+        );
+        var handler = new GatedHandler();
+        using var client = new AnthropicClient(
+            new ClientOptions
+            {
+                Credentials = creds,
+                HttpClient = new HttpClient(handler),
+                MaxRetries = 0,
+            }
+        );
+
+        var first = client.Messages.Create(TestParams(), TestContext.Current.CancellationToken);
+        var second = client.Messages.Create(TestParams(), TestContext.Current.CancellationToken);
+        // Awaiting the winner surfaces the real exception if a request fails before being held.
+        await await Task.WhenAny(handler.BothHeld.Task, first, second);
+        Assert.True(handler.BothHeld.Task.IsCompleted);
+
+        handler.Release(0, HttpStatusCode.Unauthorized);
+        var refreshed = await Task.WhenAny(first, second);
+        await refreshed;
+        var stale = refreshed == first ? second : first;
+        Assert.False(stale.IsCompleted);
+
+        handler.Release(1, HttpStatusCode.Unauthorized);
+        await stale;
+
+        Assert.Equal(1, creds.ForceRefreshCount);
+        string?[] expectedTokens = ["token-A", "token-A", "token-B", "token-B"];
+        Assert.Equal(expectedTokens, handler.SentTokens);
+    }
+
+    [Fact]
+    public async Task UnauthorizedResponse_StaticToken_CacheClearedMeanwhile_DoesNotRetry()
+    {
+        // Another request clears the cache (as its forced refresh or Invalidate() does) before
+        // this 401 is handled. The refresh then returns the token that was just rejected, so
+        // retrying would send the same token again.
+        using var cache = new TokenCache(new StaticTokenCredentials("tok"));
+        var handler = new FakeHandler(
+            (_, _) =>
+            {
+                cache.Invalidate();
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized)
+                {
+                    Content = new StringContent("{}", Encoding.UTF8, "application/json"),
+                };
+            }
+        );
+        using var client = new AnthropicClient(
+            new ClientOptions
+            {
+                Credentials = cache,
+                HttpClient = new HttpClient(handler),
+                MaxRetries = 0,
+            }
+        );
+
+        await Assert.ThrowsAsync<AnthropicUnauthorizedException>(() =>
+            client.Messages.Create(TestParams(), TestContext.Current.CancellationToken)
+        );
+
+        Assert.Single(handler.Requests);
     }
 
     [Fact]
