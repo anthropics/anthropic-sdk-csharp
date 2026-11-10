@@ -23,6 +23,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -35,6 +36,7 @@ public class SlackChannelUpdateParamsTest : TestBase
             GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
             Instructions = "instructions",
             Model = "x",
+            ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
         };
         List<ApiEnum<string, AnthropicBeta>> expectedBetas =
         [
@@ -64,6 +66,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
         };
 
@@ -84,6 +87,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
 
             // Null should be interpreted as omitted for these properties
@@ -107,6 +111,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         } with
@@ -132,6 +137,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
         };
 
@@ -161,6 +167,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };
@@ -186,6 +193,7 @@ public class SlackChannelUpdateParamsTest : TestBase
                 GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                 Instructions = "instructions",
                 Model = "x",
+                ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
             Betas = [AnthropicBeta.MessageBatches2024_09_24],
         };

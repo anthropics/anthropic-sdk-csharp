@@ -28,33 +28,10 @@ public class MessageTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -89,32 +66,10 @@ public class MessageTest : TestBase
         };
         List<ContentBlock> expectedContent =
         [
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "The grass is green. The sky is blue.",
-                        DocumentIndex = 0,
-                        DocumentTitle = "My Document",
-                        EndCharIndex = 0,
-                        FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "Hi! My name is Claude.",
-            },
+            new TextBlock() { Citations = null, Text = "Hi! My name is Claude." },
         ];
-        Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
-        RefusalStopDetails expectedStopDetails = new()
-        {
-            Category = Category.Cyber,
-            Explanation =
-                "This request was declined because it conflicts with Anthropic's Usage Policy.",
-        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
@@ -138,10 +93,10 @@ public class MessageTest : TestBase
         {
             Assert.Equal(expectedContent[i], model.Content[i]);
         }
-        Assert.Equal(expectedDiagnostics, model.Diagnostics);
+        Assert.Null(model.Diagnostics);
         Assert.Equal(expectedModel, model.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, model.Role));
-        Assert.Equal(expectedStopDetails, model.StopDetails);
+        Assert.Null(model.StopDetails);
         Assert.Equal(expectedStopReason, model.StopReason);
         Assert.Null(model.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -168,33 +123,10 @@ public class MessageTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -238,33 +170,10 @@ public class MessageTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -306,32 +215,10 @@ public class MessageTest : TestBase
         };
         List<ContentBlock> expectedContent =
         [
-            new TextBlock()
-            {
-                Citations =
-                [
-                    new CitationCharLocation()
-                    {
-                        CitedText = "The grass is green. The sky is blue.",
-                        DocumentIndex = 0,
-                        DocumentTitle = "My Document",
-                        EndCharIndex = 0,
-                        FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                        StartCharIndex = 0,
-                    },
-                ],
-                Text = "Hi! My name is Claude.",
-            },
+            new TextBlock() { Citations = null, Text = "Hi! My name is Claude." },
         ];
-        Diagnostics expectedDiagnostics = new(new CacheMissModelChanged(0));
         ApiEnum<string, Model> expectedModel = Model.ClaudeOpus5_5;
         JsonElement expectedRole = JsonSerializer.SerializeToElement("assistant");
-        RefusalStopDetails expectedStopDetails = new()
-        {
-            Category = Category.Cyber,
-            Explanation =
-                "This request was declined because it conflicts with Anthropic's Usage Policy.",
-        };
         ApiEnum<string, StopReason> expectedStopReason = StopReason.EndTurn;
         JsonElement expectedType = JsonSerializer.SerializeToElement("message");
         Usage expectedUsage = new()
@@ -355,10 +242,10 @@ public class MessageTest : TestBase
         {
             Assert.Equal(expectedContent[i], deserialized.Content[i]);
         }
-        Assert.Equal(expectedDiagnostics, deserialized.Diagnostics);
+        Assert.Null(deserialized.Diagnostics);
         Assert.Equal(expectedModel, deserialized.Model);
         Assert.True(JsonElement.DeepEquals(expectedRole, deserialized.Role));
-        Assert.Equal(expectedStopDetails, deserialized.StopDetails);
+        Assert.Null(deserialized.StopDetails);
         Assert.Equal(expectedStopReason, deserialized.StopReason);
         Assert.Null(deserialized.StopSequence);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -385,33 +272,10 @@ public class MessageTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()
@@ -452,33 +316,10 @@ public class MessageTest : TestBase
                     },
                 ],
             },
-            Content =
-            [
-                new TextBlock()
-                {
-                    Citations =
-                    [
-                        new CitationCharLocation()
-                        {
-                            CitedText = "The grass is green. The sky is blue.",
-                            DocumentIndex = 0,
-                            DocumentTitle = "My Document",
-                            EndCharIndex = 0,
-                            FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-                            StartCharIndex = 0,
-                        },
-                    ],
-                    Text = "Hi! My name is Claude.",
-                },
-            ],
-            Diagnostics = new(new CacheMissModelChanged(0)),
+            Content = [new TextBlock() { Citations = null, Text = "Hi! My name is Claude." }],
+            Diagnostics = null,
             Model = Model.ClaudeOpus5_5,
-            StopDetails = new()
-            {
-                Category = Category.Cyber,
-                Explanation =
-                    "This request was declined because it conflicts with Anthropic's Usage Policy.",
-            },
+            StopDetails = null,
             StopReason = StopReason.EndTurn,
             StopSequence = null,
             Usage = new()

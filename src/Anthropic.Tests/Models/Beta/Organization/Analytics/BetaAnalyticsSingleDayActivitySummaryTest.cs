@@ -37,6 +37,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = 0,
             ClaudeDesignMonthlyActiveUserCount = 0,
             ClaudeDesignWeeklyActiveUserCount = 0,
+            ClaudeTagDailyActiveUserCount = 0,
+            ClaudeTagMonthlyActiveUserCount = 0,
+            ClaudeTagWeeklyActiveUserCount = 0,
             OfficeAgentDailyActiveUserCount = 0,
             OfficeAgentMonthlyActiveUserCount = 0,
             OfficeAgentWeeklyActiveUserCount = 0,
@@ -71,6 +74,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         long expectedClaudeDesignDailyActiveUserCount = 0;
         long expectedClaudeDesignMonthlyActiveUserCount = 0;
         long expectedClaudeDesignWeeklyActiveUserCount = 0;
+        long expectedClaudeTagDailyActiveUserCount = 0;
+        long expectedClaudeTagMonthlyActiveUserCount = 0;
+        long expectedClaudeTagWeeklyActiveUserCount = 0;
         long expectedOfficeAgentDailyActiveUserCount = 0;
         long expectedOfficeAgentMonthlyActiveUserCount = 0;
         long expectedOfficeAgentWeeklyActiveUserCount = 0;
@@ -128,6 +134,12 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             expectedClaudeDesignWeeklyActiveUserCount,
             model.ClaudeDesignWeeklyActiveUserCount
         );
+        Assert.Equal(expectedClaudeTagDailyActiveUserCount, model.ClaudeTagDailyActiveUserCount);
+        Assert.Equal(
+            expectedClaudeTagMonthlyActiveUserCount,
+            model.ClaudeTagMonthlyActiveUserCount
+        );
+        Assert.Equal(expectedClaudeTagWeeklyActiveUserCount, model.ClaudeTagWeeklyActiveUserCount);
         Assert.Equal(
             expectedOfficeAgentDailyActiveUserCount,
             model.OfficeAgentDailyActiveUserCount
@@ -176,6 +188,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = 0,
             ClaudeDesignMonthlyActiveUserCount = 0,
             ClaudeDesignWeeklyActiveUserCount = 0,
+            ClaudeTagDailyActiveUserCount = 0,
+            ClaudeTagMonthlyActiveUserCount = 0,
+            ClaudeTagWeeklyActiveUserCount = 0,
             OfficeAgentDailyActiveUserCount = 0,
             OfficeAgentMonthlyActiveUserCount = 0,
             OfficeAgentWeeklyActiveUserCount = 0,
@@ -224,6 +239,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = 0,
             ClaudeDesignMonthlyActiveUserCount = 0,
             ClaudeDesignWeeklyActiveUserCount = 0,
+            ClaudeTagDailyActiveUserCount = 0,
+            ClaudeTagMonthlyActiveUserCount = 0,
+            ClaudeTagWeeklyActiveUserCount = 0,
             OfficeAgentDailyActiveUserCount = 0,
             OfficeAgentMonthlyActiveUserCount = 0,
             OfficeAgentWeeklyActiveUserCount = 0,
@@ -265,6 +283,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         long expectedClaudeDesignDailyActiveUserCount = 0;
         long expectedClaudeDesignMonthlyActiveUserCount = 0;
         long expectedClaudeDesignWeeklyActiveUserCount = 0;
+        long expectedClaudeTagDailyActiveUserCount = 0;
+        long expectedClaudeTagMonthlyActiveUserCount = 0;
+        long expectedClaudeTagWeeklyActiveUserCount = 0;
         long expectedOfficeAgentDailyActiveUserCount = 0;
         long expectedOfficeAgentMonthlyActiveUserCount = 0;
         long expectedOfficeAgentWeeklyActiveUserCount = 0;
@@ -329,6 +350,18 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             deserialized.ClaudeDesignWeeklyActiveUserCount
         );
         Assert.Equal(
+            expectedClaudeTagDailyActiveUserCount,
+            deserialized.ClaudeTagDailyActiveUserCount
+        );
+        Assert.Equal(
+            expectedClaudeTagMonthlyActiveUserCount,
+            deserialized.ClaudeTagMonthlyActiveUserCount
+        );
+        Assert.Equal(
+            expectedClaudeTagWeeklyActiveUserCount,
+            deserialized.ClaudeTagWeeklyActiveUserCount
+        );
+        Assert.Equal(
             expectedOfficeAgentDailyActiveUserCount,
             deserialized.OfficeAgentDailyActiveUserCount
         );
@@ -382,6 +415,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = 0,
             ClaudeDesignMonthlyActiveUserCount = 0,
             ClaudeDesignWeeklyActiveUserCount = 0,
+            ClaudeTagDailyActiveUserCount = 0,
+            ClaudeTagMonthlyActiveUserCount = 0,
+            ClaudeTagWeeklyActiveUserCount = 0,
             OfficeAgentDailyActiveUserCount = 0,
             OfficeAgentMonthlyActiveUserCount = 0,
             OfficeAgentWeeklyActiveUserCount = 0,
@@ -438,6 +474,12 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         Assert.False(model.RawData.ContainsKey("claude_design_monthly_active_user_count"));
         Assert.Null(model.ClaudeDesignWeeklyActiveUserCount);
         Assert.False(model.RawData.ContainsKey("claude_design_weekly_active_user_count"));
+        Assert.Null(model.ClaudeTagDailyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("claude_tag_daily_active_user_count"));
+        Assert.Null(model.ClaudeTagMonthlyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("claude_tag_monthly_active_user_count"));
+        Assert.Null(model.ClaudeTagWeeklyActiveUserCount);
+        Assert.False(model.RawData.ContainsKey("claude_tag_weekly_active_user_count"));
         Assert.Null(model.OfficeAgentDailyActiveUserCount);
         Assert.False(model.RawData.ContainsKey("office_agent_daily_active_user_count"));
         Assert.Null(model.OfficeAgentMonthlyActiveUserCount);
@@ -508,6 +550,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = null,
             ClaudeDesignMonthlyActiveUserCount = null,
             ClaudeDesignWeeklyActiveUserCount = null,
+            ClaudeTagDailyActiveUserCount = null,
+            ClaudeTagMonthlyActiveUserCount = null,
+            ClaudeTagWeeklyActiveUserCount = null,
             OfficeAgentDailyActiveUserCount = null,
             OfficeAgentMonthlyActiveUserCount = null,
             OfficeAgentWeeklyActiveUserCount = null,
@@ -541,6 +586,12 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
         Assert.True(model.RawData.ContainsKey("claude_design_monthly_active_user_count"));
         Assert.Null(model.ClaudeDesignWeeklyActiveUserCount);
         Assert.True(model.RawData.ContainsKey("claude_design_weekly_active_user_count"));
+        Assert.Null(model.ClaudeTagDailyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("claude_tag_daily_active_user_count"));
+        Assert.Null(model.ClaudeTagMonthlyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("claude_tag_monthly_active_user_count"));
+        Assert.Null(model.ClaudeTagWeeklyActiveUserCount);
+        Assert.True(model.RawData.ContainsKey("claude_tag_weekly_active_user_count"));
         Assert.Null(model.OfficeAgentDailyActiveUserCount);
         Assert.True(model.RawData.ContainsKey("office_agent_daily_active_user_count"));
         Assert.Null(model.OfficeAgentMonthlyActiveUserCount);
@@ -588,6 +639,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = null,
             ClaudeDesignMonthlyActiveUserCount = null,
             ClaudeDesignWeeklyActiveUserCount = null,
+            ClaudeTagDailyActiveUserCount = null,
+            ClaudeTagMonthlyActiveUserCount = null,
+            ClaudeTagWeeklyActiveUserCount = null,
             OfficeAgentDailyActiveUserCount = null,
             OfficeAgentMonthlyActiveUserCount = null,
             OfficeAgentWeeklyActiveUserCount = null,
@@ -630,6 +684,9 @@ public class BetaAnalyticsSingleDayActivitySummaryTest : TestBase
             ClaudeDesignDailyActiveUserCount = 0,
             ClaudeDesignMonthlyActiveUserCount = 0,
             ClaudeDesignWeeklyActiveUserCount = 0,
+            ClaudeTagDailyActiveUserCount = 0,
+            ClaudeTagMonthlyActiveUserCount = 0,
+            ClaudeTagWeeklyActiveUserCount = 0,
             OfficeAgentDailyActiveUserCount = 0,
             OfficeAgentMonthlyActiveUserCount = 0,
             OfficeAgentWeeklyActiveUserCount = 0,

@@ -375,6 +375,63 @@ public sealed record class AnalyticsSingleDayActivitySummary : JsonModel
     }
 
     /// <summary>
+    /// Number of Slack users active in Claude Tag on the requested day. Counts distinct
+    /// Slack users, including users who have not linked a Claude account, so it can
+    /// exceed `daily_active_user_count` and `assigned_seat_count`. Null on a day
+    /// with no measured value, when Claude Tag data cannot be read for the request,
+    /// and when the response is scoped to an RBAC group, because an unlinked user
+    /// belongs to no group. Omitted from the response on deployments that do not
+    /// offer Claude Tag reporting.
+    /// </summary>
+    public long? ClaudeTagDailyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("claude_tag_daily_active_user_count");
+        }
+        init { this._rawData.Set("claude_tag_daily_active_user_count", value); }
+    }
+
+    /// <summary>
+    /// Number of Slack users active in Claude Tag in the 28-day rolling window. Counts
+    /// distinct Slack users, including users who have not linked a Claude account,
+    /// so it can exceed `daily_active_user_count` and `assigned_seat_count`. Null
+    /// on a day with no measured value, when Claude Tag data cannot be read for the
+    /// request, and when the response is scoped to an RBAC group, because an unlinked
+    /// user belongs to no group. Omitted from the response on deployments that do
+    /// not offer Claude Tag reporting.
+    /// </summary>
+    public long? ClaudeTagMonthlyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("claude_tag_monthly_active_user_count");
+        }
+        init { this._rawData.Set("claude_tag_monthly_active_user_count", value); }
+    }
+
+    /// <summary>
+    /// Number of Slack users active in Claude Tag in the 7-day rolling window. Counts
+    /// distinct Slack users, including users who have not linked a Claude account,
+    /// so it can exceed `daily_active_user_count` and `assigned_seat_count`. Null
+    /// on a day with no measured value, when Claude Tag data cannot be read for the
+    /// request, and when the response is scoped to an RBAC group, because an unlinked
+    /// user belongs to no group. Omitted from the response on deployments that do
+    /// not offer Claude Tag reporting.
+    /// </summary>
+    public long? ClaudeTagWeeklyActiveUserCount
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableStruct<long>("claude_tag_weekly_active_user_count");
+        }
+        init { this._rawData.Set("claude_tag_weekly_active_user_count", value); }
+    }
+
+    /// <summary>
     /// Number of users with Claude in Office activity on the requested day. Omitted
     /// from the response while the per-product breakdown is not enabled for this organization.
     /// </summary>
@@ -507,6 +564,9 @@ public sealed record class AnalyticsSingleDayActivitySummary : JsonModel
         _ = this.ClaudeDesignDailyActiveUserCount;
         _ = this.ClaudeDesignMonthlyActiveUserCount;
         _ = this.ClaudeDesignWeeklyActiveUserCount;
+        _ = this.ClaudeTagDailyActiveUserCount;
+        _ = this.ClaudeTagMonthlyActiveUserCount;
+        _ = this.ClaudeTagWeeklyActiveUserCount;
         _ = this.OfficeAgentDailyActiveUserCount;
         _ = this.OfficeAgentMonthlyActiveUserCount;
         _ = this.OfficeAgentWeeklyActiveUserCount;

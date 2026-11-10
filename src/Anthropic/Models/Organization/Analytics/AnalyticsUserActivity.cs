@@ -153,6 +153,22 @@ public sealed record class AnalyticsUserActivity : JsonModel
     }
 
     /// <summary>
+    /// Claude Tag activity in Slack by a user who has linked a Claude account. Activity
+    /// by Slack users who have not linked an account appears only in the `/summaries`
+    /// Claude Tag counts, so these rows do not add up to those counts. Omitted from
+    /// the response on deployments that do not offer Claude Tag reporting.
+    /// </summary>
+    public AnalyticsClaudeTagMetrics? ClaudeTagMetrics
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<AnalyticsClaudeTagMetrics>("claude_tag_metrics");
+        }
+        init { this._rawData.Set("claude_tag_metrics", value); }
+    }
+
+    /// <summary>
     /// Most recent UTC day (YYYY-MM-DD) on which the user had any counted activity,
     /// within the requested window: equal to the requested `date` in single-day
     /// mode, and to the latest active day from `starting_date` (inclusive) to `ending_date`
@@ -216,6 +232,7 @@ public sealed record class AnalyticsUserActivity : JsonModel
         this.User?.Validate();
         _ = this.WebSearchCount;
         this.ChatCoworkUnifiedMetrics?.Validate();
+        this.ClaudeTagMetrics?.Validate();
         _ = this.LastActivityDate;
         _ = this.RbacGroupID;
         _ = this.RbacGroupName;

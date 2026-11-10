@@ -14,28 +14,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         {
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
-            McpProbe = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Method = "method",
-            },
-            Refresh = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Status = Status.Succeeded,
-            },
+            McpProbe = null,
+            Refresh = null,
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
@@ -43,28 +23,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
 
         string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         bool expectedHasRefreshToken = true;
-        BetaManagedAgentsMcpProbe expectedMcpProbe = new()
-        {
-            HttpResponse = new()
-            {
-                Body = "body",
-                BodyTruncated = true,
-                ContentType = "content_type",
-                StatusCode = 0,
-            },
-            Method = "method",
-        };
-        BetaManagedAgentsRefreshObject expectedRefresh = new()
-        {
-            HttpResponse = new()
-            {
-                Body = "body",
-                BodyTruncated = true,
-                ContentType = "content_type",
-                StatusCode = 0,
-            },
-            Status = Status.Succeeded,
-        };
         ApiEnum<string, BetaManagedAgentsCredentialValidationStatus> expectedStatus =
             BetaManagedAgentsCredentialValidationStatus.Valid;
         JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential_validation");
@@ -73,8 +31,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
 
         Assert.Equal(expectedCredentialID, model.CredentialID);
         Assert.Equal(expectedHasRefreshToken, model.HasRefreshToken);
-        Assert.Equal(expectedMcpProbe, model.McpProbe);
-        Assert.Equal(expectedRefresh, model.Refresh);
+        Assert.Null(model.McpProbe);
+        Assert.Null(model.Refresh);
         Assert.Equal(expectedStatus, model.Status);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedValidatedAt, model.ValidatedAt);
@@ -88,28 +46,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         {
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
-            McpProbe = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Method = "method",
-            },
-            Refresh = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Status = Status.Succeeded,
-            },
+            McpProbe = null,
+            Refresh = null,
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
@@ -131,28 +69,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         {
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
-            McpProbe = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Method = "method",
-            },
-            Refresh = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Status = Status.Succeeded,
-            },
+            McpProbe = null,
+            Refresh = null,
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
@@ -167,28 +85,6 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
 
         string expectedCredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw";
         bool expectedHasRefreshToken = true;
-        BetaManagedAgentsMcpProbe expectedMcpProbe = new()
-        {
-            HttpResponse = new()
-            {
-                Body = "body",
-                BodyTruncated = true,
-                ContentType = "content_type",
-                StatusCode = 0,
-            },
-            Method = "method",
-        };
-        BetaManagedAgentsRefreshObject expectedRefresh = new()
-        {
-            HttpResponse = new()
-            {
-                Body = "body",
-                BodyTruncated = true,
-                ContentType = "content_type",
-                StatusCode = 0,
-            },
-            Status = Status.Succeeded,
-        };
         ApiEnum<string, BetaManagedAgentsCredentialValidationStatus> expectedStatus =
             BetaManagedAgentsCredentialValidationStatus.Valid;
         JsonElement expectedType = JsonSerializer.SerializeToElement("vault_credential_validation");
@@ -197,8 +93,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
 
         Assert.Equal(expectedCredentialID, deserialized.CredentialID);
         Assert.Equal(expectedHasRefreshToken, deserialized.HasRefreshToken);
-        Assert.Equal(expectedMcpProbe, deserialized.McpProbe);
-        Assert.Equal(expectedRefresh, deserialized.Refresh);
+        Assert.Null(deserialized.McpProbe);
+        Assert.Null(deserialized.Refresh);
         Assert.Equal(expectedStatus, deserialized.Status);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedValidatedAt, deserialized.ValidatedAt);
@@ -212,28 +108,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         {
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
-            McpProbe = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Method = "method",
-            },
-            Refresh = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Status = Status.Succeeded,
-            },
+            McpProbe = null,
+            Refresh = null,
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",
@@ -249,28 +125,8 @@ public class BetaManagedAgentsCredentialValidationTest : TestBase
         {
             CredentialID = "vcrd_011CZkZEMt8gZan2iYPQfSkw",
             HasRefreshToken = true,
-            McpProbe = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Method = "method",
-            },
-            Refresh = new()
-            {
-                HttpResponse = new()
-                {
-                    Body = "body",
-                    BodyTruncated = true,
-                    ContentType = "content_type",
-                    StatusCode = 0,
-                },
-                Status = Status.Succeeded,
-            },
+            McpProbe = null,
+            Refresh = null,
             Status = BetaManagedAgentsCredentialValidationStatus.Valid,
             ValidatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z"),
             VaultID = "vlt_011CZkZDLs7fYzm1hXNPeRjv",

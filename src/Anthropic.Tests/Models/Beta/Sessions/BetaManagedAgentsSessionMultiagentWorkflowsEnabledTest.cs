@@ -21,14 +21,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
                     ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                    McpServers =
-                    [
-                        new()
-                        {
-                            Name = "example-mcp",
-                            Url = "https://example-server.modelcontextprotocol.io/sse",
-                        },
-                    ],
+                    McpServers = [],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -37,24 +30,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
-                    Skills =
-                    [
-                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                    ],
+                    Skills = [],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                     Tools =
                     [
                         new BetaManagedAgentsAgentToolset20260401()
                         {
-                            Configs =
-                            [
-                                new BetaManagedAgentsBashToolConfig()
-                                {
-                                    Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                                },
-                            ],
+                            Configs = [],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
@@ -76,14 +59,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
                 ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                McpServers =
-                [
-                    new()
-                    {
-                        Name = "example-mcp",
-                        Url = "https://example-server.modelcontextprotocol.io/sse",
-                    },
-                ],
+                McpServers = [],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -92,24 +68,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     Speed = Speed.Standard,
                 },
                 Name = "Researcher",
-                Skills =
-                [
-                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                ],
+                Skills = [],
                 System =
                     "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                 Tools =
                 [
                     new BetaManagedAgentsAgentToolset20260401()
                     {
-                        Configs =
-                        [
-                            new BetaManagedAgentsBashToolConfig()
-                            {
-                                Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                            },
-                        ],
+                        Configs = [],
                         DefaultConfig = new()
                         {
                             Enabled = true,
@@ -144,14 +110,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
                     ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                    McpServers =
-                    [
-                        new()
-                        {
-                            Name = "example-mcp",
-                            Url = "https://example-server.modelcontextprotocol.io/sse",
-                        },
-                    ],
+                    McpServers = [],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -160,24 +119,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
-                    Skills =
-                    [
-                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                    ],
+                    Skills = [],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                     Tools =
                     [
                         new BetaManagedAgentsAgentToolset20260401()
                         {
-                            Configs =
-                            [
-                                new BetaManagedAgentsBashToolConfig()
-                                {
-                                    Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                                },
-                            ],
+                            Configs = [],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
@@ -213,14 +162,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
                     ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                    McpServers =
-                    [
-                        new()
-                        {
-                            Name = "example-mcp",
-                            Url = "https://example-server.modelcontextprotocol.io/sse",
-                        },
-                    ],
+                    McpServers = [],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -229,24 +171,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
-                    Skills =
-                    [
-                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                    ],
+                    Skills = [],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                     Tools =
                     [
                         new BetaManagedAgentsAgentToolset20260401()
                         {
-                            Configs =
-                            [
-                                new BetaManagedAgentsBashToolConfig()
-                                {
-                                    Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                                },
-                            ],
+                            Configs = [],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
@@ -276,14 +208,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                 ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                 Description = "A focused research subagent.",
                 ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                McpServers =
-                [
-                    new()
-                    {
-                        Name = "example-mcp",
-                        Url = "https://example-server.modelcontextprotocol.io/sse",
-                    },
-                ],
+                McpServers = [],
                 Model = new()
                 {
                     ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -292,24 +217,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     Speed = Speed.Standard,
                 },
                 Name = "Researcher",
-                Skills =
-                [
-                    new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                ],
+                Skills = [],
                 System =
                     "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                 Tools =
                 [
                     new BetaManagedAgentsAgentToolset20260401()
                     {
-                        Configs =
-                        [
-                            new BetaManagedAgentsBashToolConfig()
-                            {
-                                Enabled = true,
-                                PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                            },
-                        ],
+                        Configs = [],
                         DefaultConfig = new()
                         {
                             Enabled = true,
@@ -344,14 +259,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
                     ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                    McpServers =
-                    [
-                        new()
-                        {
-                            Name = "example-mcp",
-                            Url = "https://example-server.modelcontextprotocol.io/sse",
-                        },
-                    ],
+                    McpServers = [],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -360,24 +268,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
-                    Skills =
-                    [
-                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                    ],
+                    Skills = [],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                     Tools =
                     [
                         new BetaManagedAgentsAgentToolset20260401()
                         {
-                            Configs =
-                            [
-                                new BetaManagedAgentsBashToolConfig()
-                                {
-                                    Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                                },
-                            ],
+                            Configs = [],
                             DefaultConfig = new()
                             {
                                 Enabled = true,
@@ -406,14 +304,7 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                     ID = "agent_011CZkYqphY8vELVzwCUpqiQ",
                     Description = "A focused research subagent.",
                     ExecutionIdentity = new BetaManagedAgentsServiceAccountExecutionIdentity(),
-                    McpServers =
-                    [
-                        new()
-                        {
-                            Name = "example-mcp",
-                            Url = "https://example-server.modelcontextprotocol.io/sse",
-                        },
-                    ],
+                    McpServers = [],
                     Model = new()
                     {
                         ID = BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -422,24 +313,14 @@ public class BetaManagedAgentsSessionMultiagentWorkflowsEnabledTest : TestBase
                         Speed = Speed.Standard,
                     },
                     Name = "Researcher",
-                    Skills =
-                    [
-                        new BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-                    ],
+                    Skills = [],
                     System =
                         "You are a research subagent that gathers and summarises sources for the coordinating agent.",
                     Tools =
                     [
                         new BetaManagedAgentsAgentToolset20260401()
                         {
-                            Configs =
-                            [
-                                new BetaManagedAgentsBashToolConfig()
-                                {
-                                    Enabled = true,
-                                    PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                                },
-                            ],
+                            Configs = [],
                             DefaultConfig = new()
                             {
                                 Enabled = true,

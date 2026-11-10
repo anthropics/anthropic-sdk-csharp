@@ -1,0 +1,1 @@
+fix(google-cloud): percent-encode the project, location and workspace ID in the derived base URL, so one with a `/` in it can't send the request to a different path, and throw on an empty value or one of `"."` or `".."`

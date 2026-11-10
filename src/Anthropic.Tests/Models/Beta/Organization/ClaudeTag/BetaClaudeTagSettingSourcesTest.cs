@@ -17,6 +17,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
 
         BetaClaudeTagSettingSource expectedEnabled = new BetaClaudeTagSlackChannelSettingSource(
@@ -34,6 +35,9 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
         BetaClaudeTagSettingSource expectedModel = new BetaClaudeTagSlackChannelSettingSource(
             "slack_channel_id"
         );
+        BetaClaudeTagSettingSource expectedReplyMode = new BetaClaudeTagSlackChannelSettingSource(
+            "slack_channel_id"
+        );
 
         Assert.Equal(expectedEnabled, model.Enabled);
         Assert.Equal(expectedEnvironmentID, model.EnvironmentID);
@@ -44,6 +48,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             Assert.Equal(expectedInstructions[i], model.Instructions[i]);
         }
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedReplyMode, model.ReplyMode);
     }
 
     [Fact]
@@ -56,6 +61,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -77,6 +83,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -101,6 +108,9 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
         BetaClaudeTagSettingSource expectedModel = new BetaClaudeTagSlackChannelSettingSource(
             "slack_channel_id"
         );
+        BetaClaudeTagSettingSource expectedReplyMode = new BetaClaudeTagSlackChannelSettingSource(
+            "slack_channel_id"
+        );
 
         Assert.Equal(expectedEnabled, deserialized.Enabled);
         Assert.Equal(expectedEnvironmentID, deserialized.EnvironmentID);
@@ -111,6 +121,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             Assert.Equal(expectedInstructions[i], deserialized.Instructions[i]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedReplyMode, deserialized.ReplyMode);
     }
 
     [Fact]
@@ -123,6 +134,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
 
         model.Validate();
@@ -138,6 +150,7 @@ public class BetaClaudeTagSettingSourcesTest : TestBase
             GuestPolicy = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
             Instructions = [new BetaClaudeTagSlackChannelSettingSource("slack_channel_id")],
             Model = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
+            ReplyMode = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
         };
 
         BetaClaudeTagSettingSources copied = new(model);

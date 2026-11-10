@@ -4,7 +4,6 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Deployments;
-using Anthropic.Models.Beta.Sessions;
 using Anthropic.Models.Beta.Sessions.Events;
 
 namespace Anthropic.Tests.Models.Beta.Deployments;
@@ -39,16 +38,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -93,16 +84,8 @@ public class DeploymentListPageResponseTest : TestBase
                 ],
                 Metadata = new Dictionary<string, string>(),
                 Name = "Daily order report",
-                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                Resources =
-                [
-                    new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                    {
-                        Url = "url",
-                        Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                        MountPath = "mount_path",
-                    },
-                ],
+                PausedReason = null,
+                Resources = [],
                 Schedule = new()
                 {
                     Expression = "0 9 * * 1-5",
@@ -160,16 +143,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -229,16 +204,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -290,16 +257,8 @@ public class DeploymentListPageResponseTest : TestBase
                 ],
                 Metadata = new Dictionary<string, string>(),
                 Name = "Daily order report",
-                PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                Resources =
-                [
-                    new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                    {
-                        Url = "url",
-                        Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                        MountPath = "mount_path",
-                    },
-                ],
+                PausedReason = null,
+                Resources = [],
                 Schedule = new()
                 {
                     Expression = "0 9 * * 1-5",
@@ -357,16 +316,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -420,16 +371,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -483,16 +426,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -545,16 +480,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -610,16 +537,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",
@@ -674,16 +593,8 @@ public class DeploymentListPageResponseTest : TestBase
                     ],
                     Metadata = new Dictionary<string, string>(),
                     Name = "Daily order report",
-                    PausedReason = new BetaManagedAgentsManualDeploymentPausedReason(),
-                    Resources =
-                    [
-                        new BetaManagedAgentsGitHubRepositoryResourceConfig()
-                        {
-                            Url = "url",
-                            Checkout = new BetaManagedAgentsBranchCheckout("main"),
-                            MountPath = "mount_path",
-                        },
-                    ],
+                    PausedReason = null,
+                    Resources = [],
                     Schedule = new()
                     {
                         Expression = "0 9 * * 1-5",

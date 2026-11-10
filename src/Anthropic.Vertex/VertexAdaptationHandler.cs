@@ -1,6 +1,7 @@
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+using Anthropic.Core;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Vertex;
@@ -77,8 +78,10 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
             contentStream.Length.ToString()
         );
 
+        var project = ParamsBase.EncodePathSegment(_vertexCredentials.Project, "project");
+        var region = ParamsBase.EncodePathSegment(_vertexCredentials.Region, "region");
         var requestBuilder = new StringBuilder(
-            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/v1/projects/{_vertexCredentials.Project}/locations/{_vertexCredentials.Region}/publishers/anthropic/models/"
+            $"{requestMessage.RequestUri!.Scheme}://{requestMessage.RequestUri.Authority}/v1/projects/{project}/locations/{region}/publishers/anthropic/models/"
         );
         if (isCountEndpoint)
         {
@@ -86,8 +89,28 @@ internal sealed class VertexAdaptationHandler : DelegatingHandler
         }
         else
         {
+            var rawModel = modelValue.AsValue().ToString();
+            // Some servers drop ";" and what follows it from a segment before they route the request, so the
+            // part before it can't be empty, "." or "..". With no ";", the specifier keeps "." and ".." from
+            // being dot-segments.
+            if (rawModel == "" || rawModel[0] == ';')
+            {
+                throw new AnthropicInvalidDataException("Expected a non-empty value for `model`");
+            }
+            if (
+                rawModel.StartsWith(".;", StringComparison.Ordinal)
+                || rawModel.StartsWith("..;", StringComparison.Ordinal)
+            )
+            {
+                throw new AnthropicInvalidDataException(
+                    $"'model' value \"{rawModel}\" is a dot-segment and can't be safely passed as a path parameter"
+                );
+            }
+            // "@" and ":" are valid in a path segment as they are, and Vertex model IDs contain "@".
+            // ";" stays escaped, because such a server would drop the specifier along with it.
+            var model = Uri.EscapeDataString(rawModel).Replace("%40", "@").Replace("%3A", ":");
             requestBuilder.Append(
-                $"{modelValue.AsValue()}:{(parsedStreamValue ? "streamRawPredict" : "rawPredict")}"
+                $"{model}:{(parsedStreamValue ? "streamRawPredict" : "rawPredict")}"
             );
         }
 

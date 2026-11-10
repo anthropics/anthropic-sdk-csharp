@@ -16,14 +16,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-            McpServers =
-            [
-                new()
-                {
-                    Name = "example-mcp",
-                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                },
-            ],
+            McpServers = [],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -32,23 +25,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
-            Skills =
-            [
-                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-            ],
+            Skills = [],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new Agents::BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -60,14 +43,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
 
         Agents::BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
             new Agents::BetaManagedAgentsServiceAccountExecutionIdentity();
-        List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
-        [
-            new()
-            {
-                Name = "example-mcp",
-                Url = "https://example-server.modelcontextprotocol.io/sse",
-            },
-        ];
+        List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers = [];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -76,23 +52,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
             Speed = Agents::Speed.Standard,
         };
         string expectedName = "pdf-reader-3";
-        List<Skill> expectedSkills =
-        [
-            new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-        ];
+        List<Skill> expectedSkills = [];
         string expectedSystem = "You extract tables precisely. Output CSV only.";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
             {
-                Configs =
-                [
-                    new Agents::BetaManagedAgentsBashToolConfig()
-                    {
-                        Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                    },
-                ],
+                Configs = [],
                 DefaultConfig = new()
                 {
                     Enabled = true,
@@ -132,14 +98,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-            McpServers =
-            [
-                new()
-                {
-                    Name = "example-mcp",
-                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                },
-            ],
+            McpServers = [],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -148,23 +107,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
-            Skills =
-            [
-                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-            ],
+            Skills = [],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new Agents::BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -190,14 +139,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-            McpServers =
-            [
-                new()
-                {
-                    Name = "example-mcp",
-                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                },
-            ],
+            McpServers = [],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -206,23 +148,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
-            Skills =
-            [
-                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-            ],
+            Skills = [],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new Agents::BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -241,14 +173,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
 
         Agents::BetaManagedAgentsExecutionIdentity expectedExecutionIdentity =
             new Agents::BetaManagedAgentsServiceAccountExecutionIdentity();
-        List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers =
-        [
-            new()
-            {
-                Name = "example-mcp",
-                Url = "https://example-server.modelcontextprotocol.io/sse",
-            },
-        ];
+        List<Agents::BetaManagedAgentsMcpServerUrlDefinition> expectedMcpServers = [];
         Agents::BetaManagedAgentsModelConfig expectedModel = new()
         {
             ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -257,23 +182,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
             Speed = Agents::Speed.Standard,
         };
         string expectedName = "pdf-reader-3";
-        List<Skill> expectedSkills =
-        [
-            new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-        ];
+        List<Skill> expectedSkills = [];
         string expectedSystem = "You extract tables precisely. Output CSV only.";
         List<Tool> expectedTools =
         [
             new Agents::BetaManagedAgentsAgentToolset20260401()
             {
-                Configs =
-                [
-                    new Agents::BetaManagedAgentsBashToolConfig()
-                    {
-                        Enabled = true,
-                        PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                    },
-                ],
+                Configs = [],
                 DefaultConfig = new()
                 {
                     Enabled = true,
@@ -313,14 +228,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-            McpServers =
-            [
-                new()
-                {
-                    Name = "example-mcp",
-                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                },
-            ],
+            McpServers = [],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -329,23 +237,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
-            Skills =
-            [
-                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-            ],
+            Skills = [],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new Agents::BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -365,14 +263,7 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
         {
             Description = null,
             ExecutionIdentity = new Agents::BetaManagedAgentsServiceAccountExecutionIdentity(),
-            McpServers =
-            [
-                new()
-                {
-                    Name = "example-mcp",
-                    Url = "https://example-server.modelcontextprotocol.io/sse",
-                },
-            ],
+            McpServers = [],
             Model = new()
             {
                 ID = Agents::BetaManagedAgentsModel.ClaudeOpus5_5,
@@ -381,23 +272,13 @@ public class BetaManagedAgentsInlineAgentTest : TestBase
                 Speed = Agents::Speed.Standard,
             },
             Name = "pdf-reader-3",
-            Skills =
-            [
-                new Agents::BetaManagedAgentsAnthropicSkill() { SkillID = "xlsx", Version = "1" },
-            ],
+            Skills = [],
             System = "You extract tables precisely. Output CSV only.",
             Tools =
             [
                 new Agents::BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new Agents::BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new Agents::BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,

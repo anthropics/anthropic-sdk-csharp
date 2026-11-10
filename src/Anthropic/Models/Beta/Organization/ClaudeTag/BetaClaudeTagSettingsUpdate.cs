@@ -32,7 +32,9 @@ public sealed record class BetaClaudeTagSettingsUpdate : JsonModel
 
     /// <summary>
     /// The environment Claude's sessions run in: the identifier of an active environment
-    /// of the organization, starting with `env_`. Null clears it.
+    /// of the organization, starting with `env_`, or of a self-hosted runner pool
+    /// of the organization that every member may use, starting with `ccpool_`. Null
+    /// clears it.
     /// </summary>
     public string? EnvironmentID
     {
@@ -85,6 +87,24 @@ public sealed record class BetaClaudeTagSettingsUpdate : JsonModel
         init { this._rawData.Set("model", value); }
     }
 
+    /// <summary>
+    /// How Claude takes part in the channel: `automatic`, `mention_only`, `always_awake`
+    /// or `thread`. Only a channel takes one: an update of a workspace that sends
+    /// a value is refused, and one that sends null changes nothing. Null never clears
+    /// it: sent to a channel that stores none it changes nothing, and sent to a channel
+    /// that stores one it is refused, because a stored reply mode can be changed
+    /// but never cleared; a caller that wants Claude's default behavior sends `automatic`.
+    /// </summary>
+    public BetaClaudeTagReplyMode? ReplyMode
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaClaudeTagReplyMode>("reply_mode");
+        }
+        init { this._rawData.Set("reply_mode", value); }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -93,6 +113,7 @@ public sealed record class BetaClaudeTagSettingsUpdate : JsonModel
         this.GuestPolicy?.Validate();
         _ = this.Instructions;
         _ = this.Model;
+        this.ReplyMode?.Validate();
     }
 
     public BetaClaudeTagSettingsUpdate() { }

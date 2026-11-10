@@ -34,6 +34,7 @@ public class SlackWorkspaceServiceTest : TestBase
                         GuestPolicy = new BetaClaudeTagGuestPolicyAllow(),
                         Instructions = "instructions",
                         Model = "x",
+                        ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
                     },
                 },
                 TestContext.Current.CancellationToken

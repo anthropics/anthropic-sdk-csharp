@@ -20,11 +20,11 @@ public class BetaCloudConfigTest : TestBase
             },
             Packages = new()
             {
-                Apt = ["string"],
-                Cargo = ["string"],
-                Gem = ["string"],
-                Go = ["string"],
-                Npm = ["string"],
+                Apt = [],
+                Cargo = [],
+                Gem = [],
+                Go = [],
+                Npm = [],
                 Pip = ["pandas", "numpy"],
                 Type = Type.Packages,
             },
@@ -38,11 +38,11 @@ public class BetaCloudConfigTest : TestBase
         };
         BetaPackages expectedPackages = new()
         {
-            Apt = ["string"],
-            Cargo = ["string"],
-            Gem = ["string"],
-            Go = ["string"],
-            Npm = ["string"],
+            Apt = [],
+            Cargo = [],
+            Gem = [],
+            Go = [],
+            Npm = [],
             Pip = ["pandas", "numpy"],
             Type = Type.Packages,
         };
@@ -66,11 +66,11 @@ public class BetaCloudConfigTest : TestBase
             },
             Packages = new()
             {
-                Apt = ["string"],
-                Cargo = ["string"],
-                Gem = ["string"],
-                Go = ["string"],
-                Npm = ["string"],
+                Apt = [],
+                Cargo = [],
+                Gem = [],
+                Go = [],
+                Npm = [],
                 Pip = ["pandas", "numpy"],
                 Type = Type.Packages,
             },
@@ -98,11 +98,11 @@ public class BetaCloudConfigTest : TestBase
             },
             Packages = new()
             {
-                Apt = ["string"],
-                Cargo = ["string"],
-                Gem = ["string"],
-                Go = ["string"],
-                Npm = ["string"],
+                Apt = [],
+                Cargo = [],
+                Gem = [],
+                Go = [],
+                Npm = [],
                 Pip = ["pandas", "numpy"],
                 Type = Type.Packages,
             },
@@ -123,11 +123,11 @@ public class BetaCloudConfigTest : TestBase
         };
         BetaPackages expectedPackages = new()
         {
-            Apt = ["string"],
-            Cargo = ["string"],
-            Gem = ["string"],
-            Go = ["string"],
-            Npm = ["string"],
+            Apt = [],
+            Cargo = [],
+            Gem = [],
+            Go = [],
+            Npm = [],
             Pip = ["pandas", "numpy"],
             Type = Type.Packages,
         };
@@ -151,11 +151,11 @@ public class BetaCloudConfigTest : TestBase
             },
             Packages = new()
             {
-                Apt = ["string"],
-                Cargo = ["string"],
-                Gem = ["string"],
-                Go = ["string"],
-                Npm = ["string"],
+                Apt = [],
+                Cargo = [],
+                Gem = [],
+                Go = [],
+                Npm = [],
                 Pip = ["pandas", "numpy"],
                 Type = Type.Packages,
             },
@@ -177,11 +177,11 @@ public class BetaCloudConfigTest : TestBase
             },
             Packages = new()
             {
-                Apt = ["string"],
-                Cargo = ["string"],
-                Gem = ["string"],
-                Go = ["string"],
-                Npm = ["string"],
+                Apt = [],
+                Cargo = [],
+                Gem = [],
+                Go = [],
+                Npm = [],
                 Pip = ["pandas", "numpy"],
                 Type = Type.Packages,
             },

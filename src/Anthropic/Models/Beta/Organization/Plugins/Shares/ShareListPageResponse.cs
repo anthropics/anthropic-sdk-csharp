@@ -29,7 +29,8 @@ public sealed record class ShareListPageResponse : JsonModel
 
     /// <summary>
     /// Token to provide in as `page` in the subsequent request to retrieve the next
-    /// page of data.
+    /// page of data. A page may hold fewer than `limit` shares, even none, while
+    /// this is set; keep following it until it is null.
     /// </summary>
     public required string? NextPage
     {

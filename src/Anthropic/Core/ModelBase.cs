@@ -967,6 +967,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Webhooks::State>(),
             new ApiEnumConverter<string, Webhooks::Order>(),
             new ApiEnumConverter<string, BetaClaudeTagGuestPolicyType>(),
+            new ApiEnumConverter<string, BetaClaudeTagReplyModeType>(),
             new ApiEnumConverter<string, BetaClaudeTagSettingSourceType>(),
             new ApiEnumConverter<string, BetaClaudeTagBundleTargetType>(),
             new ApiEnumConverter<string, BetaClaudeTagBundleTargetCreateType>(),

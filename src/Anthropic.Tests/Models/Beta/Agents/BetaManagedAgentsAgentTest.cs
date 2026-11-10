@@ -4,7 +4,6 @@ using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta.Agents;
-using Sessions = Anthropic.Models.Beta.Sessions;
 
 namespace Anthropic.Tests.Models.Beta.Agents;
 
@@ -36,26 +35,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            },
+            Multiagent = null,
             Name = "My First Agent",
             Skills =
             [
@@ -72,14 +52,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -112,27 +85,6 @@ public class BetaManagedAgentsAgentTest : TestBase
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
-            new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -149,14 +101,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         [
             new BetaManagedAgentsAgentToolset20260401()
             {
-                Configs =
-                [
-                    new BetaManagedAgentsBashToolConfig()
-                    {
-                        Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                    },
-                ],
+                Configs = [],
                 DefaultConfig = new()
                 {
                     Enabled = true,
@@ -186,7 +131,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             Assert.Equal(value, model.Metadata[item.Key]);
         }
         Assert.Equal(expectedModel, model.Model);
-        Assert.Equal(expectedMultiagent, model.Multiagent);
+        Assert.Null(model.Multiagent);
         Assert.Equal(expectedName, model.Name);
         Assert.Equal(expectedSkills.Count, model.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -230,26 +175,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            },
+            Multiagent = null,
             Name = "My First Agent",
             Skills =
             [
@@ -266,14 +192,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -320,26 +239,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            },
+            Multiagent = null,
             Name = "My First Agent",
             Skills =
             [
@@ -356,14 +256,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -403,27 +296,6 @@ public class BetaManagedAgentsAgentTest : TestBase
             InferenceGeo = "inference_geo",
             Speed = Speed.Standard,
         };
-        Sessions::BetaManagedAgentsMultiagent expectedMultiagent =
-            new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            };
         string expectedName = "My First Agent";
         List<Skill> expectedSkills =
         [
@@ -440,14 +312,7 @@ public class BetaManagedAgentsAgentTest : TestBase
         [
             new BetaManagedAgentsAgentToolset20260401()
             {
-                Configs =
-                [
-                    new BetaManagedAgentsBashToolConfig()
-                    {
-                        Enabled = true,
-                        PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                    },
-                ],
+                Configs = [],
                 DefaultConfig = new()
                 {
                     Enabled = true,
@@ -477,7 +342,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             Assert.Equal(value, deserialized.Metadata[item.Key]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
-        Assert.Equal(expectedMultiagent, deserialized.Multiagent);
+        Assert.Null(deserialized.Multiagent);
         Assert.Equal(expectedName, deserialized.Name);
         Assert.Equal(expectedSkills.Count, deserialized.Skills.Count);
         for (int i = 0; i < expectedSkills.Count; i++)
@@ -521,26 +386,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            },
+            Multiagent = null,
             Name = "My First Agent",
             Skills =
             [
@@ -557,14 +403,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
@@ -605,26 +444,7 @@ public class BetaManagedAgentsAgentTest : TestBase
                 InferenceGeo = "inference_geo",
                 Speed = Speed.Standard,
             },
-            Multiagent = new BetaManagedAgentsMultiagent20261001()
-            {
-                Advisor = new BetaManagedAgentsMultiagentAdvisorDisabled(),
-                Subagents = new BetaManagedAgentsMultiagentSubagentsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-                Workflows = new BetaManagedAgentsMultiagentWorkflowsEnabled()
-                {
-                    InlineAgents = new BetaManagedAgentsMultiagentInlineAgentsEnabled(),
-                    PredefinedAgents =
-                    [
-                        new() { ID = "agent_011CZkYqphY8vELVzwCUpqiQ", Version = 1 },
-                    ],
-                },
-            },
+            Multiagent = null,
             Name = "My First Agent",
             Skills =
             [
@@ -641,14 +461,7 @@ public class BetaManagedAgentsAgentTest : TestBase
             [
                 new BetaManagedAgentsAgentToolset20260401()
                 {
-                    Configs =
-                    [
-                        new BetaManagedAgentsBashToolConfig()
-                        {
-                            Enabled = true,
-                            PermissionPolicy = new BetaManagedAgentsAlwaysAllowPolicy(),
-                        },
-                    ],
+                    Configs = [],
                     DefaultConfig = new()
                     {
                         Enabled = true,
