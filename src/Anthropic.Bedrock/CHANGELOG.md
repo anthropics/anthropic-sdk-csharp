@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.1...Bedrock-v1.0.2) (2026-11-10)
+
+### Bug Fixes
+
+* **bedrock:** throw on an empty model or one of `"."` or `".."`, and send the `/` in an inference profile's ARN as `%2F`, so the model can't change the request path
+
 ## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.0...Bedrock-v1.0.1) (2026-10-21)
 
 ### Bug Fixes

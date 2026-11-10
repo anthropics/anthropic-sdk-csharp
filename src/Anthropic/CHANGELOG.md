@@ -1,5 +1,22 @@
 # Changelog
 
+## [13.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.7.0...Anthropic-v13.8.0) (2026-11-10)
+
+### Features
+
+* **api:** add Claude Tag metrics to the analytics summaries and users reports
+* **api:** add reply_mode to Claude Tag Slack channel settings
+
+
+### Chores
+
+* **docs:** clarify display_name for RBAC Roles created by Anthropic
+* **docs:** clarify plugin delete and skill name conflict descriptions
+* **docs:** clarify when to omit user_profile_id on external keys
+* **docs:** note that a page of plugin shares may be short or empty
+* **docs:** note that Claude Tag settings accept self-hosted runner pools
+* **docs:** update model descriptions
+
 ## [13.7.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.6.0...Anthropic-v13.7.0) (2026-11-09)
 
 ### Features

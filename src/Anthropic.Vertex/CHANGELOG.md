@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v1.0.1...Vertex-v1.0.2) (2026-11-10)
+
+### Bug Fixes
+
+* **vertex:** percent-encode the project ID, region and model in the request path, so one with a `/` in it can't send the request to a different path, and throw on an empty project ID or region or one of `"."` or `".."`
+* **vertex:** throw on an empty model, and on one that starts with `;`, `.;` or `..;`, such as `"..;x"`, because a server that drops `;` and what follows it would read it as an empty or dot segment
+
 ## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Vertex-v1.0.0...Vertex-v1.0.1) (2026-10-26)
 
 ### Bug Fixes
