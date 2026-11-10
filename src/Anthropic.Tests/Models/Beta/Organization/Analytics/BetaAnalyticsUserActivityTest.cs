@@ -159,6 +159,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
+            ClaudeTagMetrics = new() { ActiveDayCount = 0, ActiveMessageCount = 0 },
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -312,6 +313,11 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 WriteToolCount = 0,
             },
         };
+        BetaAnalyticsClaudeTagMetrics expectedClaudeTagMetrics = new()
+        {
+            ActiveDayCount = 0,
+            ActiveMessageCount = 0,
+        };
         string expectedLastActivityDate = "2019-12-27";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -326,6 +332,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
         Assert.Equal(expectedUser, model.User);
         Assert.Equal(expectedWebSearchCount, model.WebSearchCount);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, model.ChatCoworkUnifiedMetrics);
+        Assert.Equal(expectedClaudeTagMetrics, model.ClaudeTagMetrics);
         Assert.Equal(expectedLastActivityDate, model.LastActivityDate);
         Assert.Equal(expectedRbacGroupID, model.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, model.RbacGroupName);
@@ -484,6 +491,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
+            ClaudeTagMetrics = new() { ActiveDayCount = 0, ActiveMessageCount = 0 },
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -651,6 +659,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
+            ClaudeTagMetrics = new() { ActiveDayCount = 0, ActiveMessageCount = 0 },
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -811,6 +820,11 @@ public class BetaAnalyticsUserActivityTest : TestBase
                 WriteToolCount = 0,
             },
         };
+        BetaAnalyticsClaudeTagMetrics expectedClaudeTagMetrics = new()
+        {
+            ActiveDayCount = 0,
+            ActiveMessageCount = 0,
+        };
         string expectedLastActivityDate = "2019-12-27";
         string expectedRbacGroupID = "rbac_group_id";
         string expectedRbacGroupName = "rbac_group_name";
@@ -825,6 +839,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
         Assert.Equal(expectedUser, deserialized.User);
         Assert.Equal(expectedWebSearchCount, deserialized.WebSearchCount);
         Assert.Equal(expectedChatCoworkUnifiedMetrics, deserialized.ChatCoworkUnifiedMetrics);
+        Assert.Equal(expectedClaudeTagMetrics, deserialized.ClaudeTagMetrics);
         Assert.Equal(expectedLastActivityDate, deserialized.LastActivityDate);
         Assert.Equal(expectedRbacGroupID, deserialized.RbacGroupID);
         Assert.Equal(expectedRbacGroupName, deserialized.RbacGroupName);
@@ -983,6 +998,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
+            ClaudeTagMetrics = new() { ActiveDayCount = 0, ActiveMessageCount = 0 },
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
@@ -1110,6 +1126,8 @@ public class BetaAnalyticsUserActivityTest : TestBase
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.False(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
+        Assert.Null(model.ClaudeTagMetrics);
+        Assert.False(model.RawData.ContainsKey("claude_tag_metrics"));
         Assert.Null(model.LastActivityDate);
         Assert.False(model.RawData.ContainsKey("last_activity_date"));
         Assert.Null(model.RbacGroupID);
@@ -1355,6 +1373,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             WebSearchCount = 0,
 
             ChatCoworkUnifiedMetrics = null,
+            ClaudeTagMetrics = null,
             LastActivityDate = null,
             RbacGroupID = null,
             RbacGroupName = null,
@@ -1362,6 +1381,8 @@ public class BetaAnalyticsUserActivityTest : TestBase
 
         Assert.Null(model.ChatCoworkUnifiedMetrics);
         Assert.True(model.RawData.ContainsKey("chat_cowork_unified_metrics"));
+        Assert.Null(model.ClaudeTagMetrics);
+        Assert.True(model.RawData.ContainsKey("claude_tag_metrics"));
         Assert.Null(model.LastActivityDate);
         Assert.True(model.RawData.ContainsKey("last_activity_date"));
         Assert.Null(model.RbacGroupID);
@@ -1487,6 +1508,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
             WebSearchCount = 0,
 
             ChatCoworkUnifiedMetrics = null,
+            ClaudeTagMetrics = null,
             LastActivityDate = null,
             RbacGroupID = null,
             RbacGroupName = null,
@@ -1648,6 +1670,7 @@ public class BetaAnalyticsUserActivityTest : TestBase
                     WriteToolCount = 0,
                 },
             },
+            ClaudeTagMetrics = new() { ActiveDayCount = 0, ActiveMessageCount = 0 },
             LastActivityDate = "2019-12-27",
             RbacGroupID = "rbac_group_id",
             RbacGroupName = "rbac_group_name",
