@@ -735,6 +735,7 @@ public static class AnthropicClientExtensions
             long? startInputTokens = null;
             long? startCacheCreationInputTokens = null;
             long? startCacheReadInputTokens = null;
+            CacheCreation? startCacheCreation = null;
             long? startThinkingTokens = null;
             ServerToolUsage? startServerToolUse = null;
             ChatFinishReason? finishReason = null;
@@ -766,6 +767,7 @@ public static class AnthropicClientExtensions
                             startInputTokens = usage.InputTokens;
                             startCacheCreationInputTokens = usage.CacheCreationInputTokens;
                             startCacheReadInputTokens = usage.CacheReadInputTokens;
+                            startCacheCreation = usage.CacheCreation;
                             startThinkingTokens = usage.OutputTokensDetails?.ThinkingTokens;
                             startServerToolUse = usage.ServerToolUse;
                             UsageDetails current = ToUsageDetails(usage);
@@ -797,6 +799,8 @@ public static class AnthropicClientExtensions
                                 deltaUsage.CacheCreationInputTokens
                                     ?? startCacheCreationInputTokens,
                                 deltaUsage.CacheReadInputTokens ?? startCacheReadInputTokens,
+                                // message_delta has no cache_creation breakdown.
+                                startCacheCreation,
                                 deltaUsage.ServerToolUse ?? startServerToolUse
                             );
                         }
@@ -1851,6 +1855,7 @@ public static class AnthropicClientExtensions
                 usage.OutputTokensDetails?.ThinkingTokens,
                 usage.CacheCreationInputTokens,
                 usage.CacheReadInputTokens,
+                usage.CacheCreation,
                 usage.ServerToolUse
             );
 
@@ -1860,6 +1865,7 @@ public static class AnthropicClientExtensions
             long? thinkingTokens,
             long? cacheCreationInputTokens,
             long? cacheReadInputTokens,
+            CacheCreation? cacheCreation,
             ServerToolUsage? serverToolUsage
         )
         {
@@ -1889,6 +1895,20 @@ public static class AnthropicClientExtensions
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(Usage.CacheCreationInputTokens)] =
                     cacheCreationInputTokens.Value;
+            }
+
+            if (cacheCreation?.Ephemeral5mInputTokens is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[
+                    nameof(CacheCreation.Ephemeral5mInputTokens)
+                ] = cacheCreation.Ephemeral5mInputTokens;
+            }
+
+            if (cacheCreation?.Ephemeral1hInputTokens is > 0)
+            {
+                (usageDetails.AdditionalCounts ??= [])[
+                    nameof(CacheCreation.Ephemeral1hInputTokens)
+                ] = cacheCreation.Ephemeral1hInputTokens;
             }
 
             if (serverToolUsage?.WebFetchRequests is > 0)
