@@ -17,16 +17,13 @@ public class ServiceAccountListParamsTest : TestBase
             WorkspaceID = "workspace_id",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedWorkspaceID = "workspace_id";
         long expectedLimit = 1;
         string expectedPage = "page";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -81,7 +78,7 @@ public class ServiceAccountListParamsTest : TestBase
             WorkspaceID = "workspace_id",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -102,7 +99,7 @@ public class ServiceAccountListParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Page);
@@ -116,7 +113,7 @@ public class ServiceAccountListParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Page = null,
         };
@@ -154,13 +151,13 @@ public class ServiceAccountListParamsTest : TestBase
         ServiceAccountListParams parameters = new()
         {
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -173,7 +170,7 @@ public class ServiceAccountListParamsTest : TestBase
             WorkspaceID = "workspace_id",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         ServiceAccountListParams copied = new(parameters);

@@ -16,15 +16,12 @@ public class ServiceAccountRetrieveParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedWorkspaceID = "workspace_id";
         string expectedServiceAccountID = "service_account_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
         Assert.Equal(expectedServiceAccountID, parameters.ServiceAccountID);
@@ -72,7 +69,7 @@ public class ServiceAccountRetrieveParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -112,13 +109,13 @@ public class ServiceAccountRetrieveParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -130,7 +127,7 @@ public class ServiceAccountRetrieveParamsTest : TestBase
         {
             WorkspaceID = "workspace_id",
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         ServiceAccountRetrieveParams copied = new(parameters);

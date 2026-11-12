@@ -14,7 +14,6 @@ namespace Anthropic.Models.Beta;
 [JsonConverter(typeof(AnthropicBetaConverter))]
 public enum AnthropicBeta
 {
-    MessageBatches2024_09_24,
     ComputerUse2024_10_22,
     ComputerUse2025_01_24,
     Output128k2025_02_19,
@@ -63,6 +62,9 @@ public enum AnthropicBeta
     ExperimentalClaudeTag2026_10_21,
 
     [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    MessageBatches2024_09_24,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
     PromptCaching2024_07_31,
 
     [Obsolete("This value is no longer needed. Remove it from your requests.")]
@@ -104,7 +106,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
-            "message-batches-2024-09-24" => AnthropicBeta.MessageBatches2024_09_24,
             "computer-use-2024-10-22" => AnthropicBeta.ComputerUse2024_10_22,
             "computer-use-2025-01-24" => AnthropicBeta.ComputerUse2025_01_24,
             "output-128k-2025-02-19" => AnthropicBeta.Output128k2025_02_19,
@@ -156,6 +157,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "message-threads-2026-08-12" => AnthropicBeta.MessageThreads2026_08_12,
             "analytics-usage-cost-2026-08-24" => AnthropicBeta.AnalyticsUsageCost2026_08_24,
             "experimental-claude-tag-2026-10-21" => AnthropicBeta.ExperimentalClaudeTag2026_10_21,
+            "message-batches-2024-09-24" => AnthropicBeta.MessageBatches2024_09_24,
             "prompt-caching-2024-07-31" => AnthropicBeta.PromptCaching2024_07_31,
             "pdfs-2024-09-25" => AnthropicBeta.Pdfs2024_09_25,
             "token-counting-2024-11-01" => AnthropicBeta.TokenCounting2024_11_01,
@@ -179,7 +181,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             writer,
             value switch
             {
-                AnthropicBeta.MessageBatches2024_09_24 => "message-batches-2024-09-24",
                 AnthropicBeta.ComputerUse2024_10_22 => "computer-use-2024-10-22",
                 AnthropicBeta.ComputerUse2025_01_24 => "computer-use-2025-01-24",
                 AnthropicBeta.Output128k2025_02_19 => "output-128k-2025-02-19",
@@ -234,6 +235,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.AnalyticsUsageCost2026_08_24 => "analytics-usage-cost-2026-08-24",
                 AnthropicBeta.ExperimentalClaudeTag2026_10_21 =>
                     "experimental-claude-tag-2026-10-21",
+                AnthropicBeta.MessageBatches2024_09_24 => "message-batches-2024-09-24",
                 AnthropicBeta.PromptCaching2024_07_31 => "prompt-caching-2024-07-31",
                 AnthropicBeta.Pdfs2024_09_25 => "pdfs-2024-09-25",
                 AnthropicBeta.TokenCounting2024_11_01 => "token-counting-2024-11-01",

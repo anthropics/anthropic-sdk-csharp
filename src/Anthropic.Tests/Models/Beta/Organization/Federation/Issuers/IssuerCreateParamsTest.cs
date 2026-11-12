@@ -25,7 +25,7 @@ public class IssuerCreateParamsTest : TestBase
                 DiscoveryBase = "discovery_base",
             },
             MaxJwtLifetimeSeconds = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedIssuerUrl = "x";
@@ -37,10 +37,7 @@ public class IssuerCreateParamsTest : TestBase
             DiscoveryBase = "discovery_base",
         };
         long expectedMaxJwtLifetimeSeconds = 1;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedIssuerUrl, parameters.IssuerUrl);
         Assert.Equal(expectedName, parameters.Name);
@@ -107,7 +104,7 @@ public class IssuerCreateParamsTest : TestBase
                 DiscoveryBase = "discovery_base",
             },
             MaxJwtLifetimeSeconds = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -133,7 +130,7 @@ public class IssuerCreateParamsTest : TestBase
                 CACertPem = "ca_cert_pem",
                 DiscoveryBase = "discovery_base",
             },
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.CheckJti);
@@ -154,7 +151,7 @@ public class IssuerCreateParamsTest : TestBase
                 CACertPem = "ca_cert_pem",
                 DiscoveryBase = "discovery_base",
             },
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             CheckJti = null,
             MaxJwtLifetimeSeconds = null,
@@ -189,13 +186,13 @@ public class IssuerCreateParamsTest : TestBase
         {
             IssuerUrl = "x",
             Name = "x",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -214,7 +211,7 @@ public class IssuerCreateParamsTest : TestBase
                 DiscoveryBase = "discovery_base",
             },
             MaxJwtLifetimeSeconds = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         IssuerCreateParams copied = new(parameters);

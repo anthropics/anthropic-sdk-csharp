@@ -20,17 +20,14 @@ public class WebhookListParamsTest : TestBase
             BeforeID = "before_id",
             Limit = 0,
             Order = Order.Asc,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedAfterID = "after_id";
         string expectedBeforeID = "before_id";
         long expectedLimit = 0;
         ApiEnum<string, Order> expectedOrder = Order.Asc;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
@@ -89,7 +86,7 @@ public class WebhookListParamsTest : TestBase
             BeforeID = "before_id",
             Limit = 0,
             Order = Order.Asc,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -109,7 +106,7 @@ public class WebhookListParamsTest : TestBase
         var parameters = new WebhookListParams
         {
             Limit = 0,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.AfterID);
@@ -126,7 +123,7 @@ public class WebhookListParamsTest : TestBase
         var parameters = new WebhookListParams
         {
             Limit = 0,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             AfterID = null,
             BeforeID = null,
@@ -168,12 +165,12 @@ public class WebhookListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        WebhookListParams parameters = new() { Betas = [AnthropicBeta.MessageBatches2024_09_24] };
+        WebhookListParams parameters = new() { Betas = [AnthropicBeta.ComputerUse2024_10_22] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,webhooks-2026-10-07"],
+            ["computer-use-2024-10-22,webhooks-2026-10-07"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -187,7 +184,7 @@ public class WebhookListParamsTest : TestBase
             BeforeID = "before_id",
             Limit = 0,
             Order = Order.Asc,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WebhookListParams copied = new(parameters);

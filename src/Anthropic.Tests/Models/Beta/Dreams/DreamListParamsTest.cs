@@ -20,7 +20,7 @@ public class DreamListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Statuses = [BetaDreamStatus.Pending],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -30,10 +30,7 @@ public class DreamListParamsTest : TestBase
         int expectedLimit = 0;
         string expectedPage = "page";
         List<ApiEnum<string, BetaDreamStatus>> expectedStatuses = [BetaDreamStatus.Pending];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedCreatedAtGt, parameters.CreatedAtGt);
@@ -124,7 +121,7 @@ public class DreamListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Statuses = [BetaDreamStatus.Pending],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -188,14 +185,14 @@ public class DreamListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DreamListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,dreaming-2026-04-21"],
+            ["computer-use-2024-10-22,dreaming-2026-04-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -215,7 +212,7 @@ public class DreamListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Statuses = [BetaDreamStatus.Pending],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

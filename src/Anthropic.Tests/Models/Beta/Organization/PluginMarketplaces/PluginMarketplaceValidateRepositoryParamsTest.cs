@@ -16,15 +16,12 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
             Ref = "main",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedRepositoryUrl = "https://github.com/example-org/example-marketplace";
         string expectedRef = "main";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedRepositoryUrl, parameters.RepositoryUrl);
         Assert.Equal(expectedRef, parameters.Ref);
@@ -72,7 +69,7 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
             Ref = "main",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -89,7 +86,7 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateRepositoryParams
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Ref);
@@ -102,7 +99,7 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateRepositoryParams
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Ref = null,
         };
@@ -138,13 +135,13 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         PluginMarketplaceValidateRepositoryParams parameters = new()
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -156,7 +153,7 @@ public class PluginMarketplaceValidateRepositoryParamsTest : TestBase
         {
             RepositoryUrl = "https://github.com/example-org/example-marketplace",
             Ref = "main",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         PluginMarketplaceValidateRepositoryParams copied = new(parameters);

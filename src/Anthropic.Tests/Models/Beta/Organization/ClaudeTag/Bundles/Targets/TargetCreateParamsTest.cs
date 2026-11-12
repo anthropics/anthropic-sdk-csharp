@@ -16,16 +16,13 @@ public class TargetCreateParamsTest : TestBase
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
             Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedBundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq";
         BetaClaudeTagBundleTargetCreate expectedTarget =
             new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx");
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedBundleID, parameters.BundleID);
         Assert.Equal(expectedTarget, parameters.Target);
@@ -73,7 +70,7 @@ public class TargetCreateParamsTest : TestBase
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
             Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -113,13 +110,13 @@ public class TargetCreateParamsTest : TestBase
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
             Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,experimental-claude-tag-2026-10-21"],
+            ["computer-use-2024-10-22,experimental-claude-tag-2026-10-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -131,7 +128,7 @@ public class TargetCreateParamsTest : TestBase
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
             Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         TargetCreateParams copied = new(parameters);

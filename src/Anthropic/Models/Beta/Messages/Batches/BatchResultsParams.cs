@@ -6,7 +6,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Services.Beta.Messages;
 
 namespace Anthropic.Models.Beta.Messages.Batches;
 
@@ -177,7 +176,6 @@ public record class BatchResultsParams : ParamsBase
     {
         ParamsBase.AddDefaultHeaders(request, options);
         request.Headers.Add("Accept", "application/x-jsonl");
-        BatchService.AddDefaultHeaders(request);
         foreach (var item in this.RawHeaderData)
         {
             ParamsBase.AddHeaderElementToRequest(request, item.Key, item.Value);

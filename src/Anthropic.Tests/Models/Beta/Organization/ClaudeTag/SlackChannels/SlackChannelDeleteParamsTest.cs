@@ -15,14 +15,11 @@ public class SlackChannelDeleteParamsTest : TestBase
         var parameters = new SlackChannelDeleteParams
         {
             ID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedID = "slch_01SvpyRQK3nN6eH9uhRA7n1q";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedID, parameters.ID);
         Assert.NotNull(parameters.Betas);
@@ -63,7 +60,7 @@ public class SlackChannelDeleteParamsTest : TestBase
         var parameters = new SlackChannelDeleteParams
         {
             ID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -98,13 +95,13 @@ public class SlackChannelDeleteParamsTest : TestBase
         SlackChannelDeleteParams parameters = new()
         {
             ID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,experimental-claude-tag-2026-10-21"],
+            ["computer-use-2024-10-22,experimental-claude-tag-2026-10-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -115,7 +112,7 @@ public class SlackChannelDeleteParamsTest : TestBase
         var parameters = new SlackChannelDeleteParams
         {
             ID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         SlackChannelDeleteParams copied = new(parameters);

@@ -26,7 +26,7 @@ public class WorkspaceCreateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedName = "x";
@@ -45,10 +45,7 @@ public class WorkspaceCreateParamsTest : TestBase
             { "team", "platform" },
         };
         string expectedUserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedName, parameters.Name);
         Assert.Equal(expectedDataResidency, parameters.DataResidency);
@@ -137,7 +134,7 @@ public class WorkspaceCreateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -154,7 +151,7 @@ public class WorkspaceCreateParamsTest : TestBase
         var parameters = new WorkspaceCreateParams
         {
             Name = "x",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.DataResidency);
@@ -175,7 +172,7 @@ public class WorkspaceCreateParamsTest : TestBase
         var parameters = new WorkspaceCreateParams
         {
             Name = "x",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             DataResidency = null,
             DisplayColor = null,
@@ -218,13 +215,13 @@ public class WorkspaceCreateParamsTest : TestBase
         WorkspaceCreateParams parameters = new()
         {
             Name = "x",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -246,7 +243,7 @@ public class WorkspaceCreateParamsTest : TestBase
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WorkspaceCreateParams copied = new(parameters);

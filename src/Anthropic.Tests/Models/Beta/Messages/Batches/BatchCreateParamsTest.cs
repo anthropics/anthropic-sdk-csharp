@@ -166,7 +166,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -315,10 +315,7 @@ public class BatchCreateParamsTest : TestBase
                 },
             },
         ];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedUserProfileID = "anthropic-user-profile-id";
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
@@ -821,7 +818,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
@@ -1156,7 +1153,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -1164,7 +1161,7 @@ public class BatchCreateParamsTest : TestBase
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -1330,7 +1327,7 @@ public class BatchCreateParamsTest : TestBase
                     },
                 },
             ],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };

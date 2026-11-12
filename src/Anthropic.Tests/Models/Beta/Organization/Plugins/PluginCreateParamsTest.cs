@@ -21,16 +21,13 @@ public class PluginCreateParamsTest : TestBase
             Files = [files],
             MarketplaceID = "marketplace_id",
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         List<BinaryContent> expectedFiles = [files];
         string expectedMarketplaceID = "marketplace_id";
         string expectedReleaseNotes = "release_notes";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedFiles.Count, parameters.Files.Count);
         for (int i = 0; i < expectedFiles.Count; i++)
@@ -95,7 +92,7 @@ public class PluginCreateParamsTest : TestBase
             Files = [files],
             MarketplaceID = "marketplace_id",
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -131,13 +128,13 @@ public class PluginCreateParamsTest : TestBase
         PluginCreateParams parameters = new()
         {
             Files = [Encoding.UTF8.GetBytes("Example data")],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -152,7 +149,7 @@ public class PluginCreateParamsTest : TestBase
             Files = [files],
             MarketplaceID = "marketplace_id",
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.True(parameters.IsBodyRepeatable());
@@ -171,7 +168,7 @@ public class PluginCreateParamsTest : TestBase
             Files = [files],
             MarketplaceID = "marketplace_id",
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.False(parameters.IsBodyRepeatable());
@@ -185,7 +182,7 @@ public class PluginCreateParamsTest : TestBase
             Files = [Encoding.UTF8.GetBytes("Example data")],
             MarketplaceID = "marketplace_id",
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         PluginCreateParams copied = new(parameters);

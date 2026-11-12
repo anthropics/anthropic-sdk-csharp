@@ -20,16 +20,13 @@ public class SkillCreateParamsTest : TestBase
         {
             Files = [files],
             DisplayName = "display_name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         List<BinaryContent> expectedFiles = [files];
         string expectedDisplayName = "display_name";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedFiles.Count, parameters.Files.Count);
@@ -90,7 +87,7 @@ public class SkillCreateParamsTest : TestBase
         {
             Files = [files],
             DisplayName = "display_name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -113,7 +110,7 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             Files = [files],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -129,7 +126,7 @@ public class SkillCreateParamsTest : TestBase
         var parameters = new SkillCreateParams
         {
             Files = [files],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             DisplayName = null,
@@ -156,14 +153,14 @@ public class SkillCreateParamsTest : TestBase
         SkillCreateParams parameters = new()
         {
             Files = [Encoding.UTF8.GetBytes("Example data")],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -181,7 +178,7 @@ public class SkillCreateParamsTest : TestBase
         {
             Files = [files],
             DisplayName = "display_name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -200,7 +197,7 @@ public class SkillCreateParamsTest : TestBase
         {
             Files = [files],
             DisplayName = "display_name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -214,7 +211,7 @@ public class SkillCreateParamsTest : TestBase
         {
             Files = [Encoding.UTF8.GetBytes("Example data")],
             DisplayName = "display_name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

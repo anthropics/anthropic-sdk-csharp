@@ -15,14 +15,11 @@ public class RuleRetrieveParamsTest : TestBase
         var parameters = new RuleRetrieveParams
         {
             FederationRuleID = "federation_rule_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedFederationRuleID = "federation_rule_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedFederationRuleID, parameters.FederationRuleID);
         Assert.NotNull(parameters.Betas);
@@ -63,7 +60,7 @@ public class RuleRetrieveParamsTest : TestBase
         var parameters = new RuleRetrieveParams
         {
             FederationRuleID = "federation_rule_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -98,13 +95,13 @@ public class RuleRetrieveParamsTest : TestBase
         RuleRetrieveParams parameters = new()
         {
             FederationRuleID = "federation_rule_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -115,7 +112,7 @@ public class RuleRetrieveParamsTest : TestBase
         var parameters = new RuleRetrieveParams
         {
             FederationRuleID = "federation_rule_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         RuleRetrieveParams copied = new(parameters);

@@ -18,17 +18,14 @@ public class WorkHeartbeatParamsTest : TestBase
             WorkID = "work_id",
             DesiredTtlSeconds = 0,
             ExpectedLastHeartbeat = "expected_last_heartbeat",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         string expectedWorkID = "work_id";
         long expectedDesiredTtlSeconds = 0;
         string expectedExpectedLastHeartbeat = "expected_last_heartbeat";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
         Assert.Equal(expectedWorkID, parameters.WorkID);
@@ -84,7 +81,7 @@ public class WorkHeartbeatParamsTest : TestBase
             WorkID = "work_id",
             DesiredTtlSeconds = 0,
             ExpectedLastHeartbeat = "expected_last_heartbeat",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -102,7 +99,7 @@ public class WorkHeartbeatParamsTest : TestBase
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             WorkID = "work_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.DesiredTtlSeconds);
@@ -118,7 +115,7 @@ public class WorkHeartbeatParamsTest : TestBase
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             WorkID = "work_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             DesiredTtlSeconds = null,
             ExpectedLastHeartbeat = null,
@@ -161,13 +158,13 @@ public class WorkHeartbeatParamsTest : TestBase
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             WorkID = "work_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
+            ["computer-use-2024-10-22,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -181,7 +178,7 @@ public class WorkHeartbeatParamsTest : TestBase
             WorkID = "work_id",
             DesiredTtlSeconds = 0,
             ExpectedLastHeartbeat = "expected_last_heartbeat",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WorkHeartbeatParams copied = new(parameters);

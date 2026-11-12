@@ -17,7 +17,7 @@ public class MemoryRetrieveParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -25,10 +25,7 @@ public class MemoryRetrieveParamsTest : TestBase
         string expectedMemoryID = "memory_id";
         ApiEnum<string, BetaManagedAgentsMemoryView> expectedView =
             BetaManagedAgentsMemoryView.Basic;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedMemoryStoreID, parameters.MemoryStoreID);
@@ -90,7 +87,7 @@ public class MemoryRetrieveParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -138,14 +135,14 @@ public class MemoryRetrieveParamsTest : TestBase
         {
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,agent-memory-2026-07-22"],
+            ["computer-use-2024-10-22,agent-memory-2026-07-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -162,7 +159,7 @@ public class MemoryRetrieveParamsTest : TestBase
             MemoryStoreID = "memory_store_id",
             MemoryID = "memory_id",
             View = BetaManagedAgentsMemoryView.Basic,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

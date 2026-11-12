@@ -18,7 +18,7 @@ public class FileListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeID = "scope_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -26,10 +26,7 @@ public class FileListParamsTest : TestBase
         long expectedLimit = 1;
         string expectedPage = "page";
         string expectedScopeID = "scope_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.NotNull(parameters.Ids);
@@ -99,7 +96,7 @@ public class FileListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeID = "scope_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -127,7 +124,7 @@ public class FileListParamsTest : TestBase
         {
             Limit = 1,
             ScopeID = "scope_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -144,7 +141,7 @@ public class FileListParamsTest : TestBase
         {
             Limit = 1,
             ScopeID = "scope_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Ids = null,
@@ -186,14 +183,14 @@ public class FileListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         FileListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -211,7 +208,7 @@ public class FileListParamsTest : TestBase
             Limit = 1,
             Page = "page",
             ScopeID = "scope_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

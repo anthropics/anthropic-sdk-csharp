@@ -21,7 +21,7 @@ public class DeploymentListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Status = BetaManagedAgentsDeploymentStatus.Active,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -33,10 +33,7 @@ public class DeploymentListParamsTest : TestBase
         string expectedPage = "page";
         ApiEnum<string, BetaManagedAgentsDeploymentStatus> expectedStatus =
             BetaManagedAgentsDeploymentStatus.Active;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedAgentID, parameters.AgentID);
@@ -129,7 +126,7 @@ public class DeploymentListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Status = BetaManagedAgentsDeploymentStatus.Active,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -197,14 +194,14 @@ public class DeploymentListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DeploymentListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
+            ["computer-use-2024-10-22,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -225,7 +222,7 @@ public class DeploymentListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             Status = BetaManagedAgentsDeploymentStatus.Active,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

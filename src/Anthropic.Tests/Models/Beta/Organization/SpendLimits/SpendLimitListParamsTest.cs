@@ -20,17 +20,14 @@ public class SpendLimitListParamsTest : TestBase
             Page = "page",
             ScopeType = [ScopeType.Organization],
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         long expectedLimit = 1;
         string expectedPage = "page";
         List<ApiEnum<string, ScopeType>> expectedScopeType = [ScopeType.Organization];
         string expectedWorkspaceID = "workspace_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
@@ -94,7 +91,7 @@ public class SpendLimitListParamsTest : TestBase
             Page = "page",
             ScopeType = [ScopeType.Organization],
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -114,7 +111,7 @@ public class SpendLimitListParamsTest : TestBase
         var parameters = new SpendLimitListParams
         {
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Page);
@@ -131,7 +128,7 @@ public class SpendLimitListParamsTest : TestBase
         var parameters = new SpendLimitListParams
         {
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Page = null,
             ScopeType = null,
@@ -173,15 +170,12 @@ public class SpendLimitListParamsTest : TestBase
     public void AddHeadersToRequest_Works()
     {
         HttpRequestMessage requestMessage = new();
-        SpendLimitListParams parameters = new()
-        {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
-        };
+        SpendLimitListParams parameters = new() { Betas = [AnthropicBeta.ComputerUse2024_10_22] };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,spend-limit-reads-2026-09-26"],
+            ["computer-use-2024-10-22,spend-limit-reads-2026-09-26"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -195,7 +189,7 @@ public class SpendLimitListParamsTest : TestBase
             Page = "page",
             ScopeType = [ScopeType.Organization],
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         SpendLimitListParams copied = new(parameters);

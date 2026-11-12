@@ -17,16 +17,13 @@ public class TelemetryDestinationListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             WorkspaceIds = ["string"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         int expectedLimit = 0;
         string expectedPage = "page";
         List<string> expectedWorkspaceIds = ["string"];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedPage, parameters.Page);
@@ -89,7 +86,7 @@ public class TelemetryDestinationListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             WorkspaceIds = ["string"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -137,13 +134,13 @@ public class TelemetryDestinationListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         TelemetryDestinationListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,telemetry-destinations-2026-08-11"],
+            ["computer-use-2024-10-22,telemetry-destinations-2026-08-11"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -156,7 +153,7 @@ public class TelemetryDestinationListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             WorkspaceIds = ["string"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         TelemetryDestinationListParams copied = new(parameters);

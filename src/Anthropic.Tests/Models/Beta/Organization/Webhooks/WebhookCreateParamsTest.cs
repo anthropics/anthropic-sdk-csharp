@@ -20,7 +20,7 @@ public class WebhookCreateParamsTest : TestBase
             UrlValue = "x",
             Description = "description",
             Name = "name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         List<ApiEnum<string, EnabledEvent>> expectedEnabledEvents =
@@ -30,10 +30,7 @@ public class WebhookCreateParamsTest : TestBase
         string expectedUrlValue = "x";
         string expectedDescription = "description";
         string expectedName = "name";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedEnabledEvents.Count, parameters.EnabledEvents.Count);
         for (int i = 0; i < expectedEnabledEvents.Count; i++)
@@ -99,7 +96,7 @@ public class WebhookCreateParamsTest : TestBase
             UrlValue = "x",
             Description = "description",
             Name = "name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -140,13 +137,13 @@ public class WebhookCreateParamsTest : TestBase
         {
             EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
             UrlValue = "x",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,webhooks-2026-10-07"],
+            ["computer-use-2024-10-22,webhooks-2026-10-07"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -160,7 +157,7 @@ public class WebhookCreateParamsTest : TestBase
             UrlValue = "x",
             Description = "description",
             Name = "name",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WebhookCreateParams copied = new(parameters);

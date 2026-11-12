@@ -34,7 +34,7 @@ public class RuleCreateParamsTest : TestBase
             Description = "description",
             TokenLifetimeSeconds = 60,
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedIssuerID = "issuer_id";
@@ -57,10 +57,7 @@ public class RuleCreateParamsTest : TestBase
         string expectedDescription = "description";
         long expectedTokenLifetimeSeconds = 60;
         string expectedWorkspaceID = "workspace_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedIssuerID, parameters.IssuerID);
         Assert.Equal(expectedMatch, parameters.Match);
@@ -183,7 +180,7 @@ public class RuleCreateParamsTest : TestBase
             Description = "description",
             TokenLifetimeSeconds = 60,
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -222,7 +219,7 @@ public class RuleCreateParamsTest : TestBase
             },
             AppliesToAllWorkspaces = true,
             TokenLifetimeSeconds = 60,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Attributes);
@@ -255,7 +252,7 @@ public class RuleCreateParamsTest : TestBase
             },
             AppliesToAllWorkspaces = true,
             TokenLifetimeSeconds = 60,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Attributes = null,
             Description = null,
@@ -323,13 +320,13 @@ public class RuleCreateParamsTest : TestBase
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
                 ServiceAccountName = "service_account_name",
             },
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -359,7 +356,7 @@ public class RuleCreateParamsTest : TestBase
             Description = "description",
             TokenLifetimeSeconds = 60,
             WorkspaceID = "workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         RuleCreateParams copied = new(parameters);

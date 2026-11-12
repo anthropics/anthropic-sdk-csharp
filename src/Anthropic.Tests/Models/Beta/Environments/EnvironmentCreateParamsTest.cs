@@ -39,7 +39,7 @@ public class EnvironmentCreateParamsTest : TestBase
             Description = "Python environment with data-analysis packages.",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Scope = Scope.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -66,10 +66,7 @@ public class EnvironmentCreateParamsTest : TestBase
         string expectedDescription = "Python environment with data-analysis packages.";
         Dictionary<string, string> expectedMetadata = new() { { "foo", "string" } };
         ApiEnum<string, Scope> expectedScope = Scope.Organization;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedName, parameters.Name);
@@ -200,7 +197,7 @@ public class EnvironmentCreateParamsTest : TestBase
             Description = "Python environment with data-analysis packages.",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Scope = Scope.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -225,7 +222,7 @@ public class EnvironmentCreateParamsTest : TestBase
         {
             Name = "python-data-analysis",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -244,7 +241,7 @@ public class EnvironmentCreateParamsTest : TestBase
         {
             Name = "python-data-analysis",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Config = null,
@@ -277,14 +274,14 @@ public class EnvironmentCreateParamsTest : TestBase
         EnvironmentCreateParams parameters = new()
         {
             Name = "python-data-analysis",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
+            ["computer-use-2024-10-22,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -321,7 +318,7 @@ public class EnvironmentCreateParamsTest : TestBase
             Description = "Python environment with data-analysis packages.",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Scope = Scope.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

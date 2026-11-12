@@ -8,7 +8,6 @@ namespace Anthropic.Tests.Models.Beta;
 public class AnthropicBetaTest : TestBase
 {
     [Theory]
-    [InlineData(AnthropicBeta.MessageBatches2024_09_24)]
     [InlineData(AnthropicBeta.ComputerUse2024_10_22)]
     [InlineData(AnthropicBeta.ComputerUse2025_01_24)]
     [InlineData(AnthropicBeta.Output128k2025_02_19)]
@@ -55,6 +54,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.MessageThreads2026_08_12)]
     [InlineData(AnthropicBeta.AnalyticsUsageCost2026_08_24)]
     [InlineData(AnthropicBeta.ExperimentalClaudeTag2026_10_21)]
+    [InlineData(AnthropicBeta.MessageBatches2024_09_24)]
     [InlineData(AnthropicBeta.PromptCaching2024_07_31)]
     [InlineData(AnthropicBeta.Pdfs2024_09_25)]
     [InlineData(AnthropicBeta.TokenCounting2024_11_01)]
@@ -84,7 +84,6 @@ public class AnthropicBetaTest : TestBase
     }
 
     [Theory]
-    [InlineData(AnthropicBeta.MessageBatches2024_09_24)]
     [InlineData(AnthropicBeta.ComputerUse2024_10_22)]
     [InlineData(AnthropicBeta.ComputerUse2025_01_24)]
     [InlineData(AnthropicBeta.Output128k2025_02_19)]
@@ -131,6 +130,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.MessageThreads2026_08_12)]
     [InlineData(AnthropicBeta.AnalyticsUsageCost2026_08_24)]
     [InlineData(AnthropicBeta.ExperimentalClaudeTag2026_10_21)]
+    [InlineData(AnthropicBeta.MessageBatches2024_09_24)]
     [InlineData(AnthropicBeta.PromptCaching2024_07_31)]
     [InlineData(AnthropicBeta.Pdfs2024_09_25)]
     [InlineData(AnthropicBeta.TokenCounting2024_11_01)]

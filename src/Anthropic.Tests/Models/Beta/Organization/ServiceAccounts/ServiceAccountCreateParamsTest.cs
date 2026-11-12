@@ -19,16 +19,13 @@ public class ServiceAccountCreateParamsTest : TestBase
             Name = "ci-deploy-bot",
             Description = "description",
             OrganizationRole = OrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedName = "ci-deploy-bot";
         string expectedDescription = "description";
         ApiEnum<string, OrganizationRole> expectedOrganizationRole = OrganizationRole.Admin;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedName, parameters.Name);
         Assert.Equal(expectedDescription, parameters.Description);
@@ -83,7 +80,7 @@ public class ServiceAccountCreateParamsTest : TestBase
             Name = "ci-deploy-bot",
             Description = "description",
             OrganizationRole = OrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -104,7 +101,7 @@ public class ServiceAccountCreateParamsTest : TestBase
         {
             Name = "ci-deploy-bot",
             OrganizationRole = OrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Description);
@@ -118,7 +115,7 @@ public class ServiceAccountCreateParamsTest : TestBase
         {
             Name = "ci-deploy-bot",
             OrganizationRole = OrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Description = null,
         };
@@ -149,13 +146,13 @@ public class ServiceAccountCreateParamsTest : TestBase
         ServiceAccountCreateParams parameters = new()
         {
             Name = "ci-deploy-bot",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -168,7 +165,7 @@ public class ServiceAccountCreateParamsTest : TestBase
             Name = "ci-deploy-bot",
             Description = "description",
             OrganizationRole = OrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         ServiceAccountCreateParams copied = new(parameters);
