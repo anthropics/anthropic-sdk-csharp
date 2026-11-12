@@ -15,24 +15,17 @@ namespace Anthropic.Models.Beta;
 public enum AnthropicBeta
 {
     MessageBatches2024_09_24,
-    PromptCaching2024_07_31,
     ComputerUse2024_10_22,
     ComputerUse2025_01_24,
-    Pdfs2024_09_25,
-    TokenCounting2024_11_01,
-    TokenEfficientTools2025_02_19,
     Output128k2025_02_19,
-    FilesApi2025_04_14,
     McpClient2025_04_04,
     McpClient2025_11_20,
     DevFullThinking2025_05_14,
     InterleavedThinking2025_05_14,
     CodeExecution2025_05_22,
-    ExtendedCacheTtl2025_04_11,
     Context1m2025_08_07,
     ContextManagement2025_06_27,
     ModelContextWindowExceeded2025_08_26,
-    Skills2025_10_02,
     FastMode2026_02_01,
     Output300k2026_03_24,
     UserProfiles2026_03_24,
@@ -40,7 +33,6 @@ public enum AnthropicBeta
     UserProfiles2026_09_04,
     AdvisorTool2026_03_01,
     ManagedAgents2026_04_01,
-    CacheDiagnosis2026_04_07,
     Dreaming2026_04_21,
     ThinkingTokenCount2026_05_13,
     ServerSideFallback2026_06_01,
@@ -55,7 +47,6 @@ public enum AnthropicBeta
     StructuredOutputs2025_11_13,
     TaskBudgets2026_03_13,
     ThinkingDisplayUpdates2026_08_18,
-    CEUserManagement2026_07_13,
     MidConversationOutputConfig2026_07_01,
     ThinkingBindingControls2026_08_01,
     MidConversationSystemClearAt2026_08_21,
@@ -70,6 +61,37 @@ public enum AnthropicBeta
     MessageThreads2026_08_12,
     AnalyticsUsageCost2026_08_24,
     ExperimentalClaudeTag2026_10_21,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    PromptCaching2024_07_31,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    Pdfs2024_09_25,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    TokenCounting2024_11_01,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    TokenEfficientTools2025_02_19,
+
+    [Obsolete(
+        "Sending this value selects the beta response shapes. Removing it moves you to the current shapes, so follow the migration steps: https://platform.claude.com/docs/en/build-with-claude/files#migrate-from-files-api-2025-04-14"
+    )]
+    FilesApi2025_04_14,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    ExtendedCacheTtl2025_04_11,
+
+    [Obsolete(
+        "Sending this value selects the beta response shapes. Removing it moves you to the current shapes, so follow the migration steps: https://platform.claude.com/docs/en/build-with-claude/skills-guide#migrate-from-skills-2025-10-02"
+    )]
+    Skills2025_10_02,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    CacheDiagnosis2026_04_07,
+
+    [Obsolete("This value is no longer needed. Remove it from your requests.")]
+    CEUserManagement2026_07_13,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -83,25 +105,18 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
             "message-batches-2024-09-24" => AnthropicBeta.MessageBatches2024_09_24,
-            "prompt-caching-2024-07-31" => AnthropicBeta.PromptCaching2024_07_31,
             "computer-use-2024-10-22" => AnthropicBeta.ComputerUse2024_10_22,
             "computer-use-2025-01-24" => AnthropicBeta.ComputerUse2025_01_24,
-            "pdfs-2024-09-25" => AnthropicBeta.Pdfs2024_09_25,
-            "token-counting-2024-11-01" => AnthropicBeta.TokenCounting2024_11_01,
-            "token-efficient-tools-2025-02-19" => AnthropicBeta.TokenEfficientTools2025_02_19,
             "output-128k-2025-02-19" => AnthropicBeta.Output128k2025_02_19,
-            "files-api-2025-04-14" => AnthropicBeta.FilesApi2025_04_14,
             "mcp-client-2025-04-04" => AnthropicBeta.McpClient2025_04_04,
             "mcp-client-2025-11-20" => AnthropicBeta.McpClient2025_11_20,
             "dev-full-thinking-2025-05-14" => AnthropicBeta.DevFullThinking2025_05_14,
             "interleaved-thinking-2025-05-14" => AnthropicBeta.InterleavedThinking2025_05_14,
             "code-execution-2025-05-22" => AnthropicBeta.CodeExecution2025_05_22,
-            "extended-cache-ttl-2025-04-11" => AnthropicBeta.ExtendedCacheTtl2025_04_11,
             "context-1m-2025-08-07" => AnthropicBeta.Context1m2025_08_07,
             "context-management-2025-06-27" => AnthropicBeta.ContextManagement2025_06_27,
             "model-context-window-exceeded-2025-08-26" =>
                 AnthropicBeta.ModelContextWindowExceeded2025_08_26,
-            "skills-2025-10-02" => AnthropicBeta.Skills2025_10_02,
             "fast-mode-2026-02-01" => AnthropicBeta.FastMode2026_02_01,
             "output-300k-2026-03-24" => AnthropicBeta.Output300k2026_03_24,
             "user-profiles-2026-03-24" => AnthropicBeta.UserProfiles2026_03_24,
@@ -109,7 +124,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "user-profiles-2026-09-04" => AnthropicBeta.UserProfiles2026_09_04,
             "advisor-tool-2026-03-01" => AnthropicBeta.AdvisorTool2026_03_01,
             "managed-agents-2026-04-01" => AnthropicBeta.ManagedAgents2026_04_01,
-            "cache-diagnosis-2026-04-07" => AnthropicBeta.CacheDiagnosis2026_04_07,
             "dreaming-2026-04-21" => AnthropicBeta.Dreaming2026_04_21,
             "thinking-token-count-2026-05-13" => AnthropicBeta.ThinkingTokenCount2026_05_13,
             "server-side-fallback-2026-06-01" => AnthropicBeta.ServerSideFallback2026_06_01,
@@ -125,7 +139,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "structured-outputs-2025-11-13" => AnthropicBeta.StructuredOutputs2025_11_13,
             "task-budgets-2026-03-13" => AnthropicBeta.TaskBudgets2026_03_13,
             "thinking-display-updates-2026-08-18" => AnthropicBeta.ThinkingDisplayUpdates2026_08_18,
-            "ce-user-management-2026-07-13" => AnthropicBeta.CEUserManagement2026_07_13,
             "mid-conversation-output-config-2026-07-01" =>
                 AnthropicBeta.MidConversationOutputConfig2026_07_01,
             "thinking-binding-controls-2026-08-01" =>
@@ -143,6 +156,15 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "message-threads-2026-08-12" => AnthropicBeta.MessageThreads2026_08_12,
             "analytics-usage-cost-2026-08-24" => AnthropicBeta.AnalyticsUsageCost2026_08_24,
             "experimental-claude-tag-2026-10-21" => AnthropicBeta.ExperimentalClaudeTag2026_10_21,
+            "prompt-caching-2024-07-31" => AnthropicBeta.PromptCaching2024_07_31,
+            "pdfs-2024-09-25" => AnthropicBeta.Pdfs2024_09_25,
+            "token-counting-2024-11-01" => AnthropicBeta.TokenCounting2024_11_01,
+            "token-efficient-tools-2025-02-19" => AnthropicBeta.TokenEfficientTools2025_02_19,
+            "files-api-2025-04-14" => AnthropicBeta.FilesApi2025_04_14,
+            "extended-cache-ttl-2025-04-11" => AnthropicBeta.ExtendedCacheTtl2025_04_11,
+            "skills-2025-10-02" => AnthropicBeta.Skills2025_10_02,
+            "cache-diagnosis-2026-04-07" => AnthropicBeta.CacheDiagnosis2026_04_07,
+            "ce-user-management-2026-07-13" => AnthropicBeta.CEUserManagement2026_07_13,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -158,25 +180,18 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             value switch
             {
                 AnthropicBeta.MessageBatches2024_09_24 => "message-batches-2024-09-24",
-                AnthropicBeta.PromptCaching2024_07_31 => "prompt-caching-2024-07-31",
                 AnthropicBeta.ComputerUse2024_10_22 => "computer-use-2024-10-22",
                 AnthropicBeta.ComputerUse2025_01_24 => "computer-use-2025-01-24",
-                AnthropicBeta.Pdfs2024_09_25 => "pdfs-2024-09-25",
-                AnthropicBeta.TokenCounting2024_11_01 => "token-counting-2024-11-01",
-                AnthropicBeta.TokenEfficientTools2025_02_19 => "token-efficient-tools-2025-02-19",
                 AnthropicBeta.Output128k2025_02_19 => "output-128k-2025-02-19",
-                AnthropicBeta.FilesApi2025_04_14 => "files-api-2025-04-14",
                 AnthropicBeta.McpClient2025_04_04 => "mcp-client-2025-04-04",
                 AnthropicBeta.McpClient2025_11_20 => "mcp-client-2025-11-20",
                 AnthropicBeta.DevFullThinking2025_05_14 => "dev-full-thinking-2025-05-14",
                 AnthropicBeta.InterleavedThinking2025_05_14 => "interleaved-thinking-2025-05-14",
                 AnthropicBeta.CodeExecution2025_05_22 => "code-execution-2025-05-22",
-                AnthropicBeta.ExtendedCacheTtl2025_04_11 => "extended-cache-ttl-2025-04-11",
                 AnthropicBeta.Context1m2025_08_07 => "context-1m-2025-08-07",
                 AnthropicBeta.ContextManagement2025_06_27 => "context-management-2025-06-27",
                 AnthropicBeta.ModelContextWindowExceeded2025_08_26 =>
                     "model-context-window-exceeded-2025-08-26",
-                AnthropicBeta.Skills2025_10_02 => "skills-2025-10-02",
                 AnthropicBeta.FastMode2026_02_01 => "fast-mode-2026-02-01",
                 AnthropicBeta.Output300k2026_03_24 => "output-300k-2026-03-24",
                 AnthropicBeta.UserProfiles2026_03_24 => "user-profiles-2026-03-24",
@@ -184,7 +199,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.UserProfiles2026_09_04 => "user-profiles-2026-09-04",
                 AnthropicBeta.AdvisorTool2026_03_01 => "advisor-tool-2026-03-01",
                 AnthropicBeta.ManagedAgents2026_04_01 => "managed-agents-2026-04-01",
-                AnthropicBeta.CacheDiagnosis2026_04_07 => "cache-diagnosis-2026-04-07",
                 AnthropicBeta.Dreaming2026_04_21 => "dreaming-2026-04-21",
                 AnthropicBeta.ThinkingTokenCount2026_05_13 => "thinking-token-count-2026-05-13",
                 AnthropicBeta.ServerSideFallback2026_06_01 => "server-side-fallback-2026-06-01",
@@ -201,7 +215,6 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.TaskBudgets2026_03_13 => "task-budgets-2026-03-13",
                 AnthropicBeta.ThinkingDisplayUpdates2026_08_18 =>
                     "thinking-display-updates-2026-08-18",
-                AnthropicBeta.CEUserManagement2026_07_13 => "ce-user-management-2026-07-13",
                 AnthropicBeta.MidConversationOutputConfig2026_07_01 =>
                     "mid-conversation-output-config-2026-07-01",
                 AnthropicBeta.ThinkingBindingControls2026_08_01 =>
@@ -221,6 +234,15 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.AnalyticsUsageCost2026_08_24 => "analytics-usage-cost-2026-08-24",
                 AnthropicBeta.ExperimentalClaudeTag2026_10_21 =>
                     "experimental-claude-tag-2026-10-21",
+                AnthropicBeta.PromptCaching2024_07_31 => "prompt-caching-2024-07-31",
+                AnthropicBeta.Pdfs2024_09_25 => "pdfs-2024-09-25",
+                AnthropicBeta.TokenCounting2024_11_01 => "token-counting-2024-11-01",
+                AnthropicBeta.TokenEfficientTools2025_02_19 => "token-efficient-tools-2025-02-19",
+                AnthropicBeta.FilesApi2025_04_14 => "files-api-2025-04-14",
+                AnthropicBeta.ExtendedCacheTtl2025_04_11 => "extended-cache-ttl-2025-04-11",
+                AnthropicBeta.Skills2025_10_02 => "skills-2025-10-02",
+                AnthropicBeta.CacheDiagnosis2026_04_07 => "cache-diagnosis-2026-04-07",
+                AnthropicBeta.CEUserManagement2026_07_13 => "ce-user-management-2026-07-13",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),
