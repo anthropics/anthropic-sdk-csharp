@@ -16,20 +16,25 @@ public class WebhookCreateParamsTest : TestBase
     {
         var parameters = new WebhookCreateParams
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
             Description = "description",
-            Name = "name",
+            Name = "Enforcement actions",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         List<ApiEnum<string, EnabledEvent>> expectedEnabledEvents =
         [
             EnabledEvent.UserProfileEnforcementActionOpened,
+            EnabledEvent.UserProfileEnforcementActionResolved,
         ];
-        string expectedUrlValue = "x";
+        string expectedUrlValue = "https://example.com/anthropic-webhooks";
         string expectedDescription = "description";
-        string expectedName = "name";
+        string expectedName = "Enforcement actions";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedEnabledEvents.Count, parameters.EnabledEvents.Count);
@@ -53,8 +58,12 @@ public class WebhookCreateParamsTest : TestBase
     {
         var parameters = new WebhookCreateParams
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
         };
 
         Assert.Null(parameters.Description);
@@ -70,8 +79,12 @@ public class WebhookCreateParamsTest : TestBase
     {
         var parameters = new WebhookCreateParams
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
 
             // Null should be interpreted as omitted for these properties
             Description = null,
@@ -92,10 +105,14 @@ public class WebhookCreateParamsTest : TestBase
     {
         var parameters = new WebhookCreateParams
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
             Description = "description",
-            Name = "name",
+            Name = "Enforcement actions",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -118,8 +135,12 @@ public class WebhookCreateParamsTest : TestBase
     {
         WebhookCreateParams parameters = new()
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -135,8 +156,12 @@ public class WebhookCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         WebhookCreateParams parameters = new()
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -153,10 +178,14 @@ public class WebhookCreateParamsTest : TestBase
     {
         var parameters = new WebhookCreateParams
         {
-            EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-            UrlValue = "x",
+            EnabledEvents =
+            [
+                EnabledEvent.UserProfileEnforcementActionOpened,
+                EnabledEvent.UserProfileEnforcementActionResolved,
+            ],
+            UrlValue = "https://example.com/anthropic-webhooks",
             Description = "description",
-            Name = "name",
+            Name = "Enforcement actions",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 

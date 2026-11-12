@@ -13,8 +13,12 @@ public class WebhookServiceTest : TestBase
             .Beta.Organization.Webhooks.Create(
                 new()
                 {
-                    EnabledEvents = [EnabledEvent.UserProfileEnforcementActionOpened],
-                    UrlValue = "x",
+                    EnabledEvents =
+                    [
+                        EnabledEvent.UserProfileEnforcementActionOpened,
+                        EnabledEvent.UserProfileEnforcementActionResolved,
+                    ],
+                    UrlValue = "https://example.com/anthropic-webhooks",
                 },
                 TestContext.Current.CancellationToken
             );
