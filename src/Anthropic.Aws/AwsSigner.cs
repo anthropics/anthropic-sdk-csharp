@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
@@ -37,7 +38,7 @@ internal static class AwsSigner
         const string Algorithm = "AWS4-HMAC-SHA256";
 
         var amzDate = ToAmzDate(request.Now);
-        var datestamp = request.Now.ToString("yyyyMMdd");
+        var datestamp = request.Now.ToString("yyyyMMdd", CultureInfo.InvariantCulture);
 
         var canonicalQuerystring = CanonicalizeQueryString(request.Uri);
         var canonicalHeaders = CanonicalizeHeaders(request.Headers);
@@ -68,7 +69,7 @@ internal static class AwsSigner
 
     public static string ToAmzDate(DateTime date)
     {
-        return date.ToString("yyyyMMddTHHmmssZ");
+        return date.ToString("yyyyMMddTHHmmssZ", CultureInfo.InvariantCulture);
     }
 
     static string CanonicalizeQueryString(Uri uri)
