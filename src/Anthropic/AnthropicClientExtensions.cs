@@ -1891,16 +1891,26 @@ public static class AnthropicClientExtensions
                     cacheCreationInputTokens.Value;
             }
 
-            if (serverToolUsage?.WebFetchRequests is > 0)
+            // Read leniently: some providers (Amazon Bedrock) omit these counters, and the
+            // typed accessors throw on an absent field.
+            if (
+                OptionalCounts.GetLong(serverToolUsage, "web_fetch_requests")
+                is { } webFetchRequests
+                    and > 0
+            )
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebFetchRequests)] =
-                    serverToolUsage.WebFetchRequests;
+                    webFetchRequests;
             }
 
-            if (serverToolUsage?.WebSearchRequests is > 0)
+            if (
+                OptionalCounts.GetLong(serverToolUsage, "web_search_requests")
+                is { } webSearchRequests
+                    and > 0
+            )
             {
                 (usageDetails.AdditionalCounts ??= [])[nameof(ServerToolUsage.WebSearchRequests)] =
-                    serverToolUsage.WebSearchRequests;
+                    webSearchRequests;
             }
 
             return usageDetails;
