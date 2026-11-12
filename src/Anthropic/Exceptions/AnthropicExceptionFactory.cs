@@ -300,6 +300,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "parent_organization_required")] = (statusCode, responseBody, response) =>
+            new AnthropicParentOrganizationRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "rbac_group_grants_owner_access")] = (statusCode, responseBody, response) =>
             new AnthropicRbacGroupGrantsOwnerAccessException()
             {
@@ -558,6 +566,14 @@ public class AnthropicExceptionFactory
             },
         [(404, "file_expired")] = (statusCode, responseBody, response) =>
             new AnthropicFileExpiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(404, "rbac_role_not_found")] = (statusCode, responseBody, response) =>
+            new AnthropicRbacRoleNotFoundException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

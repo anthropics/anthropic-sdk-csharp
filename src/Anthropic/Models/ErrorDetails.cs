@@ -143,6 +143,9 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
                 OrganizationTypeNotSupportedErrorDetails _ =>
                     ErrorDetailsErrorCode.OrganizationTypeNotSupported,
+                ParentOrganizationRequiredErrorDetails _ =>
+                    ErrorDetailsErrorCode.ParentOrganizationRequired,
+                RbacRoleNotFoundErrorDetails _ => ErrorDetailsErrorCode.RbacRoleNotFound,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ =>
                     ErrorDetailsErrorCode.EnvironmentCreateDisabled,
                 Environments::BetaEnvironmentArchivedErrorDetails _ =>
@@ -258,6 +261,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -351,6 +356,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -447,6 +454,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -874,6 +883,18 @@ public record class ErrorDetails : ModelBase
     }
 
     public ErrorDetails(OrganizationTypeNotSupportedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(ParentOrganizationRequiredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(RbacRoleNotFoundErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -2350,6 +2371,50 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ParentOrganizationRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickParentOrganizationRequired(out var value)) {
+    ///     // `value` is of type `ParentOrganizationRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickParentOrganizationRequired(
+        [NotNullWhen(true)] out ParentOrganizationRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as ParentOrganizationRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="RbacRoleNotFoundErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRbacRoleNotFound(out var value)) {
+    ///     // `value` is of type `RbacRoleNotFoundErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRbacRoleNotFound([NotNullWhen(true)] out RbacRoleNotFoundErrorDetails? value)
+    {
+        value = this.Value as RbacRoleNotFoundErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="Environments::BetaEnvironmentCreateDisabledErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -3060,6 +3125,8 @@ public record class ErrorDetails : ModelBase
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
+    ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
+    ///     (RbacRoleNotFoundErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentCreateDisabledErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentArchivedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidConfigTypeChangeErrorDetails value) =&gt; {...},
@@ -3147,6 +3214,8 @@ public record class ErrorDetails : ModelBase
         Action<ExternalKeyChangedErrorDetails> externalKeyChanged,
         Action<WorkspaceMemberLimitExceededErrorDetails> workspaceMemberLimitExceeded,
         Action<OrganizationTypeNotSupportedErrorDetails> organizationTypeNotSupported,
+        Action<ParentOrganizationRequiredErrorDetails> parentOrganizationRequired,
+        Action<RbacRoleNotFoundErrorDetails> rbacRoleNotFound,
         Action<Environments::BetaEnvironmentCreateDisabledErrorDetails> betaEnvironmentCreateDisabled,
         Action<Environments::BetaEnvironmentArchivedErrorDetails> betaEnvironmentArchived,
         Action<Environments::BetaInvalidConfigTypeChangeErrorDetails> betaInvalidConfigTypeChange,
@@ -3341,6 +3410,12 @@ public record class ErrorDetails : ModelBase
             case OrganizationTypeNotSupportedErrorDetails value:
                 organizationTypeNotSupported(value);
                 break;
+            case ParentOrganizationRequiredErrorDetails value:
+                parentOrganizationRequired(value);
+                break;
+            case RbacRoleNotFoundErrorDetails value:
+                rbacRoleNotFound(value);
+                break;
             case Environments::BetaEnvironmentCreateDisabledErrorDetails value:
                 betaEnvironmentCreateDisabled(value);
                 break;
@@ -3501,6 +3576,8 @@ public record class ErrorDetails : ModelBase
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
+    ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
+    ///     (RbacRoleNotFoundErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentCreateDisabledErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentArchivedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidConfigTypeChangeErrorDetails value) =&gt; {...},
@@ -3594,6 +3671,8 @@ public record class ErrorDetails : ModelBase
         Func<ExternalKeyChangedErrorDetails, T> externalKeyChanged,
         Func<WorkspaceMemberLimitExceededErrorDetails, T> workspaceMemberLimitExceeded,
         Func<OrganizationTypeNotSupportedErrorDetails, T> organizationTypeNotSupported,
+        Func<ParentOrganizationRequiredErrorDetails, T> parentOrganizationRequired,
+        Func<RbacRoleNotFoundErrorDetails, T> rbacRoleNotFound,
         Func<
             Environments::BetaEnvironmentCreateDisabledErrorDetails,
             T
@@ -3725,6 +3804,8 @@ public record class ErrorDetails : ModelBase
             ExternalKeyChangedErrorDetails value => externalKeyChanged(value),
             WorkspaceMemberLimitExceededErrorDetails value => workspaceMemberLimitExceeded(value),
             OrganizationTypeNotSupportedErrorDetails value => organizationTypeNotSupported(value),
+            ParentOrganizationRequiredErrorDetails value => parentOrganizationRequired(value),
+            RbacRoleNotFoundErrorDetails value => rbacRoleNotFound(value),
             Environments::BetaEnvironmentCreateDisabledErrorDetails value =>
                 betaEnvironmentCreateDisabled(value),
             Environments::BetaEnvironmentArchivedErrorDetails value => betaEnvironmentArchived(
@@ -3961,6 +4042,11 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(OrganizationTypeNotSupportedErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(ParentOrganizationRequiredErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(RbacRoleNotFoundErrorDetails value) => new(value);
+
     public static implicit operator ErrorDetails(
         Environments::BetaEnvironmentCreateDisabledErrorDetails value
     ) => new(value);
@@ -4137,6 +4223,8 @@ public record class ErrorDetails : ModelBase
             (externalKeyChanged) => externalKeyChanged.Validate(),
             (workspaceMemberLimitExceeded) => workspaceMemberLimitExceeded.Validate(),
             (organizationTypeNotSupported) => organizationTypeNotSupported.Validate(),
+            (parentOrganizationRequired) => parentOrganizationRequired.Validate(),
+            (rbacRoleNotFound) => rbacRoleNotFound.Validate(),
             (betaEnvironmentCreateDisabled) => betaEnvironmentCreateDisabled.Validate(),
             (betaEnvironmentArchived) => betaEnvironmentArchived.Validate(),
             (betaInvalidConfigTypeChange) => betaInvalidConfigTypeChange.Validate(),
@@ -4248,34 +4336,36 @@ public record class ErrorDetails : ModelBase
             ExternalKeyChangedErrorDetails _ => 51,
             WorkspaceMemberLimitExceededErrorDetails _ => 52,
             OrganizationTypeNotSupportedErrorDetails _ => 53,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 54,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 55,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 56,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 57,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 58,
-            Environments::BetaInvalidMetadataErrorDetails _ => 59,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 60,
-            BetaCannotSignOutSelfErrorDetails _ => 61,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 62,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 63,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 64,
-            BetaCannotSignOutOwnerErrorDetails _ => 65,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 66,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 67,
-            BetaUnsupportedCharsetErrorDetails _ => 68,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 69,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 70,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 71,
-            Plugins::BetaScanFailedErrorDetails _ => 72,
-            Plugins::BetaScanPendingErrorDetails _ => 73,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 74,
-            BetaApiKeyScopeMissingErrorDetails _ => 75,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 76,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 77,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 78,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 79,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 80,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 81,
+            ParentOrganizationRequiredErrorDetails _ => 54,
+            RbacRoleNotFoundErrorDetails _ => 55,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 56,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 57,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 58,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 59,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 60,
+            Environments::BetaInvalidMetadataErrorDetails _ => 61,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 62,
+            BetaCannotSignOutSelfErrorDetails _ => 63,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 64,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 65,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 66,
+            BetaCannotSignOutOwnerErrorDetails _ => 67,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 68,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 69,
+            BetaUnsupportedCharsetErrorDetails _ => 70,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 71,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 72,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 73,
+            Plugins::BetaScanFailedErrorDetails _ => 74,
+            Plugins::BetaScanPendingErrorDetails _ => 75,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 76,
+            BetaApiKeyScopeMissingErrorDetails _ => 77,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 78,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 79,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 80,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 81,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 82,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 83,
             _ => -1,
         };
     }
@@ -5426,6 +5516,47 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "parent_organization_required":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<ParentOrganizationRequiredErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "rbac_role_not_found":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RbacRoleNotFoundErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "environment_create_disabled":
             {
                 try
@@ -6088,6 +6219,8 @@ public enum ErrorDetailsErrorCode
     ExternalKeyChanged,
     WorkspaceMemberLimitExceeded,
     OrganizationTypeNotSupported,
+    ParentOrganizationRequired,
+    RbacRoleNotFound,
     EnvironmentCreateDisabled,
     EnvironmentArchived,
     InvalidConfigTypeChange,
@@ -6193,6 +6326,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "external_key_changed" => ErrorDetailsErrorCode.ExternalKeyChanged,
             "workspace_member_limit_exceeded" => ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
             "organization_type_not_supported" => ErrorDetailsErrorCode.OrganizationTypeNotSupported,
+            "parent_organization_required" => ErrorDetailsErrorCode.ParentOrganizationRequired,
+            "rbac_role_not_found" => ErrorDetailsErrorCode.RbacRoleNotFound,
             "environment_create_disabled" => ErrorDetailsErrorCode.EnvironmentCreateDisabled,
             "environment_archived" => ErrorDetailsErrorCode.EnvironmentArchived,
             "invalid_config_type_change" => ErrorDetailsErrorCode.InvalidConfigTypeChange,
@@ -6315,6 +6450,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "workspace_member_limit_exceeded",
                 ErrorDetailsErrorCode.OrganizationTypeNotSupported =>
                     "organization_type_not_supported",
+                ErrorDetailsErrorCode.ParentOrganizationRequired => "parent_organization_required",
+                ErrorDetailsErrorCode.RbacRoleNotFound => "rbac_role_not_found",
                 ErrorDetailsErrorCode.EnvironmentCreateDisabled => "environment_create_disabled",
                 ErrorDetailsErrorCode.EnvironmentArchived => "environment_archived",
                 ErrorDetailsErrorCode.InvalidConfigTypeChange => "invalid_config_type_change",

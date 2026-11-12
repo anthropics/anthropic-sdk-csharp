@@ -2,6 +2,8 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
+using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.RbacRoles;
 using Anthropic.Services.Organization.RbacRoles;
 
@@ -34,6 +36,9 @@ public interface IRbacRoleService
     ///
     /// <para>The RBAC Roles API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException"/>
+    /// <exception cref="AnthropicParentOrganizationRequiredException"/>
+    /// <exception cref="AnthropicRbacRoleNotFoundException"/>
     Task<RbacRole> Retrieve(
         RbacRoleRetrieveParams parameters,
         CancellationToken cancellationToken = default
@@ -51,6 +56,8 @@ public interface IRbacRoleService
     ///
     /// <para>The RBAC Roles API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException"/>
+    /// <exception cref="AnthropicParentOrganizationRequiredException"/>
     Task<RbacRoleListPage> List(
         RbacRoleListParams? parameters = null,
         CancellationToken cancellationToken = default

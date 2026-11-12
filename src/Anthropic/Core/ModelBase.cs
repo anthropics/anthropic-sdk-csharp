@@ -13,6 +13,7 @@ using Anthropic.Models.Beta.Organization.ClaudeTag.Bundles.Targets;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
 using Anthropic.Models.Beta.Organization.Plugins.Versions;
+using Anthropic.Models.Beta.Organization.RbacRoles;
 using Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Beta.Organization.TelemetryDestinations;
 using Anthropic.Models.Beta.Sessions.Resources;
@@ -26,6 +27,7 @@ using Anthropic.Models.Organization.Analytics;
 using Anthropic.Models.Organization.ComplianceSettings;
 using Anthropic.Models.Organization.Federation.Issuers;
 using Anthropic.Models.Organization.RateLimits;
+using Anthropic.Models.Organization.RbacRoles;
 using Anthropic.Models.Organization.RbacRoles.Permissions;
 using Anthropic.Models.Organization.SpendLimits.IncreaseRequests;
 using Anthropic.Models.Organization.Users;
@@ -270,6 +272,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, SpendLimitIncreaseRequestResolvedByType>(),
             new ApiEnumConverter<string, SpendLimitIncreaseRequestStatus>(),
             new ApiEnumConverter<string, RbacGroups::SourceType>(),
+            new ApiEnumConverter<string, RbacRoleSourceType>(),
             new ApiEnumConverter<string, ResourceType>(),
             new ApiEnumConverter<string, AnthropicBeta>(),
             new ApiEnumConverter<string, BetaCurrency>(),
@@ -921,6 +924,7 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestResolvedByType>(),
             new ApiEnumConverter<string, BetaSpendLimitIncreaseRequestStatus>(),
             new ApiEnumConverter<string, OrganizationRbacGroups::SourceType>(),
+            new ApiEnumConverter<string, BetaRbacRoleSourceType>(),
             new ApiEnumConverter<string, Permissions::ResourceType>(),
             new ApiEnumConverter<string, Plugins::CreatedByType>(),
             new ApiEnumConverter<string, Plugins::OrganizationInstallationPreference>(),

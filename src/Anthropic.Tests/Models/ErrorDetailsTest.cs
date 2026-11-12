@@ -409,6 +409,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredValidationWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundValidationWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledValidationWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -1330,6 +1344,32 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -2107,6 +2147,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ParentOrganizationRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundErrorCodeWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RbacRoleNotFound, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledErrorCodeWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -2454,6 +2508,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
+    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentArchived)]
     [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange)]
@@ -2556,6 +2612,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
+    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentArchived)]
     [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange)]

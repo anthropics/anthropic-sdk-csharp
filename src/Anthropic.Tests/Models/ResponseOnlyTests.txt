@@ -19,6 +19,7 @@ src/Anthropic.Tests/Models/NotFoundErrorTest.cs
 src/Anthropic.Tests/Models/OrganizationOnHoldErrorDetailsTest.cs
 src/Anthropic.Tests/Models/OrganizationTypeNotSupportedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/OverloadedErrorTest.cs
+src/Anthropic.Tests/Models/ParentOrganizationRequiredErrorDetailsTest.cs
 src/Anthropic.Tests/Models/PermissionErrorTest.cs
 src/Anthropic.Tests/Models/RampLimitExceededErrorDetailsTest.cs
 src/Anthropic.Tests/Models/RateLimitErrorTest.cs
@@ -280,6 +281,7 @@ src/Anthropic.Tests/Models/Organization/ConcurrentMembershipChangeErrorDetailsTe
 src/Anthropic.Tests/Models/Organization/OrgMemberLimitExceededErrorDetailsTest.cs
 src/Anthropic.Tests/Models/Organization/OrganizationInfoTest.cs
 src/Anthropic.Tests/Models/Organization/OrganizationRoleTest.cs
+src/Anthropic.Tests/Models/Organization/RbacRoleNotFoundErrorDetailsTest.cs
 src/Anthropic.Tests/Models/Organization/ApiKeys/ApiKeyTest.cs
 src/Anthropic.Tests/Models/Organization/ApiKeys/ApiKeyCreatedByTest.cs
 src/Anthropic.Tests/Models/Organization/ApiKeys/ApiKeyOrganizationScopeTest.cs
@@ -429,6 +431,9 @@ src/Anthropic.Tests/Models/Organization/RbacGroups/Members/DeletedRbacGroupMembe
 src/Anthropic.Tests/Models/Organization/RbacGroups/Members/RbacGroupMemberTest.cs
 src/Anthropic.Tests/Models/Organization/RbacGroups/Members/MemberListPageResponseTest.cs
 src/Anthropic.Tests/Models/Organization/RbacRoles/RbacRoleTest.cs
+src/Anthropic.Tests/Models/Organization/RbacRoles/RbacRoleSourceTest.cs
+src/Anthropic.Tests/Models/Organization/RbacRoles/RbacRoleSourceBuiltInTest.cs
+src/Anthropic.Tests/Models/Organization/RbacRoles/RbacRoleSourceCustomTest.cs
 src/Anthropic.Tests/Models/Organization/RbacRoles/RbacRoleListPageResponseTest.cs
 src/Anthropic.Tests/Models/Organization/RbacRoles/Permissions/RbacAllConnectorsPermissionResourceTest.cs
 src/Anthropic.Tests/Models/Organization/RbacRoles/Permissions/RbacConnectorPermissionResourceTest.cs
@@ -1233,6 +1238,9 @@ src/Anthropic.Tests/Models/Beta/Organization/RbacGroups/Members/BetaDeletedRbacG
 src/Anthropic.Tests/Models/Beta/Organization/RbacGroups/Members/BetaRbacGroupMemberTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/RbacGroups/Members/MemberListPageResponseTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/BetaRbacRoleTest.cs
+src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/BetaRbacRoleSourceTest.cs
+src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/BetaRbacRoleSourceBuiltInTest.cs
+src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/BetaRbacRoleSourceCustomTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/RbacRoleListPageResponseTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/Permissions/BetaRbacAllConnectorsPermissionResourceTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/RbacRoles/Permissions/BetaRbacConnectorPermissionResourceTest.cs

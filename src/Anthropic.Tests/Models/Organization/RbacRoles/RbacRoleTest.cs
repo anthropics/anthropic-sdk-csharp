@@ -15,18 +15,21 @@ public class RbacRoleTest : TestBase
             ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             DisplayName = "Project Editor",
+            Source = new RbacRoleSourceBuiltIn(),
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
         };
 
         string expectedID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedDisplayName = "Project Editor";
+        RbacRoleSource expectedSource = new RbacRoleSourceBuiltIn();
         JsonElement expectedType = JsonSerializer.SerializeToElement("rbac_role");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
 
         Assert.Equal(expectedID, model.ID);
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDisplayName, model.DisplayName);
+        Assert.Equal(expectedSource, model.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
@@ -39,6 +42,7 @@ public class RbacRoleTest : TestBase
             ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             DisplayName = "Project Editor",
+            Source = new RbacRoleSourceBuiltIn(),
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
         };
 
@@ -56,6 +60,7 @@ public class RbacRoleTest : TestBase
             ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             DisplayName = "Project Editor",
+            Source = new RbacRoleSourceBuiltIn(),
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
         };
 
@@ -69,12 +74,14 @@ public class RbacRoleTest : TestBase
         string expectedID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
         string expectedDisplayName = "Project Editor";
+        RbacRoleSource expectedSource = new RbacRoleSourceBuiltIn();
         JsonElement expectedType = JsonSerializer.SerializeToElement("rbac_role");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
 
         Assert.Equal(expectedID, deserialized.ID);
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDisplayName, deserialized.DisplayName);
+        Assert.Equal(expectedSource, deserialized.Source);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
@@ -87,6 +94,7 @@ public class RbacRoleTest : TestBase
             ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             DisplayName = "Project Editor",
+            Source = new RbacRoleSourceBuiltIn(),
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
         };
 
@@ -101,6 +109,7 @@ public class RbacRoleTest : TestBase
             ID = "rbac_role_016J8xVtKpDq3Wy9ZmN2hR4s",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
             DisplayName = "Project Editor",
+            Source = new RbacRoleSourceBuiltIn(),
             UpdatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
         };
 

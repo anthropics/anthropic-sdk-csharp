@@ -2,7 +2,9 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.RbacRoles.Permissions;
+using Anthropic.Models.Organization;
 
 namespace Anthropic.Services.Beta.Organization.RbacRoles;
 
@@ -31,6 +33,9 @@ public interface IPermissionService
     ///
     /// <para>The RBAC Roles API is available to Claude Enterprise organizations only.</para>
     /// </summary>
+    /// <exception cref="AnthropicOrganizationTypeNotSupportedException"/>
+    /// <exception cref="AnthropicParentOrganizationRequiredException"/>
+    /// <exception cref="AnthropicRbacRoleNotFoundException"/>
     Task<PermissionListPage> List(
         PermissionListParams parameters,
         CancellationToken cancellationToken = default
