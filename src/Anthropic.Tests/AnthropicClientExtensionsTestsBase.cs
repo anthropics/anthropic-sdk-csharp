@@ -6212,7 +6212,7 @@ public abstract class AnthropicClientExtensionsTestsBase
         var textContent = response.Messages[0].Contents.OfType<TextContent>().FirstOrDefault();
         Assert.NotNull(textContent);
         Assert.Equal("AI is transforming the world.", textContent.Text);
-        Assert.True(textContent.Annotations is null || !textContent.Annotations.Any());
+        Assert.True(textContent.Annotations is null or { Count: 0 });
     }
 
     [Fact]
