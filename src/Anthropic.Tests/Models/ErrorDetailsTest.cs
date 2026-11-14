@@ -637,6 +637,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaBundleAttachmentNotSupportedValidationWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaBundleOnCallValidationWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void AvailableToolsLimitExceededSerializationRoundtripWorks()
     {
         ErrorDetails value = new AvailableToolsLimitExceededErrorDetails();
@@ -1752,6 +1766,32 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaBundleAttachmentNotSupportedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaBundleOnCallSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void AvailableToolsLimitExceededErrorCodeWorks()
     {
         ErrorDetails value = new AvailableToolsLimitExceededErrorDetails();
@@ -2393,6 +2433,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaBundleAttachmentNotSupportedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.BundleAttachmentNotSupported, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaBundleOnCallErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.BundleOnCall, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ErrorDetails value = new(
@@ -2538,6 +2592,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict)]
+    [InlineData(ErrorDetailsErrorCode.BundleAttachmentNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.BundleOnCall)]
     public void Validation_Works(ErrorDetailsErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -2642,6 +2698,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict)]
+    [InlineData(ErrorDetailsErrorCode.BundleAttachmentNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.BundleOnCall)]
     public void SerializationRoundtrip_Works(ErrorDetailsErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

@@ -48,6 +48,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "bundle_attachment_not_supported")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaBundleAttachmentNotSupportedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "bundle_on_call")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaBundleOnCallException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "cannot_invite_emails_with_unverified_domains")] = (
             statusCode,
             responseBody,

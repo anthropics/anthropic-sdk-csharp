@@ -18,6 +18,19 @@ public class BundleServiceTest : TestBase
     }
 
     [Fact]
+    public async Task Update_Works()
+    {
+        var betaClaudeTagBundle = await this
+            .client.WithQuery("beta=true")
+            .Beta.Organization.ClaudeTag.Bundles.Update(
+                "capp_011CZkZjLP1cWxj5EtMmdgbq",
+                new(),
+                TestContext.Current.CancellationToken
+            );
+        betaClaudeTagBundle.Validate();
+    }
+
+    [Fact]
     public async Task List_Works()
     {
         var page = await this

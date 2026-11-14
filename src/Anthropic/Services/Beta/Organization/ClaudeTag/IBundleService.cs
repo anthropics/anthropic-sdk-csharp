@@ -51,6 +51,32 @@ public interface IBundleService
     );
 
     /// <summary>
+    /// Change a Bundle's instructions. The update is partial: a field left out is
+    /// unchanged, and `instructions` sent as null or as an empty string clears them.
+    /// The later of two updates wins. Sessions that start after the change use the new
+    /// instructions; sessions already running keep the ones they started with. Some
+    /// Bundles are managed in claude.ai, and an update of one returns 400.
+    /// </summary>
+    /// <exception cref="AnthropicBetaBundleAttachmentNotSupportedException"/>
+    /// <exception cref="AnthropicBetaBundleOnCallException"/>
+    /// <exception cref="AnthropicBetaApiKeyScopeMissingException"/>
+    /// <exception cref="AnthropicBetaClaudeTagWritesNotEnabledException"/>
+    /// <exception cref="AnthropicBetaComplianceConfigurationRestrictedException"/>
+    /// <exception cref="AnthropicBetaOrganizationLevelScopedApiKeyRequiredException"/>
+    /// <exception cref="AnthropicBetaSlackChannelSetUpSettingsConflictException"/>
+    Task<BetaClaudeTagBundle> Update(
+        BundleUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Update(BundleUpdateParams, CancellationToken)"/>
+    Task<BetaClaudeTagBundle> Update(
+        string bundleID,
+        BundleUpdateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
     /// List the organization's Bundles, newest first by `created_at`. A Bundle that
     /// Claude Tag manages for itself is not listed.
     /// </summary>
@@ -92,6 +118,22 @@ public interface IBundleServiceWithRawResponse
     Task<HttpResponse<BetaClaudeTagBundle>> Retrieve(
         string bundleID,
         BundleRetrieveParams? parameters = null,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <summary>
+    /// Returns a raw HTTP response for <c>post /v1/organizations/claude_tag/bundles/{bundle_id}</c>, but is otherwise the
+    /// same as <see cref="IBundleService.Update(BundleUpdateParams, CancellationToken)"/>.
+    /// </summary>
+    Task<HttpResponse<BetaClaudeTagBundle>> Update(
+        BundleUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    );
+
+    /// <inheritdoc cref="Update(BundleUpdateParams, CancellationToken)"/>
+    Task<HttpResponse<BetaClaudeTagBundle>> Update(
+        string bundleID,
+        BundleUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 

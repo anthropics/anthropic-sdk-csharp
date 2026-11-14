@@ -194,6 +194,9 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ =>
                     ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict,
+                BetaBundleAttachmentNotSupportedErrorDetails _ =>
+                    ErrorDetailsErrorCode.BundleAttachmentNotSupported,
+                BetaBundleOnCallErrorDetails _ => ErrorDetailsErrorCode.BundleOnCall,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<
                     ApiEnum<string, ErrorDetailsErrorCode>
                 >(this.Json, "error_code"),
@@ -291,6 +294,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "plugin_id"),
             };
         }
@@ -386,6 +391,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "plugin_version_id"
@@ -484,6 +491,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails x => x.SlackChannelID,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails x => x.SlackChannelID,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "slack_channel_id"
@@ -1123,6 +1132,21 @@ public record class ErrorDetails : ModelBase
         BetaSlackChannelSetUpSettingsConflictErrorDetails value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaBundleAttachmentNotSupportedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaBundleOnCallErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -3058,6 +3082,50 @@ public record class ErrorDetails : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBundleAttachmentNotSupportedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBundleAttachmentNotSupported(out var value)) {
+    ///     // `value` is of type `BetaBundleAttachmentNotSupportedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaBundleAttachmentNotSupported(
+        [NotNullWhen(true)] out BetaBundleAttachmentNotSupportedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaBundleAttachmentNotSupportedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBundleOnCallErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBundleOnCall(out var value)) {
+    ///     // `value` is of type `BetaBundleOnCallErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaBundleOnCall([NotNullWhen(true)] out BetaBundleOnCallErrorDetails? value)
+    {
+        value = this.Value as BetaBundleOnCallErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -3154,7 +3222,9 @@ public record class ErrorDetails : ModelBase
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
-    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
+    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...},
+    ///     (BetaBundleAttachmentNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaBundleOnCallErrorDetails value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -3243,7 +3313,9 @@ public record class ErrorDetails : ModelBase
         Action<BetaOrganizationLevelScopedApiKeyRequiredErrorDetails> betaOrganizationLevelScopedApiKeyRequired,
         Action<Environments::BetaEnvironmentNotFoundErrorDetails> betaEnvironmentNotFound,
         Action<BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails> betaSlackChannelSetUpEnvironmentNotFound,
-        Action<BetaSlackChannelSetUpSettingsConflictErrorDetails> betaSlackChannelSetUpSettingsConflict
+        Action<BetaSlackChannelSetUpSettingsConflictErrorDetails> betaSlackChannelSetUpSettingsConflict,
+        Action<BetaBundleAttachmentNotSupportedErrorDetails> betaBundleAttachmentNotSupported,
+        Action<BetaBundleOnCallErrorDetails> betaBundleOnCall
     )
     {
         switch (this.Value)
@@ -3500,6 +3572,12 @@ public record class ErrorDetails : ModelBase
             case BetaSlackChannelSetUpSettingsConflictErrorDetails value:
                 betaSlackChannelSetUpSettingsConflict(value);
                 break;
+            case BetaBundleAttachmentNotSupportedErrorDetails value:
+                betaBundleAttachmentNotSupported(value);
+                break;
+            case BetaBundleOnCallErrorDetails value:
+                betaBundleOnCall(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of ErrorDetails"
@@ -3605,7 +3683,9 @@ public record class ErrorDetails : ModelBase
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
-    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
+    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...},
+    ///     (BetaBundleAttachmentNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaBundleOnCallErrorDetails value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -3724,7 +3804,9 @@ public record class ErrorDetails : ModelBase
         Func<
             BetaSlackChannelSetUpSettingsConflictErrorDetails,
             T
-        > betaSlackChannelSetUpSettingsConflict
+        > betaSlackChannelSetUpSettingsConflict,
+        Func<BetaBundleAttachmentNotSupportedErrorDetails, T> betaBundleAttachmentNotSupported,
+        Func<BetaBundleOnCallErrorDetails, T> betaBundleOnCall
     )
     {
         return this.Value switch
@@ -3855,6 +3937,10 @@ public record class ErrorDetails : ModelBase
                 betaSlackChannelSetUpEnvironmentNotFound(value),
             BetaSlackChannelSetUpSettingsConflictErrorDetails value =>
                 betaSlackChannelSetUpSettingsConflict(value),
+            BetaBundleAttachmentNotSupportedErrorDetails value => betaBundleAttachmentNotSupported(
+                value
+            ),
+            BetaBundleOnCallErrorDetails value => betaBundleOnCall(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ErrorDetails"
             ),
@@ -4149,6 +4235,12 @@ public record class ErrorDetails : ModelBase
         BetaSlackChannelSetUpSettingsConflictErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(
+        BetaBundleAttachmentNotSupportedErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaBundleOnCallErrorDetails value) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -4258,7 +4350,9 @@ public record class ErrorDetails : ModelBase
             (betaSlackChannelSetUpEnvironmentNotFound) =>
                 betaSlackChannelSetUpEnvironmentNotFound.Validate(),
             (betaSlackChannelSetUpSettingsConflict) =>
-                betaSlackChannelSetUpSettingsConflict.Validate()
+                betaSlackChannelSetUpSettingsConflict.Validate(),
+            (betaBundleAttachmentNotSupported) => betaBundleAttachmentNotSupported.Validate(),
+            (betaBundleOnCall) => betaBundleOnCall.Validate()
         );
     }
 
@@ -4366,6 +4460,8 @@ public record class ErrorDetails : ModelBase
             Environments::BetaEnvironmentNotFoundErrorDetails _ => 81,
             BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 82,
             BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 83,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 84,
+            BetaBundleOnCallErrorDetails _ => 85,
             _ => -1,
         };
     }
@@ -6145,6 +6241,47 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "bundle_attachment_not_supported":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaBundleAttachmentNotSupportedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "bundle_on_call":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaBundleOnCallErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
                 return new ErrorDetails(element);
@@ -6249,6 +6386,8 @@ public enum ErrorDetailsErrorCode
     EnvironmentNotFound,
     SlackChannelSetUpEnvironmentNotFound,
     SlackChannelSetUpSettingsConflict,
+    BundleAttachmentNotSupported,
+    BundleOnCall,
 }
 
 sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCode>
@@ -6365,6 +6504,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
             "slack_channel_set_up_settings_conflict" =>
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict,
+            "bundle_attachment_not_supported" => ErrorDetailsErrorCode.BundleAttachmentNotSupported,
+            "bundle_on_call" => ErrorDetailsErrorCode.BundleOnCall,
             _ => (ErrorDetailsErrorCode)(-1),
         };
     }
@@ -6491,6 +6632,9 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "slack_channel_set_up_environment_not_found",
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict =>
                     "slack_channel_set_up_settings_conflict",
+                ErrorDetailsErrorCode.BundleAttachmentNotSupported =>
+                    "bundle_attachment_not_supported",
+                ErrorDetailsErrorCode.BundleOnCall => "bundle_on_call",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

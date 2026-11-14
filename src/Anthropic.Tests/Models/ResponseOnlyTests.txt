@@ -1310,6 +1310,8 @@ src/Anthropic.Tests/Models/Beta/Organization/Webhooks/BetaOrganizationWebhookEnd
 src/Anthropic.Tests/Models/Beta/Organization/Webhooks/BetaOrganizationWebhookEndpointStateTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/Webhooks/WebhookListPageResponseTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaApiKeyScopeMissingErrorDetailsTest.cs
+src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaBundleAttachmentNotSupportedErrorDetailsTest.cs
+src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaBundleOnCallErrorDetailsTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaClaudeTagDefaultSettingSourceTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaClaudeTagSettingSourceTest.cs
 src/Anthropic.Tests/Models/Beta/Organization/ClaudeTag/BetaClaudeTagSettingSourcesTest.cs
