@@ -146,18 +146,19 @@ sealed class SigV4VerifyingHandler : HttpMessageHandler
     }
 
     /// <summary>
-    /// The header value as it appears on the wire: request or content headers, with
-    /// repeated headers comma-joined, and <c>Host</c> defaulting to the URI authority.
+    /// The header value as it appears on the wire: request or content headers, each on the one
+    /// line that .NET writes for it, and <c>Host</c> defaulting to the URI authority.
     /// </summary>
     static string HeaderValue(HttpRequestMessage request, string name)
     {
-        if (request.Headers.TryGetValues(name, out var values))
+        var line = $"{request.Headers}{request.Content?.Headers}"
+            .Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+            .FirstOrDefault(written =>
+                written.StartsWith(name + ": ", StringComparison.OrdinalIgnoreCase)
+            );
+        if (line != null)
         {
-            return string.Join(",", values);
-        }
-        if (request.Content != null && request.Content.Headers.TryGetValues(name, out values))
-        {
-            return string.Join(",", values);
+            return line.Substring(name.Length + 2);
         }
         if (name.Equals("host", StringComparison.OrdinalIgnoreCase))
         {
