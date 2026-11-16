@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 
@@ -82,5 +83,22 @@ public class ParamsBaseTest : TestBase
             ParamsBase.EncodePathSegment(JsonSerializer.Deserialize<JsonElement>(json), "id")
         );
         Assert.Contains("`id`", exception.Message);
+    }
+
+    [Fact]
+    public async Task JsonBodyContent_Works()
+    {
+        using var content = ParamsBase.JsonBodyContent(JsonSerializer.SerializeToElement("a"));
+
+        Assert.Equal("application/json; charset=utf-8", content.Headers.ContentType?.ToString());
+        Assert.Equal(3, content.Headers.ContentLength);
+        Assert.Equal(
+            "\"a\"",
+            await content.ReadAsStringAsync(
+#if NET
+                TestContext.Current.CancellationToken
+#endif
+            )
+        );
     }
 }

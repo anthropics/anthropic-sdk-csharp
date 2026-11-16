@@ -287,6 +287,12 @@ public abstract record class ParamsBase
         return null;
     }
 
+    internal static HttpContent JsonBodyContent<T>(T body) =>
+        new ByteArrayContent(JsonSerializer.SerializeToUtf8Bytes(body, ModelBase.SerializerOptions))
+        {
+            Headers = { ContentType = new("application/json") { CharSet = "utf-8" } },
+        };
+
     /// <summary>
     /// Whether <see cref="BodyContent"/> can produce the body again for a retry; when false the request is
     /// sent once. A multipart body with a part that reads from a caller's stream can't: the first attempt consumes it.
