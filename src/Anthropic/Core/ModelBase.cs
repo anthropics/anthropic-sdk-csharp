@@ -1,3 +1,4 @@
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models;
@@ -96,6 +97,7 @@ public abstract record class ModelBase
 
     internal static readonly JsonSerializerOptions SerializerOptions = new()
     {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
         Converters =
         {
             new FrozenDictionaryConverterFactory(),
@@ -982,6 +984,7 @@ public abstract record class ModelBase
         SerializerOptions
     )
     {
+        Encoder = JavaScriptEncoder.Default,
         WriteIndented = true,
     };
 

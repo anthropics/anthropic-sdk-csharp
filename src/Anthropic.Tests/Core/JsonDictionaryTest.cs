@@ -405,6 +405,33 @@ public class JsonDictionaryTest : TestBase
     }
 
     [Fact]
+    public void ToString_EscapesHtmlAndNonAsciiCharacters()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("text", "a+<é");
+
+        Assert.Contains("\"a\\u002B\\u003C\\u00E9\"", dict.ToString());
+    }
+
+    [Fact]
+    public void Set_LeavesHtmlAndAccentedCharactersUnescaped()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("text", "a+<é\"\n");
+
+        Assert.Equal("\"a+<é\\\"\\n\"", dict.Freeze()["text"].GetRawText());
+    }
+
+    [Fact]
+    public void Set_ReplacesLoneSurrogate()
+    {
+        var dict = new JsonDictionary();
+        dict.Set("text", "a\ud83d");
+
+        Assert.Equal("a\uFFFD", dict.Freeze()["text"].GetString());
+    }
+
+    [Fact]
     public void Equals_ReturnsTrueForSameContent()
     {
         var dict1 = new JsonDictionary();
