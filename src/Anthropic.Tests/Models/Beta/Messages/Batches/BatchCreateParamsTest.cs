@@ -28,6 +28,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -181,6 +182,7 @@ public class BatchCreateParamsTest : TestBase
                     MaxTokens = 1024,
                     Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                     Model = ModelsMessages::Model.ClaudeOpus5_5,
+                    BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                     CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                     Compaction = new() { Instructions = "instructions" },
                     Container = new Messages::BetaContainerParams()
@@ -349,6 +351,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -512,6 +515,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -680,6 +684,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -852,6 +857,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -1015,6 +1021,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -1189,6 +1196,7 @@ public class BatchCreateParamsTest : TestBase
                         MaxTokens = 1024,
                         Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                         Model = ModelsMessages::Model.ClaudeOpus5_5,
+                        BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                         CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                         Compaction = new() { Instructions = "instructions" },
                         Container = new Messages::BetaContainerParams()
@@ -1351,6 +1359,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                 Model = ModelsMessages::Model.ClaudeOpus5_5,
+                BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
@@ -1487,6 +1496,7 @@ public class RequestTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -1631,6 +1641,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                 Model = ModelsMessages::Model.ClaudeOpus5_5,
+                BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
@@ -1778,6 +1789,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                 Model = ModelsMessages::Model.ClaudeOpus5_5,
+                BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
@@ -1921,6 +1933,7 @@ public class RequestTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -2065,6 +2078,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                 Model = ModelsMessages::Model.ClaudeOpus5_5,
+                BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
@@ -2209,6 +2223,7 @@ public class RequestTest : TestBase
                 MaxTokens = 1024,
                 Messages = [new Messages::BetaUserMessageParam("Hello, world")],
                 Model = ModelsMessages::Model.ClaudeOpus5_5,
+                BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
                 CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
                 Compaction = new() { Instructions = "instructions" },
                 Container = new Messages::BetaContainerParams()
@@ -2355,6 +2370,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -2490,6 +2506,10 @@ public class ParamsTest : TestBase
             new Messages::BetaUserMessageParam("Hello, world"),
         ];
         ApiEnum<string, ModelsMessages::Model> expectedModel = ModelsMessages::Model.ClaudeOpus5_5;
+        Messages::BetaBillingPolicy expectedBillingPolicy = new()
+        {
+            BillTo = Messages::BetaBillTo.Self,
+        };
         Messages::BetaCacheControlEphemeral expectedCacheControl = new()
         {
             Ttl = Messages::Ttl.Ttl5m,
@@ -2638,6 +2658,7 @@ public class ParamsTest : TestBase
             Assert.Equal(expectedMessages[i], model.Messages[i]);
         }
         Assert.Equal(expectedModel, model.Model);
+        Assert.Equal(expectedBillingPolicy, model.BillingPolicy);
         Assert.Equal(expectedCacheControl, model.CacheControl);
         Assert.Equal(expectedCompaction, model.Compaction);
         Assert.Equal(expectedContainer, model.Container);
@@ -2684,6 +2705,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -2827,6 +2849,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -2966,6 +2989,10 @@ public class ParamsTest : TestBase
             new Messages::BetaUserMessageParam("Hello, world"),
         ];
         ApiEnum<string, ModelsMessages::Model> expectedModel = ModelsMessages::Model.ClaudeOpus5_5;
+        Messages::BetaBillingPolicy expectedBillingPolicy = new()
+        {
+            BillTo = Messages::BetaBillTo.Self,
+        };
         Messages::BetaCacheControlEphemeral expectedCacheControl = new()
         {
             Ttl = Messages::Ttl.Ttl5m,
@@ -3114,6 +3141,7 @@ public class ParamsTest : TestBase
             Assert.Equal(expectedMessages[i], deserialized.Messages[i]);
         }
         Assert.Equal(expectedModel, deserialized.Model);
+        Assert.Equal(expectedBillingPolicy, deserialized.BillingPolicy);
         Assert.Equal(expectedCacheControl, deserialized.CacheControl);
         Assert.Equal(expectedCompaction, deserialized.Compaction);
         Assert.Equal(expectedContainer, deserialized.Container);
@@ -3160,6 +3188,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3300,6 +3329,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3374,6 +3404,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3429,6 +3460,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3515,6 +3547,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3687,6 +3720,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()
@@ -3841,6 +3875,8 @@ public class ParamsTest : TestBase
             ],
         };
 
+        Assert.Null(model.BillingPolicy);
+        Assert.False(model.RawData.ContainsKey("billing_policy"));
         Assert.Null(model.CacheControl);
         Assert.False(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Compaction);
@@ -4057,6 +4093,7 @@ public class ParamsTest : TestBase
                 },
             ],
 
+            BillingPolicy = null,
             CacheControl = null,
             Compaction = null,
             Container = null,
@@ -4070,6 +4107,8 @@ public class ParamsTest : TestBase
             Thread = null,
         };
 
+        Assert.Null(model.BillingPolicy);
+        Assert.True(model.RawData.ContainsKey("billing_policy"));
         Assert.Null(model.CacheControl);
         Assert.True(model.RawData.ContainsKey("cache_control"));
         Assert.Null(model.Compaction);
@@ -4188,6 +4227,7 @@ public class ParamsTest : TestBase
                 },
             ],
 
+            BillingPolicy = null,
             CacheControl = null,
             Compaction = null,
             Container = null,
@@ -4212,6 +4252,7 @@ public class ParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new Messages::BetaUserMessageParam("Hello, world")],
             Model = ModelsMessages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = Messages::BetaBillTo.Self },
             CacheControl = new() { Ttl = Messages::Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new Messages::BetaContainerParams()

@@ -118,6 +118,22 @@ public record class MessageCountTokensParams : ParamsBase
     }
 
     /// <summary>
+    /// Declares which organization is billed when this body is sent to `/v1/messages`.
+    /// Accepted here so that you can count the tokens of the exact body you will
+    /// send, and otherwise ignored: counting tokens bills nobody, so no user profile
+    /// is required.
+    /// </summary>
+    public BetaBillingPolicy? BillingPolicy
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaBillingPolicy>("billing_policy");
+        }
+        init { this._rawBodyData.Set("billing_policy", value); }
+    }
+
+    /// <summary>
     /// Top-level cache control automatically applies a cache_control marker to the
     /// last cacheable block in the request.
     /// </summary>

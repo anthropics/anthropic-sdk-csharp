@@ -291,6 +291,7 @@ public abstract record class ModelBase
                 string,
                 Messages::BetaBashCodeExecutionToolResultErrorParamErrorCode
             >(),
+            new ApiEnumConverter<string, Messages::BetaBillTo>(),
             new ApiEnumConverter<string, Messages::BetaBrowserClickTargetType>(),
             new ApiEnumConverter<string, Messages::BetaBrowserReadPageFilter>(),
             new ApiEnumConverter<string, Messages::BetaBrowserScrollDirection>(),
