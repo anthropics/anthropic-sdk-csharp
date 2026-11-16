@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v1.0.0...Aws-v1.0.1) (2026-11-16)
+
+### Bug Fixes
+
+* **aws:** format SigV4 dates with the invariant culture
+
 ## [1.0.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v0.7.0...Aws-v1.0.0) (2026-10-21)
 
 ### ⚠ BREAKING CHANGES

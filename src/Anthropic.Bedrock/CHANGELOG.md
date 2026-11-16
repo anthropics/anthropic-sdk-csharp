@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.3](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.2...Bedrock-v1.0.3) (2026-11-16)
+
+### Bug Fixes
+
+* **bedrock:** format SigV4 dates with the invariant culture
+
 ## [1.0.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.1...Bedrock-v1.0.2) (2026-11-10)
 
 ### Bug Fixes
