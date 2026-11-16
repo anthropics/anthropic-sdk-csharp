@@ -6,7 +6,6 @@ using Anthropic;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Services;
-using Beta = Anthropic.Services.Beta;
 
 namespace Anthropic.Bedrock;
 
@@ -196,214 +195,36 @@ public sealed class AnthropicBedrockMantleClient : AnthropicClient
 
     #region Restricted Beta Wrappers
 
-    private sealed class RestrictedBetaService : IBetaService
+    private sealed class RestrictedBetaService(IBetaService inner) : BetaServiceDecorator(inner)
     {
-        private readonly IBetaService _inner;
+        public override IBetaServiceWithRawResponse WithRawResponse =>
+            new RestrictedBetaServiceWithRawResponse(InnerService.WithRawResponse);
 
-        public RestrictedBetaService(IBetaService inner) => _inner = inner;
+        public override IBetaService WithOptions(Func<ClientOptions, ClientOptions> modifier) =>
+            new RestrictedBetaService(InnerService.WithOptions(modifier));
 
-        public IBetaServiceWithRawResponse WithRawResponse =>
-            new RestrictedBetaServiceWithRawResponse(_inner.WithRawResponse);
-
-        public IBetaService WithOptions(Func<ClientOptions, ClientOptions> modifier) =>
-            new RestrictedBetaService(_inner.WithOptions(modifier));
-
-        public Beta::IMessageService Messages => _inner.Messages;
-
-        public Beta::IModelService Models =>
-            throw new NotSupportedException(
-                "The Beta.Models resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IFileService Files =>
-            throw new NotSupportedException(
-                "The Beta.Files resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ISkillService Skills =>
-            throw new NotSupportedException(
-                "The Beta.Skills resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IAgentService Agents =>
-            throw new NotSupportedException(
-                "The Beta.Agents resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IEnvironmentService Environments =>
-            throw new NotSupportedException(
-                "The Beta.Environments resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ISessionService Sessions =>
-            throw new NotSupportedException(
-                "The Beta.Sessions resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IVaultService Vaults =>
-            throw new NotSupportedException(
-                "The Beta.Vaults resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IMemoryStoreService MemoryStores =>
-            throw new NotSupportedException(
-                "The Beta.MemoryStores resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IUserProfileService UserProfiles =>
-            throw new NotSupportedException(
-                "The Beta.UserProfiles resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IWebhookService Webhooks =>
-            throw new NotSupportedException(
-                "The Beta.Webhooks resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDeploymentService Deployments =>
-            throw new NotSupportedException(
-                "The Beta.Deployments resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDeploymentRunService DeploymentRuns =>
-            throw new NotSupportedException(
-                "The Beta.DeploymentRuns resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDreamService Dreams =>
-            throw new NotSupportedException(
-                "The Beta.Dreams resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ITunnelService Tunnels =>
-            throw new NotSupportedException(
-                "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IOrganizationService Organization =>
-            throw new NotSupportedException(
-                "The Beta.Organization resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
+        protected override T Subresource<T>(string name, Func<IBetaService, T> get) =>
+            name == nameof(Messages) ? get(InnerService) : Refuse<T>(name);
     }
 
-    private sealed class RestrictedBetaServiceWithRawResponse : IBetaServiceWithRawResponse
+    private sealed class RestrictedBetaServiceWithRawResponse(IBetaServiceWithRawResponse inner)
+        : BetaServiceWithRawResponseDecorator(inner)
     {
-        private readonly IBetaServiceWithRawResponse _inner;
-
-        public RestrictedBetaServiceWithRawResponse(IBetaServiceWithRawResponse inner) =>
-            _inner = inner;
-
-        public IBetaServiceWithRawResponse WithOptions(
+        public override IBetaServiceWithRawResponse WithOptions(
             Func<ClientOptions, ClientOptions> modifier
-        ) => new RestrictedBetaServiceWithRawResponse(_inner.WithOptions(modifier));
+        ) => new RestrictedBetaServiceWithRawResponse(InnerService.WithOptions(modifier));
 
-        public Beta::IMessageServiceWithRawResponse Messages => _inner.Messages;
-
-        public Beta::IModelServiceWithRawResponse Models =>
-            throw new NotSupportedException(
-                "The Beta.Models resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IFileServiceWithRawResponse Files =>
-            throw new NotSupportedException(
-                "The Beta.Files resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ISkillServiceWithRawResponse Skills =>
-            throw new NotSupportedException(
-                "The Beta.Skills resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IAgentServiceWithRawResponse Agents =>
-            throw new NotSupportedException(
-                "The Beta.Agents resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IEnvironmentServiceWithRawResponse Environments =>
-            throw new NotSupportedException(
-                "The Beta.Environments resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ISessionServiceWithRawResponse Sessions =>
-            throw new NotSupportedException(
-                "The Beta.Sessions resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IVaultServiceWithRawResponse Vaults =>
-            throw new NotSupportedException(
-                "The Beta.Vaults resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IMemoryStoreServiceWithRawResponse MemoryStores =>
-            throw new NotSupportedException(
-                "The Beta.MemoryStores resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IUserProfileServiceWithRawResponse UserProfiles =>
-            throw new NotSupportedException(
-                "The Beta.UserProfiles resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IWebhookServiceWithRawResponse Webhooks =>
-            throw new NotSupportedException(
-                "The Beta.Webhooks resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDeploymentServiceWithRawResponse Deployments =>
-            throw new NotSupportedException(
-                "The Beta.Deployments resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDeploymentRunServiceWithRawResponse DeploymentRuns =>
-            throw new NotSupportedException(
-                "The Beta.DeploymentRuns resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IDreamServiceWithRawResponse Dreams =>
-            throw new NotSupportedException(
-                "The Beta.Dreams resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::ITunnelServiceWithRawResponse Tunnels =>
-            throw new NotSupportedException(
-                "The Beta.Tunnels resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
-
-        public Beta::IOrganizationServiceWithRawResponse Organization =>
-            throw new NotSupportedException(
-                "The Beta.Organization resource is not supported on Bedrock Mantle. "
-                    + "Only Messages and Beta.Messages are available."
-            );
+        protected override T Subresource<T>(
+            string name,
+            Func<IBetaServiceWithRawResponse, T> get
+        ) => name == nameof(Messages) ? get(InnerService) : Refuse<T>(name);
     }
+
+    private static T Refuse<T>(string resource) =>
+        throw new NotSupportedException(
+            $"The Beta.{resource} resource is not supported on Bedrock Mantle. "
+                + "Only Messages and Beta.Messages are available."
+        );
 
     #endregion
 }

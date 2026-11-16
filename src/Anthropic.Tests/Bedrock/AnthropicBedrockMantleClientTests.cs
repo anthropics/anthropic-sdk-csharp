@@ -999,6 +999,38 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         Assert.Throws<NotSupportedException>(() => client.Beta.Skills);
     }
 
+    [Fact]
+    public void BetaViews_StillThrowNotSupportedException()
+    {
+        var client = new AnthropicBedrockMantleClient(
+            new() { ApiKey = "test-key", BaseUrl = "http://localhost" }
+        );
+        var modified = client.Beta.WithOptions(opts => opts);
+        var raw = client.Beta.WithRawResponse;
+        var modifiedRaw = raw.WithOptions(opts => opts);
+
+        NotSupportedException[] refusals =
+        [
+            Assert.Throws<NotSupportedException>(() => client.Beta.Models),
+            Assert.Throws<NotSupportedException>(() => modified.Models),
+            Assert.Throws<NotSupportedException>(() => raw.Models),
+            Assert.Throws<NotSupportedException>(() => modifiedRaw.Models),
+        ];
+        Assert.All(
+            refusals,
+            refusal =>
+                Assert.Equal(
+                    "The Beta.Models resource is not supported on Bedrock Mantle. "
+                        + "Only Messages and Beta.Messages are available.",
+                    refusal.Message
+                )
+        );
+
+        Assert.NotNull(modified.Messages);
+        Assert.NotNull(raw.Messages);
+        Assert.NotNull(modifiedRaw.Messages);
+    }
+
     #endregion
 
     #region WithOptions / WithRawResponse
