@@ -11,12 +11,7 @@ using Anthropic.Services.Beta.Environments;
 namespace Anthropic.Models.Beta.Environments.Work;
 
 /// <summary>
-/// Note: these endpoints are called automatically by the pre-built environment worker
-/// provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox
-/// environments. They are included here as a reference; you do not need to invoke
-/// them directly.
-///
-/// <para>Stop a work item, initiating graceful or forced shutdown.</para>
+/// Stop a work item, initiating graceful or forced shutdown.
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
