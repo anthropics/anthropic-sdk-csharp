@@ -1,5 +1,38 @@
 # Changelog
 
+## [13.9.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.8.0...Anthropic-v13.9.0) (2026-11-16)
+
+### Features
+
+* **api:** add source and error codes to the RBAC Role read endpoints
+* **api:** add Update Bundle, which sets a Claude Tag Bundle's instructions, and return instructions on Bundle
+
+
+### Bug Fixes
+
+* **credentials:** refuse credentials files that group or others can write
+
+
+### Chores
+
+* **api:** deprecate old beta header values
+
+  The API still accepts these values, but a later release removes them from the SDKs. Delete `prompt-caching-2024-07-31`, `pdfs-2024-09-25`, `token-counting-2024-11-01`, `token-efficient-tools-2025-02-19`, `extended-cache-ttl-2025-04-11`, `cache-diagnosis-2026-04-07` and `ce-user-management-2026-07-13` from your requests. `files-api-2025-04-14` and `skills-2025-10-02` select the beta response shapes, so follow the Files API and Skills migration guides before you delete them.
+
+  In C#, the `AnthropicBeta` enum's members have new numbers, so code compiled against an earlier SDK version sends a different beta value, with no error, until you rebuild it.
+
+* **api:** stop sending an old beta header on batch requests
+
+  `beta.messages.batches` no longer sends `message-batches-2024-09-24`, which the API doesn't need. If your client sets a default `anthropic-beta` header, these requests now send it, where in some SDKs the old value replaced it. The API still accepts the old value. If you set it yourself, delete it: a later release removes it from the SDKs.
+
+* **docs:** clarify data_refreshed_at on usage and cost reports
+* **docs:** clarify when the auto permission policy denies a tool call
+* **docs:** clarify which workspaces an external key can be attached to
+* **docs:** recommend multiagent_20261001 over the coordinator type
+* **docs:** remove note that a page of plugin shares may be short
+* **docs:** say when organization_id is required on plugin reads
+* **internal:** add a base class for wrappers of grouping services
+
 ## [13.8.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.7.0...Anthropic-v13.8.0) (2026-11-10)
 
 ### Features
