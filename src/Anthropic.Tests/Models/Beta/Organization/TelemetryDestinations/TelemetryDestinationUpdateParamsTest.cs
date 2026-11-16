@@ -27,7 +27,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
                 MaxContentBytes = 0,
             },
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedDestinationID = "destination_id";
@@ -45,10 +45,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
         };
         BetaTelemetryDestinationWorkspacesParams expectedWorkspaces =
             new BetaTelemetryDestinationWorkspacesAllParams();
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedDestinationID, parameters.DestinationID);
         Assert.Equal(expectedDisplayName, parameters.DisplayName);
@@ -150,7 +147,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
                 MaxContentBytes = 0,
             },
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -179,7 +176,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
             EndpointUrl = "endpoint_url",
             State = new BetaTelemetryDestinationStateEnabledParams(),
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.DisplayName);
@@ -199,7 +196,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
             EndpointUrl = "endpoint_url",
             State = new BetaTelemetryDestinationStateEnabledParams(),
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             DisplayName = null,
             Headers = null,
@@ -238,13 +235,13 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
         TelemetryDestinationUpdateParams parameters = new()
         {
             DestinationID = "destination_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,telemetry-destinations-2026-08-11"],
+            ["computer-use-2024-10-22,telemetry-destinations-2026-08-11"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -267,7 +264,7 @@ public class TelemetryDestinationUpdateParamsTest : TestBase
                 MaxContentBytes = 0,
             },
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         TelemetryDestinationUpdateParams copied = new(parameters);

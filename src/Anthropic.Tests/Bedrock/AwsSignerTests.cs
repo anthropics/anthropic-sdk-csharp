@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using Anthropic.Bedrock;
 
 namespace Anthropic.Tests.Bedrock;
@@ -38,5 +39,35 @@ public class AwsSignerTests
             $"AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/20260102/us-east-1/bedrock/aws4_request, SignedHeaders=host;x-amz-date, Signature={expectedSignature}",
             authorization
         );
+    }
+
+    [Fact]
+    public void GetAuthorizationHeader_NonGregorianCulture_SignsGregorianDate()
+    {
+        var originalCulture = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = new CultureInfo("th-TH");
+        try
+        {
+            var headers = new Dictionary<string, string>();
+
+            var authorization = AWSSigner.GetAuthorizationHeader(
+                "bedrock",
+                "us-east-1",
+                "POST",
+                new Uri("https://bedrock-runtime.us-east-1.amazonaws.com/model/m/invoke"),
+                new DateTime(2026, 1, 2, 3, 4, 5, DateTimeKind.Utc),
+                headers,
+                AWSSigner.CalculateHash("{}"),
+                "AKIAIOSFODNN7EXAMPLE",
+                "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY"
+            );
+
+            Assert.Equal("20260102T030405Z", headers["x-amz-date"]);
+            Assert.Contains("Credential=AKIAIOSFODNN7EXAMPLE/20260102/us-east-1/", authorization);
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+        }
     }
 }

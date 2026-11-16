@@ -19,7 +19,7 @@ public class SlackChannelListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackChannelID = "slack_channel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedSlackWorkspaceID = "slack_workspace_id";
@@ -27,10 +27,7 @@ public class SlackChannelListParamsTest : TestBase
         int expectedLimit = 0;
         string expectedPage = "page";
         string expectedSlackChannelID = "slack_channel_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedSlackWorkspaceID, parameters.SlackWorkspaceID);
         Assert.Equal(expectedIncludeInherited, parameters.IncludeInherited);
@@ -99,7 +96,7 @@ public class SlackChannelListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackChannelID = "slack_channel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -153,13 +150,13 @@ public class SlackChannelListParamsTest : TestBase
         SlackChannelListParams parameters = new()
         {
             SlackWorkspaceID = "slack_workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,experimental-claude-tag-2026-10-21"],
+            ["computer-use-2024-10-22,experimental-claude-tag-2026-10-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -174,7 +171,7 @@ public class SlackChannelListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackChannelID = "slack_channel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         SlackChannelListParams copied = new(parameters);

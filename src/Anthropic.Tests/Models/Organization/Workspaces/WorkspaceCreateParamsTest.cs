@@ -11,7 +11,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =
@@ -25,7 +25,7 @@ public class WorkspaceCreateParamsTest : TestBase
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
-        string expectedName = "x";
+        string expectedName = "Workspace Name";
         DataResidencyCreateConfig expectedDataResidency = new()
         {
             AllowedInferenceGeos = new DataResidencyCreateConfigAllowedInferenceGeosUnrestricted(),
@@ -59,7 +59,7 @@ public class WorkspaceCreateParamsTest : TestBase
     [Fact]
     public void OptionalNullableParamsUnsetAreNotSet_Works()
     {
-        var parameters = new WorkspaceCreateParams { Name = "x" };
+        var parameters = new WorkspaceCreateParams { Name = "Workspace Name" };
 
         Assert.Null(parameters.DataResidency);
         Assert.False(parameters.RawBodyData.ContainsKey("data_residency"));
@@ -78,7 +78,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
 
             DataResidency = null,
             DisplayColor = null,
@@ -102,7 +102,7 @@ public class WorkspaceCreateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        WorkspaceCreateParams parameters = new() { Name = "x" };
+        WorkspaceCreateParams parameters = new() { Name = "Workspace Name" };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
@@ -119,7 +119,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =

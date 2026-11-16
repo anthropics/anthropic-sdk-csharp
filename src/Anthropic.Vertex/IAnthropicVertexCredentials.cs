@@ -62,7 +62,9 @@ public static class DefaultAnthropicVertexCredentials
         region ??= "global";
 
         var credentials = string.IsNullOrWhiteSpace(accessToken)
-            ? await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false)
+            ? (
+                await GoogleCredential.GetApplicationDefaultAsync().ConfigureAwait(false)
+            ).CreateScoped(AnthropicVertexCredentials.CloudPlatformScope)
             : GoogleCredential.FromAccessToken(accessToken);
 
         if (credentials.UnderlyingCredential is null)

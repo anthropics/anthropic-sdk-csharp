@@ -19,7 +19,7 @@ public class DreamCreateParamsTest : TestBase
             Model = "string",
             Instructions = "x",
             OutputBehavior = new BetaOutputBehaviorCreateNew(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -27,10 +27,7 @@ public class DreamCreateParamsTest : TestBase
         Model expectedModel = "string";
         string expectedInstructions = "x";
         BetaOutputBehavior expectedOutputBehavior = new BetaOutputBehaviorCreateNew();
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedInputs.Count, parameters.Inputs.Count);
@@ -100,7 +97,7 @@ public class DreamCreateParamsTest : TestBase
             Model = "string",
             Instructions = "x",
             OutputBehavior = new BetaOutputBehaviorCreateNew(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -126,7 +123,7 @@ public class DreamCreateParamsTest : TestBase
             Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             OutputBehavior = new BetaOutputBehaviorCreateNew(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -142,7 +139,7 @@ public class DreamCreateParamsTest : TestBase
             Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
             OutputBehavior = new BetaOutputBehaviorCreateNew(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Instructions = null,
@@ -174,14 +171,14 @@ public class DreamCreateParamsTest : TestBase
         {
             Inputs = [new BetaDreamMemoryStoreInput("x")],
             Model = "string",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,dreaming-2026-04-21"],
+            ["computer-use-2024-10-22,dreaming-2026-04-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -199,7 +196,7 @@ public class DreamCreateParamsTest : TestBase
             Model = "string",
             Instructions = "x",
             OutputBehavior = new BetaOutputBehaviorCreateNew(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

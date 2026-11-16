@@ -17,16 +17,13 @@ public class WorkListParamsTest : TestBase
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         long expectedLimit = 1;
         string expectedPage = "page";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedEnvironmentID, parameters.EnvironmentID);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -81,7 +78,7 @@ public class WorkListParamsTest : TestBase
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -102,7 +99,7 @@ public class WorkListParamsTest : TestBase
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Page);
@@ -116,7 +113,7 @@ public class WorkListParamsTest : TestBase
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Page = null,
         };
@@ -154,13 +151,13 @@ public class WorkListParamsTest : TestBase
         WorkListParams parameters = new()
         {
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
+            ["computer-use-2024-10-22,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -173,7 +170,7 @@ public class WorkListParamsTest : TestBase
             EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             Limit = 1,
             Page = "page",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WorkListParams copied = new(parameters);

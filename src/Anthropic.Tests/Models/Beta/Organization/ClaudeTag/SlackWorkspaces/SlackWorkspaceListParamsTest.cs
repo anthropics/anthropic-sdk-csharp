@@ -18,17 +18,14 @@ public class SlackWorkspaceListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackWorkspaceID = "slack_workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         bool expectedIncludeInherited = true;
         int expectedLimit = 0;
         string expectedPage = "page";
         string expectedSlackWorkspaceID = "slack_workspace_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedIncludeInherited, parameters.IncludeInherited);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -93,7 +90,7 @@ public class SlackWorkspaceListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackWorkspaceID = "slack_workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -145,13 +142,13 @@ public class SlackWorkspaceListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         SlackWorkspaceListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,experimental-claude-tag-2026-10-21"],
+            ["computer-use-2024-10-22,experimental-claude-tag-2026-10-21"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -165,7 +162,7 @@ public class SlackWorkspaceListParamsTest : TestBase
             Limit = 0,
             Page = "page",
             SlackWorkspaceID = "slack_workspace_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         SlackWorkspaceListParams copied = new(parameters);

@@ -16,16 +16,13 @@ public class TunnelRotateTokenParamsTest : TestBase
         {
             TunnelID = "tunnel_id",
             Reason = "reason",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedTunnelID = "tunnel_id";
         string expectedReason = "reason";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedTunnelID, parameters.TunnelID);
@@ -76,7 +73,7 @@ public class TunnelRotateTokenParamsTest : TestBase
         {
             TunnelID = "tunnel_id",
             Reason = "reason",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -97,7 +94,7 @@ public class TunnelRotateTokenParamsTest : TestBase
         var parameters = new TunnelRotateTokenParams
         {
             TunnelID = "tunnel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -111,7 +108,7 @@ public class TunnelRotateTokenParamsTest : TestBase
         var parameters = new TunnelRotateTokenParams
         {
             TunnelID = "tunnel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             Reason = null,
@@ -143,14 +140,14 @@ public class TunnelRotateTokenParamsTest : TestBase
         TunnelRotateTokenParams parameters = new()
         {
             TunnelID = "tunnel_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,mcp-tunnels-2026-06-22"],
+            ["computer-use-2024-10-22,mcp-tunnels-2026-06-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -166,7 +163,7 @@ public class TunnelRotateTokenParamsTest : TestBase
         {
             TunnelID = "tunnel_id",
             Reason = "reason",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

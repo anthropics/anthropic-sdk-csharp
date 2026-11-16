@@ -19,16 +19,13 @@ public class SpendLimitSetParamsTest : TestBase
             Amount = "50000",
             Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedAmount = "50000";
         Scope expectedScope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu");
         ApiEnum<string, BetaSpendLimitPeriod> expectedPeriod = BetaSpendLimitPeriod.Monthly;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedAmount, parameters.Amount);
         Assert.Equal(expectedScope, parameters.Scope);
@@ -83,7 +80,7 @@ public class SpendLimitSetParamsTest : TestBase
             Amount = "50000",
             Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -124,13 +121,13 @@ public class SpendLimitSetParamsTest : TestBase
         {
             Amount = "50000",
             Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -143,7 +140,7 @@ public class SpendLimitSetParamsTest : TestBase
             Amount = "50000",
             Scope = new BetaSpendLimitUserScope("user_01WxYzAbCdEfGhJkMnPqRsTu"),
             Period = BetaSpendLimitPeriod.Monthly,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         SpendLimitSetParams copied = new(parameters);

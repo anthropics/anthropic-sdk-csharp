@@ -39,9 +39,9 @@ public sealed record class RbacRole : JsonModel
     }
 
     /// <summary>
-    /// Name of the RBAC Role. For a role created by Anthropic, this is Anthropic's
-    /// name for the access that the role grants. Anthropic may change this name,
-    /// so to keep a lasting reference to a role, store its `id`.
+    /// Name of the RBAC Role. For a built-in role, this is Anthropic's name for
+    /// the access that the role grants. Anthropic may change this name, so to keep
+    /// a lasting reference to a role, store its `id`.
     /// </summary>
     public required string DisplayName
     {
@@ -51,6 +51,20 @@ public sealed record class RbacRole : JsonModel
             return this._rawData.GetNotNullClass<string>("display_name");
         }
         init { this._rawData.Set("display_name", value); }
+    }
+
+    /// <summary>
+    /// Whether the RBAC Role is built-in or custom. More values of `type` may be
+    /// added, so do not treat every role that is not `built_in` as `custom`.
+    /// </summary>
+    public required RbacRoleSource Source
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<RbacRoleSource>("source");
+        }
+        init { this._rawData.Set("source", value); }
     }
 
     /// <summary>
@@ -87,6 +101,7 @@ public sealed record class RbacRole : JsonModel
         _ = this.ID;
         _ = this.CreatedAt;
         _ = this.DisplayName;
+        this.Source.Validate();
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("rbac_role")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");

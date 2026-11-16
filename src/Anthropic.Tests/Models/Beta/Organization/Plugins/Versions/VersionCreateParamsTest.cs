@@ -21,16 +21,13 @@ public class VersionCreateParamsTest : TestBase
             PluginID = "plugin_id",
             Files = [files],
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedPluginID = "plugin_id";
         List<BinaryContent> expectedFiles = [files];
         string expectedReleaseNotes = "release_notes";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedPluginID, parameters.PluginID);
         Assert.Equal(expectedFiles.Count, parameters.Files.Count);
@@ -91,7 +88,7 @@ public class VersionCreateParamsTest : TestBase
             PluginID = "plugin_id",
             Files = [files],
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -132,13 +129,13 @@ public class VersionCreateParamsTest : TestBase
         {
             PluginID = "plugin_id",
             Files = [Encoding.UTF8.GetBytes("Example data")],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -153,7 +150,7 @@ public class VersionCreateParamsTest : TestBase
             PluginID = "plugin_id",
             Files = [files],
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.True(parameters.IsBodyRepeatable());
@@ -172,7 +169,7 @@ public class VersionCreateParamsTest : TestBase
             PluginID = "plugin_id",
             Files = [files],
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.False(parameters.IsBodyRepeatable());
@@ -186,7 +183,7 @@ public class VersionCreateParamsTest : TestBase
             PluginID = "plugin_id",
             Files = [Encoding.UTF8.GetBytes("Example data")],
             ReleaseNotes = "release_notes",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         VersionCreateParams copied = new(parameters);

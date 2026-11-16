@@ -14,11 +14,6 @@ namespace Anthropic.Services.Beta.Messages;
 /// <inheritdoc/>
 public sealed class BatchService : IBatchService
 {
-    internal static void AddDefaultHeaders(HttpRequestMessage request)
-    {
-        request.Headers.Add("anthropic-beta", "message-batches-2024-09-24");
-    }
-
     readonly Lazy<IBatchServiceWithRawResponse> _withRawResponse;
 
     /// <inheritdoc/>

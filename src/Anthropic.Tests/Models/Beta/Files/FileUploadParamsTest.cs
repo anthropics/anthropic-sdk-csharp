@@ -20,16 +20,13 @@ public class FileUploadParamsTest : TestBase
         {
             File = file,
             ExpiresInSeconds = 3600,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         BinaryContent expectedFile = file;
         long expectedExpiresInSeconds = 3600;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedFile, parameters.File);
@@ -90,7 +87,7 @@ public class FileUploadParamsTest : TestBase
         {
             File = file,
             ExpiresInSeconds = 3600,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -125,14 +122,14 @@ public class FileUploadParamsTest : TestBase
         FileUploadParams parameters = new()
         {
             File = Encoding.UTF8.GetBytes("Example data"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -150,7 +147,7 @@ public class FileUploadParamsTest : TestBase
         {
             File = file,
             ExpiresInSeconds = 3600,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -169,7 +166,7 @@ public class FileUploadParamsTest : TestBase
         {
             File = file,
             ExpiresInSeconds = 3600,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -183,7 +180,7 @@ public class FileUploadParamsTest : TestBase
         {
             File = Encoding.UTF8.GetBytes("Example data"),
             ExpiresInSeconds = 3600,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

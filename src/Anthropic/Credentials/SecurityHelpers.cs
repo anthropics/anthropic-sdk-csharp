@@ -73,7 +73,7 @@ internal static class SecurityHelpers
 
 #if NET
     /// <summary>
-    /// On POSIX systems, checks that a credentials file is not world-readable.
+    /// On Linux and macOS, throws if group or others can read or write the credentials file.
     /// </summary>
     internal static void CheckFilePermissions(string path)
     {
@@ -84,10 +84,16 @@ internal static class SecurityHelpers
 
         var mode = File.GetUnixFileMode(path);
 
-        if ((mode & (UnixFileMode.OtherRead | UnixFileMode.GroupRead)) != 0)
+        const UnixFileMode groupOrOtherAccess =
+            UnixFileMode.GroupRead
+            | UnixFileMode.GroupWrite
+            | UnixFileMode.OtherRead
+            | UnixFileMode.OtherWrite;
+
+        if ((mode & groupOrOtherAccess) != 0)
         {
             throw new InvalidOperationException(
-                $"Credentials file {path} is world-readable. Set permissions to 0600."
+                $"Credentials file {path} is readable or writable by group or others (mode 0{Convert.ToString((int)mode, 8)}). Run `chmod 600 {path}`."
             );
         }
     }

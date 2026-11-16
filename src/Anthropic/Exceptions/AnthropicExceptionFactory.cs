@@ -48,6 +48,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "bundle_attachment_not_supported")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaBundleAttachmentNotSupportedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "bundle_on_call")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaBundleOnCallException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "cannot_invite_emails_with_unverified_domains")] = (
             statusCode,
             responseBody,
@@ -294,6 +310,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "organization_type_not_supported")] = (statusCode, responseBody, response) =>
             new AnthropicOrganizationTypeNotSupportedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "parent_organization_required")] = (statusCode, responseBody, response) =>
+            new AnthropicParentOrganizationRequiredException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -558,6 +582,14 @@ public class AnthropicExceptionFactory
             },
         [(404, "file_expired")] = (statusCode, responseBody, response) =>
             new AnthropicFileExpiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(404, "rbac_role_not_found")] = (statusCode, responseBody, response) =>
+            new AnthropicRbacRoleNotFoundException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

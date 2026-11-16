@@ -16,15 +16,12 @@ public class PluginRetrieveParamsTest : TestBase
         {
             PluginID = "plugin_id",
             OrganizationID = "organization_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedPluginID = "plugin_id";
         string expectedOrganizationID = "organization_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedPluginID, parameters.PluginID);
         Assert.Equal(expectedOrganizationID, parameters.OrganizationID);
@@ -72,7 +69,7 @@ public class PluginRetrieveParamsTest : TestBase
         {
             PluginID = "plugin_id",
             OrganizationID = "organization_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -89,7 +86,7 @@ public class PluginRetrieveParamsTest : TestBase
         var parameters = new PluginRetrieveParams
         {
             PluginID = "plugin_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.OrganizationID);
@@ -102,7 +99,7 @@ public class PluginRetrieveParamsTest : TestBase
         var parameters = new PluginRetrieveParams
         {
             PluginID = "plugin_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             OrganizationID = null,
         };
@@ -139,13 +136,13 @@ public class PluginRetrieveParamsTest : TestBase
         PluginRetrieveParams parameters = new()
         {
             PluginID = "plugin_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -157,7 +154,7 @@ public class PluginRetrieveParamsTest : TestBase
         {
             PluginID = "plugin_id",
             OrganizationID = "organization_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         PluginRetrieveParams copied = new(parameters);

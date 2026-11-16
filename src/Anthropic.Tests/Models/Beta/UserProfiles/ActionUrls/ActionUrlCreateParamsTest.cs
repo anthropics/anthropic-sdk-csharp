@@ -16,16 +16,13 @@ public class ActionUrlCreateParamsTest : TestBase
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             Action = new(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedUserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9";
         BetaUserProfileEnrollEndUserAction expectedAction = new();
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedUserProfileID, parameters.UserProfileID);
@@ -80,7 +77,7 @@ public class ActionUrlCreateParamsTest : TestBase
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             Action = new(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -124,14 +121,14 @@ public class ActionUrlCreateParamsTest : TestBase
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             Action = new(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,user-profiles-2026-08-18"],
+            ["computer-use-2024-10-22,user-profiles-2026-08-18"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -147,7 +144,7 @@ public class ActionUrlCreateParamsTest : TestBase
         {
             UserProfileID = "uprof_011CZkZCu8hGbp5mYRQgUmz9",
             Action = new(),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

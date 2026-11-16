@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -463,6 +464,39 @@ public class AnthropicAwsClientTests : IDisposable
             "AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/",
             req.Headers.GetValues("Authorization").Single()
         );
+    }
+
+    [Fact]
+    public async Task SigV4Mode_NonGregorianCulture_SignsGregorianDate()
+    {
+        var client = new AnthropicAwsClient(
+            new()
+            {
+                AwsAccessKey = "AKIAIOSFODNN7EXAMPLE",
+                AwsSecretAccessKey = "wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY",
+                AwsRegion = "us-east-1",
+                WorkspaceId = "default",
+                BaseUrl = "http://localhost",
+            }
+        );
+
+        var originalCulture = CultureInfo.CurrentCulture;
+        CultureInfo.CurrentCulture = new CultureInfo("th-TH");
+        try
+        {
+            var req = await AnthropicAwsClientTests.SendOneRequest(client);
+
+            var year = DateTime.UtcNow.Year.ToString(CultureInfo.InvariantCulture);
+            Assert.StartsWith(year, req.Headers.GetValues("x-amz-date").Single());
+            Assert.StartsWith(
+                $"AWS4-HMAC-SHA256 Credential=AKIAIOSFODNN7EXAMPLE/{year}",
+                req.Headers.GetValues("Authorization").Single()
+            );
+        }
+        finally
+        {
+            CultureInfo.CurrentCulture = originalCulture;
+        }
     }
 
     [Fact]

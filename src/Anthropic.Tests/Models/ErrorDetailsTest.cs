@@ -409,6 +409,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredValidationWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundValidationWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledValidationWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -619,6 +633,20 @@ public class ErrorDetailsTest : TestBase
         ErrorDetails value = new BetaSlackChannelSetUpSettingsConflictErrorDetails(
             "slack_channel_id"
         );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaBundleAttachmentNotSupportedValidationWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaBundleOnCallValidationWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
         value.Validate();
     }
 
@@ -1330,6 +1358,32 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -1702,6 +1756,32 @@ public class ErrorDetailsTest : TestBase
         ErrorDetails value = new BetaSlackChannelSetUpSettingsConflictErrorDetails(
             "slack_channel_id"
         );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaBundleAttachmentNotSupportedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaBundleOnCallSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2107,6 +2187,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ParentOrganizationRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new ParentOrganizationRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ParentOrganizationRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void RbacRoleNotFoundErrorCodeWorks()
+    {
+        ErrorDetails value = new RbacRoleNotFoundErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RbacRoleNotFound, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaEnvironmentCreateDisabledErrorCodeWorks()
     {
         ErrorDetails value = new BetaEnvironmentCreateDisabledErrorDetails();
@@ -2339,6 +2433,20 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaBundleAttachmentNotSupportedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaBundleAttachmentNotSupportedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.BundleAttachmentNotSupported, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaBundleOnCallErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaBundleOnCallErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.BundleOnCall, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         ErrorDetails value = new(
@@ -2454,6 +2562,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
+    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentArchived)]
     [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange)]
@@ -2482,6 +2592,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict)]
+    [InlineData(ErrorDetailsErrorCode.BundleAttachmentNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.BundleOnCall)]
     public void Validation_Works(ErrorDetailsErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -2556,6 +2668,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
+    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled)]
     [InlineData(ErrorDetailsErrorCode.EnvironmentArchived)]
     [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange)]
@@ -2584,6 +2698,8 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict)]
+    [InlineData(ErrorDetailsErrorCode.BundleAttachmentNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.BundleOnCall)]
     public void SerializationRoundtrip_Works(ErrorDetailsErrorCode rawValue)
     {
         // force implicit conversion because Theory can't do that for us

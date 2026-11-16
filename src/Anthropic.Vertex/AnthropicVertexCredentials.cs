@@ -7,6 +7,8 @@ namespace Anthropic.Vertex;
 /// </summary>
 public class AnthropicVertexCredentials : IAnthropicVertexCredentials
 {
+    internal const string CloudPlatformScope = "https://www.googleapis.com/auth/cloud-platform";
+
     private readonly GoogleCredential _googleCredentials;
 
     /// <summary>
@@ -15,7 +17,11 @@ public class AnthropicVertexCredentials : IAnthropicVertexCredentials
     /// <param name="region">The region string for the project or <c>null</c> for global.</param>
     /// <param name="project">The project string.</param>
     public AnthropicVertexCredentials(string? region, string project)
-        : this(region, project, GoogleCredential.GetApplicationDefault()) { }
+        : this(
+            region,
+            project,
+            GoogleCredential.GetApplicationDefault().CreateScoped(CloudPlatformScope)
+        ) { }
 
     /// <summary>
     /// Creates a new instance of the <see cref="AnthropicVertexCredentials"/>.

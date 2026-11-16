@@ -20,7 +20,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
-            Name = "x",
+            Name = "Workspace Name",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
@@ -34,7 +34,7 @@ public class WorkspaceUpdateParamsTest : TestBase
         };
         string expectedDisplayColor = "#6C5BB9";
         string expectedExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
-        string expectedName = "x";
+        string expectedName = "Workspace Name";
         Dictionary<string, string?> expectedTags = new()
         {
             { "env", "prod" },
@@ -128,7 +128,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
-            Name = "x",
+            Name = "Workspace Name",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         } with
@@ -158,7 +158,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             WorkspaceID = "workspace_id",
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
-            Name = "x",
+            Name = "Workspace Name",
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
 
@@ -176,7 +176,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             WorkspaceID = "workspace_id",
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
-            Name = "x",
+            Name = "Workspace Name",
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
 
             DataResidency = null,
@@ -218,7 +218,7 @@ public class WorkspaceUpdateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
-            Name = "x",
+            Name = "Workspace Name",
             Tags = new Dictionary<string, string?>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };

@@ -9,8 +9,10 @@ using Anthropic.Exceptions;
 namespace Anthropic.Models.Beta.Sessions.Events;
 
 /// <summary>
-/// The server judged the invocation high-risk; it does not execute and a synthetic
-/// error tool result is appended.
+/// The server judged the invocation high-risk, or reached no judgement and did not
+/// hold it for client approval (for example, because the organization is out of
+/// credits or has reached a spend limit); it does not execute and a synthetic error
+/// tool result is appended.
 /// </summary>
 [JsonConverter(
     typeof(JsonModelConverter<
@@ -22,8 +24,9 @@ public sealed record class BetaManagedAgentsAgentAutoEvaluatedPermissionDeny : J
 {
     /// <summary>
     /// The judgement's grounds in registry-bound terms. Open registry; currently
-    /// "high_risk" (judged high-risk; the call does not run). Clients must tolerate
-    /// values outside this set.
+    /// "high_risk" (judged high-risk; the call does not run) and "indeterminate"
+    /// (no judgement was reached; the call does not run). Clients must tolerate values
+    /// outside this set.
     /// </summary>
     public required string ReasonCode
     {

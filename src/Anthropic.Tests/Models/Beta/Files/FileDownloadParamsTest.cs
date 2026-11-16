@@ -15,15 +15,12 @@ public class FileDownloadParamsTest : TestBase
         var parameters = new FileDownloadParams
         {
             FileID = "file_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         string expectedFileID = "file_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedFileID, parameters.FileID);
@@ -71,7 +68,7 @@ public class FileDownloadParamsTest : TestBase
         var parameters = new FileDownloadParams
         {
             FileID = "file_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -105,14 +102,14 @@ public class FileDownloadParamsTest : TestBase
         FileDownloadParams parameters = new()
         {
             FileID = "file_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -127,7 +124,7 @@ public class FileDownloadParamsTest : TestBase
         var parameters = new FileDownloadParams
         {
             FileID = "file_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

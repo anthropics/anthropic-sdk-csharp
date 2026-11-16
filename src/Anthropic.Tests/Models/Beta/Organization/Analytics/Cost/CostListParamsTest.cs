@@ -44,7 +44,7 @@ public class CostListParamsTest : TestBase
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
             WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z");
@@ -99,10 +99,7 @@ public class CostListParamsTest : TestBase
             BetaAnalyticsTimeBucketWidth.Day;
         List<string> expectedUserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"];
         List<string> expectedWorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"];
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedStartingAt, parameters.StartingAt);
         Assert.NotNull(parameters.ActorIds);
@@ -375,7 +372,7 @@ public class CostListParamsTest : TestBase
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
             WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -408,7 +405,7 @@ public class CostListParamsTest : TestBase
             Limit = 1,
             Order = BetaAnalyticsUsageCostSortOrder.Asc,
             OrderBy = BetaAnalyticsCostOrderBy.Amount,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.ActorIds);
@@ -471,7 +468,7 @@ public class CostListParamsTest : TestBase
             Limit = 1,
             Order = BetaAnalyticsUsageCostSortOrder.Asc,
             OrderBy = BetaAnalyticsCostOrderBy.Amount,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             ActorIds = null,
             ActorTypes = null,
@@ -604,13 +601,13 @@ public class CostListParamsTest : TestBase
         CostListParams parameters = new()
         {
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,analytics-usage-cost-2026-08-24"],
+            ["computer-use-2024-10-22,analytics-usage-cost-2026-08-24"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -649,7 +646,7 @@ public class CostListParamsTest : TestBase
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
             WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         CostListParams copied = new(parameters);

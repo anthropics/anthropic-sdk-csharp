@@ -16,6 +16,7 @@ public class BetaClaudeTagBundleTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisplayName = "display_name",
+            Instructions = "instructions",
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -23,6 +24,7 @@ public class BetaClaudeTagBundleTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDescription = "description";
         string expectedDisplayName = "display_name";
+        string expectedInstructions = "instructions";
         JsonElement expectedType = JsonSerializer.SerializeToElement("bundle");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
@@ -30,6 +32,7 @@ public class BetaClaudeTagBundleTest : TestBase
         Assert.Equal(expectedCreatedAt, model.CreatedAt);
         Assert.Equal(expectedDescription, model.Description);
         Assert.Equal(expectedDisplayName, model.DisplayName);
+        Assert.Equal(expectedInstructions, model.Instructions);
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUpdatedAt, model.UpdatedAt);
     }
@@ -43,6 +46,7 @@ public class BetaClaudeTagBundleTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisplayName = "display_name",
+            Instructions = "instructions",
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -64,6 +68,7 @@ public class BetaClaudeTagBundleTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisplayName = "display_name",
+            Instructions = "instructions",
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -78,6 +83,7 @@ public class BetaClaudeTagBundleTest : TestBase
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
         string expectedDescription = "description";
         string expectedDisplayName = "display_name";
+        string expectedInstructions = "instructions";
         JsonElement expectedType = JsonSerializer.SerializeToElement("bundle");
         DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
 
@@ -85,6 +91,7 @@ public class BetaClaudeTagBundleTest : TestBase
         Assert.Equal(expectedCreatedAt, deserialized.CreatedAt);
         Assert.Equal(expectedDescription, deserialized.Description);
         Assert.Equal(expectedDisplayName, deserialized.DisplayName);
+        Assert.Equal(expectedInstructions, deserialized.Instructions);
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUpdatedAt, deserialized.UpdatedAt);
     }
@@ -98,6 +105,7 @@ public class BetaClaudeTagBundleTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisplayName = "display_name",
+            Instructions = "instructions",
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 
@@ -113,6 +121,7 @@ public class BetaClaudeTagBundleTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisplayName = "display_name",
+            Instructions = "instructions",
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
         };
 

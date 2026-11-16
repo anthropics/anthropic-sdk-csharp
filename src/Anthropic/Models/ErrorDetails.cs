@@ -143,6 +143,9 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
                 OrganizationTypeNotSupportedErrorDetails _ =>
                     ErrorDetailsErrorCode.OrganizationTypeNotSupported,
+                ParentOrganizationRequiredErrorDetails _ =>
+                    ErrorDetailsErrorCode.ParentOrganizationRequired,
+                RbacRoleNotFoundErrorDetails _ => ErrorDetailsErrorCode.RbacRoleNotFound,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ =>
                     ErrorDetailsErrorCode.EnvironmentCreateDisabled,
                 Environments::BetaEnvironmentArchivedErrorDetails _ =>
@@ -191,6 +194,9 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ =>
                     ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict,
+                BetaBundleAttachmentNotSupportedErrorDetails _ =>
+                    ErrorDetailsErrorCode.BundleAttachmentNotSupported,
+                BetaBundleOnCallErrorDetails _ => ErrorDetailsErrorCode.BundleOnCall,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<
                     ApiEnum<string, ErrorDetailsErrorCode>
                 >(this.Json, "error_code"),
@@ -258,6 +264,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -286,6 +294,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "plugin_id"),
             };
         }
@@ -351,6 +361,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -379,6 +391,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails _ => null,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "plugin_version_id"
@@ -447,6 +461,8 @@ public record class ErrorDetails : ModelBase
                 ExternalKeyChangedErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
+                ParentOrganizationRequiredErrorDetails _ => null,
+                RbacRoleNotFoundErrorDetails _ => null,
                 Environments::BetaEnvironmentCreateDisabledErrorDetails _ => null,
                 Environments::BetaEnvironmentArchivedErrorDetails _ => null,
                 Environments::BetaInvalidConfigTypeChangeErrorDetails _ => null,
@@ -475,6 +491,8 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails x => x.SlackChannelID,
                 BetaSlackChannelSetUpSettingsConflictErrorDetails x => x.SlackChannelID,
+                BetaBundleAttachmentNotSupportedErrorDetails _ => null,
+                BetaBundleOnCallErrorDetails _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "slack_channel_id"
@@ -879,6 +897,18 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(ParentOrganizationRequiredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(RbacRoleNotFoundErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(
         Environments::BetaEnvironmentCreateDisabledErrorDetails value,
         JsonElement? element = null
@@ -1102,6 +1132,21 @@ public record class ErrorDetails : ModelBase
         BetaSlackChannelSetUpSettingsConflictErrorDetails value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaBundleAttachmentNotSupportedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaBundleOnCallErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -2350,6 +2395,50 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ParentOrganizationRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickParentOrganizationRequired(out var value)) {
+    ///     // `value` is of type `ParentOrganizationRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickParentOrganizationRequired(
+        [NotNullWhen(true)] out ParentOrganizationRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as ParentOrganizationRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="RbacRoleNotFoundErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickRbacRoleNotFound(out var value)) {
+    ///     // `value` is of type `RbacRoleNotFoundErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickRbacRoleNotFound([NotNullWhen(true)] out RbacRoleNotFoundErrorDetails? value)
+    {
+        value = this.Value as RbacRoleNotFoundErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="Environments::BetaEnvironmentCreateDisabledErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2993,6 +3082,50 @@ public record class ErrorDetails : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBundleAttachmentNotSupportedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBundleAttachmentNotSupported(out var value)) {
+    ///     // `value` is of type `BetaBundleAttachmentNotSupportedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaBundleAttachmentNotSupported(
+        [NotNullWhen(true)] out BetaBundleAttachmentNotSupportedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaBundleAttachmentNotSupportedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaBundleOnCallErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaBundleOnCall(out var value)) {
+    ///     // `value` is of type `BetaBundleOnCallErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaBundleOnCall([NotNullWhen(true)] out BetaBundleOnCallErrorDetails? value)
+    {
+        value = this.Value as BetaBundleOnCallErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -3060,6 +3193,8 @@ public record class ErrorDetails : ModelBase
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
+    ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
+    ///     (RbacRoleNotFoundErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentCreateDisabledErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentArchivedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidConfigTypeChangeErrorDetails value) =&gt; {...},
@@ -3087,7 +3222,9 @@ public record class ErrorDetails : ModelBase
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
-    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
+    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...},
+    ///     (BetaBundleAttachmentNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaBundleOnCallErrorDetails value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -3147,6 +3284,8 @@ public record class ErrorDetails : ModelBase
         Action<ExternalKeyChangedErrorDetails> externalKeyChanged,
         Action<WorkspaceMemberLimitExceededErrorDetails> workspaceMemberLimitExceeded,
         Action<OrganizationTypeNotSupportedErrorDetails> organizationTypeNotSupported,
+        Action<ParentOrganizationRequiredErrorDetails> parentOrganizationRequired,
+        Action<RbacRoleNotFoundErrorDetails> rbacRoleNotFound,
         Action<Environments::BetaEnvironmentCreateDisabledErrorDetails> betaEnvironmentCreateDisabled,
         Action<Environments::BetaEnvironmentArchivedErrorDetails> betaEnvironmentArchived,
         Action<Environments::BetaInvalidConfigTypeChangeErrorDetails> betaInvalidConfigTypeChange,
@@ -3174,7 +3313,9 @@ public record class ErrorDetails : ModelBase
         Action<BetaOrganizationLevelScopedApiKeyRequiredErrorDetails> betaOrganizationLevelScopedApiKeyRequired,
         Action<Environments::BetaEnvironmentNotFoundErrorDetails> betaEnvironmentNotFound,
         Action<BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails> betaSlackChannelSetUpEnvironmentNotFound,
-        Action<BetaSlackChannelSetUpSettingsConflictErrorDetails> betaSlackChannelSetUpSettingsConflict
+        Action<BetaSlackChannelSetUpSettingsConflictErrorDetails> betaSlackChannelSetUpSettingsConflict,
+        Action<BetaBundleAttachmentNotSupportedErrorDetails> betaBundleAttachmentNotSupported,
+        Action<BetaBundleOnCallErrorDetails> betaBundleOnCall
     )
     {
         switch (this.Value)
@@ -3341,6 +3482,12 @@ public record class ErrorDetails : ModelBase
             case OrganizationTypeNotSupportedErrorDetails value:
                 organizationTypeNotSupported(value);
                 break;
+            case ParentOrganizationRequiredErrorDetails value:
+                parentOrganizationRequired(value);
+                break;
+            case RbacRoleNotFoundErrorDetails value:
+                rbacRoleNotFound(value);
+                break;
             case Environments::BetaEnvironmentCreateDisabledErrorDetails value:
                 betaEnvironmentCreateDisabled(value);
                 break;
@@ -3425,6 +3572,12 @@ public record class ErrorDetails : ModelBase
             case BetaSlackChannelSetUpSettingsConflictErrorDetails value:
                 betaSlackChannelSetUpSettingsConflict(value);
                 break;
+            case BetaBundleAttachmentNotSupportedErrorDetails value:
+                betaBundleAttachmentNotSupported(value);
+                break;
+            case BetaBundleOnCallErrorDetails value:
+                betaBundleOnCall(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of ErrorDetails"
@@ -3501,6 +3654,8 @@ public record class ErrorDetails : ModelBase
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
+    ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
+    ///     (RbacRoleNotFoundErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentCreateDisabledErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentArchivedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidConfigTypeChangeErrorDetails value) =&gt; {...},
@@ -3528,7 +3683,9 @@ public record class ErrorDetails : ModelBase
     ///     (BetaOrganizationLevelScopedApiKeyRequiredErrorDetails value) =&gt; {...},
     ///     (Environments::BetaEnvironmentNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails value) =&gt; {...},
-    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...}
+    ///     (BetaSlackChannelSetUpSettingsConflictErrorDetails value) =&gt; {...},
+    ///     (BetaBundleAttachmentNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaBundleOnCallErrorDetails value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -3594,6 +3751,8 @@ public record class ErrorDetails : ModelBase
         Func<ExternalKeyChangedErrorDetails, T> externalKeyChanged,
         Func<WorkspaceMemberLimitExceededErrorDetails, T> workspaceMemberLimitExceeded,
         Func<OrganizationTypeNotSupportedErrorDetails, T> organizationTypeNotSupported,
+        Func<ParentOrganizationRequiredErrorDetails, T> parentOrganizationRequired,
+        Func<RbacRoleNotFoundErrorDetails, T> rbacRoleNotFound,
         Func<
             Environments::BetaEnvironmentCreateDisabledErrorDetails,
             T
@@ -3645,7 +3804,9 @@ public record class ErrorDetails : ModelBase
         Func<
             BetaSlackChannelSetUpSettingsConflictErrorDetails,
             T
-        > betaSlackChannelSetUpSettingsConflict
+        > betaSlackChannelSetUpSettingsConflict,
+        Func<BetaBundleAttachmentNotSupportedErrorDetails, T> betaBundleAttachmentNotSupported,
+        Func<BetaBundleOnCallErrorDetails, T> betaBundleOnCall
     )
     {
         return this.Value switch
@@ -3725,6 +3886,8 @@ public record class ErrorDetails : ModelBase
             ExternalKeyChangedErrorDetails value => externalKeyChanged(value),
             WorkspaceMemberLimitExceededErrorDetails value => workspaceMemberLimitExceeded(value),
             OrganizationTypeNotSupportedErrorDetails value => organizationTypeNotSupported(value),
+            ParentOrganizationRequiredErrorDetails value => parentOrganizationRequired(value),
+            RbacRoleNotFoundErrorDetails value => rbacRoleNotFound(value),
             Environments::BetaEnvironmentCreateDisabledErrorDetails value =>
                 betaEnvironmentCreateDisabled(value),
             Environments::BetaEnvironmentArchivedErrorDetails value => betaEnvironmentArchived(
@@ -3774,6 +3937,10 @@ public record class ErrorDetails : ModelBase
                 betaSlackChannelSetUpEnvironmentNotFound(value),
             BetaSlackChannelSetUpSettingsConflictErrorDetails value =>
                 betaSlackChannelSetUpSettingsConflict(value),
+            BetaBundleAttachmentNotSupportedErrorDetails value => betaBundleAttachmentNotSupported(
+                value
+            ),
+            BetaBundleOnCallErrorDetails value => betaBundleOnCall(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of ErrorDetails"
             ),
@@ -3961,6 +4128,11 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(OrganizationTypeNotSupportedErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(ParentOrganizationRequiredErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(RbacRoleNotFoundErrorDetails value) => new(value);
+
     public static implicit operator ErrorDetails(
         Environments::BetaEnvironmentCreateDisabledErrorDetails value
     ) => new(value);
@@ -4063,6 +4235,12 @@ public record class ErrorDetails : ModelBase
         BetaSlackChannelSetUpSettingsConflictErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(
+        BetaBundleAttachmentNotSupportedErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaBundleOnCallErrorDetails value) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -4137,6 +4315,8 @@ public record class ErrorDetails : ModelBase
             (externalKeyChanged) => externalKeyChanged.Validate(),
             (workspaceMemberLimitExceeded) => workspaceMemberLimitExceeded.Validate(),
             (organizationTypeNotSupported) => organizationTypeNotSupported.Validate(),
+            (parentOrganizationRequired) => parentOrganizationRequired.Validate(),
+            (rbacRoleNotFound) => rbacRoleNotFound.Validate(),
             (betaEnvironmentCreateDisabled) => betaEnvironmentCreateDisabled.Validate(),
             (betaEnvironmentArchived) => betaEnvironmentArchived.Validate(),
             (betaInvalidConfigTypeChange) => betaInvalidConfigTypeChange.Validate(),
@@ -4170,7 +4350,9 @@ public record class ErrorDetails : ModelBase
             (betaSlackChannelSetUpEnvironmentNotFound) =>
                 betaSlackChannelSetUpEnvironmentNotFound.Validate(),
             (betaSlackChannelSetUpSettingsConflict) =>
-                betaSlackChannelSetUpSettingsConflict.Validate()
+                betaSlackChannelSetUpSettingsConflict.Validate(),
+            (betaBundleAttachmentNotSupported) => betaBundleAttachmentNotSupported.Validate(),
+            (betaBundleOnCall) => betaBundleOnCall.Validate()
         );
     }
 
@@ -4248,34 +4430,38 @@ public record class ErrorDetails : ModelBase
             ExternalKeyChangedErrorDetails _ => 51,
             WorkspaceMemberLimitExceededErrorDetails _ => 52,
             OrganizationTypeNotSupportedErrorDetails _ => 53,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 54,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 55,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 56,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 57,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 58,
-            Environments::BetaInvalidMetadataErrorDetails _ => 59,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 60,
-            BetaCannotSignOutSelfErrorDetails _ => 61,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 62,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 63,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 64,
-            BetaCannotSignOutOwnerErrorDetails _ => 65,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 66,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 67,
-            BetaUnsupportedCharsetErrorDetails _ => 68,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 69,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 70,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 71,
-            Plugins::BetaScanFailedErrorDetails _ => 72,
-            Plugins::BetaScanPendingErrorDetails _ => 73,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 74,
-            BetaApiKeyScopeMissingErrorDetails _ => 75,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 76,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 77,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 78,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 79,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 80,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 81,
+            ParentOrganizationRequiredErrorDetails _ => 54,
+            RbacRoleNotFoundErrorDetails _ => 55,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 56,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 57,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 58,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 59,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 60,
+            Environments::BetaInvalidMetadataErrorDetails _ => 61,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 62,
+            BetaCannotSignOutSelfErrorDetails _ => 63,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 64,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 65,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 66,
+            BetaCannotSignOutOwnerErrorDetails _ => 67,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 68,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 69,
+            BetaUnsupportedCharsetErrorDetails _ => 70,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 71,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 72,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 73,
+            Plugins::BetaScanFailedErrorDetails _ => 74,
+            Plugins::BetaScanPendingErrorDetails _ => 75,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 76,
+            BetaApiKeyScopeMissingErrorDetails _ => 77,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 78,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 79,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 80,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 81,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 82,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 83,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 84,
+            BetaBundleOnCallErrorDetails _ => 85,
             _ => -1,
         };
     }
@@ -5426,6 +5612,47 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "parent_organization_required":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<ParentOrganizationRequiredErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "rbac_role_not_found":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<RbacRoleNotFoundErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "environment_create_disabled":
             {
                 try
@@ -6014,6 +6241,47 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "bundle_attachment_not_supported":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaBundleAttachmentNotSupportedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "bundle_on_call":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaBundleOnCallErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
                 return new ErrorDetails(element);
@@ -6088,6 +6356,8 @@ public enum ErrorDetailsErrorCode
     ExternalKeyChanged,
     WorkspaceMemberLimitExceeded,
     OrganizationTypeNotSupported,
+    ParentOrganizationRequired,
+    RbacRoleNotFound,
     EnvironmentCreateDisabled,
     EnvironmentArchived,
     InvalidConfigTypeChange,
@@ -6116,6 +6386,8 @@ public enum ErrorDetailsErrorCode
     EnvironmentNotFound,
     SlackChannelSetUpEnvironmentNotFound,
     SlackChannelSetUpSettingsConflict,
+    BundleAttachmentNotSupported,
+    BundleOnCall,
 }
 
 sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCode>
@@ -6193,6 +6465,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "external_key_changed" => ErrorDetailsErrorCode.ExternalKeyChanged,
             "workspace_member_limit_exceeded" => ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
             "organization_type_not_supported" => ErrorDetailsErrorCode.OrganizationTypeNotSupported,
+            "parent_organization_required" => ErrorDetailsErrorCode.ParentOrganizationRequired,
+            "rbac_role_not_found" => ErrorDetailsErrorCode.RbacRoleNotFound,
             "environment_create_disabled" => ErrorDetailsErrorCode.EnvironmentCreateDisabled,
             "environment_archived" => ErrorDetailsErrorCode.EnvironmentArchived,
             "invalid_config_type_change" => ErrorDetailsErrorCode.InvalidConfigTypeChange,
@@ -6230,6 +6504,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
             "slack_channel_set_up_settings_conflict" =>
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict,
+            "bundle_attachment_not_supported" => ErrorDetailsErrorCode.BundleAttachmentNotSupported,
+            "bundle_on_call" => ErrorDetailsErrorCode.BundleOnCall,
             _ => (ErrorDetailsErrorCode)(-1),
         };
     }
@@ -6315,6 +6591,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "workspace_member_limit_exceeded",
                 ErrorDetailsErrorCode.OrganizationTypeNotSupported =>
                     "organization_type_not_supported",
+                ErrorDetailsErrorCode.ParentOrganizationRequired => "parent_organization_required",
+                ErrorDetailsErrorCode.RbacRoleNotFound => "rbac_role_not_found",
                 ErrorDetailsErrorCode.EnvironmentCreateDisabled => "environment_create_disabled",
                 ErrorDetailsErrorCode.EnvironmentArchived => "environment_archived",
                 ErrorDetailsErrorCode.InvalidConfigTypeChange => "invalid_config_type_change",
@@ -6354,6 +6632,9 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "slack_channel_set_up_environment_not_found",
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict =>
                     "slack_channel_set_up_settings_conflict",
+                ErrorDetailsErrorCode.BundleAttachmentNotSupported =>
+                    "bundle_attachment_not_supported",
+                ErrorDetailsErrorCode.BundleOnCall => "bundle_on_call",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

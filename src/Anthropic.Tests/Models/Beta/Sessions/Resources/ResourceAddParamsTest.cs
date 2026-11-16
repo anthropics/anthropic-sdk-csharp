@@ -18,7 +18,7 @@ public class ResourceAddParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             MountPath = "/uploads/receipt.pdf",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -26,10 +26,7 @@ public class ResourceAddParamsTest : TestBase
         string expectedFileID = "file_011CNha8iCJcU1wXNR6q4V8w";
         JsonElement expectedType = JsonSerializer.SerializeToElement("file");
         string expectedMountPath = "/uploads/receipt.pdf";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
         string expectedWorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy";
 
         Assert.Equal(expectedSessionID, parameters.SessionID);
@@ -89,7 +86,7 @@ public class ResourceAddParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             MountPath = "/uploads/receipt.pdf",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         } with
         {
@@ -111,7 +108,7 @@ public class ResourceAddParamsTest : TestBase
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
@@ -126,7 +123,7 @@ public class ResourceAddParamsTest : TestBase
         {
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
             MountPath = null,
@@ -167,14 +164,14 @@ public class ResourceAddParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             Type = JsonSerializer.SerializeToElement("file"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,managed-agents-2026-04-01"],
+            ["computer-use-2024-10-22,managed-agents-2026-04-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
         Assert.Equal(
@@ -191,7 +188,7 @@ public class ResourceAddParamsTest : TestBase
             SessionID = "sesn_011CZkZAtmR3yMPDzynEDxu7",
             FileID = "file_011CNha8iCJcU1wXNR6q4V8w",
             MountPath = "/uploads/receipt.pdf",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 

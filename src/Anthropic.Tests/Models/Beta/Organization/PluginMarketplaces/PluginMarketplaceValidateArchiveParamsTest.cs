@@ -19,14 +19,11 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateArchiveParams
         {
             Archive = archive,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         BinaryContent expectedArchive = archive;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedArchive, parameters.Archive);
         Assert.NotNull(parameters.Betas);
@@ -73,7 +70,7 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateArchiveParams
         {
             Archive = archive,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -111,13 +108,13 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         PluginMarketplaceValidateArchiveParams parameters = new()
         {
             Archive = Encoding.UTF8.GetBytes("Example data"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -130,7 +127,7 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateArchiveParams
         {
             Archive = archive,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.True(parameters.IsBodyRepeatable());
@@ -147,7 +144,7 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateArchiveParams
         {
             Archive = archive,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.False(parameters.IsBodyRepeatable());
@@ -159,7 +156,7 @@ public class PluginMarketplaceValidateArchiveParamsTest : TestBase
         var parameters = new PluginMarketplaceValidateArchiveParams
         {
             Archive = Encoding.UTF8.GetBytes("Example data"),
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         PluginMarketplaceValidateArchiveParams copied = new(parameters);

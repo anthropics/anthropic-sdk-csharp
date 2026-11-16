@@ -21,7 +21,7 @@ public class ShareListParamsTest : TestBase
             OrganizationID = "organization_id",
             Page = "page",
             TargetType = TargetType.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedPluginID = "plugin_id";
@@ -29,10 +29,7 @@ public class ShareListParamsTest : TestBase
         string expectedOrganizationID = "organization_id";
         string expectedPage = "page";
         ApiEnum<string, TargetType> expectedTargetType = TargetType.Organization;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedPluginID, parameters.PluginID);
         Assert.Equal(expectedLimit, parameters.Limit);
@@ -95,7 +92,7 @@ public class ShareListParamsTest : TestBase
             OrganizationID = "organization_id",
             Page = "page",
             TargetType = TargetType.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -116,7 +113,7 @@ public class ShareListParamsTest : TestBase
         {
             PluginID = "plugin_id",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.OrganizationID);
@@ -134,7 +131,7 @@ public class ShareListParamsTest : TestBase
         {
             PluginID = "plugin_id",
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             OrganizationID = null,
             Page = null,
@@ -180,13 +177,13 @@ public class ShareListParamsTest : TestBase
         ShareListParams parameters = new()
         {
             PluginID = "plugin_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -201,7 +198,7 @@ public class ShareListParamsTest : TestBase
             OrganizationID = "organization_id",
             Page = "page",
             TargetType = TargetType.Organization,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         ShareListParams copied = new(parameters);

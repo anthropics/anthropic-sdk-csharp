@@ -19,17 +19,14 @@ public class ServiceAccountUpdateParamsTest : TestBase
             ServiceAccountID = "service_account_id",
             Description = "description",
             OrganizationRole = ServiceAccountUpdateParamsOrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedServiceAccountID = "service_account_id";
         string expectedDescription = "description";
         ApiEnum<string, ServiceAccountUpdateParamsOrganizationRole> expectedOrganizationRole =
             ServiceAccountUpdateParamsOrganizationRole.Admin;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedServiceAccountID, parameters.ServiceAccountID);
         Assert.Equal(expectedDescription, parameters.Description);
@@ -81,7 +78,7 @@ public class ServiceAccountUpdateParamsTest : TestBase
             ServiceAccountID = "service_account_id",
             Description = "description",
             OrganizationRole = ServiceAccountUpdateParamsOrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -98,7 +95,7 @@ public class ServiceAccountUpdateParamsTest : TestBase
         var parameters = new ServiceAccountUpdateParams
         {
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.Description);
@@ -113,7 +110,7 @@ public class ServiceAccountUpdateParamsTest : TestBase
         var parameters = new ServiceAccountUpdateParams
         {
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             Description = null,
             OrganizationRole = null,
@@ -149,13 +146,13 @@ public class ServiceAccountUpdateParamsTest : TestBase
         ServiceAccountUpdateParams parameters = new()
         {
             ServiceAccountID = "service_account_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24"],
+            ["computer-use-2024-10-22"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -168,7 +165,7 @@ public class ServiceAccountUpdateParamsTest : TestBase
             ServiceAccountID = "service_account_id",
             Description = "description",
             OrganizationRole = ServiceAccountUpdateParamsOrganizationRole.Admin,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         ServiceAccountUpdateParams copied = new(parameters);

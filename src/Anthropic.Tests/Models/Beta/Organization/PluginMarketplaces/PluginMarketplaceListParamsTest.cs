@@ -21,7 +21,7 @@ public class PluginMarketplaceListParamsTest : TestBase
             OwnerType = OwnerType.Organization,
             Page = "page",
             Source = Source.Directory,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         long expectedLimit = 1;
@@ -29,10 +29,7 @@ public class PluginMarketplaceListParamsTest : TestBase
         ApiEnum<string, OwnerType> expectedOwnerType = OwnerType.Organization;
         string expectedPage = "page";
         ApiEnum<string, Source> expectedSource = Source.Directory;
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedLimit, parameters.Limit);
         Assert.Equal(expectedOrganizationID, parameters.OrganizationID);
@@ -95,7 +92,7 @@ public class PluginMarketplaceListParamsTest : TestBase
             OwnerType = OwnerType.Organization,
             Page = "page",
             Source = Source.Directory,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -115,7 +112,7 @@ public class PluginMarketplaceListParamsTest : TestBase
         var parameters = new PluginMarketplaceListParams
         {
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         Assert.Null(parameters.OrganizationID);
@@ -134,7 +131,7 @@ public class PluginMarketplaceListParamsTest : TestBase
         var parameters = new PluginMarketplaceListParams
         {
             Limit = 1,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             OrganizationID = null,
             OwnerType = null,
@@ -182,13 +179,13 @@ public class PluginMarketplaceListParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         PluginMarketplaceListParams parameters = new()
         {
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,ce-plugins-2026-09-01"],
+            ["computer-use-2024-10-22,ce-plugins-2026-09-01"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -203,7 +200,7 @@ public class PluginMarketplaceListParamsTest : TestBase
             OwnerType = OwnerType.Organization,
             Page = "page",
             Source = Source.Directory,
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         PluginMarketplaceListParams copied = new(parameters);

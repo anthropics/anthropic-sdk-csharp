@@ -73,6 +73,30 @@ public sealed class BundleService : IBundleService
     }
 
     /// <inheritdoc/>
+    public async Task<BetaClaudeTagBundle> Update(
+        BundleUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        using var response = await this
+            .WithRawResponse.Update(parameters, cancellationToken)
+            .ConfigureAwait(false);
+        return await response.Deserialize(cancellationToken).ConfigureAwait(false);
+    }
+
+    /// <inheritdoc/>
+    public Task<BetaClaudeTagBundle> Update(
+        string bundleID,
+        BundleUpdateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Update(parameters with { BundleID = bundleID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
     public async Task<BundleListPage> List(
         BundleListParams? parameters = null,
         CancellationToken cancellationToken = default
@@ -158,6 +182,57 @@ public sealed class BundleServiceWithRawResponse : IBundleServiceWithRawResponse
         parameters ??= new();
 
         return this.Retrieve(parameters with { BundleID = bundleID }, cancellationToken);
+    }
+
+    /// <inheritdoc/>
+    public async Task<HttpResponse<BetaClaudeTagBundle>> Update(
+        BundleUpdateParams parameters,
+        CancellationToken cancellationToken = default
+    )
+    {
+        if (parameters.BundleID == null)
+        {
+            throw new AnthropicInvalidDataException("'parameters.BundleID' cannot be null");
+        }
+
+        HttpRequest<BundleUpdateParams> request = new()
+        {
+            Method = HttpMethod.Post,
+            Params = parameters,
+            Qualifiers = new Dictionary<string, string>() { ["beta"] = "true" },
+            SpanName = "anthropic.organization.claude_tag.bundles.update",
+            SpanResourceIds =
+            [
+                new("anthropic.organization.claude_tag.bundle.id", parameters.BundleID),
+            ],
+        };
+        var response = await this._client.Execute(request, cancellationToken).ConfigureAwait(false);
+        return new(
+            response,
+            async (token) =>
+            {
+                var betaClaudeTagBundle = await response
+                    .Deserialize<BetaClaudeTagBundle>(token)
+                    .ConfigureAwait(false);
+                if (this._client.ResponseValidation)
+                {
+                    betaClaudeTagBundle.Validate();
+                }
+                return betaClaudeTagBundle;
+            }
+        );
+    }
+
+    /// <inheritdoc/>
+    public Task<HttpResponse<BetaClaudeTagBundle>> Update(
+        string bundleID,
+        BundleUpdateParams? parameters = null,
+        CancellationToken cancellationToken = default
+    )
+    {
+        parameters ??= new();
+
+        return this.Update(parameters with { BundleID = bundleID }, cancellationToken);
     }
 
     /// <inheritdoc/>

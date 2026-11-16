@@ -11,7 +11,8 @@ namespace Anthropic.Models.Beta.Organization.ClaudeTag.Bundles;
 
 /// <summary>
 /// A named set of access that Claude can use in a Slack channel or a Slack workspace:
-/// connectors, repositories and credentials. Created and edited in claude.ai.
+/// connectors, repositories and credentials. Created and edited in claude.ai; Update
+/// Bundle also changes its instructions.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaClaudeTagBundle, BetaClaudeTagBundleFromRaw>))]
 public sealed record class BetaClaudeTagBundle : JsonModel
@@ -68,6 +69,20 @@ public sealed record class BetaClaudeTagBundle : JsonModel
         init { this._rawData.Set("display_name", value); }
     }
 
+    /// <summary>
+    /// Instructions for Claude, added to the instructions of every session that can
+    /// use the Bundle. Null when it has none.
+    /// </summary>
+    public required string? Instructions
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<string>("instructions");
+        }
+        init { this._rawData.Set("instructions", value); }
+    }
+
     public JsonElement Type
     {
         get
@@ -98,6 +113,7 @@ public sealed record class BetaClaudeTagBundle : JsonModel
         _ = this.CreatedAt;
         _ = this.Description;
         _ = this.DisplayName;
+        _ = this.Instructions;
         if (!JsonElement.DeepEquals(this.Type, JsonSerializer.SerializeToElement("bundle")))
         {
             throw new AnthropicInvalidDataException("Invalid value given for constant");

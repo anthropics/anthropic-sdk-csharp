@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Text.Json;
 using Anthropic.Credentials;
 
@@ -55,6 +56,64 @@ public class SecurityHelpersTests
     {
         Assert.ThrowsAny<ArgumentException>(() => SecurityHelpers.ValidateProfileName(profile));
     }
+
+#if NET
+    [Theory]
+    [InlineData("644")]
+    [InlineData("640")]
+    [InlineData("604")]
+    [InlineData("620")]
+    [InlineData("602")]
+    [InlineData("622")]
+    [InlineData("660")]
+    public void CheckFilePermissions_RejectsGroupOrOtherAccess(string octalMode)
+    {
+        if (!OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
+        {
+            return;
+        }
+
+        var path = Path.GetTempFileName();
+        try
+        {
+            File.SetUnixFileMode(path, (UnixFileMode)Convert.ToInt32(octalMode, 8));
+
+            var ex = Assert.Throws<InvalidOperationException>(() =>
+                SecurityHelpers.CheckFilePermissions(path)
+            );
+            Assert.Contains($"(mode 0{octalMode})", ex.Message);
+            Assert.Contains($"Run `chmod 600 {path}`.", ex.Message);
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+
+    [Theory]
+    [InlineData("600")]
+    [InlineData("400")]
+    [InlineData("700")]
+    public void CheckFilePermissions_AllowsOwnerOnlyAccess(string octalMode)
+    {
+        if (!OperatingSystem.IsLinux() && !OperatingSystem.IsMacOS())
+        {
+            return;
+        }
+
+        var path = Path.GetTempFileName();
+        try
+        {
+            File.SetUnixFileMode(path, (UnixFileMode)Convert.ToInt32(octalMode, 8));
+
+            SecurityHelpers.CheckFilePermissions(path);
+        }
+        finally
+        {
+            File.Delete(path);
+        }
+    }
+#endif
 
     [Fact]
     public void RedactErrorBody_KeepsRfc6749Fields()

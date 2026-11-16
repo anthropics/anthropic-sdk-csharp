@@ -15,14 +15,11 @@ public class UserSignOutParamsTest : TestBase
         var parameters = new UserSignOutParams
         {
             UserID = "user_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedUserID = "user_id";
-        List<ApiEnum<string, AnthropicBeta>> expectedBetas =
-        [
-            AnthropicBeta.MessageBatches2024_09_24,
-        ];
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedUserID, parameters.UserID);
         Assert.NotNull(parameters.Betas);
@@ -63,7 +60,7 @@ public class UserSignOutParamsTest : TestBase
         var parameters = new UserSignOutParams
         {
             UserID = "user_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -96,13 +93,13 @@ public class UserSignOutParamsTest : TestBase
         UserSignOutParams parameters = new()
         {
             UserID = "user_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
 
         Assert.Equal(
-            ["message-batches-2024-09-24,admin-user-sign-out-2026-10-08"],
+            ["computer-use-2024-10-22,admin-user-sign-out-2026-10-08"],
             requestMessage.Headers.GetValues("anthropic-beta")
         );
     }
@@ -113,7 +110,7 @@ public class UserSignOutParamsTest : TestBase
         var parameters = new UserSignOutParams
         {
             UserID = "user_id",
-            Betas = [AnthropicBeta.MessageBatches2024_09_24],
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         UserSignOutParams copied = new(parameters);
