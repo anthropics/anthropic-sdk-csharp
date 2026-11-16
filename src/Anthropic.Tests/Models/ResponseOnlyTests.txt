@@ -872,8 +872,8 @@ src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserInterruptEv
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserMessageEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserToolConfirmationEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunCreatedEventTest.cs
-src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorEventTest.cs
+src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseEndedEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseStartedEventTest.cs
