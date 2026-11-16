@@ -226,6 +226,8 @@ class BetaNewOrganizationWebhookEndpointFromRaw : IFromRawJson<BetaNewOrganizati
 [JsonConverter(typeof(BetaNewOrganizationWebhookEndpointEnabledEventConverter))]
 public enum BetaNewOrganizationWebhookEndpointEnabledEvent
 {
+    ExternalKeyFailed,
+    ExternalKeyRecovered,
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
     UserProfileProgramStatusUpdated,
@@ -242,6 +244,10 @@ sealed class BetaNewOrganizationWebhookEndpointEnabledEventConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "external_key.failed" =>
+                BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
+            "external_key.recovered" =>
+                BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered,
             "user_profile.enforcement_action_opened" =>
                 BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -262,6 +268,10 @@ sealed class BetaNewOrganizationWebhookEndpointEnabledEventConverter
             writer,
             value switch
             {
+                BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed =>
+                    "external_key.failed",
+                BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered =>
+                    "external_key.recovered",
                 BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved =>

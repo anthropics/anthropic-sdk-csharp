@@ -18,7 +18,7 @@ public class WebhookUpdateParamsTest : TestBase
         {
             WebhookEndpointID = "webhook_endpoint_id",
             Description = "description",
-            EnabledEvents = [WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened],
+            EnabledEvents = [WebhookUpdateParamsEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = State.Disabled,
             UrlValue = "x",
@@ -29,7 +29,7 @@ public class WebhookUpdateParamsTest : TestBase
         string expectedDescription = "description";
         List<ApiEnum<string, WebhookUpdateParamsEnabledEvent>> expectedEnabledEvents =
         [
-            WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
+            WebhookUpdateParamsEnabledEvent.ExternalKeyFailed,
         ];
         string expectedName = "name";
         ApiEnum<string, State> expectedState = State.Disabled;
@@ -111,7 +111,7 @@ public class WebhookUpdateParamsTest : TestBase
         {
             WebhookEndpointID = "webhook_endpoint_id",
             Description = "description",
-            EnabledEvents = [WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened],
+            EnabledEvents = [WebhookUpdateParamsEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = State.Disabled,
             UrlValue = "x",
@@ -181,7 +181,7 @@ public class WebhookUpdateParamsTest : TestBase
         {
             WebhookEndpointID = "webhook_endpoint_id",
             Description = "description",
-            EnabledEvents = [WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened],
+            EnabledEvents = [WebhookUpdateParamsEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = State.Disabled,
             UrlValue = "x",
@@ -197,6 +197,8 @@ public class WebhookUpdateParamsTest : TestBase
 public class WebhookUpdateParamsEnabledEventTest : TestBase
 {
     [Theory]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]
@@ -220,6 +222,8 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     }
 
     [Theory]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]

@@ -18,10 +18,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = BetaOrganizationWebhookEndpointState.Disabled,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -34,7 +31,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
         string expectedDisabledReason = "disabled_reason";
         List<ApiEnum<string, BetaOrganizationWebhookEndpointEnabledEvent>> expectedEnabledEvents =
         [
-            BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
+            BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
         ];
         string expectedName = "name";
         ApiEnum<string, BetaOrganizationWebhookEndpointState> expectedState =
@@ -66,10 +63,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = BetaOrganizationWebhookEndpointState.Disabled,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -94,10 +88,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = BetaOrganizationWebhookEndpointState.Disabled,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -117,7 +108,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
         string expectedDisabledReason = "disabled_reason";
         List<ApiEnum<string, BetaOrganizationWebhookEndpointEnabledEvent>> expectedEnabledEvents =
         [
-            BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
+            BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
         ];
         string expectedName = "name";
         ApiEnum<string, BetaOrganizationWebhookEndpointState> expectedState =
@@ -149,10 +140,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = BetaOrganizationWebhookEndpointState.Disabled,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -171,10 +159,7 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             State = BetaOrganizationWebhookEndpointState.Disabled,
             UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -190,6 +175,8 @@ public class BetaOrganizationWebhookEndpointTest : TestBase
 public class BetaOrganizationWebhookEndpointEnabledEventTest : TestBase
 {
     [Theory]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated)]
@@ -212,6 +199,8 @@ public class BetaOrganizationWebhookEndpointEnabledEventTest : TestBase
     }
 
     [Theory]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
+    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated)]

@@ -1016,6 +1016,8 @@ src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEnvironmentDeletedEventDataT
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEnvironmentUpdatedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/UnwrapWebhookEventTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyFailedEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyRecoveredEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreArchivedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreCreatedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreDeletedEventDataTest.cs

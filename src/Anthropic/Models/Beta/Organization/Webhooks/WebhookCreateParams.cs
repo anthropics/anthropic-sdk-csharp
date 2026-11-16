@@ -259,6 +259,8 @@ public record class WebhookCreateParams : ParamsBase
 [JsonConverter(typeof(EnabledEventConverter))]
 public enum EnabledEvent
 {
+    ExternalKeyFailed,
+    ExternalKeyRecovered,
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
     UserProfileProgramStatusUpdated,
@@ -274,6 +276,8 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "external_key.failed" => EnabledEvent.ExternalKeyFailed,
+            "external_key.recovered" => EnabledEvent.ExternalKeyRecovered,
             "user_profile.enforcement_action_opened" =>
                 EnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -293,6 +297,8 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
             writer,
             value switch
             {
+                EnabledEvent.ExternalKeyFailed => "external_key.failed",
+                EnabledEvent.ExternalKeyRecovered => "external_key.recovered",
                 EnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 EnabledEvent.UserProfileEnforcementActionResolved =>
