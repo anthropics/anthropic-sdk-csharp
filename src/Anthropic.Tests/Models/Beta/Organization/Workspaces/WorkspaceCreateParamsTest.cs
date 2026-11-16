@@ -14,7 +14,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =
@@ -29,7 +29,7 @@ public class WorkspaceCreateParamsTest : TestBase
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
-        string expectedName = "x";
+        string expectedName = "Workspace Name";
         BetaDataResidencyCreateConfig expectedDataResidency = new()
         {
             AllowedInferenceGeos =
@@ -73,7 +73,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =
@@ -96,7 +96,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =
@@ -122,7 +122,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =
@@ -150,7 +150,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -171,7 +171,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
 
             DataResidency = null,
@@ -196,7 +196,7 @@ public class WorkspaceCreateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        WorkspaceCreateParams parameters = new() { Name = "x" };
+        WorkspaceCreateParams parameters = new() { Name = "Workspace Name" };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
@@ -214,7 +214,7 @@ public class WorkspaceCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         WorkspaceCreateParams parameters = new()
         {
-            Name = "x",
+            Name = "Workspace Name",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -231,7 +231,7 @@ public class WorkspaceCreateParamsTest : TestBase
     {
         var parameters = new WorkspaceCreateParams
         {
-            Name = "x",
+            Name = "Workspace Name",
             DataResidency = new()
             {
                 AllowedInferenceGeos =

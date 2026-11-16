@@ -10,7 +10,7 @@ public class WorkspaceServiceTest : TestBase
         var betaWorkspace = await this
             .client.WithQuery("beta=true")
             .Beta.Organization.Workspaces.Create(
-                new() { Name = "x" },
+                new() { Name = "Workspace Name" },
                 TestContext.Current.CancellationToken
             );
         betaWorkspace.Validate();

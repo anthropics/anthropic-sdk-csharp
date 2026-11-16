@@ -8,7 +8,7 @@ public class WorkspaceServiceTest : TestBase
     public async Task Create_Works()
     {
         var workspace = await this.client.Organization.Workspaces.Create(
-            new() { Name = "x" },
+            new() { Name = "Workspace Name" },
             TestContext.Current.CancellationToken
         );
         workspace.Validate();
