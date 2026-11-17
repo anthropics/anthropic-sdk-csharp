@@ -13,8 +13,12 @@ namespace Anthropic.Models.Beta.Organization.Plugins;
 /// <summary>
 /// Change which stored version of an organization-owned Plugin is served to members,
 /// for example to roll back to an earlier one. This pins the served version: later
-/// uploads are stored but no longer change what is served, and pinning cannot currently
-/// be undone, here or in claude.ai.
+/// uploads through this API are stored but no longer change what is served, and pinning
+/// cannot currently be undone, here or in claude.ai.
+///
+/// <para>A version from claude.ai might still change what is served: see [Versions
+/// and the served version](/docs/en/manage-claude/plugins-api#versions-and-the-served-version)
+/// in the Plugins API guide.</para>
 ///
 /// <para>Pass the version as `served_version_id`: an earlier one to roll back, a
 /// later one to start serving a version that was stored without being served, or
