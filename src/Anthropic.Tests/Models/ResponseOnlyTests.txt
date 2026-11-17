@@ -15,6 +15,8 @@ src/Anthropic.Tests/Models/ErrorResponseTest.cs
 src/Anthropic.Tests/Models/ErrorTypeTest.cs
 src/Anthropic.Tests/Models/GatewayTimeoutErrorTest.cs
 src/Anthropic.Tests/Models/InvalidRequestErrorTest.cs
+src/Anthropic.Tests/Models/LinkedOrganizationBillingUnavailableErrorDetailsTest.cs
+src/Anthropic.Tests/Models/LinkedOrganizationSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/NotFoundErrorTest.cs
 src/Anthropic.Tests/Models/OrganizationOnHoldErrorDetailsTest.cs
 src/Anthropic.Tests/Models/OrganizationTypeNotSupportedErrorDetailsTest.cs
@@ -272,9 +274,11 @@ src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionNextStepTest
 src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionReasonTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionRestrictionTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileExternalUserDetailsTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileNotBillableErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileNotFoundErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileProgramStatusTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileProgramsTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileRequiredErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileListPageResponseTest.cs
 src/Anthropic.Tests/Models/UserProfiles/ActionUrls/UserProfileActionUrlTest.cs
 src/Anthropic.Tests/Models/Organization/ConcurrentMembershipChangeErrorDetailsTest.cs

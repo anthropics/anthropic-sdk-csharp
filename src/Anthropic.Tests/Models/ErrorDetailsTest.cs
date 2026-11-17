@@ -183,6 +183,34 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void UserProfileRequiredValidationWorks()
+    {
+        ErrorDetails value = new UserProfileRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void LinkedOrganizationBillingUnavailableValidationWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationBillingUnavailableErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void LinkedOrganizationSpendLimitReachedValidationWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationSpendLimitReachedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void UserProfileNotBillableValidationWorks()
+    {
+        ErrorDetails value = new UserProfileNotBillableErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void ThreadNotFoundValidationWorks()
     {
         ErrorDetails value = new ThreadNotFoundErrorDetails();
@@ -930,6 +958,58 @@ public class ErrorDetailsTest : TestBase
     public void ToolReferenceUnresolvedSerializationRoundtripWorks()
     {
         ErrorDetails value = new ToolReferenceUnresolvedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserProfileRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new UserProfileRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void LinkedOrganizationBillingUnavailableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationBillingUnavailableErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void LinkedOrganizationSpendLimitReachedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationSpendLimitReachedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserProfileNotBillableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new UserProfileNotBillableErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -1952,6 +2032,40 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void UserProfileRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new UserProfileRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.UserProfileRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void LinkedOrganizationBillingUnavailableErrorCodeWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationBillingUnavailableErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void LinkedOrganizationSpendLimitReachedErrorCodeWorks()
+    {
+        ErrorDetails value = new LinkedOrganizationSpendLimitReachedErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void UserProfileNotBillableErrorCodeWorks()
+    {
+        ErrorDetails value = new UserProfileNotBillableErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.UserProfileNotBillable, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void ThreadNotFoundErrorCodeWorks()
     {
         ErrorDetails value = new ThreadNotFoundErrorDetails();
@@ -2530,6 +2644,10 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ThreadUnsupportedRequest)]
     [InlineData(ErrorDetailsErrorCode.ToolNameConflict)]
     [InlineData(ErrorDetailsErrorCode.ToolReferenceUnresolved)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileRequired)]
+    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable)]
+    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable)]
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
@@ -2636,6 +2754,10 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ThreadUnsupportedRequest)]
     [InlineData(ErrorDetailsErrorCode.ToolNameConflict)]
     [InlineData(ErrorDetailsErrorCode.ToolReferenceUnresolved)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileRequired)]
+    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable)]
+    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable)]
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
