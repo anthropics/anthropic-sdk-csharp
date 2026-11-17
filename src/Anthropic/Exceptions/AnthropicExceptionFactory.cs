@@ -444,6 +444,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "user_profile_required")] = (statusCode, responseBody, response) =>
+            new AnthropicUserProfileRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "workspace_api_key_limit_exceeded")] = (statusCode, responseBody, response) =>
             new AnthropicWorkspaceApiKeyLimitExceededException()
             {
@@ -462,6 +470,22 @@ public class AnthropicExceptionFactory
             },
         [(400, "workspace_policy_violation")] = (statusCode, responseBody, response) =>
             new AnthropicWorkspacePolicyViolationException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(402, "linked_organization_billing_unavailable")] = (statusCode, responseBody, response) =>
+            new AnthropicLinkedOrganizationBillingUnavailableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(402, "linked_organization_spend_limit_reached")] = (statusCode, responseBody, response) =>
+            new AnthropicLinkedOrganizationSpendLimitReachedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -566,6 +590,22 @@ public class AnthropicExceptionFactory
             response
         ) =>
             new AnthropicBetaSpendLimitsAdminApiWritesNotEnabledException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "user_profile_billing_not_authorized")] = (statusCode, responseBody, response) =>
+            new AnthropicUserProfileBillingNotAuthorizedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(403, "user_profile_not_billable")] = (statusCode, responseBody, response) =>
+            new AnthropicUserProfileNotBillableException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -688,6 +728,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(429, "contract_spend_limit_reached")] = (statusCode, responseBody, response) =>
+            new AnthropicContractSpendLimitReachedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(429, "enforced_spend_limit_reached")] = (statusCode, responseBody, response) =>
             new AnthropicEnforcedSpendLimitReachedException()
             {
@@ -774,6 +822,13 @@ public class AnthropicExceptionFactory
                 WorkspaceID = response?.WorkspaceID,
             },
             401 => new AnthropicUnauthorizedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+            402 => new AnthropicPaymentRequiredException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

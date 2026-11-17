@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Services.Beta.Environments;
@@ -12,12 +11,7 @@ using Anthropic.Services.Beta.Environments;
 namespace Anthropic.Models.Beta.Environments.Work;
 
 /// <summary>
-/// Note: these endpoints are called automatically by the pre-built environment worker
-/// provided in the SDKs and CLI, for orchestrating sessions with self-hosted sandbox
-/// environments. They are included here as a reference; you do not need to invoke
-/// them directly.
-///
-/// <para>Stop a work item, initiating graceful or forced shutdown.</para>
+/// Stop a work item, initiating graceful or forced shutdown.
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -223,11 +217,7 @@ public record class WorkStopParams : ParamsBase
 
     internal override HttpContent? BodyContent()
     {
-        return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return ParamsBase.JsonBodyContent(this.RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

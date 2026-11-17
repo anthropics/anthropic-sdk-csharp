@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -291,11 +290,7 @@ public record class WebhookUpdateParams : ParamsBase
 
     internal override HttpContent? BodyContent()
     {
-        return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return ParamsBase.JsonBodyContent(this.RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -317,6 +312,8 @@ public record class WebhookUpdateParams : ParamsBase
 [JsonConverter(typeof(WebhookUpdateParamsEnabledEventConverter))]
 public enum WebhookUpdateParamsEnabledEvent
 {
+    ExternalKeyFailed,
+    ExternalKeyRecovered,
     UserProfileEnforcementActionOpened,
     UserProfileEnforcementActionResolved,
     UserProfileProgramStatusUpdated,
@@ -333,6 +330,8 @@ sealed class WebhookUpdateParamsEnabledEventConverter
     {
         return JsonSerializer.Deserialize<string>(ref reader, options) switch
         {
+            "external_key.failed" => WebhookUpdateParamsEnabledEvent.ExternalKeyFailed,
+            "external_key.recovered" => WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered,
             "user_profile.enforcement_action_opened" =>
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -353,6 +352,8 @@ sealed class WebhookUpdateParamsEnabledEventConverter
             writer,
             value switch
             {
+                WebhookUpdateParamsEnabledEvent.ExternalKeyFailed => "external_key.failed",
+                WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered => "external_key.recovered",
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved =>

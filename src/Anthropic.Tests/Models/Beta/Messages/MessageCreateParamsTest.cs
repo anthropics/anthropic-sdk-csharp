@@ -20,6 +20,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = BetaBillTo.Self },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -154,6 +155,7 @@ public class MessageCreateParamsTest : TestBase
         long expectedMaxTokens = 1024;
         List<BetaMessageParam> expectedMessages = [new BetaUserMessageParam("Hello, world")];
         ApiEnum<string, Messages::Model> expectedModel = Messages::Model.ClaudeOpus5_5;
+        BetaBillingPolicy expectedBillingPolicy = new() { BillTo = BetaBillTo.Self };
         BetaCacheControlEphemeral expectedCacheControl = new() { Ttl = Ttl.Ttl5m };
         BetaCompactionConfig expectedCompaction = new() { Instructions = "instructions" };
         Container expectedContainer = new BetaContainerParams()
@@ -297,6 +299,7 @@ public class MessageCreateParamsTest : TestBase
             Assert.Equal(expectedMessages[i], parameters.Messages[i]);
         }
         Assert.Equal(expectedModel, parameters.Model);
+        Assert.Equal(expectedBillingPolicy, parameters.BillingPolicy);
         Assert.Equal(expectedCacheControl, parameters.CacheControl);
         Assert.Equal(expectedCompaction, parameters.Compaction);
         Assert.Equal(expectedContainer, parameters.Container);
@@ -350,6 +353,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = BetaBillTo.Self },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -428,6 +432,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = BetaBillTo.Self },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -520,6 +525,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = BetaBillTo.Self },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()
@@ -789,6 +795,8 @@ public class MessageCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
+        Assert.Null(parameters.BillingPolicy);
+        Assert.False(parameters.RawBodyData.ContainsKey("billing_policy"));
         Assert.Null(parameters.CacheControl);
         Assert.False(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Compaction);
@@ -909,6 +917,7 @@ public class MessageCreateParamsTest : TestBase
             UserProfileID = "anthropic-user-profile-id",
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
 
+            BillingPolicy = null,
             CacheControl = null,
             Compaction = null,
             Container = null,
@@ -922,6 +931,8 @@ public class MessageCreateParamsTest : TestBase
             Thread = null,
         };
 
+        Assert.Null(parameters.BillingPolicy);
+        Assert.True(parameters.RawBodyData.ContainsKey("billing_policy"));
         Assert.Null(parameters.CacheControl);
         Assert.True(parameters.RawBodyData.ContainsKey("cache_control"));
         Assert.Null(parameters.Compaction);
@@ -999,6 +1010,7 @@ public class MessageCreateParamsTest : TestBase
             MaxTokens = 1024,
             Messages = [new BetaUserMessageParam("Hello, world")],
             Model = Messages::Model.ClaudeOpus5_5,
+            BillingPolicy = new() { BillTo = BetaBillTo.Self },
             CacheControl = new() { Ttl = Ttl.Ttl5m },
             Compaction = new() { Instructions = "instructions" },
             Container = new BetaContainerParams()

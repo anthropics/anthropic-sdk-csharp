@@ -227,7 +227,7 @@ public abstract record class ParamsBase
                 sb.Append(HttpUtility.UrlEncode(value));
             }
         }
-        return sb.ToString();
+        return sb.ToString().Replace("+", "%20");
     }
 
     internal static string EncodePathSegment(string? value, string paramName)
@@ -286,6 +286,12 @@ public abstract record class ParamsBase
     {
         return null;
     }
+
+    internal static HttpContent JsonBodyContent<T>(T body) =>
+        new ByteArrayContent(JsonSerializer.SerializeToUtf8Bytes(body, ModelBase.SerializerOptions))
+        {
+            Headers = { ContentType = new("application/json") { CharSet = "utf-8" } },
+        };
 
     /// <summary>
     /// Whether <see cref="BodyContent"/> can produce the body again for a retry; when false the request is

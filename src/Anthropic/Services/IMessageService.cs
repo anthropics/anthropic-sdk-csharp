@@ -6,6 +6,7 @@ using Anthropic.Core;
 using Anthropic.Models;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Skills;
+using Anthropic.Models.UserProfiles;
 using Anthropic.Services.Messages;
 
 namespace Anthropic.Services;
@@ -64,9 +65,15 @@ public interface IMessageService
     /// <exception cref="AnthropicThreadUnsupportedRequestException"/>
     /// <exception cref="AnthropicToolNameConflictException"/>
     /// <exception cref="AnthropicToolReferenceUnresolvedException"/>
+    /// <exception cref="AnthropicUserProfileRequiredException"/>
+    /// <exception cref="AnthropicLinkedOrganizationBillingUnavailableException"/>
+    /// <exception cref="AnthropicLinkedOrganizationSpendLimitReachedException"/>
+    /// <exception cref="AnthropicUserProfileBillingNotAuthorizedException"/>
+    /// <exception cref="AnthropicUserProfileNotBillableException"/>
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicContractSpendLimitReachedException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>
@@ -108,9 +115,15 @@ public interface IMessageService
     /// <exception cref="AnthropicThreadUnsupportedRequestException"/>
     /// <exception cref="AnthropicToolNameConflictException"/>
     /// <exception cref="AnthropicToolReferenceUnresolvedException"/>
+    /// <exception cref="AnthropicUserProfileRequiredException"/>
+    /// <exception cref="AnthropicLinkedOrganizationBillingUnavailableException"/>
+    /// <exception cref="AnthropicLinkedOrganizationSpendLimitReachedException"/>
+    /// <exception cref="AnthropicUserProfileBillingNotAuthorizedException"/>
+    /// <exception cref="AnthropicUserProfileNotBillableException"/>
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicContractSpendLimitReachedException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>

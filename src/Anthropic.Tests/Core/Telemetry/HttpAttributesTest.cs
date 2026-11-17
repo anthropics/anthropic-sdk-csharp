@@ -207,7 +207,7 @@ public class HttpAttributesTest : TracingTestBase
             {
                 // What is kept is as it was sent, in the order sent.
                 var kept = requests[0].Uri!.Query.TrimStart('?');
-                Assert.Contains("scope_id=scope+1%2f2", kept, StringComparison.Ordinal);
+                Assert.Contains("scope_id=scope%201%2f2", kept, StringComparison.Ordinal);
                 Assert.Contains("limit=5", kept, StringComparison.Ordinal);
                 Assert.Equal(kept, span.GetTagItem("url.query"));
                 Assert.Equal(

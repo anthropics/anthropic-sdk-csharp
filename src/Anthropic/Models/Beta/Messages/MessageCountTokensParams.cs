@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -116,6 +115,22 @@ public record class MessageCountTokensParams : ParamsBase
             return this._rawBodyData.GetNotNullClass<ApiEnum<string, Messages::Model>>("model");
         }
         init { this._rawBodyData.Set("model", value); }
+    }
+
+    /// <summary>
+    /// Declares which organization is billed when this body is sent to `/v1/messages`.
+    /// Accepted here so that you can count the tokens of the exact body you will
+    /// send, and otherwise ignored: counting tokens bills nobody, so no user profile
+    /// is required.
+    /// </summary>
+    public BetaBillingPolicy? BillingPolicy
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaBillingPolicy>("billing_policy");
+        }
+        init { this._rawBodyData.Set("billing_policy", value); }
     }
 
     /// <summary>
@@ -575,11 +590,7 @@ public record class MessageCountTokensParams : ParamsBase
 
     internal override HttpContent? BodyContent()
     {
-        return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return ParamsBase.JsonBodyContent(this.RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

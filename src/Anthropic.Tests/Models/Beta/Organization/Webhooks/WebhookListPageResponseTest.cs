@@ -21,10 +21,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -44,10 +41,7 @@ public class WebhookListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Description = "description",
                 DisabledReason = "disabled_reason",
-                EnabledEvents =
-                [
-                    BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                ],
+                EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                 Name = "name",
                 State = BetaOrganizationWebhookEndpointState.Disabled,
                 UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -81,10 +75,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -118,10 +109,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -148,10 +136,7 @@ public class WebhookListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                 Description = "description",
                 DisabledReason = "disabled_reason",
-                EnabledEvents =
-                [
-                    BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                ],
+                EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                 Name = "name",
                 State = BetaOrganizationWebhookEndpointState.Disabled,
                 UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -185,10 +170,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -216,10 +198,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -248,10 +227,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -277,10 +253,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -312,10 +285,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
@@ -344,10 +314,7 @@ public class WebhookListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
                     Description = "description",
                     DisabledReason = "disabled_reason",
-                    EnabledEvents =
-                    [
-                        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-                    ],
+                    EnabledEvents = [BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
                     Name = "name",
                     State = BetaOrganizationWebhookEndpointState.Disabled,
                     UpdatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),

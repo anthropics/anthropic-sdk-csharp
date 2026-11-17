@@ -94,6 +94,7 @@ public enum AnthropicBeta
 
     [Obsolete("This value is no longer needed. Remove it from your requests.")]
     CEUserManagement2026_07_13,
+    UserProfilesBilling2026_10_01,
 }
 
 sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
@@ -167,6 +168,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
             "skills-2025-10-02" => AnthropicBeta.Skills2025_10_02,
             "cache-diagnosis-2026-04-07" => AnthropicBeta.CacheDiagnosis2026_04_07,
             "ce-user-management-2026-07-13" => AnthropicBeta.CEUserManagement2026_07_13,
+            "user-profiles-billing-2026-10-01" => AnthropicBeta.UserProfilesBilling2026_10_01,
             _ => (AnthropicBeta)(-1),
         };
     }
@@ -245,6 +247,7 @@ sealed class AnthropicBetaConverter : JsonConverter<AnthropicBeta>
                 AnthropicBeta.Skills2025_10_02 => "skills-2025-10-02",
                 AnthropicBeta.CacheDiagnosis2026_04_07 => "cache-diagnosis-2026-04-07",
                 AnthropicBeta.CEUserManagement2026_07_13 => "ce-user-management-2026-07-13",
+                AnthropicBeta.UserProfilesBilling2026_10_01 => "user-profiles-billing-2026-10-01",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

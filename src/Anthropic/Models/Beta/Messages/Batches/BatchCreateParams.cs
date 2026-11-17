@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
@@ -225,11 +224,7 @@ public record class BatchCreateParams : ParamsBase
 
     internal override HttpContent? BodyContent()
     {
-        return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return ParamsBase.JsonBodyContent(this.RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)
@@ -439,6 +434,25 @@ public sealed record class Params : JsonModel
             return this._rawData.GetNotNullClass<ApiEnum<string, Model>>("model");
         }
         init { this._rawData.Set("model", value); }
+    }
+
+    /// <summary>
+    /// Declares which organization is billed for this request. `{"type": "billing_policy",
+    /// "bill_to": "user_profile"}` bills the customer behind the user profile named
+    /// in the `anthropic-user-profile-id` header, instead of your organization.
+    /// If that customer has not linked an Anthropic organization to the profile,
+    /// or has not allowed your organization to bill it, the request is rejected rather
+    /// than billed to you. Omit the field, or send `"bill_to": "self"` (the default),
+    /// to be billed as usual.
+    /// </summary>
+    public BetaBillingPolicy? BillingPolicy
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaBillingPolicy>("billing_policy");
+        }
+        init { this._rawData.Set("billing_policy", value); }
     }
 
     /// <summary>
@@ -960,6 +974,7 @@ public sealed record class Params : JsonModel
             item.Validate();
         }
         this.Model.Raw();
+        this.BillingPolicy?.Validate();
         this.CacheControl?.Validate();
         this.Compaction?.Validate();
         this.Container?.Validate();

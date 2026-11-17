@@ -198,6 +198,8 @@ public class WebhookCreateParamsTest : TestBase
 public class EnabledEventTest : TestBase
 {
     [Theory]
+    [InlineData(EnabledEvent.ExternalKeyFailed)]
+    [InlineData(EnabledEvent.ExternalKeyRecovered)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]
@@ -221,6 +223,8 @@ public class EnabledEventTest : TestBase
     }
 
     [Theory]
+    [InlineData(EnabledEvent.ExternalKeyFailed)]
+    [InlineData(EnabledEvent.ExternalKeyRecovered)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]

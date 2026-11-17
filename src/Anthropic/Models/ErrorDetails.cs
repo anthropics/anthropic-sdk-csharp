@@ -89,11 +89,22 @@ public record class ErrorDetails : ModelBase
                 Messages::ToolNameConflictErrorDetails _ => ErrorDetailsErrorCode.ToolNameConflict,
                 Messages::ToolReferenceUnresolvedErrorDetails _ =>
                     ErrorDetailsErrorCode.ToolReferenceUnresolved,
+                UserProfileRequiredErrorDetails _ => ErrorDetailsErrorCode.UserProfileRequired,
+                LinkedOrganizationBillingUnavailableErrorDetails _ =>
+                    ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
+                LinkedOrganizationSpendLimitReachedErrorDetails _ =>
+                    ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+                UserProfileBillingNotAuthorizedErrorDetails _ =>
+                    ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
+                UserProfileNotBillableErrorDetails _ =>
+                    ErrorDetailsErrorCode.UserProfileNotBillable,
                 Messages::ThreadNotFoundErrorDetails _ => ErrorDetailsErrorCode.ThreadNotFound,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ =>
                     ErrorDetailsErrorCode.SkillReadBlockedUndecryptable,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ =>
                     ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
+                ContractSpendLimitReachedErrorDetails _ =>
+                    ErrorDetailsErrorCode.ContractSpendLimitReached,
                 EnforcedSpendLimitReachedErrorDetails _ =>
                     ErrorDetailsErrorCode.EnforcedSpendLimitReached,
                 RampLimitExceededErrorDetails _ => ErrorDetailsErrorCode.RampLimitExceeded,
@@ -232,9 +243,15 @@ public record class ErrorDetails : ModelBase
                 Messages::ThreadUnsupportedRequestErrorDetails _ => null,
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
+                UserProfileRequiredErrorDetails _ => null,
+                LinkedOrganizationBillingUnavailableErrorDetails _ => null,
+                LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
+                UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
+                ContractSpendLimitReachedErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -329,9 +346,15 @@ public record class ErrorDetails : ModelBase
                 Messages::ThreadUnsupportedRequestErrorDetails _ => null,
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
+                UserProfileRequiredErrorDetails _ => null,
+                LinkedOrganizationBillingUnavailableErrorDetails _ => null,
+                LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
+                UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
+                ContractSpendLimitReachedErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -429,9 +452,15 @@ public record class ErrorDetails : ModelBase
                 Messages::ThreadUnsupportedRequestErrorDetails _ => null,
                 Messages::ToolNameConflictErrorDetails _ => null,
                 Messages::ToolReferenceUnresolvedErrorDetails _ => null,
+                UserProfileRequiredErrorDetails _ => null,
+                LinkedOrganizationBillingUnavailableErrorDetails _ => null,
+                LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
+                UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
                 RequestBodyTooLargeAfterDecodingErrorDetails _ => null,
+                ContractSpendLimitReachedErrorDetails _ => null,
                 EnforcedSpendLimitReachedErrorDetails _ => null,
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
@@ -681,6 +710,45 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(UserProfileRequiredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        LinkedOrganizationBillingUnavailableErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        LinkedOrganizationSpendLimitReachedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        UserProfileBillingNotAuthorizedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(UserProfileNotBillableErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(Messages::ThreadNotFoundErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
@@ -700,6 +768,12 @@ public record class ErrorDetails : ModelBase
         RequestBodyTooLargeAfterDecodingErrorDetails value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(ContractSpendLimitReachedErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -1663,6 +1737,121 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="UserProfileRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserProfileRequired(out var value)) {
+    ///     // `value` is of type `UserProfileRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserProfileRequired(
+        [NotNullWhen(true)] out UserProfileRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as UserProfileRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="LinkedOrganizationBillingUnavailableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickLinkedOrganizationBillingUnavailable(out var value)) {
+    ///     // `value` is of type `LinkedOrganizationBillingUnavailableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickLinkedOrganizationBillingUnavailable(
+        [NotNullWhen(true)] out LinkedOrganizationBillingUnavailableErrorDetails? value
+    )
+    {
+        value = this.Value as LinkedOrganizationBillingUnavailableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="LinkedOrganizationSpendLimitReachedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickLinkedOrganizationSpendLimitReached(out var value)) {
+    ///     // `value` is of type `LinkedOrganizationSpendLimitReachedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickLinkedOrganizationSpendLimitReached(
+        [NotNullWhen(true)] out LinkedOrganizationSpendLimitReachedErrorDetails? value
+    )
+    {
+        value = this.Value as LinkedOrganizationSpendLimitReachedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="UserProfileBillingNotAuthorizedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserProfileBillingNotAuthorized(out var value)) {
+    ///     // `value` is of type `UserProfileBillingNotAuthorizedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserProfileBillingNotAuthorized(
+        [NotNullWhen(true)] out UserProfileBillingNotAuthorizedErrorDetails? value
+    )
+    {
+        value = this.Value as UserProfileBillingNotAuthorizedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="UserProfileNotBillableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserProfileNotBillable(out var value)) {
+    ///     // `value` is of type `UserProfileNotBillableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserProfileNotBillable(
+        [NotNullWhen(true)] out UserProfileNotBillableErrorDetails? value
+    )
+    {
+        value = this.Value as UserProfileNotBillableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="Messages::ThreadNotFoundErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -1727,6 +1916,29 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as RequestBodyTooLargeAfterDecodingErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ContractSpendLimitReachedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickContractSpendLimitReached(out var value)) {
+    ///     // `value` is of type `ContractSpendLimitReachedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickContractSpendLimitReached(
+        [NotNullWhen(true)] out ContractSpendLimitReachedErrorDetails? value
+    )
+    {
+        value = this.Value as ContractSpendLimitReachedErrorDetails;
         return value != null;
     }
 
@@ -3161,9 +3373,15 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::ThreadUnsupportedRequestErrorDetails value) =&gt; {...},
     ///     (Messages::ToolNameConflictErrorDetails value) =&gt; {...},
     ///     (Messages::ToolReferenceUnresolvedErrorDetails value) =&gt; {...},
+    ///     (UserProfileRequiredErrorDetails value) =&gt; {...},
+    ///     (LinkedOrganizationBillingUnavailableErrorDetails value) =&gt; {...},
+    ///     (LinkedOrganizationSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (UserProfileBillingNotAuthorizedErrorDetails value) =&gt; {...},
+    ///     (UserProfileNotBillableErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
+    ///     (ContractSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
@@ -3252,9 +3470,15 @@ public record class ErrorDetails : ModelBase
         Action<Messages::ThreadUnsupportedRequestErrorDetails> threadUnsupportedRequest,
         Action<Messages::ToolNameConflictErrorDetails> toolNameConflict,
         Action<Messages::ToolReferenceUnresolvedErrorDetails> toolReferenceUnresolved,
+        Action<UserProfileRequiredErrorDetails> userProfileRequired,
+        Action<LinkedOrganizationBillingUnavailableErrorDetails> linkedOrganizationBillingUnavailable,
+        Action<LinkedOrganizationSpendLimitReachedErrorDetails> linkedOrganizationSpendLimitReached,
+        Action<UserProfileBillingNotAuthorizedErrorDetails> userProfileBillingNotAuthorized,
+        Action<UserProfileNotBillableErrorDetails> userProfileNotBillable,
         Action<Messages::ThreadNotFoundErrorDetails> threadNotFound,
         Action<Skills::SkillReadBlockedUndecryptableErrorDetails> skillReadBlockedUndecryptable,
         Action<RequestBodyTooLargeAfterDecodingErrorDetails> requestBodyTooLargeAfterDecoding,
+        Action<ContractSpendLimitReachedErrorDetails> contractSpendLimitReached,
         Action<EnforcedSpendLimitReachedErrorDetails> enforcedSpendLimitReached,
         Action<RampLimitExceededErrorDetails> rampLimitExceeded,
         Action<CmekKeyUnreachableErrorDetails> cmekKeyUnreachable,
@@ -3386,6 +3610,21 @@ public record class ErrorDetails : ModelBase
             case Messages::ToolReferenceUnresolvedErrorDetails value:
                 toolReferenceUnresolved(value);
                 break;
+            case UserProfileRequiredErrorDetails value:
+                userProfileRequired(value);
+                break;
+            case LinkedOrganizationBillingUnavailableErrorDetails value:
+                linkedOrganizationBillingUnavailable(value);
+                break;
+            case LinkedOrganizationSpendLimitReachedErrorDetails value:
+                linkedOrganizationSpendLimitReached(value);
+                break;
+            case UserProfileBillingNotAuthorizedErrorDetails value:
+                userProfileBillingNotAuthorized(value);
+                break;
+            case UserProfileNotBillableErrorDetails value:
+                userProfileNotBillable(value);
+                break;
             case Messages::ThreadNotFoundErrorDetails value:
                 threadNotFound(value);
                 break;
@@ -3394,6 +3633,9 @@ public record class ErrorDetails : ModelBase
                 break;
             case RequestBodyTooLargeAfterDecodingErrorDetails value:
                 requestBodyTooLargeAfterDecoding(value);
+                break;
+            case ContractSpendLimitReachedErrorDetails value:
+                contractSpendLimitReached(value);
                 break;
             case EnforcedSpendLimitReachedErrorDetails value:
                 enforcedSpendLimitReached(value);
@@ -3622,9 +3864,15 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::ThreadUnsupportedRequestErrorDetails value) =&gt; {...},
     ///     (Messages::ToolNameConflictErrorDetails value) =&gt; {...},
     ///     (Messages::ToolReferenceUnresolvedErrorDetails value) =&gt; {...},
+    ///     (UserProfileRequiredErrorDetails value) =&gt; {...},
+    ///     (LinkedOrganizationBillingUnavailableErrorDetails value) =&gt; {...},
+    ///     (LinkedOrganizationSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (UserProfileBillingNotAuthorizedErrorDetails value) =&gt; {...},
+    ///     (UserProfileNotBillableErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
     ///     (RequestBodyTooLargeAfterDecodingErrorDetails value) =&gt; {...},
+    ///     (ContractSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (EnforcedSpendLimitReachedErrorDetails value) =&gt; {...},
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
@@ -3716,9 +3964,21 @@ public record class ErrorDetails : ModelBase
         Func<Messages::ThreadUnsupportedRequestErrorDetails, T> threadUnsupportedRequest,
         Func<Messages::ToolNameConflictErrorDetails, T> toolNameConflict,
         Func<Messages::ToolReferenceUnresolvedErrorDetails, T> toolReferenceUnresolved,
+        Func<UserProfileRequiredErrorDetails, T> userProfileRequired,
+        Func<
+            LinkedOrganizationBillingUnavailableErrorDetails,
+            T
+        > linkedOrganizationBillingUnavailable,
+        Func<
+            LinkedOrganizationSpendLimitReachedErrorDetails,
+            T
+        > linkedOrganizationSpendLimitReached,
+        Func<UserProfileBillingNotAuthorizedErrorDetails, T> userProfileBillingNotAuthorized,
+        Func<UserProfileNotBillableErrorDetails, T> userProfileNotBillable,
         Func<Messages::ThreadNotFoundErrorDetails, T> threadNotFound,
         Func<Skills::SkillReadBlockedUndecryptableErrorDetails, T> skillReadBlockedUndecryptable,
         Func<RequestBodyTooLargeAfterDecodingErrorDetails, T> requestBodyTooLargeAfterDecoding,
+        Func<ContractSpendLimitReachedErrorDetails, T> contractSpendLimitReached,
         Func<EnforcedSpendLimitReachedErrorDetails, T> enforcedSpendLimitReached,
         Func<RampLimitExceededErrorDetails, T> rampLimitExceeded,
         Func<CmekKeyUnreachableErrorDetails, T> cmekKeyUnreachable,
@@ -3846,12 +4106,22 @@ public record class ErrorDetails : ModelBase
             Messages::ThreadUnsupportedRequestErrorDetails value => threadUnsupportedRequest(value),
             Messages::ToolNameConflictErrorDetails value => toolNameConflict(value),
             Messages::ToolReferenceUnresolvedErrorDetails value => toolReferenceUnresolved(value),
+            UserProfileRequiredErrorDetails value => userProfileRequired(value),
+            LinkedOrganizationBillingUnavailableErrorDetails value =>
+                linkedOrganizationBillingUnavailable(value),
+            LinkedOrganizationSpendLimitReachedErrorDetails value =>
+                linkedOrganizationSpendLimitReached(value),
+            UserProfileBillingNotAuthorizedErrorDetails value => userProfileBillingNotAuthorized(
+                value
+            ),
+            UserProfileNotBillableErrorDetails value => userProfileNotBillable(value),
             Messages::ThreadNotFoundErrorDetails value => threadNotFound(value),
             Skills::SkillReadBlockedUndecryptableErrorDetails value =>
                 skillReadBlockedUndecryptable(value),
             RequestBodyTooLargeAfterDecodingErrorDetails value => requestBodyTooLargeAfterDecoding(
                 value
             ),
+            ContractSpendLimitReachedErrorDetails value => contractSpendLimitReached(value),
             EnforcedSpendLimitReachedErrorDetails value => enforcedSpendLimitReached(value),
             RampLimitExceededErrorDetails value => rampLimitExceeded(value),
             CmekKeyUnreachableErrorDetails value => cmekKeyUnreachable(value),
@@ -4027,6 +4297,24 @@ public record class ErrorDetails : ModelBase
         Messages::ToolReferenceUnresolvedErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(UserProfileRequiredErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        LinkedOrganizationBillingUnavailableErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        LinkedOrganizationSpendLimitReachedErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        UserProfileBillingNotAuthorizedErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(UserProfileNotBillableErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(Messages::ThreadNotFoundErrorDetails value) =>
         new(value);
 
@@ -4037,6 +4325,9 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(
         RequestBodyTooLargeAfterDecodingErrorDetails value
     ) => new(value);
+
+    public static implicit operator ErrorDetails(ContractSpendLimitReachedErrorDetails value) =>
+        new(value);
 
     public static implicit operator ErrorDetails(EnforcedSpendLimitReachedErrorDetails value) =>
         new(value);
@@ -4282,9 +4573,16 @@ public record class ErrorDetails : ModelBase
             (threadUnsupportedRequest) => threadUnsupportedRequest.Validate(),
             (toolNameConflict) => toolNameConflict.Validate(),
             (toolReferenceUnresolved) => toolReferenceUnresolved.Validate(),
+            (userProfileRequired) => userProfileRequired.Validate(),
+            (linkedOrganizationBillingUnavailable) =>
+                linkedOrganizationBillingUnavailable.Validate(),
+            (linkedOrganizationSpendLimitReached) => linkedOrganizationSpendLimitReached.Validate(),
+            (userProfileBillingNotAuthorized) => userProfileBillingNotAuthorized.Validate(),
+            (userProfileNotBillable) => userProfileNotBillable.Validate(),
             (threadNotFound) => threadNotFound.Validate(),
             (skillReadBlockedUndecryptable) => skillReadBlockedUndecryptable.Validate(),
             (requestBodyTooLargeAfterDecoding) => requestBodyTooLargeAfterDecoding.Validate(),
+            (contractSpendLimitReached) => contractSpendLimitReached.Validate(),
             (enforcedSpendLimitReached) => enforcedSpendLimitReached.Validate(),
             (rampLimitExceeded) => rampLimitExceeded.Validate(),
             (cmekKeyUnreachable) => cmekKeyUnreachable.Validate(),
@@ -4398,70 +4696,76 @@ public record class ErrorDetails : ModelBase
             Messages::ThreadUnsupportedRequestErrorDetails _ => 19,
             Messages::ToolNameConflictErrorDetails _ => 20,
             Messages::ToolReferenceUnresolvedErrorDetails _ => 21,
-            Messages::ThreadNotFoundErrorDetails _ => 22,
-            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 23,
-            RequestBodyTooLargeAfterDecodingErrorDetails _ => 24,
-            EnforcedSpendLimitReachedErrorDetails _ => 25,
-            RampLimitExceededErrorDetails _ => 26,
-            CmekKeyUnreachableErrorDetails _ => 27,
-            Messages::CompactionUnavailableErrorDetails _ => 28,
-            Files::StorageQuotaExceededErrorDetails _ => 29,
-            Files::FileNotDownloadableErrorDetails _ => 30,
-            Files::FileExpiredErrorDetails _ => 31,
-            CmekContextUnavailableErrorDetails _ => 32,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 33,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 34,
-            SandboxEgressRestrictedErrorDetails _ => 35,
-            UserProfileNotFoundErrorDetails _ => 36,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 37,
-            AlreadyMemberErrorDetails _ => 38,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 39,
-            EmailDomainNotAllowedErrorDetails _ => 40,
-            InviteAlreadyExistsErrorDetails _ => 41,
-            OrgMemberLimitExceededErrorDetails _ => 42,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 43,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 44,
-            CannotRemoveLastMemberErrorDetails _ => 45,
-            ConcurrentMembershipChangeErrorDetails _ => 46,
-            ExternalKeyValidationFailedErrorDetails _ => 47,
-            ExternalKeyValidationTimedOutErrorDetails _ => 48,
-            KeyProfileMismatchErrorDetails _ => 49,
-            WorkspacePolicyViolationErrorDetails _ => 50,
-            ExternalKeyChangedErrorDetails _ => 51,
-            WorkspaceMemberLimitExceededErrorDetails _ => 52,
-            OrganizationTypeNotSupportedErrorDetails _ => 53,
-            ParentOrganizationRequiredErrorDetails _ => 54,
-            RbacRoleNotFoundErrorDetails _ => 55,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 56,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 57,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 58,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 59,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 60,
-            Environments::BetaInvalidMetadataErrorDetails _ => 61,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 62,
-            BetaCannotSignOutSelfErrorDetails _ => 63,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 64,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 65,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 66,
-            BetaCannotSignOutOwnerErrorDetails _ => 67,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 68,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 69,
-            BetaUnsupportedCharsetErrorDetails _ => 70,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 71,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 72,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 73,
-            Plugins::BetaScanFailedErrorDetails _ => 74,
-            Plugins::BetaScanPendingErrorDetails _ => 75,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 76,
-            BetaApiKeyScopeMissingErrorDetails _ => 77,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 78,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 79,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 80,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 81,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 82,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 83,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 84,
-            BetaBundleOnCallErrorDetails _ => 85,
+            UserProfileRequiredErrorDetails _ => 22,
+            LinkedOrganizationBillingUnavailableErrorDetails _ => 23,
+            LinkedOrganizationSpendLimitReachedErrorDetails _ => 24,
+            UserProfileBillingNotAuthorizedErrorDetails _ => 25,
+            UserProfileNotBillableErrorDetails _ => 26,
+            Messages::ThreadNotFoundErrorDetails _ => 27,
+            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 28,
+            RequestBodyTooLargeAfterDecodingErrorDetails _ => 29,
+            ContractSpendLimitReachedErrorDetails _ => 30,
+            EnforcedSpendLimitReachedErrorDetails _ => 31,
+            RampLimitExceededErrorDetails _ => 32,
+            CmekKeyUnreachableErrorDetails _ => 33,
+            Messages::CompactionUnavailableErrorDetails _ => 34,
+            Files::StorageQuotaExceededErrorDetails _ => 35,
+            Files::FileNotDownloadableErrorDetails _ => 36,
+            Files::FileExpiredErrorDetails _ => 37,
+            CmekContextUnavailableErrorDetails _ => 38,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 39,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 40,
+            SandboxEgressRestrictedErrorDetails _ => 41,
+            UserProfileNotFoundErrorDetails _ => 42,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 43,
+            AlreadyMemberErrorDetails _ => 44,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 45,
+            EmailDomainNotAllowedErrorDetails _ => 46,
+            InviteAlreadyExistsErrorDetails _ => 47,
+            OrgMemberLimitExceededErrorDetails _ => 48,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 49,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 50,
+            CannotRemoveLastMemberErrorDetails _ => 51,
+            ConcurrentMembershipChangeErrorDetails _ => 52,
+            ExternalKeyValidationFailedErrorDetails _ => 53,
+            ExternalKeyValidationTimedOutErrorDetails _ => 54,
+            KeyProfileMismatchErrorDetails _ => 55,
+            WorkspacePolicyViolationErrorDetails _ => 56,
+            ExternalKeyChangedErrorDetails _ => 57,
+            WorkspaceMemberLimitExceededErrorDetails _ => 58,
+            OrganizationTypeNotSupportedErrorDetails _ => 59,
+            ParentOrganizationRequiredErrorDetails _ => 60,
+            RbacRoleNotFoundErrorDetails _ => 61,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 62,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 63,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 64,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 65,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 66,
+            Environments::BetaInvalidMetadataErrorDetails _ => 67,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 68,
+            BetaCannotSignOutSelfErrorDetails _ => 69,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 70,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 71,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 72,
+            BetaCannotSignOutOwnerErrorDetails _ => 73,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 74,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 75,
+            BetaUnsupportedCharsetErrorDetails _ => 76,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 77,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 78,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 79,
+            Plugins::BetaScanFailedErrorDetails _ => 80,
+            Plugins::BetaScanPendingErrorDetails _ => 81,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 82,
+            BetaApiKeyScopeMissingErrorDetails _ => 83,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 84,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 85,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 86,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 87,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 88,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 89,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 90,
+            BetaBundleOnCallErrorDetails _ => 91,
             _ => -1,
         };
     }
@@ -4948,6 +5252,110 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "user_profile_required":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<UserProfileRequiredErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "linked_organization_billing_unavailable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<LinkedOrganizationBillingUnavailableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "linked_organization_spend_limit_reached":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<LinkedOrganizationSpendLimitReachedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "user_profile_billing_not_authorized":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<UserProfileBillingNotAuthorizedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "user_profile_not_billable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<UserProfileNotBillableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "thread_not_found":
             {
                 try
@@ -4996,6 +5404,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<RequestBodyTooLargeAfterDecodingErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "contract_spend_limit_reached":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<ContractSpendLimitReachedErrorDetails>(
                             element,
                             options
                         );
@@ -6324,9 +6753,15 @@ public enum ErrorDetailsErrorCode
     ThreadUnsupportedRequest,
     ToolNameConflict,
     ToolReferenceUnresolved,
+    UserProfileRequired,
+    LinkedOrganizationBillingUnavailable,
+    LinkedOrganizationSpendLimitReached,
+    UserProfileBillingNotAuthorized,
+    UserProfileNotBillable,
     ThreadNotFound,
     SkillReadBlockedUndecryptable,
     RequestBodyTooLargeAfterDecoding,
+    ContractSpendLimitReached,
     EnforcedSpendLimitReached,
     RampLimitExceeded,
     CmekKeyUnreachable,
@@ -6426,11 +6861,20 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "thread_unsupported_request" => ErrorDetailsErrorCode.ThreadUnsupportedRequest,
             "tool_name_conflict" => ErrorDetailsErrorCode.ToolNameConflict,
             "tool_reference_unresolved" => ErrorDetailsErrorCode.ToolReferenceUnresolved,
+            "user_profile_required" => ErrorDetailsErrorCode.UserProfileRequired,
+            "linked_organization_billing_unavailable" =>
+                ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
+            "linked_organization_spend_limit_reached" =>
+                ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+            "user_profile_billing_not_authorized" =>
+                ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
+            "user_profile_not_billable" => ErrorDetailsErrorCode.UserProfileNotBillable,
             "thread_not_found" => ErrorDetailsErrorCode.ThreadNotFound,
             "skill_read_blocked_undecryptable" =>
                 ErrorDetailsErrorCode.SkillReadBlockedUndecryptable,
             "request_body_too_large_after_decoding" =>
                 ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
+            "contract_spend_limit_reached" => ErrorDetailsErrorCode.ContractSpendLimitReached,
             "enforced_spend_limit_reached" => ErrorDetailsErrorCode.EnforcedSpendLimitReached,
             "ramp_limit_exceeded" => ErrorDetailsErrorCode.RampLimitExceeded,
             "cmek_key_unreachable" => ErrorDetailsErrorCode.CmekKeyUnreachable,
@@ -6548,11 +6992,20 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.ThreadUnsupportedRequest => "thread_unsupported_request",
                 ErrorDetailsErrorCode.ToolNameConflict => "tool_name_conflict",
                 ErrorDetailsErrorCode.ToolReferenceUnresolved => "tool_reference_unresolved",
+                ErrorDetailsErrorCode.UserProfileRequired => "user_profile_required",
+                ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable =>
+                    "linked_organization_billing_unavailable",
+                ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached =>
+                    "linked_organization_spend_limit_reached",
+                ErrorDetailsErrorCode.UserProfileBillingNotAuthorized =>
+                    "user_profile_billing_not_authorized",
+                ErrorDetailsErrorCode.UserProfileNotBillable => "user_profile_not_billable",
                 ErrorDetailsErrorCode.ThreadNotFound => "thread_not_found",
                 ErrorDetailsErrorCode.SkillReadBlockedUndecryptable =>
                     "skill_read_blocked_undecryptable",
                 ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding =>
                     "request_body_too_large_after_decoding",
+                ErrorDetailsErrorCode.ContractSpendLimitReached => "contract_spend_limit_reached",
                 ErrorDetailsErrorCode.EnforcedSpendLimitReached => "enforced_spend_limit_reached",
                 ErrorDetailsErrorCode.RampLimitExceeded => "ramp_limit_exceeded",
                 ErrorDetailsErrorCode.CmekKeyUnreachable => "cmek_key_unreachable",

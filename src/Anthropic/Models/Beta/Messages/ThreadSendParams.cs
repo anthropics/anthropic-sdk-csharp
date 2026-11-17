@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text;
 using System.Text.Json;
 using Anthropic.Core;
 using Anthropic.Models.Messages;
@@ -69,6 +68,25 @@ public record class ThreadSendParams : ParamsBase
             return this._rawBodyData.GetNotNullClass<ApiEnum<string, Model>>("model");
         }
         init { this._rawBodyData.Set("model", value); }
+    }
+
+    /// <summary>
+    /// Declares which organization is billed for this request. `{"type": "billing_policy",
+    /// "bill_to": "user_profile"}` bills the customer behind the user profile named
+    /// in the `anthropic-user-profile-id` header, instead of your organization.
+    /// If that customer has not linked an Anthropic organization to the profile,
+    /// or has not allowed your organization to bill it, the request is rejected rather
+    /// than billed to you. Omit the field, or send `"bill_to": "self"` (the default),
+    /// to be billed as usual.
+    /// </summary>
+    public BetaBillingPolicy? BillingPolicy
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaBillingPolicy>("billing_policy");
+        }
+        init { this._rawBodyData.Set("billing_policy", value); }
     }
 
     /// <summary>
@@ -669,11 +687,7 @@ public record class ThreadSendParams : ParamsBase
 
     internal override HttpContent? BodyContent()
     {
-        return new StringContent(
-            JsonSerializer.Serialize(this.RawBodyData, ModelBase.SerializerOptions),
-            Encoding.UTF8,
-            "application/json"
-        );
+        return ParamsBase.JsonBodyContent(this.RawBodyData);
     }
 
     internal override void AddHeadersToRequest(HttpRequestMessage request, ClientOptions options)

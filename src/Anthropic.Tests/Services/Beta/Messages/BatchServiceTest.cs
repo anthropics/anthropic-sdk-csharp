@@ -26,6 +26,7 @@ public class BatchServiceTest : TestBase
                                 MaxTokens = 1024,
                                 Messages = [new BetaUserMessageParam("Hello, world")],
                                 Model = Messages::Model.ClaudeOpus5_5,
+                                BillingPolicy = new() { BillTo = BetaBillTo.Self },
                                 CacheControl = new() { Ttl = Ttl.Ttl5m },
                                 Compaction = new() { Instructions = "instructions" },
                                 Container = new BetaContainerParams()

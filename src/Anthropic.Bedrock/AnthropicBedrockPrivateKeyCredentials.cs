@@ -55,12 +55,14 @@ public sealed class AnthropicBedrockPrivateKeyCredentials : IAnthropicBedrockCre
             requestMessage.RequestUri!,
             now,
             // The trace-context headers stay unsigned: an HTTP instrumentation may replace
-            // them after signing.
+            // them after signing. User-Agent stays unsigned too: .NET joins its values with a
+            // space rather than ", ", and nothing needs it signed.
             TraceContextHeaders
                 .Signed(requestMessage.Headers)
+                .Where(e => !e.Key.Equals("User-Agent", StringComparison.OrdinalIgnoreCase))
                 .ToDictionary(
                     e => e.Key,
-                    e => string.Join(" ", e.Value),
+                    e => string.Join(", ", e.Value),
                     StringComparer.InvariantCultureIgnoreCase
                 ),
             payloadHash,

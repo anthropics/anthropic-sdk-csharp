@@ -8,6 +8,7 @@ src/Anthropic.Tests/Models/CmekContextUnavailableErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyDisabledErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyNetworkBlockedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyUnreachableErrorDetailsTest.cs
+src/Anthropic.Tests/Models/ContractSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/EnforcedSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/ErrorDetailsTest.cs
 src/Anthropic.Tests/Models/ErrorObjectTest.cs
@@ -15,6 +16,8 @@ src/Anthropic.Tests/Models/ErrorResponseTest.cs
 src/Anthropic.Tests/Models/ErrorTypeTest.cs
 src/Anthropic.Tests/Models/GatewayTimeoutErrorTest.cs
 src/Anthropic.Tests/Models/InvalidRequestErrorTest.cs
+src/Anthropic.Tests/Models/LinkedOrganizationBillingUnavailableErrorDetailsTest.cs
+src/Anthropic.Tests/Models/LinkedOrganizationSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/NotFoundErrorTest.cs
 src/Anthropic.Tests/Models/OrganizationOnHoldErrorDetailsTest.cs
 src/Anthropic.Tests/Models/OrganizationTypeNotSupportedErrorDetailsTest.cs
@@ -261,6 +264,7 @@ src/Anthropic.Tests/Models/Skills/Versions/SkillVersionTest.cs
 src/Anthropic.Tests/Models/Skills/Versions/VersionListPageResponseTest.cs
 src/Anthropic.Tests/Models/UserProfiles/DeletedUserProfileTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileBillingNotAuthorizedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberProgramTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberRequirementsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberTierTest.cs
@@ -272,9 +276,11 @@ src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionNextStepTest
 src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionReasonTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileEnforcementActionRestrictionTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileExternalUserDetailsTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileNotBillableErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileNotFoundErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileProgramStatusTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileProgramsTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileRequiredErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileListPageResponseTest.cs
 src/Anthropic.Tests/Models/UserProfiles/ActionUrls/UserProfileActionUrlTest.cs
 src/Anthropic.Tests/Models/Organization/ConcurrentMembershipChangeErrorDetailsTest.cs
@@ -872,8 +878,8 @@ src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserInterruptEv
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserMessageEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsUserToolConfirmationEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunCreatedEventTest.cs
-src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorEventTest.cs
+src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunErrorTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseEndedEventTest.cs
 src/Anthropic.Tests/Models/Beta/Sessions/Events/BetaManagedAgentsWorkflowRunPhaseStartedEventTest.cs
@@ -1016,6 +1022,8 @@ src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEnvironmentDeletedEventDataT
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEnvironmentUpdatedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/UnwrapWebhookEventTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyFailedEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyRecoveredEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreArchivedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreCreatedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreDeletedEventDataTest.cs

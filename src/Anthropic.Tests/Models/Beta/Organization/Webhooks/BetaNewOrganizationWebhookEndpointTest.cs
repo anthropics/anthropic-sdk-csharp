@@ -18,10 +18,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             SigningSecret = "signing_secret",
             State = BetaOrganizationWebhookEndpointState.Disabled,
@@ -37,7 +34,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             ApiEnum<string, BetaNewOrganizationWebhookEndpointEnabledEvent>
         > expectedEnabledEvents =
         [
-            BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
+            BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
         ];
         string expectedName = "name";
         string expectedSigningSecret = "signing_secret";
@@ -71,10 +68,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             SigningSecret = "signing_secret",
             State = BetaOrganizationWebhookEndpointState.Disabled,
@@ -100,10 +94,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             SigningSecret = "signing_secret",
             State = BetaOrganizationWebhookEndpointState.Disabled,
@@ -126,7 +117,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             ApiEnum<string, BetaNewOrganizationWebhookEndpointEnabledEvent>
         > expectedEnabledEvents =
         [
-            BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
+            BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
         ];
         string expectedName = "name";
         string expectedSigningSecret = "signing_secret";
@@ -160,10 +151,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             SigningSecret = "signing_secret",
             State = BetaOrganizationWebhookEndpointState.Disabled,
@@ -183,10 +171,7 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
             CreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z"),
             Description = "description",
             DisabledReason = "disabled_reason",
-            EnabledEvents =
-            [
-                BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
-            ],
+            EnabledEvents = [BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed],
             Name = "name",
             SigningSecret = "signing_secret",
             State = BetaOrganizationWebhookEndpointState.Disabled,
@@ -203,6 +188,8 @@ public class BetaNewOrganizationWebhookEndpointTest : TestBase
 public class BetaNewOrganizationWebhookEndpointEnabledEventTest : TestBase
 {
     [Theory]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
     [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(
         BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved
@@ -227,6 +214,8 @@ public class BetaNewOrganizationWebhookEndpointEnabledEventTest : TestBase
     }
 
     [Theory]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
     [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(
         BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved
