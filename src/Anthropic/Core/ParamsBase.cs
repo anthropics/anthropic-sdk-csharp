@@ -227,7 +227,7 @@ public abstract record class ParamsBase
                 sb.Append(HttpUtility.UrlEncode(value));
             }
         }
-        return sb.ToString();
+        return sb.ToString().Replace("+", "%20");
     }
 
     internal static string EncodePathSegment(string? value, string paramName)
