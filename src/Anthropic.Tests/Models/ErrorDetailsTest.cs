@@ -239,6 +239,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ContractSpendLimitReachedValidationWorks()
+    {
+        ErrorDetails value = new ContractSpendLimitReachedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void EnforcedSpendLimitReachedValidationWorks()
     {
         ErrorDetails value = new EnforcedSpendLimitReachedErrorDetails();
@@ -1069,6 +1076,19 @@ public class ErrorDetailsTest : TestBase
     public void RequestBodyTooLargeAfterDecodingSerializationRoundtripWorks()
     {
         ErrorDetails value = new RequestBodyTooLargeAfterDecodingErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ContractSpendLimitReachedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ContractSpendLimitReachedErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2120,6 +2140,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ContractSpendLimitReachedErrorCodeWorks()
+    {
+        ErrorDetails value = new ContractSpendLimitReachedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ContractSpendLimitReached, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void EnforcedSpendLimitReachedErrorCodeWorks()
     {
         ErrorDetails value = new EnforcedSpendLimitReachedErrorDetails();
@@ -2682,6 +2709,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
+    [InlineData(ErrorDetailsErrorCode.ContractSpendLimitReached)]
     [InlineData(ErrorDetailsErrorCode.EnforcedSpendLimitReached)]
     [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]
@@ -2793,6 +2821,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
+    [InlineData(ErrorDetailsErrorCode.ContractSpendLimitReached)]
     [InlineData(ErrorDetailsErrorCode.EnforcedSpendLimitReached)]
     [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]

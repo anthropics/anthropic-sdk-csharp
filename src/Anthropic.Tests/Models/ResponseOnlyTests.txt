@@ -8,6 +8,7 @@ src/Anthropic.Tests/Models/CmekContextUnavailableErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyDisabledErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyNetworkBlockedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/CmekKeyUnreachableErrorDetailsTest.cs
+src/Anthropic.Tests/Models/ContractSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/EnforcedSpendLimitReachedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/ErrorDetailsTest.cs
 src/Anthropic.Tests/Models/ErrorObjectTest.cs

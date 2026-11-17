@@ -74,6 +74,7 @@ public interface IMessageService
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicContractSpendLimitReachedException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>
@@ -123,6 +124,7 @@ public interface IMessageService
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
     /// <exception cref="AnthropicRequestBodyTooLargeAfterDecodingException"/>
+    /// <exception cref="AnthropicContractSpendLimitReachedException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     /// <exception cref="AnthropicRampLimitExceededException"/>
     /// <exception cref="AnthropicCmekKeyUnreachableException"/>

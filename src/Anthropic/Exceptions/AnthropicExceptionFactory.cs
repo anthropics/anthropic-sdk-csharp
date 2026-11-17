@@ -728,6 +728,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(429, "contract_spend_limit_reached")] = (statusCode, responseBody, response) =>
+            new AnthropicContractSpendLimitReachedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(429, "enforced_spend_limit_reached")] = (statusCode, responseBody, response) =>
             new AnthropicEnforcedSpendLimitReachedException()
             {
