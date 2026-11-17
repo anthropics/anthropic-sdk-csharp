@@ -16,8 +16,7 @@ public sealed record class BetaAwsExternalKeyConfig : JsonModel
 {
     /// <summary>
     /// Full ARN of the AWS KMS key. On Claude Platform on AWS, alias ARNs are rejected,
-    /// and your organization's own key must be a single-Region key in your organization's
-    /// AWS account.
+    /// and your organization's own key must be a single-Region key.
     /// </summary>
     public required string KmsArn
     {
