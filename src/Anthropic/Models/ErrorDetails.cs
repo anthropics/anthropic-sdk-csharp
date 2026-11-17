@@ -94,6 +94,8 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
                 LinkedOrganizationSpendLimitReachedErrorDetails _ =>
                     ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+                UserProfileBillingNotAuthorizedErrorDetails _ =>
+                    ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
                 UserProfileNotBillableErrorDetails _ =>
                     ErrorDetailsErrorCode.UserProfileNotBillable,
                 Messages::ThreadNotFoundErrorDetails _ => ErrorDetailsErrorCode.ThreadNotFound,
@@ -242,6 +244,7 @@ public record class ErrorDetails : ModelBase
                 UserProfileRequiredErrorDetails _ => null,
                 LinkedOrganizationBillingUnavailableErrorDetails _ => null,
                 LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
                 UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
@@ -343,6 +346,7 @@ public record class ErrorDetails : ModelBase
                 UserProfileRequiredErrorDetails _ => null,
                 LinkedOrganizationBillingUnavailableErrorDetails _ => null,
                 LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
                 UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
@@ -447,6 +451,7 @@ public record class ErrorDetails : ModelBase
                 UserProfileRequiredErrorDetails _ => null,
                 LinkedOrganizationBillingUnavailableErrorDetails _ => null,
                 LinkedOrganizationSpendLimitReachedErrorDetails _ => null,
+                UserProfileBillingNotAuthorizedErrorDetails _ => null,
                 UserProfileNotBillableErrorDetails _ => null,
                 Messages::ThreadNotFoundErrorDetails _ => null,
                 Skills::SkillReadBlockedUndecryptableErrorDetails _ => null,
@@ -717,6 +722,15 @@ public record class ErrorDetails : ModelBase
 
     public ErrorDetails(
         LinkedOrganizationSpendLimitReachedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        UserProfileBillingNotAuthorizedErrorDetails value,
         JsonElement? element = null
     )
     {
@@ -1776,6 +1790,29 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as LinkedOrganizationSpendLimitReachedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="UserProfileBillingNotAuthorizedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickUserProfileBillingNotAuthorized(out var value)) {
+    ///     // `value` is of type `UserProfileBillingNotAuthorizedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickUserProfileBillingNotAuthorized(
+        [NotNullWhen(true)] out UserProfileBillingNotAuthorizedErrorDetails? value
+    )
+    {
+        value = this.Value as UserProfileBillingNotAuthorizedErrorDetails;
         return value != null;
     }
 
@@ -3305,6 +3342,7 @@ public record class ErrorDetails : ModelBase
     ///     (UserProfileRequiredErrorDetails value) =&gt; {...},
     ///     (LinkedOrganizationBillingUnavailableErrorDetails value) =&gt; {...},
     ///     (LinkedOrganizationSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (UserProfileBillingNotAuthorizedErrorDetails value) =&gt; {...},
     ///     (UserProfileNotBillableErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
@@ -3400,6 +3438,7 @@ public record class ErrorDetails : ModelBase
         Action<UserProfileRequiredErrorDetails> userProfileRequired,
         Action<LinkedOrganizationBillingUnavailableErrorDetails> linkedOrganizationBillingUnavailable,
         Action<LinkedOrganizationSpendLimitReachedErrorDetails> linkedOrganizationSpendLimitReached,
+        Action<UserProfileBillingNotAuthorizedErrorDetails> userProfileBillingNotAuthorized,
         Action<UserProfileNotBillableErrorDetails> userProfileNotBillable,
         Action<Messages::ThreadNotFoundErrorDetails> threadNotFound,
         Action<Skills::SkillReadBlockedUndecryptableErrorDetails> skillReadBlockedUndecryptable,
@@ -3543,6 +3582,9 @@ public record class ErrorDetails : ModelBase
                 break;
             case LinkedOrganizationSpendLimitReachedErrorDetails value:
                 linkedOrganizationSpendLimitReached(value);
+                break;
+            case UserProfileBillingNotAuthorizedErrorDetails value:
+                userProfileBillingNotAuthorized(value);
                 break;
             case UserProfileNotBillableErrorDetails value:
                 userProfileNotBillable(value);
@@ -3786,6 +3828,7 @@ public record class ErrorDetails : ModelBase
     ///     (UserProfileRequiredErrorDetails value) =&gt; {...},
     ///     (LinkedOrganizationBillingUnavailableErrorDetails value) =&gt; {...},
     ///     (LinkedOrganizationSpendLimitReachedErrorDetails value) =&gt; {...},
+    ///     (UserProfileBillingNotAuthorizedErrorDetails value) =&gt; {...},
     ///     (UserProfileNotBillableErrorDetails value) =&gt; {...},
     ///     (Messages::ThreadNotFoundErrorDetails value) =&gt; {...},
     ///     (Skills::SkillReadBlockedUndecryptableErrorDetails value) =&gt; {...},
@@ -3890,6 +3933,7 @@ public record class ErrorDetails : ModelBase
             LinkedOrganizationSpendLimitReachedErrorDetails,
             T
         > linkedOrganizationSpendLimitReached,
+        Func<UserProfileBillingNotAuthorizedErrorDetails, T> userProfileBillingNotAuthorized,
         Func<UserProfileNotBillableErrorDetails, T> userProfileNotBillable,
         Func<Messages::ThreadNotFoundErrorDetails, T> threadNotFound,
         Func<Skills::SkillReadBlockedUndecryptableErrorDetails, T> skillReadBlockedUndecryptable,
@@ -4026,6 +4070,9 @@ public record class ErrorDetails : ModelBase
                 linkedOrganizationBillingUnavailable(value),
             LinkedOrganizationSpendLimitReachedErrorDetails value =>
                 linkedOrganizationSpendLimitReached(value),
+            UserProfileBillingNotAuthorizedErrorDetails value => userProfileBillingNotAuthorized(
+                value
+            ),
             UserProfileNotBillableErrorDetails value => userProfileNotBillable(value),
             Messages::ThreadNotFoundErrorDetails value => threadNotFound(value),
             Skills::SkillReadBlockedUndecryptableErrorDetails value =>
@@ -4217,6 +4264,10 @@ public record class ErrorDetails : ModelBase
 
     public static implicit operator ErrorDetails(
         LinkedOrganizationSpendLimitReachedErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        UserProfileBillingNotAuthorizedErrorDetails value
     ) => new(value);
 
     public static implicit operator ErrorDetails(UserProfileNotBillableErrorDetails value) =>
@@ -4481,6 +4532,7 @@ public record class ErrorDetails : ModelBase
             (linkedOrganizationBillingUnavailable) =>
                 linkedOrganizationBillingUnavailable.Validate(),
             (linkedOrganizationSpendLimitReached) => linkedOrganizationSpendLimitReached.Validate(),
+            (userProfileBillingNotAuthorized) => userProfileBillingNotAuthorized.Validate(),
             (userProfileNotBillable) => userProfileNotBillable.Validate(),
             (threadNotFound) => threadNotFound.Validate(),
             (skillReadBlockedUndecryptable) => skillReadBlockedUndecryptable.Validate(),
@@ -4601,71 +4653,72 @@ public record class ErrorDetails : ModelBase
             UserProfileRequiredErrorDetails _ => 22,
             LinkedOrganizationBillingUnavailableErrorDetails _ => 23,
             LinkedOrganizationSpendLimitReachedErrorDetails _ => 24,
-            UserProfileNotBillableErrorDetails _ => 25,
-            Messages::ThreadNotFoundErrorDetails _ => 26,
-            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 27,
-            RequestBodyTooLargeAfterDecodingErrorDetails _ => 28,
-            EnforcedSpendLimitReachedErrorDetails _ => 29,
-            RampLimitExceededErrorDetails _ => 30,
-            CmekKeyUnreachableErrorDetails _ => 31,
-            Messages::CompactionUnavailableErrorDetails _ => 32,
-            Files::StorageQuotaExceededErrorDetails _ => 33,
-            Files::FileNotDownloadableErrorDetails _ => 34,
-            Files::FileExpiredErrorDetails _ => 35,
-            CmekContextUnavailableErrorDetails _ => 36,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 37,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 38,
-            SandboxEgressRestrictedErrorDetails _ => 39,
-            UserProfileNotFoundErrorDetails _ => 40,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 41,
-            AlreadyMemberErrorDetails _ => 42,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 43,
-            EmailDomainNotAllowedErrorDetails _ => 44,
-            InviteAlreadyExistsErrorDetails _ => 45,
-            OrgMemberLimitExceededErrorDetails _ => 46,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 47,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 48,
-            CannotRemoveLastMemberErrorDetails _ => 49,
-            ConcurrentMembershipChangeErrorDetails _ => 50,
-            ExternalKeyValidationFailedErrorDetails _ => 51,
-            ExternalKeyValidationTimedOutErrorDetails _ => 52,
-            KeyProfileMismatchErrorDetails _ => 53,
-            WorkspacePolicyViolationErrorDetails _ => 54,
-            ExternalKeyChangedErrorDetails _ => 55,
-            WorkspaceMemberLimitExceededErrorDetails _ => 56,
-            OrganizationTypeNotSupportedErrorDetails _ => 57,
-            ParentOrganizationRequiredErrorDetails _ => 58,
-            RbacRoleNotFoundErrorDetails _ => 59,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 60,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 61,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 62,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 63,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 64,
-            Environments::BetaInvalidMetadataErrorDetails _ => 65,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 66,
-            BetaCannotSignOutSelfErrorDetails _ => 67,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 68,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 69,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 70,
-            BetaCannotSignOutOwnerErrorDetails _ => 71,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 72,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 73,
-            BetaUnsupportedCharsetErrorDetails _ => 74,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 75,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 76,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 77,
-            Plugins::BetaScanFailedErrorDetails _ => 78,
-            Plugins::BetaScanPendingErrorDetails _ => 79,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 80,
-            BetaApiKeyScopeMissingErrorDetails _ => 81,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 82,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 83,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 84,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 85,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 86,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 87,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 88,
-            BetaBundleOnCallErrorDetails _ => 89,
+            UserProfileBillingNotAuthorizedErrorDetails _ => 25,
+            UserProfileNotBillableErrorDetails _ => 26,
+            Messages::ThreadNotFoundErrorDetails _ => 27,
+            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 28,
+            RequestBodyTooLargeAfterDecodingErrorDetails _ => 29,
+            EnforcedSpendLimitReachedErrorDetails _ => 30,
+            RampLimitExceededErrorDetails _ => 31,
+            CmekKeyUnreachableErrorDetails _ => 32,
+            Messages::CompactionUnavailableErrorDetails _ => 33,
+            Files::StorageQuotaExceededErrorDetails _ => 34,
+            Files::FileNotDownloadableErrorDetails _ => 35,
+            Files::FileExpiredErrorDetails _ => 36,
+            CmekContextUnavailableErrorDetails _ => 37,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 38,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 39,
+            SandboxEgressRestrictedErrorDetails _ => 40,
+            UserProfileNotFoundErrorDetails _ => 41,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 42,
+            AlreadyMemberErrorDetails _ => 43,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 44,
+            EmailDomainNotAllowedErrorDetails _ => 45,
+            InviteAlreadyExistsErrorDetails _ => 46,
+            OrgMemberLimitExceededErrorDetails _ => 47,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 48,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 49,
+            CannotRemoveLastMemberErrorDetails _ => 50,
+            ConcurrentMembershipChangeErrorDetails _ => 51,
+            ExternalKeyValidationFailedErrorDetails _ => 52,
+            ExternalKeyValidationTimedOutErrorDetails _ => 53,
+            KeyProfileMismatchErrorDetails _ => 54,
+            WorkspacePolicyViolationErrorDetails _ => 55,
+            ExternalKeyChangedErrorDetails _ => 56,
+            WorkspaceMemberLimitExceededErrorDetails _ => 57,
+            OrganizationTypeNotSupportedErrorDetails _ => 58,
+            ParentOrganizationRequiredErrorDetails _ => 59,
+            RbacRoleNotFoundErrorDetails _ => 60,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 61,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 62,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 63,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 64,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 65,
+            Environments::BetaInvalidMetadataErrorDetails _ => 66,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 67,
+            BetaCannotSignOutSelfErrorDetails _ => 68,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 69,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 70,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 71,
+            BetaCannotSignOutOwnerErrorDetails _ => 72,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 73,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 74,
+            BetaUnsupportedCharsetErrorDetails _ => 75,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 76,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 77,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 78,
+            Plugins::BetaScanFailedErrorDetails _ => 79,
+            Plugins::BetaScanPendingErrorDetails _ => 80,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 81,
+            BetaApiKeyScopeMissingErrorDetails _ => 82,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 83,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 84,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 85,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 86,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 87,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 88,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 89,
+            BetaBundleOnCallErrorDetails _ => 90,
             _ => -1,
         };
     }
@@ -5199,6 +5252,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<LinkedOrganizationSpendLimitReachedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "user_profile_billing_not_authorized":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<UserProfileBillingNotAuthorizedErrorDetails>(
                             element,
                             options
                         );
@@ -6614,6 +6688,7 @@ public enum ErrorDetailsErrorCode
     UserProfileRequired,
     LinkedOrganizationBillingUnavailable,
     LinkedOrganizationSpendLimitReached,
+    UserProfileBillingNotAuthorized,
     UserProfileNotBillable,
     ThreadNotFound,
     SkillReadBlockedUndecryptable,
@@ -6722,6 +6797,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
             "linked_organization_spend_limit_reached" =>
                 ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+            "user_profile_billing_not_authorized" =>
+                ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
             "user_profile_not_billable" => ErrorDetailsErrorCode.UserProfileNotBillable,
             "thread_not_found" => ErrorDetailsErrorCode.ThreadNotFound,
             "skill_read_blocked_undecryptable" =>
@@ -6850,6 +6927,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "linked_organization_billing_unavailable",
                 ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached =>
                     "linked_organization_spend_limit_reached",
+                ErrorDetailsErrorCode.UserProfileBillingNotAuthorized =>
+                    "user_profile_billing_not_authorized",
                 ErrorDetailsErrorCode.UserProfileNotBillable => "user_profile_not_billable",
                 ErrorDetailsErrorCode.ThreadNotFound => "thread_not_found",
                 ErrorDetailsErrorCode.SkillReadBlockedUndecryptable =>

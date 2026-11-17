@@ -204,6 +204,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void UserProfileBillingNotAuthorizedValidationWorks()
+    {
+        ErrorDetails value = new UserProfileBillingNotAuthorizedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void UserProfileNotBillableValidationWorks()
     {
         ErrorDetails value = new UserProfileNotBillableErrorDetails();
@@ -997,6 +1004,19 @@ public class ErrorDetailsTest : TestBase
     public void LinkedOrganizationSpendLimitReachedSerializationRoundtripWorks()
     {
         ErrorDetails value = new LinkedOrganizationSpendLimitReachedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void UserProfileBillingNotAuthorizedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new UserProfileBillingNotAuthorizedErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2059,6 +2079,16 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void UserProfileBillingNotAuthorizedErrorCodeWorks()
+    {
+        ErrorDetails value = new UserProfileBillingNotAuthorizedErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
     public void UserProfileNotBillableErrorCodeWorks()
     {
         ErrorDetails value = new UserProfileNotBillableErrorDetails();
@@ -2647,6 +2677,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.UserProfileRequired)]
     [InlineData(ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable)]
     [InlineData(ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileBillingNotAuthorized)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable)]
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
@@ -2757,6 +2788,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.UserProfileRequired)]
     [InlineData(ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable)]
     [InlineData(ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.UserProfileBillingNotAuthorized)]
     [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable)]
     [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
     [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]

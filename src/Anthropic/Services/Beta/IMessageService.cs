@@ -69,6 +69,7 @@ public interface IMessageService
     /// <exception cref="AnthropicUserProfileRequiredException"/>
     /// <exception cref="AnthropicLinkedOrganizationBillingUnavailableException"/>
     /// <exception cref="AnthropicLinkedOrganizationSpendLimitReachedException"/>
+    /// <exception cref="AnthropicUserProfileBillingNotAuthorizedException"/>
     /// <exception cref="AnthropicUserProfileNotBillableException"/>
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>
@@ -117,6 +118,7 @@ public interface IMessageService
     /// <exception cref="AnthropicUserProfileRequiredException"/>
     /// <exception cref="AnthropicLinkedOrganizationBillingUnavailableException"/>
     /// <exception cref="AnthropicLinkedOrganizationSpendLimitReachedException"/>
+    /// <exception cref="AnthropicUserProfileBillingNotAuthorizedException"/>
     /// <exception cref="AnthropicUserProfileNotBillableException"/>
     /// <exception cref="AnthropicThreadNotFoundException"/>
     /// <exception cref="AnthropicSkillReadBlockedUndecryptableException"/>

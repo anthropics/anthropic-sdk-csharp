@@ -596,6 +596,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(403, "user_profile_billing_not_authorized")] = (statusCode, responseBody, response) =>
+            new AnthropicUserProfileBillingNotAuthorizedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(403, "user_profile_not_billable")] = (statusCode, responseBody, response) =>
             new AnthropicUserProfileNotBillableException()
             {

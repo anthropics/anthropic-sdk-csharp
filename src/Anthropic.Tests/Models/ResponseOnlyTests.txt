@@ -263,6 +263,7 @@ src/Anthropic.Tests/Models/Skills/Versions/SkillVersionTest.cs
 src/Anthropic.Tests/Models/Skills/Versions/VersionListPageResponseTest.cs
 src/Anthropic.Tests/Models/UserProfiles/DeletedUserProfileTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileTest.cs
+src/Anthropic.Tests/Models/UserProfiles/UserProfileBillingNotAuthorizedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberProgramTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberRequirementsTest.cs
 src/Anthropic.Tests/Models/UserProfiles/UserProfileCyberTierTest.cs
