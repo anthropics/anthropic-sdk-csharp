@@ -2,12 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Exceptions;
-using Anthropic.Models.Beta.Messages;
+using static Anthropic.Core.JsonNodes;
 
 namespace Anthropic.Helpers.Fallbacks;
 
@@ -202,28 +201,18 @@ internal sealed class BufferedRun
         var body = await response
             .Content.ReadAsStringAsync(cancellationToken)
             .ConfigureAwait(false);
-        try
+        if (ParseObject(body) is not { } message || GetString(message["stop_reason"]) != "refusal")
         {
-            var message = JsonSerializer.Deserialize<BetaMessage>(
-                body,
-                ModelBase.SerializerOptions
-            );
-            if (
-                message?.StopReason is not { } stopReason
-                || stopReason.Value() != BetaStopReason.Refusal
-            )
-            {
-                return null;
-            }
-            return new RefusalDetails(
-                message.StopDetails?.FallbackCreditToken,
-                message.StopDetails?.Category?.Raw()
-            );
-        }
-        catch (Exception e) when (e is JsonException or AnthropicInvalidDataException)
-        {
-            // Pass unexpected response shapes (e.g. errors) through for normal handling.
             return null;
         }
+        var details = message["stop_details"] as JsonObject;
+        if (details != null && GetString(details["type"]) != "refusal")
+        {
+            details = null;
+        }
+        return new RefusalDetails(
+            GetString(details?["fallback_credit_token"]),
+            GetString(details?["category"])
+        );
     }
 }

@@ -73,6 +73,50 @@ public class BetaRefusalFallbackHandlerTest
     }
 
     [Fact]
+    public async Task PutsTheRefusalCategoryOnTheSeamBlock()
+    {
+        var refusal = JsonNode.Parse(Refusal("primary-model", "credit-token"))!;
+        refusal["stop_details"]!["category"] = "cyber";
+        var transport = new FakeTransport()
+            .EnqueueJson(200, refusal.ToJsonString())
+            .EnqueueJson(200, Message("fallback-model", "answer"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        using var _ = BetaFallbackState.Create().Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(),
+            TestContext.Current.CancellationToken
+        );
+
+        var message = await ReadMessage(response);
+        Assert.True(message.Content[0].TryPickFallback(out var seam));
+        Assert.Equal("cyber", seam.Trigger.Category?.Raw());
+    }
+
+    [Fact]
+    public async Task ReadsNoTokenOrCategoryFromStopDetailsThatAreNotARefusal()
+    {
+        var refusal = JsonNode.Parse(Refusal("primary-model", "credit-token"))!;
+        refusal["stop_details"]!["type"] = "other";
+        refusal["stop_details"]!["category"] = "cyber";
+        var transport = new FakeTransport()
+            .EnqueueJson(200, refusal.ToJsonString())
+            .EnqueueJson(200, Message("fallback-model", "answer"));
+        using var invoker = Intercepted(transport, "fallback-model");
+
+        using var _ = BetaFallbackState.Create().Use();
+        var response = await invoker.SendAsync(
+            MessagesRequest(),
+            TestContext.Current.CancellationToken
+        );
+
+        var message = await ReadMessage(response);
+        Assert.False(transport.JsonBodies[1].ContainsKey("fallback_credit_token"));
+        Assert.True(message.Content[0].TryPickFallback(out var seam));
+        Assert.Null(seam.Trigger.Category);
+    }
+
+    [Fact]
     public async Task PrependsSeamBlockPerBoundaryOnMultiHopChain()
     {
         var transport = new FakeTransport()
