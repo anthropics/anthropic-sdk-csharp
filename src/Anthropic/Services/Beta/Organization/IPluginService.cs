@@ -75,6 +75,7 @@ public interface IPluginService
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
     /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
     /// <exception cref="AnthropicBetaUnsupportedCharsetException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicBetaPluginNameTakenException"/>
     /// <exception cref="AnthropicBetaSkillNameTakenException"/>
     /// <exception cref="AnthropicBetaRegistrationPendingException"/>
@@ -150,6 +151,7 @@ public interface IPluginService
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
     /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
     /// <exception cref="AnthropicBetaScanFailedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicBetaScanPendingException"/>
     /// <exception cref="AnthropicBetaSkillNameTakenException"/>
     Task<BetaPlugin> Update(
@@ -214,6 +216,7 @@ public interface IPluginService
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaDeletedPlugin> Delete(
         PluginDeleteParams parameters,
         CancellationToken cancellationToken = default

@@ -63,6 +63,7 @@ public interface IVersionService
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
     /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
     /// <exception cref="AnthropicBetaUnsupportedCharsetException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicBetaSkillNameTakenException"/>
     /// <exception cref="AnthropicBetaRegistrationPendingException"/>
     Task<BetaPluginVersion> Create(
@@ -163,6 +164,7 @@ public interface IVersionService
     /// </summary>
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
     /// <exception cref="AnthropicCmekKeyNetworkBlockedException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<HttpResponse> Download(
         VersionDownloadParams parameters,
         CancellationToken cancellationToken = default

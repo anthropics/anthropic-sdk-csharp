@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
 
 namespace Anthropic.Services.Beta.Organization.Plugins;
@@ -85,6 +86,7 @@ public interface IInstallationSettingService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaDeletedPluginInstallationSetting> Remove(
         InstallationSettingRemoveParams parameters,
         CancellationToken cancellationToken = default
@@ -120,6 +122,7 @@ public interface IInstallationSettingService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaPluginInstallationSetting> Set(
         InstallationSettingSetParams parameters,
         CancellationToken cancellationToken = default

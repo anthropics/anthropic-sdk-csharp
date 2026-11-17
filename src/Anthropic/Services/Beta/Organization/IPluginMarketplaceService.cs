@@ -2,6 +2,7 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
+using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.PluginMarketplaces;
 
@@ -68,6 +69,7 @@ public interface IPluginMarketplaceService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaPluginMarketplace> Update(
         PluginMarketplaceUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -138,6 +140,7 @@ public interface IPluginMarketplaceService
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
     /// <exception cref="AnthropicBetaUnsupportedCharsetException"/>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaPluginMarketplaceValidationReport> ValidateArchive(
         PluginMarketplaceValidateArchiveParams parameters,
         CancellationToken cancellationToken = default
@@ -175,6 +178,7 @@ public interface IPluginMarketplaceService
     /// Enterprise organizations only. It is not available to Claude Platform (Claude
     /// Console) organizations, or to organizations with HIPAA readiness enabled.</para>
     /// </summary>
+    /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     Task<BetaPluginMarketplaceValidationReport> ValidateRepository(
         PluginMarketplaceValidateRepositoryParams parameters,
         CancellationToken cancellationToken = default
