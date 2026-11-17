@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.0.4](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.3...Bedrock-v1.0.4) (2026-11-17)
+
+### Bug Fixes
+
+* **bedrock:** sign repeated header values
+
+  The signature no longer covers `User-Agent`. The header is sent as before.
+
+
+### Chores
+
+* **internal:** base the Mantle beta wrappers on the generated decorator
+
 ## [1.0.3](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.2...Bedrock-v1.0.3) (2026-11-16)
 
 ### Bug Fixes
