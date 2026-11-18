@@ -1538,7 +1538,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
-    public async Task GetResponseAsync_WithHostedTools_AddsBetaHeaders()
+    public async Task GetResponseAsync_WithHostedTools_AddsOnlyNeededBetaHeaders()
     {
         IEnumerable<string>? capturedBetaHeaders = null;
         VerbatimHttpHandler handler = new(
@@ -1554,7 +1554,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     }]
                 }],
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "mcp_servers": [{
@@ -1606,8 +1606,8 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
         string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
-        Assert.Contains("code-execution-2025-08-25", betas);
-        Assert.Contains("mcp-client-2025-11-20", betas);
+        // Code execution needs no beta header.
+        Assert.Equal(["mcp-client-2025-11-20"], betas);
     }
 
     [Fact]
@@ -1627,7 +1627,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                     }]
                 }],
                 "tools": [{
-                    "type": "code_execution_20250825",
+                    "type": "code_execution_20260521",
                     "name": "code_execution"
                 }],
                 "mcp_servers": [{
@@ -1669,7 +1669,7 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
                 MaxTokens = 1024,
                 Model = "claude-haiku-4-5",
                 Messages = [],
-                Betas = ["custom-beta-feature", "code-execution-2025-08-25"],
+                Betas = ["custom-beta-feature", "mcp-client-2025-11-20"],
             },
             Tools =
             [
@@ -1686,11 +1686,175 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
         Assert.NotNull(response);
         Assert.NotNull(capturedBetaHeaders);
         string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
-        Assert.Equal(3, betas.Length);
+        Assert.Equal(2, betas.Length);
         Assert.Contains("custom-beta-feature", betas);
-        Assert.Contains("code-execution-2025-08-25", betas);
         Assert.Contains("mcp-client-2025-11-20", betas);
     }
+
+    [Fact]
+    public async Task GetResponseAsync_WithSkills_AddsCurrentCodeExecutionTool()
+    {
+        IEnumerable<string>? capturedBetaHeaders = null;
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Make a deck"
+                    }]
+                }],
+                "container": {
+                    "skills": [{
+                        "skill_id": "pptx",
+                        "type": "anthropic",
+                        "version": "latest"
+                    }]
+                },
+                "tools": [{
+                    "type": "code_execution_20260521",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: SkillsResponse
+        )
+        {
+            OnRequestHeaders = headers =>
+                headers.TryGetValues("anthropic-beta", out capturedBetaHeaders),
+        };
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Tools = [Skill("pptx")] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Make a deck",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+        Assert.NotNull(capturedBetaHeaders);
+        string[] betas = [.. capturedBetaHeaders.SelectMany(h => h.Split(','))];
+        // Code execution needs no beta header.
+        Assert.Equal(["skills-2025-10-02"], betas);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithSkillsAndHostedCodeInterpreterTool_SendsOneCodeExecutionTool()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Make a deck"
+                    }]
+                }],
+                "container": {
+                    "skills": [{
+                        "skill_id": "pptx",
+                        "type": "anthropic",
+                        "version": "latest"
+                    }]
+                },
+                "tools": [{
+                    "type": "code_execution_20260521",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: SkillsResponse
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatOptions options = new() { Tools = [new HostedCodeInterpreterTool(), Skill("pptx")] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Make a deck",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_WithSkillsAndOtherCodeExecutionVersion_KeepsOnlyThatTool()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Make a deck"
+                    }]
+                }],
+                "container": {
+                    "skills": [{
+                        "skill_id": "pptx",
+                        "type": "anthropic",
+                        "version": "latest"
+                    }]
+                },
+                "tools": [{
+                    "type": "code_execution_20260120",
+                    "name": "code_execution"
+                }]
+            }
+            """,
+            actualResponse: SkillsResponse
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        BetaToolUnion codeExecution = new BetaCodeExecutionTool20260120();
+        ChatOptions options = new() { Tools = [codeExecution.AsAITool(), Skill("pptx")] };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Make a deck",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    private static AITool Skill(string skillId) =>
+        new BetaSkillParams
+        {
+            SkillID = skillId,
+            Type = BetaSkillParamsType.Anthropic,
+            Version = "latest",
+        }.AsAITool();
+
+    private const string SkillsResponse = """
+        {
+            "id": "msg_skills_01",
+            "type": "message",
+            "role": "assistant",
+            "model": "claude-haiku-4-5",
+            "content": [{
+                "type": "text",
+                "text": "Done."
+            }],
+            "stop_reason": "end_turn",
+            "usage": {
+                "input_tokens": 10,
+                "output_tokens": 5
+            }
+        }
+        """;
 
     [Fact]
     public async Task GetResponseAsync_IncludesMeaiUserAgentHeader()
