@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.5](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.4...Bedrock-v1.0.5) (2026-11-19)
+
+### Bug Fixes
+
+* **bedrock:** send `User-Agent` with spaces and sign headers that have several values in `AnthropicBedrockMantleClient`
+
 ## [1.0.4](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.3...Bedrock-v1.0.4) (2026-11-17)
 
 ### Bug Fixes
