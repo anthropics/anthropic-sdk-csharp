@@ -616,20 +616,28 @@ public class SkillTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SkillType.Anthropic)]
-    [InlineData(SkillType.Custom)]
-    public void SerializationRoundtrip_Works(SkillType rawValue)
+    [InlineData(SkillType.Anthropic, 0, "anthropic")]
+    [InlineData(SkillType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SkillType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SkillType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -915,20 +923,28 @@ public class BetaManagedAgentsAgentToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentToolType.AgentToolset20260401)]
-    [InlineData(BetaManagedAgentsAgentToolType.McpToolset)]
-    [InlineData(BetaManagedAgentsAgentToolType.Custom)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentToolType rawValue)
+    [InlineData(BetaManagedAgentsAgentToolType.AgentToolset20260401, 0, "agent_toolset_20260401")]
+    [InlineData(BetaManagedAgentsAgentToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(BetaManagedAgentsAgentToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsAgentToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsAgentToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsAgentToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

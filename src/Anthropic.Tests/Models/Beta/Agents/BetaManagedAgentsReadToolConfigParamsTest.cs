@@ -394,22 +394,36 @@ public class BetaManagedAgentsReadToolConfigParamsPermissionPolicyTypeTest : Tes
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsReadToolConfigParamsPermissionPolicyType rawValue
+    [InlineData(
+        BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.AlwaysAllow,
+        0,
+        "always_allow"
+    )]
+    [InlineData(
+        BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.AlwaysAsk,
+        1,
+        "always_ask"
+    )]
+    [InlineData(BetaManagedAgentsReadToolConfigParamsPermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsReadToolConfigParamsPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsReadToolConfigParamsPermissionPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsReadToolConfigParamsPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -450,18 +464,26 @@ public class BetaManagedAgentsReadToolConfigParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsReadToolConfigParamsType.Read)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsReadToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsReadToolConfigParamsType.Read, 0, "read")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsReadToolConfigParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsReadToolConfigParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsReadToolConfigParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

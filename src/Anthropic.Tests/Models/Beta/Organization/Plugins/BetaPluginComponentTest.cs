@@ -129,24 +129,28 @@ public class TypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Type.Agent)]
-    [InlineData(Type.Cli)]
-    [InlineData(Type.Command)]
-    [InlineData(Type.Hook)]
-    [InlineData(Type.McpServer)]
-    [InlineData(Type.Skill)]
-    public void SerializationRoundtrip_Works(Type rawValue)
+    [InlineData(Type.Agent, 0, "agent")]
+    [InlineData(Type.Cli, 1, "cli")]
+    [InlineData(Type.Command, 2, "command")]
+    [InlineData(Type.Hook, 3, "hook")]
+    [InlineData(Type.McpServer, 4, "mcp_server")]
+    [InlineData(Type.Skill, 5, "skill")]
+    public void EnumMemberSerializationRoundtrip_Works(Type rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Type> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

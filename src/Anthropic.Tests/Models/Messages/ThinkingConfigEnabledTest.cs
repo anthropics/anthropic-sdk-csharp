@@ -166,19 +166,27 @@ public class ThinkingConfigEnabledDisplayTest : TestBase
     }
 
     [Theory]
-    [InlineData(ThinkingConfigEnabledDisplay.Summarized)]
-    [InlineData(ThinkingConfigEnabledDisplay.Omitted)]
-    public void SerializationRoundtrip_Works(ThinkingConfigEnabledDisplay rawValue)
+    [InlineData(ThinkingConfigEnabledDisplay.Summarized, 0, "summarized")]
+    [InlineData(ThinkingConfigEnabledDisplay.Omitted, 1, "omitted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ThinkingConfigEnabledDisplay rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ThinkingConfigEnabledDisplay> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ThinkingConfigEnabledDisplay>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

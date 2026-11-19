@@ -116,22 +116,30 @@ public class BetaFallbackRefusalTriggerCategoryTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaFallbackRefusalTriggerCategory.Cyber)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.Bio)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.FrontierLlm)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.ReasoningExtraction)]
-    [InlineData(BetaFallbackRefusalTriggerCategory.GeneralHarms)]
-    public void SerializationRoundtrip_Works(BetaFallbackRefusalTriggerCategory rawValue)
+    [InlineData(BetaFallbackRefusalTriggerCategory.Cyber, 0, "cyber")]
+    [InlineData(BetaFallbackRefusalTriggerCategory.Bio, 1, "bio")]
+    [InlineData(BetaFallbackRefusalTriggerCategory.FrontierLlm, 2, "frontier_llm")]
+    [InlineData(BetaFallbackRefusalTriggerCategory.ReasoningExtraction, 3, "reasoning_extraction")]
+    [InlineData(BetaFallbackRefusalTriggerCategory.GeneralHarms, 4, "general_harms")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaFallbackRefusalTriggerCategory rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaFallbackRefusalTriggerCategory> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaFallbackRefusalTriggerCategory>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

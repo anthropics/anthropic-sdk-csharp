@@ -322,19 +322,31 @@ public class ToolSearchToolRegex20251119TypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119)]
-    [InlineData(ToolSearchToolRegex20251119Type.ToolSearchToolRegex)]
-    public void SerializationRoundtrip_Works(ToolSearchToolRegex20251119Type rawValue)
+    [InlineData(
+        ToolSearchToolRegex20251119Type.ToolSearchToolRegex20251119,
+        0,
+        "tool_search_tool_regex_20251119"
+    )]
+    [InlineData(ToolSearchToolRegex20251119Type.ToolSearchToolRegex, 1, "tool_search_tool_regex")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolSearchToolRegex20251119Type rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolSearchToolRegex20251119Type> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ToolSearchToolRegex20251119Type>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -379,21 +391,41 @@ public class ToolSearchToolRegex20251119AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolSearchToolRegex20251119AllowedCaller.Direct)]
-    [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825)]
-    [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120)]
-    [InlineData(ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(ToolSearchToolRegex20251119AllowedCaller rawValue)
+    [InlineData(ToolSearchToolRegex20251119AllowedCaller.Direct, 0, "direct")]
+    [InlineData(
+        ToolSearchToolRegex20251119AllowedCaller.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    [InlineData(
+        ToolSearchToolRegex20251119AllowedCaller.CodeExecution20260521,
+        3,
+        "code_execution_20260521"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolSearchToolRegex20251119AllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolSearchToolRegex20251119AllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ToolSearchToolRegex20251119AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

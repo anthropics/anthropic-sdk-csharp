@@ -92,20 +92,24 @@ public class StatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(Status.Active)]
-    [InlineData(Status.Inactive)]
-    public void SerializationRoundtrip_Works(Status rawValue)
+    [InlineData(Status.Active, 0, "active")]
+    [InlineData(Status.Inactive, 1, "inactive")]
+    public void EnumMemberSerializationRoundtrip_Works(Status rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Status> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Status>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

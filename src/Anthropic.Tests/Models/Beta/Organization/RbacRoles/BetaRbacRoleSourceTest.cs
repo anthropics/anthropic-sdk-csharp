@@ -110,20 +110,28 @@ public class BetaRbacRoleSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaRbacRoleSourceType.BuiltIn)]
-    [InlineData(BetaRbacRoleSourceType.Custom)]
-    public void SerializationRoundtrip_Works(BetaRbacRoleSourceType rawValue)
+    [InlineData(BetaRbacRoleSourceType.BuiltIn, 0, "built_in")]
+    [InlineData(BetaRbacRoleSourceType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaRbacRoleSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaRbacRoleSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaRbacRoleSourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

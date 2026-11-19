@@ -137,23 +137,31 @@ public class BetaWorkLeaseStateStateTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaWorkLeaseStateState.Queued)]
-    [InlineData(BetaWorkLeaseStateState.Starting)]
-    [InlineData(BetaWorkLeaseStateState.Active)]
-    [InlineData(BetaWorkLeaseStateState.Stopping)]
-    [InlineData(BetaWorkLeaseStateState.Stopped)]
-    public void SerializationRoundtrip_Works(BetaWorkLeaseStateState rawValue)
+    [InlineData(BetaWorkLeaseStateState.Queued, 0, "queued")]
+    [InlineData(BetaWorkLeaseStateState.Starting, 1, "starting")]
+    [InlineData(BetaWorkLeaseStateState.Active, 2, "active")]
+    [InlineData(BetaWorkLeaseStateState.Stopping, 3, "stopping")]
+    [InlineData(BetaWorkLeaseStateState.Stopped, 4, "stopped")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaWorkLeaseStateState rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaWorkLeaseStateState> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaWorkLeaseStateState>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

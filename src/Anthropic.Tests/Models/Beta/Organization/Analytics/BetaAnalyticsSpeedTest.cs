@@ -30,20 +30,28 @@ public class BetaAnalyticsSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsSpeed.Fast)]
-    [InlineData(BetaAnalyticsSpeed.Standard)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsSpeed rawValue)
+    [InlineData(BetaAnalyticsSpeed.Fast, 0, "fast")]
+    [InlineData(BetaAnalyticsSpeed.Standard, 1, "standard")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsSpeed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -30,19 +30,27 @@ public class BetaManagedAgentsTriggerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsTriggerType.Schedule)]
-    [InlineData(BetaManagedAgentsTriggerType.Manual)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsTriggerType rawValue)
+    [InlineData(BetaManagedAgentsTriggerType.Schedule, 0, "schedule")]
+    [InlineData(BetaManagedAgentsTriggerType.Manual, 1, "manual")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsTriggerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsTriggerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsTriggerType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

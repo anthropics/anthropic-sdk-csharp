@@ -32,21 +32,29 @@ public class BetaAnalyticsGroupedCostTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsGroupedCostType.CodeExecution)]
-    [InlineData(BetaAnalyticsGroupedCostType.SessionUsage)]
-    [InlineData(BetaAnalyticsGroupedCostType.Tokens)]
-    [InlineData(BetaAnalyticsGroupedCostType.WebSearch)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsGroupedCostType rawValue)
+    [InlineData(BetaAnalyticsGroupedCostType.CodeExecution, 0, "code_execution")]
+    [InlineData(BetaAnalyticsGroupedCostType.SessionUsage, 1, "session_usage")]
+    [InlineData(BetaAnalyticsGroupedCostType.Tokens, 2, "tokens")]
+    [InlineData(BetaAnalyticsGroupedCostType.WebSearch, 3, "web_search")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsGroupedCostType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsGroupedCostType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsGroupedCostType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

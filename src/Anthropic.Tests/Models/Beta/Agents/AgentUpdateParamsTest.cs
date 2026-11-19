@@ -941,20 +941,32 @@ public class AgentUpdateParamsToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Agents::AgentUpdateParamsToolType.AgentToolset20260401)]
-    [InlineData(Agents::AgentUpdateParamsToolType.McpToolset)]
-    [InlineData(Agents::AgentUpdateParamsToolType.Custom)]
-    public void SerializationRoundtrip_Works(Agents::AgentUpdateParamsToolType rawValue)
+    [InlineData(
+        Agents::AgentUpdateParamsToolType.AgentToolset20260401,
+        0,
+        "agent_toolset_20260401"
+    )]
+    [InlineData(Agents::AgentUpdateParamsToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(Agents::AgentUpdateParamsToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Agents::AgentUpdateParamsToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Agents::AgentUpdateParamsToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, Agents::AgentUpdateParamsToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

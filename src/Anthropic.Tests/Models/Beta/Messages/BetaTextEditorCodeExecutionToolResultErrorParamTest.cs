@@ -186,24 +186,50 @@ public class BetaTextEditorCodeExecutionToolResultErrorParamErrorCodeTest : Test
     }
 
     [Theory]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.Unavailable)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.TooManyRequests)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.FileNotFound)]
-    public void SerializationRoundtrip_Works(
-        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode rawValue
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.InvalidToolInput,
+        0,
+        "invalid_tool_input"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.Unavailable,
+        1,
+        "unavailable"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.TooManyRequests,
+        2,
+        "too_many_requests"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.ExecutionTimeExceeded,
+        3,
+        "execution_time_exceeded"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode.FileNotFound,
+        4,
+        "file_not_found"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTextEditorCodeExecutionToolResultErrorParamErrorCode rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorParamErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

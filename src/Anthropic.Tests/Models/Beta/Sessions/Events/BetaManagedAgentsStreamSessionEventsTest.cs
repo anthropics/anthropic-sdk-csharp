@@ -2693,61 +2693,185 @@ public class BetaManagedAgentsStreamSessionEventsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserMessage)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserInterrupt)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserToolConfirmation)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserCustomToolResult)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentCustomToolUse)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentMessage)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentThinking)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentMcpToolUse)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentMcpToolResult)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentToolUse)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentToolResult)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentThreadMessageReceived)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentThreadMessageSent)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentThreadContextCompacted)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionError)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionStatusRescheduled)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionStatusRunning)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionStatusIdle)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionStatusTerminated)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionThreadCreated)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationStart)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationEnd)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SpanModelRequestStart)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SpanModelRequestEnd)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationOngoing)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserDefineOutcome)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionDeleted)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusRunning)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusIdle)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusTerminated)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserToolResult)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusRescheduled)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionUpdated)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.EventStart)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.EventDelta)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SystemMessage)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionUsage)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunCreated)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusEnded)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunPhaseStarted)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunPhaseEnded)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusRunning)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusIdle)]
-    [InlineData(BetaManagedAgentsStreamSessionEventsType.WorkflowRunError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsStreamSessionEventsType rawValue)
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserMessage, 0, "user.message")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserInterrupt, 1, "user.interrupt")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.UserToolConfirmation,
+        2,
+        "user.tool_confirmation"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.UserCustomToolResult,
+        3,
+        "user.custom_tool_result"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.AgentCustomToolUse,
+        4,
+        "agent.custom_tool_use"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentMessage, 5, "agent.message")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentThinking, 6, "agent.thinking")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentMcpToolUse, 7, "agent.mcp_tool_use")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.AgentMcpToolResult,
+        8,
+        "agent.mcp_tool_result"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentToolUse, 9, "agent.tool_use")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.AgentToolResult, 10, "agent.tool_result")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.AgentThreadMessageReceived,
+        11,
+        "agent.thread_message_received"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.AgentThreadMessageSent,
+        12,
+        "agent.thread_message_sent"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.AgentThreadContextCompacted,
+        13,
+        "agent.thread_context_compacted"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionError, 14, "session.error")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionStatusRescheduled,
+        15,
+        "session.status_rescheduled"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionStatusRunning,
+        16,
+        "session.status_running"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionStatusIdle,
+        17,
+        "session.status_idle"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionStatusTerminated,
+        18,
+        "session.status_terminated"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionThreadCreated,
+        19,
+        "session.thread_created"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationStart,
+        20,
+        "span.outcome_evaluation_start"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationEnd,
+        21,
+        "span.outcome_evaluation_end"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SpanModelRequestStart,
+        22,
+        "span.model_request_start"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SpanModelRequestEnd,
+        23,
+        "span.model_request_end"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SpanOutcomeEvaluationOngoing,
+        24,
+        "span.outcome_evaluation_ongoing"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.UserDefineOutcome,
+        25,
+        "user.define_outcome"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionDeleted, 26, "session.deleted")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusRunning,
+        27,
+        "session.thread_status_running"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusIdle,
+        28,
+        "session.thread_status_idle"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusTerminated,
+        29,
+        "session.thread_status_terminated"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.UserToolResult, 30, "user.tool_result")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.SessionThreadStatusRescheduled,
+        31,
+        "session.thread_status_rescheduled"
+    )]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionUpdated, 32, "session.updated")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.EventStart, 33, "event_start")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.EventDelta, 34, "event_delta")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.SystemMessage, 35, "system.message")]
+    [InlineData(BetaManagedAgentsStreamSessionEventsType.SessionUsage, 36, "session.usage")]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunCreated,
+        37,
+        "workflow_run.created"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusEnded,
+        38,
+        "workflow_run.status_ended"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunPhaseStarted,
+        39,
+        "workflow_run.phase_started"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunPhaseEnded,
+        40,
+        "workflow_run.phase_ended"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusRunning,
+        41,
+        "workflow_run.status_running"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunStatusIdle,
+        42,
+        "workflow_run.status_idle"
+    )]
+    [InlineData(
+        BetaManagedAgentsStreamSessionEventsType.WorkflowRunError,
+        43,
+        "workflow_run.error"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsStreamSessionEventsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsStreamSessionEventsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsStreamSessionEventsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

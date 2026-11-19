@@ -361,25 +361,37 @@ public class ServerToolUseBlockParamNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(ServerToolUseBlockParamName.WebSearch)]
-    [InlineData(ServerToolUseBlockParamName.WebFetch)]
-    [InlineData(ServerToolUseBlockParamName.CodeExecution)]
-    [InlineData(ServerToolUseBlockParamName.BashCodeExecution)]
-    [InlineData(ServerToolUseBlockParamName.TextEditorCodeExecution)]
-    [InlineData(ServerToolUseBlockParamName.ToolSearchToolRegex)]
-    [InlineData(ServerToolUseBlockParamName.ToolSearchToolBm25)]
-    public void SerializationRoundtrip_Works(ServerToolUseBlockParamName rawValue)
+    [InlineData(ServerToolUseBlockParamName.WebSearch, 0, "web_search")]
+    [InlineData(ServerToolUseBlockParamName.WebFetch, 1, "web_fetch")]
+    [InlineData(ServerToolUseBlockParamName.CodeExecution, 2, "code_execution")]
+    [InlineData(ServerToolUseBlockParamName.BashCodeExecution, 3, "bash_code_execution")]
+    [InlineData(
+        ServerToolUseBlockParamName.TextEditorCodeExecution,
+        4,
+        "text_editor_code_execution"
+    )]
+    [InlineData(ServerToolUseBlockParamName.ToolSearchToolRegex, 5, "tool_search_tool_regex")]
+    [InlineData(ServerToolUseBlockParamName.ToolSearchToolBm25, 6, "tool_search_tool_bm25")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ServerToolUseBlockParamName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ServerToolUseBlockParamName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServerToolUseBlockParamName>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -553,20 +565,36 @@ public class ServerToolUseBlockParamCallerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ServerToolUseBlockParamCallerType.Direct)]
-    [InlineData(ServerToolUseBlockParamCallerType.CodeExecution20250825)]
-    [InlineData(ServerToolUseBlockParamCallerType.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(ServerToolUseBlockParamCallerType rawValue)
+    [InlineData(ServerToolUseBlockParamCallerType.Direct, 0, "direct")]
+    [InlineData(
+        ServerToolUseBlockParamCallerType.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        ServerToolUseBlockParamCallerType.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ServerToolUseBlockParamCallerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ServerToolUseBlockParamCallerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ServerToolUseBlockParamCallerType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

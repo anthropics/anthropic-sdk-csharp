@@ -305,11 +305,25 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyTyp
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType rawValue
+    [InlineData(
+        BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAllow,
+        0,
+        "always_allow"
+    )]
+    [InlineData(
+        BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.AlwaysAsk,
+        1,
+        "always_ask"
+    )]
+    [InlineData(
+        BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType.Auto,
+        2,
+        "auto"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
@@ -317,13 +331,17 @@ public class BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyTyp
             string,
             BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType
         > value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

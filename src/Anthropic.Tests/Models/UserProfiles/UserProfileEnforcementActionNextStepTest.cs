@@ -28,18 +28,26 @@ public class UserProfileEnforcementActionNextStepTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileEnforcementActionNextStep.Verify)]
-    public void SerializationRoundtrip_Works(UserProfileEnforcementActionNextStep rawValue)
+    [InlineData(UserProfileEnforcementActionNextStep.Verify, 0, "verify")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileEnforcementActionNextStep rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileEnforcementActionNextStep> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, UserProfileEnforcementActionNextStep>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

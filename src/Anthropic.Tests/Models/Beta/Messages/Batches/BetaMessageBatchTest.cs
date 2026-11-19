@@ -245,21 +245,29 @@ public class ProcessingStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(ProcessingStatus.InProgress)]
-    [InlineData(ProcessingStatus.Canceling)]
-    [InlineData(ProcessingStatus.Ended)]
-    public void SerializationRoundtrip_Works(ProcessingStatus rawValue)
+    [InlineData(ProcessingStatus.InProgress, 0, "in_progress")]
+    [InlineData(ProcessingStatus.Canceling, 1, "canceling")]
+    [InlineData(ProcessingStatus.Ended, 2, "ended")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ProcessingStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ProcessingStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ProcessingStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

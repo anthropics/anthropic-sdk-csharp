@@ -195,21 +195,29 @@ public class LifecycleTest : TestBase
     }
 
     [Theory]
-    [InlineData(Lifecycle.Active)]
-    [InlineData(Lifecycle.Deprecated)]
-    [InlineData(Lifecycle.Retired)]
-    public void SerializationRoundtrip_Works(Lifecycle rawValue)
+    [InlineData(Lifecycle.Active, 0, "active")]
+    [InlineData(Lifecycle.Deprecated, 1, "deprecated")]
+    [InlineData(Lifecycle.Retired, 2, "retired")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Lifecycle rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Lifecycle> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Lifecycle>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -121,21 +121,27 @@ public class BetaManagedAgentsCredentialNetworkingParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsCredentialNetworkingParamsType.Unrestricted)]
-    [InlineData(BetaManagedAgentsCredentialNetworkingParamsType.Limited)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsCredentialNetworkingParamsType rawValue
+    [InlineData(BetaManagedAgentsCredentialNetworkingParamsType.Unrestricted, 0, "unrestricted")]
+    [InlineData(BetaManagedAgentsCredentialNetworkingParamsType.Limited, 1, "limited")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsCredentialNetworkingParamsType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsCredentialNetworkingParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsCredentialNetworkingParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

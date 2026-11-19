@@ -425,20 +425,28 @@ public class CreatedByTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CreatedByType.UserActor)]
-    [InlineData(CreatedByType.ApiActor)]
-    public void SerializationRoundtrip_Works(CreatedByType rawValue)
+    [InlineData(CreatedByType.UserActor, 0, "user_actor")]
+    [InlineData(CreatedByType.ApiActor, 1, "api_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CreatedByType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CreatedByType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CreatedByType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -484,21 +492,25 @@ public class ReachTest : TestBase
     }
 
     [Theory]
-    [InlineData(Reach.Contained)]
-    [InlineData(Reach.Privileged)]
-    [InlineData(Reach.Remote)]
-    public void SerializationRoundtrip_Works(Reach rawValue)
+    [InlineData(Reach.Contained, 0, "contained")]
+    [InlineData(Reach.Privileged, 1, "privileged")]
+    [InlineData(Reach.Remote, 2, "remote")]
+    public void EnumMemberSerializationRoundtrip_Works(Reach rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Reach> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Reach>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

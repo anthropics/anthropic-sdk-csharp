@@ -508,21 +508,29 @@ public class BetaModelInfoLifecycleTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaModelInfoLifecycle.Active)]
-    [InlineData(BetaModelInfoLifecycle.Deprecated)]
-    [InlineData(BetaModelInfoLifecycle.Retired)]
-    public void SerializationRoundtrip_Works(BetaModelInfoLifecycle rawValue)
+    [InlineData(BetaModelInfoLifecycle.Active, 0, "active")]
+    [InlineData(BetaModelInfoLifecycle.Deprecated, 1, "deprecated")]
+    [InlineData(BetaModelInfoLifecycle.Retired, 2, "retired")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaModelInfoLifecycle rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaModelInfoLifecycle> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaModelInfoLifecycle>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

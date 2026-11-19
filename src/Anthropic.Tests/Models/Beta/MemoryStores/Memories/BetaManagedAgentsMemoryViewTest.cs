@@ -30,20 +30,28 @@ public class BetaManagedAgentsMemoryViewTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMemoryView.Basic)]
-    [InlineData(BetaManagedAgentsMemoryView.Full)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryView rawValue)
+    [InlineData(BetaManagedAgentsMemoryView.Basic, 0, "basic")]
+    [InlineData(BetaManagedAgentsMemoryView.Full, 1, "full")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMemoryView rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMemoryView> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsMemoryView>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

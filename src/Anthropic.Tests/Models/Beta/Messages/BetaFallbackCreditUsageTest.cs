@@ -178,20 +178,28 @@ public class StatusTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(StatusType.Redeemed)]
-    [InlineData(StatusType.NotApplied)]
-    public void SerializationRoundtrip_Works(StatusType rawValue)
+    [InlineData(StatusType.Redeemed, 0, "redeemed")]
+    [InlineData(StatusType.NotApplied, 1, "not_applied")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        StatusType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, StatusType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, StatusType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

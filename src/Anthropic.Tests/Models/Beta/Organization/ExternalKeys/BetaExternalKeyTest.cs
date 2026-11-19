@@ -295,20 +295,28 @@ public class AttachmentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(AttachmentType.Attached)]
-    [InlineData(AttachmentType.Unattached)]
-    public void SerializationRoundtrip_Works(AttachmentType rawValue)
+    [InlineData(AttachmentType.Attached, 0, "attached")]
+    [InlineData(AttachmentType.Unattached, 1, "unattached")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        AttachmentType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, AttachmentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AttachmentType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -521,20 +529,28 @@ public class BetaExternalKeyProviderConfigTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaExternalKeyProviderConfigType.Aws)]
-    [InlineData(BetaExternalKeyProviderConfigType.Gcp)]
-    [InlineData(BetaExternalKeyProviderConfigType.Azure)]
-    public void SerializationRoundtrip_Works(BetaExternalKeyProviderConfigType rawValue)
+    [InlineData(BetaExternalKeyProviderConfigType.Aws, 0, "aws")]
+    [InlineData(BetaExternalKeyProviderConfigType.Gcp, 1, "gcp")]
+    [InlineData(BetaExternalKeyProviderConfigType.Azure, 2, "azure")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaExternalKeyProviderConfigType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaExternalKeyProviderConfigType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaExternalKeyProviderConfigType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

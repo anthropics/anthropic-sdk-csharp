@@ -31,21 +31,29 @@ public class AnalyticsConnectorGroupByTest : TestBase
     }
 
     [Theory]
-    [InlineData(AnalyticsConnectorGroupBy.Product)]
-    [InlineData(AnalyticsConnectorGroupBy.RbacGroupID)]
-    [InlineData(AnalyticsConnectorGroupBy.UserID)]
-    public void SerializationRoundtrip_Works(AnalyticsConnectorGroupBy rawValue)
+    [InlineData(AnalyticsConnectorGroupBy.Product, 0, "product")]
+    [InlineData(AnalyticsConnectorGroupBy.RbacGroupID, 1, "rbac_group_id")]
+    [InlineData(AnalyticsConnectorGroupBy.UserID, 2, "user_id")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        AnalyticsConnectorGroupBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, AnalyticsConnectorGroupBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AnalyticsConnectorGroupBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

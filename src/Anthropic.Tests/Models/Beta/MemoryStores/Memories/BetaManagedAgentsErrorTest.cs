@@ -434,30 +434,46 @@ public class BetaManagedAgentsErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsErrorType.InvalidRequestError)]
-    [InlineData(BetaManagedAgentsErrorType.AuthenticationError)]
-    [InlineData(BetaManagedAgentsErrorType.BillingError)]
-    [InlineData(BetaManagedAgentsErrorType.PermissionError)]
-    [InlineData(BetaManagedAgentsErrorType.NotFoundError)]
-    [InlineData(BetaManagedAgentsErrorType.RateLimitError)]
-    [InlineData(BetaManagedAgentsErrorType.TimeoutError)]
-    [InlineData(BetaManagedAgentsErrorType.ApiError)]
-    [InlineData(BetaManagedAgentsErrorType.OverloadedError)]
-    [InlineData(BetaManagedAgentsErrorType.MemoryPreconditionFailedError)]
-    [InlineData(BetaManagedAgentsErrorType.MemoryPathConflictError)]
-    [InlineData(BetaManagedAgentsErrorType.ConflictError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsErrorType rawValue)
+    [InlineData(BetaManagedAgentsErrorType.InvalidRequestError, 0, "invalid_request_error")]
+    [InlineData(BetaManagedAgentsErrorType.AuthenticationError, 1, "authentication_error")]
+    [InlineData(BetaManagedAgentsErrorType.BillingError, 2, "billing_error")]
+    [InlineData(BetaManagedAgentsErrorType.PermissionError, 3, "permission_error")]
+    [InlineData(BetaManagedAgentsErrorType.NotFoundError, 4, "not_found_error")]
+    [InlineData(BetaManagedAgentsErrorType.RateLimitError, 5, "rate_limit_error")]
+    [InlineData(BetaManagedAgentsErrorType.TimeoutError, 6, "timeout_error")]
+    [InlineData(BetaManagedAgentsErrorType.ApiError, 7, "api_error")]
+    [InlineData(BetaManagedAgentsErrorType.OverloadedError, 8, "overloaded_error")]
+    [InlineData(
+        BetaManagedAgentsErrorType.MemoryPreconditionFailedError,
+        9,
+        "memory_precondition_failed_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsErrorType.MemoryPathConflictError,
+        10,
+        "memory_path_conflict_error"
+    )]
+    [InlineData(BetaManagedAgentsErrorType.ConflictError, 11, "conflict_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsErrorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

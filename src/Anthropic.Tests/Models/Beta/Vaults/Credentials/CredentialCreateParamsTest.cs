@@ -471,21 +471,29 @@ public class AuthTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(AuthType.McpOAuth)]
-    [InlineData(AuthType.StaticBearer)]
-    [InlineData(AuthType.EnvironmentVariable)]
-    public void SerializationRoundtrip_Works(AuthType rawValue)
+    [InlineData(AuthType.McpOAuth, 0, "mcp_oauth")]
+    [InlineData(AuthType.StaticBearer, 1, "static_bearer")]
+    [InlineData(AuthType.EnvironmentVariable, 2, "environment_variable")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        AuthType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, AuthType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AuthType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

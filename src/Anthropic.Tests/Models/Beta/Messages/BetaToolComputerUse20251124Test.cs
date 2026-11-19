@@ -503,21 +503,41 @@ public class BetaToolComputerUse20251124AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaToolComputerUse20251124AllowedCaller.Direct)]
-    [InlineData(BetaToolComputerUse20251124AllowedCaller.CodeExecution20250825)]
-    [InlineData(BetaToolComputerUse20251124AllowedCaller.CodeExecution20260120)]
-    [InlineData(BetaToolComputerUse20251124AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(BetaToolComputerUse20251124AllowedCaller rawValue)
+    [InlineData(BetaToolComputerUse20251124AllowedCaller.Direct, 0, "direct")]
+    [InlineData(
+        BetaToolComputerUse20251124AllowedCaller.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        BetaToolComputerUse20251124AllowedCaller.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    [InlineData(
+        BetaToolComputerUse20251124AllowedCaller.CodeExecution20260521,
+        3,
+        "code_execution_20260521"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaToolComputerUse20251124AllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaToolComputerUse20251124AllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolComputerUse20251124AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

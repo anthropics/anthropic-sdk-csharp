@@ -198,21 +198,29 @@ public class BetaAnalyticsFederatedActorProviderTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsFederatedActorProviderType.Aws)]
-    [InlineData(BetaAnalyticsFederatedActorProviderType.Azure)]
-    [InlineData(BetaAnalyticsFederatedActorProviderType.Gcp)]
-    [InlineData(BetaAnalyticsFederatedActorProviderType.Oidc)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsFederatedActorProviderType rawValue)
+    [InlineData(BetaAnalyticsFederatedActorProviderType.Aws, 0, "aws")]
+    [InlineData(BetaAnalyticsFederatedActorProviderType.Azure, 1, "azure")]
+    [InlineData(BetaAnalyticsFederatedActorProviderType.Gcp, 2, "gcp")]
+    [InlineData(BetaAnalyticsFederatedActorProviderType.Oidc, 3, "oidc")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsFederatedActorProviderType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsFederatedActorProviderType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsFederatedActorProviderType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

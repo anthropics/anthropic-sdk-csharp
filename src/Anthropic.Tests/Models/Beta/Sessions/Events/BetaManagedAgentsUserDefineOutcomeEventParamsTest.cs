@@ -311,21 +311,27 @@ public class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTypeTest : TestB
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.File)]
-    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserDefineOutcomeEventParamsRubricType rawValue
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.File, 0, "file")]
+    [InlineData(BetaManagedAgentsUserDefineOutcomeEventParamsRubricType.Text, 1, "text")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsUserDefineOutcomeEventParamsRubricType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserDefineOutcomeEventParamsRubricType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

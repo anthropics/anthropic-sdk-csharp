@@ -304,20 +304,28 @@ public class ActorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ActorType.UserActor)]
-    [InlineData(ActorType.ScopedApiKeyActor)]
-    public void SerializationRoundtrip_Works(ActorType rawValue)
+    [InlineData(ActorType.UserActor, 0, "user_actor")]
+    [InlineData(ActorType.ScopedApiKeyActor, 1, "scoped_api_key_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ActorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ActorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ActorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -582,25 +590,33 @@ public class SpendSummaryScopeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SpendSummaryScopeType.User)]
-    [InlineData(SpendSummaryScopeType.SeatTier)]
-    [InlineData(SpendSummaryScopeType.RbacGroup)]
-    [InlineData(SpendSummaryScopeType.OrganizationService)]
-    [InlineData(SpendSummaryScopeType.Organization)]
-    [InlineData(SpendSummaryScopeType.Workspace)]
-    [InlineData(SpendSummaryScopeType.UsageTier)]
-    public void SerializationRoundtrip_Works(SpendSummaryScopeType rawValue)
+    [InlineData(SpendSummaryScopeType.User, 0, "user")]
+    [InlineData(SpendSummaryScopeType.SeatTier, 1, "seat_tier")]
+    [InlineData(SpendSummaryScopeType.RbacGroup, 2, "rbac_group")]
+    [InlineData(SpendSummaryScopeType.OrganizationService, 3, "organization_service")]
+    [InlineData(SpendSummaryScopeType.Organization, 4, "organization")]
+    [InlineData(SpendSummaryScopeType.Workspace, 5, "workspace")]
+    [InlineData(SpendSummaryScopeType.UsageTier, 6, "usage_tier")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SpendSummaryScopeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SpendSummaryScopeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SpendSummaryScopeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -844,25 +860,33 @@ public class SourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SourceType.User)]
-    [InlineData(SourceType.SeatTier)]
-    [InlineData(SourceType.RbacGroup)]
-    [InlineData(SourceType.OrganizationService)]
-    [InlineData(SourceType.Organization)]
-    [InlineData(SourceType.Workspace)]
-    [InlineData(SourceType.UsageTier)]
-    public void SerializationRoundtrip_Works(SourceType rawValue)
+    [InlineData(SourceType.User, 0, "user")]
+    [InlineData(SourceType.SeatTier, 1, "seat_tier")]
+    [InlineData(SourceType.RbacGroup, 2, "rbac_group")]
+    [InlineData(SourceType.OrganizationService, 3, "organization_service")]
+    [InlineData(SourceType.Organization, 4, "organization")]
+    [InlineData(SourceType.Workspace, 5, "workspace")]
+    [InlineData(SourceType.UsageTier, 6, "usage_tier")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

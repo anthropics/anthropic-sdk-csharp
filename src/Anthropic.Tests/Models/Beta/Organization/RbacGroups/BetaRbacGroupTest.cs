@@ -168,20 +168,28 @@ public class SourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SourceType.Direct)]
-    [InlineData(SourceType.Scim)]
-    public void SerializationRoundtrip_Works(SourceType rawValue)
+    [InlineData(SourceType.Direct, 0, "direct")]
+    [InlineData(SourceType.Scim, 1, "scim")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

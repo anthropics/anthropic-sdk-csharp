@@ -787,23 +787,39 @@ public class BetaRawMessageStreamEventTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Messages::BetaRawMessageStreamEventType.MessageStart)]
-    [InlineData(Messages::BetaRawMessageStreamEventType.MessageDelta)]
-    [InlineData(Messages::BetaRawMessageStreamEventType.MessageStop)]
-    [InlineData(Messages::BetaRawMessageStreamEventType.ContentBlockStart)]
-    [InlineData(Messages::BetaRawMessageStreamEventType.ContentBlockDelta)]
-    [InlineData(Messages::BetaRawMessageStreamEventType.ContentBlockStop)]
-    public void SerializationRoundtrip_Works(Messages::BetaRawMessageStreamEventType rawValue)
+    [InlineData(Messages::BetaRawMessageStreamEventType.MessageStart, 0, "message_start")]
+    [InlineData(Messages::BetaRawMessageStreamEventType.MessageDelta, 1, "message_delta")]
+    [InlineData(Messages::BetaRawMessageStreamEventType.MessageStop, 2, "message_stop")]
+    [InlineData(
+        Messages::BetaRawMessageStreamEventType.ContentBlockStart,
+        3,
+        "content_block_start"
+    )]
+    [InlineData(
+        Messages::BetaRawMessageStreamEventType.ContentBlockDelta,
+        4,
+        "content_block_delta"
+    )]
+    [InlineData(Messages::BetaRawMessageStreamEventType.ContentBlockStop, 5, "content_block_stop")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Messages::BetaRawMessageStreamEventType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Messages::BetaRawMessageStreamEventType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, Messages::BetaRawMessageStreamEventType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

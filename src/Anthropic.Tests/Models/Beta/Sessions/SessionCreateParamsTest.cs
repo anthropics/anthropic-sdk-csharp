@@ -693,20 +693,28 @@ public class InitialEventTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(InitialEventType.UserMessage)]
-    [InlineData(InitialEventType.UserDefineOutcome)]
-    public void SerializationRoundtrip_Works(InitialEventType rawValue)
+    [InlineData(InitialEventType.UserMessage, 0, "user.message")]
+    [InlineData(InitialEventType.UserDefineOutcome, 1, "user.define_outcome")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        InitialEventType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, InitialEventType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, InitialEventType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -922,21 +930,29 @@ public class ResourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ResourceType.GitHubRepository)]
-    [InlineData(ResourceType.File)]
-    [InlineData(ResourceType.MemoryStore)]
-    public void SerializationRoundtrip_Works(ResourceType rawValue)
+    [InlineData(ResourceType.GitHubRepository, 0, "github_repository")]
+    [InlineData(ResourceType.File, 1, "file")]
+    [InlineData(ResourceType.MemoryStore, 2, "memory_store")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ResourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ResourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

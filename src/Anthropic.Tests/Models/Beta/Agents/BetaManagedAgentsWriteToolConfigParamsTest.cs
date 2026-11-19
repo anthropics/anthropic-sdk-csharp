@@ -397,23 +397,37 @@ public class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTypeTest : Te
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType rawValue
+    [InlineData(
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAllow,
+        0,
+        "always_allow"
+    )]
+    [InlineData(
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.AlwaysAsk,
+        1,
+        "always_ask"
+    )]
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType> value =
             rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -454,18 +468,26 @@ public class BetaManagedAgentsWriteToolConfigParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWriteToolConfigParamsType.Write)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsWriteToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsWriteToolConfigParamsType.Write, 0, "write")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWriteToolConfigParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWriteToolConfigParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

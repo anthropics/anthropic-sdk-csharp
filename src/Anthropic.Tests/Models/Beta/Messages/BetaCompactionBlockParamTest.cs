@@ -398,19 +398,27 @@ public class BetaCompactionBlockParamToolChangeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaCompactionBlockParamToolChangeType.ToolAddition)]
-    [InlineData(BetaCompactionBlockParamToolChangeType.ToolRemoval)]
-    public void SerializationRoundtrip_Works(BetaCompactionBlockParamToolChangeType rawValue)
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolAddition, 0, "tool_addition")]
+    [InlineData(BetaCompactionBlockParamToolChangeType.ToolRemoval, 1, "tool_removal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaCompactionBlockParamToolChangeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaCompactionBlockParamToolChangeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCompactionBlockParamToolChangeType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

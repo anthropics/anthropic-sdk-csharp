@@ -29,19 +29,27 @@ public class BetaTelemetryDestinationContentModeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTelemetryDestinationContentMode.MetadataOnly)]
-    [InlineData(BetaTelemetryDestinationContentMode.Content)]
-    public void SerializationRoundtrip_Works(BetaTelemetryDestinationContentMode rawValue)
+    [InlineData(BetaTelemetryDestinationContentMode.MetadataOnly, 0, "metadata_only")]
+    [InlineData(BetaTelemetryDestinationContentMode.Content, 1, "content")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTelemetryDestinationContentMode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTelemetryDestinationContentMode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTelemetryDestinationContentMode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

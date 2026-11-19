@@ -32,22 +32,30 @@ public class BetaComputerScrollDirectionTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaComputerScrollDirection.Up)]
-    [InlineData(BetaComputerScrollDirection.Down)]
-    [InlineData(BetaComputerScrollDirection.Left)]
-    [InlineData(BetaComputerScrollDirection.Right)]
-    public void SerializationRoundtrip_Works(BetaComputerScrollDirection rawValue)
+    [InlineData(BetaComputerScrollDirection.Up, 0, "up")]
+    [InlineData(BetaComputerScrollDirection.Down, 1, "down")]
+    [InlineData(BetaComputerScrollDirection.Left, 2, "left")]
+    [InlineData(BetaComputerScrollDirection.Right, 3, "right")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaComputerScrollDirection rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaComputerScrollDirection> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaComputerScrollDirection>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

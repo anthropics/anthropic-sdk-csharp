@@ -30,20 +30,28 @@ public class UserProfileAccessTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileAccessType.Application)]
-    [InlineData(UserProfileAccessType.Passthrough)]
-    public void SerializationRoundtrip_Works(UserProfileAccessType rawValue)
+    [InlineData(UserProfileAccessType.Application, 0, "application")]
+    [InlineData(UserProfileAccessType.Passthrough, 1, "passthrough")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileAccessType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileAccessType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfileAccessType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -110,20 +110,28 @@ public class BrowserClickTargetTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BrowserClickTargetType.Coordinate)]
-    [InlineData(BrowserClickTargetType.Ref)]
-    public void SerializationRoundtrip_Works(BrowserClickTargetType rawValue)
+    [InlineData(BrowserClickTargetType.Coordinate, 0, "coordinate")]
+    [InlineData(BrowserClickTargetType.Ref, 1, "ref")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BrowserClickTargetType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BrowserClickTargetType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserClickTargetType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

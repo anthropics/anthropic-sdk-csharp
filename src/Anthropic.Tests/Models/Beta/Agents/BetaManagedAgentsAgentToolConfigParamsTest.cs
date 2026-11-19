@@ -505,25 +505,33 @@ public class BetaManagedAgentsAgentToolConfigParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Bash)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Edit)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Read)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Write)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Glob)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Grep)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebFetch)]
-    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebSearch)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Bash, 0, "bash")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Edit, 1, "edit")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Read, 2, "read")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Write, 3, "write")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Glob, 4, "glob")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.Grep, 5, "grep")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebFetch, 6, "web_fetch")]
+    [InlineData(BetaManagedAgentsAgentToolConfigParamsType.WebSearch, 7, "web_search")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsAgentToolConfigParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsAgentToolConfigParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

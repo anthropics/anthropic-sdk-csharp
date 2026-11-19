@@ -30,20 +30,28 @@ public class BetaManagedAgentsMemoryVersionOperationTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMemoryVersionOperation.Created)]
-    [InlineData(BetaManagedAgentsMemoryVersionOperation.Modified)]
-    [InlineData(BetaManagedAgentsMemoryVersionOperation.Deleted)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryVersionOperation rawValue)
+    [InlineData(BetaManagedAgentsMemoryVersionOperation.Created, 0, "created")]
+    [InlineData(BetaManagedAgentsMemoryVersionOperation.Modified, 1, "modified")]
+    [InlineData(BetaManagedAgentsMemoryVersionOperation.Deleted, 2, "deleted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMemoryVersionOperation rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMemoryVersionOperation> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMemoryVersionOperation>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

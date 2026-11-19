@@ -152,21 +152,29 @@ public class FileTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(FileType.Text)]
-    [InlineData(FileType.Image)]
-    [InlineData(FileType.Pdf)]
-    public void SerializationRoundtrip_Works(FileType rawValue)
+    [InlineData(FileType.Text, 0, "text")]
+    [InlineData(FileType.Image, 1, "image")]
+    [InlineData(FileType.Pdf, 2, "pdf")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        FileType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, FileType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FileType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

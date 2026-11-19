@@ -30,20 +30,28 @@ public class BetaBillToTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaBillTo.Self)]
-    [InlineData(BetaBillTo.UserProfile)]
-    public void SerializationRoundtrip_Works(BetaBillTo rawValue)
+    [InlineData(BetaBillTo.Self, 0, "self")]
+    [InlineData(BetaBillTo.UserProfile, 1, "user_profile")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaBillTo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaBillTo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaBillTo>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

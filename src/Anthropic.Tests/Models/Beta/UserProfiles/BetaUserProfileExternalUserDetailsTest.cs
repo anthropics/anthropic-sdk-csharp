@@ -163,21 +163,29 @@ public class AccountStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(AccountStatus.Active)]
-    [InlineData(AccountStatus.Suspended)]
-    [InlineData(AccountStatus.Blocked)]
-    public void SerializationRoundtrip_Works(AccountStatus rawValue)
+    [InlineData(AccountStatus.Active, 0, "active")]
+    [InlineData(AccountStatus.Suspended, 1, "suspended")]
+    [InlineData(AccountStatus.Blocked, 2, "blocked")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        AccountStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, AccountStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AccountStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -224,22 +232,30 @@ public class EntityTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(EntityType.Individual)]
-    [InlineData(EntityType.Business)]
-    [InlineData(EntityType.NonProfit)]
-    [InlineData(EntityType.Government)]
-    public void SerializationRoundtrip_Works(EntityType rawValue)
+    [InlineData(EntityType.Individual, 0, "individual")]
+    [InlineData(EntityType.Business, 1, "business")]
+    [InlineData(EntityType.NonProfit, 2, "non_profit")]
+    [InlineData(EntityType.Government, 3, "government")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EntityType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EntityType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EntityType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

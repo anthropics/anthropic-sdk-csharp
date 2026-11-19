@@ -514,24 +514,38 @@ public class BetaManagedAgentsUserCustomToolResultEventParamsContentTypeTest : T
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.Text)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.Image)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.Document)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.SearchResult)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserCustomToolResultEventParamsContentType rawValue
+    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.Text, 0, "text")]
+    [InlineData(BetaManagedAgentsUserCustomToolResultEventParamsContentType.Image, 1, "image")]
+    [InlineData(
+        BetaManagedAgentsUserCustomToolResultEventParamsContentType.Document,
+        2,
+        "document"
+    )]
+    [InlineData(
+        BetaManagedAgentsUserCustomToolResultEventParamsContentType.SearchResult,
+        3,
+        "search_result"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsUserCustomToolResultEventParamsContentType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsContentType> value =
             rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventParamsContentType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

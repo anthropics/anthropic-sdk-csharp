@@ -579,22 +579,30 @@ public class IterationTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(IterationType.Message)]
-    [InlineData(IterationType.Compaction)]
-    [InlineData(IterationType.AdvisorMessage)]
-    [InlineData(IterationType.FallbackMessage)]
-    public void SerializationRoundtrip_Works(IterationType rawValue)
+    [InlineData(IterationType.Message, 0, "message")]
+    [InlineData(IterationType.Compaction, 1, "compaction")]
+    [InlineData(IterationType.AdvisorMessage, 2, "advisor_message")]
+    [InlineData(IterationType.FallbackMessage, 3, "fallback_message")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        IterationType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, IterationType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IterationType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

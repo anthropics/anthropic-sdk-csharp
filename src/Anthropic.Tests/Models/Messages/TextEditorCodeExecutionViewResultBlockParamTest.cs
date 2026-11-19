@@ -219,22 +219,28 @@ public class TextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Text)]
-    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
-    public void SerializationRoundtrip_Works(
-        TextEditorCodeExecutionViewResultBlockParamFileType rawValue
+    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Text, 0, "text")]
+    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Image, 1, "image")]
+    [InlineData(TextEditorCodeExecutionViewResultBlockParamFileType.Pdf, 2, "pdf")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        TextEditorCodeExecutionViewResultBlockParamFileType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, TextEditorCodeExecutionViewResultBlockParamFileType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, TextEditorCodeExecutionViewResultBlockParamFileType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -638,25 +638,33 @@ public class DataTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(DataType.UserMessage)]
-    [InlineData(DataType.UserInterrupt)]
-    [InlineData(DataType.UserToolConfirmation)]
-    [InlineData(DataType.UserCustomToolResult)]
-    [InlineData(DataType.UserDefineOutcome)]
-    [InlineData(DataType.UserToolResult)]
-    [InlineData(DataType.SystemMessage)]
-    public void SerializationRoundtrip_Works(DataType rawValue)
+    [InlineData(DataType.UserMessage, 0, "user.message")]
+    [InlineData(DataType.UserInterrupt, 1, "user.interrupt")]
+    [InlineData(DataType.UserToolConfirmation, 2, "user.tool_confirmation")]
+    [InlineData(DataType.UserCustomToolResult, 3, "user.custom_tool_result")]
+    [InlineData(DataType.UserDefineOutcome, 4, "user.define_outcome")]
+    [InlineData(DataType.UserToolResult, 5, "user.tool_result")]
+    [InlineData(DataType.SystemMessage, 6, "system.message")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DataType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DataType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DataType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

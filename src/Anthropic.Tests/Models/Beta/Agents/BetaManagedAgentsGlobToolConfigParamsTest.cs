@@ -394,22 +394,36 @@ public class BetaManagedAgentsGlobToolConfigParamsPermissionPolicyTypeTest : Tes
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType rawValue
+    [InlineData(
+        BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.AlwaysAllow,
+        0,
+        "always_allow"
+    )]
+    [InlineData(
+        BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.AlwaysAsk,
+        1,
+        "always_ask"
+    )]
+    [InlineData(BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -450,18 +464,26 @@ public class BetaManagedAgentsGlobToolConfigParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsGlobToolConfigParamsType.Glob)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsGlobToolConfigParamsType rawValue)
+    [InlineData(BetaManagedAgentsGlobToolConfigParamsType.Glob, 0, "glob")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsGlobToolConfigParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsGlobToolConfigParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsGlobToolConfigParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

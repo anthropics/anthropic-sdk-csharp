@@ -4531,20 +4531,28 @@ public class ServiceTierTest : TestBase
     }
 
     [Theory]
-    [InlineData(ServiceTier.Auto)]
-    [InlineData(ServiceTier.StandardOnly)]
-    public void SerializationRoundtrip_Works(ServiceTier rawValue)
+    [InlineData(ServiceTier.Auto, 0, "auto")]
+    [InlineData(ServiceTier.StandardOnly, 1, "standard_only")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ServiceTier rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ServiceTier> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServiceTier>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -4589,20 +4597,24 @@ public class SpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(Speed.Standard)]
-    [InlineData(Speed.Fast)]
-    public void SerializationRoundtrip_Works(Speed rawValue)
+    [InlineData(Speed.Standard, 0, "standard")]
+    [InlineData(Speed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(Speed rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Speed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

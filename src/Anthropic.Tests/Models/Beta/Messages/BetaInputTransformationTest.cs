@@ -153,20 +153,32 @@ public class BetaInputTransformationTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaInputTransformationType.ThinkingDropped)]
-    [InlineData(BetaInputTransformationType.ThinkingMismatchAllowed)]
-    public void SerializationRoundtrip_Works(BetaInputTransformationType rawValue)
+    [InlineData(BetaInputTransformationType.ThinkingDropped, 0, "thinking_dropped")]
+    [InlineData(
+        BetaInputTransformationType.ThinkingMismatchAllowed,
+        1,
+        "thinking_mismatch_allowed"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaInputTransformationType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaInputTransformationType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaInputTransformationType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

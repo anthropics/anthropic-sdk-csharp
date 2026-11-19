@@ -113,19 +113,27 @@ public class ComplianceSettingsStateParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ComplianceSettingsStateParamType.Enabled)]
-    [InlineData(ComplianceSettingsStateParamType.Disabled)]
-    public void SerializationRoundtrip_Works(ComplianceSettingsStateParamType rawValue)
+    [InlineData(ComplianceSettingsStateParamType.Enabled, 0, "enabled")]
+    [InlineData(ComplianceSettingsStateParamType.Disabled, 1, "disabled")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ComplianceSettingsStateParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ComplianceSettingsStateParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ComplianceSettingsStateParamType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -83,19 +83,27 @@ public class BetaUserProfileActionTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaUserProfileActionType.EnrollEndUser)]
-    public void SerializationRoundtrip_Works(BetaUserProfileActionType rawValue)
+    [InlineData(BetaUserProfileActionType.EnrollEndUser, 0, "enroll_end_user")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaUserProfileActionType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaUserProfileActionType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileActionType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

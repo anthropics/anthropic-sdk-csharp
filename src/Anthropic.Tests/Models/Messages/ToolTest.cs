@@ -818,22 +818,30 @@ public class ToolAllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolAllowedCaller.Direct)]
-    [InlineData(ToolAllowedCaller.CodeExecution20250825)]
-    [InlineData(ToolAllowedCaller.CodeExecution20260120)]
-    [InlineData(ToolAllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(ToolAllowedCaller rawValue)
+    [InlineData(ToolAllowedCaller.Direct, 0, "direct")]
+    [InlineData(ToolAllowedCaller.CodeExecution20250825, 1, "code_execution_20250825")]
+    [InlineData(ToolAllowedCaller.CodeExecution20260120, 2, "code_execution_20260120")]
+    [InlineData(ToolAllowedCaller.CodeExecution20260521, 3, "code_execution_20260521")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolAllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolAllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolAllowedCaller>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -877,19 +885,23 @@ public class TypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Type.Custom)]
-    public void SerializationRoundtrip_Works(Type rawValue)
+    [InlineData(Type.Custom, 0, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(Type rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Type> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Type>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

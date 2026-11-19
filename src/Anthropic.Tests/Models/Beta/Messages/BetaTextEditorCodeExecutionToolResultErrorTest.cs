@@ -128,24 +128,46 @@ public class BetaTextEditorCodeExecutionToolResultErrorErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.Unavailable)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.TooManyRequests)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded)]
-    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.FileNotFound)]
-    public void SerializationRoundtrip_Works(
-        BetaTextEditorCodeExecutionToolResultErrorErrorCode rawValue
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode.InvalidToolInput,
+        0,
+        "invalid_tool_input"
+    )]
+    [InlineData(BetaTextEditorCodeExecutionToolResultErrorErrorCode.Unavailable, 1, "unavailable")]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode.TooManyRequests,
+        2,
+        "too_many_requests"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode.ExecutionTimeExceeded,
+        3,
+        "execution_time_exceeded"
+    )]
+    [InlineData(
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode.FileNotFound,
+        4,
+        "file_not_found"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTextEditorCodeExecutionToolResultErrorErrorCode rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionToolResultErrorErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

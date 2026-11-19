@@ -30,20 +30,28 @@ public class BetaManagedAgentsDeltaTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsDeltaType.AgentMessage)]
-    [InlineData(BetaManagedAgentsDeltaType.AgentThinking)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsDeltaType rawValue)
+    [InlineData(BetaManagedAgentsDeltaType.AgentMessage, 0, "agent.message")]
+    [InlineData(BetaManagedAgentsDeltaType.AgentThinking, 1, "agent.thinking")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsDeltaType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsDeltaType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaManagedAgentsDeltaType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

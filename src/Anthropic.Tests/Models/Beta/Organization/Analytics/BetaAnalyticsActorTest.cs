@@ -215,22 +215,30 @@ public class BetaAnalyticsActorTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsActorTypeValue.UserActor)]
-    [InlineData(BetaAnalyticsActorTypeValue.ServiceAccountActor)]
-    [InlineData(BetaAnalyticsActorTypeValue.FederatedActor)]
-    [InlineData(BetaAnalyticsActorTypeValue.ApiActor)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsActorTypeValue rawValue)
+    [InlineData(BetaAnalyticsActorTypeValue.UserActor, 0, "user_actor")]
+    [InlineData(BetaAnalyticsActorTypeValue.ServiceAccountActor, 1, "service_account_actor")]
+    [InlineData(BetaAnalyticsActorTypeValue.FederatedActor, 2, "federated_actor")]
+    [InlineData(BetaAnalyticsActorTypeValue.ApiActor, 3, "api_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsActorTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsActorTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsActorTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

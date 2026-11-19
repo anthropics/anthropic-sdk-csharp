@@ -167,22 +167,30 @@ public class BetaClaudeTagReplyModeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeTagReplyModeType.Automatic)]
-    [InlineData(BetaClaudeTagReplyModeType.MentionOnly)]
-    [InlineData(BetaClaudeTagReplyModeType.AlwaysAwake)]
-    [InlineData(BetaClaudeTagReplyModeType.Thread)]
-    public void SerializationRoundtrip_Works(BetaClaudeTagReplyModeType rawValue)
+    [InlineData(BetaClaudeTagReplyModeType.Automatic, 0, "automatic")]
+    [InlineData(BetaClaudeTagReplyModeType.MentionOnly, 1, "mention_only")]
+    [InlineData(BetaClaudeTagReplyModeType.AlwaysAwake, 2, "always_awake")]
+    [InlineData(BetaClaudeTagReplyModeType.Thread, 3, "thread")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeTagReplyModeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeTagReplyModeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaClaudeTagReplyModeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

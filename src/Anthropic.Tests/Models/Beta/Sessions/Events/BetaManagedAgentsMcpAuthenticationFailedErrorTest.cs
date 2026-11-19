@@ -271,23 +271,41 @@ public class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusTypeTest : 
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Retrying)]
-    [InlineData(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Exhausted)]
-    [InlineData(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Terminal)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType rawValue
+    [InlineData(
+        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Retrying,
+        0,
+        "retrying"
+    )]
+    [InlineData(
+        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Exhausted,
+        1,
+        "exhausted"
+    )]
+    [InlineData(
+        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType.Terminal,
+        2,
+        "terminal"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType> value =
             rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

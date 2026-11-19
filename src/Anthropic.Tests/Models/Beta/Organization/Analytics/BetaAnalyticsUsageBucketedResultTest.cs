@@ -249,19 +249,27 @@ public class BetaAnalyticsUsageBucketedResultInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageBucketedResultInferenceGeo.Global)]
-    [InlineData(BetaAnalyticsUsageBucketedResultInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageBucketedResultInferenceGeo rawValue)
+    [InlineData(BetaAnalyticsUsageBucketedResultInferenceGeo.Global, 0, "global")]
+    [InlineData(BetaAnalyticsUsageBucketedResultInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageBucketedResultInferenceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageBucketedResultInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageBucketedResultInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -303,19 +311,27 @@ public class BetaAnalyticsUsageBucketedResultSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageBucketedResultSpeed.Fast)]
-    [InlineData(BetaAnalyticsUsageBucketedResultSpeed.Standard)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageBucketedResultSpeed rawValue)
+    [InlineData(BetaAnalyticsUsageBucketedResultSpeed.Fast, 0, "fast")]
+    [InlineData(BetaAnalyticsUsageBucketedResultSpeed.Standard, 1, "standard")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageBucketedResultSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageBucketedResultSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageBucketedResultSpeed>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

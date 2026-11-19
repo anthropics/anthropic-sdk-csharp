@@ -976,21 +976,29 @@ public class ToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Agents::ToolType.AgentToolset20260401)]
-    [InlineData(Agents::ToolType.McpToolset)]
-    [InlineData(Agents::ToolType.Custom)]
-    public void SerializationRoundtrip_Works(Agents::ToolType rawValue)
+    [InlineData(Agents::ToolType.AgentToolset20260401, 0, "agent_toolset_20260401")]
+    [InlineData(Agents::ToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(Agents::ToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Agents::ToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Agents::ToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Agents::ToolType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

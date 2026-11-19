@@ -31,20 +31,28 @@ public class BetaAnalyticsTimeBucketWidthTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsTimeBucketWidth.Day)]
-    [InlineData(BetaAnalyticsTimeBucketWidth.Hour)]
-    [InlineData(BetaAnalyticsTimeBucketWidth.Minute)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsTimeBucketWidth rawValue)
+    [InlineData(BetaAnalyticsTimeBucketWidth.Day, 0, "1d")]
+    [InlineData(BetaAnalyticsTimeBucketWidth.Hour, 1, "1h")]
+    [InlineData(BetaAnalyticsTimeBucketWidth.Minute, 2, "1m")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsTimeBucketWidth rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsTimeBucketWidth> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsTimeBucketWidth>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

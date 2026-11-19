@@ -127,21 +127,33 @@ public class BetaToolSearchToolResultErrorErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaToolSearchToolResultErrorErrorCode.InvalidToolInput)]
-    [InlineData(BetaToolSearchToolResultErrorErrorCode.Unavailable)]
-    [InlineData(BetaToolSearchToolResultErrorErrorCode.TooManyRequests)]
-    [InlineData(BetaToolSearchToolResultErrorErrorCode.ExecutionTimeExceeded)]
-    public void SerializationRoundtrip_Works(BetaToolSearchToolResultErrorErrorCode rawValue)
+    [InlineData(BetaToolSearchToolResultErrorErrorCode.InvalidToolInput, 0, "invalid_tool_input")]
+    [InlineData(BetaToolSearchToolResultErrorErrorCode.Unavailable, 1, "unavailable")]
+    [InlineData(BetaToolSearchToolResultErrorErrorCode.TooManyRequests, 2, "too_many_requests")]
+    [InlineData(
+        BetaToolSearchToolResultErrorErrorCode.ExecutionTimeExceeded,
+        3,
+        "execution_time_exceeded"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaToolSearchToolResultErrorErrorCode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaToolSearchToolResultErrorErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaToolSearchToolResultErrorErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

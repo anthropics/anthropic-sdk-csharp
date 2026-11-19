@@ -265,23 +265,31 @@ public class BetaClaudeTagSettingSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeTagSettingSourceType.SlackChannel)]
-    [InlineData(BetaClaudeTagSettingSourceType.SlackWorkspace)]
-    [InlineData(BetaClaudeTagSettingSourceType.SlackParentChannel)]
-    [InlineData(BetaClaudeTagSettingSourceType.SlackDefault)]
-    [InlineData(BetaClaudeTagSettingSourceType.Default)]
-    [InlineData(BetaClaudeTagSettingSourceType.SlackGridChannel)]
-    public void SerializationRoundtrip_Works(BetaClaudeTagSettingSourceType rawValue)
+    [InlineData(BetaClaudeTagSettingSourceType.SlackChannel, 0, "slack_channel")]
+    [InlineData(BetaClaudeTagSettingSourceType.SlackWorkspace, 1, "slack_workspace")]
+    [InlineData(BetaClaudeTagSettingSourceType.SlackParentChannel, 2, "slack_parent_channel")]
+    [InlineData(BetaClaudeTagSettingSourceType.SlackDefault, 3, "slack_default")]
+    [InlineData(BetaClaudeTagSettingSourceType.Default, 4, "default")]
+    [InlineData(BetaClaudeTagSettingSourceType.SlackGridChannel, 5, "slack_grid_channel")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeTagSettingSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeTagSettingSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaClaudeTagSettingSourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

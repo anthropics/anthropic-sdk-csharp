@@ -225,20 +225,28 @@ public class SourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SourceType.Base64)]
-    [InlineData(SourceType.Text)]
-    public void SerializationRoundtrip_Works(SourceType rawValue)
+    [InlineData(SourceType.Base64, 0, "base64")]
+    [InlineData(SourceType.Text, 1, "text")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

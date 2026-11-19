@@ -199,19 +199,27 @@ public class UserProfileEnforcementActionTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileEnforcementActionType.Restriction)]
-    [InlineData(UserProfileEnforcementActionType.Ban)]
-    public void SerializationRoundtrip_Works(UserProfileEnforcementActionType rawValue)
+    [InlineData(UserProfileEnforcementActionType.Restriction, 0, "restriction")]
+    [InlineData(UserProfileEnforcementActionType.Ban, 1, "ban")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileEnforcementActionType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileEnforcementActionType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, UserProfileEnforcementActionType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

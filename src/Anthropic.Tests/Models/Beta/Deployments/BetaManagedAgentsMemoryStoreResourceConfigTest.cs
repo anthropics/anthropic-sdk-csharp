@@ -185,20 +185,24 @@ public class AccessTest : TestBase
     }
 
     [Theory]
-    [InlineData(Access.ReadWrite)]
-    [InlineData(Access.ReadOnly)]
-    public void SerializationRoundtrip_Works(Access rawValue)
+    [InlineData(Access.ReadWrite, 0, "read_write")]
+    [InlineData(Access.ReadOnly, 1, "read_only")]
+    public void EnumMemberSerializationRoundtrip_Works(Access rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Access> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Access>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -199,22 +199,50 @@ public class BetaOrganizationWebhookEndpointEnabledEventTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
-    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
-    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
-    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved)]
-    [InlineData(BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated)]
-    public void SerializationRoundtrip_Works(BetaOrganizationWebhookEndpointEnabledEvent rawValue)
+    [InlineData(
+        BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
+        0,
+        "external_key.failed"
+    )]
+    [InlineData(
+        BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered,
+        1,
+        "external_key.recovered"
+    )]
+    [InlineData(
+        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
+        2,
+        "user_profile.enforcement_action_opened"
+    )]
+    [InlineData(
+        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved,
+        3,
+        "user_profile.enforcement_action_resolved"
+    )]
+    [InlineData(
+        BetaOrganizationWebhookEndpointEnabledEvent.UserProfileProgramStatusUpdated,
+        4,
+        "user_profile.program_status_updated"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaOrganizationWebhookEndpointEnabledEvent rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaOrganizationWebhookEndpointEnabledEvent> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaOrganizationWebhookEndpointEnabledEvent>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

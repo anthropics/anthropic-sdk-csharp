@@ -405,25 +405,33 @@ public class BetaSpendLimitScopeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaSpendLimitScopeType.User)]
-    [InlineData(BetaSpendLimitScopeType.SeatTier)]
-    [InlineData(BetaSpendLimitScopeType.RbacGroup)]
-    [InlineData(BetaSpendLimitScopeType.OrganizationService)]
-    [InlineData(BetaSpendLimitScopeType.Organization)]
-    [InlineData(BetaSpendLimitScopeType.Workspace)]
-    [InlineData(BetaSpendLimitScopeType.UsageTier)]
-    public void SerializationRoundtrip_Works(BetaSpendLimitScopeType rawValue)
+    [InlineData(BetaSpendLimitScopeType.User, 0, "user")]
+    [InlineData(BetaSpendLimitScopeType.SeatTier, 1, "seat_tier")]
+    [InlineData(BetaSpendLimitScopeType.RbacGroup, 2, "rbac_group")]
+    [InlineData(BetaSpendLimitScopeType.OrganizationService, 3, "organization_service")]
+    [InlineData(BetaSpendLimitScopeType.Organization, 4, "organization")]
+    [InlineData(BetaSpendLimitScopeType.Workspace, 5, "workspace")]
+    [InlineData(BetaSpendLimitScopeType.UsageTier, 6, "usage_tier")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaSpendLimitScopeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaSpendLimitScopeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaSpendLimitScopeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -354,22 +354,30 @@ public class ClientToolResultsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ClientToolResultsType.All)]
-    [InlineData(ClientToolResultsType.None)]
-    [InlineData(ClientToolResultsType.Only)]
-    [InlineData(ClientToolResultsType.Except)]
-    public void SerializationRoundtrip_Works(ClientToolResultsType rawValue)
+    [InlineData(ClientToolResultsType.All, 0, "all")]
+    [InlineData(ClientToolResultsType.None, 1, "none")]
+    [InlineData(ClientToolResultsType.Only, 2, "only")]
+    [InlineData(ClientToolResultsType.Except, 3, "except")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ClientToolResultsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ClientToolResultsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClientToolResultsType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -564,22 +572,30 @@ public class ServerToolResultsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ServerToolResultsType.All)]
-    [InlineData(ServerToolResultsType.None)]
-    [InlineData(ServerToolResultsType.Only)]
-    [InlineData(ServerToolResultsType.Except)]
-    public void SerializationRoundtrip_Works(ServerToolResultsType rawValue)
+    [InlineData(ServerToolResultsType.All, 0, "all")]
+    [InlineData(ServerToolResultsType.None, 1, "none")]
+    [InlineData(ServerToolResultsType.Only, 2, "only")]
+    [InlineData(ServerToolResultsType.Except, 3, "except")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ServerToolResultsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ServerToolResultsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ServerToolResultsType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -704,20 +720,28 @@ public class UserInputTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserInputType.All)]
-    [InlineData(UserInputType.None)]
-    public void SerializationRoundtrip_Works(UserInputType rawValue)
+    [InlineData(UserInputType.All, 0, "all")]
+    [InlineData(UserInputType.None, 1, "none")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserInputType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserInputType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserInputType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

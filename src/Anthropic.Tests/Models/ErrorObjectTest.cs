@@ -324,27 +324,35 @@ public class ErrorObjectTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ErrorObjectType.InvalidRequestError)]
-    [InlineData(ErrorObjectType.AuthenticationError)]
-    [InlineData(ErrorObjectType.BillingError)]
-    [InlineData(ErrorObjectType.PermissionError)]
-    [InlineData(ErrorObjectType.NotFoundError)]
-    [InlineData(ErrorObjectType.RateLimitError)]
-    [InlineData(ErrorObjectType.TimeoutError)]
-    [InlineData(ErrorObjectType.ApiError)]
-    [InlineData(ErrorObjectType.OverloadedError)]
-    public void SerializationRoundtrip_Works(ErrorObjectType rawValue)
+    [InlineData(ErrorObjectType.InvalidRequestError, 0, "invalid_request_error")]
+    [InlineData(ErrorObjectType.AuthenticationError, 1, "authentication_error")]
+    [InlineData(ErrorObjectType.BillingError, 2, "billing_error")]
+    [InlineData(ErrorObjectType.PermissionError, 3, "permission_error")]
+    [InlineData(ErrorObjectType.NotFoundError, 4, "not_found_error")]
+    [InlineData(ErrorObjectType.RateLimitError, 5, "rate_limit_error")]
+    [InlineData(ErrorObjectType.TimeoutError, 6, "timeout_error")]
+    [InlineData(ErrorObjectType.ApiError, 7, "api_error")]
+    [InlineData(ErrorObjectType.OverloadedError, 8, "overloaded_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ErrorObjectType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ErrorObjectType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorObjectType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

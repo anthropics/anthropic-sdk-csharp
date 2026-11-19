@@ -391,21 +391,29 @@ public class EditTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(EditType.ClearToolUses20250919)]
-    [InlineData(EditType.ClearThinking20251015)]
-    [InlineData(EditType.Compact20260112)]
-    public void SerializationRoundtrip_Works(EditType rawValue)
+    [InlineData(EditType.ClearToolUses20250919, 0, "clear_tool_uses_20250919")]
+    [InlineData(EditType.ClearThinking20251015, 1, "clear_thinking_20251015")]
+    [InlineData(EditType.Compact20260112, 2, "compact_20260112")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EditType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EditType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EditType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

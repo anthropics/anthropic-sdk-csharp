@@ -518,20 +518,28 @@ public class CreatedByTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Plugins::CreatedByType.UserActor)]
-    [InlineData(Plugins::CreatedByType.ApiActor)]
-    public void SerializationRoundtrip_Works(Plugins::CreatedByType rawValue)
+    [InlineData(Plugins::CreatedByType.UserActor, 0, "user_actor")]
+    [InlineData(Plugins::CreatedByType.ApiActor, 1, "api_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Plugins::CreatedByType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Plugins::CreatedByType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::CreatedByType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -577,21 +585,29 @@ public class OrganizationInstallationPreferenceTest : TestBase
     }
 
     [Theory]
-    [InlineData(Plugins::OrganizationInstallationPreference.AutoInstall)]
-    [InlineData(Plugins::OrganizationInstallationPreference.Available)]
-    [InlineData(Plugins::OrganizationInstallationPreference.NotAvailable)]
-    [InlineData(Plugins::OrganizationInstallationPreference.Required)]
-    public void SerializationRoundtrip_Works(Plugins::OrganizationInstallationPreference rawValue)
+    [InlineData(Plugins::OrganizationInstallationPreference.AutoInstall, 0, "auto_install")]
+    [InlineData(Plugins::OrganizationInstallationPreference.Available, 1, "available")]
+    [InlineData(Plugins::OrganizationInstallationPreference.NotAvailable, 2, "not_available")]
+    [InlineData(Plugins::OrganizationInstallationPreference.Required, 3, "required")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Plugins::OrganizationInstallationPreference rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Plugins::OrganizationInstallationPreference> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, Plugins::OrganizationInstallationPreference>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -715,20 +731,28 @@ public class OwnerTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(Plugins::OwnerTypeValue.Organization)]
-    [InlineData(Plugins::OwnerTypeValue.User)]
-    public void SerializationRoundtrip_Works(Plugins::OwnerTypeValue rawValue)
+    [InlineData(Plugins::OwnerTypeValue.Organization, 0, "organization")]
+    [InlineData(Plugins::OwnerTypeValue.User, 1, "user")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Plugins::OwnerTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Plugins::OwnerTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::OwnerTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -774,21 +798,29 @@ public class ReachTest : TestBase
     }
 
     [Theory]
-    [InlineData(Plugins::Reach.Contained)]
-    [InlineData(Plugins::Reach.Privileged)]
-    [InlineData(Plugins::Reach.Remote)]
-    public void SerializationRoundtrip_Works(Plugins::Reach rawValue)
+    [InlineData(Plugins::Reach.Contained, 0, "contained")]
+    [InlineData(Plugins::Reach.Privileged, 1, "privileged")]
+    [InlineData(Plugins::Reach.Remote, 2, "remote")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Plugins::Reach rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Plugins::Reach> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Plugins::Reach>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

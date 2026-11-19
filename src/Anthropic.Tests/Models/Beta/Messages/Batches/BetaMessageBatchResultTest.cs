@@ -441,22 +441,30 @@ public class BetaMessageBatchResultTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaMessageBatchResultType.Succeeded)]
-    [InlineData(BetaMessageBatchResultType.Errored)]
-    [InlineData(BetaMessageBatchResultType.Canceled)]
-    [InlineData(BetaMessageBatchResultType.Expired)]
-    public void SerializationRoundtrip_Works(BetaMessageBatchResultType rawValue)
+    [InlineData(BetaMessageBatchResultType.Succeeded, 0, "succeeded")]
+    [InlineData(BetaMessageBatchResultType.Errored, 1, "errored")]
+    [InlineData(BetaMessageBatchResultType.Canceled, 2, "canceled")]
+    [InlineData(BetaMessageBatchResultType.Expired, 3, "expired")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaMessageBatchResultType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaMessageBatchResultType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaMessageBatchResultType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

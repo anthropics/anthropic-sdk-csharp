@@ -289,21 +289,29 @@ public class CallerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CallerType.Direct)]
-    [InlineData(CallerType.CodeExecution20250825)]
-    [InlineData(CallerType.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(CallerType rawValue)
+    [InlineData(CallerType.Direct, 0, "direct")]
+    [InlineData(CallerType.CodeExecution20250825, 1, "code_execution_20250825")]
+    [InlineData(CallerType.CodeExecution20260120, 2, "code_execution_20260120")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CallerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CallerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CallerType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -353,25 +361,29 @@ public class NameTest : TestBase
     }
 
     [Theory]
-    [InlineData(Name.WebSearch)]
-    [InlineData(Name.WebFetch)]
-    [InlineData(Name.CodeExecution)]
-    [InlineData(Name.BashCodeExecution)]
-    [InlineData(Name.TextEditorCodeExecution)]
-    [InlineData(Name.ToolSearchToolRegex)]
-    [InlineData(Name.ToolSearchToolBm25)]
-    public void SerializationRoundtrip_Works(Name rawValue)
+    [InlineData(Name.WebSearch, 0, "web_search")]
+    [InlineData(Name.WebFetch, 1, "web_fetch")]
+    [InlineData(Name.CodeExecution, 2, "code_execution")]
+    [InlineData(Name.BashCodeExecution, 3, "bash_code_execution")]
+    [InlineData(Name.TextEditorCodeExecution, 4, "text_editor_code_execution")]
+    [InlineData(Name.ToolSearchToolRegex, 5, "tool_search_tool_regex")]
+    [InlineData(Name.ToolSearchToolBm25, 6, "tool_search_tool_bm25")]
+    public void EnumMemberSerializationRoundtrip_Works(Name rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Name> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Name>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

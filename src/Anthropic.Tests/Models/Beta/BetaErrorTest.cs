@@ -324,27 +324,35 @@ public class BetaErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaErrorType.InvalidRequestError)]
-    [InlineData(BetaErrorType.AuthenticationError)]
-    [InlineData(BetaErrorType.BillingError)]
-    [InlineData(BetaErrorType.PermissionError)]
-    [InlineData(BetaErrorType.NotFoundError)]
-    [InlineData(BetaErrorType.RateLimitError)]
-    [InlineData(BetaErrorType.TimeoutError)]
-    [InlineData(BetaErrorType.ApiError)]
-    [InlineData(BetaErrorType.OverloadedError)]
-    public void SerializationRoundtrip_Works(BetaErrorType rawValue)
+    [InlineData(BetaErrorType.InvalidRequestError, 0, "invalid_request_error")]
+    [InlineData(BetaErrorType.AuthenticationError, 1, "authentication_error")]
+    [InlineData(BetaErrorType.BillingError, 2, "billing_error")]
+    [InlineData(BetaErrorType.PermissionError, 3, "permission_error")]
+    [InlineData(BetaErrorType.NotFoundError, 4, "not_found_error")]
+    [InlineData(BetaErrorType.RateLimitError, 5, "rate_limit_error")]
+    [InlineData(BetaErrorType.TimeoutError, 6, "timeout_error")]
+    [InlineData(BetaErrorType.ApiError, 7, "api_error")]
+    [InlineData(BetaErrorType.OverloadedError, 8, "overloaded_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaErrorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

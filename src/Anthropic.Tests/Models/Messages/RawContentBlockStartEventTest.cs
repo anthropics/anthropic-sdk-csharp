@@ -869,29 +869,61 @@ public class RawContentBlockStartEventContentBlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(RawContentBlockStartEventContentBlockType.Text)]
-    [InlineData(RawContentBlockStartEventContentBlockType.Thinking)]
-    [InlineData(RawContentBlockStartEventContentBlockType.RedactedThinking)]
-    [InlineData(RawContentBlockStartEventContentBlockType.ToolUse)]
-    [InlineData(RawContentBlockStartEventContentBlockType.ServerToolUse)]
-    [InlineData(RawContentBlockStartEventContentBlockType.WebSearchToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.WebFetchToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.CodeExecutionToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.ToolSearchToolResult)]
-    [InlineData(RawContentBlockStartEventContentBlockType.ContainerUpload)]
-    public void SerializationRoundtrip_Works(RawContentBlockStartEventContentBlockType rawValue)
+    [InlineData(RawContentBlockStartEventContentBlockType.Text, 0, "text")]
+    [InlineData(RawContentBlockStartEventContentBlockType.Thinking, 1, "thinking")]
+    [InlineData(RawContentBlockStartEventContentBlockType.RedactedThinking, 2, "redacted_thinking")]
+    [InlineData(RawContentBlockStartEventContentBlockType.ToolUse, 3, "tool_use")]
+    [InlineData(RawContentBlockStartEventContentBlockType.ServerToolUse, 4, "server_tool_use")]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.WebSearchToolResult,
+        5,
+        "web_search_tool_result"
+    )]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.WebFetchToolResult,
+        6,
+        "web_fetch_tool_result"
+    )]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.CodeExecutionToolResult,
+        7,
+        "code_execution_tool_result"
+    )]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.BashCodeExecutionToolResult,
+        8,
+        "bash_code_execution_tool_result"
+    )]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.TextEditorCodeExecutionToolResult,
+        9,
+        "text_editor_code_execution_tool_result"
+    )]
+    [InlineData(
+        RawContentBlockStartEventContentBlockType.ToolSearchToolResult,
+        10,
+        "tool_search_tool_result"
+    )]
+    [InlineData(RawContentBlockStartEventContentBlockType.ContainerUpload, 11, "container_upload")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        RawContentBlockStartEventContentBlockType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, RawContentBlockStartEventContentBlockType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, RawContentBlockStartEventContentBlockType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

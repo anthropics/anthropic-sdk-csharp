@@ -31,21 +31,29 @@ public class SpendLimitPeriodTest : TestBase
     }
 
     [Theory]
-    [InlineData(SpendLimitPeriod.Daily)]
-    [InlineData(SpendLimitPeriod.Monthly)]
-    [InlineData(SpendLimitPeriod.Weekly)]
-    public void SerializationRoundtrip_Works(SpendLimitPeriod rawValue)
+    [InlineData(SpendLimitPeriod.Daily, 0, "daily")]
+    [InlineData(SpendLimitPeriod.Monthly, 1, "monthly")]
+    [InlineData(SpendLimitPeriod.Weekly, 2, "weekly")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SpendLimitPeriod rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SpendLimitPeriod> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SpendLimitPeriod>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

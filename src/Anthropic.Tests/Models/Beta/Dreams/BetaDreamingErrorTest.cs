@@ -354,28 +354,36 @@ public class BetaDreamingErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDreamingErrorType.InvalidRequestError)]
-    [InlineData(BetaDreamingErrorType.AuthenticationError)]
-    [InlineData(BetaDreamingErrorType.BillingError)]
-    [InlineData(BetaDreamingErrorType.PermissionError)]
-    [InlineData(BetaDreamingErrorType.NotFoundError)]
-    [InlineData(BetaDreamingErrorType.RateLimitError)]
-    [InlineData(BetaDreamingErrorType.TimeoutError)]
-    [InlineData(BetaDreamingErrorType.ApiError)]
-    [InlineData(BetaDreamingErrorType.OverloadedError)]
-    [InlineData(BetaDreamingErrorType.ConflictError)]
-    public void SerializationRoundtrip_Works(BetaDreamingErrorType rawValue)
+    [InlineData(BetaDreamingErrorType.InvalidRequestError, 0, "invalid_request_error")]
+    [InlineData(BetaDreamingErrorType.AuthenticationError, 1, "authentication_error")]
+    [InlineData(BetaDreamingErrorType.BillingError, 2, "billing_error")]
+    [InlineData(BetaDreamingErrorType.PermissionError, 3, "permission_error")]
+    [InlineData(BetaDreamingErrorType.NotFoundError, 4, "not_found_error")]
+    [InlineData(BetaDreamingErrorType.RateLimitError, 5, "rate_limit_error")]
+    [InlineData(BetaDreamingErrorType.TimeoutError, 6, "timeout_error")]
+    [InlineData(BetaDreamingErrorType.ApiError, 7, "api_error")]
+    [InlineData(BetaDreamingErrorType.OverloadedError, 8, "overloaded_error")]
+    [InlineData(BetaDreamingErrorType.ConflictError, 9, "conflict_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDreamingErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDreamingErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamingErrorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -810,24 +810,32 @@ public class BlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BlockType.Text)]
-    [InlineData(BlockType.Image)]
-    [InlineData(BlockType.SearchResult)]
-    [InlineData(BlockType.Document)]
-    [InlineData(BlockType.ToolReference)]
-    [InlineData(BlockType.BrowserState)]
-    public void SerializationRoundtrip_Works(BlockType rawValue)
+    [InlineData(BlockType.Text, 0, "text")]
+    [InlineData(BlockType.Image, 1, "image")]
+    [InlineData(BlockType.SearchResult, 2, "search_result")]
+    [InlineData(BlockType.Document, 3, "document")]
+    [InlineData(BlockType.ToolReference, 4, "tool_reference")]
+    [InlineData(BlockType.BrowserState, 5, "browser_state")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BlockType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BlockType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BlockType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

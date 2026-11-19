@@ -158,23 +158,33 @@ public class BetaPluginInstallationSettingInstallationPreferenceTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaPluginInstallationSettingInstallationPreference.AutoInstall)]
-    [InlineData(BetaPluginInstallationSettingInstallationPreference.Available)]
-    [InlineData(BetaPluginInstallationSettingInstallationPreference.NotAvailable)]
-    [InlineData(BetaPluginInstallationSettingInstallationPreference.Required)]
-    public void SerializationRoundtrip_Works(
-        BetaPluginInstallationSettingInstallationPreference rawValue
+    [InlineData(BetaPluginInstallationSettingInstallationPreference.AutoInstall, 0, "auto_install")]
+    [InlineData(BetaPluginInstallationSettingInstallationPreference.Available, 1, "available")]
+    [InlineData(
+        BetaPluginInstallationSettingInstallationPreference.NotAvailable,
+        2,
+        "not_available"
+    )]
+    [InlineData(BetaPluginInstallationSettingInstallationPreference.Required, 3, "required")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaPluginInstallationSettingInstallationPreference rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaPluginInstallationSettingInstallationPreference> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaPluginInstallationSettingInstallationPreference>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -342,20 +352,32 @@ public class BetaPluginInstallationSettingTargetTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaPluginInstallationSettingTargetType.Organization)]
-    [InlineData(BetaPluginInstallationSettingTargetType.RbacGroup)]
-    [InlineData(BetaPluginInstallationSettingTargetType.OrganizationMember)]
-    public void SerializationRoundtrip_Works(BetaPluginInstallationSettingTargetType rawValue)
+    [InlineData(BetaPluginInstallationSettingTargetType.Organization, 0, "organization")]
+    [InlineData(BetaPluginInstallationSettingTargetType.RbacGroup, 1, "rbac_group")]
+    [InlineData(
+        BetaPluginInstallationSettingTargetType.OrganizationMember,
+        2,
+        "organization_member"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaPluginInstallationSettingTargetType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaPluginInstallationSettingTargetType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaPluginInstallationSettingTargetType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

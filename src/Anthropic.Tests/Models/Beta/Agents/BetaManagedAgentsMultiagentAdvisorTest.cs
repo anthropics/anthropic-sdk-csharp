@@ -118,19 +118,27 @@ public class BetaManagedAgentsMultiagentAdvisorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMultiagentAdvisorType.Enabled)]
-    [InlineData(BetaManagedAgentsMultiagentAdvisorType.Disabled)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMultiagentAdvisorType rawValue)
+    [InlineData(BetaManagedAgentsMultiagentAdvisorType.Enabled, 0, "enabled")]
+    [InlineData(BetaManagedAgentsMultiagentAdvisorType.Disabled, 1, "disabled")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMultiagentAdvisorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMultiagentAdvisorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMultiagentAdvisorType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -160,22 +160,26 @@ public class StatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(Status.Succeeded)]
-    [InlineData(Status.Failed)]
-    [InlineData(Status.ConnectError)]
-    [InlineData(Status.NoRefreshToken)]
-    public void SerializationRoundtrip_Works(Status rawValue)
+    [InlineData(Status.Succeeded, 0, "succeeded")]
+    [InlineData(Status.Failed, 1, "failed")]
+    [InlineData(Status.ConnectError, 2, "connect_error")]
+    [InlineData(Status.NoRefreshToken, 3, "no_refresh_token")]
+    public void EnumMemberSerializationRoundtrip_Works(Status rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Status> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Status>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

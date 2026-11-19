@@ -456,21 +456,29 @@ public class FederationIssuerJwksTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(FederationIssuerJwksType.Discovery)]
-    [InlineData(FederationIssuerJwksType.ExplicitUrl)]
-    [InlineData(FederationIssuerJwksType.Inline)]
-    public void SerializationRoundtrip_Works(FederationIssuerJwksType rawValue)
+    [InlineData(FederationIssuerJwksType.Discovery, 0, "discovery")]
+    [InlineData(FederationIssuerJwksType.ExplicitUrl, 1, "explicit_url")]
+    [InlineData(FederationIssuerJwksType.Inline, 2, "inline")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        FederationIssuerJwksType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, FederationIssuerJwksType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, FederationIssuerJwksType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

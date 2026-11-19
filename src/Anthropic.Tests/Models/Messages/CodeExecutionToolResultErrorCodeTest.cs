@@ -32,21 +32,33 @@ public class CodeExecutionToolResultErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CodeExecutionToolResultErrorCode.InvalidToolInput)]
-    [InlineData(CodeExecutionToolResultErrorCode.Unavailable)]
-    [InlineData(CodeExecutionToolResultErrorCode.TooManyRequests)]
-    [InlineData(CodeExecutionToolResultErrorCode.ExecutionTimeExceeded)]
-    public void SerializationRoundtrip_Works(CodeExecutionToolResultErrorCode rawValue)
+    [InlineData(CodeExecutionToolResultErrorCode.InvalidToolInput, 0, "invalid_tool_input")]
+    [InlineData(CodeExecutionToolResultErrorCode.Unavailable, 1, "unavailable")]
+    [InlineData(CodeExecutionToolResultErrorCode.TooManyRequests, 2, "too_many_requests")]
+    [InlineData(
+        CodeExecutionToolResultErrorCode.ExecutionTimeExceeded,
+        3,
+        "execution_time_exceeded"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CodeExecutionToolResultErrorCode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CodeExecutionToolResultErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, CodeExecutionToolResultErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -1442,42 +1442,62 @@ public class BetaContentBlockParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaContentBlockParamType.Text)]
-    [InlineData(BetaContentBlockParamType.Image)]
-    [InlineData(BetaContentBlockParamType.Document)]
-    [InlineData(BetaContentBlockParamType.SearchResult)]
-    [InlineData(BetaContentBlockParamType.Thinking)]
-    [InlineData(BetaContentBlockParamType.RedactedThinking)]
-    [InlineData(BetaContentBlockParamType.ToolUse)]
-    [InlineData(BetaContentBlockParamType.ToolResult)]
-    [InlineData(BetaContentBlockParamType.ServerToolUse)]
-    [InlineData(BetaContentBlockParamType.WebSearchToolResult)]
-    [InlineData(BetaContentBlockParamType.WebFetchToolResult)]
-    [InlineData(BetaContentBlockParamType.AdvisorToolResult)]
-    [InlineData(BetaContentBlockParamType.CodeExecutionToolResult)]
-    [InlineData(BetaContentBlockParamType.BashCodeExecutionToolResult)]
-    [InlineData(BetaContentBlockParamType.TextEditorCodeExecutionToolResult)]
-    [InlineData(BetaContentBlockParamType.ToolSearchToolResult)]
-    [InlineData(BetaContentBlockParamType.McpToolUse)]
-    [InlineData(BetaContentBlockParamType.McpToolResult)]
-    [InlineData(BetaContentBlockParamType.ContainerUpload)]
-    [InlineData(BetaContentBlockParamType.Compaction)]
-    [InlineData(BetaContentBlockParamType.ToolAddition)]
-    [InlineData(BetaContentBlockParamType.ToolRemoval)]
-    [InlineData(BetaContentBlockParamType.McpToolListing)]
-    [InlineData(BetaContentBlockParamType.Fallback)]
-    public void SerializationRoundtrip_Works(BetaContentBlockParamType rawValue)
+    [InlineData(BetaContentBlockParamType.Text, 0, "text")]
+    [InlineData(BetaContentBlockParamType.Image, 1, "image")]
+    [InlineData(BetaContentBlockParamType.Document, 2, "document")]
+    [InlineData(BetaContentBlockParamType.SearchResult, 3, "search_result")]
+    [InlineData(BetaContentBlockParamType.Thinking, 4, "thinking")]
+    [InlineData(BetaContentBlockParamType.RedactedThinking, 5, "redacted_thinking")]
+    [InlineData(BetaContentBlockParamType.ToolUse, 6, "tool_use")]
+    [InlineData(BetaContentBlockParamType.ToolResult, 7, "tool_result")]
+    [InlineData(BetaContentBlockParamType.ServerToolUse, 8, "server_tool_use")]
+    [InlineData(BetaContentBlockParamType.WebSearchToolResult, 9, "web_search_tool_result")]
+    [InlineData(BetaContentBlockParamType.WebFetchToolResult, 10, "web_fetch_tool_result")]
+    [InlineData(BetaContentBlockParamType.AdvisorToolResult, 11, "advisor_tool_result")]
+    [InlineData(
+        BetaContentBlockParamType.CodeExecutionToolResult,
+        12,
+        "code_execution_tool_result"
+    )]
+    [InlineData(
+        BetaContentBlockParamType.BashCodeExecutionToolResult,
+        13,
+        "bash_code_execution_tool_result"
+    )]
+    [InlineData(
+        BetaContentBlockParamType.TextEditorCodeExecutionToolResult,
+        14,
+        "text_editor_code_execution_tool_result"
+    )]
+    [InlineData(BetaContentBlockParamType.ToolSearchToolResult, 15, "tool_search_tool_result")]
+    [InlineData(BetaContentBlockParamType.McpToolUse, 16, "mcp_tool_use")]
+    [InlineData(BetaContentBlockParamType.McpToolResult, 17, "mcp_tool_result")]
+    [InlineData(BetaContentBlockParamType.ContainerUpload, 18, "container_upload")]
+    [InlineData(BetaContentBlockParamType.Compaction, 19, "compaction")]
+    [InlineData(BetaContentBlockParamType.ToolAddition, 20, "tool_addition")]
+    [InlineData(BetaContentBlockParamType.ToolRemoval, 21, "tool_removal")]
+    [InlineData(BetaContentBlockParamType.McpToolListing, 22, "mcp_tool_listing")]
+    [InlineData(BetaContentBlockParamType.Fallback, 23, "fallback")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaContentBlockParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaContentBlockParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockParamType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

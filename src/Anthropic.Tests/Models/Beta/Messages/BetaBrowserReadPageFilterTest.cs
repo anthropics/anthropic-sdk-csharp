@@ -30,20 +30,28 @@ public class BetaBrowserReadPageFilterTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaBrowserReadPageFilter.All)]
-    [InlineData(BetaBrowserReadPageFilter.Interactive)]
-    public void SerializationRoundtrip_Works(BetaBrowserReadPageFilter rawValue)
+    [InlineData(BetaBrowserReadPageFilter.All, 0, "all")]
+    [InlineData(BetaBrowserReadPageFilter.Interactive, 1, "interactive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaBrowserReadPageFilter rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaBrowserReadPageFilter> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaBrowserReadPageFilter>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

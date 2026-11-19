@@ -262,20 +262,28 @@ public class CheckoutTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CheckoutType.Branch)]
-    [InlineData(CheckoutType.Commit)]
-    public void SerializationRoundtrip_Works(CheckoutType rawValue)
+    [InlineData(CheckoutType.Branch, 0, "branch")]
+    [InlineData(CheckoutType.Commit, 1, "commit")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CheckoutType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CheckoutType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CheckoutType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

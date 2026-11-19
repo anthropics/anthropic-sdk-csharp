@@ -344,22 +344,28 @@ public class BetaUserProfileExternalUserDetailsParamsAccountStatusTest : TestBas
     }
 
     [Theory]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Active)]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended)]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Blocked)]
-    public void SerializationRoundtrip_Works(
-        BetaUserProfileExternalUserDetailsParamsAccountStatus rawValue
+    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Active, 0, "active")]
+    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Suspended, 1, "suspended")]
+    [InlineData(BetaUserProfileExternalUserDetailsParamsAccountStatus.Blocked, 2, "blocked")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaUserProfileExternalUserDetailsParamsAccountStatus rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaUserProfileExternalUserDetailsParamsAccountStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaUserProfileExternalUserDetailsParamsAccountStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -403,23 +409,29 @@ public class BetaUserProfileExternalUserDetailsParamsEntityTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Individual)]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Business)]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.NonProfit)]
-    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Government)]
-    public void SerializationRoundtrip_Works(
-        BetaUserProfileExternalUserDetailsParamsEntityType rawValue
+    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Individual, 0, "individual")]
+    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Business, 1, "business")]
+    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.NonProfit, 2, "non_profit")]
+    [InlineData(BetaUserProfileExternalUserDetailsParamsEntityType.Government, 3, "government")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaUserProfileExternalUserDetailsParamsEntityType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaUserProfileExternalUserDetailsParamsEntityType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaUserProfileExternalUserDetailsParamsEntityType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

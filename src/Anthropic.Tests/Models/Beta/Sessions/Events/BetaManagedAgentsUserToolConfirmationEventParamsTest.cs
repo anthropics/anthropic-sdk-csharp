@@ -186,21 +186,27 @@ public class BetaManagedAgentsUserToolConfirmationEventParamsResultTest : TestBa
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow)]
-    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsResult.Deny)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserToolConfirmationEventParamsResult rawValue
+    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsResult.Allow, 0, "allow")]
+    [InlineData(BetaManagedAgentsUserToolConfirmationEventParamsResult.Deny, 1, "deny")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsUserToolConfirmationEventParamsResult rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserToolConfirmationEventParamsResult>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -189,21 +189,29 @@ public class BetaOrganizationInviteStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaOrganizationInviteStatus.Accepted)]
-    [InlineData(BetaOrganizationInviteStatus.Deleted)]
-    [InlineData(BetaOrganizationInviteStatus.Expired)]
-    [InlineData(BetaOrganizationInviteStatus.Pending)]
-    public void SerializationRoundtrip_Works(BetaOrganizationInviteStatus rawValue)
+    [InlineData(BetaOrganizationInviteStatus.Accepted, 0, "accepted")]
+    [InlineData(BetaOrganizationInviteStatus.Deleted, 1, "deleted")]
+    [InlineData(BetaOrganizationInviteStatus.Expired, 2, "expired")]
+    [InlineData(BetaOrganizationInviteStatus.Pending, 3, "pending")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaOrganizationInviteStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaOrganizationInviteStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaOrganizationInviteStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

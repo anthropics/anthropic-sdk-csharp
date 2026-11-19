@@ -118,19 +118,27 @@ public class BetaTelemetryDestinationTestResultTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTelemetryDestinationTestResultType.Success)]
-    [InlineData(BetaTelemetryDestinationTestResultType.Failure)]
-    public void SerializationRoundtrip_Works(BetaTelemetryDestinationTestResultType rawValue)
+    [InlineData(BetaTelemetryDestinationTestResultType.Success, 0, "success")]
+    [InlineData(BetaTelemetryDestinationTestResultType.Failure, 1, "failure")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTelemetryDestinationTestResultType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTelemetryDestinationTestResultType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTelemetryDestinationTestResultType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

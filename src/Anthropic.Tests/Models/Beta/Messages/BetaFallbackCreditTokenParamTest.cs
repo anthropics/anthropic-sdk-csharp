@@ -155,20 +155,24 @@ public class ModeTest : TestBase
     }
 
     [Theory]
-    [InlineData(Mode.Strict)]
-    [InlineData(Mode.BestEffort)]
-    public void SerializationRoundtrip_Works(Mode rawValue)
+    [InlineData(Mode.Strict, 0, "strict")]
+    [InlineData(Mode.BestEffort, 1, "best_effort")]
+    public void EnumMemberSerializationRoundtrip_Works(Mode rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Mode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Mode>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

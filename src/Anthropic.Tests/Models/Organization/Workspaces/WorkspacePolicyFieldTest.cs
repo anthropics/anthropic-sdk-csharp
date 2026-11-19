@@ -29,19 +29,27 @@ public class WorkspacePolicyFieldTest : TestBase
     }
 
     [Theory]
-    [InlineData(WorkspacePolicyField.ExternalKeyID)]
-    public void SerializationRoundtrip_Works(WorkspacePolicyField rawValue)
+    [InlineData(WorkspacePolicyField.ExternalKeyID, 0, "external_key_id")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        WorkspacePolicyField rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, WorkspacePolicyField> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, WorkspacePolicyField>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

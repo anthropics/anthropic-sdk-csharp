@@ -401,18 +401,26 @@ public class BetaAnalyticsUsageUsersItemActorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageUsersItemActorType.UserActor)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageUsersItemActorType rawValue)
+    [InlineData(BetaAnalyticsUsageUsersItemActorType.UserActor, 0, "user_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageUsersItemActorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageUsersItemActorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageUsersItemActorType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -454,19 +462,27 @@ public class BetaAnalyticsUsageUsersItemInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageUsersItemInferenceGeo.Global)]
-    [InlineData(BetaAnalyticsUsageUsersItemInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageUsersItemInferenceGeo rawValue)
+    [InlineData(BetaAnalyticsUsageUsersItemInferenceGeo.Global, 0, "global")]
+    [InlineData(BetaAnalyticsUsageUsersItemInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageUsersItemInferenceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageUsersItemInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageUsersItemInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -509,19 +525,27 @@ public class BetaAnalyticsUsageUsersItemSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageUsersItemSpeed.Fast)]
-    [InlineData(BetaAnalyticsUsageUsersItemSpeed.Standard)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageUsersItemSpeed rawValue)
+    [InlineData(BetaAnalyticsUsageUsersItemSpeed.Fast, 0, "fast")]
+    [InlineData(BetaAnalyticsUsageUsersItemSpeed.Standard, 1, "standard")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageUsersItemSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageUsersItemSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageUsersItemSpeed>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

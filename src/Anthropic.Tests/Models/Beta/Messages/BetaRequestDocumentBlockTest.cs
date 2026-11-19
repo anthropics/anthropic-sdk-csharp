@@ -409,22 +409,30 @@ public class BetaRequestDocumentBlockSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaRequestDocumentBlockSourceType.Base64)]
-    [InlineData(BetaRequestDocumentBlockSourceType.Text)]
-    [InlineData(BetaRequestDocumentBlockSourceType.Content)]
-    [InlineData(BetaRequestDocumentBlockSourceType.Url)]
-    [InlineData(BetaRequestDocumentBlockSourceType.File)]
-    public void SerializationRoundtrip_Works(BetaRequestDocumentBlockSourceType rawValue)
+    [InlineData(BetaRequestDocumentBlockSourceType.Base64, 0, "base64")]
+    [InlineData(BetaRequestDocumentBlockSourceType.Text, 1, "text")]
+    [InlineData(BetaRequestDocumentBlockSourceType.Content, 2, "content")]
+    [InlineData(BetaRequestDocumentBlockSourceType.Url, 3, "url")]
+    [InlineData(BetaRequestDocumentBlockSourceType.File, 4, "file")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaRequestDocumentBlockSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaRequestDocumentBlockSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaRequestDocumentBlockSourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

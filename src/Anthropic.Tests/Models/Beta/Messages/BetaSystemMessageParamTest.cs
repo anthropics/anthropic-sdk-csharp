@@ -259,20 +259,28 @@ public class ClearAtTest : TestBase
     }
 
     [Theory]
-    [InlineData(ClearAt.NextUserMessage)]
-    [InlineData(ClearAt.Never)]
-    public void SerializationRoundtrip_Works(ClearAt rawValue)
+    [InlineData(ClearAt.NextUserMessage, 0, "next_user_message")]
+    [InlineData(ClearAt.Never, 1, "never")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ClearAt rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ClearAt> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ClearAt>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -601,20 +609,28 @@ public class SystemMessageContentBlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SystemMessageContentBlockType.Text)]
-    [InlineData(SystemMessageContentBlockType.ToolAddition)]
-    [InlineData(SystemMessageContentBlockType.ToolRemoval)]
-    public void SerializationRoundtrip_Works(SystemMessageContentBlockType rawValue)
+    [InlineData(SystemMessageContentBlockType.Text, 0, "text")]
+    [InlineData(SystemMessageContentBlockType.ToolAddition, 1, "tool_addition")]
+    [InlineData(SystemMessageContentBlockType.ToolRemoval, 2, "tool_removal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SystemMessageContentBlockType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SystemMessageContentBlockType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, SystemMessageContentBlockType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

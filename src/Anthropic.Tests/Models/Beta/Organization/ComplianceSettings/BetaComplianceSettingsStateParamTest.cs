@@ -112,19 +112,27 @@ public class BetaComplianceSettingsStateParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaComplianceSettingsStateParamType.Enabled)]
-    [InlineData(BetaComplianceSettingsStateParamType.Disabled)]
-    public void SerializationRoundtrip_Works(BetaComplianceSettingsStateParamType rawValue)
+    [InlineData(BetaComplianceSettingsStateParamType.Enabled, 0, "enabled")]
+    [InlineData(BetaComplianceSettingsStateParamType.Disabled, 1, "disabled")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaComplianceSettingsStateParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaComplianceSettingsStateParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaComplianceSettingsStateParamType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -130,19 +130,27 @@ public class BetaManagedAgentsStartEventPreviewTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsStartEventPreviewType.AgentMessage)]
-    [InlineData(BetaManagedAgentsStartEventPreviewType.AgentThinking)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsStartEventPreviewType rawValue)
+    [InlineData(BetaManagedAgentsStartEventPreviewType.AgentMessage, 0, "agent.message")]
+    [InlineData(BetaManagedAgentsStartEventPreviewType.AgentThinking, 1, "agent.thinking")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsStartEventPreviewType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsStartEventPreviewType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsStartEventPreviewType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

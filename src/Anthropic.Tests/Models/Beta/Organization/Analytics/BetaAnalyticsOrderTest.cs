@@ -30,20 +30,28 @@ public class BetaAnalyticsOrderTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsOrder.Asc)]
-    [InlineData(BetaAnalyticsOrder.Desc)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsOrder rawValue)
+    [InlineData(BetaAnalyticsOrder.Asc, 0, "asc")]
+    [InlineData(BetaAnalyticsOrder.Desc, 1, "desc")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsOrder rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsOrder> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsOrder>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

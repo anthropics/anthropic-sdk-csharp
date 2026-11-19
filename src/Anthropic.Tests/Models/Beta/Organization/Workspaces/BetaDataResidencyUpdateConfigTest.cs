@@ -311,21 +311,27 @@ public class BetaDataResidencyUpdateConfigDefaultInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDataResidencyUpdateConfigDefaultInferenceGeo.Global)]
-    [InlineData(BetaDataResidencyUpdateConfigDefaultInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(
-        BetaDataResidencyUpdateConfigDefaultInferenceGeo rawValue
+    [InlineData(BetaDataResidencyUpdateConfigDefaultInferenceGeo.Global, 0, "global")]
+    [InlineData(BetaDataResidencyUpdateConfigDefaultInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDataResidencyUpdateConfigDefaultInferenceGeo rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDataResidencyUpdateConfigDefaultInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaDataResidencyUpdateConfigDefaultInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

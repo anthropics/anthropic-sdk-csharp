@@ -633,34 +633,46 @@ public class ErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ErrorType.EnvironmentArchivedError)]
-    [InlineData(ErrorType.AgentArchivedError)]
-    [InlineData(ErrorType.EnvironmentNotFoundError)]
-    [InlineData(ErrorType.VaultNotFoundError)]
-    [InlineData(ErrorType.VaultArchivedError)]
-    [InlineData(ErrorType.FileNotFoundError)]
-    [InlineData(ErrorType.MemoryStoreArchivedError)]
-    [InlineData(ErrorType.SkillNotFoundError)]
-    [InlineData(ErrorType.SessionResourceNotFoundError)]
-    [InlineData(ErrorType.WorkspaceArchivedError)]
-    [InlineData(ErrorType.OrganizationDisabledError)]
-    [InlineData(ErrorType.SessionRateLimitedError)]
-    [InlineData(ErrorType.SessionCreationRejectedError)]
-    [InlineData(ErrorType.UnknownError)]
-    [InlineData(ErrorType.SelfHostedResourcesUnsupportedError)]
-    [InlineData(ErrorType.McpEgressBlockedError)]
-    public void SerializationRoundtrip_Works(ErrorType rawValue)
+    [InlineData(ErrorType.EnvironmentArchivedError, 0, "environment_archived_error")]
+    [InlineData(ErrorType.AgentArchivedError, 1, "agent_archived_error")]
+    [InlineData(ErrorType.EnvironmentNotFoundError, 2, "environment_not_found_error")]
+    [InlineData(ErrorType.VaultNotFoundError, 3, "vault_not_found_error")]
+    [InlineData(ErrorType.VaultArchivedError, 4, "vault_archived_error")]
+    [InlineData(ErrorType.FileNotFoundError, 5, "file_not_found_error")]
+    [InlineData(ErrorType.MemoryStoreArchivedError, 6, "memory_store_archived_error")]
+    [InlineData(ErrorType.SkillNotFoundError, 7, "skill_not_found_error")]
+    [InlineData(ErrorType.SessionResourceNotFoundError, 8, "session_resource_not_found_error")]
+    [InlineData(ErrorType.WorkspaceArchivedError, 9, "workspace_archived_error")]
+    [InlineData(ErrorType.OrganizationDisabledError, 10, "organization_disabled_error")]
+    [InlineData(ErrorType.SessionRateLimitedError, 11, "session_rate_limited_error")]
+    [InlineData(ErrorType.SessionCreationRejectedError, 12, "session_creation_rejected_error")]
+    [InlineData(ErrorType.UnknownError, 13, "unknown_error")]
+    [InlineData(
+        ErrorType.SelfHostedResourcesUnsupportedError,
+        14,
+        "self_hosted_resources_unsupported_error"
+    )]
+    [InlineData(ErrorType.McpEgressBlockedError, 15, "mcp_egress_blocked_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -94,20 +94,28 @@ public class UserProfileEfsFeatureStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileEfsFeatureStatus.Active)]
-    [InlineData(UserProfileEfsFeatureStatus.Inactive)]
-    public void SerializationRoundtrip_Works(UserProfileEfsFeatureStatus rawValue)
+    [InlineData(UserProfileEfsFeatureStatus.Active, 0, "active")]
+    [InlineData(UserProfileEfsFeatureStatus.Inactive, 1, "inactive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileEfsFeatureStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileEfsFeatureStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfileEfsFeatureStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

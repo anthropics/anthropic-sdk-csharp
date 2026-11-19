@@ -227,20 +227,24 @@ public class ResultTest : TestBase
     }
 
     [Theory]
-    [InlineData(Result.Allow)]
-    [InlineData(Result.Deny)]
-    public void SerializationRoundtrip_Works(Result rawValue)
+    [InlineData(Result.Allow, 0, "allow")]
+    [InlineData(Result.Deny, 1, "deny")]
+    public void EnumMemberSerializationRoundtrip_Works(Result rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Result> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Result>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

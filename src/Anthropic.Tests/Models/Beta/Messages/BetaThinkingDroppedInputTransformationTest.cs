@@ -123,21 +123,45 @@ public class BetaThinkingDroppedInputTransformationReasonTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch)]
-    [InlineData(BetaThinkingDroppedInputTransformationReason.PrefixBindingMismatch)]
-    [InlineData(BetaThinkingDroppedInputTransformationReason.OrganizationBindingMismatch)]
-    [InlineData(BetaThinkingDroppedInputTransformationReason.EndUserBindingMismatch)]
-    public void SerializationRoundtrip_Works(BetaThinkingDroppedInputTransformationReason rawValue)
+    [InlineData(
+        BetaThinkingDroppedInputTransformationReason.ModelBindingMismatch,
+        0,
+        "model_binding_mismatch"
+    )]
+    [InlineData(
+        BetaThinkingDroppedInputTransformationReason.PrefixBindingMismatch,
+        1,
+        "prefix_binding_mismatch"
+    )]
+    [InlineData(
+        BetaThinkingDroppedInputTransformationReason.OrganizationBindingMismatch,
+        2,
+        "organization_binding_mismatch"
+    )]
+    [InlineData(
+        BetaThinkingDroppedInputTransformationReason.EndUserBindingMismatch,
+        3,
+        "end_user_binding_mismatch"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaThinkingDroppedInputTransformationReason rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaThinkingDroppedInputTransformationReason> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaThinkingDroppedInputTransformationReason>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

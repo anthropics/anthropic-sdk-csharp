@@ -347,20 +347,24 @@ public class OrderTest : TestBase
     }
 
     [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void SerializationRoundtrip_Works(Order rawValue)
+    [InlineData(Order.Asc, 0, "asc")]
+    [InlineData(Order.Desc, 1, "desc")]
+    public void EnumMemberSerializationRoundtrip_Works(Order rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Order> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -407,22 +411,26 @@ public class StatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(Status.Rescheduling)]
-    [InlineData(Status.Running)]
-    [InlineData(Status.Idle)]
-    [InlineData(Status.Terminated)]
-    public void SerializationRoundtrip_Works(Status rawValue)
+    [InlineData(Status.Rescheduling, 0, "rescheduling")]
+    [InlineData(Status.Running, 1, "running")]
+    [InlineData(Status.Idle, 2, "idle")]
+    [InlineData(Status.Terminated, 3, "terminated")]
+    public void EnumMemberSerializationRoundtrip_Works(Status rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Status> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Status>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

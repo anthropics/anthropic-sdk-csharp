@@ -545,24 +545,32 @@ public class RawMessageStreamEventTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(RawMessageStreamEventType.MessageStart)]
-    [InlineData(RawMessageStreamEventType.MessageDelta)]
-    [InlineData(RawMessageStreamEventType.MessageStop)]
-    [InlineData(RawMessageStreamEventType.ContentBlockStart)]
-    [InlineData(RawMessageStreamEventType.ContentBlockDelta)]
-    [InlineData(RawMessageStreamEventType.ContentBlockStop)]
-    public void SerializationRoundtrip_Works(RawMessageStreamEventType rawValue)
+    [InlineData(RawMessageStreamEventType.MessageStart, 0, "message_start")]
+    [InlineData(RawMessageStreamEventType.MessageDelta, 1, "message_delta")]
+    [InlineData(RawMessageStreamEventType.MessageStop, 2, "message_stop")]
+    [InlineData(RawMessageStreamEventType.ContentBlockStart, 3, "content_block_start")]
+    [InlineData(RawMessageStreamEventType.ContentBlockDelta, 4, "content_block_delta")]
+    [InlineData(RawMessageStreamEventType.ContentBlockStop, 5, "content_block_stop")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        RawMessageStreamEventType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, RawMessageStreamEventType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, RawMessageStreamEventType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

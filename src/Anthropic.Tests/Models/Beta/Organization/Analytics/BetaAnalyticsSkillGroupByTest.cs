@@ -31,21 +31,29 @@ public class BetaAnalyticsSkillGroupByTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsSkillGroupBy.Product)]
-    [InlineData(BetaAnalyticsSkillGroupBy.RbacGroupID)]
-    [InlineData(BetaAnalyticsSkillGroupBy.UserID)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsSkillGroupBy rawValue)
+    [InlineData(BetaAnalyticsSkillGroupBy.Product, 0, "product")]
+    [InlineData(BetaAnalyticsSkillGroupBy.RbacGroupID, 1, "rbac_group_id")]
+    [InlineData(BetaAnalyticsSkillGroupBy.UserID, 2, "user_id")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsSkillGroupBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsSkillGroupBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsSkillGroupBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

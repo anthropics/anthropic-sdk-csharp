@@ -252,20 +252,28 @@ public class ResourceRetrieveResponseTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ResourceRetrieveResponseType.GitHubRepository)]
-    [InlineData(ResourceRetrieveResponseType.File)]
-    [InlineData(ResourceRetrieveResponseType.MemoryStore)]
-    public void SerializationRoundtrip_Works(ResourceRetrieveResponseType rawValue)
+    [InlineData(ResourceRetrieveResponseType.GitHubRepository, 0, "github_repository")]
+    [InlineData(ResourceRetrieveResponseType.File, 1, "file")]
+    [InlineData(ResourceRetrieveResponseType.MemoryStore, 2, "memory_store")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ResourceRetrieveResponseType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ResourceRetrieveResponseType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ResourceRetrieveResponseType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

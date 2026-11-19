@@ -453,20 +453,36 @@ public class BetaWebFetchToolResultBlockCallerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaWebFetchToolResultBlockCallerType.Direct)]
-    [InlineData(BetaWebFetchToolResultBlockCallerType.CodeExecution20250825)]
-    [InlineData(BetaWebFetchToolResultBlockCallerType.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(BetaWebFetchToolResultBlockCallerType rawValue)
+    [InlineData(BetaWebFetchToolResultBlockCallerType.Direct, 0, "direct")]
+    [InlineData(
+        BetaWebFetchToolResultBlockCallerType.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        BetaWebFetchToolResultBlockCallerType.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaWebFetchToolResultBlockCallerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaWebFetchToolResultBlockCallerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaWebFetchToolResultBlockCallerType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

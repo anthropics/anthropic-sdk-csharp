@@ -30,20 +30,28 @@ public class UserProfileListOrderTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileListOrder.Asc)]
-    [InlineData(UserProfileListOrder.Desc)]
-    public void SerializationRoundtrip_Works(UserProfileListOrder rawValue)
+    [InlineData(UserProfileListOrder.Asc, 0, "asc")]
+    [InlineData(UserProfileListOrder.Desc, 1, "desc")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileListOrder rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileListOrder> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfileListOrder>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

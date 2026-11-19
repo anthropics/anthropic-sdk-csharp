@@ -366,23 +366,31 @@ public class EffortTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(EffortType.Low)]
-    [InlineData(EffortType.Medium)]
-    [InlineData(EffortType.High)]
-    [InlineData(EffortType.Xhigh)]
-    [InlineData(EffortType.Max)]
-    public void SerializationRoundtrip_Works(EffortType rawValue)
+    [InlineData(EffortType.Low, 0, "low")]
+    [InlineData(EffortType.Medium, 1, "medium")]
+    [InlineData(EffortType.High, 2, "high")]
+    [InlineData(EffortType.Xhigh, 3, "xhigh")]
+    [InlineData(EffortType.Max, 4, "max")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EffortType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EffortType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EffortType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -427,20 +435,24 @@ public class SpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(Speed.Standard)]
-    [InlineData(Speed.Fast)]
-    public void SerializationRoundtrip_Works(Speed rawValue)
+    [InlineData(Speed.Standard, 0, "standard")]
+    [InlineData(Speed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(Speed rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Speed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

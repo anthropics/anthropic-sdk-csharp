@@ -314,23 +314,31 @@ public class BetaMemoryTool20250818CommandCommandTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaMemoryTool20250818CommandCommand.View)]
-    [InlineData(BetaMemoryTool20250818CommandCommand.Create)]
-    [InlineData(BetaMemoryTool20250818CommandCommand.StrReplace)]
-    [InlineData(BetaMemoryTool20250818CommandCommand.Insert)]
-    [InlineData(BetaMemoryTool20250818CommandCommand.Delete)]
-    [InlineData(BetaMemoryTool20250818CommandCommand.Rename)]
-    public void SerializationRoundtrip_Works(BetaMemoryTool20250818CommandCommand rawValue)
+    [InlineData(BetaMemoryTool20250818CommandCommand.View, 0, "view")]
+    [InlineData(BetaMemoryTool20250818CommandCommand.Create, 1, "create")]
+    [InlineData(BetaMemoryTool20250818CommandCommand.StrReplace, 2, "str_replace")]
+    [InlineData(BetaMemoryTool20250818CommandCommand.Insert, 3, "insert")]
+    [InlineData(BetaMemoryTool20250818CommandCommand.Delete, 4, "delete")]
+    [InlineData(BetaMemoryTool20250818CommandCommand.Rename, 5, "rename")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaMemoryTool20250818CommandCommand rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaMemoryTool20250818CommandCommand> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaMemoryTool20250818CommandCommand>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -850,35 +850,43 @@ public class ComputerToolUseBlockNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(ComputerToolUseBlockName.Key)]
-    [InlineData(ComputerToolUseBlockName.HoldKey)]
-    [InlineData(ComputerToolUseBlockName.Type)]
-    [InlineData(ComputerToolUseBlockName.CursorPosition)]
-    [InlineData(ComputerToolUseBlockName.MouseMove)]
-    [InlineData(ComputerToolUseBlockName.LeftMouseDown)]
-    [InlineData(ComputerToolUseBlockName.LeftMouseUp)]
-    [InlineData(ComputerToolUseBlockName.LeftClick)]
-    [InlineData(ComputerToolUseBlockName.LeftClickDrag)]
-    [InlineData(ComputerToolUseBlockName.RightClick)]
-    [InlineData(ComputerToolUseBlockName.MiddleClick)]
-    [InlineData(ComputerToolUseBlockName.DoubleClick)]
-    [InlineData(ComputerToolUseBlockName.TripleClick)]
-    [InlineData(ComputerToolUseBlockName.Scroll)]
-    [InlineData(ComputerToolUseBlockName.Wait)]
-    [InlineData(ComputerToolUseBlockName.Screenshot)]
-    [InlineData(ComputerToolUseBlockName.Zoom)]
-    public void SerializationRoundtrip_Works(ComputerToolUseBlockName rawValue)
+    [InlineData(ComputerToolUseBlockName.Key, 0, "key")]
+    [InlineData(ComputerToolUseBlockName.HoldKey, 1, "hold_key")]
+    [InlineData(ComputerToolUseBlockName.Type, 2, "type")]
+    [InlineData(ComputerToolUseBlockName.CursorPosition, 3, "cursor_position")]
+    [InlineData(ComputerToolUseBlockName.MouseMove, 4, "mouse_move")]
+    [InlineData(ComputerToolUseBlockName.LeftMouseDown, 5, "left_mouse_down")]
+    [InlineData(ComputerToolUseBlockName.LeftMouseUp, 6, "left_mouse_up")]
+    [InlineData(ComputerToolUseBlockName.LeftClick, 7, "left_click")]
+    [InlineData(ComputerToolUseBlockName.LeftClickDrag, 8, "left_click_drag")]
+    [InlineData(ComputerToolUseBlockName.RightClick, 9, "right_click")]
+    [InlineData(ComputerToolUseBlockName.MiddleClick, 10, "middle_click")]
+    [InlineData(ComputerToolUseBlockName.DoubleClick, 11, "double_click")]
+    [InlineData(ComputerToolUseBlockName.TripleClick, 12, "triple_click")]
+    [InlineData(ComputerToolUseBlockName.Scroll, 13, "scroll")]
+    [InlineData(ComputerToolUseBlockName.Wait, 14, "wait")]
+    [InlineData(ComputerToolUseBlockName.Screenshot, 15, "screenshot")]
+    [InlineData(ComputerToolUseBlockName.Zoom, 16, "zoom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ComputerToolUseBlockName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ComputerToolUseBlockName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ComputerToolUseBlockName>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

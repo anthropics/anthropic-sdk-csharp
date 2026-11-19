@@ -315,19 +315,27 @@ public class DataResidencyCreateConfigDefaultInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(DataResidencyCreateConfigDefaultInferenceGeo.Global)]
-    [InlineData(DataResidencyCreateConfigDefaultInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(DataResidencyCreateConfigDefaultInferenceGeo rawValue)
+    [InlineData(DataResidencyCreateConfigDefaultInferenceGeo.Global, 0, "global")]
+    [InlineData(DataResidencyCreateConfigDefaultInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DataResidencyCreateConfigDefaultInferenceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DataResidencyCreateConfigDefaultInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, DataResidencyCreateConfigDefaultInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -368,18 +376,26 @@ public class DataResidencyCreateConfigWorkspaceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(DataResidencyCreateConfigWorkspaceGeo.Us)]
-    public void SerializationRoundtrip_Works(DataResidencyCreateConfigWorkspaceGeo rawValue)
+    [InlineData(DataResidencyCreateConfigWorkspaceGeo.Us, 0, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DataResidencyCreateConfigWorkspaceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DataResidencyCreateConfigWorkspaceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, DataResidencyCreateConfigWorkspaceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

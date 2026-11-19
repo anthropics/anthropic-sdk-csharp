@@ -124,19 +124,27 @@ public class BetaClaudeTagBundleTargetCreateTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeTagBundleTargetCreateType.SlackChannel)]
-    [InlineData(BetaClaudeTagBundleTargetCreateType.SlackWorkspace)]
-    public void SerializationRoundtrip_Works(BetaClaudeTagBundleTargetCreateType rawValue)
+    [InlineData(BetaClaudeTagBundleTargetCreateType.SlackChannel, 0, "slack_channel")]
+    [InlineData(BetaClaudeTagBundleTargetCreateType.SlackWorkspace, 1, "slack_workspace")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeTagBundleTargetCreateType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeTagBundleTargetCreateType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaClaudeTagBundleTargetCreateType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

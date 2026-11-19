@@ -137,19 +137,31 @@ public class SpendLimitIncreaseRequestResolvedByTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SpendLimitIncreaseRequestResolvedByType.UserActor)]
-    [InlineData(SpendLimitIncreaseRequestResolvedByType.ScopedApiKeyActor)]
-    public void SerializationRoundtrip_Works(SpendLimitIncreaseRequestResolvedByType rawValue)
+    [InlineData(SpendLimitIncreaseRequestResolvedByType.UserActor, 0, "user_actor")]
+    [InlineData(
+        SpendLimitIncreaseRequestResolvedByType.ScopedApiKeyActor,
+        1,
+        "scoped_api_key_actor"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SpendLimitIncreaseRequestResolvedByType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SpendLimitIncreaseRequestResolvedByType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, SpendLimitIncreaseRequestResolvedByType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

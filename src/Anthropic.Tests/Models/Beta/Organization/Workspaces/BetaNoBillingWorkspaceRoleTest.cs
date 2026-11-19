@@ -32,22 +32,34 @@ public class BetaNoBillingWorkspaceRoleTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceAdmin)]
-    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceDeveloper)]
-    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceRestrictedDeveloper)]
-    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceUser)]
-    public void SerializationRoundtrip_Works(BetaNoBillingWorkspaceRole rawValue)
+    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceAdmin, 0, "workspace_admin")]
+    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceDeveloper, 1, "workspace_developer")]
+    [InlineData(
+        BetaNoBillingWorkspaceRole.WorkspaceRestrictedDeveloper,
+        2,
+        "workspace_restricted_developer"
+    )]
+    [InlineData(BetaNoBillingWorkspaceRole.WorkspaceUser, 3, "workspace_user")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaNoBillingWorkspaceRole rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaNoBillingWorkspaceRole> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaNoBillingWorkspaceRole>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

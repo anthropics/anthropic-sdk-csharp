@@ -196,22 +196,30 @@ public class BetaToolChoiceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaToolChoiceType.Auto)]
-    [InlineData(BetaToolChoiceType.Any)]
-    [InlineData(BetaToolChoiceType.Tool)]
-    [InlineData(BetaToolChoiceType.None)]
-    public void SerializationRoundtrip_Works(BetaToolChoiceType rawValue)
+    [InlineData(BetaToolChoiceType.Auto, 0, "auto")]
+    [InlineData(BetaToolChoiceType.Any, 1, "any")]
+    [InlineData(BetaToolChoiceType.Tool, 2, "tool")]
+    [InlineData(BetaToolChoiceType.None, 3, "none")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaToolChoiceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaToolChoiceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaToolChoiceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

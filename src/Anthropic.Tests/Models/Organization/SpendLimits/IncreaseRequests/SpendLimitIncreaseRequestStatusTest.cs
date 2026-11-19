@@ -31,20 +31,28 @@ public class SpendLimitIncreaseRequestStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(SpendLimitIncreaseRequestStatus.Approved)]
-    [InlineData(SpendLimitIncreaseRequestStatus.Denied)]
-    [InlineData(SpendLimitIncreaseRequestStatus.Pending)]
-    public void SerializationRoundtrip_Works(SpendLimitIncreaseRequestStatus rawValue)
+    [InlineData(SpendLimitIncreaseRequestStatus.Approved, 0, "approved")]
+    [InlineData(SpendLimitIncreaseRequestStatus.Denied, 1, "denied")]
+    [InlineData(SpendLimitIncreaseRequestStatus.Pending, 2, "pending")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SpendLimitIncreaseRequestStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SpendLimitIncreaseRequestStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, SpendLimitIncreaseRequestStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

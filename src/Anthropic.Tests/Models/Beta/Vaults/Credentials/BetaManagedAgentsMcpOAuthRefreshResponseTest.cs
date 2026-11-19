@@ -345,23 +345,37 @@ public class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeTest :
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None)]
-    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic)]
-    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType rawValue
+    [InlineData(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.None, 0, "none")]
+    [InlineData(
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretBasic,
+        1,
+        "client_secret_basic"
+    )]
+    [InlineData(
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType.ClientSecretPost,
+        2,
+        "client_secret_post"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType> value =
             rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

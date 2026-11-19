@@ -251,22 +251,28 @@ public class BetaManagedAgentsGrepToolConfigPermissionPolicyTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsGrepToolConfigPermissionPolicyType rawValue
+    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.AlwaysAllow, 0, "always_allow")]
+    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.AlwaysAsk, 1, "always_ask")]
+    [InlineData(BetaManagedAgentsGrepToolConfigPermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsGrepToolConfigPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsGrepToolConfigPermissionPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsGrepToolConfigPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

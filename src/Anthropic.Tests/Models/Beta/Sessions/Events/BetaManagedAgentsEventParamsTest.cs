@@ -366,24 +366,36 @@ public class BetaManagedAgentsEventParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsEventParamsType.UserMessage)]
-    [InlineData(BetaManagedAgentsEventParamsType.UserInterrupt)]
-    [InlineData(BetaManagedAgentsEventParamsType.UserToolConfirmation)]
-    [InlineData(BetaManagedAgentsEventParamsType.UserCustomToolResult)]
-    [InlineData(BetaManagedAgentsEventParamsType.UserDefineOutcome)]
-    [InlineData(BetaManagedAgentsEventParamsType.UserToolResult)]
-    [InlineData(BetaManagedAgentsEventParamsType.SystemMessage)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsEventParamsType rawValue)
+    [InlineData(BetaManagedAgentsEventParamsType.UserMessage, 0, "user.message")]
+    [InlineData(BetaManagedAgentsEventParamsType.UserInterrupt, 1, "user.interrupt")]
+    [InlineData(BetaManagedAgentsEventParamsType.UserToolConfirmation, 2, "user.tool_confirmation")]
+    [InlineData(
+        BetaManagedAgentsEventParamsType.UserCustomToolResult,
+        3,
+        "user.custom_tool_result"
+    )]
+    [InlineData(BetaManagedAgentsEventParamsType.UserDefineOutcome, 4, "user.define_outcome")]
+    [InlineData(BetaManagedAgentsEventParamsType.UserToolResult, 5, "user.tool_result")]
+    [InlineData(BetaManagedAgentsEventParamsType.SystemMessage, 6, "system.message")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsEventParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsEventParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsEventParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

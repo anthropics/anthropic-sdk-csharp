@@ -1656,49 +1656,57 @@ public class BrowserToolUseBlockNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(BrowserToolUseBlockName.Navigate)]
-    [InlineData(BrowserToolUseBlockName.ListTabs)]
-    [InlineData(BrowserToolUseBlockName.NewTab)]
-    [InlineData(BrowserToolUseBlockName.SwitchTab)]
-    [InlineData(BrowserToolUseBlockName.CloseTab)]
-    [InlineData(BrowserToolUseBlockName.ReadPage)]
-    [InlineData(BrowserToolUseBlockName.GetPageText)]
-    [InlineData(BrowserToolUseBlockName.ReadConsole)]
-    [InlineData(BrowserToolUseBlockName.ReadNetwork)]
-    [InlineData(BrowserToolUseBlockName.Find)]
-    [InlineData(BrowserToolUseBlockName.FormInput)]
-    [InlineData(BrowserToolUseBlockName.FileUpload)]
-    [InlineData(BrowserToolUseBlockName.ScrollTo)]
-    [InlineData(BrowserToolUseBlockName.Screenshot)]
-    [InlineData(BrowserToolUseBlockName.Zoom)]
-    [InlineData(BrowserToolUseBlockName.LeftClick)]
-    [InlineData(BrowserToolUseBlockName.RightClick)]
-    [InlineData(BrowserToolUseBlockName.MiddleClick)]
-    [InlineData(BrowserToolUseBlockName.DoubleClick)]
-    [InlineData(BrowserToolUseBlockName.TripleClick)]
-    [InlineData(BrowserToolUseBlockName.Hover)]
-    [InlineData(BrowserToolUseBlockName.LeftClickDrag)]
-    [InlineData(BrowserToolUseBlockName.LeftMouseDown)]
-    [InlineData(BrowserToolUseBlockName.LeftMouseUp)]
-    [InlineData(BrowserToolUseBlockName.MouseMove)]
-    [InlineData(BrowserToolUseBlockName.Scroll)]
-    [InlineData(BrowserToolUseBlockName.Type)]
-    [InlineData(BrowserToolUseBlockName.Key)]
-    [InlineData(BrowserToolUseBlockName.HoldKey)]
-    [InlineData(BrowserToolUseBlockName.Wait)]
-    [InlineData(BrowserToolUseBlockName.JavascriptExec)]
-    public void SerializationRoundtrip_Works(BrowserToolUseBlockName rawValue)
+    [InlineData(BrowserToolUseBlockName.Navigate, 0, "navigate")]
+    [InlineData(BrowserToolUseBlockName.ListTabs, 1, "list_tabs")]
+    [InlineData(BrowserToolUseBlockName.NewTab, 2, "new_tab")]
+    [InlineData(BrowserToolUseBlockName.SwitchTab, 3, "switch_tab")]
+    [InlineData(BrowserToolUseBlockName.CloseTab, 4, "close_tab")]
+    [InlineData(BrowserToolUseBlockName.ReadPage, 5, "read_page")]
+    [InlineData(BrowserToolUseBlockName.GetPageText, 6, "get_page_text")]
+    [InlineData(BrowserToolUseBlockName.ReadConsole, 7, "read_console")]
+    [InlineData(BrowserToolUseBlockName.ReadNetwork, 8, "read_network")]
+    [InlineData(BrowserToolUseBlockName.Find, 9, "find")]
+    [InlineData(BrowserToolUseBlockName.FormInput, 10, "form_input")]
+    [InlineData(BrowserToolUseBlockName.FileUpload, 11, "file_upload")]
+    [InlineData(BrowserToolUseBlockName.ScrollTo, 12, "scroll_to")]
+    [InlineData(BrowserToolUseBlockName.Screenshot, 13, "screenshot")]
+    [InlineData(BrowserToolUseBlockName.Zoom, 14, "zoom")]
+    [InlineData(BrowserToolUseBlockName.LeftClick, 15, "left_click")]
+    [InlineData(BrowserToolUseBlockName.RightClick, 16, "right_click")]
+    [InlineData(BrowserToolUseBlockName.MiddleClick, 17, "middle_click")]
+    [InlineData(BrowserToolUseBlockName.DoubleClick, 18, "double_click")]
+    [InlineData(BrowserToolUseBlockName.TripleClick, 19, "triple_click")]
+    [InlineData(BrowserToolUseBlockName.Hover, 20, "hover")]
+    [InlineData(BrowserToolUseBlockName.LeftClickDrag, 21, "left_click_drag")]
+    [InlineData(BrowserToolUseBlockName.LeftMouseDown, 22, "left_mouse_down")]
+    [InlineData(BrowserToolUseBlockName.LeftMouseUp, 23, "left_mouse_up")]
+    [InlineData(BrowserToolUseBlockName.MouseMove, 24, "mouse_move")]
+    [InlineData(BrowserToolUseBlockName.Scroll, 25, "scroll")]
+    [InlineData(BrowserToolUseBlockName.Type, 26, "type")]
+    [InlineData(BrowserToolUseBlockName.Key, 27, "key")]
+    [InlineData(BrowserToolUseBlockName.HoldKey, 28, "hold_key")]
+    [InlineData(BrowserToolUseBlockName.Wait, 29, "wait")]
+    [InlineData(BrowserToolUseBlockName.JavascriptExec, 30, "javascript_exec")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BrowserToolUseBlockName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BrowserToolUseBlockName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserToolUseBlockName>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

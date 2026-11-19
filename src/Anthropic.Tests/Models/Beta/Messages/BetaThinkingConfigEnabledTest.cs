@@ -203,20 +203,28 @@ public class BetaThinkingConfigEnabledDisplayTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaThinkingConfigEnabledDisplay.Summarized)]
-    [InlineData(BetaThinkingConfigEnabledDisplay.Omitted)]
-    [InlineData(BetaThinkingConfigEnabledDisplay.Updates)]
-    public void SerializationRoundtrip_Works(BetaThinkingConfigEnabledDisplay rawValue)
+    [InlineData(BetaThinkingConfigEnabledDisplay.Summarized, 0, "summarized")]
+    [InlineData(BetaThinkingConfigEnabledDisplay.Omitted, 1, "omitted")]
+    [InlineData(BetaThinkingConfigEnabledDisplay.Updates, 2, "updates")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaThinkingConfigEnabledDisplay rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaThinkingConfigEnabledDisplay> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaThinkingConfigEnabledDisplay>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

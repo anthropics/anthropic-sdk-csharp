@@ -543,21 +543,27 @@ public class BetaManagedAgentsSessionMultiagentCoordinatorAgentTypeTest : TestBa
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Agent)]
-    [InlineData(BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Advisor)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsSessionMultiagentCoordinatorAgentType rawValue
+    [InlineData(BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Agent, 0, "agent")]
+    [InlineData(BetaManagedAgentsSessionMultiagentCoordinatorAgentType.Advisor, 1, "advisor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionMultiagentCoordinatorAgentType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorAgentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionMultiagentCoordinatorAgentType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
