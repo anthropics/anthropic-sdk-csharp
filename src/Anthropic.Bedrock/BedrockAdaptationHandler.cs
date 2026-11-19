@@ -18,6 +18,7 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
 {
     private const string HeaderAnthropicBeta = "anthropic-beta";
     private const string HeaderAnthropicVersion = "anthropic-version";
+    private const string HeaderUserProfileID = "anthropic-user-profile-id";
 
     /// <summary>
     /// The name of the header that identifies the content type for the "payloads" of AWS
@@ -99,6 +100,15 @@ internal sealed class BedrockAdaptationHandler : DelegatingHandler
             if (version is not null)
             {
                 bodyContent["anthropic_version"] = JsonValue.Create(version);
+            }
+
+            if (requestMessage.Headers.TryGetValues(HeaderUserProfileID, out var userProfileIDs))
+            {
+                if (!bodyContent.AsObject().ContainsKey("user_profile_id"))
+                {
+                    bodyContent["user_profile_id"] = string.Join(",", userProfileIDs);
+                }
+                requestMessage.Headers.Remove(HeaderUserProfileID);
             }
 
             var modelValue =
