@@ -14,8 +14,8 @@ namespace Anthropic.Models.Organization.ExternalKeys;
 /// Partially update an external key config. Omitted fields are left unchanged.
 ///
 /// <para>`display_name` is always editable. `geo` and `provider_config` cannot be
-/// changed once any workspace references this config, because previously encrypted
-/// data requires the original key identity to decrypt.</para>
+/// changed once any workspace references this config, and a Google Cloud key's provider
+/// and `key_name` cannot be changed at all.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
