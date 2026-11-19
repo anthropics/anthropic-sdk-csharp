@@ -1,5 +1,11 @@
 # Changelog
 
+## [1.0.2](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v1.0.1...Aws-v1.0.2) (2026-11-19)
+
+### Bug Fixes
+
+* **aws:** send `User-Agent` with spaces and sign headers that have several values
+
 ## [1.0.1](https://github.com/anthropics/anthropic-sdk-csharp/compare/Aws-v1.0.0...Aws-v1.0.1) (2026-11-16)
 
 ### Bug Fixes
