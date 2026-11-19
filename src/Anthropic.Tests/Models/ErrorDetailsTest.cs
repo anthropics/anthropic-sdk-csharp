@@ -5,8 +5,10 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
+using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Files;
@@ -613,6 +615,55 @@ public class ErrorDetailsTest : TestBase
     public void BetaScanPendingValidationWorks()
     {
         ErrorDetails value = new BetaScanPendingErrorDetails("plugin_version_id");
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRequestBodyTimeoutValidationWorks()
+    {
+        ErrorDetails value = new BetaRequestBodyTimeoutErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaSettingsDocumentLimitExceededValidationWorks()
+    {
+        ErrorDetails value = new BetaSettingsDocumentLimitExceededErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaSettingsHistoryLimitExceededValidationWorks()
+    {
+        ErrorDetails value = new BetaSettingsHistoryLimitExceededErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaCmekFeatureUnsupportedValidationWorks()
+    {
+        ErrorDetails value = new BetaCmekFeatureUnsupportedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRbacGroupManagedSettingsNotFoundValidationWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupManagedSettingsNotFoundErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRbacGroupOrderLimitExceededValidationWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupOrderLimitExceededErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRbacGroupNotFoundValidationWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupNotFoundErrorDetails();
         value.Validate();
     }
 
@@ -1776,6 +1827,97 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaRequestBodyTimeoutSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaRequestBodyTimeoutErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaSettingsDocumentLimitExceededSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaSettingsDocumentLimitExceededErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaSettingsHistoryLimitExceededSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaSettingsHistoryLimitExceededErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaCmekFeatureUnsupportedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCmekFeatureUnsupportedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRbacGroupManagedSettingsNotFoundSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupManagedSettingsNotFoundErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRbacGroupOrderLimitExceededSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupOrderLimitExceededErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRbacGroupNotFoundSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupNotFoundErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaSlackChannelSetUpSettingsRefusedSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaSlackChannelSetUpSettingsRefusedErrorDetails(
@@ -2527,6 +2669,58 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaRequestBodyTimeoutErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaRequestBodyTimeoutErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RequestBodyTimeout, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaSettingsDocumentLimitExceededErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaSettingsDocumentLimitExceededErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.SettingsDocumentLimitExceeded, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaSettingsHistoryLimitExceededErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaSettingsHistoryLimitExceededErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.SettingsHistoryLimitExceeded, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaCmekFeatureUnsupportedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCmekFeatureUnsupportedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CmekFeatureUnsupported, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaRbacGroupManagedSettingsNotFoundErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupManagedSettingsNotFoundErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaRbacGroupOrderLimitExceededErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupOrderLimitExceededErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaRbacGroupNotFoundErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaRbacGroupNotFoundErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RbacGroupNotFound, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaSlackChannelSetUpSettingsRefusedErrorCodeWorks()
     {
         ErrorDetails value = new BetaSlackChannelSetUpSettingsRefusedErrorDetails(
@@ -2761,6 +2955,13 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RegistrationPending)]
     [InlineData(ErrorDetailsErrorCode.ScanFailed)]
     [InlineData(ErrorDetailsErrorCode.ScanPending)]
+    [InlineData(ErrorDetailsErrorCode.RequestBodyTimeout)]
+    [InlineData(ErrorDetailsErrorCode.SettingsDocumentLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SettingsHistoryLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.CmekFeatureUnsupported)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused)]
     [InlineData(ErrorDetailsErrorCode.ApiKeyScopeMissing)]
     [InlineData(ErrorDetailsErrorCode.ClaudeTagWritesNotEnabled)]
@@ -2873,6 +3074,13 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RegistrationPending)]
     [InlineData(ErrorDetailsErrorCode.ScanFailed)]
     [InlineData(ErrorDetailsErrorCode.ScanPending)]
+    [InlineData(ErrorDetailsErrorCode.RequestBodyTimeout)]
+    [InlineData(ErrorDetailsErrorCode.SettingsDocumentLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.SettingsHistoryLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.CmekFeatureUnsupported)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded)]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupNotFound)]
     [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused)]
     [InlineData(ErrorDetailsErrorCode.ApiKeyScopeMissing)]
     [InlineData(ErrorDetailsErrorCode.ClaudeTagWritesNotEnabled)]

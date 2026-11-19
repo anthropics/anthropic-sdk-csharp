@@ -130,25 +130,6 @@ internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
             requestMessage.Headers.TryAddWithoutValidation("x-amz-security-token", sessionToken);
         }
 
-        // Collapse any multi-value request headers (e.g. anthropic-beta when several
-        // betas are supplied, or values added by user handlers, which run before this
-        // handler) to a single comma-joined value before signing AND sending.
-        // HttpClient serializes multi-value headers with ", " on the wire, which would
-        // not match the canonical request and cause a SigV4 signature mismatch. By
-        // mutating the message headers here, the signed bytes and the wire bytes agree.
-        foreach (var header in requestMessage.Headers.ToList())
-        {
-            var values = header.Value.ToList();
-            if (values.Count > 1)
-            {
-                requestMessage.Headers.Remove(header.Key);
-                requestMessage.Headers.TryAddWithoutValidation(
-                    header.Key,
-                    string.Join(",", values)
-                );
-            }
-        }
-
         var authHeader = MantleAwsSigner.GetAuthorizationHeader(
             new MantleSigningRequest
             {
@@ -161,9 +142,11 @@ internal sealed class MantleAwsAdaptationHandler : DelegatingHandler
                 // replace them after signing.
                 Headers = TraceContextHeaders
                     .Signed(requestMessage.Headers)
+                    // User-Agent stays unsigned: .NET joins its values with a space, not ", ".
+                    .Where(e => !e.Key.Equals("User-Agent", StringComparison.OrdinalIgnoreCase))
                     .ToDictionary(
                         e => e.Key,
-                        e => string.Join(",", e.Value),
+                        e => string.Join(", ", e.Value),
                         StringComparer.InvariantCultureIgnoreCase
                     ),
                 PayloadHash = payloadHash,

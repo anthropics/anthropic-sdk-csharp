@@ -41,3 +41,30 @@
 The generator writes the rest of this file. Rules for reviewing this
 repository's hand-written code go in this section, and a change anywhere else in
 the file belongs in the generator.
+
+### Report these as Important, as well as functional bugs
+
+- A platform client (a class deriving from `AnthropicClient`) that lacks any of:
+  `ShouldAutoResolveCredentials => false`, a `WithOptions` override that returns
+  a new instance of the same class built with the same credentials, and
+  `BackendAdaptationHandler` and `OpenTelemetrySource` set in both the public
+  constructor and the private one `WithOptions` calls
+- `.Result`, `.Wait()` or `.GetAwaiter().GetResult()` on an unfinished task,
+  outside a synchronous `Stream` or `Dispose` override
+- An `await` with no `.ConfigureAwait(false)` in a library project under `src/`.
+  This leaves out `await foreach`, `src/Anthropic.Tests` and `examples/`
+
+### Don't report these
+
+- A null-forgiving `!` in `src/Anthropic.Tests`
+- `#pragma warning disable CS0809` around an `[Obsolete(..., true)]` override on
+  a platform client
+- `JsonObject` reads and edits of wire events in
+  `src/Anthropic/Helpers/Fallbacks`, which keep fields this version does not
+  model
+- Reading a field through `RawData`, `TryGetProperty` or another string key
+  where the generated property would throw `AnthropicInvalidDataException` on an
+  absent, malformed or unknown value, in code that must not throw, such as
+  streaming, middleware or fallback code
+- A target-framework `#if` with no `#else` that only adds an overload, or
+  passes an argument `netstandard2.0` lacks

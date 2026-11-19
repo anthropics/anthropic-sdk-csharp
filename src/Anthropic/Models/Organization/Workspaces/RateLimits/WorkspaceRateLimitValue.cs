@@ -41,7 +41,7 @@ public sealed record class WorkspaceRateLimitValue : JsonModel
     }
 
     /// <summary>
-    /// The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute`).
+    /// The limiter type (for example, `requests_per_minute` or `input_tokens_per_minute_cache_aware`).
     /// </summary>
     public required string Type
     {

@@ -528,6 +528,7 @@ public record struct ClientOptions
 
     public ClientOptions()
     {
+        AssemblyVersionCompatibility.ThrowIfIncompatible();
         _messageInvoker = BuildMessageInvoker();
     }
 }

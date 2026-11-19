@@ -604,6 +604,40 @@ public class AnthropicBedrockMantleClientTests : IDisposable
         Assert.Equal("?tag%5b%5d=b&tag%5b%5d=a", gateway.VerifiedRequestUris.Single().Query);
     }
 
+    [Fact]
+    public async Task SigV4Mode_AcceptLanguageInExtraHeaders_SignatureVerifies()
+    {
+        var gateway = new SigV4VerifyingHandler(SigV4SecretKey, "{}");
+        Dictionary<string, string> extraHeaders = new() { ["Accept-Language"] = "en, fr" };
+        var client = CreateSigV4ClientAgainst(gateway)
+            .WithOptions(options => options with { ExtraHeaders = extraHeaders });
+
+        await client.WithRawResponse.Execute(
+            new HttpRequest<BlankParams> { Method = HttpMethod.Post, Params = new() },
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.Single(gateway.VerifiedRequestUris);
+    }
+
+    [Fact]
+    public async Task SigV4Mode_UserAgent_IsSentUnsigned()
+    {
+        var client = new AnthropicBedrockMantleClient(
+            new()
+            {
+                AwsAccessKey = SigV4AccessKey,
+                AwsSecretAccessKey = SigV4SecretKey,
+                AwsRegion = "us-east-1",
+            }
+        );
+
+        var req = await SendOneRequest(client);
+
+        Assert.Matches("^AnthropicClient/C# [^ ,]+$", req.Headers.UserAgent.ToString());
+        Assert.DoesNotContain("user-agent", req.Headers.GetValues("Authorization").Single());
+    }
+
     #endregion
 
     #region User Profile ID

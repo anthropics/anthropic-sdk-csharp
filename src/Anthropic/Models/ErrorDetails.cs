@@ -6,7 +6,9 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
+using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Organization;
@@ -190,6 +192,18 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.RegistrationPending,
                 Plugins::BetaScanFailedErrorDetails _ => ErrorDetailsErrorCode.ScanFailed,
                 Plugins::BetaScanPendingErrorDetails _ => ErrorDetailsErrorCode.ScanPending,
+                BetaRequestBodyTimeoutErrorDetails _ => ErrorDetailsErrorCode.RequestBodyTimeout,
+                BetaSettingsDocumentLimitExceededErrorDetails _ =>
+                    ErrorDetailsErrorCode.SettingsDocumentLimitExceeded,
+                BetaSettingsHistoryLimitExceededErrorDetails _ =>
+                    ErrorDetailsErrorCode.SettingsHistoryLimitExceeded,
+                BetaCmekFeatureUnsupportedErrorDetails _ =>
+                    ErrorDetailsErrorCode.CmekFeatureUnsupported,
+                BetaRbacGroupManagedSettingsNotFoundErrorDetails _ =>
+                    ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound,
+                BetaRbacGroupOrderLimitExceededErrorDetails _ =>
+                    ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded,
+                BetaRbacGroupNotFoundErrorDetails _ => ErrorDetailsErrorCode.RbacGroupNotFound,
                 BetaSlackChannelSetUpSettingsRefusedErrorDetails _ =>
                     ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused,
                 BetaApiKeyScopeMissingErrorDetails _ => ErrorDetailsErrorCode.ApiKeyScopeMissing,
@@ -303,6 +317,13 @@ public record class ErrorDetails : ModelBase
                 Plugins::BetaRegistrationPendingErrorDetails x => x.PluginID,
                 Plugins::BetaScanFailedErrorDetails _ => null,
                 Plugins::BetaScanPendingErrorDetails _ => null,
+                BetaRequestBodyTimeoutErrorDetails _ => null,
+                BetaSettingsDocumentLimitExceededErrorDetails _ => null,
+                BetaSettingsHistoryLimitExceededErrorDetails _ => null,
+                BetaCmekFeatureUnsupportedErrorDetails _ => null,
+                BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => null,
+                BetaRbacGroupOrderLimitExceededErrorDetails _ => null,
+                BetaRbacGroupNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => null,
                 BetaApiKeyScopeMissingErrorDetails _ => null,
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
@@ -406,6 +427,13 @@ public record class ErrorDetails : ModelBase
                 Plugins::BetaRegistrationPendingErrorDetails x => x.PluginVersionID,
                 Plugins::BetaScanFailedErrorDetails x => x.PluginVersionID,
                 Plugins::BetaScanPendingErrorDetails x => x.PluginVersionID,
+                BetaRequestBodyTimeoutErrorDetails _ => null,
+                BetaSettingsDocumentLimitExceededErrorDetails _ => null,
+                BetaSettingsHistoryLimitExceededErrorDetails _ => null,
+                BetaCmekFeatureUnsupportedErrorDetails _ => null,
+                BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => null,
+                BetaRbacGroupOrderLimitExceededErrorDetails _ => null,
+                BetaRbacGroupNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => null,
                 BetaApiKeyScopeMissingErrorDetails _ => null,
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
@@ -512,6 +540,13 @@ public record class ErrorDetails : ModelBase
                 Plugins::BetaRegistrationPendingErrorDetails _ => null,
                 Plugins::BetaScanFailedErrorDetails _ => null,
                 Plugins::BetaScanPendingErrorDetails _ => null,
+                BetaRequestBodyTimeoutErrorDetails _ => null,
+                BetaSettingsDocumentLimitExceededErrorDetails _ => null,
+                BetaSettingsHistoryLimitExceededErrorDetails _ => null,
+                BetaCmekFeatureUnsupportedErrorDetails _ => null,
+                BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => null,
+                BetaRbacGroupOrderLimitExceededErrorDetails _ => null,
+                BetaRbacGroupNotFoundErrorDetails _ => null,
                 BetaSlackChannelSetUpSettingsRefusedErrorDetails x => x.SlackChannelID,
                 BetaApiKeyScopeMissingErrorDetails _ => null,
                 BetaClaudeTagWritesNotEnabledErrorDetails _ => null,
@@ -1137,6 +1172,60 @@ public record class ErrorDetails : ModelBase
     }
 
     public ErrorDetails(Plugins::BetaScanPendingErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaRequestBodyTimeoutErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaSettingsDocumentLimitExceededErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaSettingsHistoryLimitExceededErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaCmekFeatureUnsupportedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaRbacGroupManagedSettingsNotFoundErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaRbacGroupOrderLimitExceededErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaRbacGroupNotFoundErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -3111,6 +3200,167 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRequestBodyTimeoutErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRequestBodyTimeout(out var value)) {
+    ///     // `value` is of type `BetaRequestBodyTimeoutErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaRequestBodyTimeout(
+        [NotNullWhen(true)] out BetaRequestBodyTimeoutErrorDetails? value
+    )
+    {
+        value = this.Value as BetaRequestBodyTimeoutErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSettingsDocumentLimitExceededErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaSettingsDocumentLimitExceeded(out var value)) {
+    ///     // `value` is of type `BetaSettingsDocumentLimitExceededErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaSettingsDocumentLimitExceeded(
+        [NotNullWhen(true)] out BetaSettingsDocumentLimitExceededErrorDetails? value
+    )
+    {
+        value = this.Value as BetaSettingsDocumentLimitExceededErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaSettingsHistoryLimitExceededErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaSettingsHistoryLimitExceeded(out var value)) {
+    ///     // `value` is of type `BetaSettingsHistoryLimitExceededErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaSettingsHistoryLimitExceeded(
+        [NotNullWhen(true)] out BetaSettingsHistoryLimitExceededErrorDetails? value
+    )
+    {
+        value = this.Value as BetaSettingsHistoryLimitExceededErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCmekFeatureUnsupportedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCmekFeatureUnsupported(out var value)) {
+    ///     // `value` is of type `BetaCmekFeatureUnsupportedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCmekFeatureUnsupported(
+        [NotNullWhen(true)] out BetaCmekFeatureUnsupportedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCmekFeatureUnsupportedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRbacGroupManagedSettingsNotFoundErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRbacGroupManagedSettingsNotFound(out var value)) {
+    ///     // `value` is of type `BetaRbacGroupManagedSettingsNotFoundErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaRbacGroupManagedSettingsNotFound(
+        [NotNullWhen(true)] out BetaRbacGroupManagedSettingsNotFoundErrorDetails? value
+    )
+    {
+        value = this.Value as BetaRbacGroupManagedSettingsNotFoundErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRbacGroupOrderLimitExceededErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRbacGroupOrderLimitExceeded(out var value)) {
+    ///     // `value` is of type `BetaRbacGroupOrderLimitExceededErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaRbacGroupOrderLimitExceeded(
+        [NotNullWhen(true)] out BetaRbacGroupOrderLimitExceededErrorDetails? value
+    )
+    {
+        value = this.Value as BetaRbacGroupOrderLimitExceededErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRbacGroupNotFoundErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRbacGroupNotFound(out var value)) {
+    ///     // `value` is of type `BetaRbacGroupNotFoundErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaRbacGroupNotFound(
+        [NotNullWhen(true)] out BetaRbacGroupNotFoundErrorDetails? value
+    )
+    {
+        value = this.Value as BetaRbacGroupNotFoundErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaSlackChannelSetUpSettingsRefusedErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -3433,6 +3683,13 @@ public record class ErrorDetails : ModelBase
     ///     (Plugins::BetaRegistrationPendingErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaScanFailedErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaScanPendingErrorDetails value) =&gt; {...},
+    ///     (BetaRequestBodyTimeoutErrorDetails value) =&gt; {...},
+    ///     (BetaSettingsDocumentLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaSettingsHistoryLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaCmekFeatureUnsupportedErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupManagedSettingsNotFoundErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupOrderLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpSettingsRefusedErrorDetails value) =&gt; {...},
     ///     (BetaApiKeyScopeMissingErrorDetails value) =&gt; {...},
     ///     (BetaClaudeTagWritesNotEnabledErrorDetails value) =&gt; {...},
@@ -3530,6 +3787,13 @@ public record class ErrorDetails : ModelBase
         Action<Plugins::BetaRegistrationPendingErrorDetails> betaRegistrationPending,
         Action<Plugins::BetaScanFailedErrorDetails> betaScanFailed,
         Action<Plugins::BetaScanPendingErrorDetails> betaScanPending,
+        Action<BetaRequestBodyTimeoutErrorDetails> betaRequestBodyTimeout,
+        Action<BetaSettingsDocumentLimitExceededErrorDetails> betaSettingsDocumentLimitExceeded,
+        Action<BetaSettingsHistoryLimitExceededErrorDetails> betaSettingsHistoryLimitExceeded,
+        Action<BetaCmekFeatureUnsupportedErrorDetails> betaCmekFeatureUnsupported,
+        Action<BetaRbacGroupManagedSettingsNotFoundErrorDetails> betaRbacGroupManagedSettingsNotFound,
+        Action<BetaRbacGroupOrderLimitExceededErrorDetails> betaRbacGroupOrderLimitExceeded,
+        Action<BetaRbacGroupNotFoundErrorDetails> betaRbacGroupNotFound,
         Action<BetaSlackChannelSetUpSettingsRefusedErrorDetails> betaSlackChannelSetUpSettingsRefused,
         Action<BetaApiKeyScopeMissingErrorDetails> betaApiKeyScopeMissing,
         Action<BetaClaudeTagWritesNotEnabledErrorDetails> betaClaudeTagWritesNotEnabled,
@@ -3790,6 +4054,27 @@ public record class ErrorDetails : ModelBase
             case Plugins::BetaScanPendingErrorDetails value:
                 betaScanPending(value);
                 break;
+            case BetaRequestBodyTimeoutErrorDetails value:
+                betaRequestBodyTimeout(value);
+                break;
+            case BetaSettingsDocumentLimitExceededErrorDetails value:
+                betaSettingsDocumentLimitExceeded(value);
+                break;
+            case BetaSettingsHistoryLimitExceededErrorDetails value:
+                betaSettingsHistoryLimitExceeded(value);
+                break;
+            case BetaCmekFeatureUnsupportedErrorDetails value:
+                betaCmekFeatureUnsupported(value);
+                break;
+            case BetaRbacGroupManagedSettingsNotFoundErrorDetails value:
+                betaRbacGroupManagedSettingsNotFound(value);
+                break;
+            case BetaRbacGroupOrderLimitExceededErrorDetails value:
+                betaRbacGroupOrderLimitExceeded(value);
+                break;
+            case BetaRbacGroupNotFoundErrorDetails value:
+                betaRbacGroupNotFound(value);
+                break;
             case BetaSlackChannelSetUpSettingsRefusedErrorDetails value:
                 betaSlackChannelSetUpSettingsRefused(value);
                 break;
@@ -3924,6 +4209,13 @@ public record class ErrorDetails : ModelBase
     ///     (Plugins::BetaRegistrationPendingErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaScanFailedErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaScanPendingErrorDetails value) =&gt; {...},
+    ///     (BetaRequestBodyTimeoutErrorDetails value) =&gt; {...},
+    ///     (BetaSettingsDocumentLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaSettingsHistoryLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaCmekFeatureUnsupportedErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupManagedSettingsNotFoundErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupOrderLimitExceededErrorDetails value) =&gt; {...},
+    ///     (BetaRbacGroupNotFoundErrorDetails value) =&gt; {...},
     ///     (BetaSlackChannelSetUpSettingsRefusedErrorDetails value) =&gt; {...},
     ///     (BetaApiKeyScopeMissingErrorDetails value) =&gt; {...},
     ///     (BetaClaudeTagWritesNotEnabledErrorDetails value) =&gt; {...},
@@ -4042,6 +4334,16 @@ public record class ErrorDetails : ModelBase
         Func<Plugins::BetaRegistrationPendingErrorDetails, T> betaRegistrationPending,
         Func<Plugins::BetaScanFailedErrorDetails, T> betaScanFailed,
         Func<Plugins::BetaScanPendingErrorDetails, T> betaScanPending,
+        Func<BetaRequestBodyTimeoutErrorDetails, T> betaRequestBodyTimeout,
+        Func<BetaSettingsDocumentLimitExceededErrorDetails, T> betaSettingsDocumentLimitExceeded,
+        Func<BetaSettingsHistoryLimitExceededErrorDetails, T> betaSettingsHistoryLimitExceeded,
+        Func<BetaCmekFeatureUnsupportedErrorDetails, T> betaCmekFeatureUnsupported,
+        Func<
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails,
+            T
+        > betaRbacGroupManagedSettingsNotFound,
+        Func<BetaRbacGroupOrderLimitExceededErrorDetails, T> betaRbacGroupOrderLimitExceeded,
+        Func<BetaRbacGroupNotFoundErrorDetails, T> betaRbacGroupNotFound,
         Func<
             BetaSlackChannelSetUpSettingsRefusedErrorDetails,
             T
@@ -4192,6 +4494,19 @@ public record class ErrorDetails : ModelBase
             Plugins::BetaRegistrationPendingErrorDetails value => betaRegistrationPending(value),
             Plugins::BetaScanFailedErrorDetails value => betaScanFailed(value),
             Plugins::BetaScanPendingErrorDetails value => betaScanPending(value),
+            BetaRequestBodyTimeoutErrorDetails value => betaRequestBodyTimeout(value),
+            BetaSettingsDocumentLimitExceededErrorDetails value =>
+                betaSettingsDocumentLimitExceeded(value),
+            BetaSettingsHistoryLimitExceededErrorDetails value => betaSettingsHistoryLimitExceeded(
+                value
+            ),
+            BetaCmekFeatureUnsupportedErrorDetails value => betaCmekFeatureUnsupported(value),
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails value =>
+                betaRbacGroupManagedSettingsNotFound(value),
+            BetaRbacGroupOrderLimitExceededErrorDetails value => betaRbacGroupOrderLimitExceeded(
+                value
+            ),
+            BetaRbacGroupNotFoundErrorDetails value => betaRbacGroupNotFound(value),
             BetaSlackChannelSetUpSettingsRefusedErrorDetails value =>
                 betaSlackChannelSetUpSettingsRefused(value),
             BetaApiKeyScopeMissingErrorDetails value => betaApiKeyScopeMissing(value),
@@ -4496,6 +4811,31 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(Plugins::BetaScanPendingErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(BetaRequestBodyTimeoutErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaSettingsDocumentLimitExceededErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaSettingsHistoryLimitExceededErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaCmekFeatureUnsupportedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaRbacGroupManagedSettingsNotFoundErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaRbacGroupOrderLimitExceededErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaRbacGroupNotFoundErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(
         BetaSlackChannelSetUpSettingsRefusedErrorDetails value
     ) => new(value);
@@ -4636,6 +4976,14 @@ public record class ErrorDetails : ModelBase
             (betaRegistrationPending) => betaRegistrationPending.Validate(),
             (betaScanFailed) => betaScanFailed.Validate(),
             (betaScanPending) => betaScanPending.Validate(),
+            (betaRequestBodyTimeout) => betaRequestBodyTimeout.Validate(),
+            (betaSettingsDocumentLimitExceeded) => betaSettingsDocumentLimitExceeded.Validate(),
+            (betaSettingsHistoryLimitExceeded) => betaSettingsHistoryLimitExceeded.Validate(),
+            (betaCmekFeatureUnsupported) => betaCmekFeatureUnsupported.Validate(),
+            (betaRbacGroupManagedSettingsNotFound) =>
+                betaRbacGroupManagedSettingsNotFound.Validate(),
+            (betaRbacGroupOrderLimitExceeded) => betaRbacGroupOrderLimitExceeded.Validate(),
+            (betaRbacGroupNotFound) => betaRbacGroupNotFound.Validate(),
             (betaSlackChannelSetUpSettingsRefused) =>
                 betaSlackChannelSetUpSettingsRefused.Validate(),
             (betaApiKeyScopeMissing) => betaApiKeyScopeMissing.Validate(),
@@ -4756,16 +5104,23 @@ public record class ErrorDetails : ModelBase
             Plugins::BetaRegistrationPendingErrorDetails _ => 79,
             Plugins::BetaScanFailedErrorDetails _ => 80,
             Plugins::BetaScanPendingErrorDetails _ => 81,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 82,
-            BetaApiKeyScopeMissingErrorDetails _ => 83,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 84,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 85,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 86,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 87,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 88,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 89,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 90,
-            BetaBundleOnCallErrorDetails _ => 91,
+            BetaRequestBodyTimeoutErrorDetails _ => 82,
+            BetaSettingsDocumentLimitExceededErrorDetails _ => 83,
+            BetaSettingsHistoryLimitExceededErrorDetails _ => 84,
+            BetaCmekFeatureUnsupportedErrorDetails _ => 85,
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 86,
+            BetaRbacGroupOrderLimitExceededErrorDetails _ => 87,
+            BetaRbacGroupNotFoundErrorDetails _ => 88,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 89,
+            BetaApiKeyScopeMissingErrorDetails _ => 90,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 91,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 92,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 93,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 94,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 95,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 96,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 97,
+            BetaBundleOnCallErrorDetails _ => 98,
             _ => -1,
         };
     }
@@ -6502,6 +6857,153 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "request_body_timeout":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaRequestBodyTimeoutErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "settings_document_limit_exceeded":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaSettingsDocumentLimitExceededErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "settings_history_limit_exceeded":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaSettingsHistoryLimitExceededErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "cmek_feature_unsupported":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCmekFeatureUnsupportedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "rbac_group_managed_settings_not_found":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaRbacGroupManagedSettingsNotFoundErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "rbac_group_order_limit_exceeded":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaRbacGroupOrderLimitExceededErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "rbac_group_not_found":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaRbacGroupNotFoundErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "slack_channel_set_up_settings_refused":
             {
                 try
@@ -6813,6 +7315,13 @@ public enum ErrorDetailsErrorCode
     RegistrationPending,
     ScanFailed,
     ScanPending,
+    RequestBodyTimeout,
+    SettingsDocumentLimitExceeded,
+    SettingsHistoryLimitExceeded,
+    CmekFeatureUnsupported,
+    RbacGroupManagedSettingsNotFound,
+    RbacGroupOrderLimitExceeded,
+    RbacGroupNotFound,
     SlackChannelSetUpSettingsRefused,
     ApiKeyScopeMissing,
     ClaudeTagWritesNotEnabled,
@@ -6935,6 +7444,15 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "registration_pending" => ErrorDetailsErrorCode.RegistrationPending,
             "scan_failed" => ErrorDetailsErrorCode.ScanFailed,
             "scan_pending" => ErrorDetailsErrorCode.ScanPending,
+            "request_body_timeout" => ErrorDetailsErrorCode.RequestBodyTimeout,
+            "settings_document_limit_exceeded" =>
+                ErrorDetailsErrorCode.SettingsDocumentLimitExceeded,
+            "settings_history_limit_exceeded" => ErrorDetailsErrorCode.SettingsHistoryLimitExceeded,
+            "cmek_feature_unsupported" => ErrorDetailsErrorCode.CmekFeatureUnsupported,
+            "rbac_group_managed_settings_not_found" =>
+                ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound,
+            "rbac_group_order_limit_exceeded" => ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded,
+            "rbac_group_not_found" => ErrorDetailsErrorCode.RbacGroupNotFound,
             "slack_channel_set_up_settings_refused" =>
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused,
             "api_key_scope_missing" => ErrorDetailsErrorCode.ApiKeyScopeMissing,
@@ -7072,6 +7590,17 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.RegistrationPending => "registration_pending",
                 ErrorDetailsErrorCode.ScanFailed => "scan_failed",
                 ErrorDetailsErrorCode.ScanPending => "scan_pending",
+                ErrorDetailsErrorCode.RequestBodyTimeout => "request_body_timeout",
+                ErrorDetailsErrorCode.SettingsDocumentLimitExceeded =>
+                    "settings_document_limit_exceeded",
+                ErrorDetailsErrorCode.SettingsHistoryLimitExceeded =>
+                    "settings_history_limit_exceeded",
+                ErrorDetailsErrorCode.CmekFeatureUnsupported => "cmek_feature_unsupported",
+                ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound =>
+                    "rbac_group_managed_settings_not_found",
+                ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded =>
+                    "rbac_group_order_limit_exceeded",
+                ErrorDetailsErrorCode.RbacGroupNotFound => "rbac_group_not_found",
                 ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused =>
                     "slack_channel_set_up_settings_refused",
                 ErrorDetailsErrorCode.ApiKeyScopeMissing => "api_key_scope_missing",

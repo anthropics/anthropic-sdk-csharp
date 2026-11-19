@@ -9,6 +9,8 @@ using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
 using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.Analytics.Cost;
 using Anthropic.Models.Beta.Organization.Analytics.Usage;
+using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings.Configuration;
+using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings.RbacGroups;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.Bundles.Targets;
 using Anthropic.Models.Beta.Organization.ComplianceSettings;
@@ -973,6 +975,9 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Webhooks::WebhookUpdateParamsEnabledEvent>(),
             new ApiEnumConverter<string, Webhooks::State>(),
             new ApiEnumConverter<string, Webhooks::Order>(),
+            new ApiEnumConverter<string, BetaClaudeCodeManagedSettingsModeType>(),
+            new ApiEnumConverter<string, BetaClaudeCodeManagedSettingsModeParamType>(),
+            new ApiEnumConverter<string, BetaClaudeCodeRbacGroupStatusType>(),
             new ApiEnumConverter<string, BetaClaudeTagGuestPolicyType>(),
             new ApiEnumConverter<string, BetaClaudeTagReplyModeType>(),
             new ApiEnumConverter<string, BetaClaudeTagSettingSourceType>(),
