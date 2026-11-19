@@ -1,0 +1,22 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+cd -- "$(dirname -- "$0")/.."
+
+# The version manifest gives each package's version, and the project file in its folder gives its name
+manifest="$(jq -r 'to_entries[] | [.key, .value] | @tsv' .version-manifest.json)"
+packages=()
+while read -r folder version; do
+  project="$(basename "$folder"/*.csproj .csproj)"
+  packages+=("artifacts/packages/$project.$version.nupkg")
+done <<<"$manifest"
+
+# fails for a missing file, so that nothing is published
+wc -c "${packages[@]}"
+
+dotnet nuget push "${packages[@]}" \
+  --source https://api.nuget.org/v3/index.json \
+  --api-key "$NUGET_API_KEY" \
+  --no-symbols \
+  --skip-duplicate
