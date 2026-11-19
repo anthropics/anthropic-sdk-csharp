@@ -52,6 +52,7 @@ public sealed class OrganizationService : IOrganizationService
         _pluginMarketplaces = new(() => new Organization::PluginMarketplaceService(client));
         _telemetryDestinations = new(() => new Organization::TelemetryDestinationService(client));
         _webhooks = new(() => new Organization::WebhookService(client));
+        _claudeCode = new(() => new Organization::ClaudeCodeService(client));
         _claudeTag = new(() => new Organization::ClaudeTagService(client));
     }
 
@@ -157,6 +158,12 @@ public sealed class OrganizationService : IOrganizationService
         get { return _webhooks.Value; }
     }
 
+    readonly Lazy<Organization::IClaudeCodeService> _claudeCode;
+    public Organization::IClaudeCodeService ClaudeCode
+    {
+        get { return _claudeCode.Value; }
+    }
+
     readonly Lazy<Organization::IClaudeTagService> _claudeTag;
     public Organization::IClaudeTagService ClaudeTag
     {
@@ -218,6 +225,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
             new Organization::TelemetryDestinationServiceWithRawResponse(client)
         );
         _webhooks = new(() => new Organization::WebhookServiceWithRawResponse(client));
+        _claudeCode = new(() => new Organization::ClaudeCodeServiceWithRawResponse(client));
         _claudeTag = new(() => new Organization::ClaudeTagServiceWithRawResponse(client));
     }
 
@@ -321,6 +329,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
     public Organization::IWebhookServiceWithRawResponse Webhooks
     {
         get { return _webhooks.Value; }
+    }
+
+    readonly Lazy<Organization::IClaudeCodeServiceWithRawResponse> _claudeCode;
+    public Organization::IClaudeCodeServiceWithRawResponse ClaudeCode
+    {
+        get { return _claudeCode.Value; }
     }
 
     readonly Lazy<Organization::IClaudeTagServiceWithRawResponse> _claudeTag;

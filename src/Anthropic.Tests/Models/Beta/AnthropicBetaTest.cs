@@ -64,6 +64,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Skills2025_10_02)]
     [InlineData(AnthropicBeta.CacheDiagnosis2026_04_07)]
     [InlineData(AnthropicBeta.CEUserManagement2026_07_13)]
+    [InlineData(AnthropicBeta.CEClaudeCodeManagedSettings2026_10_06)]
     [InlineData(AnthropicBeta.UserProfilesBilling2026_10_01)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
@@ -141,6 +142,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.Skills2025_10_02)]
     [InlineData(AnthropicBeta.CacheDiagnosis2026_04_07)]
     [InlineData(AnthropicBeta.CEUserManagement2026_07_13)]
+    [InlineData(AnthropicBeta.CEClaudeCodeManagedSettings2026_10_06)]
     [InlineData(AnthropicBeta.UserProfilesBilling2026_10_01)]
     public void SerializationRoundtrip_Works(AnthropicBeta rawValue)
     {

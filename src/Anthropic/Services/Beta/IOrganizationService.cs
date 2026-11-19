@@ -61,6 +61,8 @@ public interface IOrganizationService
 
     Organization::IWebhookService Webhooks { get; }
 
+    Organization::IClaudeCodeService ClaudeCode { get; }
+
     Organization::IClaudeTagService ClaudeTag { get; }
 
     /// <summary>
@@ -119,6 +121,8 @@ public interface IOrganizationServiceWithRawResponse
     Organization::ITelemetryDestinationServiceWithRawResponse TelemetryDestinations { get; }
 
     Organization::IWebhookServiceWithRawResponse Webhooks { get; }
+
+    Organization::IClaudeCodeServiceWithRawResponse ClaudeCode { get; }
 
     Organization::IClaudeTagServiceWithRawResponse ClaudeTag { get; }
 

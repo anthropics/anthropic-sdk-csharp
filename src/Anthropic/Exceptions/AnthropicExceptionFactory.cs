@@ -7,8 +7,10 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
+using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
 using Anthropic.Models.Files;
@@ -110,6 +112,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "claude_code_version_too_old")] = (statusCode, responseBody, response) =>
             new AnthropicClaudeCodeVersionTooOldException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "cmek_feature_unsupported")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCmekFeatureUnsupportedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -332,6 +342,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "rbac_group_order_limit_exceeded")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaRbacGroupOrderLimitExceededException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "rbac_group_owner_access_unconfirmed")] = (statusCode, responseBody, response) =>
             new AnthropicRbacGroupOwnerAccessUnconfirmedException()
             {
@@ -356,8 +374,32 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "request_body_timeout")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaRequestBodyTimeoutException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "scan_failed")] = (statusCode, responseBody, response) =>
             new AnthropicBetaScanFailedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "settings_document_limit_exceeded")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaSettingsDocumentLimitExceededException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "settings_history_limit_exceeded")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaSettingsHistoryLimitExceededException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -622,6 +664,22 @@ public class AnthropicExceptionFactory
             },
         [(404, "file_expired")] = (statusCode, responseBody, response) =>
             new AnthropicFileExpiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(404, "rbac_group_managed_settings_not_found")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaRbacGroupManagedSettingsNotFoundException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(404, "rbac_group_not_found")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaRbacGroupNotFoundException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

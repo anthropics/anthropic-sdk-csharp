@@ -1,0 +1,179 @@
+using System;
+using System.Collections.Frozen;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Anthropic.Core;
+using Anthropic.Exceptions;
+
+namespace Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings.RbacGroups;
+
+[JsonConverter(
+    typeof(JsonModelConverter<
+        BetaClaudeCodeRbacGroupManagedSettings,
+        BetaClaudeCodeRbacGroupManagedSettingsFromRaw
+    >)
+)]
+public sealed record class BetaClaudeCodeRbacGroupManagedSettings : JsonModel
+{
+    /// <summary>
+    /// When the settings document this group uses was first stored, in RFC 3339 format.
+    /// This can be earlier than when the group got its settings, and it changes
+    /// if the group gets a different document.
+    /// </summary>
+    public required DateTimeOffset CreatedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("created_at");
+        }
+        init { this._rawData.Set("created_at", value); }
+    }
+
+    /// <summary>
+    /// The RBAC Group's ID, prefixed `rbac_group_`.
+    /// </summary>
+    public required string RbacGroupID
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<string>("rbac_group_id");
+        }
+        init { this._rawData.Set("rbac_group_id", value); }
+    }
+
+    /// <summary>
+    /// Whether the group is still one of the organization's RBAC Groups. Its `type`
+    /// is `active` if it is, `deleted` if it is not, and `unknown` if that cannot
+    /// be checked right now. A deleted group's settings stay in `rbac_group_order`
+    /// but match no member.
+    /// </summary>
+    public required BetaClaudeCodeRbacGroupStatus RbacGroupStatus
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullClass<BetaClaudeCodeRbacGroupStatus>(
+                "rbac_group_status"
+            );
+        }
+        init { this._rawData.Set("rbac_group_status", value); }
+    }
+
+    /// <summary>
+    /// The group's settings document, or `null` if the stored document is damaged
+    /// and can no longer be read. Replacing it fixes this.
+    /// </summary>
+    public required IReadOnlyDictionary<string, JsonElement>? Settings
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<FrozenDictionary<string, JsonElement>>(
+                "settings"
+            );
+        }
+        init
+        {
+            this._rawData.Set<FrozenDictionary<string, JsonElement>?>(
+                "settings",
+                value == null ? null : FrozenDictionary.ToFrozenDictionary(value)
+            );
+        }
+    }
+
+    /// <summary>
+    /// Always `claude_code_rbac_group_managed_settings`.
+    /// </summary>
+    public JsonElement Type
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<JsonElement>("type");
+        }
+        init { this._rawData.Set("type", value); }
+    }
+
+    /// <summary>
+    /// When this group's settings or its position in the order last changed, in RFC
+    /// 3339 format. Its position changes whenever the number of groups ahead of
+    /// it changes.
+    /// </summary>
+    public required DateTimeOffset UpdatedAt
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNotNullStruct<DateTimeOffset>("updated_at");
+        }
+        init { this._rawData.Set("updated_at", value); }
+    }
+
+    /// <inheritdoc/>
+    public override void Validate()
+    {
+        _ = this.CreatedAt;
+        _ = this.RbacGroupID;
+        this.RbacGroupStatus.Validate();
+        _ = this.Settings;
+        if (
+            !JsonElement.DeepEquals(
+                this.Type,
+                JsonSerializer.SerializeToElement("claude_code_rbac_group_managed_settings")
+            )
+        )
+        {
+            throw new AnthropicInvalidDataException("Invalid value given for constant");
+        }
+        _ = this.UpdatedAt;
+    }
+
+    public BetaClaudeCodeRbacGroupManagedSettings()
+    {
+        this.Type = JsonSerializer.SerializeToElement("claude_code_rbac_group_managed_settings");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    public BetaClaudeCodeRbacGroupManagedSettings(
+        BetaClaudeCodeRbacGroupManagedSettings betaClaudeCodeRbacGroupManagedSettings
+    )
+        : base(betaClaudeCodeRbacGroupManagedSettings) { }
+#pragma warning restore CS8618
+
+    public BetaClaudeCodeRbacGroupManagedSettings(IReadOnlyDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+
+        this.Type = JsonSerializer.SerializeToElement("claude_code_rbac_group_managed_settings");
+    }
+
+#pragma warning disable CS8618
+    [SetsRequiredMembers]
+    BetaClaudeCodeRbacGroupManagedSettings(FrozenDictionary<string, JsonElement> rawData)
+    {
+        this._rawData = new(rawData);
+    }
+#pragma warning restore CS8618
+
+    /// <inheritdoc cref="BetaClaudeCodeRbacGroupManagedSettingsFromRaw.FromRawUnchecked"/>
+    public static BetaClaudeCodeRbacGroupManagedSettings FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    )
+    {
+        return new(FrozenDictionary.ToFrozenDictionary(rawData));
+    }
+}
+
+class BetaClaudeCodeRbacGroupManagedSettingsFromRaw
+    : IFromRawJson<BetaClaudeCodeRbacGroupManagedSettings>
+{
+    /// <inheritdoc/>
+    public BetaClaudeCodeRbacGroupManagedSettings FromRawUnchecked(
+        IReadOnlyDictionary<string, JsonElement> rawData
+    ) => BetaClaudeCodeRbacGroupManagedSettings.FromRawUnchecked(rawData);
+}
