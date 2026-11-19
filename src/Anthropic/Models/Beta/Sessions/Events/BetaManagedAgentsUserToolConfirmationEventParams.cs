@@ -145,8 +145,8 @@ class BetaManagedAgentsUserToolConfirmationEventParamsFromRaw
 [JsonConverter(typeof(BetaManagedAgentsUserToolConfirmationEventParamsResultConverter))]
 public enum BetaManagedAgentsUserToolConfirmationEventParamsResult
 {
-    Allow,
-    Deny,
+    Allow = 0,
+    Deny = 1,
 }
 
 sealed class BetaManagedAgentsUserToolConfirmationEventParamsResultConverter

@@ -835,9 +835,9 @@ sealed class BetaWebFetchToolResultBlockParamCallerConverter
 [JsonConverter(typeof(BetaWebFetchToolResultBlockParamCallerTypeConverter))]
 public enum BetaWebFetchToolResultBlockParamCallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class BetaWebFetchToolResultBlockParamCallerTypeConverter

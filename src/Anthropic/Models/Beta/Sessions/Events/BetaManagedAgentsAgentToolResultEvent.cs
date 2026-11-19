@@ -654,10 +654,10 @@ sealed class BetaManagedAgentsAgentToolResultEventContentConverter
 [JsonConverter(typeof(BetaManagedAgentsAgentToolResultEventContentTypeConverter))]
 public enum BetaManagedAgentsAgentToolResultEventContentType
 {
-    Text,
-    Image,
-    Document,
-    SearchResult,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    SearchResult = 3,
 }
 
 sealed class BetaManagedAgentsAgentToolResultEventContentTypeConverter

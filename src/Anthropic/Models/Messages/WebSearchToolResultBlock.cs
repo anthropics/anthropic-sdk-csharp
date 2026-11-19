@@ -499,9 +499,9 @@ sealed class WebSearchToolResultBlockCallerConverter : JsonConverter<WebSearchTo
 [JsonConverter(typeof(WebSearchToolResultBlockCallerTypeConverter))]
 public enum WebSearchToolResultBlockCallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class WebSearchToolResultBlockCallerTypeConverter

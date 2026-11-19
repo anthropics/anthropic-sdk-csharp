@@ -110,10 +110,10 @@ class BetaToolSearchToolResultErrorFromRaw : IFromRawJson<BetaToolSearchToolResu
 [JsonConverter(typeof(BetaToolSearchToolResultErrorErrorCodeConverter))]
 public enum BetaToolSearchToolResultErrorErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
 }
 
 sealed class BetaToolSearchToolResultErrorErrorCodeConverter

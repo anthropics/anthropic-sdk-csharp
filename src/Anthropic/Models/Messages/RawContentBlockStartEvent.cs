@@ -1116,18 +1116,18 @@ sealed class RawContentBlockStartEventContentBlockConverter
 [JsonConverter(typeof(RawContentBlockStartEventContentBlockTypeConverter))]
 public enum RawContentBlockStartEventContentBlockType
 {
-    Text,
-    Thinking,
-    RedactedThinking,
-    ToolUse,
-    ServerToolUse,
-    WebSearchToolResult,
-    WebFetchToolResult,
-    CodeExecutionToolResult,
-    BashCodeExecutionToolResult,
-    TextEditorCodeExecutionToolResult,
-    ToolSearchToolResult,
-    ContainerUpload,
+    Text = 0,
+    Thinking = 1,
+    RedactedThinking = 2,
+    ToolUse = 3,
+    ServerToolUse = 4,
+    WebSearchToolResult = 5,
+    WebFetchToolResult = 6,
+    CodeExecutionToolResult = 7,
+    BashCodeExecutionToolResult = 8,
+    TextEditorCodeExecutionToolResult = 9,
+    ToolSearchToolResult = 10,
+    ContainerUpload = 11,
 }
 
 sealed class RawContentBlockStartEventContentBlockTypeConverter

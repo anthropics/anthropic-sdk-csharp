@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsBashToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsBashToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeConverter
@@ -584,7 +584,7 @@ sealed class BetaManagedAgentsBashToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    Bash,
+    Bash = 0,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.Type>

@@ -182,18 +182,18 @@ public enum AccountStatus
     /// The platform has neither restricted nor barred the account of the entity
     /// that the user profile represents.
     /// </summary>
-    Active,
+    Active = 0,
 
     /// <summary>
     /// The platform has restricted the account of the entity that the user profile
     /// represents and may restore it.
     /// </summary>
-    Suspended,
+    Suspended = 1,
 
     /// <summary>
     /// The platform has barred the account of the entity that the user profile represents.
     /// </summary>
-    Blocked,
+    Blocked = 2,
 }
 
 sealed class AccountStatusConverter : JsonConverter<AccountStatus>
@@ -242,10 +242,10 @@ sealed class AccountStatusConverter : JsonConverter<AccountStatus>
 [JsonConverter(typeof(EntityTypeConverter))]
 public enum EntityType
 {
-    Individual,
-    Business,
-    NonProfit,
-    Government,
+    Individual = 0,
+    Business = 1,
+    NonProfit = 2,
+    Government = 3,
 }
 
 sealed class EntityTypeConverter : JsonConverter<EntityType>

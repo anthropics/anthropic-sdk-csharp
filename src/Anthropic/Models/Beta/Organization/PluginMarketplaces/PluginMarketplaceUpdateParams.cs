@@ -219,10 +219,10 @@ public record class PluginMarketplaceUpdateParams : ParamsBase
 [JsonConverter(typeof(DefaultInstallationPreferenceConverter))]
 public enum DefaultInstallationPreference
 {
-    AutoInstall,
-    Available,
-    NotAvailable,
-    Required,
+    AutoInstall = 0,
+    Available = 1,
+    NotAvailable = 2,
+    Required = 3,
 }
 
 sealed class DefaultInstallationPreferenceConverter : JsonConverter<DefaultInstallationPreference>

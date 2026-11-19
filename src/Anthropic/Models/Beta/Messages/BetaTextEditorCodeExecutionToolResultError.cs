@@ -120,11 +120,11 @@ class BetaTextEditorCodeExecutionToolResultErrorFromRaw
 [JsonConverter(typeof(BetaTextEditorCodeExecutionToolResultErrorErrorCodeConverter))]
 public enum BetaTextEditorCodeExecutionToolResultErrorErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
-    FileNotFound,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
+    FileNotFound = 4,
 }
 
 sealed class BetaTextEditorCodeExecutionToolResultErrorErrorCodeConverter

@@ -470,9 +470,9 @@ sealed class ResourceRetrieveResponseConverter : JsonConverter<ResourceRetrieveR
 [JsonConverter(typeof(ResourceRetrieveResponseTypeConverter))]
 public enum ResourceRetrieveResponseType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class ResourceRetrieveResponseTypeConverter : JsonConverter<ResourceRetrieveResponseType>

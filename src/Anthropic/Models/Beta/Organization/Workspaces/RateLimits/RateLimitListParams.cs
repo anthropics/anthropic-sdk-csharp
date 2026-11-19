@@ -210,12 +210,12 @@ public record class RateLimitListParams : ParamsBase
 [JsonConverter(typeof(GroupTypeConverter))]
 public enum GroupType
 {
-    Batch,
-    Files,
-    ModelGroup,
-    Skills,
-    TokenCount,
-    WebSearch,
+    Batch = 0,
+    Files = 1,
+    ModelGroup = 2,
+    Skills = 3,
+    TokenCount = 4,
+    WebSearch = 5,
 }
 
 sealed class GroupTypeConverter : JsonConverter<GroupType>

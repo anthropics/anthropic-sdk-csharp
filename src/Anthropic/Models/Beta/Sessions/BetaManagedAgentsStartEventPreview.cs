@@ -343,8 +343,8 @@ sealed class BetaManagedAgentsStartEventPreviewConverter
 [JsonConverter(typeof(BetaManagedAgentsStartEventPreviewTypeConverter))]
 public enum BetaManagedAgentsStartEventPreviewType
 {
-    AgentMessage,
-    AgentThinking,
+    AgentMessage = 0,
+    AgentThinking = 1,
 }
 
 sealed class BetaManagedAgentsStartEventPreviewTypeConverter

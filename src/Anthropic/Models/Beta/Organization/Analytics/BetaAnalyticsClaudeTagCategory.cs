@@ -8,11 +8,11 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsClaudeTagCategoryConverter))]
 public enum BetaAnalyticsClaudeTagCategory
 {
-    Dm,
-    Engaged,
-    Monitoring,
-    Proactive,
-    Scheduled,
+    Dm = 0,
+    Engaged = 1,
+    Monitoring = 2,
+    Proactive = 3,
+    Scheduled = 4,
 }
 
 sealed class BetaAnalyticsClaudeTagCategoryConverter : JsonConverter<BetaAnalyticsClaudeTagCategory>

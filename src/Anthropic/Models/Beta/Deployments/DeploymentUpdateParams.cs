@@ -1102,9 +1102,9 @@ sealed class DeploymentUpdateParamsResourceConverter : JsonConverter<DeploymentU
 [JsonConverter(typeof(DeploymentUpdateParamsResourceTypeConverter))]
 public enum DeploymentUpdateParamsResourceType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class DeploymentUpdateParamsResourceTypeConverter

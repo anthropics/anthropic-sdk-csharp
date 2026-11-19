@@ -235,8 +235,8 @@ class BetaServiceAccountFromRaw : IFromRawJson<BetaServiceAccount>
 [JsonConverter(typeof(BetaServiceAccountOrganizationRoleConverter))]
 public enum BetaServiceAccountOrganizationRole
 {
-    Admin,
-    Developer,
+    Admin = 0,
+    Developer = 1,
 }
 
 sealed class BetaServiceAccountOrganizationRoleConverter

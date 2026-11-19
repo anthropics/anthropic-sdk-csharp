@@ -438,8 +438,8 @@ sealed class SourceConverter : JsonConverter<Source>
 [JsonConverter(typeof(SourceTypeConverter))]
 public enum SourceType
 {
-    Base64,
-    Text,
+    Base64 = 0,
+    Text = 1,
 }
 
 sealed class SourceTypeConverter : JsonConverter<SourceType>

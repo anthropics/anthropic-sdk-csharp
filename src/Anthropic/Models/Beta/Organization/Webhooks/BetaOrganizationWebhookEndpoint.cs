@@ -210,11 +210,11 @@ class BetaOrganizationWebhookEndpointFromRaw : IFromRawJson<BetaOrganizationWebh
 [JsonConverter(typeof(BetaOrganizationWebhookEndpointEnabledEventConverter))]
 public enum BetaOrganizationWebhookEndpointEnabledEvent
 {
-    ExternalKeyFailed,
-    ExternalKeyRecovered,
-    UserProfileEnforcementActionOpened,
-    UserProfileEnforcementActionResolved,
-    UserProfileProgramStatusUpdated,
+    ExternalKeyFailed = 0,
+    ExternalKeyRecovered = 1,
+    UserProfileEnforcementActionOpened = 2,
+    UserProfileEnforcementActionResolved = 3,
+    UserProfileProgramStatusUpdated = 4,
 }
 
 sealed class BetaOrganizationWebhookEndpointEnabledEventConverter

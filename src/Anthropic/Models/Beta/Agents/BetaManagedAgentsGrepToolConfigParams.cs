@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsGrepToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTypeConverter
@@ -584,7 +584,7 @@ sealed class BetaManagedAgentsGrepToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(BetaManagedAgentsGrepToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsGrepToolConfigParamsType
 {
-    Grep,
+    Grep = 0,
 }
 
 sealed class BetaManagedAgentsGrepToolConfigParamsTypeConverter

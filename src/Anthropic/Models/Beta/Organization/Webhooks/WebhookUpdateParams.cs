@@ -312,11 +312,11 @@ public record class WebhookUpdateParams : ParamsBase
 [JsonConverter(typeof(WebhookUpdateParamsEnabledEventConverter))]
 public enum WebhookUpdateParamsEnabledEvent
 {
-    ExternalKeyFailed,
-    ExternalKeyRecovered,
-    UserProfileEnforcementActionOpened,
-    UserProfileEnforcementActionResolved,
-    UserProfileProgramStatusUpdated,
+    ExternalKeyFailed = 0,
+    ExternalKeyRecovered = 1,
+    UserProfileEnforcementActionOpened = 2,
+    UserProfileEnforcementActionResolved = 3,
+    UserProfileProgramStatusUpdated = 4,
 }
 
 sealed class WebhookUpdateParamsEnabledEventConverter
@@ -376,8 +376,8 @@ sealed class WebhookUpdateParamsEnabledEventConverter
 [JsonConverter(typeof(StateConverter))]
 public enum State
 {
-    Disabled,
-    Enabled,
+    Disabled = 0,
+    Enabled = 1,
 }
 
 sealed class StateConverter : JsonConverter<State>

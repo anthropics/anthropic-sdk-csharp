@@ -119,11 +119,11 @@ class BetaWorkLeaseStateFromRaw : IFromRawJson<BetaWorkLeaseState>
 [JsonConverter(typeof(BetaWorkLeaseStateStateConverter))]
 public enum BetaWorkLeaseStateState
 {
-    Queued,
-    Starting,
-    Active,
-    Stopping,
-    Stopped,
+    Queued = 0,
+    Starting = 1,
+    Active = 2,
+    Stopping = 3,
+    Stopped = 4,
 }
 
 sealed class BetaWorkLeaseStateStateConverter : JsonConverter<BetaWorkLeaseStateState>

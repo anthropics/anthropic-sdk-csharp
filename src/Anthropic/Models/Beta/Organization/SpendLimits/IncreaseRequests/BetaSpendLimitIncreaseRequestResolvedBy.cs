@@ -328,8 +328,8 @@ sealed class BetaSpendLimitIncreaseRequestResolvedByConverter
 [JsonConverter(typeof(BetaSpendLimitIncreaseRequestResolvedByTypeConverter))]
 public enum BetaSpendLimitIncreaseRequestResolvedByType
 {
-    UserActor,
-    ScopedApiKeyActor,
+    UserActor = 0,
+    ScopedApiKeyActor = 1,
 }
 
 sealed class BetaSpendLimitIncreaseRequestResolvedByTypeConverter

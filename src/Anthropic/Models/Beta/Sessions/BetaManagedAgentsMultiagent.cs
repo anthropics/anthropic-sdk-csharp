@@ -333,8 +333,8 @@ sealed class BetaManagedAgentsMultiagentConverter : JsonConverter<BetaManagedAge
 [JsonConverter(typeof(BetaManagedAgentsMultiagentTypeConverter))]
 public enum BetaManagedAgentsMultiagentType
 {
-    Coordinator,
-    Multiagent20261001,
+    Coordinator = 0,
+    Multiagent20261001 = 1,
 }
 
 sealed class BetaManagedAgentsMultiagentTypeConverter

@@ -1053,8 +1053,8 @@ sealed class InitialEventConverter : JsonConverter<InitialEvent>
 [JsonConverter(typeof(InitialEventTypeConverter))]
 public enum InitialEventType
 {
-    UserMessage,
-    UserDefineOutcome,
+    UserMessage = 0,
+    UserDefineOutcome = 1,
 }
 
 sealed class InitialEventTypeConverter : JsonConverter<InitialEventType>
@@ -1496,9 +1496,9 @@ sealed class ResourceConverter : JsonConverter<Resource>
 [JsonConverter(typeof(ResourceTypeConverter))]
 public enum ResourceType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class ResourceTypeConverter : JsonConverter<ResourceType>

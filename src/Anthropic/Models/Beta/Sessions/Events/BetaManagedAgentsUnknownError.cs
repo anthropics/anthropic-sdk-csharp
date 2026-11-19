@@ -517,9 +517,9 @@ sealed class BetaManagedAgentsUnknownErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsUnknownErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsUnknownErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsUnknownErrorRetryStatusTypeConverter

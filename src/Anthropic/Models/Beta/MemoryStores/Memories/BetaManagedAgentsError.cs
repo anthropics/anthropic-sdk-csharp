@@ -953,18 +953,18 @@ sealed class BetaManagedAgentsErrorConverter : JsonConverter<BetaManagedAgentsEr
 [JsonConverter(typeof(BetaManagedAgentsErrorTypeConverter))]
 public enum BetaManagedAgentsErrorType
 {
-    InvalidRequestError,
-    AuthenticationError,
-    BillingError,
-    PermissionError,
-    NotFoundError,
-    RateLimitError,
-    TimeoutError,
-    ApiError,
-    OverloadedError,
-    MemoryPreconditionFailedError,
-    MemoryPathConflictError,
-    ConflictError,
+    InvalidRequestError = 0,
+    AuthenticationError = 1,
+    BillingError = 2,
+    PermissionError = 3,
+    NotFoundError = 4,
+    RateLimitError = 5,
+    TimeoutError = 6,
+    ApiError = 7,
+    OverloadedError = 8,
+    MemoryPreconditionFailedError = 9,
+    MemoryPathConflictError = 10,
+    ConflictError = 11,
 }
 
 sealed class BetaManagedAgentsErrorTypeConverter : JsonConverter<BetaManagedAgentsErrorType>

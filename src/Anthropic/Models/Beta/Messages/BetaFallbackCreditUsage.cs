@@ -393,8 +393,8 @@ sealed class StatusConverter : JsonConverter<Status>
 [JsonConverter(typeof(StatusTypeConverter))]
 public enum StatusType
 {
-    Redeemed,
-    NotApplied,
+    Redeemed = 0,
+    NotApplied = 1,
 }
 
 sealed class StatusTypeConverter : JsonConverter<StatusType>

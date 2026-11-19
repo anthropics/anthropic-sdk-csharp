@@ -589,12 +589,12 @@ sealed class BetaRawMessageStreamEventConverter : JsonConverter<BetaRawMessageSt
 [JsonConverter(typeof(BetaRawMessageStreamEventTypeConverter))]
 public enum BetaRawMessageStreamEventType
 {
-    MessageStart,
-    MessageDelta,
-    MessageStop,
-    ContentBlockStart,
-    ContentBlockDelta,
-    ContentBlockStop,
+    MessageStart = 0,
+    MessageDelta = 1,
+    MessageStop = 2,
+    ContentBlockStart = 3,
+    ContentBlockDelta = 4,
+    ContentBlockStop = 5,
 }
 
 sealed class BetaRawMessageStreamEventTypeConverter : JsonConverter<BetaRawMessageStreamEventType>

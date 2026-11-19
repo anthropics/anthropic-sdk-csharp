@@ -352,8 +352,8 @@ sealed class BetaManagedAgentsSkillParamsConverter : JsonConverter<BetaManagedAg
 [JsonConverter(typeof(BetaManagedAgentsSkillParamsTypeConverter))]
 public enum BetaManagedAgentsSkillParamsType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class BetaManagedAgentsSkillParamsTypeConverter

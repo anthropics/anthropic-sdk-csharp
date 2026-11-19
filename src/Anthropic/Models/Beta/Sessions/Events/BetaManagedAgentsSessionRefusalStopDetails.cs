@@ -124,11 +124,11 @@ class BetaManagedAgentsSessionRefusalStopDetailsFromRaw
 [JsonConverter(typeof(CategoryConverter))]
 public enum Category
 {
-    Cyber,
-    Bio,
-    FrontierLlm,
-    ReasoningExtraction,
-    GeneralHarms,
+    Cyber = 0,
+    Bio = 1,
+    FrontierLlm = 2,
+    ReasoningExtraction = 3,
+    GeneralHarms = 4,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>

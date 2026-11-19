@@ -145,9 +145,9 @@ class TextEditorCodeExecutionViewResultBlockFromRaw
 [JsonConverter(typeof(FileTypeConverter))]
 public enum FileType
 {
-    Text,
-    Image,
-    Pdf,
+    Text = 0,
+    Image = 1,
+    Pdf = 2,
 }
 
 sealed class FileTypeConverter : JsonConverter<FileType>

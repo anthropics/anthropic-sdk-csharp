@@ -313,8 +313,8 @@ sealed class BetaBrowserClickTargetConverter : JsonConverter<BetaBrowserClickTar
 [JsonConverter(typeof(BetaBrowserClickTargetTypeConverter))]
 public enum BetaBrowserClickTargetType
 {
-    Coordinate,
-    Ref,
+    Coordinate = 0,
+    Ref = 1,
 }
 
 sealed class BetaBrowserClickTargetTypeConverter : JsonConverter<BetaBrowserClickTargetType>

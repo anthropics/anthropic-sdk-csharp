@@ -121,32 +121,32 @@ public enum Category
     /// The request could enable cyber harm, such as malware or exploit development.
     /// Benign cybersecurity work can also trigger this category.
     /// </summary>
-    Cyber,
+    Cyber = 0,
 
     /// <summary>
     /// The request could enable biological harm, such as dangerous lab methods. Beneficial
     /// life sciences work can also trigger this category.
     /// </summary>
-    Bio,
+    Bio = 1,
 
     /// <summary>
     /// The request could assist the development of competing AI models, which is
     /// restricted under [Anthropic's commercial terms](https://www.anthropic.com/legal/commercial-terms).
     /// Benign machine learning work can also trigger this category.
     /// </summary>
-    FrontierLlm,
+    FrontierLlm = 2,
 
     /// <summary>
     /// The request asks the model to reproduce its internal reasoning in the response
     /// text. To get reasoning in a structured form instead, use [adaptive thinking](https://platform.claude.com/docs/en/build-with-claude/adaptive-thinking).
     /// </summary>
-    ReasoningExtraction,
+    ReasoningExtraction = 3,
 
     /// <summary>
     /// The request could be related to an area that was determined as harmful. Benign
     /// work might sometimes trigger this category.
     /// </summary>
-    GeneralHarms,
+    GeneralHarms = 4,
 }
 
 sealed class CategoryConverter : JsonConverter<Category>

@@ -15,14 +15,14 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsProductFilterConverter))]
 public enum BetaAnalyticsProductFilter
 {
-    Chat,
-    ChatCoworkUnified,
-    ClaudeTag,
-    ClaudeCode,
-    ClaudeDesign,
-    ClaudeInChrome,
-    Cowork,
-    OfficeAgent,
+    Chat = 0,
+    ChatCoworkUnified = 1,
+    ClaudeTag = 2,
+    ClaudeCode = 3,
+    ClaudeDesign = 4,
+    ClaudeInChrome = 5,
+    Cowork = 6,
+    OfficeAgent = 7,
 }
 
 sealed class BetaAnalyticsProductFilterConverter : JsonConverter<BetaAnalyticsProductFilter>

@@ -227,8 +227,8 @@ public record class ServiceAccountUpdateParams : ParamsBase
 [JsonConverter(typeof(ServiceAccountUpdateParamsOrganizationRoleConverter))]
 public enum ServiceAccountUpdateParamsOrganizationRole
 {
-    Admin,
-    Developer,
+    Admin = 0,
+    Developer = 1,
 }
 
 sealed class ServiceAccountUpdateParamsOrganizationRoleConverter

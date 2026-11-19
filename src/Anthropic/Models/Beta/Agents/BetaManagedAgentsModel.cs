@@ -17,75 +17,75 @@ public enum BetaManagedAgentsModel
     /// <summary>
     /// Built for the most ambitious work in coding, enterprise workflows, and the sciences
     /// </summary>
-    ClaudeFable5_2,
+    ClaudeFable5_2 = 0,
 
     /// <summary>
     /// Fastest model for high-volume, real-time tasks
     /// </summary>
-    ClaudeHaiku5_5,
+    ClaudeHaiku5_5 = 1,
 
     /// <summary>
     /// Efficient model for coding and agents
     /// </summary>
-    ClaudeSonnet5_5,
+    ClaudeSonnet5_5 = 2,
 
     /// <summary>
     /// Powerful intelligence for coding, knowledge work, and long-running agents
     /// </summary>
-    ClaudeOpus5_5,
+    ClaudeOpus5_5 = 3,
 
     /// <summary>
     /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
     /// and enterprise workflows
     /// </summary>
-    ClaudeFable5_1,
+    ClaudeFable5_1 = 4,
 
     /// <summary>
     /// Efficient model for coding and agents
     /// </summary>
-    ClaudeSonnet5,
+    ClaudeSonnet5 = 5,
 
     /// <summary>
     /// Next generation of intelligence for the hardest knowledge work and coding problems
     /// </summary>
-    ClaudeFable5,
+    ClaudeFable5 = 6,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus5,
+    ClaudeOpus5 = 7,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_8,
+    ClaudeOpus4_8 = 8,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_7,
+    ClaudeOpus4_7 = 9,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_6,
+    ClaudeOpus4_6 = 10,
 
     /// <summary>
     /// Best combination of speed and intelligence
     /// </summary>
-    ClaudeSonnet4_6,
-    ClaudeHaiku4_5,
-    ClaudeHaiku4_5_20251001,
+    ClaudeSonnet4_6 = 11,
+    ClaudeHaiku4_5 = 12,
+    ClaudeHaiku4_5_20251001 = 13,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_5,
+    ClaudeOpus4_5 = 14,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_5_20251101,
+    ClaudeOpus4_5_20251101 = 15,
 
     /// <summary>
     /// High-performance model for agents and coding
@@ -93,7 +93,7 @@ public enum BetaManagedAgentsModel
     [System::Obsolete(
         "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    ClaudeSonnet4_5,
+    ClaudeSonnet4_5 = 16,
 
     /// <summary>
     /// High-performance model for agents and coding
@@ -101,7 +101,7 @@ public enum BetaManagedAgentsModel
     [System::Obsolete(
         "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    ClaudeSonnet4_5_20250929,
+    ClaudeSonnet4_5_20250929 = 17,
 }
 
 sealed class BetaManagedAgentsModelConverter : JsonConverter<BetaManagedAgentsModel>

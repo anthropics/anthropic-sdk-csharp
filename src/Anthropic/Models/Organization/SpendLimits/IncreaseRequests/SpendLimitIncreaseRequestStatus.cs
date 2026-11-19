@@ -8,9 +8,9 @@ namespace Anthropic.Models.Organization.SpendLimits.IncreaseRequests;
 [JsonConverter(typeof(SpendLimitIncreaseRequestStatusConverter))]
 public enum SpendLimitIncreaseRequestStatus
 {
-    Approved,
-    Denied,
-    Pending,
+    Approved = 0,
+    Denied = 1,
+    Pending = 2,
 }
 
 sealed class SpendLimitIncreaseRequestStatusConverter

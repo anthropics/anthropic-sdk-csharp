@@ -1196,20 +1196,20 @@ sealed class BetaManagedAgentsDeploymentPausedReasonErrorConverter
 [JsonConverter(typeof(BetaManagedAgentsDeploymentPausedReasonErrorTypeConverter))]
 public enum BetaManagedAgentsDeploymentPausedReasonErrorType
 {
-    EnvironmentArchivedError,
-    AgentArchivedError,
-    EnvironmentNotFoundError,
-    VaultNotFoundError,
-    FileNotFoundError,
-    SessionResourceNotFoundError,
-    WorkspaceArchivedError,
-    OrganizationDisabledError,
-    MemoryStoreArchivedError,
-    SkillNotFoundError,
-    VaultArchivedError,
-    UnknownError,
-    SelfHostedResourcesUnsupportedError,
-    McpEgressBlockedError,
+    EnvironmentArchivedError = 0,
+    AgentArchivedError = 1,
+    EnvironmentNotFoundError = 2,
+    VaultNotFoundError = 3,
+    FileNotFoundError = 4,
+    SessionResourceNotFoundError = 5,
+    WorkspaceArchivedError = 6,
+    OrganizationDisabledError = 7,
+    MemoryStoreArchivedError = 8,
+    SkillNotFoundError = 9,
+    VaultArchivedError = 10,
+    UnknownError = 11,
+    SelfHostedResourcesUnsupportedError = 12,
+    McpEgressBlockedError = 13,
 }
 
 sealed class BetaManagedAgentsDeploymentPausedReasonErrorTypeConverter

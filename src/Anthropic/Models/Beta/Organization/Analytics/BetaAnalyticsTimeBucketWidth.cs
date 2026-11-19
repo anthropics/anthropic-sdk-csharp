@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsTimeBucketWidthConverter))]
 public enum BetaAnalyticsTimeBucketWidth
 {
-    Day,
-    Hour,
-    Minute,
+    Day = 0,
+    Hour = 1,
+    Minute = 2,
 }
 
 sealed class BetaAnalyticsTimeBucketWidthConverter : JsonConverter<BetaAnalyticsTimeBucketWidth>

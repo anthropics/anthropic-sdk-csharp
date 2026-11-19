@@ -89,8 +89,8 @@ class UserProfileCyberTierFromRaw : IFromRawJson<UserProfileCyberTier>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Active,
-    Inactive,
+    Active = 0,
+    Inactive = 1,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

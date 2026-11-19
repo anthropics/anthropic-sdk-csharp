@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsWriteToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTypeConverter
@@ -586,7 +586,7 @@ sealed class BetaManagedAgentsWriteToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(BetaManagedAgentsWriteToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsWriteToolConfigParamsType
 {
-    Write,
+    Write = 0,
 }
 
 sealed class BetaManagedAgentsWriteToolConfigParamsTypeConverter

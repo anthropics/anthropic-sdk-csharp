@@ -421,9 +421,9 @@ sealed class BetaTelemetryDestinationWorkspacesParamsConverter
 [JsonConverter(typeof(BetaTelemetryDestinationWorkspacesParamsTypeConverter))]
 public enum BetaTelemetryDestinationWorkspacesParamsType
 {
-    All,
-    Include,
-    Exclude,
+    All = 0,
+    Include = 1,
+    Exclude = 2,
 }
 
 sealed class BetaTelemetryDestinationWorkspacesParamsTypeConverter

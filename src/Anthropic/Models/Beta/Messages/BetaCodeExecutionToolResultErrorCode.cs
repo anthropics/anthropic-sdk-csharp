@@ -8,10 +8,10 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaCodeExecutionToolResultErrorCodeConverter))]
 public enum BetaCodeExecutionToolResultErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
 }
 
 sealed class BetaCodeExecutionToolResultErrorCodeConverter

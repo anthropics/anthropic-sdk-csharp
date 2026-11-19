@@ -453,8 +453,8 @@ class UnrestrictedConverter : JsonConverter<Unrestricted>
 [JsonConverter(typeof(DefaultInferenceGeoConverter))]
 public enum DefaultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
@@ -500,7 +500,7 @@ sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
 [JsonConverter(typeof(WorkspaceGeoConverter))]
 public enum WorkspaceGeo
 {
-    Us,
+    Us = 0,
 }
 
 sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>

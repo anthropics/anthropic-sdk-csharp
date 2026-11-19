@@ -463,8 +463,8 @@ class DataResidencyUpdateConfigAllowedInferenceGeosUnrestrictedConverter
 [JsonConverter(typeof(DataResidencyUpdateConfigDefaultInferenceGeoConverter))]
 public enum DataResidencyUpdateConfigDefaultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class DataResidencyUpdateConfigDefaultInferenceGeoConverter

@@ -107,8 +107,8 @@ class BetaContainerSkillFromRaw : IFromRawJson<BetaContainerSkill>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Messages.Type>

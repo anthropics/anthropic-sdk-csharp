@@ -520,9 +520,9 @@ sealed class BetaManagedAgentsBashToolConfigPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsBashToolConfigPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsBashToolConfigPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsBashToolConfigPermissionPolicyTypeConverter

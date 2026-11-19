@@ -8,11 +8,11 @@ namespace Anthropic.Models.Organization.Workspaces;
 [JsonConverter(typeof(WorkspaceRoleConverter))]
 public enum WorkspaceRole
 {
-    WorkspaceAdmin,
-    WorkspaceBilling,
-    WorkspaceDeveloper,
-    WorkspaceRestrictedDeveloper,
-    WorkspaceUser,
+    WorkspaceAdmin = 0,
+    WorkspaceBilling = 1,
+    WorkspaceDeveloper = 2,
+    WorkspaceRestrictedDeveloper = 3,
+    WorkspaceUser = 4,
 }
 
 sealed class WorkspaceRoleConverter : JsonConverter<WorkspaceRole>

@@ -476,11 +476,11 @@ sealed class RawContentBlockDeltaConverter : JsonConverter<RawContentBlockDelta>
 [JsonConverter(typeof(RawContentBlockDeltaTypeConverter))]
 public enum RawContentBlockDeltaType
 {
-    TextDelta,
-    InputJsonDelta,
-    CitationsDelta,
-    ThinkingDelta,
-    SignatureDelta,
+    TextDelta = 0,
+    InputJsonDelta = 1,
+    CitationsDelta = 2,
+    ThinkingDelta = 3,
+    SignatureDelta = 4,
 }
 
 sealed class RawContentBlockDeltaTypeConverter : JsonConverter<RawContentBlockDeltaType>

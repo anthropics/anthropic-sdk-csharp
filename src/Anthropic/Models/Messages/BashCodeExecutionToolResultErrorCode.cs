@@ -8,11 +8,11 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(BashCodeExecutionToolResultErrorCodeConverter))]
 public enum BashCodeExecutionToolResultErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
-    OutputFileTooLarge,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
+    OutputFileTooLarge = 4,
 }
 
 sealed class BashCodeExecutionToolResultErrorCodeConverter

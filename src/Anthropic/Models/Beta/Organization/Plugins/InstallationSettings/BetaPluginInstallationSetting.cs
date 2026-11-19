@@ -177,10 +177,10 @@ class BetaPluginInstallationSettingFromRaw : IFromRawJson<BetaPluginInstallation
 [JsonConverter(typeof(BetaPluginInstallationSettingInstallationPreferenceConverter))]
 public enum BetaPluginInstallationSettingInstallationPreference
 {
-    AutoInstall,
-    Available,
-    NotAvailable,
-    Required,
+    AutoInstall = 0,
+    Available = 1,
+    NotAvailable = 2,
+    Required = 3,
 }
 
 sealed class BetaPluginInstallationSettingInstallationPreferenceConverter
@@ -619,9 +619,9 @@ sealed class BetaPluginInstallationSettingTargetConverter
 [JsonConverter(typeof(BetaPluginInstallationSettingTargetTypeConverter))]
 public enum BetaPluginInstallationSettingTargetType
 {
-    Organization,
-    RbacGroup,
-    OrganizationMember,
+    Organization = 0,
+    RbacGroup = 1,
+    OrganizationMember = 2,
 }
 
 sealed class BetaPluginInstallationSettingTargetTypeConverter

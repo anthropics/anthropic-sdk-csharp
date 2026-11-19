@@ -463,8 +463,8 @@ sealed class BetaManagedAgentsUserDefineOutcomeEventParamsRubricConverter
 [JsonConverter(typeof(BetaManagedAgentsUserDefineOutcomeEventParamsRubricTypeConverter))]
 public enum BetaManagedAgentsUserDefineOutcomeEventParamsRubricType
 {
-    File,
-    Text,
+    File = 0,
+    Text = 1,
 }
 
 sealed class BetaManagedAgentsUserDefineOutcomeEventParamsRubricTypeConverter

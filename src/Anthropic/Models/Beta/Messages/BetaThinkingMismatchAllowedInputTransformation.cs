@@ -144,10 +144,10 @@ class BetaThinkingMismatchAllowedInputTransformationFromRaw
 [JsonConverter(typeof(BetaThinkingMismatchAllowedInputTransformationReasonConverter))]
 public enum BetaThinkingMismatchAllowedInputTransformationReason
 {
-    ModelBindingMismatch,
-    PrefixBindingMismatch,
-    OrganizationBindingMismatch,
-    EndUserBindingMismatch,
+    ModelBindingMismatch = 0,
+    PrefixBindingMismatch = 1,
+    OrganizationBindingMismatch = 2,
+    EndUserBindingMismatch = 3,
 }
 
 sealed class BetaThinkingMismatchAllowedInputTransformationReasonConverter

@@ -15,8 +15,8 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaThinkingPrefixMismatchBehaviorConverter))]
 public enum BetaThinkingPrefixMismatchBehavior
 {
-    Error,
-    DropBlock,
+    Error = 0,
+    DropBlock = 1,
 }
 
 sealed class BetaThinkingPrefixMismatchBehaviorConverter

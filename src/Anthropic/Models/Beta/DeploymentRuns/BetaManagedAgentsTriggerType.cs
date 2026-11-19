@@ -14,12 +14,12 @@ public enum BetaManagedAgentsTriggerType
     /// <summary>
     /// The run was fired by the deployment's cron schedule.
     /// </summary>
-    Schedule,
+    Schedule = 0,
 
     /// <summary>
     /// The run was started manually by creating a session directly against the deployment.
     /// </summary>
-    Manual,
+    Manual = 1,
 }
 
 sealed class BetaManagedAgentsTriggerTypeConverter : JsonConverter<BetaManagedAgentsTriggerType>

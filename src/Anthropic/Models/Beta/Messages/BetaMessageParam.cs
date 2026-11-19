@@ -424,9 +424,9 @@ sealed class BetaMessageParamConverter : JsonConverter<BetaMessageParam>
 [JsonConverter(typeof(BetaMessageParamRoleConverter))]
 public enum BetaMessageParamRole
 {
-    User,
-    Assistant,
-    System,
+    User = 0,
+    Assistant = 1,
+    System = 2,
 }
 
 sealed class BetaMessageParamRoleConverter : JsonConverter<BetaMessageParamRole>

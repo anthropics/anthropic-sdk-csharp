@@ -609,10 +609,10 @@ sealed class BetaRequestToolAdditionBlockToolConverter
 [JsonConverter(typeof(BetaRequestToolAdditionBlockToolTypeConverter))]
 public enum BetaRequestToolAdditionBlockToolType
 {
-    ToolReference,
-    McpToolReference,
-    McpToolsetReference,
-    ToolDefinition,
+    ToolReference = 0,
+    McpToolReference = 1,
+    McpToolsetReference = 2,
+    ToolDefinition = 3,
 }
 
 sealed class BetaRequestToolAdditionBlockToolTypeConverter

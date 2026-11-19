@@ -403,9 +403,9 @@ sealed class BetaManagedAgentsDeploymentInitialEventConverter
 [JsonConverter(typeof(BetaManagedAgentsDeploymentInitialEventTypeConverter))]
 public enum BetaManagedAgentsDeploymentInitialEventType
 {
-    UserMessage,
-    UserDefineOutcome,
-    SystemMessage,
+    UserMessage = 0,
+    UserDefineOutcome = 1,
+    SystemMessage = 2,
 }
 
 sealed class BetaManagedAgentsDeploymentInitialEventTypeConverter

@@ -233,10 +233,10 @@ public record class ApiKeyListParams : ParamsBase
 [JsonConverter(typeof(ApiKeyListParamsStatusConverter))]
 public enum ApiKeyListParamsStatus
 {
-    Active,
-    Archived,
-    Expired,
-    Inactive,
+    Active = 0,
+    Archived = 1,
+    Expired = 2,
+    Inactive = 3,
 }
 
 sealed class ApiKeyListParamsStatusConverter : JsonConverter<ApiKeyListParamsStatus>

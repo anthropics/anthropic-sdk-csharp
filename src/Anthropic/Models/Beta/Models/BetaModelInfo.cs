@@ -272,9 +272,9 @@ class BetaModelInfoFromRaw : IFromRawJson<BetaModelInfo>
 [JsonConverter(typeof(BetaModelInfoLifecycleConverter))]
 public enum BetaModelInfoLifecycle
 {
-    Active,
-    Deprecated,
-    Retired,
+    Active = 0,
+    Deprecated = 1,
+    Retired = 2,
 }
 
 sealed class BetaModelInfoLifecycleConverter : JsonConverter<BetaModelInfoLifecycle>

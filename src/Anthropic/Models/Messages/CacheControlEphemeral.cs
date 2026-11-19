@@ -113,8 +113,8 @@ class CacheControlEphemeralFromRaw : IFromRawJson<CacheControlEphemeral>
 [JsonConverter(typeof(TtlConverter))]
 public enum Ttl
 {
-    Ttl5m,
-    Ttl1h,
+    Ttl5m = 0,
+    Ttl1h = 1,
 }
 
 sealed class TtlConverter : JsonConverter<Ttl>

@@ -255,8 +255,8 @@ public record class PluginMarketplaceListParams : ParamsBase
 [JsonConverter(typeof(OwnerTypeConverter))]
 public enum OwnerType
 {
-    Organization,
-    User,
+    Organization = 0,
+    User = 1,
 }
 
 sealed class OwnerTypeConverter : JsonConverter<OwnerType>
@@ -304,11 +304,11 @@ sealed class OwnerTypeConverter : JsonConverter<OwnerType>
 [JsonConverter(typeof(SourceConverter))]
 public enum Source
 {
-    Directory,
-    GitHub,
-    Gitlab,
-    Manual,
-    PublicGit,
+    Directory = 0,
+    GitHub = 1,
+    Gitlab = 2,
+    Manual = 3,
+    PublicGit = 4,
 }
 
 sealed class SourceConverter : JsonConverter<Source>

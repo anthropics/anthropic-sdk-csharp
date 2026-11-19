@@ -311,8 +311,8 @@ sealed class BetaDreamInputConverter : JsonConverter<BetaDreamInput>
 [JsonConverter(typeof(BetaDreamInputTypeConverter))]
 public enum BetaDreamInputType
 {
-    MemoryStore,
-    Sessions,
+    MemoryStore = 0,
+    Sessions = 1,
 }
 
 sealed class BetaDreamInputTypeConverter : JsonConverter<BetaDreamInputType>

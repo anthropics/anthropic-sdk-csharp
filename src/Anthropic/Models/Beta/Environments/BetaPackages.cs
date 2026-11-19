@@ -204,7 +204,7 @@ class BetaPackagesFromRaw : IFromRawJson<BetaPackages>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    Packages,
+    Packages = 0,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Environments.Type>

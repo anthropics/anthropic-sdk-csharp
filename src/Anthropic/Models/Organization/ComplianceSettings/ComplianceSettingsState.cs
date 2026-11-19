@@ -317,8 +317,8 @@ sealed class ComplianceSettingsStateConverter : JsonConverter<ComplianceSettings
 [JsonConverter(typeof(ComplianceSettingsStateTypeConverter))]
 public enum ComplianceSettingsStateType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class ComplianceSettingsStateTypeConverter : JsonConverter<ComplianceSettingsStateType>

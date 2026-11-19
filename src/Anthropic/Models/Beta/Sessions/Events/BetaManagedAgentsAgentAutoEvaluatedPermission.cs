@@ -421,9 +421,9 @@ sealed class BetaManagedAgentsAgentAutoEvaluatedPermissionConverter
 [JsonConverter(typeof(BetaManagedAgentsAgentAutoEvaluatedPermissionTypeConverter))]
 public enum BetaManagedAgentsAgentAutoEvaluatedPermissionType
 {
-    Allow,
-    Ask,
-    Deny,
+    Allow = 0,
+    Ask = 1,
+    Deny = 2,
 }
 
 sealed class BetaManagedAgentsAgentAutoEvaluatedPermissionTypeConverter

@@ -8,12 +8,12 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsServiceTierConverter))]
 public enum BetaAnalyticsServiceTier
 {
-    Batch,
-    Flex,
-    FlexDiscount,
-    Priority,
-    PriorityOnDemand,
-    Standard,
+    Batch = 0,
+    Flex = 1,
+    FlexDiscount = 2,
+    Priority = 3,
+    PriorityOnDemand = 4,
+    Standard = 5,
 }
 
 sealed class BetaAnalyticsServiceTierConverter : JsonConverter<BetaAnalyticsServiceTier>

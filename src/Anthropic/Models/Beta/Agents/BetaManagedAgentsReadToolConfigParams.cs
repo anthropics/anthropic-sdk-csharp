@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsReadToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsReadToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsReadToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsReadToolConfigParamsPermissionPolicyTypeConverter
@@ -584,7 +584,7 @@ sealed class BetaManagedAgentsReadToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(BetaManagedAgentsReadToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsReadToolConfigParamsType
 {
-    Read,
+    Read = 0,
 }
 
 sealed class BetaManagedAgentsReadToolConfigParamsTypeConverter

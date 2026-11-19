@@ -475,10 +475,10 @@ sealed class BetaTelemetryDestinationDisabledReasonConverter
 [JsonConverter(typeof(BetaTelemetryDestinationDisabledReasonTypeConverter))]
 public enum BetaTelemetryDestinationDisabledReasonType
 {
-    Caller,
-    SustainedFailure,
-    InvalidAddress,
-    Redirect,
+    Caller = 0,
+    SustainedFailure = 1,
+    InvalidAddress = 2,
+    Redirect = 3,
 }
 
 sealed class BetaTelemetryDestinationDisabledReasonTypeConverter

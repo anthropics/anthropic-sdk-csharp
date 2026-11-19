@@ -1484,22 +1484,22 @@ sealed class ErrorConverter : JsonConverter<Error?>
 [JsonConverter(typeof(ErrorTypeConverter))]
 public enum ErrorType
 {
-    EnvironmentArchivedError,
-    AgentArchivedError,
-    EnvironmentNotFoundError,
-    VaultNotFoundError,
-    VaultArchivedError,
-    FileNotFoundError,
-    MemoryStoreArchivedError,
-    SkillNotFoundError,
-    SessionResourceNotFoundError,
-    WorkspaceArchivedError,
-    OrganizationDisabledError,
-    SessionRateLimitedError,
-    SessionCreationRejectedError,
-    UnknownError,
-    SelfHostedResourcesUnsupportedError,
-    McpEgressBlockedError,
+    EnvironmentArchivedError = 0,
+    AgentArchivedError = 1,
+    EnvironmentNotFoundError = 2,
+    VaultNotFoundError = 3,
+    VaultArchivedError = 4,
+    FileNotFoundError = 5,
+    MemoryStoreArchivedError = 6,
+    SkillNotFoundError = 7,
+    SessionResourceNotFoundError = 8,
+    WorkspaceArchivedError = 9,
+    OrganizationDisabledError = 10,
+    SessionRateLimitedError = 11,
+    SessionCreationRejectedError = 12,
+    UnknownError = 13,
+    SelfHostedResourcesUnsupportedError = 14,
+    McpEgressBlockedError = 15,
 }
 
 sealed class ErrorTypeConverter : JsonConverter<ErrorType>

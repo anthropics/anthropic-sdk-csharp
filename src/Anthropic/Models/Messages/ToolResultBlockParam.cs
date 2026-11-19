@@ -993,12 +993,12 @@ sealed class BlockConverter : JsonConverter<Block>
 [JsonConverter(typeof(BlockTypeConverter))]
 public enum BlockType
 {
-    Text,
-    Image,
-    SearchResult,
-    Document,
-    ToolReference,
-    BrowserState,
+    Text = 0,
+    Image = 1,
+    SearchResult = 2,
+    Document = 3,
+    ToolReference = 4,
+    BrowserState = 5,
 }
 
 sealed class BlockTypeConverter : JsonConverter<BlockType>

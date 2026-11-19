@@ -148,9 +148,9 @@ class BetaThinkingConfigEnabledFromRaw : IFromRawJson<BetaThinkingConfigEnabled>
 [JsonConverter(typeof(BetaThinkingConfigEnabledDisplayConverter))]
 public enum BetaThinkingConfigEnabledDisplay
 {
-    Summarized,
-    Omitted,
-    Updates,
+    Summarized = 0,
+    Omitted = 1,
+    Updates = 2,
 }
 
 sealed class BetaThinkingConfigEnabledDisplayConverter

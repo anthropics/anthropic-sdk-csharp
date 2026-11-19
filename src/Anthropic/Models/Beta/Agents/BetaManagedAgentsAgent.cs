@@ -652,8 +652,8 @@ sealed class SkillConverter : JsonConverter<global::Anthropic.Models.Beta.Agents
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Agents.SkillTypeConverter))]
 public enum SkillType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class SkillTypeConverter : JsonConverter<global::Anthropic.Models.Beta.Agents.SkillType>
@@ -1087,9 +1087,9 @@ sealed class BetaManagedAgentsAgentToolConverter : JsonConverter<BetaManagedAgen
 [JsonConverter(typeof(BetaManagedAgentsAgentToolTypeConverter))]
 public enum BetaManagedAgentsAgentToolType
 {
-    AgentToolset20260401,
-    McpToolset,
-    Custom,
+    AgentToolset20260401 = 0,
+    McpToolset = 1,
+    Custom = 2,
 }
 
 sealed class BetaManagedAgentsAgentToolTypeConverter : JsonConverter<BetaManagedAgentsAgentToolType>

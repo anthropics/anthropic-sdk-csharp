@@ -19,7 +19,7 @@ public enum BetaTelemetryDestinationContentMode
     /// metadata. They don't contain prompt text, completion text, or tool inputs
     /// and outputs.
     /// </summary>
-    MetadataOnly,
+    MetadataOnly = 0,
 
     /// <summary>
     /// The spans contain the same metadata as `metadata_only`, plus message and tool content.
@@ -28,7 +28,7 @@ public enum BetaTelemetryDestinationContentMode
     /// can't choose this mode. The API exports only metadata for such an organization,
     /// even to a destination that already has `content`.</para>
     /// </summary>
-    Content,
+    Content = 1,
 }
 
 sealed class BetaTelemetryDestinationContentModeConverter

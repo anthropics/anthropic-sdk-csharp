@@ -408,9 +408,9 @@ sealed class BetaTelemetryDestinationWorkspacesConverter
 [JsonConverter(typeof(BetaTelemetryDestinationWorkspacesTypeConverter))]
 public enum BetaTelemetryDestinationWorkspacesType
 {
-    All,
-    Include,
-    Exclude,
+    All = 0,
+    Include = 1,
+    Exclude = 2,
 }
 
 sealed class BetaTelemetryDestinationWorkspacesTypeConverter

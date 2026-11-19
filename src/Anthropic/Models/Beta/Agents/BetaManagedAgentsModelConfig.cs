@@ -650,11 +650,11 @@ sealed class EffortConverter : JsonConverter<Effort>
 [JsonConverter(typeof(EffortTypeConverter))]
 public enum EffortType
 {
-    Low,
-    Medium,
-    High,
-    Xhigh,
-    Max,
+    Low = 0,
+    Medium = 1,
+    High = 2,
+    Xhigh = 3,
+    Max = 4,
 }
 
 sealed class EffortTypeConverter : JsonConverter<EffortType>
@@ -708,8 +708,8 @@ sealed class EffortTypeConverter : JsonConverter<EffortType>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

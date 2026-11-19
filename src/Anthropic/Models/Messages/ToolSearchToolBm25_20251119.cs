@@ -198,8 +198,8 @@ class ToolSearchToolBm25_20251119FromRaw : IFromRawJson<ToolSearchToolBm25_20251
 [JsonConverter(typeof(ToolSearchToolBm25_20251119TypeConverter))]
 public enum ToolSearchToolBm25_20251119Type
 {
-    ToolSearchToolBm25_20251119,
-    ToolSearchToolBm25,
+    ToolSearchToolBm25_20251119 = 0,
+    ToolSearchToolBm25 = 1,
 }
 
 sealed class ToolSearchToolBm25_20251119TypeConverter
@@ -254,10 +254,10 @@ sealed class ToolSearchToolBm25_20251119TypeConverter
 [JsonConverter(typeof(ToolSearchToolBm25_20251119AllowedCallerConverter))]
 public enum ToolSearchToolBm25_20251119AllowedCaller
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
+    CodeExecution20260521 = 3,
 }
 
 sealed class ToolSearchToolBm25_20251119AllowedCallerConverter

@@ -230,9 +230,9 @@ class BetaMessageBatchFromRaw : IFromRawJson<BetaMessageBatch>
 [JsonConverter(typeof(ProcessingStatusConverter))]
 public enum ProcessingStatus
 {
-    InProgress,
-    Canceling,
-    Ended,
+    InProgress = 0,
+    Canceling = 1,
+    Ended = 2,
 }
 
 sealed class ProcessingStatusConverter : JsonConverter<ProcessingStatus>

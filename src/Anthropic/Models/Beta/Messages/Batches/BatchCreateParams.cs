@@ -1598,8 +1598,8 @@ sealed class FallbackCreditTokenConverter : JsonConverter<FallbackCreditToken?>
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.ServiceTierConverter))]
 public enum ServiceTier
 {
-    Auto,
-    StandardOnly,
+    Auto = 0,
+    StandardOnly = 1,
 }
 
 sealed class ServiceTierConverter
@@ -1657,8 +1657,8 @@ sealed class ServiceTierConverter
 [JsonConverter(typeof(global::Anthropic.Models.Beta.Messages.Batches.SpeedConverter))]
 public enum Speed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<global::Anthropic.Models.Beta.Messages.Batches.Speed>

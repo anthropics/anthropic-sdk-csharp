@@ -715,11 +715,11 @@ sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTypeConverter))]
 public enum BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType
 {
-    EndTurn,
-    RequiresAction,
-    RetriesExhausted,
-    BudgetReached,
-    Refusal,
+    EndTurn = 0,
+    RequiresAction = 1,
+    RetriesExhausted = 2,
+    BudgetReached = 3,
+    Refusal = 4,
 }
 
 sealed class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTypeConverter

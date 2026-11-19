@@ -326,8 +326,8 @@ sealed class SpendLimitIncreaseRequestResolvedByConverter
 [JsonConverter(typeof(SpendLimitIncreaseRequestResolvedByTypeConverter))]
 public enum SpendLimitIncreaseRequestResolvedByType
 {
-    UserActor,
-    ScopedApiKeyActor,
+    UserActor = 0,
+    ScopedApiKeyActor = 1,
 }
 
 sealed class SpendLimitIncreaseRequestResolvedByTypeConverter

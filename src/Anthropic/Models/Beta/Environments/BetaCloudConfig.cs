@@ -413,8 +413,8 @@ sealed class NetworkingConverter : JsonConverter<Networking>
 [JsonConverter(typeof(NetworkingTypeConverter))]
 public enum NetworkingType
 {
-    Unrestricted,
-    Limited,
+    Unrestricted = 0,
+    Limited = 1,
 }
 
 sealed class NetworkingTypeConverter : JsonConverter<NetworkingType>

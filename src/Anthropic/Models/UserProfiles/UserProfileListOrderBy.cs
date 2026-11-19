@@ -15,13 +15,13 @@ public enum UserProfileListOrderBy
     /// <summary>
     /// Sort by when each user profile was created. This is the default.
     /// </summary>
-    CreatedAt,
+    CreatedAt = 0,
 
     /// <summary>
     /// Sort by `name`, ignoring the case of ASCII letters. Profiles without a name
     /// come last in either direction.
     /// </summary>
-    Name,
+    Name = 1,
 }
 
 sealed class UserProfileListOrderByConverter : JsonConverter<UserProfileListOrderBy>

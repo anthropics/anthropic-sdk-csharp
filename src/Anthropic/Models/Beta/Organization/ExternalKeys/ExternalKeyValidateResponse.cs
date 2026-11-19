@@ -123,8 +123,8 @@ class ExternalKeyValidateResponseFromRaw : IFromRawJson<ExternalKeyValidateRespo
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Failure,
-    Success,
+    Failure = 0,
+    Success = 1,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

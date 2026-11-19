@@ -231,8 +231,8 @@ public record class ServiceAccountCreateParams : ParamsBase
 [JsonConverter(typeof(OrganizationRoleConverter))]
 public enum OrganizationRole
 {
-    Admin,
-    Developer,
+    Admin = 0,
+    Developer = 1,
 }
 
 sealed class OrganizationRoleConverter : JsonConverter<OrganizationRole>

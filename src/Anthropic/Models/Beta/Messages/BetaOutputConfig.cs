@@ -108,11 +108,11 @@ class BetaOutputConfigFromRaw : IFromRawJson<BetaOutputConfig>
 [JsonConverter(typeof(EffortConverter))]
 public enum Effort
 {
-    Low,
-    Medium,
-    High,
-    Xhigh,
-    Max,
+    Low = 0,
+    Medium = 1,
+    High = 2,
+    Xhigh = 3,
+    Max = 4,
 }
 
 sealed class EffortConverter : JsonConverter<Effort>

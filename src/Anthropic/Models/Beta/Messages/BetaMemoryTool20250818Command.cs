@@ -621,12 +621,12 @@ sealed class BetaMemoryTool20250818CommandConverter : JsonConverter<BetaMemoryTo
 [JsonConverter(typeof(BetaMemoryTool20250818CommandCommandConverter))]
 public enum BetaMemoryTool20250818CommandCommand
 {
-    View,
-    Create,
-    StrReplace,
-    Insert,
-    Delete,
-    Rename,
+    View = 0,
+    Create = 1,
+    StrReplace = 2,
+    Insert = 3,
+    Delete = 4,
+    Rename = 5,
 }
 
 sealed class BetaMemoryTool20250818CommandCommandConverter

@@ -259,11 +259,11 @@ public record class WebhookCreateParams : ParamsBase
 [JsonConverter(typeof(EnabledEventConverter))]
 public enum EnabledEvent
 {
-    ExternalKeyFailed,
-    ExternalKeyRecovered,
-    UserProfileEnforcementActionOpened,
-    UserProfileEnforcementActionResolved,
-    UserProfileProgramStatusUpdated,
+    ExternalKeyFailed = 0,
+    ExternalKeyRecovered = 1,
+    UserProfileEnforcementActionOpened = 2,
+    UserProfileEnforcementActionResolved = 3,
+    UserProfileProgramStatusUpdated = 4,
 }
 
 sealed class EnabledEventConverter : JsonConverter<EnabledEvent>

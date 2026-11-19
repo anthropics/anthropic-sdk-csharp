@@ -400,9 +400,9 @@ sealed class BetaManagedAgentsWorkflowRunResultConverter
 [JsonConverter(typeof(BetaManagedAgentsWorkflowRunResultTypeConverter))]
 public enum BetaManagedAgentsWorkflowRunResultType
 {
-    Completed,
-    Error,
-    Stopped,
+    Completed = 0,
+    Error = 1,
+    Stopped = 2,
 }
 
 sealed class BetaManagedAgentsWorkflowRunResultTypeConverter

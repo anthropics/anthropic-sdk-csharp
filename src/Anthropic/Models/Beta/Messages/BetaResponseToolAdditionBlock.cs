@@ -613,10 +613,10 @@ sealed class BetaResponseToolAdditionBlockToolConverter
 [JsonConverter(typeof(BetaResponseToolAdditionBlockToolTypeConverter))]
 public enum BetaResponseToolAdditionBlockToolType
 {
-    ToolReference,
-    McpToolReference,
-    McpToolsetReference,
-    ToolDefinition,
+    ToolReference = 0,
+    McpToolReference = 1,
+    McpToolsetReference = 2,
+    ToolDefinition = 3,
 }
 
 sealed class BetaResponseToolAdditionBlockToolTypeConverter

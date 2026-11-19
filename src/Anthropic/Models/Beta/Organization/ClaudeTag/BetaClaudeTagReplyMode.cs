@@ -452,10 +452,10 @@ sealed class BetaClaudeTagReplyModeConverter : JsonConverter<BetaClaudeTagReplyM
 [JsonConverter(typeof(BetaClaudeTagReplyModeTypeConverter))]
 public enum BetaClaudeTagReplyModeType
 {
-    Automatic,
-    MentionOnly,
-    AlwaysAwake,
-    Thread,
+    Automatic = 0,
+    MentionOnly = 1,
+    AlwaysAwake = 2,
+    Thread = 3,
 }
 
 sealed class BetaClaudeTagReplyModeTypeConverter : JsonConverter<BetaClaudeTagReplyModeType>

@@ -333,8 +333,8 @@ sealed class BetaTelemetryDestinationStateConverter : JsonConverter<BetaTelemetr
 [JsonConverter(typeof(BetaTelemetryDestinationStateTypeConverter))]
 public enum BetaTelemetryDestinationStateType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaTelemetryDestinationStateTypeConverter

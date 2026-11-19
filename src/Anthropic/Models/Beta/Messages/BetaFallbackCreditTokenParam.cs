@@ -126,8 +126,8 @@ class BetaFallbackCreditTokenParamFromRaw : IFromRawJson<BetaFallbackCreditToken
 [JsonConverter(typeof(ModeConverter))]
 public enum Mode
 {
-    Strict,
-    BestEffort,
+    Strict = 0,
+    BestEffort = 1,
 }
 
 sealed class ModeConverter : JsonConverter<Mode>

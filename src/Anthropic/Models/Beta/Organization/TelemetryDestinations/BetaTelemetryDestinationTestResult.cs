@@ -326,8 +326,8 @@ sealed class BetaTelemetryDestinationTestResultConverter
 [JsonConverter(typeof(BetaTelemetryDestinationTestResultTypeConverter))]
 public enum BetaTelemetryDestinationTestResultType
 {
-    Success,
-    Failure,
+    Success = 0,
+    Failure = 1,
 }
 
 sealed class BetaTelemetryDestinationTestResultTypeConverter

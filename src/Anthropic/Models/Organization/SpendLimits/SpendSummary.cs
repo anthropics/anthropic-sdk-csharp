@@ -459,8 +459,8 @@ sealed class ActorConverter : JsonConverter<Actor>
 [JsonConverter(typeof(ActorTypeConverter))]
 public enum ActorType
 {
-    UserActor,
-    ScopedApiKeyActor,
+    UserActor = 0,
+    ScopedApiKeyActor = 1,
 }
 
 sealed class ActorTypeConverter : JsonConverter<ActorType>
@@ -1111,13 +1111,13 @@ sealed class SpendSummaryScopeConverter : JsonConverter<SpendSummaryScope>
 [JsonConverter(typeof(SpendSummaryScopeTypeConverter))]
 public enum SpendSummaryScopeType
 {
-    User,
-    SeatTier,
-    RbacGroup,
-    OrganizationService,
-    Organization,
-    Workspace,
-    UsageTier,
+    User = 0,
+    SeatTier = 1,
+    RbacGroup = 2,
+    OrganizationService = 3,
+    Organization = 4,
+    Workspace = 5,
+    UsageTier = 6,
 }
 
 sealed class SpendSummaryScopeTypeConverter : JsonConverter<SpendSummaryScopeType>
@@ -1777,13 +1777,13 @@ sealed class SourceConverter : JsonConverter<Source>
 [JsonConverter(typeof(SourceTypeConverter))]
 public enum SourceType
 {
-    User,
-    SeatTier,
-    RbacGroup,
-    OrganizationService,
-    Organization,
-    Workspace,
-    UsageTier,
+    User = 0,
+    SeatTier = 1,
+    RbacGroup = 2,
+    OrganizationService = 3,
+    Organization = 4,
+    Workspace = 5,
+    UsageTier = 6,
 }
 
 sealed class SourceTypeConverter : JsonConverter<SourceType>

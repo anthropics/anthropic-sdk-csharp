@@ -12,10 +12,10 @@ namespace Anthropic.Models.UserProfiles;
 [JsonConverter(typeof(UserProfileExternalUserEntityTypeConverter))]
 public enum UserProfileExternalUserEntityType
 {
-    Individual,
-    Business,
-    NonProfit,
-    Government,
+    Individual = 0,
+    Business = 1,
+    NonProfit = 2,
+    Government = 3,
 }
 
 sealed class UserProfileExternalUserEntityTypeConverter

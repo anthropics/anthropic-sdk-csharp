@@ -181,9 +181,9 @@ public record class ApiKeyUpdateParams : ParamsBase
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Active,
-    Archived,
-    Inactive,
+    Active = 0,
+    Archived = 1,
+    Inactive = 2,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

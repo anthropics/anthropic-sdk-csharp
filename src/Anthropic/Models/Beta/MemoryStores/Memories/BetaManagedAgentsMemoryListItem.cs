@@ -341,8 +341,8 @@ sealed class BetaManagedAgentsMemoryListItemConverter
 [JsonConverter(typeof(BetaManagedAgentsMemoryListItemTypeConverter))]
 public enum BetaManagedAgentsMemoryListItemType
 {
-    Memory,
-    MemoryPrefix,
+    Memory = 0,
+    MemoryPrefix = 1,
 }
 
 sealed class BetaManagedAgentsMemoryListItemTypeConverter

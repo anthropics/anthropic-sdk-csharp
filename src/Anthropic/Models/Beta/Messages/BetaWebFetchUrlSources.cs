@@ -591,10 +591,10 @@ sealed class ClientToolResultsConverter : JsonConverter<ClientToolResults>
 [JsonConverter(typeof(ClientToolResultsTypeConverter))]
 public enum ClientToolResultsType
 {
-    All,
-    None,
-    Only,
-    Except,
+    All = 0,
+    None = 1,
+    Only = 2,
+    Except = 3,
 }
 
 sealed class ClientToolResultsTypeConverter : JsonConverter<ClientToolResultsType>
@@ -1095,10 +1095,10 @@ sealed class ServerToolResultsConverter : JsonConverter<ServerToolResults>
 [JsonConverter(typeof(ServerToolResultsTypeConverter))]
 public enum ServerToolResultsType
 {
-    All,
-    None,
-    Only,
-    Except,
+    All = 0,
+    None = 1,
+    Only = 2,
+    Except = 3,
 }
 
 sealed class ServerToolResultsTypeConverter : JsonConverter<ServerToolResultsType>
@@ -1452,8 +1452,8 @@ sealed class UserInputConverter : JsonConverter<UserInput>
 [JsonConverter(typeof(UserInputTypeConverter))]
 public enum UserInputType
 {
-    All,
-    None,
+    All = 0,
+    None = 1,
 }
 
 sealed class UserInputTypeConverter : JsonConverter<UserInputType>

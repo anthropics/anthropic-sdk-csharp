@@ -626,11 +626,11 @@ sealed class BetaTextCitationConverter : JsonConverter<BetaTextCitation>
 [JsonConverter(typeof(BetaTextCitationTypeConverter))]
 public enum BetaTextCitationType
 {
-    CharLocation,
-    PageLocation,
-    ContentBlockLocation,
-    WebSearchResultLocation,
-    SearchResultLocation,
+    CharLocation = 0,
+    PageLocation = 1,
+    ContentBlockLocation = 2,
+    WebSearchResultLocation = 3,
+    SearchResultLocation = 4,
 }
 
 sealed class BetaTextCitationTypeConverter : JsonConverter<BetaTextCitationType>

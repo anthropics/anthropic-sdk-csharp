@@ -335,8 +335,8 @@ sealed class BetaManagedAgentsSessionMultiagentSubagentsConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionMultiagentSubagentsTypeConverter))]
 public enum BetaManagedAgentsSessionMultiagentSubagentsType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaManagedAgentsSessionMultiagentSubagentsTypeConverter

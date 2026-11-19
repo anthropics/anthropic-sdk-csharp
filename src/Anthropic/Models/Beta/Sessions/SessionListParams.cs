@@ -484,8 +484,8 @@ public record class SessionListParams : ParamsBase
 [JsonConverter(typeof(OrderConverter))]
 public enum Order
 {
-    Asc,
-    Desc,
+    Asc = 0,
+    Desc = 1,
 }
 
 sealed class OrderConverter : JsonConverter<Order>
@@ -527,23 +527,23 @@ public enum Status
     /// <summary>
     /// Transient error occurred, retrying automatically.
     /// </summary>
-    Rescheduling,
+    Rescheduling = 0,
 
     /// <summary>
     /// Agent is actively executing.
     /// </summary>
-    Running,
+    Running = 1,
 
     /// <summary>
     /// Agent is waiting for input, including user messages or tool confirmations.
     /// Sessions start in idle.
     /// </summary>
-    Idle,
+    Idle = 2,
 
     /// <summary>
     /// Session has ended, either due to an error or completion.
     /// </summary>
-    Terminated,
+    Terminated = 3,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

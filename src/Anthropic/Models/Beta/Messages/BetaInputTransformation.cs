@@ -347,8 +347,8 @@ sealed class BetaInputTransformationConverter : JsonConverter<BetaInputTransform
 [JsonConverter(typeof(BetaInputTransformationTypeConverter))]
 public enum BetaInputTransformationType
 {
-    ThinkingDropped,
-    ThinkingMismatchAllowed,
+    ThinkingDropped = 0,
+    ThinkingMismatchAllowed = 1,
 }
 
 sealed class BetaInputTransformationTypeConverter : JsonConverter<BetaInputTransformationType>

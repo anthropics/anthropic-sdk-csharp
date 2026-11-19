@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Sessions.Events;
 [JsonConverter(typeof(BetaManagedAgentsAgentEvaluatedPermissionConverter))]
 public enum BetaManagedAgentsAgentEvaluatedPermission
 {
-    Allow,
-    Ask,
-    Deny,
+    Allow = 0,
+    Ask = 1,
+    Deny = 2,
 }
 
 sealed class BetaManagedAgentsAgentEvaluatedPermissionConverter

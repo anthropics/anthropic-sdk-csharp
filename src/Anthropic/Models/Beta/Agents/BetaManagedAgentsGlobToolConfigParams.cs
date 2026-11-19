@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsGlobToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsGlobToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsGlobToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsGlobToolConfigParamsPermissionPolicyTypeConverter
@@ -584,7 +584,7 @@ sealed class BetaManagedAgentsGlobToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(BetaManagedAgentsGlobToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsGlobToolConfigParamsType
 {
-    Glob,
+    Glob = 0,
 }
 
 sealed class BetaManagedAgentsGlobToolConfigParamsTypeConverter

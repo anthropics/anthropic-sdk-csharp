@@ -1379,21 +1379,21 @@ sealed class ErrorConverter : JsonConverter<Error>
 [JsonConverter(typeof(ErrorTypeConverter))]
 public enum ErrorType
 {
-    UnknownError,
-    ModelOverloadedError,
-    ModelRateLimitedError,
-    ModelRequestFailedError,
-    McpConnectionFailedError,
-    McpAuthenticationFailedError,
-    BillingError,
-    CredentialHostUnreachableError,
-    ToolUseLimitReachedError,
-    CompactionLimitReachedError,
-    RepositoryAuthenticationError,
-    RepositoryForbiddenError,
-    RepositoryNotFoundError,
-    RepositoryCheckoutError,
-    RepositoryCloneError,
+    UnknownError = 0,
+    ModelOverloadedError = 1,
+    ModelRateLimitedError = 2,
+    ModelRequestFailedError = 3,
+    McpConnectionFailedError = 4,
+    McpAuthenticationFailedError = 5,
+    BillingError = 6,
+    CredentialHostUnreachableError = 7,
+    ToolUseLimitReachedError = 8,
+    CompactionLimitReachedError = 9,
+    RepositoryAuthenticationError = 10,
+    RepositoryForbiddenError = 11,
+    RepositoryNotFoundError = 12,
+    RepositoryCheckoutError = 13,
+    RepositoryCloneError = 14,
 }
 
 sealed class ErrorTypeConverter : JsonConverter<ErrorType>

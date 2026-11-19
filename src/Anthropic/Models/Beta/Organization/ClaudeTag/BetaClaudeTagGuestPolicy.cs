@@ -393,9 +393,9 @@ sealed class BetaClaudeTagGuestPolicyConverter : JsonConverter<BetaClaudeTagGues
 [JsonConverter(typeof(BetaClaudeTagGuestPolicyTypeConverter))]
 public enum BetaClaudeTagGuestPolicyType
 {
-    Allow,
-    Restrict,
-    ChannelOnly,
+    Allow = 0,
+    Restrict = 1,
+    ChannelOnly = 2,
 }
 
 sealed class BetaClaudeTagGuestPolicyTypeConverter : JsonConverter<BetaClaudeTagGuestPolicyType>

@@ -571,12 +571,12 @@ sealed class RawMessageStreamEventConverter : JsonConverter<RawMessageStreamEven
 [JsonConverter(typeof(RawMessageStreamEventTypeConverter))]
 public enum RawMessageStreamEventType
 {
-    MessageStart,
-    MessageDelta,
-    MessageStop,
-    ContentBlockStart,
-    ContentBlockDelta,
-    ContentBlockStop,
+    MessageStart = 0,
+    MessageDelta = 1,
+    MessageStop = 2,
+    ContentBlockStart = 3,
+    ContentBlockDelta = 4,
+    ContentBlockStop = 5,
 }
 
 sealed class RawMessageStreamEventTypeConverter : JsonConverter<RawMessageStreamEventType>

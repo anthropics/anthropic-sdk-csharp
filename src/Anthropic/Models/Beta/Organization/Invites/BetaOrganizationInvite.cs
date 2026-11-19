@@ -207,10 +207,10 @@ class BetaOrganizationInviteFromRaw : IFromRawJson<BetaOrganizationInvite>
 [JsonConverter(typeof(BetaOrganizationInviteStatusConverter))]
 public enum BetaOrganizationInviteStatus
 {
-    Accepted,
-    Deleted,
-    Expired,
-    Pending,
+    Accepted = 0,
+    Deleted = 1,
+    Expired = 2,
+    Pending = 3,
 }
 
 sealed class BetaOrganizationInviteStatusConverter : JsonConverter<BetaOrganizationInviteStatus>

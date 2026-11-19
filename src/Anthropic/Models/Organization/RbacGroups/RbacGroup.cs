@@ -179,8 +179,8 @@ class RbacGroupFromRaw : IFromRawJson<RbacGroup>
 [JsonConverter(typeof(SourceTypeConverter))]
 public enum SourceType
 {
-    Direct,
-    Scim,
+    Direct = 0,
+    Scim = 1,
 }
 
 sealed class SourceTypeConverter : JsonConverter<SourceType>

@@ -574,12 +574,12 @@ sealed class CacheMissReasonConverter : JsonConverter<CacheMissReason>
 [JsonConverter(typeof(CacheMissReasonTypeConverter))]
 public enum CacheMissReasonType
 {
-    ModelChanged,
-    SystemChanged,
-    ToolsChanged,
-    MessagesChanged,
-    PreviousMessageNotFound,
-    Unavailable,
+    ModelChanged = 0,
+    SystemChanged = 1,
+    ToolsChanged = 2,
+    MessagesChanged = 3,
+    PreviousMessageNotFound = 4,
+    Unavailable = 5,
 }
 
 sealed class CacheMissReasonTypeConverter : JsonConverter<CacheMissReasonType>

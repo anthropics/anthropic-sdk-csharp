@@ -510,9 +510,9 @@ sealed class BetaManagedAgentsMcpToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsMcpToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsMcpToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsMcpToolConfigParamsPermissionPolicyTypeConverter

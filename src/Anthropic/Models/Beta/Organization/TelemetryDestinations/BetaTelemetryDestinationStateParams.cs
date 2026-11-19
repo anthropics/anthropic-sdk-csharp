@@ -332,8 +332,8 @@ sealed class BetaTelemetryDestinationStateParamsConverter
 [JsonConverter(typeof(BetaTelemetryDestinationStateParamsTypeConverter))]
 public enum BetaTelemetryDestinationStateParamsType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaTelemetryDestinationStateParamsTypeConverter

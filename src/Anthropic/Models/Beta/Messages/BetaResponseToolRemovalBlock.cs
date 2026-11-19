@@ -538,9 +538,9 @@ sealed class BetaResponseToolRemovalBlockToolConverter
 [JsonConverter(typeof(BetaResponseToolRemovalBlockToolTypeConverter))]
 public enum BetaResponseToolRemovalBlockToolType
 {
-    ToolReference,
-    McpToolReference,
-    McpToolsetReference,
+    ToolReference = 0,
+    McpToolReference = 1,
+    McpToolsetReference = 2,
 }
 
 sealed class BetaResponseToolRemovalBlockToolTypeConverter

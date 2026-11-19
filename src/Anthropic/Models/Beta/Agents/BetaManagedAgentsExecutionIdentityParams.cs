@@ -330,8 +330,8 @@ sealed class BetaManagedAgentsExecutionIdentityParamsConverter
 [JsonConverter(typeof(BetaManagedAgentsExecutionIdentityParamsTypeConverter))]
 public enum BetaManagedAgentsExecutionIdentityParamsType
 {
-    AwsRole,
-    ServiceAccount,
+    AwsRole = 0,
+    ServiceAccount = 1,
 }
 
 sealed class BetaManagedAgentsExecutionIdentityParamsTypeConverter

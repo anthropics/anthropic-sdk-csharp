@@ -8,11 +8,11 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsTokenTypeConverter))]
 public enum BetaAnalyticsTokenType
 {
-    CacheCreationEphemeral1hInputTokens,
-    CacheCreationEphemeral5mInputTokens,
-    CacheReadInputTokens,
-    OutputTokens,
-    UncachedInputTokens,
+    CacheCreationEphemeral1hInputTokens = 0,
+    CacheCreationEphemeral5mInputTokens = 1,
+    CacheReadInputTokens = 2,
+    OutputTokens = 3,
+    UncachedInputTokens = 4,
 }
 
 sealed class BetaAnalyticsTokenTypeConverter : JsonConverter<BetaAnalyticsTokenType>

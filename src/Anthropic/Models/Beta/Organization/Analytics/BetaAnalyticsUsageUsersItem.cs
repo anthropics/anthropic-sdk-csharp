@@ -624,7 +624,7 @@ sealed class BetaAnalyticsUsageUsersItemActorConverter
 [JsonConverter(typeof(BetaAnalyticsUsageUsersItemActorTypeConverter))]
 public enum BetaAnalyticsUsageUsersItemActorType
 {
-    UserActor,
+    UserActor = 0,
 }
 
 sealed class BetaAnalyticsUsageUsersItemActorTypeConverter
@@ -671,8 +671,8 @@ sealed class BetaAnalyticsUsageUsersItemActorTypeConverter
 [JsonConverter(typeof(BetaAnalyticsUsageUsersItemInferenceGeoConverter))]
 public enum BetaAnalyticsUsageUsersItemInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaAnalyticsUsageUsersItemInferenceGeoConverter
@@ -720,8 +720,8 @@ sealed class BetaAnalyticsUsageUsersItemInferenceGeoConverter
 [JsonConverter(typeof(BetaAnalyticsUsageUsersItemSpeedConverter))]
 public enum BetaAnalyticsUsageUsersItemSpeed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class BetaAnalyticsUsageUsersItemSpeedConverter

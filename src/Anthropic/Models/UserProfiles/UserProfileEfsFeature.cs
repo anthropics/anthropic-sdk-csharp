@@ -91,8 +91,8 @@ class UserProfileEfsFeatureFromRaw : IFromRawJson<UserProfileEfsFeature>
 [JsonConverter(typeof(UserProfileEfsFeatureStatusConverter))]
 public enum UserProfileEfsFeatureStatus
 {
-    Active,
-    Inactive,
+    Active = 0,
+    Inactive = 1,
 }
 
 sealed class UserProfileEfsFeatureStatusConverter : JsonConverter<UserProfileEfsFeatureStatus>

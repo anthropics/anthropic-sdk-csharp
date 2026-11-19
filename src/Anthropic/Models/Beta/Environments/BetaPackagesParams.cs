@@ -214,7 +214,7 @@ class BetaPackagesParamsFromRaw : IFromRawJson<BetaPackagesParams>
 [JsonConverter(typeof(BetaPackagesParamsTypeConverter))]
 public enum BetaPackagesParamsType
 {
-    Packages,
+    Packages = 0,
 }
 
 sealed class BetaPackagesParamsTypeConverter : JsonConverter<BetaPackagesParamsType>

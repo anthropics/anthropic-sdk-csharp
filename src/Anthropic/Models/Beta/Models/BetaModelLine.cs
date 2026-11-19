@@ -11,11 +11,11 @@ namespace Anthropic.Models.Beta.Models;
 [JsonConverter(typeof(BetaModelLineConverter))]
 public enum BetaModelLine
 {
-    Haiku,
-    Sonnet,
-    Opus,
-    Fable,
-    Mythos,
+    Haiku = 0,
+    Sonnet = 1,
+    Opus = 2,
+    Fable = 3,
+    Mythos = 4,
 }
 
 sealed class BetaModelLineConverter : JsonConverter<BetaModelLine>

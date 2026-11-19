@@ -19,18 +19,18 @@ public enum UserProfileExternalUserAccountStatus
     /// The platform has neither restricted nor barred the account of the entity
     /// that the user profile represents.
     /// </summary>
-    Active,
+    Active = 0,
 
     /// <summary>
     /// The platform has restricted the account of the entity that the user profile
     /// represents and may restore it.
     /// </summary>
-    Suspended,
+    Suspended = 1,
 
     /// <summary>
     /// The platform has barred the account of the entity that the user profile represents.
     /// </summary>
-    Blocked,
+    Blocked = 2,
 }
 
 sealed class UserProfileExternalUserAccountStatusConverter

@@ -540,9 +540,9 @@ sealed class BetaManagedAgentsRepositoryCloneErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsRepositoryCloneErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsRepositoryCloneErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsRepositoryCloneErrorRetryStatusTypeConverter

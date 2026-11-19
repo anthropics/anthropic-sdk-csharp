@@ -302,8 +302,8 @@ sealed class RbacRoleSourceConverter : JsonConverter<RbacRoleSource>
 [JsonConverter(typeof(RbacRoleSourceTypeConverter))]
 public enum RbacRoleSourceType
 {
-    BuiltIn,
-    Custom,
+    BuiltIn = 0,
+    Custom = 1,
 }
 
 sealed class RbacRoleSourceTypeConverter : JsonConverter<RbacRoleSourceType>

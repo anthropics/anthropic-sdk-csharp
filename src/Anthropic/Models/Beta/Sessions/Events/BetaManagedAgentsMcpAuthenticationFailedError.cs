@@ -540,9 +540,9 @@ sealed class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsMcpAuthenticationFailedErrorRetryStatusTypeConverter

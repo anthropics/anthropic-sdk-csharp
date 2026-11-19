@@ -8,8 +8,8 @@ namespace Anthropic.Models.Beta.Sessions;
 [JsonConverter(typeof(BetaManagedAgentsDeltaTypeConverter))]
 public enum BetaManagedAgentsDeltaType
 {
-    AgentMessage,
-    AgentThinking,
+    AgentMessage = 0,
+    AgentThinking = 1,
 }
 
 sealed class BetaManagedAgentsDeltaTypeConverter : JsonConverter<BetaManagedAgentsDeltaType>

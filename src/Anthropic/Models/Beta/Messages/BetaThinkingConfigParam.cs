@@ -467,10 +467,10 @@ sealed class BetaThinkingConfigParamConverter : JsonConverter<BetaThinkingConfig
 [JsonConverter(typeof(BetaThinkingConfigParamTypeConverter))]
 public enum BetaThinkingConfigParamType
 {
-    Enabled,
-    Disabled,
-    BetweenTools,
-    Adaptive,
+    Enabled = 0,
+    Disabled = 1,
+    BetweenTools = 2,
+    Adaptive = 3,
 }
 
 sealed class BetaThinkingConfigParamTypeConverter : JsonConverter<BetaThinkingConfigParamType>

@@ -330,8 +330,8 @@ sealed class BetaManagedAgentsDeploymentPausedReasonConverter
 [JsonConverter(typeof(BetaManagedAgentsDeploymentPausedReasonTypeConverter))]
 public enum BetaManagedAgentsDeploymentPausedReasonType
 {
-    Manual,
-    Error,
+    Manual = 0,
+    Error = 1,
 }
 
 sealed class BetaManagedAgentsDeploymentPausedReasonTypeConverter

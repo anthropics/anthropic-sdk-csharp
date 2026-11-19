@@ -249,7 +249,7 @@ sealed class UserProfileActionConverter : JsonConverter<UserProfileAction>
 [JsonConverter(typeof(UserProfileActionTypeConverter))]
 public enum UserProfileActionType
 {
-    EnrollEndUser,
+    EnrollEndUser = 0,
 }
 
 sealed class UserProfileActionTypeConverter : JsonConverter<UserProfileActionType>

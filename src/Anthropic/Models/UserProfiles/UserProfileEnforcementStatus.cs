@@ -12,10 +12,10 @@ namespace Anthropic.Models.UserProfiles;
 [JsonConverter(typeof(UserProfileEnforcementStatusConverter))]
 public enum UserProfileEnforcementStatus
 {
-    Unrestricted,
-    Pending,
-    Restricted,
-    Banned,
+    Unrestricted = 0,
+    Pending = 1,
+    Restricted = 2,
+    Banned = 3,
 }
 
 sealed class UserProfileEnforcementStatusConverter : JsonConverter<UserProfileEnforcementStatus>

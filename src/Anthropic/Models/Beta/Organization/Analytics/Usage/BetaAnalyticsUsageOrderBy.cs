@@ -8,11 +8,11 @@ namespace Anthropic.Models.Beta.Organization.Analytics.Usage;
 [JsonConverter(typeof(BetaAnalyticsUsageOrderByConverter))]
 public enum BetaAnalyticsUsageOrderBy
 {
-    OutputTokens,
-    Requests,
-    Time,
-    TotalTokens,
-    UncachedInputTokens,
+    OutputTokens = 0,
+    Requests = 1,
+    Time = 2,
+    TotalTokens = 3,
+    UncachedInputTokens = 4,
 }
 
 sealed class BetaAnalyticsUsageOrderByConverter : JsonConverter<BetaAnalyticsUsageOrderBy>

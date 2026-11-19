@@ -473,8 +473,8 @@ sealed class BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuthConver
 [JsonConverter(typeof(BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuthTypeConverter))]
 public enum BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuthType
 {
-    ClientSecretBasic,
-    ClientSecretPost,
+    ClientSecretBasic = 0,
+    ClientSecretPost = 1,
 }
 
 sealed class BetaManagedAgentsMcpOAuthRefreshUpdateParamsTokenEndpointAuthTypeConverter

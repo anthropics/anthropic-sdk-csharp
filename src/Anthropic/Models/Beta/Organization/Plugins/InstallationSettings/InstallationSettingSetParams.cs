@@ -233,10 +233,10 @@ public record class InstallationSettingSetParams : ParamsBase
 [JsonConverter(typeof(InstallationPreferenceConverter))]
 public enum InstallationPreference
 {
-    AutoInstall,
-    Available,
-    NotAvailable,
-    Required,
+    AutoInstall = 0,
+    Available = 1,
+    NotAvailable = 2,
+    Required = 3,
 }
 
 sealed class InstallationPreferenceConverter : JsonConverter<InstallationPreference>

@@ -470,9 +470,9 @@ sealed class PermissionPolicyConverter : JsonConverter<PermissionPolicy>
 [JsonConverter(typeof(PermissionPolicyTypeConverter))]
 public enum PermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class PermissionPolicyTypeConverter : JsonConverter<PermissionPolicyType>

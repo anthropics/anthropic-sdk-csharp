@@ -12,8 +12,8 @@ namespace Anthropic.Models.Beta.Agents;
 [JsonConverter(typeof(BetaManagedAgentsWebFetchUrlSourceShorthandConverter))]
 public enum BetaManagedAgentsWebFetchUrlSourceShorthand
 {
-    All,
-    None,
+    All = 0,
+    None = 1,
 }
 
 sealed class BetaManagedAgentsWebFetchUrlSourceShorthandConverter

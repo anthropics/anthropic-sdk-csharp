@@ -506,8 +506,8 @@ sealed class BetaCompactionBlockParamToolChangeConverter
 [JsonConverter(typeof(BetaCompactionBlockParamToolChangeTypeConverter))]
 public enum BetaCompactionBlockParamToolChangeType
 {
-    ToolAddition,
-    ToolRemoval,
+    ToolAddition = 0,
+    ToolRemoval = 1,
 }
 
 sealed class BetaCompactionBlockParamToolChangeTypeConverter

@@ -106,12 +106,12 @@ class BetaPluginComponentFromRaw : IFromRawJson<BetaPluginComponent>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    Agent,
-    Cli,
-    Command,
-    Hook,
-    McpServer,
-    Skill,
+    Agent = 0,
+    Cli = 1,
+    Command = 2,
+    Hook = 3,
+    McpServer = 4,
+    Skill = 5,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Organization.Plugins.Type>

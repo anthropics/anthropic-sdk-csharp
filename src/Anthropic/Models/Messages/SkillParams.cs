@@ -112,8 +112,8 @@ class SkillParamsFromRaw : IFromRawJson<SkillParams>
 [JsonConverter(typeof(SkillParamsTypeConverter))]
 public enum SkillParamsType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class SkillParamsTypeConverter : JsonConverter<SkillParamsType>

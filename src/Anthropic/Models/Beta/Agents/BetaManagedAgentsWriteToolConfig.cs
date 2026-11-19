@@ -520,9 +520,9 @@ sealed class BetaManagedAgentsWriteToolConfigPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsWriteToolConfigPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsWriteToolConfigPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsWriteToolConfigPermissionPolicyTypeConverter

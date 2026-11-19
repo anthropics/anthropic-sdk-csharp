@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Organization.SpendLimits.IncreaseRequests;
 [JsonConverter(typeof(BetaSpendLimitIncreaseRequestStatusConverter))]
 public enum BetaSpendLimitIncreaseRequestStatus
 {
-    Approved,
-    Denied,
-    Pending,
+    Approved = 0,
+    Denied = 1,
+    Pending = 2,
 }
 
 sealed class BetaSpendLimitIncreaseRequestStatusConverter

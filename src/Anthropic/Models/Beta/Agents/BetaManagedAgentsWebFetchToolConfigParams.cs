@@ -627,9 +627,9 @@ sealed class BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyTypeConverter
@@ -678,7 +678,7 @@ sealed class BetaManagedAgentsWebFetchToolConfigParamsPermissionPolicyTypeConver
 [JsonConverter(typeof(BetaManagedAgentsWebFetchToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsWebFetchToolConfigParamsType
 {
-    WebFetch,
+    WebFetch = 0,
 }
 
 sealed class BetaManagedAgentsWebFetchToolConfigParamsTypeConverter

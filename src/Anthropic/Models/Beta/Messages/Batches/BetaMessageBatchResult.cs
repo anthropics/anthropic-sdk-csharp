@@ -445,10 +445,10 @@ sealed class BetaMessageBatchResultConverter : JsonConverter<BetaMessageBatchRes
 [JsonConverter(typeof(BetaMessageBatchResultTypeConverter))]
 public enum BetaMessageBatchResultType
 {
-    Succeeded,
-    Errored,
-    Canceled,
-    Expired,
+    Succeeded = 0,
+    Errored = 1,
+    Canceled = 2,
+    Expired = 3,
 }
 
 sealed class BetaMessageBatchResultTypeConverter : JsonConverter<BetaMessageBatchResultType>

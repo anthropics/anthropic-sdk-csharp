@@ -467,9 +467,9 @@ sealed class ResourceUpdateResponseConverter : JsonConverter<ResourceUpdateRespo
 [JsonConverter(typeof(ResourceUpdateResponseTypeConverter))]
 public enum ResourceUpdateResponseType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class ResourceUpdateResponseTypeConverter : JsonConverter<ResourceUpdateResponseType>

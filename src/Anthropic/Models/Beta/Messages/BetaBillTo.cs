@@ -11,8 +11,8 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaBillToConverter))]
 public enum BetaBillTo
 {
-    Self,
-    UserProfile,
+    Self = 0,
+    UserProfile = 1,
 }
 
 sealed class BetaBillToConverter : JsonConverter<BetaBillTo>

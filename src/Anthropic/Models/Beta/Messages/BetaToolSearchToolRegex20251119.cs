@@ -207,8 +207,8 @@ class BetaToolSearchToolRegex20251119FromRaw : IFromRawJson<BetaToolSearchToolRe
 [JsonConverter(typeof(BetaToolSearchToolRegex20251119TypeConverter))]
 public enum BetaToolSearchToolRegex20251119Type
 {
-    ToolSearchToolRegex20251119,
-    ToolSearchToolRegex,
+    ToolSearchToolRegex20251119 = 0,
+    ToolSearchToolRegex = 1,
 }
 
 sealed class BetaToolSearchToolRegex20251119TypeConverter
@@ -263,10 +263,10 @@ sealed class BetaToolSearchToolRegex20251119TypeConverter
 [JsonConverter(typeof(BetaToolSearchToolRegex20251119AllowedCallerConverter))]
 public enum BetaToolSearchToolRegex20251119AllowedCaller
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
+    CodeExecution20260521 = 3,
 }
 
 sealed class BetaToolSearchToolRegex20251119AllowedCallerConverter

@@ -11,9 +11,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsArtifactGroupByConverter))]
 public enum BetaAnalyticsArtifactGroupBy
 {
-    Product,
-    RbacGroupID,
-    UserID,
+    Product = 0,
+    RbacGroupID = 1,
+    UserID = 2,
 }
 
 sealed class BetaAnalyticsArtifactGroupByConverter : JsonConverter<BetaAnalyticsArtifactGroupBy>

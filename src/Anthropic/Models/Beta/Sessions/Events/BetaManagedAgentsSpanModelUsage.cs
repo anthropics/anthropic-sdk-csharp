@@ -143,8 +143,8 @@ class BetaManagedAgentsSpanModelUsageFromRaw : IFromRawJson<BetaManagedAgentsSpa
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

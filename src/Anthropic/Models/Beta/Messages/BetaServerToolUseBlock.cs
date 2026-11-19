@@ -138,14 +138,14 @@ class BetaServerToolUseBlockFromRaw : IFromRawJson<BetaServerToolUseBlock>
 [JsonConverter(typeof(NameConverter))]
 public enum Name
 {
-    Advisor,
-    WebSearch,
-    WebFetch,
-    CodeExecution,
-    BashCodeExecution,
-    TextEditorCodeExecution,
-    ToolSearchToolRegex,
-    ToolSearchToolBm25,
+    Advisor = 0,
+    WebSearch = 1,
+    WebFetch = 2,
+    CodeExecution = 3,
+    BashCodeExecution = 4,
+    TextEditorCodeExecution = 5,
+    ToolSearchToolRegex = 6,
+    ToolSearchToolBm25 = 7,
 }
 
 sealed class NameConverter : JsonConverter<Name>
@@ -566,9 +566,9 @@ sealed class CallerConverter : JsonConverter<Caller>
 [JsonConverter(typeof(CallerTypeConverter))]
 public enum CallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class CallerTypeConverter : JsonConverter<CallerType>

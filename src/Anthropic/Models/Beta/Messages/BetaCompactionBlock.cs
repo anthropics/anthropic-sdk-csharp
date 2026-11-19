@@ -456,8 +456,8 @@ sealed class ToolChangeConverter : JsonConverter<ToolChange>
 [JsonConverter(typeof(ToolChangeTypeConverter))]
 public enum ToolChangeType
 {
-    ToolAddition,
-    ToolRemoval,
+    ToolAddition = 0,
+    ToolRemoval = 1,
 }
 
 sealed class ToolChangeTypeConverter : JsonConverter<ToolChangeType>

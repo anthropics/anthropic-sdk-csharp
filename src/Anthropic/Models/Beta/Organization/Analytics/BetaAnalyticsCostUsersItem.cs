@@ -599,7 +599,7 @@ sealed class ActorConverter : JsonConverter<Actor>
 [JsonConverter(typeof(ActorTypeConverter))]
 public enum ActorType
 {
-    UserActor,
+    UserActor = 0,
 }
 
 sealed class ActorTypeConverter : JsonConverter<ActorType>
@@ -645,8 +645,8 @@ sealed class ActorTypeConverter : JsonConverter<ActorType>
 [JsonConverter(typeof(BetaAnalyticsCostUsersItemInferenceGeoConverter))]
 public enum BetaAnalyticsCostUsersItemInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaAnalyticsCostUsersItemInferenceGeoConverter
@@ -694,8 +694,8 @@ sealed class BetaAnalyticsCostUsersItemInferenceGeoConverter
 [JsonConverter(typeof(BetaAnalyticsCostUsersItemSpeedConverter))]
 public enum BetaAnalyticsCostUsersItemSpeed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class BetaAnalyticsCostUsersItemSpeedConverter

@@ -427,8 +427,8 @@ sealed class AppliedEditConverter : JsonConverter<AppliedEdit>
 [JsonConverter(typeof(AppliedEditTypeConverter))]
 public enum AppliedEditType
 {
-    ClearToolUses20250919,
-    ClearThinking20251015,
+    ClearToolUses20250919 = 0,
+    ClearThinking20251015 = 1,
 }
 
 sealed class AppliedEditTypeConverter : JsonConverter<AppliedEditType>

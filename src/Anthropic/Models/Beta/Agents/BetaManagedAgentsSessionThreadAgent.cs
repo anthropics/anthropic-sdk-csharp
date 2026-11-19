@@ -589,8 +589,8 @@ sealed class BetaManagedAgentsSessionThreadAgentSkillConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentSkillTypeConverter))]
 public enum BetaManagedAgentsSessionThreadAgentSkillType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class BetaManagedAgentsSessionThreadAgentSkillTypeConverter
@@ -1029,9 +1029,9 @@ sealed class BetaManagedAgentsSessionThreadAgentToolConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadAgentToolTypeConverter))]
 public enum BetaManagedAgentsSessionThreadAgentToolType
 {
-    AgentToolset20260401,
-    McpToolset,
-    Custom,
+    AgentToolset20260401 = 0,
+    McpToolset = 1,
+    Custom = 2,
 }
 
 sealed class BetaManagedAgentsSessionThreadAgentToolTypeConverter

@@ -656,11 +656,11 @@ sealed class ResourceConverter : JsonConverter<Resource>
 [JsonConverter(typeof(ResourceTypeConverter))]
 public enum ResourceType
 {
-    Organization,
-    ConnectorTool,
-    ConnectorScope,
-    Connector,
-    AllConnectors,
+    Organization = 0,
+    ConnectorTool = 1,
+    ConnectorScope = 2,
+    Connector = 3,
+    AllConnectors = 4,
 }
 
 sealed class ResourceTypeConverter : JsonConverter<ResourceType>

@@ -332,8 +332,8 @@ class BetaAnalyticsCostBucketedResultFromRaw : IFromRawJson<BetaAnalyticsCostBuc
 [JsonConverter(typeof(InferenceGeoConverter))]
 public enum InferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class InferenceGeoConverter : JsonConverter<InferenceGeo>
@@ -380,8 +380,8 @@ sealed class InferenceGeoConverter : JsonConverter<InferenceGeo>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

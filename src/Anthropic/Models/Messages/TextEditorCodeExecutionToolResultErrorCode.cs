@@ -8,11 +8,11 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(TextEditorCodeExecutionToolResultErrorCodeConverter))]
 public enum TextEditorCodeExecutionToolResultErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
-    FileNotFound,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
+    FileNotFound = 4,
 }
 
 sealed class TextEditorCodeExecutionToolResultErrorCodeConverter

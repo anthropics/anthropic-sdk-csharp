@@ -90,8 +90,8 @@ class BetaApiKeyCreatedByFromRaw : IFromRawJson<BetaApiKeyCreatedBy>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    ServiceAccount,
-    User,
+    ServiceAccount = 0,
+    User = 1,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Beta.Organization.ApiKeys.Type>

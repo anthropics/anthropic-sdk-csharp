@@ -319,8 +319,8 @@ sealed class BetaOutputBehaviorConverter : JsonConverter<BetaOutputBehavior>
 [JsonConverter(typeof(BetaOutputBehaviorTypeConverter))]
 public enum BetaOutputBehaviorType
 {
-    CreateNew,
-    UpdateExisting,
+    CreateNew = 0,
+    UpdateExisting = 1,
 }
 
 sealed class BetaOutputBehaviorTypeConverter : JsonConverter<BetaOutputBehaviorType>

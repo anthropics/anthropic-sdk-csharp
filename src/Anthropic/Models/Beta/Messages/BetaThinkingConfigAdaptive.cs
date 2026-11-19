@@ -118,9 +118,9 @@ class BetaThinkingConfigAdaptiveFromRaw : IFromRawJson<BetaThinkingConfigAdaptiv
 [JsonConverter(typeof(DisplayConverter))]
 public enum Display
 {
-    Summarized,
-    Omitted,
-    Updates,
+    Summarized = 0,
+    Omitted = 1,
+    Updates = 2,
 }
 
 sealed class DisplayConverter : JsonConverter<Display>

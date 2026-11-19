@@ -105,22 +105,22 @@ public enum Status
     /// <summary>
     /// The token endpoint returned a new access token.
     /// </summary>
-    Succeeded,
+    Succeeded = 0,
 
     /// <summary>
     /// The token endpoint returned an error response. See `http_response` for detail.
     /// </summary>
-    Failed,
+    Failed = 1,
 
     /// <summary>
     /// The token endpoint could not be reached (DNS, TLS, or connection error).
     /// </summary>
-    ConnectError,
+    ConnectError = 2,
 
     /// <summary>
     /// No refresh token is stored for the credential, so no exchange was attempted.
     /// </summary>
-    NoRefreshToken,
+    NoRefreshToken = 3,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

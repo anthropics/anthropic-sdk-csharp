@@ -437,10 +437,10 @@ sealed class BetaAnalyticsActorConverter : JsonConverter<BetaAnalyticsActor>
 [JsonConverter(typeof(BetaAnalyticsActorTypeValueConverter))]
 public enum BetaAnalyticsActorTypeValue
 {
-    UserActor,
-    ServiceAccountActor,
-    FederatedActor,
-    ApiActor,
+    UserActor = 0,
+    ServiceAccountActor = 1,
+    FederatedActor = 2,
+    ApiActor = 3,
 }
 
 sealed class BetaAnalyticsActorTypeValueConverter : JsonConverter<BetaAnalyticsActorTypeValue>

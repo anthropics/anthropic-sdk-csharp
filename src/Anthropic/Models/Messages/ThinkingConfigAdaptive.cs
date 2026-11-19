@@ -100,8 +100,8 @@ class ThinkingConfigAdaptiveFromRaw : IFromRawJson<ThinkingConfigAdaptive>
 [JsonConverter(typeof(DisplayConverter))]
 public enum Display
 {
-    Summarized,
-    Omitted,
+    Summarized = 0,
+    Omitted = 1,
 }
 
 sealed class DisplayConverter : JsonConverter<Display>

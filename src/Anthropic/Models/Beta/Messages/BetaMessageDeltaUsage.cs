@@ -747,10 +747,10 @@ sealed class IterationConverter : JsonConverter<Iteration>
 [JsonConverter(typeof(IterationTypeConverter))]
 public enum IterationType
 {
-    Message,
-    Compaction,
-    AdvisorMessage,
-    FallbackMessage,
+    Message = 0,
+    Compaction = 1,
+    AdvisorMessage = 2,
+    FallbackMessage = 3,
 }
 
 sealed class IterationTypeConverter : JsonConverter<IterationType>

@@ -8,7 +8,7 @@ namespace Anthropic.Models.Organization.Workspaces;
 [JsonConverter(typeof(WorkspacePolicyFieldConverter))]
 public enum WorkspacePolicyField
 {
-    ExternalKeyID,
+    ExternalKeyID = 0,
 }
 
 sealed class WorkspacePolicyFieldConverter : JsonConverter<WorkspacePolicyField>

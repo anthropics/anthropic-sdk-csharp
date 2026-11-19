@@ -682,9 +682,9 @@ sealed class CredentialUpdateParamsAuthConverter : JsonConverter<CredentialUpdat
 [JsonConverter(typeof(CredentialUpdateParamsAuthTypeConverter))]
 public enum CredentialUpdateParamsAuthType
 {
-    McpOAuth,
-    StaticBearer,
-    EnvironmentVariable,
+    McpOAuth = 0,
+    StaticBearer = 1,
+    EnvironmentVariable = 2,
 }
 
 sealed class CredentialUpdateParamsAuthTypeConverter : JsonConverter<CredentialUpdateParamsAuthType>

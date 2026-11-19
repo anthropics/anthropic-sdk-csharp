@@ -8,12 +8,12 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(WebSearchToolResultErrorCodeConverter))]
 public enum WebSearchToolResultErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    MaxUsesExceeded,
-    TooManyRequests,
-    QueryTooLong,
-    RequestTooLarge,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    MaxUsesExceeded = 2,
+    TooManyRequests = 3,
+    QueryTooLong = 4,
+    RequestTooLarge = 5,
 }
 
 sealed class WebSearchToolResultErrorCodeConverter : JsonConverter<WebSearchToolResultErrorCode>
