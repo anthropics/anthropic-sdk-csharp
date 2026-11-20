@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.0.6](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.5...Bedrock-v1.0.6) (2026-11-20)
+
+### Bug Fixes
+
+* **bedrock:** send the user profile ID in the request body
+
+  Amazon Bedrock reads `user_profile_id` from the request body and ignores the `anthropic-user-profile-id` header, so a profile ID given to `AnthropicBedrockClient` was not applied. `AnthropicBedrockClient` now moves it into the body of Messages requests and no longer sends the header. A `user_profile_id` already in the body takes priority over the header.
+
+  Some models on Bedrock do not support user profiles. A request to one of them with a profile ID now fails with a 400 error; before, the ID was ignored. Leave the ID off requests to those models.
+
 ## [1.0.5](https://github.com/anthropics/anthropic-sdk-csharp/compare/Bedrock-v1.0.4...Bedrock-v1.0.5) (2026-11-19)
 
 ### Bug Fixes
