@@ -69,12 +69,12 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     /// <summary>
     /// Total tokens read from prompt cache.
     /// </summary>
-    public int? CacheReadInputTokens
+    public long? CacheReadInputTokens
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<int>("cache_read_input_tokens");
+            return this._rawData.GetNullableStruct<long>("cache_read_input_tokens");
         }
         init
         {
@@ -91,12 +91,12 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     /// <summary>
     /// Total input tokens consumed across all turns.
     /// </summary>
-    public int? InputTokens
+    public long? InputTokens
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<int>("input_tokens");
+            return this._rawData.GetNullableStruct<long>("input_tokens");
         }
         init
         {
@@ -135,12 +135,12 @@ public sealed record class BetaManagedAgentsSessionUsageSnapshot : JsonModel
     /// <summary>
     /// Total output tokens generated across all turns.
     /// </summary>
-    public int? OutputTokens
+    public long? OutputTokens
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<int>("output_tokens");
+            return this._rawData.GetNullableStruct<long>("output_tokens");
         }
         init
         {
