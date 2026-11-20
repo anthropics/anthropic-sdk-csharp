@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.Workspaces;
 
@@ -205,8 +205,8 @@ public record class AllowedInferenceGeos : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        Action<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>> geos,
-        Action<Unrestricted> unrestricted
+        System::Action<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>> geos,
+        System::Action<Unrestricted> unrestricted
     )
     {
         switch (this.Value)
@@ -246,8 +246,8 @@ public record class AllowedInferenceGeos : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        Func<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>, T> geos,
-        Func<Unrestricted, T> unrestricted
+        System::Func<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>, T> geos,
+        System::Func<Unrestricted, T> unrestricted
     )
     {
         return this.Value switch
@@ -327,7 +327,7 @@ sealed class AllowedInferenceGeosConverter : JsonConverter<AllowedInferenceGeos>
 {
     public override AllowedInferenceGeos? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -341,7 +341,7 @@ sealed class AllowedInferenceGeosConverter : JsonConverter<AllowedInferenceGeos>
                 return new(deserialized, element);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -360,7 +360,7 @@ sealed class AllowedInferenceGeosConverter : JsonConverter<AllowedInferenceGeos>
                 return new(deserialized, element);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -430,7 +430,7 @@ class UnrestrictedConverter : JsonConverter<Unrestricted>
 {
     public override Unrestricted? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -461,7 +461,7 @@ sealed class DefaultInferenceGeoConverter : JsonConverter<DefaultInferenceGeo>
 {
     public override DefaultInferenceGeo Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -507,7 +507,7 @@ sealed class WorkspaceGeoConverter : JsonConverter<WorkspaceGeo>
 {
     public override WorkspaceGeo Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

@@ -31,7 +31,7 @@ public sealed record class WorkspacePolicyViolationErrorDetails : JsonModel
     }
 
     /// <summary>
-    /// The request field the broken rule applies to.
+    /// The request field the broken rule applies to. Other values may be returned.
     /// </summary>
     public required ApiEnum<string, WorkspacePolicyField> Field
     {

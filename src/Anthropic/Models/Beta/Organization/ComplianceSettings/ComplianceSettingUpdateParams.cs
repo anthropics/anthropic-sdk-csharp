@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
@@ -48,6 +49,34 @@ public record class ComplianceSettingUpdateParams : ParamsBase
             return this._rawBodyData.GetNotNullClass<BetaComplianceSettingsStateParam>("state");
         }
         init { this._rawBodyData.Set("state", value); }
+    }
+
+    /// <summary>
+    /// Optional. Send `efs-2026-10-01` in this header to use this endpoint's beta
+    /// features: additional parameters, accepted values and response fields.
+    /// </summary>
+    public IReadOnlyList<ApiEnum<string, AnthropicBeta>>? Betas
+    {
+        get
+        {
+            this._rawHeaderData.Freeze();
+            return this._rawHeaderData.GetNullableStruct<
+                ImmutableArray<ApiEnum<string, AnthropicBeta>>
+            >("anthropic-beta");
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawHeaderData.Remove("anthropic-beta");
+                return;
+            }
+
+            this._rawHeaderData.Set<ImmutableArray<ApiEnum<string, AnthropicBeta>>?>(
+                "anthropic-beta",
+                value == null ? null : ImmutableArray.ToImmutableArray(value)
+            );
+        }
     }
 
     public ComplianceSettingUpdateParams() { }

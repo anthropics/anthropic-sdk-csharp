@@ -13,7 +13,6 @@ using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings.Configuratio
 using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings.RbacGroups;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.ClaudeTag.Bundles.Targets;
-using Anthropic.Models.Beta.Organization.ComplianceSettings;
 using Anthropic.Models.Beta.Organization.Plugins.InstallationSettings;
 using Anthropic.Models.Beta.Organization.Plugins.Versions;
 using Anthropic.Models.Beta.Organization.RbacRoles;
@@ -43,6 +42,7 @@ using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
+using ComplianceSettings = Anthropic.Models.Beta.Organization.ComplianceSettings;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
@@ -51,6 +51,7 @@ using Dreams = Anthropic.Models.Beta.Dreams;
 using Environments = Anthropic.Models.Beta.Environments;
 using Events = Anthropic.Models.Beta.Sessions.Events;
 using ExternalKeys = Anthropic.Models.Organization.ExternalKeys;
+using ExternalStorage = Anthropic.Models.Beta.Organization.ExternalStorage;
 using Files = Anthropic.Models.Files;
 using Invites = Anthropic.Models.Organization.Invites;
 using Issuers = Anthropic.Models.Beta.Organization.Federation.Issuers;
@@ -842,8 +843,15 @@ public abstract record class ModelBase
                 OrganizationServiceAccounts::ServiceAccountUpdateParamsOrganizationRole
             >(),
             new ApiEnumConverter<string, Workspaces::BetaNoBillingWorkspaceRole>(),
+            new ApiEnumConverter<string, ExternalStorage::BetaExternalStorageProviderConfigType>(),
+            new ApiEnumConverter<string, ExternalStorage::StatusType>(),
+            new ApiEnumConverter<string, ExternalStorage::Check>(),
+            new ApiEnumConverter<string, ExternalStorage::Role>(),
+            new ApiEnumConverter<string, ExternalStorage::ProviderConfigType>(),
             new ApiEnumConverter<string, Users::Role>(),
             new ApiEnumConverter<string, Workspaces::BetaAllowedInferenceGeo>(),
+            new ApiEnumConverter<string, Workspaces::Type>(),
+            new ApiEnumConverter<string, Workspaces::BetaAnthropicHumanReviewParamType>(),
             new ApiEnumConverter<string, Workspaces::DefaultInferenceGeo>(),
             new ApiEnumConverter<string, Workspaces::WorkspaceGeo>(),
             new ApiEnumConverter<
@@ -855,6 +863,9 @@ public abstract record class ModelBase
                 string,
                 Workspaces::BetaDataResidencyUpdateConfigDefaultInferenceGeo
             >(),
+            new ApiEnumConverter<string, Workspaces::BetaStorageMemberType>(),
+            new ApiEnumConverter<string, Workspaces::BetaStorageMemberParamType>(),
+            new ApiEnumConverter<string, Workspaces::BetaWorkspaceChangedConcurrentlyField>(),
             new ApiEnumConverter<string, Workspaces::BetaWorkspaceRole>(),
             new ApiEnumConverter<string, WorkspacesRateLimits::GroupTypeValue>(),
             new ApiEnumConverter<string, WorkspacesRateLimits::BetaWorkspaceRateLimitType>(),
@@ -862,8 +873,12 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, WorkspacesRateLimits::GroupType>(),
             new ApiEnumConverter<string, OrganizationRateLimits::GroupTypeValue>(),
             new ApiEnumConverter<string, OrganizationRateLimits::GroupType>(),
-            new ApiEnumConverter<string, BetaComplianceSettingsStateType>(),
-            new ApiEnumConverter<string, BetaComplianceSettingsStateParamType>(),
+            new ApiEnumConverter<string, ComplianceSettings::Type>(),
+            new ApiEnumConverter<string, ComplianceSettings::BetaComplianceSettingsStateType>(),
+            new ApiEnumConverter<
+                string,
+                ComplianceSettings::BetaComplianceSettingsStateParamType
+            >(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsActorTypeValue>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsActorType>(),
             new ApiEnumConverter<string, Analytics::BetaAnalyticsArtifactGroupBy>(),

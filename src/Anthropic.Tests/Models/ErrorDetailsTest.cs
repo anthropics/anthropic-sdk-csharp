@@ -5,12 +5,14 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
+using Anthropic.Models.Beta.Organization.Workspaces;
 using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Organization;
@@ -22,6 +24,7 @@ using Anthropic.Models.Organization.Users;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.Skills;
 using Anthropic.Models.UserProfiles;
+using ExternalStorage = Anthropic.Models.Beta.Organization.ExternalStorage;
 
 namespace Anthropic.Tests.Models;
 
@@ -450,6 +453,36 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceCreatedIncompleteValidationWorks()
+    {
+        ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
+            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void StorageProfileMismatchValidationWorks()
+    {
+        ErrorDetails value = new StorageProfileMismatchErrorDetails("field");
+        value.Validate();
+    }
+
+    [Fact]
+    public void ChangeOutcomeUnknownValidationWorks()
+    {
+        ErrorDetails value = new ChangeOutcomeUnknownErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void StorageAttachedDuringArchiveValidationWorks()
+    {
+        ErrorDetails value = new StorageAttachedDuringArchiveErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void WorkspaceMemberLimitExceededValidationWorks()
     {
         ErrorDetails value = new WorkspaceMemberLimitExceededErrorDetails();
@@ -528,6 +561,89 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaGrantRequiredValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaGrantRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEligibleValidationWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEligibleErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaProviderNotAllowedValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaProviderNotAllowedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaUnsupportedRegionValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaUnsupportedRegionErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageAlreadyRegisteredValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAlreadyRegisteredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaAuthorizationCheckUnavailableValidationWorks()
+    {
+        ErrorDetails value = new BetaAuthorizationCheckUnavailableErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaInvalidStorageArnValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaInvalidStorageArnErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaExternalStorageInUseValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageInUseErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaExternalStorageInWorkspacePolicyValidationWorks()
+    {
+        ErrorDetails value =
+            new ExternalStorage::BetaExternalStorageInWorkspacePolicyErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageVerificationFailedValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageVerificationFailedErrorDetails()
+        {
+            FailedChecks =
+            [
+                new()
+                {
+                    Check = ExternalStorage::Check.AlreadyRegistered,
+                    Message = "message",
+                    Role = ExternalStorage::Role.Ingest,
+                },
+            ],
+            Field = "inference_data_privacy.safeguards_storage",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerValidationWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -573,6 +689,84 @@ public class ErrorDetailsTest : TestBase
     public void BetaCannotSignOutPrivilegedMemberValidationWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaApprovalRequiredValidationWorks()
+    {
+        ErrorDetails value = new BetaApprovalRequiredErrorDetails(
+            "inference_data_privacy.human_review"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaExternalStorageNotAvailableValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageNotAvailableErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaHumanReviewNotAvailableValidationWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewNotAvailableErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaHumanReviewOnWithExternalStorageValidationWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewOnWithExternalStorageErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageNotAttachableValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageNotAttachableErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaTranscriptsStorageRequiredValidationWorks()
+    {
+        ErrorDetails value = new BetaTranscriptsStorageRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageAttachLimitReachedValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAttachLimitReachedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageProfileStillRequiredValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageProfileStillRequiredErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageChangedConcurrentlyValidationWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageChangedConcurrentlyErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaWorkspaceChangedConcurrentlyValidationWorks()
+    {
+        ErrorDetails value = new BetaWorkspaceChangedConcurrentlyErrorDetails(
+            BetaWorkspaceChangedConcurrentlyField.InferenceDataPrivacyHumanReview
+        );
         value.Validate();
     }
 
@@ -1531,6 +1725,60 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceCreatedIncompleteSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
+            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void StorageProfileMismatchSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new StorageProfileMismatchErrorDetails("field");
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ChangeOutcomeUnknownSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ChangeOutcomeUnknownErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void StorageAttachedDuringArchiveSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new StorageAttachedDuringArchiveErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void WorkspaceMemberLimitExceededSerializationRoundtripWorks()
     {
         ErrorDetails value = new WorkspaceMemberLimitExceededErrorDetails();
@@ -1669,6 +1917,149 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaGrantRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaGrantRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEligibleSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEligibleErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaProviderNotAllowedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaProviderNotAllowedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaUnsupportedRegionSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaUnsupportedRegionErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageAlreadyRegisteredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAlreadyRegisteredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaAuthorizationCheckUnavailableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaAuthorizationCheckUnavailableErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaInvalidStorageArnSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaInvalidStorageArnErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaExternalStorageInUseSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageInUseErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaExternalStorageInWorkspacePolicySerializationRoundtripWorks()
+    {
+        ErrorDetails value =
+            new ExternalStorage::BetaExternalStorageInWorkspacePolicyErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageVerificationFailedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageVerificationFailedErrorDetails()
+        {
+            FailedChecks =
+            [
+                new()
+                {
+                    Check = ExternalStorage::Check.AlreadyRegistered,
+                    Message = "message",
+                    Role = ExternalStorage::Role.Ingest,
+                },
+            ],
+            Field = "inference_data_privacy.safeguards_storage",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -1750,6 +2141,144 @@ public class ErrorDetailsTest : TestBase
     public void BetaCannotSignOutPrivilegedMemberSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaApprovalRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaApprovalRequiredErrorDetails(
+            "inference_data_privacy.human_review"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaExternalStorageNotAvailableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageNotAvailableErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaHumanReviewNotAvailableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewNotAvailableErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaHumanReviewOnWithExternalStorageSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewOnWithExternalStorageErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageNotAttachableSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageNotAttachableErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaTranscriptsStorageRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaTranscriptsStorageRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageAttachLimitReachedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAttachLimitReachedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageProfileStillRequiredSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageProfileStillRequiredErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageChangedConcurrentlySerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageChangedConcurrentlyErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaWorkspaceChangedConcurrentlySerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaWorkspaceChangedConcurrentlyErrorDetails(
+            BetaWorkspaceChangedConcurrentlyField.InferenceDataPrivacyHumanReview
+        );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2525,6 +3054,36 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceCreatedIncompleteErrorCodeWorks()
+    {
+        ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
+            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+        );
+        Assert.Equal(ErrorDetailsErrorCode.WorkspaceCreatedIncomplete, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void StorageProfileMismatchErrorCodeWorks()
+    {
+        ErrorDetails value = new StorageProfileMismatchErrorDetails("field");
+        Assert.Equal(ErrorDetailsErrorCode.StorageProfileMismatch, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void ChangeOutcomeUnknownErrorCodeWorks()
+    {
+        ErrorDetails value = new ChangeOutcomeUnknownErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ChangeOutcomeUnknown, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void StorageAttachedDuringArchiveErrorCodeWorks()
+    {
+        ErrorDetails value = new StorageAttachedDuringArchiveErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageAttachedDuringArchive, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void WorkspaceMemberLimitExceededErrorCodeWorks()
     {
         ErrorDetails value = new WorkspaceMemberLimitExceededErrorDetails();
@@ -2603,6 +3162,92 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaGrantRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaGrantRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.GrantRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaOrganizationNotEligibleErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaOrganizationNotEligibleErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.OrganizationNotEligible, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaProviderNotAllowedErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaProviderNotAllowedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ProviderNotAllowed, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaUnsupportedRegionErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaUnsupportedRegionErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.UnsupportedRegion, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaStorageAlreadyRegisteredErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAlreadyRegisteredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageAlreadyRegistered, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaAuthorizationCheckUnavailableErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaAuthorizationCheckUnavailableErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.AuthorizationCheckUnavailable, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaInvalidStorageArnErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaInvalidStorageArnErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.InvalidStorageArn, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaExternalStorageInUseErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageInUseErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalStorageInUse, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaExternalStorageInWorkspacePolicyErrorCodeWorks()
+    {
+        ErrorDetails value =
+            new ExternalStorage::BetaExternalStorageInWorkspacePolicyErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaStorageVerificationFailedErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageVerificationFailedErrorDetails()
+        {
+            FailedChecks =
+            [
+                new()
+                {
+                    Check = ExternalStorage::Check.AlreadyRegistered,
+                    Message = "message",
+                    Role = ExternalStorage::Role.Ingest,
+                },
+            ],
+            Field = "inference_data_privacy.safeguards_storage",
+        };
+        Assert.Equal(ErrorDetailsErrorCode.StorageVerificationFailed, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerErrorCodeWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -2649,6 +3294,87 @@ public class ErrorDetailsTest : TestBase
     {
         ErrorDetails value = new BetaCannotSignOutPrivilegedMemberErrorDetails();
         Assert.Equal(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaApprovalRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaApprovalRequiredErrorDetails(
+            "inference_data_privacy.human_review"
+        );
+        Assert.Equal(ErrorDetailsErrorCode.ApprovalRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaExternalStorageNotAvailableErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaExternalStorageNotAvailableErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalStorageNotAvailable, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaHumanReviewNotAvailableErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewNotAvailableErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.HumanReviewNotAvailable, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaHumanReviewOnWithExternalStorageErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaHumanReviewOnWithExternalStorageErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaStorageNotAttachableErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageNotAttachableErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        Assert.Equal(ErrorDetailsErrorCode.StorageNotAttachable, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaTranscriptsStorageRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaTranscriptsStorageRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.TranscriptsStorageRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaStorageAttachLimitReachedErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageAttachLimitReachedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageAttachLimitReached, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaStorageProfileStillRequiredErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageProfileStillRequiredErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageProfileStillRequired, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaStorageChangedConcurrentlyErrorCodeWorks()
+    {
+        ErrorDetails value = new ExternalStorage::BetaStorageChangedConcurrentlyErrorDetails(
+            "inference_data_privacy.safeguards_storage"
+        );
+        Assert.Equal(ErrorDetailsErrorCode.StorageChangedConcurrently, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaWorkspaceChangedConcurrentlyErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaWorkspaceChangedConcurrentlyErrorDetails(
+            BetaWorkspaceChangedConcurrentlyField.InferenceDataPrivacyHumanReview
+        );
+        Assert.Equal(ErrorDetailsErrorCode.WorkspaceChangedConcurrently, value.ErrorCode.Value());
     }
 
     [Fact]
@@ -2971,6 +3697,10 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.KeyProfileMismatch)]
     [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation)]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
+    [InlineData(ErrorDetailsErrorCode.WorkspaceCreatedIncomplete)]
+    [InlineData(ErrorDetailsErrorCode.StorageProfileMismatch)]
+    [InlineData(ErrorDetailsErrorCode.ChangeOutcomeUnknown)]
+    [InlineData(ErrorDetailsErrorCode.StorageAttachedDuringArchive)]
     [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
     [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
@@ -2981,6 +3711,16 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.EnvironmentUpdateDisabled)]
     [InlineData(ErrorDetailsErrorCode.HeartbeatPreconditionFailed)]
     [InlineData(ErrorDetailsErrorCode.InvalidMetadata)]
+    [InlineData(ErrorDetailsErrorCode.GrantRequired)]
+    [InlineData(ErrorDetailsErrorCode.OrganizationNotEligible)]
+    [InlineData(ErrorDetailsErrorCode.ProviderNotAllowed)]
+    [InlineData(ErrorDetailsErrorCode.UnsupportedRegion)]
+    [InlineData(ErrorDetailsErrorCode.StorageAlreadyRegistered)]
+    [InlineData(ErrorDetailsErrorCode.AuthorizationCheckUnavailable)]
+    [InlineData(ErrorDetailsErrorCode.InvalidStorageArn)]
+    [InlineData(ErrorDetailsErrorCode.ExternalStorageInUse)]
+    [InlineData(ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy)]
+    [InlineData(ErrorDetailsErrorCode.StorageVerificationFailed)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf)]
     [InlineData(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta)]
@@ -2988,6 +3728,16 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
+    [InlineData(ErrorDetailsErrorCode.ApprovalRequired)]
+    [InlineData(ErrorDetailsErrorCode.ExternalStorageNotAvailable)]
+    [InlineData(ErrorDetailsErrorCode.HumanReviewNotAvailable)]
+    [InlineData(ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage)]
+    [InlineData(ErrorDetailsErrorCode.StorageNotAttachable)]
+    [InlineData(ErrorDetailsErrorCode.TranscriptsStorageRequired)]
+    [InlineData(ErrorDetailsErrorCode.StorageAttachLimitReached)]
+    [InlineData(ErrorDetailsErrorCode.StorageProfileStillRequired)]
+    [InlineData(ErrorDetailsErrorCode.StorageChangedConcurrently)]
+    [InlineData(ErrorDetailsErrorCode.WorkspaceChangedConcurrently)]
     [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
     [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
     [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]
@@ -3188,6 +3938,22 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation, 56, "workspace_policy_violation")]
     [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged, 57, "external_key_changed")]
     [InlineData(
+        ErrorDetailsErrorCode.WorkspaceCreatedIncomplete,
+        724555190,
+        "workspace_created_incomplete"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageProfileMismatch,
+        679510682,
+        "storage_profile_mismatch"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ChangeOutcomeUnknown, 538157612, "change_outcome_unknown")]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageAttachedDuringArchive,
+        492893123,
+        "storage_attached_during_archive"
+    )]
+    [InlineData(
         ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
         58,
         "workspace_member_limit_exceeded"
@@ -3213,6 +3979,36 @@ public class ErrorDetailsErrorCodeTest : TestBase
         "heartbeat_precondition_failed"
     )]
     [InlineData(ErrorDetailsErrorCode.InvalidMetadata, 67, "invalid_metadata")]
+    [InlineData(ErrorDetailsErrorCode.GrantRequired, 1832381458, "grant_required")]
+    [InlineData(
+        ErrorDetailsErrorCode.OrganizationNotEligible,
+        473330095,
+        "organization_not_eligible"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ProviderNotAllowed, 1396900855, "provider_not_allowed")]
+    [InlineData(ErrorDetailsErrorCode.UnsupportedRegion, 2119195443, "unsupported_region")]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageAlreadyRegistered,
+        1005495766,
+        "storage_already_registered"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.AuthorizationCheckUnavailable,
+        479660100,
+        "authorization_check_unavailable"
+    )]
+    [InlineData(ErrorDetailsErrorCode.InvalidStorageArn, 2026729190, "invalid_storage_arn")]
+    [InlineData(ErrorDetailsErrorCode.ExternalStorageInUse, 1557296840, "external_storage_in_use")]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
+        1392417940,
+        "external_storage_in_workspace_policy"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageVerificationFailed,
+        2088159786,
+        "storage_verification_failed"
+    )]
     [InlineData(
         ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
         68,
@@ -3239,6 +4035,48 @@ public class ErrorDetailsErrorCodeTest : TestBase
         ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
         74,
         "cannot_sign_out_privileged_member"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ApprovalRequired, 311948738, "approval_required")]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalStorageNotAvailable,
+        1659550957,
+        "external_storage_not_available"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.HumanReviewNotAvailable,
+        42139857,
+        "human_review_not_available"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage,
+        1172875179,
+        "human_review_on_with_external_storage"
+    )]
+    [InlineData(ErrorDetailsErrorCode.StorageNotAttachable, 681479952, "storage_not_attachable")]
+    [InlineData(
+        ErrorDetailsErrorCode.TranscriptsStorageRequired,
+        1311301351,
+        "transcripts_storage_required"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageAttachLimitReached,
+        1233466145,
+        "storage_attach_limit_reached"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageProfileStillRequired,
+        488961029,
+        "storage_profile_still_required"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.StorageChangedConcurrently,
+        1131762667,
+        "storage_changed_concurrently"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.WorkspaceChangedConcurrently,
+        1043618038,
+        "workspace_changed_concurrently"
     )]
     [InlineData(
         ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,

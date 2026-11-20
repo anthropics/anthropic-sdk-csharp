@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -7,6 +6,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.Workspaces;
 
@@ -226,8 +226,8 @@ public record class BetaDataResidencyCreateConfigAllowedInferenceGeos : ModelBas
     /// </example>
     /// </summary>
     public void Switch(
-        Action<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>> geos,
-        Action<BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted> unrestricted
+        System::Action<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>> geos,
+        System::Action<BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted> unrestricted
     )
     {
         switch (this.Value)
@@ -267,8 +267,8 @@ public record class BetaDataResidencyCreateConfigAllowedInferenceGeos : ModelBas
     /// </example>
     /// </summary>
     public T Match<T>(
-        Func<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>, T> geos,
-        Func<BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted, T> unrestricted
+        System::Func<IReadOnlyList<ApiEnum<string, BetaAllowedInferenceGeo>>, T> geos,
+        System::Func<BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted, T> unrestricted
     )
     {
         return this.Value switch
@@ -353,7 +353,7 @@ sealed class BetaDataResidencyCreateConfigAllowedInferenceGeosConverter
 {
     public override BetaDataResidencyCreateConfigAllowedInferenceGeos? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -371,7 +371,7 @@ sealed class BetaDataResidencyCreateConfigAllowedInferenceGeosConverter
                 return new(deserialized, element);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -390,7 +390,7 @@ sealed class BetaDataResidencyCreateConfigAllowedInferenceGeosConverter
                 return new(deserialized, element);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
         {
             // ignore
         }
@@ -463,7 +463,7 @@ class BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestrictedConverter
 {
     public override BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestricted? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -497,7 +497,7 @@ sealed class BetaDataResidencyCreateConfigDefaultInferenceGeoConverter
 {
     public override BetaDataResidencyCreateConfigDefaultInferenceGeo Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -545,7 +545,7 @@ sealed class BetaDataResidencyCreateConfigWorkspaceGeoConverter
 {
     public override BetaDataResidencyCreateConfigWorkspaceGeo Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

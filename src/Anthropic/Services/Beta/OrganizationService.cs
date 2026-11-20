@@ -40,6 +40,7 @@ public sealed class OrganizationService : IOrganizationService
         _federation = new(() => new Organization::FederationService(client));
         _invites = new(() => new Organization::InviteService(client));
         _serviceAccounts = new(() => new Organization::ServiceAccountService(client));
+        _externalStorage = new(() => new Organization::ExternalStorageService(client));
         _users = new(() => new Organization::UserService(client));
         _workspaces = new(() => new Organization::WorkspaceService(client));
         _rateLimits = new(() => new Organization::RateLimitService(client));
@@ -84,6 +85,12 @@ public sealed class OrganizationService : IOrganizationService
     public Organization::IServiceAccountService ServiceAccounts
     {
         get { return _serviceAccounts.Value; }
+    }
+
+    readonly Lazy<Organization::IExternalStorageService> _externalStorage;
+    public Organization::IExternalStorageService ExternalStorage
+    {
+        get { return _externalStorage.Value; }
     }
 
     readonly Lazy<Organization::IUserService> _users;
@@ -207,6 +214,9 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         _serviceAccounts = new(() =>
             new Organization::ServiceAccountServiceWithRawResponse(client)
         );
+        _externalStorage = new(() =>
+            new Organization::ExternalStorageServiceWithRawResponse(client)
+        );
         _users = new(() => new Organization::UserServiceWithRawResponse(client));
         _workspaces = new(() => new Organization::WorkspaceServiceWithRawResponse(client));
         _rateLimits = new(() => new Organization::RateLimitServiceWithRawResponse(client));
@@ -257,6 +267,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
     public Organization::IServiceAccountServiceWithRawResponse ServiceAccounts
     {
         get { return _serviceAccounts.Value; }
+    }
+
+    readonly Lazy<Organization::IExternalStorageServiceWithRawResponse> _externalStorage;
+    public Organization::IExternalStorageServiceWithRawResponse ExternalStorage
+    {
+        get { return _externalStorage.Value; }
     }
 
     readonly Lazy<Organization::IUserServiceWithRawResponse> _users;

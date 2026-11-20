@@ -7,12 +7,15 @@ using Anthropic.Models;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
+using Anthropic.Models.Beta.Organization.ExternalStorage;
 using Anthropic.Models.Beta.Organization.Plugins;
 using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
+using Anthropic.Models.Beta.Organization.Workspaces;
 using Anthropic.Models.Files;
 using Anthropic.Models.Messages;
 using Anthropic.Models.Organization;
@@ -36,6 +39,14 @@ public class AnthropicExceptionFactory
     {
         [(400, "already_member")] = (statusCode, responseBody, response) =>
             new AnthropicAlreadyMemberException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "approval_required")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaApprovalRequiredException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -246,8 +257,56 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "external_storage_in_use")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaExternalStorageInUseException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "external_storage_in_workspace_policy")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaExternalStorageInWorkspacePolicyException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "external_storage_not_available")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaExternalStorageNotAvailableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "file_not_downloadable")] = (statusCode, responseBody, response) =>
             new AnthropicFileNotDownloadableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "grant_required")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaGrantRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "human_review_not_available")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaHumanReviewNotAvailableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "human_review_on_with_external_storage")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaHumanReviewOnWithExternalStorageException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -272,6 +331,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "invalid_metadata")] = (statusCode, responseBody, response) =>
             new AnthropicBetaInvalidMetadataException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "invalid_storage_arn")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaInvalidStorageArnException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -310,6 +377,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "organization_not_eligible")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaOrganizationNotEligibleException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "organization_not_enrolled_in_beta")] = (statusCode, responseBody, response) =>
             new AnthropicBetaOrganizationNotEnrolledInBetaException()
             {
@@ -336,6 +411,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "parent_organization_required")] = (statusCode, responseBody, response) =>
             new AnthropicParentOrganizationRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "provider_not_allowed")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaProviderNotAllowedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -422,8 +505,48 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "storage_attach_limit_reached")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageAttachLimitReachedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "storage_not_attachable")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageNotAttachableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "storage_profile_mismatch")] = (statusCode, responseBody, response) =>
+            new AnthropicStorageProfileMismatchException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "storage_profile_still_required")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageProfileStillRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "storage_quota_exceeded")] = (statusCode, responseBody, response) =>
             new AnthropicStorageQuotaExceededException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "storage_verification_failed")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageVerificationFailedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -478,8 +601,24 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "transcripts_storage_required")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaTranscriptsStorageRequiredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "unsupported_charset")] = (statusCode, responseBody, response) =>
             new AnthropicBetaUnsupportedCharsetException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "unsupported_region")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaUnsupportedRegionException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -778,6 +917,38 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(409, "storage_already_registered")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageAlreadyRegisteredException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(409, "storage_attached_during_archive")] = (statusCode, responseBody, response) =>
+            new AnthropicStorageAttachedDuringArchiveException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(409, "storage_changed_concurrently")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageChangedConcurrentlyException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(409, "workspace_changed_concurrently")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaWorkspaceChangedConcurrentlyException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(412, "heartbeat_precondition_failed")] = (statusCode, responseBody, response) =>
             new AnthropicBetaHeartbeatPreconditionFailedException()
             {
@@ -818,6 +989,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(503, "authorization_check_unavailable")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaAuthorizationCheckUnavailableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(503, "change_outcome_unknown")] = (statusCode, responseBody, response) =>
+            new AnthropicChangeOutcomeUnknownException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(503, "cmek_context_unavailable")] = (statusCode, responseBody, response) =>
             new AnthropicCmekContextUnavailableException()
             {
@@ -836,6 +1023,14 @@ public class AnthropicExceptionFactory
             },
         [(503, "registration_pending")] = (statusCode, responseBody, response) =>
             new AnthropicBetaRegistrationPendingException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(503, "workspace_created_incomplete")] = (statusCode, responseBody, response) =>
+            new AnthropicWorkspaceCreatedIncompleteException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

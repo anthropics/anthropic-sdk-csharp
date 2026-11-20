@@ -1,7 +1,7 @@
-using System;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.Workspaces;
 
@@ -16,7 +16,7 @@ sealed class BetaAllowedInferenceGeoConverter : JsonConverter<BetaAllowedInferen
 {
     public override BetaAllowedInferenceGeo Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

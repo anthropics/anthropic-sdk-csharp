@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -8,6 +7,7 @@ using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
 using RateLimits = Anthropic.Models.Beta.Organization.RateLimits;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
@@ -447,12 +447,12 @@ public record class Group : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        Action<RateLimits::BetaOrganizationRateLimitModelGroup> betaOrganizationRateLimitModel,
-        Action<RateLimits::BetaOrganizationRateLimitBatchGroup> betaOrganizationRateLimitBatch,
-        Action<RateLimits::BetaOrganizationRateLimitTokenCountGroup> betaOrganizationRateLimitTokenCount,
-        Action<RateLimits::BetaOrganizationRateLimitFilesGroup> betaOrganizationRateLimitFiles,
-        Action<RateLimits::BetaOrganizationRateLimitSkillsGroup> betaOrganizationRateLimitSkills,
-        Action<RateLimits::BetaOrganizationRateLimitWebSearchGroup> betaOrganizationRateLimitWebSearch
+        System::Action<RateLimits::BetaOrganizationRateLimitModelGroup> betaOrganizationRateLimitModel,
+        System::Action<RateLimits::BetaOrganizationRateLimitBatchGroup> betaOrganizationRateLimitBatch,
+        System::Action<RateLimits::BetaOrganizationRateLimitTokenCountGroup> betaOrganizationRateLimitTokenCount,
+        System::Action<RateLimits::BetaOrganizationRateLimitFilesGroup> betaOrganizationRateLimitFiles,
+        System::Action<RateLimits::BetaOrganizationRateLimitSkillsGroup> betaOrganizationRateLimitSkills,
+        System::Action<RateLimits::BetaOrganizationRateLimitWebSearchGroup> betaOrganizationRateLimitWebSearch
     )
     {
         switch (this.Value)
@@ -506,15 +506,27 @@ public record class Group : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        Func<RateLimits::BetaOrganizationRateLimitModelGroup, T> betaOrganizationRateLimitModel,
-        Func<RateLimits::BetaOrganizationRateLimitBatchGroup, T> betaOrganizationRateLimitBatch,
-        Func<
+        System::Func<
+            RateLimits::BetaOrganizationRateLimitModelGroup,
+            T
+        > betaOrganizationRateLimitModel,
+        System::Func<
+            RateLimits::BetaOrganizationRateLimitBatchGroup,
+            T
+        > betaOrganizationRateLimitBatch,
+        System::Func<
             RateLimits::BetaOrganizationRateLimitTokenCountGroup,
             T
         > betaOrganizationRateLimitTokenCount,
-        Func<RateLimits::BetaOrganizationRateLimitFilesGroup, T> betaOrganizationRateLimitFiles,
-        Func<RateLimits::BetaOrganizationRateLimitSkillsGroup, T> betaOrganizationRateLimitSkills,
-        Func<
+        System::Func<
+            RateLimits::BetaOrganizationRateLimitFilesGroup,
+            T
+        > betaOrganizationRateLimitFiles,
+        System::Func<
+            RateLimits::BetaOrganizationRateLimitSkillsGroup,
+            T
+        > betaOrganizationRateLimitSkills,
+        System::Func<
             RateLimits::BetaOrganizationRateLimitWebSearchGroup,
             T
         > betaOrganizationRateLimitWebSearch
@@ -622,7 +634,7 @@ sealed class GroupConverter : JsonConverter<Group>
 {
     public override Group? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -793,7 +805,7 @@ sealed class GroupTypeValueConverter : JsonConverter<GroupTypeValue>
 {
     public override GroupTypeValue Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

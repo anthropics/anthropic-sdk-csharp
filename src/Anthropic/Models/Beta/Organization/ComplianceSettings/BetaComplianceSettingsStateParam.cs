@@ -1,9 +1,9 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.ComplianceSettings;
 
@@ -132,8 +132,8 @@ public record class BetaComplianceSettingsStateParam : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        Action<BetaComplianceSettingsStateEnabledParam> enabled,
-        Action<BetaComplianceSettingsStateDisabledParam> disabled
+        System::Action<BetaComplianceSettingsStateEnabledParam> enabled,
+        System::Action<BetaComplianceSettingsStateDisabledParam> disabled
     )
     {
         switch (this.Value)
@@ -173,8 +173,8 @@ public record class BetaComplianceSettingsStateParam : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        Func<BetaComplianceSettingsStateEnabledParam, T> enabled,
-        Func<BetaComplianceSettingsStateDisabledParam, T> disabled
+        System::Func<BetaComplianceSettingsStateEnabledParam, T> enabled,
+        System::Func<BetaComplianceSettingsStateDisabledParam, T> disabled
     )
     {
         return this.Value switch
@@ -248,7 +248,7 @@ sealed class BetaComplianceSettingsStateParamConverter
 {
     public override BetaComplianceSettingsStateParam? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -336,7 +336,7 @@ sealed class BetaComplianceSettingsStateParamTypeConverter
 {
     public override BetaComplianceSettingsStateParamType Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

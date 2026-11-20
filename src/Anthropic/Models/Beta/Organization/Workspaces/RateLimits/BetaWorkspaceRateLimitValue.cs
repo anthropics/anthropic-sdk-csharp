@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -6,6 +5,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Anthropic.Core;
 using Anthropic.Exceptions;
+using System = System;
 
 namespace Anthropic.Models.Beta.Organization.Workspaces.RateLimits;
 
@@ -238,8 +238,8 @@ public record class Source : ModelBase
     /// </example>
     /// </summary>
     public void Switch(
-        Action<BetaWorkspaceRateLimitWorkspaceSource> betaWorkspaceRateLimitWorkspace,
-        Action<BetaWorkspaceRateLimitOrganizationSource> betaWorkspaceRateLimitOrganization
+        System::Action<BetaWorkspaceRateLimitWorkspaceSource> betaWorkspaceRateLimitWorkspace,
+        System::Action<BetaWorkspaceRateLimitOrganizationSource> betaWorkspaceRateLimitOrganization
     )
     {
         switch (this.Value)
@@ -277,8 +277,8 @@ public record class Source : ModelBase
     /// </example>
     /// </summary>
     public T Match<T>(
-        Func<BetaWorkspaceRateLimitWorkspaceSource, T> betaWorkspaceRateLimitWorkspace,
-        Func<BetaWorkspaceRateLimitOrganizationSource, T> betaWorkspaceRateLimitOrganization
+        System::Func<BetaWorkspaceRateLimitWorkspaceSource, T> betaWorkspaceRateLimitWorkspace,
+        System::Func<BetaWorkspaceRateLimitOrganizationSource, T> betaWorkspaceRateLimitOrganization
     )
     {
         return this.Value switch
@@ -352,7 +352,7 @@ sealed class SourceConverter : JsonConverter<Source>
 {
     public override Source? Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {
@@ -435,7 +435,7 @@ sealed class SourceTypeConverter : JsonConverter<SourceType>
 {
     public override SourceType Read(
         ref Utf8JsonReader reader,
-        Type typeToConvert,
+        System::Type typeToConvert,
         JsonSerializerOptions options
     )
     {

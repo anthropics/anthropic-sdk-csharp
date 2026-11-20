@@ -188,6 +188,33 @@ public sealed record class BetaWorkspace : JsonModel
         init { this._rawData.Set("user_profile_id", value); }
     }
 
+    /// <summary>
+    /// Where the Workspace's retained inference data and transcript copies go, and
+    /// whether Anthropic's human review applies. Returned only to requests that send
+    /// the `efs-2026-10-01` `anthropic-beta` value, and each member only to organizations
+    /// enabled for it.
+    /// </summary>
+    public BetaInferenceDataPrivacy? InferenceDataPrivacy
+    {
+        get
+        {
+            this._rawData.Freeze();
+            return this._rawData.GetNullableClass<BetaInferenceDataPrivacy>(
+                "inference_data_privacy"
+            );
+        }
+        init
+        {
+            if (value == null)
+            {
+                this._rawData.Remove("inference_data_privacy");
+                return;
+            }
+
+            this._rawData.Set("inference_data_privacy", value);
+        }
+    }
+
     /// <inheritdoc/>
     public override void Validate()
     {
@@ -205,6 +232,7 @@ public sealed record class BetaWorkspace : JsonModel
             throw new AnthropicInvalidDataException("Invalid value given for constant");
         }
         _ = this.UserProfileID;
+        this.InferenceDataPrivacy?.Validate();
     }
 
     public BetaWorkspace()
