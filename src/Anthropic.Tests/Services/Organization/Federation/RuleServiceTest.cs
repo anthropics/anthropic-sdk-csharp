@@ -11,16 +11,22 @@ public class RuleServiceTest : TestBase
         var federationRule = await this.client.Organization.Federation.Rules.Create(
             new()
             {
-                IssuerID = "issuer_id",
+                IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
                 Match = new()
                 {
                     Audience = "audience",
-                    Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                    Claims = new Dictionary<string, string>()
+                    {
+                        { "event_name", "push" },
+                        { "ref", "refs/heads/main" },
+                        { "repository_id", "123456789" },
+                        { "repository_owner_id", "987654321" },
+                    },
                     Condition = "condition",
                     SubjectPrefix = "subject_prefix",
                 },
-                Name = "x",
-                OAuthScope = "x",
+                Name = "prod-deploy-pipeline",
+                OAuthScope = "workspace:developer",
                 Target = new()
                 {
                     ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",

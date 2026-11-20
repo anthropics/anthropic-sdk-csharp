@@ -14,16 +14,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -33,20 +39,26 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
-        string expectedIssuerID = "issuer_id";
+        string expectedIssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK";
         BetaFederationRuleMatch expectedMatch = new()
         {
             Audience = "audience",
-            Claims = new Dictionary<string, string>() { { "foo", "string" } },
+            Claims = new Dictionary<string, string>()
+            {
+                { "event_name", "push" },
+                { "ref", "refs/heads/main" },
+                { "repository_id", "123456789" },
+                { "repository_owner_id", "987654321" },
+            },
             Condition = "condition",
             SubjectPrefix = "subject_prefix",
         };
-        string expectedName = "x";
-        string expectedOAuthScope = "x";
+        string expectedName = "prod-deploy-pipeline";
+        string expectedOAuthScope = "workspace:developer";
         BetaServiceAccountTarget expectedTarget = new()
         {
             ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -56,7 +68,7 @@ public class RuleCreateParamsTest : TestBase
         Dictionary<string, string> expectedAttributes = new() { { "foo", "string" } };
         string expectedDescription = "description";
         long expectedTokenLifetimeSeconds = 60;
-        string expectedWorkspaceID = "workspace_id";
+        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedIssuerID, parameters.IssuerID);
@@ -89,16 +101,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -106,7 +124,7 @@ public class RuleCreateParamsTest : TestBase
             },
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         Assert.Null(parameters.AppliesToAllWorkspaces);
@@ -122,16 +140,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -139,7 +163,7 @@ public class RuleCreateParamsTest : TestBase
             },
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
 
             // Null should be interpreted as omitted for these properties
             AppliesToAllWorkspaces = null,
@@ -160,16 +184,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -179,7 +209,7 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -202,16 +232,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -235,16 +271,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -272,16 +314,22 @@ public class RuleCreateParamsTest : TestBase
     {
         RuleCreateParams parameters = new()
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -305,16 +353,22 @@ public class RuleCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         RuleCreateParams parameters = new()
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -336,16 +390,22 @@ public class RuleCreateParamsTest : TestBase
     {
         var parameters = new RuleCreateParams
         {
-            IssuerID = "issuer_id",
+            IssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK",
             Match = new()
             {
                 Audience = "audience",
-                Claims = new Dictionary<string, string>() { { "foo", "string" } },
+                Claims = new Dictionary<string, string>()
+                {
+                    { "event_name", "push" },
+                    { "ref", "refs/heads/main" },
+                    { "repository_id", "123456789" },
+                    { "repository_owner_id", "987654321" },
+                },
                 Condition = "condition",
                 SubjectPrefix = "subject_prefix",
             },
-            Name = "x",
-            OAuthScope = "x",
+            Name = "prod-deploy-pipeline",
+            OAuthScope = "workspace:developer",
             Target = new()
             {
                 ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
@@ -355,7 +415,7 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 

@@ -15,13 +15,15 @@ public class TargetCreateParamsTest : TestBase
         var parameters = new TargetCreateParams
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedBundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq";
         BetaClaudeTagBundleTargetCreate expectedTarget =
-            new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx");
+            new BetaClaudeTagSlackChannelBundleTargetCreate("slch_01SvpyRQK3nN6eH9uhRA7n1q");
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedBundleID, parameters.BundleID);
@@ -40,7 +42,9 @@ public class TargetCreateParamsTest : TestBase
         var parameters = new TargetCreateParams
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
         };
 
         Assert.Null(parameters.Betas);
@@ -53,7 +57,9 @@ public class TargetCreateParamsTest : TestBase
         var parameters = new TargetCreateParams
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -69,7 +75,9 @@ public class TargetCreateParamsTest : TestBase
         var parameters = new TargetCreateParams
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -87,7 +95,9 @@ public class TargetCreateParamsTest : TestBase
         TargetCreateParams parameters = new()
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -109,7 +119,9 @@ public class TargetCreateParamsTest : TestBase
         TargetCreateParams parameters = new()
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -127,7 +139,9 @@ public class TargetCreateParamsTest : TestBase
         var parameters = new TargetCreateParams
         {
             BundleID = "capp_011CZkZjLP1cWxj5EtMmdgbq",
-            Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx"),
+            Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+            ),
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 

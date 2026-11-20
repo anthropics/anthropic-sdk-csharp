@@ -10,7 +10,11 @@ public class IssuerServiceTest : TestBase
         var betaFederationIssuer = await this
             .client.WithQuery("beta=true")
             .Beta.Organization.Federation.Issuers.Create(
-                new() { IssuerUrl = "x", Name = "x" },
+                new()
+                {
+                    IssuerUrl = "https://token.actions.githubusercontent.com",
+                    Name = "github-actions",
+                },
                 TestContext.Current.CancellationToken
             );
         betaFederationIssuer.Validate();

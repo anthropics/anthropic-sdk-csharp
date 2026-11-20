@@ -9,9 +9,12 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaClaudeTagSlackChannelBundleTargetCreate { SlackChannelID = "xxxxxxxx" };
+        var model = new BetaClaudeTagSlackChannelBundleTargetCreate
+        {
+            SlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
+        };
 
-        string expectedSlackChannelID = "xxxxxxxx";
+        string expectedSlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q";
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_channel");
 
         Assert.Equal(expectedSlackChannelID, model.SlackChannelID);
@@ -21,7 +24,10 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaClaudeTagSlackChannelBundleTargetCreate { SlackChannelID = "xxxxxxxx" };
+        var model = new BetaClaudeTagSlackChannelBundleTargetCreate
+        {
+            SlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
+        };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClaudeTagSlackChannelBundleTargetCreate>(
@@ -35,7 +41,10 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaClaudeTagSlackChannelBundleTargetCreate { SlackChannelID = "xxxxxxxx" };
+        var model = new BetaClaudeTagSlackChannelBundleTargetCreate
+        {
+            SlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
+        };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClaudeTagSlackChannelBundleTargetCreate>(
@@ -44,7 +53,7 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedSlackChannelID = "xxxxxxxx";
+        string expectedSlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q";
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_channel");
 
         Assert.Equal(expectedSlackChannelID, deserialized.SlackChannelID);
@@ -54,7 +63,10 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaClaudeTagSlackChannelBundleTargetCreate { SlackChannelID = "xxxxxxxx" };
+        var model = new BetaClaudeTagSlackChannelBundleTargetCreate
+        {
+            SlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
+        };
 
         model.Validate();
     }
@@ -62,7 +74,10 @@ public class BetaClaudeTagSlackChannelBundleTargetCreateTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaClaudeTagSlackChannelBundleTargetCreate { SlackChannelID = "xxxxxxxx" };
+        var model = new BetaClaudeTagSlackChannelBundleTargetCreate
+        {
+            SlackChannelID = "slch_01SvpyRQK3nN6eH9uhRA7n1q",
+        };
 
         BetaClaudeTagSlackChannelBundleTargetCreate copied = new(model);
 

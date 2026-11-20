@@ -11,7 +11,7 @@ public class BetaClaudeTagBundleTargetCreateTest : TestBase
     public void SlackChannelValidationWorks()
     {
         BetaClaudeTagBundleTargetCreate value = new BetaClaudeTagSlackChannelBundleTargetCreate(
-            "xxxxxxxx"
+            "slch_01SvpyRQK3nN6eH9uhRA7n1q"
         );
         value.Validate();
     }
@@ -29,7 +29,7 @@ public class BetaClaudeTagBundleTargetCreateTest : TestBase
     public void SlackChannelSerializationRoundtripWorks()
     {
         BetaClaudeTagBundleTargetCreate value = new BetaClaudeTagSlackChannelBundleTargetCreate(
-            "xxxxxxxx"
+            "slch_01SvpyRQK3nN6eH9uhRA7n1q"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClaudeTagBundleTargetCreate>(
@@ -59,7 +59,7 @@ public class BetaClaudeTagBundleTargetCreateTest : TestBase
     public void SlackChannelTypeWorks()
     {
         BetaClaudeTagBundleTargetCreate value = new BetaClaudeTagSlackChannelBundleTargetCreate(
-            "xxxxxxxx"
+            "slch_01SvpyRQK3nN6eH9uhRA7n1q"
         );
         Assert.Equal(BetaClaudeTagBundleTargetCreateType.SlackChannel, value.Type.Value());
     }

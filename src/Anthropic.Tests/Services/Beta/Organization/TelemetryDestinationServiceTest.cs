@@ -13,7 +13,7 @@ public class TelemetryDestinationServiceTest : TestBase
             .Beta.Organization.TelemetryDestinations.Create(
                 new()
                 {
-                    EndpointUrl = "x",
+                    EndpointUrl = "https://gateway.example.com",
                     Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
                 },
                 TestContext.Current.CancellationToken

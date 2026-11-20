@@ -11,12 +11,12 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
     {
         var model = new BetaClaudeTagSlackChannelIdentifiers
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
 
-        string expectedChannelID = "xx";
-        string expectedWorkspaceID = "xx";
+        string expectedChannelID = "C0456EFGH";
+        string expectedWorkspaceID = "T0123ABCD";
 
         Assert.Equal(expectedChannelID, model.ChannelID);
         Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
@@ -27,8 +27,8 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
     {
         var model = new BetaClaudeTagSlackChannelIdentifiers
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -45,8 +45,8 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
     {
         var model = new BetaClaudeTagSlackChannelIdentifiers
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -56,8 +56,8 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedChannelID = "xx";
-        string expectedWorkspaceID = "xx";
+        string expectedChannelID = "C0456EFGH";
+        string expectedWorkspaceID = "T0123ABCD";
 
         Assert.Equal(expectedChannelID, deserialized.ChannelID);
         Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
@@ -68,8 +68,8 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
     {
         var model = new BetaClaudeTagSlackChannelIdentifiers
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
 
         model.Validate();
@@ -80,8 +80,8 @@ public class BetaClaudeTagSlackChannelIdentifiersTest : TestBase
     {
         var model = new BetaClaudeTagSlackChannelIdentifiers
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
 
         BetaClaudeTagSlackChannelIdentifiers copied = new(model);

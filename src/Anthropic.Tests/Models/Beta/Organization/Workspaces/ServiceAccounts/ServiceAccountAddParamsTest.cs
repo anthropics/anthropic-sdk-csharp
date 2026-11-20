@@ -16,13 +16,13 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedWorkspaceID = "workspace_id";
-        string expectedServiceAccountID = "service_account_id";
+        string expectedServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK";
         ApiEnum<string, BetaNoBillingWorkspaceRole> expectedWorkspaceRole =
             BetaNoBillingWorkspaceRole.WorkspaceAdmin;
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
@@ -44,7 +44,7 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -58,7 +58,7 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
 
             // Null should be interpreted as omitted for these properties
@@ -75,7 +75,7 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
@@ -94,7 +94,7 @@ public class ServiceAccountAddParamsTest : TestBase
         ServiceAccountAddParams parameters = new()
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -117,7 +117,7 @@ public class ServiceAccountAddParamsTest : TestBase
         ServiceAccountAddParams parameters = new()
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
@@ -136,7 +136,7 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = BetaNoBillingWorkspaceRole.WorkspaceAdmin,
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
