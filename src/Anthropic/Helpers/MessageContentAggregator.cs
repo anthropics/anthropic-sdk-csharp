@@ -146,8 +146,14 @@ public sealed class MessageContentAggregator : SseAggregator<RawMessageStreamEve
             {
                 Text = StringJoinHelper(start.Text, Of<TextDelta>(), e => e.Text),
             };
+            // A citation type this SDK version doesn't model stays raw JSON, as it does in a
+            // non-streaming response.
             var citations = Of<CitationsDelta>()
-                .Select(e => e.Citation.Match<TextCitation>(f => f, f => f, f => f, f => f, f => f))
+                .Select(e =>
+                    e.Citation.Value is null
+                        ? new TextCitation(e.Citation.Json)
+                        : e.Citation.Match<TextCitation>(f => f, f => f, f => f, f => f, f => f)
+                )
                 .ToList();
             return citations.Count == 0
                 ? merged
