@@ -42,9 +42,10 @@ public class AnthropicFoundryClient : AnthropicClient
 
     private AnthropicFoundryClient(
         IAnthropicFoundryCredentials azureCredentials,
-        ClientOptions options
+        ClientOptions options,
+        ClientOptions parentOptions
     )
-        : base(options)
+        : base(options, parentOptions)
     {
         _azureCredentials =
             azureCredentials ?? throw new ArgumentNullException(nameof(azureCredentials));
@@ -86,6 +87,6 @@ public class AnthropicFoundryClient : AnthropicClient
 
     public override IAnthropicClient WithOptions(Func<ClientOptions, ClientOptions> modifier)
     {
-        return new AnthropicFoundryClient(_azureCredentials, _options.Apply(modifier));
+        return new AnthropicFoundryClient(_azureCredentials, _options.Apply(modifier), _options);
     }
 }
