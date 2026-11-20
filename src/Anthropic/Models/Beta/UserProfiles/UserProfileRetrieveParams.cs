@@ -11,7 +11,10 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.UserProfiles;
 
 /// <summary>
-/// Get User Profile
+/// Get a user profile by ID to check the details stored for it.
+///
+/// <para>See the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles)
+/// for how to set up and manage profiles.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that

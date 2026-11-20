@@ -11,7 +11,10 @@ using Anthropic.Services.Beta.UserProfiles;
 namespace Anthropic.Models.Beta.UserProfiles.ActionUrls;
 
 /// <summary>
-/// Create Action URL
+/// Create a link that sends the profile's end customer to the Verification Portal.
+///
+/// <para>See [Send an end customer a link to the Verification Portal](https://platform.claude.com/docs/en/manage-claude/user-profiles-verification-portal)
+/// for when to create the link and what the end customer sees.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that

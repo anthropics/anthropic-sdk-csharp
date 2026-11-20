@@ -9,7 +9,11 @@ using Anthropic.Core;
 namespace Anthropic.Models.UserProfiles;
 
 /// <summary>
-/// Create User Profile
+/// Register one of your end customers and get the ID to send on the requests you
+/// make for them.
+///
+/// <para>See the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#create-a-profile-for-each-end-customer)
+/// for what to send.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that

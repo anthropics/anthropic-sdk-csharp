@@ -8,9 +8,12 @@ using Anthropic.Services.Beta.UserProfiles;
 namespace Anthropic.Services.Beta;
 
 /// <summary>
-/// NOTE: Do not inherit from this type outside the SDK unless you're okay with breaking
-/// changes in non-major versions. We may add new methods in the future that cause
-/// existing derived classes to break.
+/// Register the end customers that your platform serves, so each request can name
+/// who it's for. To get started, see the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles).
+///
+/// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
+/// breaking changes in non-major versions. We may add new methods in the future that
+/// cause existing derived classes to break.</para>
 /// </summary>
 public interface IUserProfileService
 {
@@ -30,7 +33,12 @@ public interface IUserProfileService
     IActionUrlService ActionUrls { get; }
 
     /// <summary>
-    /// Create User Profile
+    /// Register one of your end customers and get the ID to send on the requests you
+    /// make for them.
+    ///
+    /// <para>See the [User profiles
+    /// guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#create-a-profile-for-each-end-customer)
+    /// for what to send.</para>
     /// </summary>
     Task<BetaUserProfile> Create(
         UserProfileCreateParams? parameters = null,
@@ -38,7 +46,11 @@ public interface IUserProfileService
     );
 
     /// <summary>
-    /// Get User Profile
+    /// Get a user profile by ID to check the details stored for it.
+    ///
+    /// <para>See the [User profiles
+    /// guide](https://platform.claude.com/docs/en/manage-claude/user-profiles) for how
+    /// to set up and manage profiles.</para>
     /// </summary>
     Task<BetaUserProfile> Retrieve(
         UserProfileRetrieveParams parameters,
@@ -53,7 +65,12 @@ public interface IUserProfileService
     );
 
     /// <summary>
-    /// Update User Profile
+    /// Change the details of a user profile, leaving the fields that you don't send as
+    /// they are.
+    ///
+    /// <para>See the [User profiles
+    /// guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#update-a-profile)
+    /// for how each field is updated.</para>
     /// </summary>
     Task<BetaUserProfile> Update(
         UserProfileUpdateParams parameters,
@@ -68,7 +85,11 @@ public interface IUserProfileService
     );
 
     /// <summary>
-    /// List User Profiles
+    /// List the user profiles in your organization, newest first by default.
+    ///
+    /// <para>See the [User profiles
+    /// guide](https://platform.claude.com/docs/en/manage-claude/user-profiles) for how
+    /// to set up and manage profiles.</para>
     /// </summary>
     Task<UserProfileListPage> List(
         UserProfileListParams? parameters = null,
@@ -76,7 +97,11 @@ public interface IUserProfileService
     );
 
     /// <summary>
-    /// Delete User Profile
+    /// Delete a user profile, for example when the end customer closes their account.
+    ///
+    /// <para>Stop sending the profile's ID first. See the [User profiles
+    /// guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#delete-a-profile)
+    /// for what happens after a delete.</para>
     /// </summary>
     Task<BetaDeletedUserProfile> Delete(
         UserProfileDeleteParams parameters,
@@ -91,7 +116,13 @@ public interface IUserProfileService
     );
 
     /// <summary>
-    /// Create Enrollment URL
+    /// Create a link that sends the profile's end customer to the Verification Portal
+    /// from Claude Platform on AWS.
+    ///
+    /// <para>On the Claude API, create an action URL instead. See [Send an end customer
+    /// a link to the Verification
+    /// Portal](https://platform.claude.com/docs/en/manage-claude/user-profiles-verification-portal)
+    /// for when to create the link and what the end customer sees.</para>
     /// </summary>
     Task<BetaUserProfileEnrollmentUrl> CreateEnrollmentUrl(
         UserProfileCreateEnrollmentUrlParams parameters,

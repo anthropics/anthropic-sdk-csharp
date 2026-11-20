@@ -13,7 +13,11 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.UserProfiles;
 
 /// <summary>
-/// Update User Profile
+/// Change the details of a user profile, leaving the fields that you don't send
+/// as they are.
+///
+/// <para>See the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#update-a-profile)
+/// for how each field is updated.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that

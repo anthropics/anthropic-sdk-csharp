@@ -9,7 +9,10 @@ using Anthropic.Core;
 namespace Anthropic.Models.UserProfiles;
 
 /// <summary>
-/// Delete User Profile
+/// Delete a user profile, for example when the end customer closes their account.
+///
+/// <para>Stop sending the profile's ID first. See the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles#delete-a-profile)
+/// for what happens after a delete.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that

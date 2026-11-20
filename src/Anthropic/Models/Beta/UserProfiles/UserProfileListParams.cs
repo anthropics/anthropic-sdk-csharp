@@ -13,7 +13,10 @@ using Anthropic.Services.Beta;
 namespace Anthropic.Models.Beta.UserProfiles;
 
 /// <summary>
-/// List User Profiles
+/// List the user profiles in your organization, newest first by default.
+///
+/// <para>See the [User profiles guide](https://platform.claude.com/docs/en/manage-claude/user-profiles)
+/// for how to set up and manage profiles.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
