@@ -57,6 +57,7 @@ public interface IMessageService
     /// <exception cref="AnthropicCompactionSignatureInvalidException"/>
     /// <exception cref="AnthropicCompactionTooManyToolReferencesException"/>
     /// <exception cref="AnthropicCompactionToolChangesMismatchException"/>
+    /// <exception cref="AnthropicImageDimensionsTooLargeException"/>
     /// <exception cref="AnthropicOrganizationOnHoldException"/>
     /// <exception cref="AnthropicRequestBodyEncodingInvalidException"/>
     /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException"/>
@@ -107,6 +108,7 @@ public interface IMessageService
     /// <exception cref="AnthropicCompactionSignatureInvalidException"/>
     /// <exception cref="AnthropicCompactionTooManyToolReferencesException"/>
     /// <exception cref="AnthropicCompactionToolChangesMismatchException"/>
+    /// <exception cref="AnthropicImageDimensionsTooLargeException"/>
     /// <exception cref="AnthropicOrganizationOnHoldException"/>
     /// <exception cref="AnthropicRequestBodyEncodingInvalidException"/>
     /// <exception cref="AnthropicRequestBodyEncodingUnsupportedException"/>

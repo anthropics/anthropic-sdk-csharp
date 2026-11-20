@@ -75,6 +75,8 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.CompactionTooManyToolReferences,
                 Messages::CompactionToolChangesMismatchErrorDetails _ =>
                     ErrorDetailsErrorCode.CompactionToolChangesMismatch,
+                Messages::ImageDimensionsTooLargeErrorDetails _ =>
+                    ErrorDetailsErrorCode.ImageDimensionsTooLarge,
                 OrganizationOnHoldErrorDetails _ => ErrorDetailsErrorCode.OrganizationOnHold,
                 RequestBodyEncodingInvalidErrorDetails _ =>
                     ErrorDetailsErrorCode.RequestBodyEncodingInvalid,
@@ -248,6 +250,7 @@ public record class ErrorDetails : ModelBase
                 Messages::CompactionSignatureInvalidErrorDetails _ => null,
                 Messages::CompactionTooManyToolReferencesErrorDetails _ => null,
                 Messages::CompactionToolChangesMismatchErrorDetails _ => null,
+                Messages::ImageDimensionsTooLargeErrorDetails _ => null,
                 OrganizationOnHoldErrorDetails _ => null,
                 RequestBodyEncodingInvalidErrorDetails _ => null,
                 RequestBodyEncodingUnsupportedErrorDetails _ => null,
@@ -358,6 +361,7 @@ public record class ErrorDetails : ModelBase
                 Messages::CompactionSignatureInvalidErrorDetails _ => null,
                 Messages::CompactionTooManyToolReferencesErrorDetails _ => null,
                 Messages::CompactionToolChangesMismatchErrorDetails _ => null,
+                Messages::ImageDimensionsTooLargeErrorDetails _ => null,
                 OrganizationOnHoldErrorDetails _ => null,
                 RequestBodyEncodingInvalidErrorDetails _ => null,
                 RequestBodyEncodingUnsupportedErrorDetails _ => null,
@@ -471,6 +475,7 @@ public record class ErrorDetails : ModelBase
                 Messages::CompactionSignatureInvalidErrorDetails _ => null,
                 Messages::CompactionTooManyToolReferencesErrorDetails _ => null,
                 Messages::CompactionToolChangesMismatchErrorDetails _ => null,
+                Messages::ImageDimensionsTooLargeErrorDetails _ => null,
                 OrganizationOnHoldErrorDetails _ => null,
                 RequestBodyEncodingInvalidErrorDetails _ => null,
                 RequestBodyEncodingUnsupportedErrorDetails _ => null,
@@ -666,6 +671,15 @@ public record class ErrorDetails : ModelBase
 
     public ErrorDetails(
         Messages::CompactionToolChangesMismatchErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        Messages::ImageDimensionsTooLargeErrorDetails value,
         JsonElement? element = null
     )
     {
@@ -1614,6 +1628,29 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as Messages::CompactionToolChangesMismatchErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="Messages::ImageDimensionsTooLargeErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickImageDimensionsTooLarge(out var value)) {
+    ///     // `value` is of type `Messages::ImageDimensionsTooLargeErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickImageDimensionsTooLarge(
+        [NotNullWhen(true)] out Messages::ImageDimensionsTooLargeErrorDetails? value
+    )
+    {
+        value = this.Value as Messages::ImageDimensionsTooLargeErrorDetails;
         return value != null;
     }
 
@@ -3614,6 +3651,7 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::CompactionSignatureInvalidErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionTooManyToolReferencesErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionToolChangesMismatchErrorDetails value) =&gt; {...},
+    ///     (Messages::ImageDimensionsTooLargeErrorDetails value) =&gt; {...},
     ///     (OrganizationOnHoldErrorDetails value) =&gt; {...},
     ///     (RequestBodyEncodingInvalidErrorDetails value) =&gt; {...},
     ///     (RequestBodyEncodingUnsupportedErrorDetails value) =&gt; {...},
@@ -3718,6 +3756,7 @@ public record class ErrorDetails : ModelBase
         Action<Messages::CompactionSignatureInvalidErrorDetails> compactionSignatureInvalid,
         Action<Messages::CompactionTooManyToolReferencesErrorDetails> compactionTooManyToolReferences,
         Action<Messages::CompactionToolChangesMismatchErrorDetails> compactionToolChangesMismatch,
+        Action<Messages::ImageDimensionsTooLargeErrorDetails> imageDimensionsTooLarge,
         Action<OrganizationOnHoldErrorDetails> organizationOnHold,
         Action<RequestBodyEncodingInvalidErrorDetails> requestBodyEncodingInvalid,
         Action<RequestBodyEncodingUnsupportedErrorDetails> requestBodyEncodingUnsupported,
@@ -3846,6 +3885,9 @@ public record class ErrorDetails : ModelBase
                 break;
             case Messages::CompactionToolChangesMismatchErrorDetails value:
                 compactionToolChangesMismatch(value);
+                break;
+            case Messages::ImageDimensionsTooLargeErrorDetails value:
+                imageDimensionsTooLarge(value);
                 break;
             case OrganizationOnHoldErrorDetails value:
                 organizationOnHold(value);
@@ -4140,6 +4182,7 @@ public record class ErrorDetails : ModelBase
     ///     (Messages::CompactionSignatureInvalidErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionTooManyToolReferencesErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionToolChangesMismatchErrorDetails value) =&gt; {...},
+    ///     (Messages::ImageDimensionsTooLargeErrorDetails value) =&gt; {...},
     ///     (OrganizationOnHoldErrorDetails value) =&gt; {...},
     ///     (RequestBodyEncodingInvalidErrorDetails value) =&gt; {...},
     ///     (RequestBodyEncodingUnsupportedErrorDetails value) =&gt; {...},
@@ -4247,6 +4290,7 @@ public record class ErrorDetails : ModelBase
             T
         > compactionTooManyToolReferences,
         Func<Messages::CompactionToolChangesMismatchErrorDetails, T> compactionToolChangesMismatch,
+        Func<Messages::ImageDimensionsTooLargeErrorDetails, T> imageDimensionsTooLarge,
         Func<OrganizationOnHoldErrorDetails, T> organizationOnHold,
         Func<RequestBodyEncodingInvalidErrorDetails, T> requestBodyEncodingInvalid,
         Func<RequestBodyEncodingUnsupportedErrorDetails, T> requestBodyEncodingUnsupported,
@@ -4395,6 +4439,7 @@ public record class ErrorDetails : ModelBase
                 compactionTooManyToolReferences(value),
             Messages::CompactionToolChangesMismatchErrorDetails value =>
                 compactionToolChangesMismatch(value),
+            Messages::ImageDimensionsTooLargeErrorDetails value => imageDimensionsTooLarge(value),
             OrganizationOnHoldErrorDetails value => organizationOnHold(value),
             RequestBodyEncodingInvalidErrorDetails value => requestBodyEncodingInvalid(value),
             RequestBodyEncodingUnsupportedErrorDetails value => requestBodyEncodingUnsupported(
@@ -4577,6 +4622,10 @@ public record class ErrorDetails : ModelBase
 
     public static implicit operator ErrorDetails(
         Messages::CompactionToolChangesMismatchErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        Messages::ImageDimensionsTooLargeErrorDetails value
     ) => new(value);
 
     public static implicit operator ErrorDetails(OrganizationOnHoldErrorDetails value) =>
@@ -4904,6 +4953,7 @@ public record class ErrorDetails : ModelBase
             (compactionSignatureInvalid) => compactionSignatureInvalid.Validate(),
             (compactionTooManyToolReferences) => compactionTooManyToolReferences.Validate(),
             (compactionToolChangesMismatch) => compactionToolChangesMismatch.Validate(),
+            (imageDimensionsTooLarge) => imageDimensionsTooLarge.Validate(),
             (organizationOnHold) => organizationOnHold.Validate(),
             (requestBodyEncodingInvalid) => requestBodyEncodingInvalid.Validate(),
             (requestBodyEncodingUnsupported) => requestBodyEncodingUnsupported.Validate(),
@@ -5035,92 +5085,93 @@ public record class ErrorDetails : ModelBase
             Messages::CompactionSignatureInvalidErrorDetails _ => 10,
             Messages::CompactionTooManyToolReferencesErrorDetails _ => 11,
             Messages::CompactionToolChangesMismatchErrorDetails _ => 12,
-            OrganizationOnHoldErrorDetails _ => 13,
-            RequestBodyEncodingInvalidErrorDetails _ => 14,
-            RequestBodyEncodingUnsupportedErrorDetails _ => 15,
-            Messages::ThreadAlreadyContinuedErrorDetails _ => 16,
-            Messages::ThreadContinueInFlightErrorDetails _ => 17,
-            Messages::ThreadFingerprintMismatchErrorDetails _ => 18,
-            Messages::ThreadUnsupportedRequestErrorDetails _ => 19,
-            Messages::ToolNameConflictErrorDetails _ => 20,
-            Messages::ToolReferenceUnresolvedErrorDetails _ => 21,
-            UserProfileRequiredErrorDetails _ => 22,
-            LinkedOrganizationBillingUnavailableErrorDetails _ => 23,
-            LinkedOrganizationSpendLimitReachedErrorDetails _ => 24,
-            UserProfileBillingNotAuthorizedErrorDetails _ => 25,
-            UserProfileNotBillableErrorDetails _ => 26,
-            Messages::ThreadNotFoundErrorDetails _ => 27,
-            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 28,
-            RequestBodyTooLargeAfterDecodingErrorDetails _ => 29,
-            ContractSpendLimitReachedErrorDetails _ => 30,
-            EnforcedSpendLimitReachedErrorDetails _ => 31,
-            RampLimitExceededErrorDetails _ => 32,
-            CmekKeyUnreachableErrorDetails _ => 33,
-            Messages::CompactionUnavailableErrorDetails _ => 34,
-            Files::StorageQuotaExceededErrorDetails _ => 35,
-            Files::FileNotDownloadableErrorDetails _ => 36,
-            Files::FileExpiredErrorDetails _ => 37,
-            CmekContextUnavailableErrorDetails _ => 38,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 39,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 40,
-            SandboxEgressRestrictedErrorDetails _ => 41,
-            UserProfileNotFoundErrorDetails _ => 42,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 43,
-            AlreadyMemberErrorDetails _ => 44,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 45,
-            EmailDomainNotAllowedErrorDetails _ => 46,
-            InviteAlreadyExistsErrorDetails _ => 47,
-            OrgMemberLimitExceededErrorDetails _ => 48,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 49,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 50,
-            CannotRemoveLastMemberErrorDetails _ => 51,
-            ConcurrentMembershipChangeErrorDetails _ => 52,
-            ExternalKeyValidationFailedErrorDetails _ => 53,
-            ExternalKeyValidationTimedOutErrorDetails _ => 54,
-            KeyProfileMismatchErrorDetails _ => 55,
-            WorkspacePolicyViolationErrorDetails _ => 56,
-            ExternalKeyChangedErrorDetails _ => 57,
-            WorkspaceMemberLimitExceededErrorDetails _ => 58,
-            OrganizationTypeNotSupportedErrorDetails _ => 59,
-            ParentOrganizationRequiredErrorDetails _ => 60,
-            RbacRoleNotFoundErrorDetails _ => 61,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 62,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 63,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 64,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 65,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 66,
-            Environments::BetaInvalidMetadataErrorDetails _ => 67,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 68,
-            BetaCannotSignOutSelfErrorDetails _ => 69,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 70,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 71,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 72,
-            BetaCannotSignOutOwnerErrorDetails _ => 73,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 74,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 75,
-            BetaUnsupportedCharsetErrorDetails _ => 76,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 77,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 78,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 79,
-            Plugins::BetaScanFailedErrorDetails _ => 80,
-            Plugins::BetaScanPendingErrorDetails _ => 81,
-            BetaRequestBodyTimeoutErrorDetails _ => 82,
-            BetaSettingsDocumentLimitExceededErrorDetails _ => 83,
-            BetaSettingsHistoryLimitExceededErrorDetails _ => 84,
-            BetaCmekFeatureUnsupportedErrorDetails _ => 85,
-            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 86,
-            BetaRbacGroupOrderLimitExceededErrorDetails _ => 87,
-            BetaRbacGroupNotFoundErrorDetails _ => 88,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 89,
-            BetaApiKeyScopeMissingErrorDetails _ => 90,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 91,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 92,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 93,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 94,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 95,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 96,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 97,
-            BetaBundleOnCallErrorDetails _ => 98,
+            Messages::ImageDimensionsTooLargeErrorDetails _ => 13,
+            OrganizationOnHoldErrorDetails _ => 14,
+            RequestBodyEncodingInvalidErrorDetails _ => 15,
+            RequestBodyEncodingUnsupportedErrorDetails _ => 16,
+            Messages::ThreadAlreadyContinuedErrorDetails _ => 17,
+            Messages::ThreadContinueInFlightErrorDetails _ => 18,
+            Messages::ThreadFingerprintMismatchErrorDetails _ => 19,
+            Messages::ThreadUnsupportedRequestErrorDetails _ => 20,
+            Messages::ToolNameConflictErrorDetails _ => 21,
+            Messages::ToolReferenceUnresolvedErrorDetails _ => 22,
+            UserProfileRequiredErrorDetails _ => 23,
+            LinkedOrganizationBillingUnavailableErrorDetails _ => 24,
+            LinkedOrganizationSpendLimitReachedErrorDetails _ => 25,
+            UserProfileBillingNotAuthorizedErrorDetails _ => 26,
+            UserProfileNotBillableErrorDetails _ => 27,
+            Messages::ThreadNotFoundErrorDetails _ => 28,
+            Skills::SkillReadBlockedUndecryptableErrorDetails _ => 29,
+            RequestBodyTooLargeAfterDecodingErrorDetails _ => 30,
+            ContractSpendLimitReachedErrorDetails _ => 31,
+            EnforcedSpendLimitReachedErrorDetails _ => 32,
+            RampLimitExceededErrorDetails _ => 33,
+            CmekKeyUnreachableErrorDetails _ => 34,
+            Messages::CompactionUnavailableErrorDetails _ => 35,
+            Files::StorageQuotaExceededErrorDetails _ => 36,
+            Files::FileNotDownloadableErrorDetails _ => 37,
+            Files::FileExpiredErrorDetails _ => 38,
+            CmekContextUnavailableErrorDetails _ => 39,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 40,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 41,
+            SandboxEgressRestrictedErrorDetails _ => 42,
+            UserProfileNotFoundErrorDetails _ => 43,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 44,
+            AlreadyMemberErrorDetails _ => 45,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 46,
+            EmailDomainNotAllowedErrorDetails _ => 47,
+            InviteAlreadyExistsErrorDetails _ => 48,
+            OrgMemberLimitExceededErrorDetails _ => 49,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 50,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 51,
+            CannotRemoveLastMemberErrorDetails _ => 52,
+            ConcurrentMembershipChangeErrorDetails _ => 53,
+            ExternalKeyValidationFailedErrorDetails _ => 54,
+            ExternalKeyValidationTimedOutErrorDetails _ => 55,
+            KeyProfileMismatchErrorDetails _ => 56,
+            WorkspacePolicyViolationErrorDetails _ => 57,
+            ExternalKeyChangedErrorDetails _ => 58,
+            WorkspaceMemberLimitExceededErrorDetails _ => 59,
+            OrganizationTypeNotSupportedErrorDetails _ => 60,
+            ParentOrganizationRequiredErrorDetails _ => 61,
+            RbacRoleNotFoundErrorDetails _ => 62,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 63,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 64,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 65,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 66,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 67,
+            Environments::BetaInvalidMetadataErrorDetails _ => 68,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 69,
+            BetaCannotSignOutSelfErrorDetails _ => 70,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 71,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 72,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 73,
+            BetaCannotSignOutOwnerErrorDetails _ => 74,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 75,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 76,
+            BetaUnsupportedCharsetErrorDetails _ => 77,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 78,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 79,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 80,
+            Plugins::BetaScanFailedErrorDetails _ => 81,
+            Plugins::BetaScanPendingErrorDetails _ => 82,
+            BetaRequestBodyTimeoutErrorDetails _ => 83,
+            BetaSettingsDocumentLimitExceededErrorDetails _ => 84,
+            BetaSettingsHistoryLimitExceededErrorDetails _ => 85,
+            BetaCmekFeatureUnsupportedErrorDetails _ => 86,
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 87,
+            BetaRbacGroupOrderLimitExceededErrorDetails _ => 88,
+            BetaRbacGroupNotFoundErrorDetails _ => 89,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 90,
+            BetaApiKeyScopeMissingErrorDetails _ => 91,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 92,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 93,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 94,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 95,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 96,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 97,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 98,
+            BetaBundleOnCallErrorDetails _ => 99,
             _ => -1,
         };
     }
@@ -5404,6 +5455,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<Messages::CompactionToolChangesMismatchErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "image_dimensions_too_large":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Messages::ImageDimensionsTooLargeErrorDetails>(
                             element,
                             options
                         );
@@ -7246,6 +7318,7 @@ public enum ErrorDetailsErrorCode
     CompactionSignatureInvalid = 10,
     CompactionTooManyToolReferences = 11,
     CompactionToolChangesMismatch = 12,
+    ImageDimensionsTooLarge = 643211828,
     OrganizationOnHold = 13,
     RequestBodyEncodingInvalid = 14,
     RequestBodyEncodingUnsupported = 15,
@@ -7360,6 +7433,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.CompactionTooManyToolReferences,
             "compaction_tool_changes_mismatch" =>
                 ErrorDetailsErrorCode.CompactionToolChangesMismatch,
+            "image_dimensions_too_large" => ErrorDetailsErrorCode.ImageDimensionsTooLarge,
             "organization_on_hold" => ErrorDetailsErrorCode.OrganizationOnHold,
             "request_body_encoding_invalid" => ErrorDetailsErrorCode.RequestBodyEncodingInvalid,
             "request_body_encoding_unsupported" =>
@@ -7500,6 +7574,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                     "compaction_too_many_tool_references",
                 ErrorDetailsErrorCode.CompactionToolChangesMismatch =>
                     "compaction_tool_changes_mismatch",
+                ErrorDetailsErrorCode.ImageDimensionsTooLarge => "image_dimensions_too_large",
                 ErrorDetailsErrorCode.OrganizationOnHold => "organization_on_hold",
                 ErrorDetailsErrorCode.RequestBodyEncodingInvalid => "request_body_encoding_invalid",
                 ErrorDetailsErrorCode.RequestBodyEncodingUnsupported =>

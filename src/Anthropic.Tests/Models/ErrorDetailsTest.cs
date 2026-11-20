@@ -119,6 +119,17 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ImageDimensionsTooLargeValidationWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void OrganizationOnHoldValidationWorks()
     {
         ErrorDetails value = new OrganizationOnHoldErrorDetails() { AppealUrl = "appeal_url" };
@@ -903,6 +914,23 @@ public class ErrorDetailsTest : TestBase
     public void CompactionToolChangesMismatchSerializationRoundtripWorks()
     {
         ErrorDetails value = new CompactionToolChangesMismatchErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ImageDimensionsTooLargeSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2148,6 +2176,17 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ImageDimensionsTooLargeErrorCodeWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
+        Assert.Equal(ErrorDetailsErrorCode.ImageDimensionsTooLarge, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void OrganizationOnHoldErrorCodeWorks()
     {
         ErrorDetails value = new OrganizationOnHoldErrorDetails() { AppealUrl = "appeal_url" };
@@ -2886,6 +2925,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CompactionSignatureInvalid)]
     [InlineData(ErrorDetailsErrorCode.CompactionTooManyToolReferences)]
     [InlineData(ErrorDetailsErrorCode.CompactionToolChangesMismatch)]
+    [InlineData(ErrorDetailsErrorCode.ImageDimensionsTooLarge)]
     [InlineData(ErrorDetailsErrorCode.OrganizationOnHold)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingInvalid)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingUnsupported)]
@@ -3028,6 +3068,11 @@ public class ErrorDetailsErrorCodeTest : TestBase
         ErrorDetailsErrorCode.CompactionToolChangesMismatch,
         12,
         "compaction_tool_changes_mismatch"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ImageDimensionsTooLarge,
+        643211828,
+        "image_dimensions_too_large"
     )]
     [InlineData(ErrorDetailsErrorCode.OrganizationOnHold, 13, "organization_on_hold")]
     [InlineData(
