@@ -200,6 +200,8 @@ public class EnabledEventTest : TestBase
     [Theory]
     [InlineData(EnabledEvent.ExternalKeyFailed)]
     [InlineData(EnabledEvent.ExternalKeyRecovered)]
+    [InlineData(EnabledEvent.ExternalStorageFailed)]
+    [InlineData(EnabledEvent.ExternalStorageRecovered)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]
@@ -225,6 +227,8 @@ public class EnabledEventTest : TestBase
     [Theory]
     [InlineData(EnabledEvent.ExternalKeyFailed, 0, "external_key.failed")]
     [InlineData(EnabledEvent.ExternalKeyRecovered, 1, "external_key.recovered")]
+    [InlineData(EnabledEvent.ExternalStorageFailed, 1543611121, "external_storage.failed")]
+    [InlineData(EnabledEvent.ExternalStorageRecovered, 353474999, "external_storage.recovered")]
     [InlineData(
         EnabledEvent.UserProfileEnforcementActionOpened,
         2,

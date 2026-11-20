@@ -80,6 +80,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData x => x.ID,
                 BetaWebhookExternalKeyFailedEventData x => x.ID,
                 BetaWebhookExternalKeyRecoveredEventData x => x.ID,
+                BetaWebhookExternalStorageFailedEventData x => x.ID,
+                BetaWebhookExternalStorageRecoveredEventData x => x.ID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(this.Json, "id"),
             };
         }
@@ -140,6 +142,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData x => x.OrganizationID,
                 BetaWebhookExternalKeyFailedEventData x => x.OrganizationID,
                 BetaWebhookExternalKeyRecoveredEventData x => x.OrganizationID,
+                BetaWebhookExternalStorageFailedEventData x => x.OrganizationID,
+                BetaWebhookExternalStorageRecoveredEventData x => x.OrganizationID,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<string>(
                     this.Json,
                     "organization_id"
@@ -237,6 +241,10 @@ public record class BetaWebhookEventData : ModelBase
                     BetaWebhookEventDataType.ExternalKeyFailed,
                 BetaWebhookExternalKeyRecoveredEventData _ =>
                     BetaWebhookEventDataType.ExternalKeyRecovered,
+                BetaWebhookExternalStorageFailedEventData _ =>
+                    BetaWebhookEventDataType.ExternalStorageFailed,
+                BetaWebhookExternalStorageRecoveredEventData _ =>
+                    BetaWebhookEventDataType.ExternalStorageRecovered,
                 _ => WrappedJsonSerializer.GetNotNullClassProperty<
                     ApiEnum<string, BetaWebhookEventDataType>
                 >(this.Json, "type"),
@@ -299,6 +307,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 BetaWebhookExternalKeyFailedEventData _ => null,
                 BetaWebhookExternalKeyRecoveredEventData _ => null,
+                BetaWebhookExternalStorageFailedEventData _ => null,
+                BetaWebhookExternalStorageRecoveredEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "workspace_id"
@@ -362,6 +372,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 BetaWebhookExternalKeyFailedEventData _ => null,
                 BetaWebhookExternalKeyRecoveredEventData _ => null,
+                BetaWebhookExternalStorageFailedEventData _ => null,
+                BetaWebhookExternalStorageRecoveredEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "session_thread_id"
@@ -425,6 +437,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 BetaWebhookExternalKeyFailedEventData _ => null,
                 BetaWebhookExternalKeyRecoveredEventData _ => null,
+                BetaWebhookExternalStorageFailedEventData _ => null,
+                BetaWebhookExternalStorageRecoveredEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(this.Json, "vault_id"),
             };
         }
@@ -485,6 +499,8 @@ public record class BetaWebhookEventData : ModelBase
                 BetaWebhookUserProfileProgramStatusUpdatedEventData _ => null,
                 BetaWebhookExternalKeyFailedEventData _ => null,
                 BetaWebhookExternalKeyRecoveredEventData _ => null,
+                BetaWebhookExternalStorageFailedEventData _ => null,
+                BetaWebhookExternalStorageRecoveredEventData _ => null,
                 _ => WrappedJsonSerializer.GetNullableClassProperty<string>(
                     this.Json,
                     "enforcement_action_id"
@@ -909,6 +925,24 @@ public record class BetaWebhookEventData : ModelBase
 
     public BetaWebhookEventData(
         BetaWebhookExternalKeyRecoveredEventData value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaWebhookEventData(
+        BetaWebhookExternalStorageFailedEventData value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public BetaWebhookEventData(
+        BetaWebhookExternalStorageRecoveredEventData value,
         JsonElement? element = null
     )
     {
@@ -2037,6 +2071,52 @@ public record class BetaWebhookEventData : ModelBase
     }
 
     /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebhookExternalStorageFailedEventData"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickExternalStorageFailed(out var value)) {
+    ///     // `value` is of type `BetaWebhookExternalStorageFailedEventData`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickExternalStorageFailed(
+        [NotNullWhen(true)] out BetaWebhookExternalStorageFailedEventData? value
+    )
+    {
+        value = this.Value as BetaWebhookExternalStorageFailedEventData;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaWebhookExternalStorageRecoveredEventData"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickExternalStorageRecovered(out var value)) {
+    ///     // `value` is of type `BetaWebhookExternalStorageRecoveredEventData`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickExternalStorageRecovered(
+        [NotNullWhen(true)] out BetaWebhookExternalStorageRecoveredEventData? value
+    )
+    {
+        value = this.Value as BetaWebhookExternalStorageRecoveredEventData;
+        return value != null;
+    }
+
+    /// <summary>
     /// Calls the function parameter corresponding to the variant the instance was constructed with.
     ///
     /// <para>Use the <c>TryPick</c> method(s) if you don't need to handle every variant, or <see cref="Match"/>
@@ -2098,7 +2178,9 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...},
     ///     (BetaWebhookUserProfileProgramStatusUpdatedEventData value) =&gt; {...},
     ///     (BetaWebhookExternalKeyFailedEventData value) =&gt; {...},
-    ///     (BetaWebhookExternalKeyRecoveredEventData value) =&gt; {...}
+    ///     (BetaWebhookExternalKeyRecoveredEventData value) =&gt; {...},
+    ///     (BetaWebhookExternalStorageFailedEventData value) =&gt; {...},
+    ///     (BetaWebhookExternalStorageRecoveredEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2152,7 +2234,9 @@ public record class BetaWebhookEventData : ModelBase
         Action<BetaWebhookUserProfileEnforcementActionResolvedEventData> userProfileEnforcementActionResolved,
         Action<BetaWebhookUserProfileProgramStatusUpdatedEventData> userProfileProgramStatusUpdated,
         Action<BetaWebhookExternalKeyFailedEventData> externalKeyFailed,
-        Action<BetaWebhookExternalKeyRecoveredEventData> externalKeyRecovered
+        Action<BetaWebhookExternalKeyRecoveredEventData> externalKeyRecovered,
+        Action<BetaWebhookExternalStorageFailedEventData> externalStorageFailed,
+        Action<BetaWebhookExternalStorageRecoveredEventData> externalStorageRecovered
     )
     {
         switch (this.Value)
@@ -2304,6 +2388,12 @@ public record class BetaWebhookEventData : ModelBase
             case BetaWebhookExternalKeyRecoveredEventData value:
                 externalKeyRecovered(value);
                 break;
+            case BetaWebhookExternalStorageFailedEventData value:
+                externalStorageFailed(value);
+                break;
+            case BetaWebhookExternalStorageRecoveredEventData value:
+                externalStorageRecovered(value);
+                break;
             default:
                 throw new AnthropicInvalidDataException(
                     "Data did not match any variant of BetaWebhookEventData"
@@ -2374,7 +2464,9 @@ public record class BetaWebhookEventData : ModelBase
     ///     (BetaWebhookUserProfileEnforcementActionResolvedEventData value) =&gt; {...},
     ///     (BetaWebhookUserProfileProgramStatusUpdatedEventData value) =&gt; {...},
     ///     (BetaWebhookExternalKeyFailedEventData value) =&gt; {...},
-    ///     (BetaWebhookExternalKeyRecoveredEventData value) =&gt; {...}
+    ///     (BetaWebhookExternalKeyRecoveredEventData value) =&gt; {...},
+    ///     (BetaWebhookExternalStorageFailedEventData value) =&gt; {...},
+    ///     (BetaWebhookExternalStorageRecoveredEventData value) =&gt; {...}
     /// );
     /// </code>
     /// </example>
@@ -2437,7 +2529,9 @@ public record class BetaWebhookEventData : ModelBase
             T
         > userProfileProgramStatusUpdated,
         Func<BetaWebhookExternalKeyFailedEventData, T> externalKeyFailed,
-        Func<BetaWebhookExternalKeyRecoveredEventData, T> externalKeyRecovered
+        Func<BetaWebhookExternalKeyRecoveredEventData, T> externalKeyRecovered,
+        Func<BetaWebhookExternalStorageFailedEventData, T> externalStorageFailed,
+        Func<BetaWebhookExternalStorageRecoveredEventData, T> externalStorageRecovered
     )
     {
         return this.Value switch
@@ -2497,6 +2591,8 @@ public record class BetaWebhookEventData : ModelBase
                 userProfileProgramStatusUpdated(value),
             BetaWebhookExternalKeyFailedEventData value => externalKeyFailed(value),
             BetaWebhookExternalKeyRecoveredEventData value => externalKeyRecovered(value),
+            BetaWebhookExternalStorageFailedEventData value => externalStorageFailed(value),
+            BetaWebhookExternalStorageRecoveredEventData value => externalStorageRecovered(value),
             _ => throw new AnthropicInvalidDataException(
                 "Data did not match any variant of BetaWebhookEventData"
             ),
@@ -2691,6 +2787,14 @@ public record class BetaWebhookEventData : ModelBase
         BetaWebhookExternalKeyRecoveredEventData value
     ) => new(value);
 
+    public static implicit operator BetaWebhookEventData(
+        BetaWebhookExternalStorageFailedEventData value
+    ) => new(value);
+
+    public static implicit operator BetaWebhookEventData(
+        BetaWebhookExternalStorageRecoveredEventData value
+    ) => new(value);
+
     /// <summary>
     /// Validates that the instance was constructed with a known variant and that this variant is valid
     /// (based on its own <c>Validate</c> method).
@@ -2759,7 +2863,9 @@ public record class BetaWebhookEventData : ModelBase
                 userProfileEnforcementActionResolved.Validate(),
             (userProfileProgramStatusUpdated) => userProfileProgramStatusUpdated.Validate(),
             (externalKeyFailed) => externalKeyFailed.Validate(),
-            (externalKeyRecovered) => externalKeyRecovered.Validate()
+            (externalKeyRecovered) => externalKeyRecovered.Validate(),
+            (externalStorageFailed) => externalStorageFailed.Validate(),
+            (externalStorageRecovered) => externalStorageRecovered.Validate()
         );
     }
 
@@ -2832,6 +2938,8 @@ public record class BetaWebhookEventData : ModelBase
             BetaWebhookUserProfileProgramStatusUpdatedEventData _ => 46,
             BetaWebhookExternalKeyFailedEventData _ => 47,
             BetaWebhookExternalKeyRecoveredEventData _ => 48,
+            BetaWebhookExternalStorageFailedEventData _ => 49,
+            BetaWebhookExternalStorageRecoveredEventData _ => 50,
             _ => -1,
         };
     }
@@ -3881,6 +3989,48 @@ sealed class BetaWebhookEventDataConverter : JsonConverter<BetaWebhookEventData>
 
                 return new(element);
             }
+            case "external_storage.failed":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaWebhookExternalStorageFailedEventData>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_storage.recovered":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaWebhookExternalStorageRecoveredEventData>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             default:
             {
                 return new BetaWebhookEventData(element);
@@ -3950,6 +4100,8 @@ public enum BetaWebhookEventDataType
     UserProfileProgramStatusUpdated = 46,
     ExternalKeyFailed = 47,
     ExternalKeyRecovered = 48,
+    ExternalStorageFailed = 1543611121,
+    ExternalStorageRecovered = 353474999,
 }
 
 sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventDataType>
@@ -4016,6 +4168,8 @@ sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventD
                 BetaWebhookEventDataType.UserProfileProgramStatusUpdated,
             "external_key.failed" => BetaWebhookEventDataType.ExternalKeyFailed,
             "external_key.recovered" => BetaWebhookEventDataType.ExternalKeyRecovered,
+            "external_storage.failed" => BetaWebhookEventDataType.ExternalStorageFailed,
+            "external_storage.recovered" => BetaWebhookEventDataType.ExternalStorageRecovered,
             _ => (BetaWebhookEventDataType)(-1),
         };
     }
@@ -4084,6 +4238,8 @@ sealed class BetaWebhookEventDataTypeConverter : JsonConverter<BetaWebhookEventD
                     "user_profile.program_status_updated",
                 BetaWebhookEventDataType.ExternalKeyFailed => "external_key.failed",
                 BetaWebhookEventDataType.ExternalKeyRecovered => "external_key.recovered",
+                BetaWebhookEventDataType.ExternalStorageFailed => "external_storage.failed",
+                BetaWebhookEventDataType.ExternalStorageRecovered => "external_storage.recovered",
                 _ => throw new AnthropicInvalidDataException(
                     string.Format("Invalid value '{0}' in {1}", value, nameof(value))
                 ),

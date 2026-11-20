@@ -1030,6 +1030,8 @@ src/Anthropic.Tests/Models/Beta/Webhooks/UnwrapWebhookEventTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyFailedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalKeyRecoveredEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalStorageFailedEventDataTest.cs
+src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookExternalStorageRecoveredEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreArchivedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreCreatedEventDataTest.cs
 src/Anthropic.Tests/Models/Beta/Webhooks/BetaWebhookMemoryStoreDeletedEventDataTest.cs
