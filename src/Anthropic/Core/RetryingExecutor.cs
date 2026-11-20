@@ -4,9 +4,12 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Anthropic.Core.Telemetry;
+using Anthropic.Credentials;
 using Anthropic.Exceptions;
 
 namespace Anthropic.Core;
@@ -87,6 +90,7 @@ internal sealed class RetryingExecutor
             ? this._client.Options.MaxRetries ?? ClientOptions.DefaultMaxRetries
             : 0;
         var retries = 0;
+        var authRetryConsumed = false;
         while (true)
         {
             HttpResponse? response = null;
@@ -100,6 +104,50 @@ internal sealed class RetryingExecutor
                 if (++retries > maxRetries || !ShouldRetry(e, cancellationToken))
                 {
                     throw;
+                }
+            }
+
+            // 401 with token credentials: force-refresh the token and retry once.
+            // Gated on retries == 0 so an auth retry never stacks on top of a transport
+            // retry, and on IsBodyRepeatable because a multipart body reads from the caller's
+            // streams, which the first attempt has already consumed.
+            if (
+                response?.StatusCode == HttpStatusCode.Unauthorized
+                && this._client.ActiveTokenCache is { } tokenCache
+            )
+            {
+                if (!authRetryConsumed && retries == 0 && request.Params.IsBodyRepeatable())
+                {
+                    authRetryConsumed = true;
+                    var failedToken = tokenCache.Cached?.Token;
+                    // Prime the cache so the retry's BeforeSend picks up the fresh token.
+                    AccessToken fresh;
+                    try
+                    {
+                        fresh = await tokenCache
+                            .GetTokenAsync(forceRefresh: true, cancellationToken)
+                            .ConfigureAwait(false);
+                    }
+                    catch
+                    {
+                        // A failed refresh abandons the 401 response, so release it here.
+                        response.Dispose();
+                        throw;
+                    }
+                    // Only retry if the refresh actually produced a different token —
+                    // StaticTokenCredentials / ANTHROPIC_AUTH_TOKEN can't change, so
+                    // skipping avoids one wasted round-trip.
+                    if (!string.Equals(fresh.Token, failedToken, StringComparison.Ordinal))
+                    {
+                        response.Dispose();
+                        retries++;
+                        continue;
+                    }
+                }
+                else
+                {
+                    // Not retrying — invalidate so the caller's next request fetches fresh.
+                    tokenCache.Invalidate();
                 }
             }
 
@@ -134,8 +182,17 @@ internal sealed class RetryingExecutor
                 }
             }
 
-            var backoff = ComputeRetryBackoff(retries, response);
-            response?.Dispose();
+            TimeSpan backoff;
+            try
+            {
+                backoff = ComputeRetryBackoff(retries, response);
+            }
+            finally
+            {
+                // The response being retried is abandoned whether or not the computation
+                // succeeds.
+                response?.Dispose();
+            }
             await Task.Delay(backoff, cancellationToken).ConfigureAwait(false);
         }
     }
@@ -156,6 +213,12 @@ internal sealed class RetryingExecutor
             Content = request.Params.BodyContent(),
         };
         Qualifiers.Attach(requestMessage, request.Qualifiers);
+        // Wire parity with the other SDKs: bare media type, no charset suffix
+        // (JSON is UTF-8 by definition per RFC 8259).
+        if (requestMessage.Content?.Headers.ContentType is { CharSet: not null } contentType)
+        {
+            contentType.CharSet = null;
+        }
         request.Params.AddHeadersToRequest(requestMessage, this._client.Options);
         if (!requestMessage.Headers.Contains("x-stainless-retry-count"))
         {
@@ -173,13 +236,24 @@ internal sealed class RetryingExecutor
         HttpResponseMessage responseMessage;
         try
         {
+            await this
+                ._client.SendingRequest(request, requestMessage, cts.Token)
+                .ConfigureAwait(false);
             if (span != null)
             {
                 Tracing.InjectTraceHeaders(span, requestMessage.Headers);
-                Tracing.TrackRequest(requestMessage, span, request.Params, false);
+                Tracing.TrackRequest(
+                    requestMessage,
+                    span,
+                    request.Params,
+                    Content.IsRecorded(this._client.Options.ResolvedOpenTelemetry)
+                );
             }
             responseMessage = await this
                 ._client.Options.SendRequestAsync(requestMessage, cts.Token)
+                .ConfigureAwait(false);
+            await this
+                ._client.ReceivedResponse(request, responseMessage, cts.Token)
                 .ConfigureAwait(false);
         }
         catch (HttpRequestException e)
@@ -197,7 +271,12 @@ internal sealed class RetryingExecutor
                 new TimeoutException(e.Message, e)
             );
         }
-        return new() { RawMessage = responseMessage, CancellationToken = cts.Token };
+        // `cts` is disposed as this method returns, before any of the body has been read, so its
+        // token must not travel with the response: every body read links against the response's
+        // token, and linking against a disposed source throws on .NET Framework in <=4.5.2
+        // compatibility mode (and is inert everywhere else). Body reads are governed by the
+        // tokens handed to them instead.
+        return new() { RawMessage = responseMessage };
     }
 
     static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
@@ -335,6 +414,12 @@ internal sealed class RetryingExecutor
         }
 
         // Retry connection errors and attempts that hit the per-attempt timeout.
-        return e is IOException || e is AnthropicIOException || e is OperationCanceledException;
+        return (
+                e is IOException
+                && e is not FileNotFoundException
+                && e is not DirectoryNotFoundException
+            )
+            || e is AnthropicIOException
+            || e is OperationCanceledException;
     }
 }
