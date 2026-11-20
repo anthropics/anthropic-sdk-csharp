@@ -123,6 +123,13 @@ public class HttpResponse : IDisposable
         {
             throw new AnthropicIOException("I/O Exception", e);
         }
+        catch (JsonException e)
+        {
+            throw new AnthropicInvalidDataException(
+                $"Response must be of type {typeof(T).FullName}",
+                e
+            );
+        }
     }
 
     public async Task<Stream> ReadAsStream(Threading::CancellationToken cancellationToken = default)
