@@ -443,20 +443,28 @@ public class SkillTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SkillType.Anthropic)]
-    [InlineData(SkillType.Custom)]
-    public void SerializationRoundtrip_Works(SkillType rawValue)
+    [InlineData(SkillType.Anthropic, 0, "anthropic")]
+    [InlineData(SkillType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SkillType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SkillType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SkillType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -732,21 +740,29 @@ public class ToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolType.AgentToolset20260401)]
-    [InlineData(ToolType.McpToolset)]
-    [InlineData(ToolType.Custom)]
-    public void SerializationRoundtrip_Works(ToolType rawValue)
+    [InlineData(ToolType.AgentToolset20260401, 0, "agent_toolset_20260401")]
+    [InlineData(ToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(ToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

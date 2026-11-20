@@ -122,22 +122,30 @@ public class MediaTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(MediaType.ImageJpeg)]
-    [InlineData(MediaType.ImagePng)]
-    [InlineData(MediaType.ImageGif)]
-    [InlineData(MediaType.ImageWebP)]
-    public void SerializationRoundtrip_Works(MediaType rawValue)
+    [InlineData(MediaType.ImageJpeg, 0, "image/jpeg")]
+    [InlineData(MediaType.ImagePng, 1, "image/png")]
+    [InlineData(MediaType.ImageGif, 2, "image/gif")]
+    [InlineData(MediaType.ImageWebP, 3, "image/webp")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        MediaType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, MediaType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, MediaType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -374,23 +374,31 @@ public class BetaTextCitationTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTextCitationType.CharLocation)]
-    [InlineData(BetaTextCitationType.PageLocation)]
-    [InlineData(BetaTextCitationType.ContentBlockLocation)]
-    [InlineData(BetaTextCitationType.WebSearchResultLocation)]
-    [InlineData(BetaTextCitationType.SearchResultLocation)]
-    public void SerializationRoundtrip_Works(BetaTextCitationType rawValue)
+    [InlineData(BetaTextCitationType.CharLocation, 0, "char_location")]
+    [InlineData(BetaTextCitationType.PageLocation, 1, "page_location")]
+    [InlineData(BetaTextCitationType.ContentBlockLocation, 2, "content_block_location")]
+    [InlineData(BetaTextCitationType.WebSearchResultLocation, 3, "web_search_result_location")]
+    [InlineData(BetaTextCitationType.SearchResultLocation, 4, "search_result_location")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTextCitationType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTextCitationType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaTextCitationType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

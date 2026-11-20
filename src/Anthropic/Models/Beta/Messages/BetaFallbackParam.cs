@@ -196,8 +196,8 @@ class BetaFallbackParamFromRaw : IFromRawJson<BetaFallbackParam>
 [JsonConverter(typeof(BetaFallbackParamSpeedConverter))]
 public enum BetaFallbackParamSpeed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class BetaFallbackParamSpeedConverter : JsonConverter<BetaFallbackParamSpeed>
@@ -700,10 +700,10 @@ sealed class ThinkingConverter : JsonConverter<Thinking?>
 [JsonConverter(typeof(ThinkingTypeConverter))]
 public enum ThinkingType
 {
-    Enabled,
-    Disabled,
-    BetweenTools,
-    Adaptive,
+    Enabled = 0,
+    Disabled = 1,
+    BetweenTools = 2,
+    Adaptive = 3,
 }
 
 sealed class ThinkingTypeConverter : JsonConverter<ThinkingType>

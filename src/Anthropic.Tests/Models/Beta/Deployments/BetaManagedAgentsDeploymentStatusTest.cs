@@ -30,19 +30,27 @@ public class BetaManagedAgentsDeploymentStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsDeploymentStatus.Active)]
-    [InlineData(BetaManagedAgentsDeploymentStatus.Paused)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsDeploymentStatus rawValue)
+    [InlineData(BetaManagedAgentsDeploymentStatus.Active, 0, "active")]
+    [InlineData(BetaManagedAgentsDeploymentStatus.Paused, 1, "paused")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsDeploymentStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsDeploymentStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsDeploymentStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

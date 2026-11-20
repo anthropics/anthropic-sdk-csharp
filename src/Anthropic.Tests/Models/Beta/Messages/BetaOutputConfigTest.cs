@@ -223,23 +223,27 @@ public class EffortTest : TestBase
     }
 
     [Theory]
-    [InlineData(Effort.Low)]
-    [InlineData(Effort.Medium)]
-    [InlineData(Effort.High)]
-    [InlineData(Effort.Xhigh)]
-    [InlineData(Effort.Max)]
-    public void SerializationRoundtrip_Works(Effort rawValue)
+    [InlineData(Effort.Low, 0, "low")]
+    [InlineData(Effort.Medium, 1, "medium")]
+    [InlineData(Effort.High, 2, "high")]
+    [InlineData(Effort.Xhigh, 3, "xhigh")]
+    [InlineData(Effort.Max, 4, "max")]
+    public void EnumMemberSerializationRoundtrip_Works(Effort rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Effort> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Effort>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

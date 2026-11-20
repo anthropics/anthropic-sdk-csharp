@@ -15,13 +15,13 @@ public enum UserProfileListOrder
     /// Oldest first when `order_by` is `created_at`, or names in ascending order
     /// when `order_by` is `name`.
     /// </summary>
-    Asc,
+    Asc = 0,
 
     /// <summary>
     /// Newest first when `order_by` is `created_at`, or names in descending order
     /// when `order_by` is `name`. This is the default.
     /// </summary>
-    Desc,
+    Desc = 1,
 }
 
 sealed class UserProfileListOrderConverter : JsonConverter<UserProfileListOrder>

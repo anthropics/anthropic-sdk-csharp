@@ -241,24 +241,32 @@ public class BetaCacheMissReasonTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaCacheMissReasonType.ModelChanged)]
-    [InlineData(BetaCacheMissReasonType.SystemChanged)]
-    [InlineData(BetaCacheMissReasonType.ToolsChanged)]
-    [InlineData(BetaCacheMissReasonType.MessagesChanged)]
-    [InlineData(BetaCacheMissReasonType.PreviousMessageNotFound)]
-    [InlineData(BetaCacheMissReasonType.Unavailable)]
-    public void SerializationRoundtrip_Works(BetaCacheMissReasonType rawValue)
+    [InlineData(BetaCacheMissReasonType.ModelChanged, 0, "model_changed")]
+    [InlineData(BetaCacheMissReasonType.SystemChanged, 1, "system_changed")]
+    [InlineData(BetaCacheMissReasonType.ToolsChanged, 2, "tools_changed")]
+    [InlineData(BetaCacheMissReasonType.MessagesChanged, 3, "messages_changed")]
+    [InlineData(BetaCacheMissReasonType.PreviousMessageNotFound, 4, "previous_message_not_found")]
+    [InlineData(BetaCacheMissReasonType.Unavailable, 5, "unavailable")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaCacheMissReasonType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaCacheMissReasonType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaCacheMissReasonType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -534,35 +534,91 @@ public class BetaManagedAgentsDeploymentPausedReasonErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError)]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError)]
     [InlineData(
-        BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError
+        BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentArchivedError,
+        0,
+        "environment_archived_error"
     )]
-    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsDeploymentPausedReasonErrorType rawValue
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.AgentArchivedError,
+        1,
+        "agent_archived_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.EnvironmentNotFoundError,
+        2,
+        "environment_not_found_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.VaultNotFoundError,
+        3,
+        "vault_not_found_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.FileNotFoundError,
+        4,
+        "file_not_found_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.SessionResourceNotFoundError,
+        5,
+        "session_resource_not_found_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.WorkspaceArchivedError,
+        6,
+        "workspace_archived_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.OrganizationDisabledError,
+        7,
+        "organization_disabled_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.MemoryStoreArchivedError,
+        8,
+        "memory_store_archived_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.SkillNotFoundError,
+        9,
+        "skill_not_found_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.VaultArchivedError,
+        10,
+        "vault_archived_error"
+    )]
+    [InlineData(BetaManagedAgentsDeploymentPausedReasonErrorType.UnknownError, 11, "unknown_error")]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.SelfHostedResourcesUnsupportedError,
+        12,
+        "self_hosted_resources_unsupported_error"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentPausedReasonErrorType.McpEgressBlockedError,
+        13,
+        "mcp_egress_blocked_error"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsDeploymentPausedReasonErrorType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsDeploymentPausedReasonErrorType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

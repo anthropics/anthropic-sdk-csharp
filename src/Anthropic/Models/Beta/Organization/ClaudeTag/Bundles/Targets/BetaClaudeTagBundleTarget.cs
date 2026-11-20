@@ -362,8 +362,8 @@ sealed class BetaClaudeTagBundleTargetConverter : JsonConverter<BetaClaudeTagBun
 [JsonConverter(typeof(BetaClaudeTagBundleTargetTypeConverter))]
 public enum BetaClaudeTagBundleTargetType
 {
-    SlackChannel,
-    SlackWorkspace,
+    SlackChannel = 0,
+    SlackWorkspace = 1,
 }
 
 sealed class BetaClaudeTagBundleTargetTypeConverter : JsonConverter<BetaClaudeTagBundleTargetType>

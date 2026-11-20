@@ -234,20 +234,28 @@ public class OwnerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(OwnerType.Organization)]
-    [InlineData(OwnerType.User)]
-    public void SerializationRoundtrip_Works(OwnerType rawValue)
+    [InlineData(OwnerType.Organization, 0, "organization")]
+    [InlineData(OwnerType.User, 1, "user")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        OwnerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, OwnerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OwnerType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -295,23 +303,27 @@ public class SourceTest : TestBase
     }
 
     [Theory]
-    [InlineData(Source.Directory)]
-    [InlineData(Source.GitHub)]
-    [InlineData(Source.Gitlab)]
-    [InlineData(Source.Manual)]
-    [InlineData(Source.PublicGit)]
-    public void SerializationRoundtrip_Works(Source rawValue)
+    [InlineData(Source.Directory, 0, "directory")]
+    [InlineData(Source.GitHub, 1, "github")]
+    [InlineData(Source.Gitlab, 2, "gitlab")]
+    [InlineData(Source.Manual, 3, "manual")]
+    [InlineData(Source.PublicGit, 4, "public_git")]
+    public void EnumMemberSerializationRoundtrip_Works(Source rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Source> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Source>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

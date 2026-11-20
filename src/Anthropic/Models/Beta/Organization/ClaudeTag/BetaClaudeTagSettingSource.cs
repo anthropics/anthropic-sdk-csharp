@@ -625,12 +625,12 @@ sealed class BetaClaudeTagSettingSourceConverter : JsonConverter<BetaClaudeTagSe
 [JsonConverter(typeof(BetaClaudeTagSettingSourceTypeConverter))]
 public enum BetaClaudeTagSettingSourceType
 {
-    SlackChannel,
-    SlackWorkspace,
-    SlackParentChannel,
-    SlackDefault,
-    Default,
-    SlackGridChannel,
+    SlackChannel = 0,
+    SlackWorkspace = 1,
+    SlackParentChannel = 2,
+    SlackDefault = 3,
+    Default = 4,
+    SlackGridChannel = 5,
 }
 
 sealed class BetaClaudeTagSettingSourceTypeConverter : JsonConverter<BetaClaudeTagSettingSourceType>

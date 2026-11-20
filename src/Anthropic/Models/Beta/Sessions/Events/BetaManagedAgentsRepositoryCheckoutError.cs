@@ -542,9 +542,9 @@ sealed class BetaManagedAgentsRepositoryCheckoutErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsRepositoryCheckoutErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsRepositoryCheckoutErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsRepositoryCheckoutErrorRetryStatusTypeConverter

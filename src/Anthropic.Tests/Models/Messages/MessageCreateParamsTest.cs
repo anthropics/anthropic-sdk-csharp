@@ -850,20 +850,28 @@ public class ServiceTierTest : TestBase
     }
 
     [Theory]
-    [InlineData(Messages::ServiceTier.Auto)]
-    [InlineData(Messages::ServiceTier.StandardOnly)]
-    public void SerializationRoundtrip_Works(Messages::ServiceTier rawValue)
+    [InlineData(Messages::ServiceTier.Auto, 0, "auto")]
+    [InlineData(Messages::ServiceTier.StandardOnly, 1, "standard_only")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Messages::ServiceTier rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Messages::ServiceTier> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::ServiceTier>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -908,20 +916,28 @@ public class SpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(Messages::Speed.Standard)]
-    [InlineData(Messages::Speed.Fast)]
-    public void SerializationRoundtrip_Works(Messages::Speed rawValue)
+    [InlineData(Messages::Speed.Standard, 0, "standard")]
+    [InlineData(Messages::Speed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Messages::Speed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Messages::Speed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Messages::Speed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

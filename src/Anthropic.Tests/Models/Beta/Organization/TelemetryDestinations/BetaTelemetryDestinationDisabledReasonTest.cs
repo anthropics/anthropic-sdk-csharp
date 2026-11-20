@@ -183,21 +183,33 @@ public class BetaTelemetryDestinationDisabledReasonTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTelemetryDestinationDisabledReasonType.Caller)]
-    [InlineData(BetaTelemetryDestinationDisabledReasonType.SustainedFailure)]
-    [InlineData(BetaTelemetryDestinationDisabledReasonType.InvalidAddress)]
-    [InlineData(BetaTelemetryDestinationDisabledReasonType.Redirect)]
-    public void SerializationRoundtrip_Works(BetaTelemetryDestinationDisabledReasonType rawValue)
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Caller, 0, "caller")]
+    [InlineData(
+        BetaTelemetryDestinationDisabledReasonType.SustainedFailure,
+        1,
+        "sustained_failure"
+    )]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.InvalidAddress, 2, "invalid_address")]
+    [InlineData(BetaTelemetryDestinationDisabledReasonType.Redirect, 3, "redirect")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTelemetryDestinationDisabledReasonType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTelemetryDestinationDisabledReasonType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTelemetryDestinationDisabledReasonType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

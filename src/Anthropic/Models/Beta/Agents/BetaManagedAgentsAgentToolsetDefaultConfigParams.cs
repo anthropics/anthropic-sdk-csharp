@@ -506,9 +506,9 @@ sealed class BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyCon
 )]
 public enum BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsAgentToolsetDefaultConfigParamsPermissionPolicyTypeConverter

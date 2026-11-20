@@ -138,19 +138,27 @@ public class ExternalKeyUpdateParamsGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(ExternalKeyUpdateParamsGeo.Us)]
-    public void SerializationRoundtrip_Works(ExternalKeyUpdateParamsGeo rawValue)
+    [InlineData(ExternalKeyUpdateParamsGeo.Us, 0, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ExternalKeyUpdateParamsGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ExternalKeyUpdateParamsGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ExternalKeyUpdateParamsGeo>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -362,20 +370,28 @@ public class ExternalKeyUpdateParamsProviderConfigTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Aws)]
-    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Gcp)]
-    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Azure)]
-    public void SerializationRoundtrip_Works(ExternalKeyUpdateParamsProviderConfigType rawValue)
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Aws, 0, "aws")]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Gcp, 1, "gcp")]
+    [InlineData(ExternalKeyUpdateParamsProviderConfigType.Azure, 2, "azure")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ExternalKeyUpdateParamsProviderConfigType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ExternalKeyUpdateParamsProviderConfigType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

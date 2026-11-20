@@ -511,23 +511,31 @@ public class CitationTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CitationType.CharLocation)]
-    [InlineData(CitationType.PageLocation)]
-    [InlineData(CitationType.ContentBlockLocation)]
-    [InlineData(CitationType.WebSearchResultLocation)]
-    [InlineData(CitationType.SearchResultLocation)]
-    public void SerializationRoundtrip_Works(CitationType rawValue)
+    [InlineData(CitationType.CharLocation, 0, "char_location")]
+    [InlineData(CitationType.PageLocation, 1, "page_location")]
+    [InlineData(CitationType.ContentBlockLocation, 2, "content_block_location")]
+    [InlineData(CitationType.WebSearchResultLocation, 3, "web_search_result_location")]
+    [InlineData(CitationType.SearchResultLocation, 4, "search_result_location")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CitationType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CitationType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CitationType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

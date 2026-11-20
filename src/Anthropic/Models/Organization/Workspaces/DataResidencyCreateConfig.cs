@@ -484,8 +484,8 @@ class DataResidencyCreateConfigAllowedInferenceGeosUnrestrictedConverter
 [JsonConverter(typeof(DataResidencyCreateConfigDefaultInferenceGeoConverter))]
 public enum DataResidencyCreateConfigDefaultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class DataResidencyCreateConfigDefaultInferenceGeoConverter
@@ -533,7 +533,7 @@ sealed class DataResidencyCreateConfigDefaultInferenceGeoConverter
 [JsonConverter(typeof(DataResidencyCreateConfigWorkspaceGeoConverter))]
 public enum DataResidencyCreateConfigWorkspaceGeo
 {
-    Us,
+    Us = 0,
 }
 
 sealed class DataResidencyCreateConfigWorkspaceGeoConverter

@@ -469,20 +469,28 @@ public class BetaFederationIssuerJwksTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaFederationIssuerJwksType.Discovery)]
-    [InlineData(BetaFederationIssuerJwksType.ExplicitUrl)]
-    [InlineData(BetaFederationIssuerJwksType.Inline)]
-    public void SerializationRoundtrip_Works(BetaFederationIssuerJwksType rawValue)
+    [InlineData(BetaFederationIssuerJwksType.Discovery, 0, "discovery")]
+    [InlineData(BetaFederationIssuerJwksType.ExplicitUrl, 1, "explicit_url")]
+    [InlineData(BetaFederationIssuerJwksType.Inline, 2, "inline")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaFederationIssuerJwksType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaFederationIssuerJwksType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaFederationIssuerJwksType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

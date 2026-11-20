@@ -162,19 +162,27 @@ public class BetaDreamModelConfigParamSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDreamModelConfigParamSpeed.Standard)]
-    [InlineData(BetaDreamModelConfigParamSpeed.Fast)]
-    public void SerializationRoundtrip_Works(BetaDreamModelConfigParamSpeed rawValue)
+    [InlineData(BetaDreamModelConfigParamSpeed.Standard, 0, "standard")]
+    [InlineData(BetaDreamModelConfigParamSpeed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDreamModelConfigParamSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDreamModelConfigParamSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaDreamModelConfigParamSpeed>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

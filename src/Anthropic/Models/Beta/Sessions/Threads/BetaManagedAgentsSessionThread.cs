@@ -691,9 +691,9 @@ sealed class AgentConverter : JsonConverter<Agent>
 [JsonConverter(typeof(AgentTypeConverter))]
 public enum AgentType
 {
-    Agent,
-    Advisor,
-    Inline,
+    Agent = 0,
+    Advisor = 1,
+    Inline = 2,
 }
 
 sealed class AgentTypeConverter : JsonConverter<AgentType>

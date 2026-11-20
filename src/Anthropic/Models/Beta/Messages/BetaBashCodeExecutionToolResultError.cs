@@ -112,11 +112,11 @@ class BetaBashCodeExecutionToolResultErrorFromRaw
 [JsonConverter(typeof(BetaBashCodeExecutionToolResultErrorErrorCodeConverter))]
 public enum BetaBashCodeExecutionToolResultErrorErrorCode
 {
-    InvalidToolInput,
-    Unavailable,
-    TooManyRequests,
-    ExecutionTimeExceeded,
-    OutputFileTooLarge,
+    InvalidToolInput = 0,
+    Unavailable = 1,
+    TooManyRequests = 2,
+    ExecutionTimeExceeded = 3,
+    OutputFileTooLarge = 4,
 }
 
 sealed class BetaBashCodeExecutionToolResultErrorErrorCodeConverter

@@ -30,20 +30,28 @@ public class BetaManagedAgentsAgentEvaluatedPermissionTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Allow)]
-    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Ask)]
-    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Deny)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsAgentEvaluatedPermission rawValue)
+    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Allow, 0, "allow")]
+    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Ask, 1, "ask")]
+    [InlineData(BetaManagedAgentsAgentEvaluatedPermission.Deny, 2, "deny")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsAgentEvaluatedPermission rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsAgentEvaluatedPermission>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

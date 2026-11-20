@@ -504,8 +504,8 @@ sealed class AttachmentConverter : JsonConverter<Attachment>
 [JsonConverter(typeof(AttachmentTypeConverter))]
 public enum AttachmentType
 {
-    Attached,
-    Unattached,
+    Attached = 0,
+    Unattached = 1,
 }
 
 sealed class AttachmentTypeConverter : JsonConverter<AttachmentType>
@@ -929,9 +929,9 @@ sealed class ExternalKeyProviderConfigConverter : JsonConverter<ExternalKeyProvi
 [JsonConverter(typeof(ExternalKeyProviderConfigTypeConverter))]
 public enum ExternalKeyProviderConfigType
 {
-    Aws,
-    Gcp,
-    Azure,
+    Aws = 0,
+    Gcp = 1,
+    Azure = 2,
 }
 
 sealed class ExternalKeyProviderConfigTypeConverter : JsonConverter<ExternalKeyProviderConfigType>

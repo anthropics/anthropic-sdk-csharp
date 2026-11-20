@@ -223,23 +223,43 @@ public class EnabledEventTest : TestBase
     }
 
     [Theory]
-    [InlineData(EnabledEvent.ExternalKeyFailed)]
-    [InlineData(EnabledEvent.ExternalKeyRecovered)]
-    [InlineData(EnabledEvent.UserProfileEnforcementActionOpened)]
-    [InlineData(EnabledEvent.UserProfileEnforcementActionResolved)]
-    [InlineData(EnabledEvent.UserProfileProgramStatusUpdated)]
-    public void SerializationRoundtrip_Works(EnabledEvent rawValue)
+    [InlineData(EnabledEvent.ExternalKeyFailed, 0, "external_key.failed")]
+    [InlineData(EnabledEvent.ExternalKeyRecovered, 1, "external_key.recovered")]
+    [InlineData(
+        EnabledEvent.UserProfileEnforcementActionOpened,
+        2,
+        "user_profile.enforcement_action_opened"
+    )]
+    [InlineData(
+        EnabledEvent.UserProfileEnforcementActionResolved,
+        3,
+        "user_profile.enforcement_action_resolved"
+    )]
+    [InlineData(
+        EnabledEvent.UserProfileProgramStatusUpdated,
+        4,
+        "user_profile.program_status_updated"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EnabledEvent rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EnabledEvent> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, EnabledEvent>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

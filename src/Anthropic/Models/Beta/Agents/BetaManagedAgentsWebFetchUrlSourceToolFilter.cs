@@ -483,10 +483,10 @@ sealed class BetaManagedAgentsWebFetchUrlSourceToolFilterConverter
 [JsonConverter(typeof(BetaManagedAgentsWebFetchUrlSourceToolFilterTypeConverter))]
 public enum BetaManagedAgentsWebFetchUrlSourceToolFilterType
 {
-    All,
-    None,
-    Only,
-    Except,
+    All = 0,
+    None = 1,
+    Only = 2,
+    Except = 3,
 }
 
 sealed class BetaManagedAgentsWebFetchUrlSourceToolFilterTypeConverter

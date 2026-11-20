@@ -112,8 +112,8 @@ class BetaSkillParamsFromRaw : IFromRawJson<BetaSkillParams>
 [JsonConverter(typeof(BetaSkillParamsTypeConverter))]
 public enum BetaSkillParamsType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class BetaSkillParamsTypeConverter : JsonConverter<BetaSkillParamsType>

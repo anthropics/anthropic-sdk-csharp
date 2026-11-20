@@ -330,8 +330,8 @@ class BetaAnalyticsUsageBucketedResultFromRaw : IFromRawJson<BetaAnalyticsUsageB
 [JsonConverter(typeof(BetaAnalyticsUsageBucketedResultInferenceGeoConverter))]
 public enum BetaAnalyticsUsageBucketedResultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaAnalyticsUsageBucketedResultInferenceGeoConverter
@@ -379,8 +379,8 @@ sealed class BetaAnalyticsUsageBucketedResultInferenceGeoConverter
 [JsonConverter(typeof(BetaAnalyticsUsageBucketedResultSpeedConverter))]
 public enum BetaAnalyticsUsageBucketedResultSpeed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class BetaAnalyticsUsageBucketedResultSpeedConverter

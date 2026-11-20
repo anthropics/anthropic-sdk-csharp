@@ -250,22 +250,34 @@ public class BetaManagedAgentsWorkflowRunErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWorkflowRunErrorType.TimeoutError)]
-    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ProgramError)]
-    [InlineData(BetaManagedAgentsWorkflowRunErrorType.UnknownError)]
-    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError)]
-    [InlineData(BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsWorkflowRunErrorType rawValue)
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.TimeoutError, 0, "timeout_error")]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ProgramError, 1, "program_error")]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.UnknownError, 2, "unknown_error")]
+    [InlineData(BetaManagedAgentsWorkflowRunErrorType.ThreadLimitError, 3, "thread_limit_error")]
+    [InlineData(
+        BetaManagedAgentsWorkflowRunErrorType.MaxWorkflowRunsError,
+        4,
+        "max_workflow_runs_error"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWorkflowRunErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWorkflowRunErrorType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

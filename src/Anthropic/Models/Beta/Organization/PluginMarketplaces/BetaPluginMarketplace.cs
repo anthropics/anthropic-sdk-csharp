@@ -242,10 +242,10 @@ class BetaPluginMarketplaceFromRaw : IFromRawJson<BetaPluginMarketplace>
 [JsonConverter(typeof(BetaPluginMarketplaceDefaultInstallationPreferenceConverter))]
 public enum BetaPluginMarketplaceDefaultInstallationPreference
 {
-    AutoInstall,
-    Available,
-    NotAvailable,
-    Required,
+    AutoInstall = 0,
+    Available = 1,
+    NotAvailable = 2,
+    Required = 3,
 }
 
 sealed class BetaPluginMarketplaceDefaultInstallationPreferenceConverter
@@ -593,8 +593,8 @@ sealed class OwnerConverter : JsonConverter<Owner>
 [JsonConverter(typeof(OwnerTypeValueConverter))]
 public enum OwnerTypeValue
 {
-    Organization,
-    User,
+    Organization = 0,
+    User = 1,
 }
 
 sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
@@ -644,11 +644,11 @@ sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
 [JsonConverter(typeof(BetaPluginMarketplaceSourceConverter))]
 public enum BetaPluginMarketplaceSource
 {
-    Directory,
-    GitHub,
-    Gitlab,
-    Manual,
-    PublicGit,
+    Directory = 0,
+    GitHub = 1,
+    Gitlab = 2,
+    Manual = 3,
+    PublicGit = 4,
 }
 
 sealed class BetaPluginMarketplaceSourceConverter : JsonConverter<BetaPluginMarketplaceSource>
@@ -703,12 +703,12 @@ sealed class BetaPluginMarketplaceSourceConverter : JsonConverter<BetaPluginMark
 [JsonConverter(typeof(SyncStatusConverter))]
 public enum SyncStatus
 {
-    FailedAuth,
-    FailedContent,
-    FailedLimits,
-    FailedTransient,
-    InProgress,
-    Success,
+    FailedAuth = 0,
+    FailedContent = 1,
+    FailedLimits = 2,
+    FailedTransient = 3,
+    InProgress = 4,
+    Success = 5,
 }
 
 sealed class SyncStatusConverter : JsonConverter<SyncStatus>

@@ -233,8 +233,8 @@ class ServiceAccountFromRaw : IFromRawJson<ServiceAccount>
 [JsonConverter(typeof(ServiceAccountOrganizationRoleConverter))]
 public enum ServiceAccountOrganizationRole
 {
-    Admin,
-    Developer,
+    Admin = 0,
+    Developer = 1,
 }
 
 sealed class ServiceAccountOrganizationRoleConverter : JsonConverter<ServiceAccountOrganizationRole>

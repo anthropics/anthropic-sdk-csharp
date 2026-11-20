@@ -362,25 +362,37 @@ public class BetaServerToolUseBlockParamNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaServerToolUseBlockParamName.Advisor)]
-    [InlineData(BetaServerToolUseBlockParamName.WebSearch)]
-    [InlineData(BetaServerToolUseBlockParamName.WebFetch)]
-    [InlineData(BetaServerToolUseBlockParamName.CodeExecution)]
-    [InlineData(BetaServerToolUseBlockParamName.BashCodeExecution)]
-    [InlineData(BetaServerToolUseBlockParamName.TextEditorCodeExecution)]
-    [InlineData(BetaServerToolUseBlockParamName.ToolSearchToolRegex)]
-    [InlineData(BetaServerToolUseBlockParamName.ToolSearchToolBm25)]
-    public void SerializationRoundtrip_Works(BetaServerToolUseBlockParamName rawValue)
+    [InlineData(BetaServerToolUseBlockParamName.Advisor, 0, "advisor")]
+    [InlineData(BetaServerToolUseBlockParamName.WebSearch, 1, "web_search")]
+    [InlineData(BetaServerToolUseBlockParamName.WebFetch, 2, "web_fetch")]
+    [InlineData(BetaServerToolUseBlockParamName.CodeExecution, 3, "code_execution")]
+    [InlineData(BetaServerToolUseBlockParamName.BashCodeExecution, 4, "bash_code_execution")]
+    [InlineData(
+        BetaServerToolUseBlockParamName.TextEditorCodeExecution,
+        5,
+        "text_editor_code_execution"
+    )]
+    [InlineData(BetaServerToolUseBlockParamName.ToolSearchToolRegex, 6, "tool_search_tool_regex")]
+    [InlineData(BetaServerToolUseBlockParamName.ToolSearchToolBm25, 7, "tool_search_tool_bm25")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaServerToolUseBlockParamName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaServerToolUseBlockParamName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaServerToolUseBlockParamName>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -558,20 +570,36 @@ public class BetaServerToolUseBlockParamCallerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaServerToolUseBlockParamCallerType.Direct)]
-    [InlineData(BetaServerToolUseBlockParamCallerType.CodeExecution20250825)]
-    [InlineData(BetaServerToolUseBlockParamCallerType.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(BetaServerToolUseBlockParamCallerType rawValue)
+    [InlineData(BetaServerToolUseBlockParamCallerType.Direct, 0, "direct")]
+    [InlineData(
+        BetaServerToolUseBlockParamCallerType.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        BetaServerToolUseBlockParamCallerType.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaServerToolUseBlockParamCallerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaServerToolUseBlockParamCallerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaServerToolUseBlockParamCallerType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

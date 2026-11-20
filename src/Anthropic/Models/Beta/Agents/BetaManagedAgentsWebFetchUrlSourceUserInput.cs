@@ -326,8 +326,8 @@ sealed class BetaManagedAgentsWebFetchUrlSourceUserInputConverter
 [JsonConverter(typeof(BetaManagedAgentsWebFetchUrlSourceUserInputTypeConverter))]
 public enum BetaManagedAgentsWebFetchUrlSourceUserInputType
 {
-    All,
-    None,
+    All = 0,
+    None = 1,
 }
 
 sealed class BetaManagedAgentsWebFetchUrlSourceUserInputTypeConverter

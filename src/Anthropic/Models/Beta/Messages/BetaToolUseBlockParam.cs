@@ -549,9 +549,9 @@ sealed class BetaToolUseBlockParamCallerConverter : JsonConverter<BetaToolUseBlo
 [JsonConverter(typeof(BetaToolUseBlockParamCallerTypeConverter))]
 public enum BetaToolUseBlockParamCallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class BetaToolUseBlockParamCallerTypeConverter

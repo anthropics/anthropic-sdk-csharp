@@ -558,11 +558,11 @@ sealed class BetaManagedAgentsWorkflowRunErrorConverter
 [JsonConverter(typeof(BetaManagedAgentsWorkflowRunErrorTypeConverter))]
 public enum BetaManagedAgentsWorkflowRunErrorType
 {
-    TimeoutError,
-    ProgramError,
-    UnknownError,
-    ThreadLimitError,
-    MaxWorkflowRunsError,
+    TimeoutError = 0,
+    ProgramError = 1,
+    UnknownError = 2,
+    ThreadLimitError = 3,
+    MaxWorkflowRunsError = 4,
 }
 
 sealed class BetaManagedAgentsWorkflowRunErrorTypeConverter

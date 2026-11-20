@@ -829,13 +829,13 @@ sealed class BetaSpendLimitScopeConverter : JsonConverter<BetaSpendLimitScope>
 [JsonConverter(typeof(BetaSpendLimitScopeTypeConverter))]
 public enum BetaSpendLimitScopeType
 {
-    User,
-    SeatTier,
-    RbacGroup,
-    OrganizationService,
-    Organization,
-    Workspace,
-    UsageTier,
+    User = 0,
+    SeatTier = 1,
+    RbacGroup = 2,
+    OrganizationService = 3,
+    Organization = 4,
+    Workspace = 5,
+    UsageTier = 6,
 }
 
 sealed class BetaSpendLimitScopeTypeConverter : JsonConverter<BetaSpendLimitScopeType>

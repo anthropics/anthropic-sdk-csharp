@@ -198,18 +198,18 @@ public enum BetaUserProfileExternalUserDetailsParamsAccountStatus
     /// The platform has neither restricted nor barred the account of the entity
     /// that the user profile represents.
     /// </summary>
-    Active,
+    Active = 0,
 
     /// <summary>
     /// The platform has restricted the account of the entity that the user profile
     /// represents and may restore it.
     /// </summary>
-    Suspended,
+    Suspended = 1,
 
     /// <summary>
     /// The platform has barred the account of the entity that the user profile represents.
     /// </summary>
-    Blocked,
+    Blocked = 2,
 }
 
 sealed class BetaUserProfileExternalUserDetailsParamsAccountStatusConverter
@@ -259,10 +259,10 @@ sealed class BetaUserProfileExternalUserDetailsParamsAccountStatusConverter
 [JsonConverter(typeof(BetaUserProfileExternalUserDetailsParamsEntityTypeConverter))]
 public enum BetaUserProfileExternalUserDetailsParamsEntityType
 {
-    Individual,
-    Business,
-    NonProfit,
-    Government,
+    Individual = 0,
+    Business = 1,
+    NonProfit = 2,
+    Government = 3,
 }
 
 sealed class BetaUserProfileExternalUserDetailsParamsEntityTypeConverter

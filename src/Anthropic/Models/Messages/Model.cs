@@ -17,70 +17,70 @@ public enum Model
     /// <summary>
     /// Built for the most ambitious work in coding, enterprise workflows, and the sciences
     /// </summary>
-    ClaudeFable5_2,
+    ClaudeFable5_2 = 0,
 
     /// <summary>
     /// Built for the most demanding cybersecurity and life sciences research, available
     /// through verification programs
     /// </summary>
-    ClaudeMythos5_2,
+    ClaudeMythos5_2 = 1,
 
     /// <summary>
     /// Fastest model for high-volume, real-time tasks
     /// </summary>
-    ClaudeHaiku5_5,
+    ClaudeHaiku5_5 = 2,
 
     /// <summary>
     /// Efficient model for coding and agents
     /// </summary>
-    ClaudeSonnet5_5,
+    ClaudeSonnet5_5 = 3,
 
     /// <summary>
     /// Frontier intelligence for ambitious tasks across coding, scientific discovery,
     /// and enterprise workflows
     /// </summary>
-    ClaudeFable5_1,
+    ClaudeFable5_1 = 4,
 
     /// <summary>
     /// Powerful intelligence for coding, knowledge work, and long-running agents
     /// </summary>
-    ClaudeOpus5_5,
+    ClaudeOpus5_5 = 5,
 
     /// <summary>
     /// Our most capable model for cybersecurity and biology research, available
     /// through trusted access programs
     /// </summary>
-    ClaudeMythos5_1,
+    ClaudeMythos5_1 = 6,
 
     /// <summary>
     /// Efficient model for coding and agents
     /// </summary>
-    ClaudeSonnet5,
+    ClaudeSonnet5 = 7,
 
     /// <summary>
     /// Next generation of intelligence for the hardest knowledge work and coding problems
     /// </summary>
-    ClaudeFable5,
+    ClaudeFable5 = 8,
 
     /// <summary>
     /// Most capable model for cybersecurity and biology research
     /// </summary>
-    ClaudeMythos5,
+    ClaudeMythos5 = 9,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus5,
+    ClaudeOpus5 = 10,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_8,
+    ClaudeOpus4_8 = 11,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_7,
+    ClaudeOpus4_7 = 12,
 
     /// <summary>
     /// New class of intelligence, strongest in coding and cybersecurity
@@ -88,29 +88,29 @@ public enum Model
     [System::Obsolete(
         "Will reach end-of-life on June 30, 2026. Please migrate to claude-mythos-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    ClaudeMythosPreview,
+    ClaudeMythosPreview = 13,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_6,
+    ClaudeOpus4_6 = 14,
 
     /// <summary>
     /// Best combination of speed and intelligence
     /// </summary>
-    ClaudeSonnet4_6,
-    ClaudeHaiku4_5,
-    ClaudeHaiku4_5_20251001,
+    ClaudeSonnet4_6 = 15,
+    ClaudeHaiku4_5 = 16,
+    ClaudeHaiku4_5_20251001 = 17,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_5,
+    ClaudeOpus4_5 = 18,
 
     /// <summary>
     /// Powerful intelligence for long-running agents and coding
     /// </summary>
-    ClaudeOpus4_5_20251101,
+    ClaudeOpus4_5_20251101 = 19,
 
     /// <summary>
     /// High-performance model for agents and coding
@@ -118,7 +118,7 @@ public enum Model
     [System::Obsolete(
         "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    ClaudeSonnet4_5,
+    ClaudeSonnet4_5 = 20,
 
     /// <summary>
     /// High-performance model for agents and coding
@@ -126,7 +126,7 @@ public enum Model
     [System::Obsolete(
         "Will reach end-of-life on November 30, 2026. Please migrate to claude-sonnet-5-5. Visit https://docs.anthropic.com/en/docs/resources/model-deprecations for more information."
     )]
-    ClaudeSonnet4_5_20250929,
+    ClaudeSonnet4_5_20250929 = 21,
 }
 
 sealed class ModelConverter : JsonConverter<Model>

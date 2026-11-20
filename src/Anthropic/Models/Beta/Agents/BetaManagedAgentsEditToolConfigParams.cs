@@ -535,9 +535,9 @@ sealed class BetaManagedAgentsEditToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsEditToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsEditToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsEditToolConfigParamsPermissionPolicyTypeConverter
@@ -584,7 +584,7 @@ sealed class BetaManagedAgentsEditToolConfigParamsPermissionPolicyTypeConverter
 [JsonConverter(typeof(BetaManagedAgentsEditToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsEditToolConfigParamsType
 {
-    Edit,
+    Edit = 0,
 }
 
 sealed class BetaManagedAgentsEditToolConfigParamsTypeConverter

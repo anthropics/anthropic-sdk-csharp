@@ -590,9 +590,9 @@ sealed class ScopeConverter : JsonConverter<Scope>
 [JsonConverter(typeof(ScopeTypeValueConverter))]
 public enum ScopeTypeValue
 {
-    User,
-    Organization,
-    Workspace,
+    User = 0,
+    Organization = 1,
+    Workspace = 2,
 }
 
 sealed class ScopeTypeValueConverter : JsonConverter<ScopeTypeValue>

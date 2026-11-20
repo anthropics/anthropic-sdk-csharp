@@ -8,9 +8,9 @@ namespace Anthropic.Models.Organization.SpendLimits;
 [JsonConverter(typeof(SpendLimitPeriodConverter))]
 public enum SpendLimitPeriod
 {
-    Daily,
-    Monthly,
-    Weekly,
+    Daily = 0,
+    Monthly = 1,
+    Weekly = 2,
 }
 
 sealed class SpendLimitPeriodConverter : JsonConverter<SpendLimitPeriod>

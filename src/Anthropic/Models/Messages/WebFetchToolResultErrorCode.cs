@@ -8,16 +8,16 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(WebFetchToolResultErrorCodeConverter))]
 public enum WebFetchToolResultErrorCode
 {
-    InvalidToolInput,
-    UrlTooLong,
-    UrlNotAllowed,
-    UrlNotInPriorContext,
-    UrlNotAccessible,
-    UnsupportedContentType,
-    TooManyRequests,
-    MaxUsesExceeded,
-    Unavailable,
-    ContentTooLarge,
+    InvalidToolInput = 0,
+    UrlTooLong = 1,
+    UrlNotAllowed = 2,
+    UrlNotInPriorContext = 3,
+    UrlNotAccessible = 4,
+    UnsupportedContentType = 5,
+    TooManyRequests = 6,
+    MaxUsesExceeded = 7,
+    Unavailable = 8,
+    ContentTooLarge = 9,
 }
 
 sealed class WebFetchToolResultErrorCodeConverter : JsonConverter<WebFetchToolResultErrorCode>

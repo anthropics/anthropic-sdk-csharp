@@ -580,10 +580,10 @@ sealed class BetaManagedAgentsUserMessageEventParamsContentConverter
 [JsonConverter(typeof(BetaManagedAgentsUserMessageEventParamsContentTypeConverter))]
 public enum BetaManagedAgentsUserMessageEventParamsContentType
 {
-    Text,
-    Image,
-    Document,
-    Redacted,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    Redacted = 3,
 }
 
 sealed class BetaManagedAgentsUserMessageEventParamsContentTypeConverter

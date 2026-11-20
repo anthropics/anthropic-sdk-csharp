@@ -462,24 +462,32 @@ public class GroupTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(GroupTypeValue.ModelGroup)]
-    [InlineData(GroupTypeValue.Batch)]
-    [InlineData(GroupTypeValue.TokenCount)]
-    [InlineData(GroupTypeValue.Files)]
-    [InlineData(GroupTypeValue.Skills)]
-    [InlineData(GroupTypeValue.WebSearch)]
-    public void SerializationRoundtrip_Works(GroupTypeValue rawValue)
+    [InlineData(GroupTypeValue.ModelGroup, 0, "model_group")]
+    [InlineData(GroupTypeValue.Batch, 1, "batch")]
+    [InlineData(GroupTypeValue.TokenCount, 2, "token_count")]
+    [InlineData(GroupTypeValue.Files, 3, "files")]
+    [InlineData(GroupTypeValue.Skills, 4, "skills")]
+    [InlineData(GroupTypeValue.WebSearch, 5, "web_search")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        GroupTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, GroupTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

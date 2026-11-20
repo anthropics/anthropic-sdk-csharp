@@ -152,11 +152,11 @@ class BetaSelfHostedWorkHeartbeatResponseFromRaw : IFromRawJson<BetaSelfHostedWo
 [JsonConverter(typeof(BetaSelfHostedWorkHeartbeatResponseStateConverter))]
 public enum BetaSelfHostedWorkHeartbeatResponseState
 {
-    Queued,
-    Starting,
-    Active,
-    Stopping,
-    Stopped,
+    Queued = 0,
+    Starting = 1,
+    Active = 2,
+    Stopping = 3,
+    Stopped = 4,
 }
 
 sealed class BetaSelfHostedWorkHeartbeatResponseStateConverter

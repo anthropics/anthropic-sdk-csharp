@@ -148,8 +148,8 @@ class BetaSystemMessageParamFromRaw : IFromRawJson<BetaSystemMessageParam>
 [JsonConverter(typeof(ClearAtConverter))]
 public enum ClearAt
 {
-    NextUserMessage,
-    Never,
+    NextUserMessage = 0,
+    Never = 1,
 }
 
 sealed class ClearAtConverter : JsonConverter<ClearAt>
@@ -852,9 +852,9 @@ sealed class SystemMessageContentBlockConverter : JsonConverter<SystemMessageCon
 [JsonConverter(typeof(SystemMessageContentBlockTypeConverter))]
 public enum SystemMessageContentBlockType
 {
-    Text,
-    ToolAddition,
-    ToolRemoval,
+    Text = 0,
+    ToolAddition = 1,
+    ToolRemoval = 2,
 }
 
 sealed class SystemMessageContentBlockTypeConverter : JsonConverter<SystemMessageContentBlockType>

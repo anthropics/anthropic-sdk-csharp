@@ -175,22 +175,30 @@ public class InstallationPreferenceTest : TestBase
     }
 
     [Theory]
-    [InlineData(InstallationPreference.AutoInstall)]
-    [InlineData(InstallationPreference.Available)]
-    [InlineData(InstallationPreference.NotAvailable)]
-    [InlineData(InstallationPreference.Required)]
-    public void SerializationRoundtrip_Works(InstallationPreference rawValue)
+    [InlineData(InstallationPreference.AutoInstall, 0, "auto_install")]
+    [InlineData(InstallationPreference.Available, 1, "available")]
+    [InlineData(InstallationPreference.NotAvailable, 2, "not_available")]
+    [InlineData(InstallationPreference.Required, 3, "required")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        InstallationPreference rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, InstallationPreference> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, InstallationPreference>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

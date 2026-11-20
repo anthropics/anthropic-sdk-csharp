@@ -635,10 +635,10 @@ sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentConverter
 [JsonConverter(typeof(BetaManagedAgentsAgentThreadMessageReceivedEventContentTypeConverter))]
 public enum BetaManagedAgentsAgentThreadMessageReceivedEventContentType
 {
-    Text,
-    Image,
-    Document,
-    Redacted,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    Redacted = 3,
 }
 
 sealed class BetaManagedAgentsAgentThreadMessageReceivedEventContentTypeConverter

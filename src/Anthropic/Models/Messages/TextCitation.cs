@@ -622,11 +622,11 @@ sealed class TextCitationConverter : JsonConverter<TextCitation>
 [JsonConverter(typeof(TextCitationTypeConverter))]
 public enum TextCitationType
 {
-    CharLocation,
-    PageLocation,
-    ContentBlockLocation,
-    WebSearchResultLocation,
-    SearchResultLocation,
+    CharLocation = 0,
+    PageLocation = 1,
+    ContentBlockLocation = 2,
+    WebSearchResultLocation = 3,
+    SearchResultLocation = 4,
 }
 
 sealed class TextCitationTypeConverter : JsonConverter<TextCitationType>

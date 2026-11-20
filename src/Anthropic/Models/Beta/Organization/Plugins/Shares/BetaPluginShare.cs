@@ -490,9 +490,9 @@ sealed class TargetConverter : JsonConverter<Target>
 [JsonConverter(typeof(TargetTypeValueConverter))]
 public enum TargetTypeValue
 {
-    Organization,
-    RbacGroup,
-    OrganizationMember,
+    Organization = 0,
+    RbacGroup = 1,
+    OrganizationMember = 2,
 }
 
 sealed class TargetTypeValueConverter : JsonConverter<TargetTypeValue>

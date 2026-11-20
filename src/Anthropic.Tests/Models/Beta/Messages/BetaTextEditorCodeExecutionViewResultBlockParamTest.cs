@@ -221,22 +221,28 @@ public class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeTest : TestB
     }
 
     [Theory]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image)]
-    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf)]
-    public void SerializationRoundtrip_Works(
-        BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Text, 0, "text")]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Image, 1, "image")]
+    [InlineData(BetaTextEditorCodeExecutionViewResultBlockParamFileType.Pdf, 2, "pdf")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTextEditorCodeExecutionViewResultBlockParamFileType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTextEditorCodeExecutionViewResultBlockParamFileType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

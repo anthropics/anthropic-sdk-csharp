@@ -98,10 +98,10 @@ class Base64ImageSourceFromRaw : IFromRawJson<Base64ImageSource>
 [JsonConverter(typeof(MediaTypeConverter))]
 public enum MediaType
 {
-    ImageJpeg,
-    ImagePng,
-    ImageGif,
-    ImageWebP,
+    ImageJpeg = 0,
+    ImagePng = 1,
+    ImageGif = 2,
+    ImageWebP = 3,
 }
 
 sealed class MediaTypeConverter : JsonConverter<MediaType>

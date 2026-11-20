@@ -189,22 +189,36 @@ public class BetaManagedAgentsDeploymentInitialEventParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsDeploymentInitialEventParamsType.UserMessage)]
-    [InlineData(BetaManagedAgentsDeploymentInitialEventParamsType.UserDefineOutcome)]
-    [InlineData(BetaManagedAgentsDeploymentInitialEventParamsType.SystemMessage)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsDeploymentInitialEventParamsType rawValue
+    [InlineData(BetaManagedAgentsDeploymentInitialEventParamsType.UserMessage, 0, "user.message")]
+    [InlineData(
+        BetaManagedAgentsDeploymentInitialEventParamsType.UserDefineOutcome,
+        1,
+        "user.define_outcome"
+    )]
+    [InlineData(
+        BetaManagedAgentsDeploymentInitialEventParamsType.SystemMessage,
+        2,
+        "system.message"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsDeploymentInitialEventParamsType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsDeploymentInitialEventParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsDeploymentInitialEventParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

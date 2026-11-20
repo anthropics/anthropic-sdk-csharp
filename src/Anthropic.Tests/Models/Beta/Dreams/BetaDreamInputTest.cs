@@ -110,20 +110,28 @@ public class BetaDreamInputTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDreamInputType.MemoryStore)]
-    [InlineData(BetaDreamInputType.Sessions)]
-    public void SerializationRoundtrip_Works(BetaDreamInputType rawValue)
+    [InlineData(BetaDreamInputType.MemoryStore, 0, "memory_store")]
+    [InlineData(BetaDreamInputType.Sessions, 1, "sessions")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDreamInputType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDreamInputType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaDreamInputType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

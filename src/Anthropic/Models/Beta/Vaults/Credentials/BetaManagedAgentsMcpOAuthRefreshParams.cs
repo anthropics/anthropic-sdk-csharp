@@ -571,9 +571,9 @@ sealed class TokenEndpointAuthConverter : JsonConverter<TokenEndpointAuth>
 [JsonConverter(typeof(TokenEndpointAuthTypeConverter))]
 public enum TokenEndpointAuthType
 {
-    None,
-    ClientSecretBasic,
-    ClientSecretPost,
+    None = 0,
+    ClientSecretBasic = 1,
+    ClientSecretPost = 2,
 }
 
 sealed class TokenEndpointAuthTypeConverter : JsonConverter<TokenEndpointAuthType>

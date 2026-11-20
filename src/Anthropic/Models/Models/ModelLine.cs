@@ -11,11 +11,11 @@ namespace Anthropic.Models.Models;
 [JsonConverter(typeof(ModelLineConverter))]
 public enum ModelLine
 {
-    Haiku,
-    Sonnet,
-    Opus,
-    Fable,
-    Mythos,
+    Haiku = 0,
+    Sonnet = 1,
+    Opus = 2,
+    Fable = 3,
+    Mythos = 4,
 }
 
 sealed class ModelLineConverter : JsonConverter<ModelLine>

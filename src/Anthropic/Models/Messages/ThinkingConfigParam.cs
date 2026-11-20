@@ -443,10 +443,10 @@ sealed class ThinkingConfigParamConverter : JsonConverter<ThinkingConfigParam>
 [JsonConverter(typeof(ThinkingConfigParamTypeConverter))]
 public enum ThinkingConfigParamType
 {
-    Enabled,
-    Disabled,
-    BetweenTools,
-    Adaptive,
+    Enabled = 0,
+    Disabled = 1,
+    BetweenTools = 2,
+    Adaptive = 3,
 }
 
 sealed class ThinkingConfigParamTypeConverter : JsonConverter<ThinkingConfigParamType>

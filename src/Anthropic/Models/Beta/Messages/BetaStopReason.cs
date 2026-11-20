@@ -8,14 +8,14 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaStopReasonConverter))]
 public enum BetaStopReason
 {
-    EndTurn,
-    MaxTokens,
-    StopSequence,
-    ToolUse,
-    PauseTurn,
-    Compaction,
-    Refusal,
-    ModelContextWindowExceeded,
+    EndTurn = 0,
+    MaxTokens = 1,
+    StopSequence = 2,
+    ToolUse = 3,
+    PauseTurn = 4,
+    Compaction = 5,
+    Refusal = 6,
+    ModelContextWindowExceeded = 7,
 }
 
 sealed class BetaStopReasonConverter : JsonConverter<BetaStopReason>

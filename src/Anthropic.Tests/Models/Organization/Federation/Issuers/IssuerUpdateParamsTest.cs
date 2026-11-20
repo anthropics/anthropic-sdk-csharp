@@ -334,21 +334,29 @@ public class IssuerUpdateParamsJwksTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(IssuerUpdateParamsJwksType.Discovery)]
-    [InlineData(IssuerUpdateParamsJwksType.ExplicitUrl)]
-    [InlineData(IssuerUpdateParamsJwksType.Inline)]
-    public void SerializationRoundtrip_Works(IssuerUpdateParamsJwksType rawValue)
+    [InlineData(IssuerUpdateParamsJwksType.Discovery, 0, "discovery")]
+    [InlineData(IssuerUpdateParamsJwksType.ExplicitUrl, 1, "explicit_url")]
+    [InlineData(IssuerUpdateParamsJwksType.Inline, 2, "inline")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        IssuerUpdateParamsJwksType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, IssuerUpdateParamsJwksType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, IssuerUpdateParamsJwksType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

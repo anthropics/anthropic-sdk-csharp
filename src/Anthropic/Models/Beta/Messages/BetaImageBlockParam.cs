@@ -489,9 +489,9 @@ sealed class BetaImageBlockParamSourceConverter : JsonConverter<BetaImageBlockPa
 [JsonConverter(typeof(BetaImageBlockParamSourceTypeConverter))]
 public enum BetaImageBlockParamSourceType
 {
-    Base64,
-    Url,
-    File,
+    Base64 = 0,
+    Url = 1,
+    File = 2,
 }
 
 sealed class BetaImageBlockParamSourceTypeConverter : JsonConverter<BetaImageBlockParamSourceType>

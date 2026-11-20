@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics.Cost;
 [JsonConverter(typeof(BetaAnalyticsCostOrderByConverter))]
 public enum BetaAnalyticsCostOrderBy
 {
-    Amount,
-    ListAmount,
-    Time,
+    Amount = 0,
+    ListAmount = 1,
+    Time = 2,
 }
 
 sealed class BetaAnalyticsCostOrderByConverter : JsonConverter<BetaAnalyticsCostOrderBy>

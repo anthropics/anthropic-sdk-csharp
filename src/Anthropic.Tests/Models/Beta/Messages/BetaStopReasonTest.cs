@@ -36,26 +36,34 @@ public class BetaStopReasonTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaStopReason.EndTurn)]
-    [InlineData(BetaStopReason.MaxTokens)]
-    [InlineData(BetaStopReason.StopSequence)]
-    [InlineData(BetaStopReason.ToolUse)]
-    [InlineData(BetaStopReason.PauseTurn)]
-    [InlineData(BetaStopReason.Compaction)]
-    [InlineData(BetaStopReason.Refusal)]
-    [InlineData(BetaStopReason.ModelContextWindowExceeded)]
-    public void SerializationRoundtrip_Works(BetaStopReason rawValue)
+    [InlineData(BetaStopReason.EndTurn, 0, "end_turn")]
+    [InlineData(BetaStopReason.MaxTokens, 1, "max_tokens")]
+    [InlineData(BetaStopReason.StopSequence, 2, "stop_sequence")]
+    [InlineData(BetaStopReason.ToolUse, 3, "tool_use")]
+    [InlineData(BetaStopReason.PauseTurn, 4, "pause_turn")]
+    [InlineData(BetaStopReason.Compaction, 5, "compaction")]
+    [InlineData(BetaStopReason.Refusal, 6, "refusal")]
+    [InlineData(BetaStopReason.ModelContextWindowExceeded, 7, "model_context_window_exceeded")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaStopReason rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaStopReason> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaStopReason>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

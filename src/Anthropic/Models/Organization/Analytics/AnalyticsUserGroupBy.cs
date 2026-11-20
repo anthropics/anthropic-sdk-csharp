@@ -11,7 +11,7 @@ namespace Anthropic.Models.Organization.Analytics;
 [JsonConverter(typeof(AnalyticsUserGroupByConverter))]
 public enum AnalyticsUserGroupBy
 {
-    RbacGroupID,
+    RbacGroupID = 0,
 }
 
 sealed class AnalyticsUserGroupByConverter : JsonConverter<AnalyticsUserGroupBy>

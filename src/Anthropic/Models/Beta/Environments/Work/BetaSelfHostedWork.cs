@@ -263,11 +263,11 @@ class BetaSelfHostedWorkFromRaw : IFromRawJson<BetaSelfHostedWork>
 [JsonConverter(typeof(StateConverter))]
 public enum State
 {
-    Queued,
-    Starting,
-    Active,
-    Stopping,
-    Stopped,
+    Queued = 0,
+    Starting = 1,
+    Active = 2,
+    Stopping = 3,
+    Stopped = 4,
 }
 
 sealed class StateConverter : JsonConverter<State>

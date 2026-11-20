@@ -1000,34 +1000,50 @@ public class ContentBlockParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ContentBlockParamType.Text)]
-    [InlineData(ContentBlockParamType.Image)]
-    [InlineData(ContentBlockParamType.Document)]
-    [InlineData(ContentBlockParamType.SearchResult)]
-    [InlineData(ContentBlockParamType.Thinking)]
-    [InlineData(ContentBlockParamType.RedactedThinking)]
-    [InlineData(ContentBlockParamType.ToolUse)]
-    [InlineData(ContentBlockParamType.ToolResult)]
-    [InlineData(ContentBlockParamType.ServerToolUse)]
-    [InlineData(ContentBlockParamType.WebSearchToolResult)]
-    [InlineData(ContentBlockParamType.WebFetchToolResult)]
-    [InlineData(ContentBlockParamType.CodeExecutionToolResult)]
-    [InlineData(ContentBlockParamType.BashCodeExecutionToolResult)]
-    [InlineData(ContentBlockParamType.TextEditorCodeExecutionToolResult)]
-    [InlineData(ContentBlockParamType.ToolSearchToolResult)]
-    [InlineData(ContentBlockParamType.ContainerUpload)]
-    public void SerializationRoundtrip_Works(ContentBlockParamType rawValue)
+    [InlineData(ContentBlockParamType.Text, 0, "text")]
+    [InlineData(ContentBlockParamType.Image, 1, "image")]
+    [InlineData(ContentBlockParamType.Document, 2, "document")]
+    [InlineData(ContentBlockParamType.SearchResult, 3, "search_result")]
+    [InlineData(ContentBlockParamType.Thinking, 4, "thinking")]
+    [InlineData(ContentBlockParamType.RedactedThinking, 5, "redacted_thinking")]
+    [InlineData(ContentBlockParamType.ToolUse, 6, "tool_use")]
+    [InlineData(ContentBlockParamType.ToolResult, 7, "tool_result")]
+    [InlineData(ContentBlockParamType.ServerToolUse, 8, "server_tool_use")]
+    [InlineData(ContentBlockParamType.WebSearchToolResult, 9, "web_search_tool_result")]
+    [InlineData(ContentBlockParamType.WebFetchToolResult, 10, "web_fetch_tool_result")]
+    [InlineData(ContentBlockParamType.CodeExecutionToolResult, 11, "code_execution_tool_result")]
+    [InlineData(
+        ContentBlockParamType.BashCodeExecutionToolResult,
+        12,
+        "bash_code_execution_tool_result"
+    )]
+    [InlineData(
+        ContentBlockParamType.TextEditorCodeExecutionToolResult,
+        13,
+        "text_editor_code_execution_tool_result"
+    )]
+    [InlineData(ContentBlockParamType.ToolSearchToolResult, 14, "tool_search_tool_result")]
+    [InlineData(ContentBlockParamType.ContainerUpload, 15, "container_upload")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ContentBlockParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ContentBlockParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockParamType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

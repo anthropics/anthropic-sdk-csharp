@@ -433,8 +433,8 @@ sealed class BetaCloudConfigParamsNetworkingConverter
 [JsonConverter(typeof(BetaCloudConfigParamsNetworkingTypeConverter))]
 public enum BetaCloudConfigParamsNetworkingType
 {
-    Unrestricted,
-    Limited,
+    Unrestricted = 0,
+    Limited = 1,
 }
 
 sealed class BetaCloudConfigParamsNetworkingTypeConverter

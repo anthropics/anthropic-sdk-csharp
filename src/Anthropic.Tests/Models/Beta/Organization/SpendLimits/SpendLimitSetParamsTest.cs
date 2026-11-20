@@ -273,21 +273,29 @@ public class ScopeTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(ScopeTypeValue.User)]
-    [InlineData(ScopeTypeValue.Organization)]
-    [InlineData(ScopeTypeValue.Workspace)]
-    public void SerializationRoundtrip_Works(ScopeTypeValue rawValue)
+    [InlineData(ScopeTypeValue.User, 0, "user")]
+    [InlineData(ScopeTypeValue.Organization, 1, "organization")]
+    [InlineData(ScopeTypeValue.Workspace, 2, "workspace")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ScopeTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ScopeTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ScopeTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

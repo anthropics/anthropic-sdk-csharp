@@ -161,20 +161,28 @@ public class BetaTelemetryDestinationWorkspacesParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.All)]
-    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Include)]
-    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Exclude)]
-    public void SerializationRoundtrip_Works(BetaTelemetryDestinationWorkspacesParamsType rawValue)
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.All, 0, "all")]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Include, 1, "include")]
+    [InlineData(BetaTelemetryDestinationWorkspacesParamsType.Exclude, 2, "exclude")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaTelemetryDestinationWorkspacesParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaTelemetryDestinationWorkspacesParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

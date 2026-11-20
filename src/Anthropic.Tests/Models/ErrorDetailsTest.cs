@@ -119,6 +119,17 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ImageDimensionsTooLargeValidationWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void OrganizationOnHoldValidationWorks()
     {
         ErrorDetails value = new OrganizationOnHoldErrorDetails() { AppealUrl = "appeal_url" };
@@ -903,6 +914,23 @@ public class ErrorDetailsTest : TestBase
     public void CompactionToolChangesMismatchSerializationRoundtripWorks()
     {
         ErrorDetails value = new CompactionToolChangesMismatchErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ImageDimensionsTooLargeSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2148,6 +2176,17 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void ImageDimensionsTooLargeErrorCodeWorks()
+    {
+        ErrorDetails value = new ImageDimensionsTooLargeErrorDetails()
+        {
+            MaxSideLengthPixels = 0,
+            Paths = ["string"],
+        };
+        Assert.Equal(ErrorDetailsErrorCode.ImageDimensionsTooLarge, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void OrganizationOnHoldErrorCodeWorks()
     {
         ErrorDetails value = new OrganizationOnHoldErrorDetails() { AppealUrl = "appeal_url" };
@@ -2886,6 +2925,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.CompactionSignatureInvalid)]
     [InlineData(ErrorDetailsErrorCode.CompactionTooManyToolReferences)]
     [InlineData(ErrorDetailsErrorCode.CompactionToolChangesMismatch)]
+    [InlineData(ErrorDetailsErrorCode.ImageDimensionsTooLarge)]
     [InlineData(ErrorDetailsErrorCode.OrganizationOnHold)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingInvalid)]
     [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingUnsupported)]
@@ -2992,117 +3032,306 @@ public class ErrorDetailsErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ErrorDetailsErrorCode.AvailableToolsLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.ClaudeCodeKeyCreatorNotMember)]
-    [InlineData(ErrorDetailsErrorCode.ClaudeCodeVersionTooOld)]
-    [InlineData(ErrorDetailsErrorCode.CmekKeyDisabled)]
-    [InlineData(ErrorDetailsErrorCode.CmekKeyNetworkBlocked)]
-    [InlineData(ErrorDetailsErrorCode.CompactionBlockAmbiguous)]
-    [InlineData(ErrorDetailsErrorCode.CompactionBlockMisplaced)]
-    [InlineData(ErrorDetailsErrorCode.CompactionContentMismatch)]
-    [InlineData(ErrorDetailsErrorCode.CompactionIncompleteTurn)]
-    [InlineData(ErrorDetailsErrorCode.CompactionNothingToSummarize)]
-    [InlineData(ErrorDetailsErrorCode.CompactionSignatureInvalid)]
-    [InlineData(ErrorDetailsErrorCode.CompactionTooManyToolReferences)]
-    [InlineData(ErrorDetailsErrorCode.CompactionToolChangesMismatch)]
-    [InlineData(ErrorDetailsErrorCode.OrganizationOnHold)]
-    [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingInvalid)]
-    [InlineData(ErrorDetailsErrorCode.RequestBodyEncodingUnsupported)]
-    [InlineData(ErrorDetailsErrorCode.ThreadAlreadyContinued)]
-    [InlineData(ErrorDetailsErrorCode.ThreadContinueInFlight)]
-    [InlineData(ErrorDetailsErrorCode.ThreadFingerprintMismatch)]
-    [InlineData(ErrorDetailsErrorCode.ThreadUnsupportedRequest)]
-    [InlineData(ErrorDetailsErrorCode.ToolNameConflict)]
-    [InlineData(ErrorDetailsErrorCode.ToolReferenceUnresolved)]
-    [InlineData(ErrorDetailsErrorCode.UserProfileRequired)]
-    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable)]
-    [InlineData(ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached)]
-    [InlineData(ErrorDetailsErrorCode.UserProfileBillingNotAuthorized)]
-    [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable)]
-    [InlineData(ErrorDetailsErrorCode.ThreadNotFound)]
-    [InlineData(ErrorDetailsErrorCode.SkillReadBlockedUndecryptable)]
-    [InlineData(ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding)]
-    [InlineData(ErrorDetailsErrorCode.ContractSpendLimitReached)]
-    [InlineData(ErrorDetailsErrorCode.EnforcedSpendLimitReached)]
-    [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]
-    [InlineData(ErrorDetailsErrorCode.CompactionUnavailable)]
-    [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded)]
-    [InlineData(ErrorDetailsErrorCode.FileNotDownloadable)]
-    [InlineData(ErrorDetailsErrorCode.FileExpired)]
-    [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable)]
-    [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted)]
-    [InlineData(ErrorDetailsErrorCode.UserProfileNotFound)]
-    [InlineData(ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy)]
-    [InlineData(ErrorDetailsErrorCode.AlreadyMember)]
-    [InlineData(ErrorDetailsErrorCode.CannotInviteEmailsWithUnverifiedDomains)]
-    [InlineData(ErrorDetailsErrorCode.EmailDomainNotAllowed)]
-    [InlineData(ErrorDetailsErrorCode.InviteAlreadyExists)]
-    [InlineData(ErrorDetailsErrorCode.OrgMemberLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.RbacGroupGrantsOwnerAccess)]
-    [InlineData(ErrorDetailsErrorCode.RbacGroupOwnerAccessUnconfirmed)]
-    [InlineData(ErrorDetailsErrorCode.CannotRemoveLastMember)]
-    [InlineData(ErrorDetailsErrorCode.ConcurrentMembershipChange)]
-    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationFailed)]
-    [InlineData(ErrorDetailsErrorCode.ExternalKeyValidationTimedOut)]
-    [InlineData(ErrorDetailsErrorCode.KeyProfileMismatch)]
-    [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation)]
-    [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged)]
-    [InlineData(ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.OrganizationTypeNotSupported)]
-    [InlineData(ErrorDetailsErrorCode.ParentOrganizationRequired)]
-    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound)]
-    [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled)]
-    [InlineData(ErrorDetailsErrorCode.EnvironmentArchived)]
-    [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange)]
-    [InlineData(ErrorDetailsErrorCode.EnvironmentUpdateDisabled)]
-    [InlineData(ErrorDetailsErrorCode.HeartbeatPreconditionFailed)]
-    [InlineData(ErrorDetailsErrorCode.InvalidMetadata)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf)]
-    [InlineData(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutManagedMember)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutMembershipAdmin)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner)]
-    [InlineData(ErrorDetailsErrorCode.CannotSignOutPrivilegedMember)]
-    [InlineData(ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled)]
-    [InlineData(ErrorDetailsErrorCode.UnsupportedCharset)]
-    [InlineData(ErrorDetailsErrorCode.PluginNameTaken)]
-    [InlineData(ErrorDetailsErrorCode.SkillNameTaken)]
-    [InlineData(ErrorDetailsErrorCode.RegistrationPending)]
-    [InlineData(ErrorDetailsErrorCode.ScanFailed)]
-    [InlineData(ErrorDetailsErrorCode.ScanPending)]
-    [InlineData(ErrorDetailsErrorCode.RequestBodyTimeout)]
-    [InlineData(ErrorDetailsErrorCode.SettingsDocumentLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.SettingsHistoryLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.CmekFeatureUnsupported)]
-    [InlineData(ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound)]
-    [InlineData(ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded)]
-    [InlineData(ErrorDetailsErrorCode.RbacGroupNotFound)]
-    [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused)]
-    [InlineData(ErrorDetailsErrorCode.ApiKeyScopeMissing)]
-    [InlineData(ErrorDetailsErrorCode.ClaudeTagWritesNotEnabled)]
-    [InlineData(ErrorDetailsErrorCode.ComplianceConfigurationRestricted)]
-    [InlineData(ErrorDetailsErrorCode.OrganizationLevelScopedApiKeyRequired)]
-    [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound)]
-    [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound)]
-    [InlineData(ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict)]
-    [InlineData(ErrorDetailsErrorCode.BundleAttachmentNotSupported)]
-    [InlineData(ErrorDetailsErrorCode.BundleOnCall)]
-    public void SerializationRoundtrip_Works(ErrorDetailsErrorCode rawValue)
+    [InlineData(
+        ErrorDetailsErrorCode.AvailableToolsLimitExceeded,
+        0,
+        "available_tools_limit_exceeded"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ClaudeCodeKeyCreatorNotMember,
+        1,
+        "claude_code_key_creator_not_member"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ClaudeCodeVersionTooOld, 2, "claude_code_version_too_old")]
+    [InlineData(ErrorDetailsErrorCode.CmekKeyDisabled, 3, "cmek_key_disabled")]
+    [InlineData(ErrorDetailsErrorCode.CmekKeyNetworkBlocked, 4, "cmek_key_network_blocked")]
+    [InlineData(ErrorDetailsErrorCode.CompactionBlockAmbiguous, 5, "compaction_block_ambiguous")]
+    [InlineData(ErrorDetailsErrorCode.CompactionBlockMisplaced, 6, "compaction_block_misplaced")]
+    [InlineData(ErrorDetailsErrorCode.CompactionContentMismatch, 7, "compaction_content_mismatch")]
+    [InlineData(ErrorDetailsErrorCode.CompactionIncompleteTurn, 8, "compaction_incomplete_turn")]
+    [InlineData(
+        ErrorDetailsErrorCode.CompactionNothingToSummarize,
+        9,
+        "compaction_nothing_to_summarize"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.CompactionSignatureInvalid,
+        10,
+        "compaction_signature_invalid"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.CompactionTooManyToolReferences,
+        11,
+        "compaction_too_many_tool_references"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.CompactionToolChangesMismatch,
+        12,
+        "compaction_tool_changes_mismatch"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ImageDimensionsTooLarge,
+        643211828,
+        "image_dimensions_too_large"
+    )]
+    [InlineData(ErrorDetailsErrorCode.OrganizationOnHold, 13, "organization_on_hold")]
+    [InlineData(
+        ErrorDetailsErrorCode.RequestBodyEncodingInvalid,
+        14,
+        "request_body_encoding_invalid"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.RequestBodyEncodingUnsupported,
+        15,
+        "request_body_encoding_unsupported"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ThreadAlreadyContinued, 16, "thread_already_continued")]
+    [InlineData(ErrorDetailsErrorCode.ThreadContinueInFlight, 17, "thread_continue_in_flight")]
+    [InlineData(ErrorDetailsErrorCode.ThreadFingerprintMismatch, 18, "thread_fingerprint_mismatch")]
+    [InlineData(ErrorDetailsErrorCode.ThreadUnsupportedRequest, 19, "thread_unsupported_request")]
+    [InlineData(ErrorDetailsErrorCode.ToolNameConflict, 20, "tool_name_conflict")]
+    [InlineData(ErrorDetailsErrorCode.ToolReferenceUnresolved, 21, "tool_reference_unresolved")]
+    [InlineData(ErrorDetailsErrorCode.UserProfileRequired, 22, "user_profile_required")]
+    [InlineData(
+        ErrorDetailsErrorCode.LinkedOrganizationBillingUnavailable,
+        23,
+        "linked_organization_billing_unavailable"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.LinkedOrganizationSpendLimitReached,
+        24,
+        "linked_organization_spend_limit_reached"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.UserProfileBillingNotAuthorized,
+        25,
+        "user_profile_billing_not_authorized"
+    )]
+    [InlineData(ErrorDetailsErrorCode.UserProfileNotBillable, 26, "user_profile_not_billable")]
+    [InlineData(ErrorDetailsErrorCode.ThreadNotFound, 27, "thread_not_found")]
+    [InlineData(
+        ErrorDetailsErrorCode.SkillReadBlockedUndecryptable,
+        28,
+        "skill_read_blocked_undecryptable"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.RequestBodyTooLargeAfterDecoding,
+        29,
+        "request_body_too_large_after_decoding"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ContractSpendLimitReached,
+        30,
+        "contract_spend_limit_reached"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.EnforcedSpendLimitReached,
+        31,
+        "enforced_spend_limit_reached"
+    )]
+    [InlineData(ErrorDetailsErrorCode.RampLimitExceeded, 32, "ramp_limit_exceeded")]
+    [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable, 33, "cmek_key_unreachable")]
+    [InlineData(ErrorDetailsErrorCode.CompactionUnavailable, 34, "compaction_unavailable")]
+    [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded, 35, "storage_quota_exceeded")]
+    [InlineData(ErrorDetailsErrorCode.FileNotDownloadable, 36, "file_not_downloadable")]
+    [InlineData(ErrorDetailsErrorCode.FileExpired, 37, "file_expired")]
+    [InlineData(ErrorDetailsErrorCode.CmekContextUnavailable, 38, "cmek_context_unavailable")]
+    [InlineData(ErrorDetailsErrorCode.OrgApiKeyLimitExceeded, 39, "org_api_key_limit_exceeded")]
+    [InlineData(
+        ErrorDetailsErrorCode.WorkspaceApiKeyLimitExceeded,
+        40,
+        "workspace_api_key_limit_exceeded"
+    )]
+    [InlineData(ErrorDetailsErrorCode.SandboxEgressRestricted, 41, "sandbox_egress_restricted")]
+    [InlineData(ErrorDetailsErrorCode.UserProfileNotFound, 42, "user_profile_not_found")]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalKeyInWorkspacePolicy,
+        43,
+        "external_key_in_workspace_policy"
+    )]
+    [InlineData(ErrorDetailsErrorCode.AlreadyMember, 44, "already_member")]
+    [InlineData(
+        ErrorDetailsErrorCode.CannotInviteEmailsWithUnverifiedDomains,
+        45,
+        "cannot_invite_emails_with_unverified_domains"
+    )]
+    [InlineData(ErrorDetailsErrorCode.EmailDomainNotAllowed, 46, "email_domain_not_allowed")]
+    [InlineData(ErrorDetailsErrorCode.InviteAlreadyExists, 47, "invite_already_exists")]
+    [InlineData(ErrorDetailsErrorCode.OrgMemberLimitExceeded, 48, "org_member_limit_exceeded")]
+    [InlineData(
+        ErrorDetailsErrorCode.RbacGroupGrantsOwnerAccess,
+        49,
+        "rbac_group_grants_owner_access"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.RbacGroupOwnerAccessUnconfirmed,
+        50,
+        "rbac_group_owner_access_unconfirmed"
+    )]
+    [InlineData(ErrorDetailsErrorCode.CannotRemoveLastMember, 51, "cannot_remove_last_member")]
+    [InlineData(
+        ErrorDetailsErrorCode.ConcurrentMembershipChange,
+        52,
+        "concurrent_membership_change"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalKeyValidationFailed,
+        53,
+        "external_key_validation_failed"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalKeyValidationTimedOut,
+        54,
+        "external_key_validation_timed_out"
+    )]
+    [InlineData(ErrorDetailsErrorCode.KeyProfileMismatch, 55, "key_profile_mismatch")]
+    [InlineData(ErrorDetailsErrorCode.WorkspacePolicyViolation, 56, "workspace_policy_violation")]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyChanged, 57, "external_key_changed")]
+    [InlineData(
+        ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
+        58,
+        "workspace_member_limit_exceeded"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.OrganizationTypeNotSupported,
+        59,
+        "organization_type_not_supported"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ParentOrganizationRequired,
+        60,
+        "parent_organization_required"
+    )]
+    [InlineData(ErrorDetailsErrorCode.RbacRoleNotFound, 61, "rbac_role_not_found")]
+    [InlineData(ErrorDetailsErrorCode.EnvironmentCreateDisabled, 62, "environment_create_disabled")]
+    [InlineData(ErrorDetailsErrorCode.EnvironmentArchived, 63, "environment_archived")]
+    [InlineData(ErrorDetailsErrorCode.InvalidConfigTypeChange, 64, "invalid_config_type_change")]
+    [InlineData(ErrorDetailsErrorCode.EnvironmentUpdateDisabled, 65, "environment_update_disabled")]
+    [InlineData(
+        ErrorDetailsErrorCode.HeartbeatPreconditionFailed,
+        66,
+        "heartbeat_precondition_failed"
+    )]
+    [InlineData(ErrorDetailsErrorCode.InvalidMetadata, 67, "invalid_metadata")]
+    [InlineData(
+        ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
+        68,
+        "cannot_sign_out_primary_owner"
+    )]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf, 69, "cannot_sign_out_self")]
+    [InlineData(
+        ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta,
+        70,
+        "organization_not_enrolled_in_beta"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.CannotSignOutManagedMember,
+        71,
+        "cannot_sign_out_managed_member"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.CannotSignOutMembershipAdmin,
+        72,
+        "cannot_sign_out_membership_admin"
+    )]
+    [InlineData(ErrorDetailsErrorCode.CannotSignOutOwner, 73, "cannot_sign_out_owner")]
+    [InlineData(
+        ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
+        74,
+        "cannot_sign_out_privileged_member"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
+        75,
+        "spend_limits_admin_api_writes_not_enabled"
+    )]
+    [InlineData(ErrorDetailsErrorCode.UnsupportedCharset, 76, "unsupported_charset")]
+    [InlineData(ErrorDetailsErrorCode.PluginNameTaken, 77, "plugin_name_taken")]
+    [InlineData(ErrorDetailsErrorCode.SkillNameTaken, 78, "skill_name_taken")]
+    [InlineData(ErrorDetailsErrorCode.RegistrationPending, 79, "registration_pending")]
+    [InlineData(ErrorDetailsErrorCode.ScanFailed, 80, "scan_failed")]
+    [InlineData(ErrorDetailsErrorCode.ScanPending, 81, "scan_pending")]
+    [InlineData(ErrorDetailsErrorCode.RequestBodyTimeout, 82, "request_body_timeout")]
+    [InlineData(
+        ErrorDetailsErrorCode.SettingsDocumentLimitExceeded,
+        83,
+        "settings_document_limit_exceeded"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.SettingsHistoryLimitExceeded,
+        84,
+        "settings_history_limit_exceeded"
+    )]
+    [InlineData(ErrorDetailsErrorCode.CmekFeatureUnsupported, 85, "cmek_feature_unsupported")]
+    [InlineData(
+        ErrorDetailsErrorCode.RbacGroupManagedSettingsNotFound,
+        86,
+        "rbac_group_managed_settings_not_found"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.RbacGroupOrderLimitExceeded,
+        87,
+        "rbac_group_order_limit_exceeded"
+    )]
+    [InlineData(ErrorDetailsErrorCode.RbacGroupNotFound, 88, "rbac_group_not_found")]
+    [InlineData(
+        ErrorDetailsErrorCode.SlackChannelSetUpSettingsRefused,
+        89,
+        "slack_channel_set_up_settings_refused"
+    )]
+    [InlineData(ErrorDetailsErrorCode.ApiKeyScopeMissing, 90, "api_key_scope_missing")]
+    [InlineData(
+        ErrorDetailsErrorCode.ClaudeTagWritesNotEnabled,
+        91,
+        "claude_tag_writes_not_enabled"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.ComplianceConfigurationRestricted,
+        92,
+        "compliance_configuration_restricted"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.OrganizationLevelScopedApiKeyRequired,
+        93,
+        "organization_level_scoped_api_key_required"
+    )]
+    [InlineData(ErrorDetailsErrorCode.EnvironmentNotFound, 94, "environment_not_found")]
+    [InlineData(
+        ErrorDetailsErrorCode.SlackChannelSetUpEnvironmentNotFound,
+        95,
+        "slack_channel_set_up_environment_not_found"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.SlackChannelSetUpSettingsConflict,
+        96,
+        "slack_channel_set_up_settings_conflict"
+    )]
+    [InlineData(
+        ErrorDetailsErrorCode.BundleAttachmentNotSupported,
+        97,
+        "bundle_attachment_not_supported"
+    )]
+    [InlineData(ErrorDetailsErrorCode.BundleOnCall, 98, "bundle_on_call")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ErrorDetailsErrorCode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ErrorDetailsErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorDetailsErrorCode>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

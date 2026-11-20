@@ -147,20 +147,28 @@ public class OversizedImageTest : TestBase
     }
 
     [Theory]
-    [InlineData(OversizedImage.Downsize)]
-    [InlineData(OversizedImage.Error)]
-    public void SerializationRoundtrip_Works(OversizedImage rawValue)
+    [InlineData(OversizedImage.Downsize, 0, "downsize")]
+    [InlineData(OversizedImage.Error, 1, "error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        OversizedImage rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, OversizedImage> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OversizedImage>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

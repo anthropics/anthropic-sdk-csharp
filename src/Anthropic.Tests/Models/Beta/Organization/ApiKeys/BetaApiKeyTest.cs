@@ -294,20 +294,28 @@ public class PrincipalTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ApiKeys::PrincipalType.UserActor)]
-    [InlineData(ApiKeys::PrincipalType.ServiceAccountActor)]
-    public void SerializationRoundtrip_Works(ApiKeys::PrincipalType rawValue)
+    [InlineData(ApiKeys::PrincipalType.UserActor, 0, "user_actor")]
+    [InlineData(ApiKeys::PrincipalType.ServiceAccountActor, 1, "service_account_actor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ApiKeys::PrincipalType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ApiKeys::PrincipalType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::PrincipalType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -438,20 +446,28 @@ public class ScopeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ApiKeys::ScopeType.Organization)]
-    [InlineData(ApiKeys::ScopeType.Workspace)]
-    public void SerializationRoundtrip_Works(ApiKeys::ScopeType rawValue)
+    [InlineData(ApiKeys::ScopeType.Organization, 0, "organization")]
+    [InlineData(ApiKeys::ScopeType.Workspace, 1, "workspace")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ApiKeys::ScopeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ApiKeys::ScopeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::ScopeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -498,22 +514,30 @@ public class BetaApiKeyStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(ApiKeys::BetaApiKeyStatus.Active)]
-    [InlineData(ApiKeys::BetaApiKeyStatus.Archived)]
-    [InlineData(ApiKeys::BetaApiKeyStatus.Expired)]
-    [InlineData(ApiKeys::BetaApiKeyStatus.Inactive)]
-    public void SerializationRoundtrip_Works(ApiKeys::BetaApiKeyStatus rawValue)
+    [InlineData(ApiKeys::BetaApiKeyStatus.Active, 0, "active")]
+    [InlineData(ApiKeys::BetaApiKeyStatus.Archived, 1, "archived")]
+    [InlineData(ApiKeys::BetaApiKeyStatus.Expired, 2, "expired")]
+    [InlineData(ApiKeys::BetaApiKeyStatus.Inactive, 3, "inactive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ApiKeys::BetaApiKeyStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ApiKeys::BetaApiKeyStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ApiKeys::BetaApiKeyStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

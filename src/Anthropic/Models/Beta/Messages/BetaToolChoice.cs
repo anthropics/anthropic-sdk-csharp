@@ -453,10 +453,10 @@ sealed class BetaToolChoiceConverter : JsonConverter<BetaToolChoice>
 [JsonConverter(typeof(BetaToolChoiceTypeConverter))]
 public enum BetaToolChoiceType
 {
-    Auto,
-    Any,
-    Tool,
-    None,
+    Auto = 0,
+    Any = 1,
+    Tool = 2,
+    None = 3,
 }
 
 sealed class BetaToolChoiceTypeConverter : JsonConverter<BetaToolChoiceType>

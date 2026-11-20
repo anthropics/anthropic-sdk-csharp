@@ -356,20 +356,28 @@ public class BetaImageBlockParamSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaImageBlockParamSourceType.Base64)]
-    [InlineData(BetaImageBlockParamSourceType.Url)]
-    [InlineData(BetaImageBlockParamSourceType.File)]
-    public void SerializationRoundtrip_Works(BetaImageBlockParamSourceType rawValue)
+    [InlineData(BetaImageBlockParamSourceType.Base64, 0, "base64")]
+    [InlineData(BetaImageBlockParamSourceType.Url, 1, "url")]
+    [InlineData(BetaImageBlockParamSourceType.File, 2, "file")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaImageBlockParamSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaImageBlockParamSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaImageBlockParamSourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

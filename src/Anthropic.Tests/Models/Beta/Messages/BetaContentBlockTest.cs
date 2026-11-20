@@ -975,36 +975,52 @@ public class BetaContentBlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaContentBlockType.Text)]
-    [InlineData(BetaContentBlockType.Thinking)]
-    [InlineData(BetaContentBlockType.RedactedThinking)]
-    [InlineData(BetaContentBlockType.ToolUse)]
-    [InlineData(BetaContentBlockType.ServerToolUse)]
-    [InlineData(BetaContentBlockType.WebSearchToolResult)]
-    [InlineData(BetaContentBlockType.WebFetchToolResult)]
-    [InlineData(BetaContentBlockType.AdvisorToolResult)]
-    [InlineData(BetaContentBlockType.CodeExecutionToolResult)]
-    [InlineData(BetaContentBlockType.BashCodeExecutionToolResult)]
-    [InlineData(BetaContentBlockType.TextEditorCodeExecutionToolResult)]
-    [InlineData(BetaContentBlockType.ToolSearchToolResult)]
-    [InlineData(BetaContentBlockType.McpToolUse)]
-    [InlineData(BetaContentBlockType.McpToolResult)]
-    [InlineData(BetaContentBlockType.ContainerUpload)]
-    [InlineData(BetaContentBlockType.Compaction)]
-    [InlineData(BetaContentBlockType.Fallback)]
-    [InlineData(BetaContentBlockType.McpToolListing)]
-    public void SerializationRoundtrip_Works(BetaContentBlockType rawValue)
+    [InlineData(BetaContentBlockType.Text, 0, "text")]
+    [InlineData(BetaContentBlockType.Thinking, 1, "thinking")]
+    [InlineData(BetaContentBlockType.RedactedThinking, 2, "redacted_thinking")]
+    [InlineData(BetaContentBlockType.ToolUse, 3, "tool_use")]
+    [InlineData(BetaContentBlockType.ServerToolUse, 4, "server_tool_use")]
+    [InlineData(BetaContentBlockType.WebSearchToolResult, 5, "web_search_tool_result")]
+    [InlineData(BetaContentBlockType.WebFetchToolResult, 6, "web_fetch_tool_result")]
+    [InlineData(BetaContentBlockType.AdvisorToolResult, 7, "advisor_tool_result")]
+    [InlineData(BetaContentBlockType.CodeExecutionToolResult, 8, "code_execution_tool_result")]
+    [InlineData(
+        BetaContentBlockType.BashCodeExecutionToolResult,
+        9,
+        "bash_code_execution_tool_result"
+    )]
+    [InlineData(
+        BetaContentBlockType.TextEditorCodeExecutionToolResult,
+        10,
+        "text_editor_code_execution_tool_result"
+    )]
+    [InlineData(BetaContentBlockType.ToolSearchToolResult, 11, "tool_search_tool_result")]
+    [InlineData(BetaContentBlockType.McpToolUse, 12, "mcp_tool_use")]
+    [InlineData(BetaContentBlockType.McpToolResult, 13, "mcp_tool_result")]
+    [InlineData(BetaContentBlockType.ContainerUpload, 14, "container_upload")]
+    [InlineData(BetaContentBlockType.Compaction, 15, "compaction")]
+    [InlineData(BetaContentBlockType.Fallback, 16, "fallback")]
+    [InlineData(BetaContentBlockType.McpToolListing, 17, "mcp_tool_listing")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaContentBlockType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaContentBlockType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaContentBlockType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -488,8 +488,8 @@ class BetaDataResidencyCreateConfigAllowedInferenceGeosUnrestrictedConverter
 [JsonConverter(typeof(BetaDataResidencyCreateConfigDefaultInferenceGeoConverter))]
 public enum BetaDataResidencyCreateConfigDefaultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaDataResidencyCreateConfigDefaultInferenceGeoConverter
@@ -537,7 +537,7 @@ sealed class BetaDataResidencyCreateConfigDefaultInferenceGeoConverter
 [JsonConverter(typeof(BetaDataResidencyCreateConfigWorkspaceGeoConverter))]
 public enum BetaDataResidencyCreateConfigWorkspaceGeo
 {
-    Us,
+    Us = 0,
 }
 
 sealed class BetaDataResidencyCreateConfigWorkspaceGeoConverter

@@ -560,8 +560,8 @@ sealed class CreatedByConverter : JsonConverter<CreatedBy?>
 [JsonConverter(typeof(CreatedByTypeConverter))]
 public enum CreatedByType
 {
-    UserActor,
-    ApiActor,
+    UserActor = 0,
+    ApiActor = 1,
 }
 
 sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
@@ -608,9 +608,9 @@ sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
 [JsonConverter(typeof(ReachConverter))]
 public enum Reach
 {
-    Contained,
-    Privileged,
-    Remote,
+    Contained = 0,
+    Privileged = 1,
+    Remote = 2,
 }
 
 sealed class ReachConverter : JsonConverter<Reach>

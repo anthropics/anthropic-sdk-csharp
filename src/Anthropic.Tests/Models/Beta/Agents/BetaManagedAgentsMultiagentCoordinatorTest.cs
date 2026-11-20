@@ -255,20 +255,28 @@ public class AgentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(AgentType.Agent)]
-    [InlineData(AgentType.Advisor)]
-    public void SerializationRoundtrip_Works(AgentType rawValue)
+    [InlineData(AgentType.Agent, 0, "agent")]
+    [InlineData(AgentType.Advisor, 1, "advisor")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        AgentType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, AgentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, AgentType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

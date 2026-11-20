@@ -118,21 +118,27 @@ public class BetaManagedAgentsWebFetchUrlSourceUserInputTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.All)]
-    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.None)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsWebFetchUrlSourceUserInputType rawValue
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.All, 0, "all")]
+    [InlineData(BetaManagedAgentsWebFetchUrlSourceUserInputType.None, 1, "none")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWebFetchUrlSourceUserInputType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWebFetchUrlSourceUserInputType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

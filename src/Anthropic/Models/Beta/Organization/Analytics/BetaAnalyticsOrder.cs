@@ -13,8 +13,8 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsOrderConverter))]
 public enum BetaAnalyticsOrder
 {
-    Asc,
-    Desc,
+    Asc = 0,
+    Desc = 1,
 }
 
 sealed class BetaAnalyticsOrderConverter : JsonConverter<BetaAnalyticsOrder>

@@ -152,9 +152,9 @@ class BetaTextEditorCodeExecutionViewResultBlockParamFromRaw
 [JsonConverter(typeof(BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter))]
 public enum BetaTextEditorCodeExecutionViewResultBlockParamFileType
 {
-    Text,
-    Image,
-    Pdf,
+    Text = 0,
+    Image = 1,
+    Pdf = 2,
 }
 
 sealed class BetaTextEditorCodeExecutionViewResultBlockParamFileTypeConverter

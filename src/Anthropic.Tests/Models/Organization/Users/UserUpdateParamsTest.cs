@@ -74,23 +74,27 @@ public class RoleTest : TestBase
     }
 
     [Theory]
-    [InlineData(Role.Billing)]
-    [InlineData(Role.ClaudeCodeUser)]
-    [InlineData(Role.Developer)]
-    [InlineData(Role.Managed)]
-    [InlineData(Role.User)]
-    public void SerializationRoundtrip_Works(Role rawValue)
+    [InlineData(Role.Billing, 0, "billing")]
+    [InlineData(Role.ClaudeCodeUser, 1, "claude_code_user")]
+    [InlineData(Role.Developer, 2, "developer")]
+    [InlineData(Role.Managed, 3, "managed")]
+    [InlineData(Role.User, 4, "user")]
+    public void EnumMemberSerializationRoundtrip_Works(Role rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Role> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Role>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -809,16 +809,16 @@ sealed class BetaDreamingErrorConverter : JsonConverter<BetaDreamingError>
 [JsonConverter(typeof(BetaDreamingErrorTypeConverter))]
 public enum BetaDreamingErrorType
 {
-    InvalidRequestError,
-    AuthenticationError,
-    BillingError,
-    PermissionError,
-    NotFoundError,
-    RateLimitError,
-    TimeoutError,
-    ApiError,
-    OverloadedError,
-    ConflictError,
+    InvalidRequestError = 0,
+    AuthenticationError = 1,
+    BillingError = 2,
+    PermissionError = 3,
+    NotFoundError = 4,
+    RateLimitError = 5,
+    TimeoutError = 6,
+    ApiError = 7,
+    OverloadedError = 8,
+    ConflictError = 9,
 }
 
 sealed class BetaDreamingErrorTypeConverter : JsonConverter<BetaDreamingErrorType>

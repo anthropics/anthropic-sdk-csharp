@@ -340,12 +340,12 @@ public enum AccessType
     /// The user profile represents an individual end-user of a product that the
     /// platform builds on the API. New profiles get this value by default.
     /// </summary>
-    Application,
+    Application = 0,
 
     /// <summary>
     /// The user profile represents a company that the platform resells Claude access to.
     /// </summary>
-    Passthrough,
+    Passthrough = 1,
 }
 
 sealed class AccessTypeConverter : JsonConverter<AccessType>

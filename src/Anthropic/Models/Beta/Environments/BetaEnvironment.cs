@@ -526,8 +526,8 @@ sealed class BetaEnvironmentConfigConverter : JsonConverter<BetaEnvironmentConfi
 [JsonConverter(typeof(BetaEnvironmentConfigTypeConverter))]
 public enum BetaEnvironmentConfigType
 {
-    Cloud,
-    SelfHosted,
+    Cloud = 0,
+    SelfHosted = 1,
 }
 
 sealed class BetaEnvironmentConfigTypeConverter : JsonConverter<BetaEnvironmentConfigType>
@@ -574,8 +574,8 @@ sealed class BetaEnvironmentConfigTypeConverter : JsonConverter<BetaEnvironmentC
 [JsonConverter(typeof(BetaEnvironmentScopeConverter))]
 public enum BetaEnvironmentScope
 {
-    Organization,
-    Account,
+    Organization = 0,
+    Account = 1,
 }
 
 sealed class BetaEnvironmentScopeConverter : JsonConverter<BetaEnvironmentScope>

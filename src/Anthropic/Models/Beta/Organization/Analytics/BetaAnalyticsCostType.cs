@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsCostTypeConverter))]
 public enum BetaAnalyticsCostType
 {
-    CodeExecution,
-    Tokens,
-    WebSearch,
+    CodeExecution = 0,
+    Tokens = 1,
+    WebSearch = 2,
 }
 
 sealed class BetaAnalyticsCostTypeConverter : JsonConverter<BetaAnalyticsCostType>

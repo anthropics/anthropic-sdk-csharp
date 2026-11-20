@@ -529,9 +529,9 @@ sealed class BetaManagedAgentsToolUseLimitReachedErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsToolUseLimitReachedErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsToolUseLimitReachedErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsToolUseLimitReachedErrorRetryStatusTypeConverter

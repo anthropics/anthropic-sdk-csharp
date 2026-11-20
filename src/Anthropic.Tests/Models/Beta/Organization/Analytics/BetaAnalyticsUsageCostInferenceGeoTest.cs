@@ -30,19 +30,27 @@ public class BetaAnalyticsUsageCostInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageCostInferenceGeo.Global)]
-    [InlineData(BetaAnalyticsUsageCostInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageCostInferenceGeo rawValue)
+    [InlineData(BetaAnalyticsUsageCostInferenceGeo.Global, 0, "global")]
+    [InlineData(BetaAnalyticsUsageCostInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageCostInferenceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageCostInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsUsageCostInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -328,8 +328,8 @@ sealed class BetaManagedAgentsTriggerContextConverter
 [JsonConverter(typeof(BetaManagedAgentsTriggerContextTypeConverter))]
 public enum BetaManagedAgentsTriggerContextType
 {
-    Schedule,
-    Manual,
+    Schedule = 0,
+    Manual = 1,
 }
 
 sealed class BetaManagedAgentsTriggerContextTypeConverter

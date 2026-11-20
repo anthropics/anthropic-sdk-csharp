@@ -338,8 +338,8 @@ sealed class MessageBetaContentBlockSourceContentConverter
 [JsonConverter(typeof(MessageBetaContentBlockSourceContentTypeConverter))]
 public enum MessageBetaContentBlockSourceContentType
 {
-    Text,
-    Image,
+    Text = 0,
+    Image = 1,
 }
 
 sealed class MessageBetaContentBlockSourceContentTypeConverter

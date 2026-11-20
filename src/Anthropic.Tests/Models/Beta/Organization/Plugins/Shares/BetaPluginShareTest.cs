@@ -230,21 +230,29 @@ public class TargetTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(TargetTypeValue.Organization)]
-    [InlineData(TargetTypeValue.RbacGroup)]
-    [InlineData(TargetTypeValue.OrganizationMember)]
-    public void SerializationRoundtrip_Works(TargetTypeValue rawValue)
+    [InlineData(TargetTypeValue.Organization, 0, "organization")]
+    [InlineData(TargetTypeValue.RbacGroup, 1, "rbac_group")]
+    [InlineData(TargetTypeValue.OrganizationMember, 2, "organization_member")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        TargetTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, TargetTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TargetTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

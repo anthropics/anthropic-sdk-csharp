@@ -94,11 +94,11 @@ class BetaSystemMessageOutputConfigFromRaw : IFromRawJson<BetaSystemMessageOutpu
 [JsonConverter(typeof(BetaSystemMessageOutputConfigEffortConverter))]
 public enum BetaSystemMessageOutputConfigEffort
 {
-    Low,
-    Medium,
-    High,
-    Xhigh,
-    Max,
+    Low = 0,
+    Medium = 1,
+    High = 2,
+    Xhigh = 3,
+    Max = 4,
 }
 
 sealed class BetaSystemMessageOutputConfigEffortConverter

@@ -495,9 +495,9 @@ sealed class CallerConverter : JsonConverter<Caller>
 [JsonConverter(typeof(CallerTypeConverter))]
 public enum CallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class CallerTypeConverter : JsonConverter<CallerType>
@@ -542,13 +542,13 @@ sealed class CallerTypeConverter : JsonConverter<CallerType>
 [JsonConverter(typeof(NameConverter))]
 public enum Name
 {
-    WebSearch,
-    WebFetch,
-    CodeExecution,
-    BashCodeExecution,
-    TextEditorCodeExecution,
-    ToolSearchToolRegex,
-    ToolSearchToolBm25,
+    WebSearch = 0,
+    WebFetch = 1,
+    CodeExecution = 2,
+    BashCodeExecution = 3,
+    TextEditorCodeExecution = 4,
+    ToolSearchToolRegex = 5,
+    ToolSearchToolBm25 = 6,
 }
 
 sealed class NameConverter : JsonConverter<Name>

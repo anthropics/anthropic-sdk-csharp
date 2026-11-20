@@ -130,8 +130,8 @@ class ThinkingConfigEnabledFromRaw : IFromRawJson<ThinkingConfigEnabled>
 [JsonConverter(typeof(ThinkingConfigEnabledDisplayConverter))]
 public enum ThinkingConfigEnabledDisplay
 {
-    Summarized,
-    Omitted,
+    Summarized = 0,
+    Omitted = 1,
 }
 
 sealed class ThinkingConfigEnabledDisplayConverter : JsonConverter<ThinkingConfigEnabledDisplay>

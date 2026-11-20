@@ -139,18 +139,18 @@ class BetaFallbackCreditNotAppliedFromRaw : IFromRawJson<BetaFallbackCreditNotAp
 [JsonConverter(typeof(ReasonConverter))]
 public enum Reason
 {
-    BodyMismatch,
-    ContinuationExcluded,
-    ContinuationOnly,
-    Expired,
-    InvalidTargetModel,
-    NotEnabled,
-    RepriceUnavailable,
-    TemporarilyUnavailable,
-    VariantFieldsPresent,
-    WrongOrganization,
-    WrongPlatform,
-    WrongWorkspace,
+    BodyMismatch = 0,
+    ContinuationExcluded = 1,
+    ContinuationOnly = 2,
+    Expired = 3,
+    InvalidTargetModel = 4,
+    NotEnabled = 5,
+    RepriceUnavailable = 6,
+    TemporarilyUnavailable = 7,
+    VariantFieldsPresent = 8,
+    WrongOrganization = 9,
+    WrongPlatform = 10,
+    WrongWorkspace = 11,
 }
 
 sealed class ReasonConverter : JsonConverter<Reason>

@@ -164,19 +164,27 @@ public class BetaManagedAgentsMemoryListItemTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMemoryListItemType.Memory)]
-    [InlineData(BetaManagedAgentsMemoryListItemType.MemoryPrefix)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsMemoryListItemType rawValue)
+    [InlineData(BetaManagedAgentsMemoryListItemType.Memory, 0, "memory")]
+    [InlineData(BetaManagedAgentsMemoryListItemType.MemoryPrefix, 1, "memory_prefix")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMemoryListItemType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMemoryListItemType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMemoryListItemType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

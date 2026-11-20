@@ -17,15 +17,15 @@ namespace Anthropic.Models.Organization.Workspaces.RateLimits;
 [JsonConverter(typeof(WorkspaceRateLimitTypeConverter))]
 public enum WorkspaceRateLimitType
 {
-    FastItpmca,
-    FastOtpm,
-    InputTokensPerMinute,
-    InputTokensPerMinuteCacheAware,
-    OutputTokensPerMinute,
-    RequestsPerMinute,
-    TokensPerDay,
-    TokensPerMinute,
-    ToolUsesPerSecond,
+    FastItpmca = 0,
+    FastOtpm = 1,
+    InputTokensPerMinute = 2,
+    InputTokensPerMinuteCacheAware = 3,
+    OutputTokensPerMinute = 4,
+    RequestsPerMinute = 5,
+    TokensPerDay = 6,
+    TokensPerMinute = 7,
+    ToolUsesPerSecond = 8,
 }
 
 sealed class WorkspaceRateLimitTypeConverter : JsonConverter<WorkspaceRateLimitType>

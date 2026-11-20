@@ -22,19 +22,19 @@ public enum BetaDreamStatus
     ///
     /// <para>`outputs` is empty and every `usage` count is zero.</para>
     /// </summary>
-    Pending,
+    Pending = 0,
 
     /// <summary>
     /// The dream is reading its inputs and writing its result.
     ///
     /// <para>`usage` updates while the dream has this status.</para>
     /// </summary>
-    Running,
+    Running = 1,
 
     /// <summary>
     /// The dream finished and its output memory store holds the complete result.
     /// </summary>
-    Completed,
+    Completed = 2,
 
     /// <summary>
     /// The dream stopped with an error, which `error` describes.
@@ -42,7 +42,7 @@ public enum BetaDreamStatus
     /// <para>If `outputs` references a memory store, that memory store keeps what
     /// the dream wrote before it stopped.</para>
     /// </summary>
-    Failed,
+    Failed = 3,
 
     /// <summary>
     /// A cancel request stopped the dream before it reached `completed` or `failed`.
@@ -50,7 +50,7 @@ public enum BetaDreamStatus
     /// <para>If `outputs` references a memory store, that memory store keeps what
     /// the dream wrote. `usage` can keep changing after the cancel.</para>
     /// </summary>
-    Canceled,
+    Canceled = 4,
 }
 
 sealed class BetaDreamStatusConverter : JsonConverter<BetaDreamStatus>

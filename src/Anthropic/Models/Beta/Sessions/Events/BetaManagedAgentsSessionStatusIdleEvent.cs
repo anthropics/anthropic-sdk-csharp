@@ -653,11 +653,11 @@ sealed class StopReasonConverter : JsonConverter<StopReason>
 [JsonConverter(typeof(StopReasonTypeConverter))]
 public enum StopReasonType
 {
-    EndTurn,
-    RequiresAction,
-    RetriesExhausted,
-    BudgetReached,
-    Refusal,
+    EndTurn = 0,
+    RequiresAction = 1,
+    RetriesExhausted = 2,
+    BudgetReached = 3,
+    Refusal = 4,
 }
 
 sealed class StopReasonTypeConverter : JsonConverter<StopReasonType>

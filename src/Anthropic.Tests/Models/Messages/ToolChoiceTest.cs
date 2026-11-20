@@ -184,22 +184,30 @@ public class ToolChoiceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolChoiceType.Auto)]
-    [InlineData(ToolChoiceType.Any)]
-    [InlineData(ToolChoiceType.Tool)]
-    [InlineData(ToolChoiceType.None)]
-    public void SerializationRoundtrip_Works(ToolChoiceType rawValue)
+    [InlineData(ToolChoiceType.Auto, 0, "auto")]
+    [InlineData(ToolChoiceType.Any, 1, "any")]
+    [InlineData(ToolChoiceType.Tool, 2, "tool")]
+    [InlineData(ToolChoiceType.None, 3, "none")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolChoiceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolChoiceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChoiceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

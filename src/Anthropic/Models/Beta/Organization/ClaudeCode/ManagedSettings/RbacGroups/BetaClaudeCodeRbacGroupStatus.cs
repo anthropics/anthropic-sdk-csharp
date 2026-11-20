@@ -389,9 +389,9 @@ sealed class BetaClaudeCodeRbacGroupStatusConverter : JsonConverter<BetaClaudeCo
 [JsonConverter(typeof(BetaClaudeCodeRbacGroupStatusTypeConverter))]
 public enum BetaClaudeCodeRbacGroupStatusType
 {
-    Active,
-    Deleted,
-    Unknown,
+    Active = 0,
+    Deleted = 1,
+    Unknown = 2,
 }
 
 sealed class BetaClaudeCodeRbacGroupStatusTypeConverter

@@ -330,8 +330,8 @@ sealed class BetaManagedAgentsMultiagentAdvisorConverter
 [JsonConverter(typeof(BetaManagedAgentsMultiagentAdvisorTypeConverter))]
 public enum BetaManagedAgentsMultiagentAdvisorType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaManagedAgentsMultiagentAdvisorTypeConverter

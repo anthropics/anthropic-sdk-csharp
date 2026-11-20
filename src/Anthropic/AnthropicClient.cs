@@ -607,13 +607,20 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         {
             foreach (var header in extraHeaders)
             {
-                // Per-request params may already carry this single-valued header; appending
+                // Per-request params may already carry these single-valued headers; appending
                 // a second value would put "a, b" on the wire.
                 if (
-                    string.Equals(
-                        header.Key,
-                        "anthropic-workspace-id",
-                        StringComparison.OrdinalIgnoreCase
+                    (
+                        string.Equals(
+                            header.Key,
+                            "anthropic-workspace-id",
+                            StringComparison.OrdinalIgnoreCase
+                        )
+                        || string.Equals(
+                            header.Key,
+                            "anthropic-user-profile-id",
+                            StringComparison.OrdinalIgnoreCase
+                        )
                     ) && requestMessage.Headers.Contains(header.Key)
                 )
                 {

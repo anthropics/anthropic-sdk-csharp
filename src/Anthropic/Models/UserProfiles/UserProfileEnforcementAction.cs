@@ -402,8 +402,8 @@ sealed class UserProfileEnforcementActionConverter : JsonConverter<UserProfileEn
 [JsonConverter(typeof(UserProfileEnforcementActionTypeConverter))]
 public enum UserProfileEnforcementActionType
 {
-    Restriction,
-    Ban,
+    Restriction = 0,
+    Ban = 1,
 }
 
 sealed class UserProfileEnforcementActionTypeConverter

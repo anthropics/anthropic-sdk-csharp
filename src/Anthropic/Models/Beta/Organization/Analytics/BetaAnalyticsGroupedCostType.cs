@@ -8,10 +8,10 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsGroupedCostTypeConverter))]
 public enum BetaAnalyticsGroupedCostType
 {
-    CodeExecution,
-    SessionUsage,
-    Tokens,
-    WebSearch,
+    CodeExecution = 0,
+    SessionUsage = 1,
+    Tokens = 2,
+    WebSearch = 3,
 }
 
 sealed class BetaAnalyticsGroupedCostTypeConverter : JsonConverter<BetaAnalyticsGroupedCostType>

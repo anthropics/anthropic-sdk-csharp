@@ -121,19 +121,27 @@ public class BetaManagedAgentsExecutionIdentityParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsExecutionIdentityParamsType.AwsRole)]
-    [InlineData(BetaManagedAgentsExecutionIdentityParamsType.ServiceAccount)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsExecutionIdentityParamsType rawValue)
+    [InlineData(BetaManagedAgentsExecutionIdentityParamsType.AwsRole, 0, "aws_role")]
+    [InlineData(BetaManagedAgentsExecutionIdentityParamsType.ServiceAccount, 1, "service_account")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsExecutionIdentityParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsExecutionIdentityParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsExecutionIdentityParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

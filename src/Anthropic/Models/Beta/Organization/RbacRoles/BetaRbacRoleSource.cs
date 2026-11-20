@@ -310,8 +310,8 @@ sealed class BetaRbacRoleSourceConverter : JsonConverter<BetaRbacRoleSource>
 [JsonConverter(typeof(BetaRbacRoleSourceTypeConverter))]
 public enum BetaRbacRoleSourceType
 {
-    BuiltIn,
-    Custom,
+    BuiltIn = 0,
+    Custom = 1,
 }
 
 sealed class BetaRbacRoleSourceTypeConverter : JsonConverter<BetaRbacRoleSourceType>

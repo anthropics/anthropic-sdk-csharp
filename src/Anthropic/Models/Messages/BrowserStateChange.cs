@@ -479,10 +479,10 @@ sealed class BrowserStateChangeConverter : JsonConverter<BrowserStateChange>
 [JsonConverter(typeof(BrowserStateChangeTypeConverter))]
 public enum BrowserStateChangeType
 {
-    TabOpened,
-    DownloadStarted,
-    DownloadCompleted,
-    DownloadFailed,
+    TabOpened = 0,
+    DownloadStarted = 1,
+    DownloadCompleted = 2,
+    DownloadFailed = 3,
 }
 
 sealed class BrowserStateChangeTypeConverter : JsonConverter<BrowserStateChangeType>

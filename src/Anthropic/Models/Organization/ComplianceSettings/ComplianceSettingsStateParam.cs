@@ -320,8 +320,8 @@ sealed class ComplianceSettingsStateParamConverter : JsonConverter<ComplianceSet
 [JsonConverter(typeof(ComplianceSettingsStateParamTypeConverter))]
 public enum ComplianceSettingsStateParamType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class ComplianceSettingsStateParamTypeConverter

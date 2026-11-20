@@ -781,12 +781,12 @@ sealed class GroupConverter : JsonConverter<Group>
 [JsonConverter(typeof(GroupTypeValueConverter))]
 public enum GroupTypeValue
 {
-    ModelGroup,
-    Batch,
-    TokenCount,
-    Files,
-    Skills,
-    WebSearch,
+    ModelGroup = 0,
+    Batch = 1,
+    TokenCount = 2,
+    Files = 3,
+    Skills = 4,
+    WebSearch = 5,
 }
 
 sealed class GroupTypeValueConverter : JsonConverter<GroupTypeValue>

@@ -482,8 +482,8 @@ sealed class RubricConverter : JsonConverter<Rubric>
 [JsonConverter(typeof(RubricTypeConverter))]
 public enum RubricType
 {
-    File,
-    Text,
+    File = 0,
+    Text = 1,
 }
 
 sealed class RubricTypeConverter : JsonConverter<RubricType>

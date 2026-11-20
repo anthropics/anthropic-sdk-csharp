@@ -224,21 +224,29 @@ public class PermissionPolicyTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(PermissionPolicyType.AlwaysAllow)]
-    [InlineData(PermissionPolicyType.AlwaysAsk)]
-    [InlineData(PermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(PermissionPolicyType rawValue)
+    [InlineData(PermissionPolicyType.AlwaysAllow, 0, "always_allow")]
+    [InlineData(PermissionPolicyType.AlwaysAsk, 1, "always_ask")]
+    [InlineData(PermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        PermissionPolicyType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, PermissionPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, PermissionPolicyType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

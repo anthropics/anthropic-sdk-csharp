@@ -391,9 +391,9 @@ sealed class BetaToolUseCallerConverter : JsonConverter<BetaToolUseCaller>
 [JsonConverter(typeof(BetaToolUseCallerTypeConverter))]
 public enum BetaToolUseCallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class BetaToolUseCallerTypeConverter : JsonConverter<BetaToolUseCallerType>

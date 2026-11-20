@@ -851,34 +851,42 @@ public class BetaComputerToolUseBlockNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaComputerToolUseBlockName.Key)]
-    [InlineData(BetaComputerToolUseBlockName.HoldKey)]
-    [InlineData(BetaComputerToolUseBlockName.Type)]
-    [InlineData(BetaComputerToolUseBlockName.CursorPosition)]
-    [InlineData(BetaComputerToolUseBlockName.MouseMove)]
-    [InlineData(BetaComputerToolUseBlockName.LeftMouseDown)]
-    [InlineData(BetaComputerToolUseBlockName.LeftMouseUp)]
-    [InlineData(BetaComputerToolUseBlockName.LeftClick)]
-    [InlineData(BetaComputerToolUseBlockName.LeftClickDrag)]
-    [InlineData(BetaComputerToolUseBlockName.RightClick)]
-    [InlineData(BetaComputerToolUseBlockName.MiddleClick)]
-    [InlineData(BetaComputerToolUseBlockName.DoubleClick)]
-    [InlineData(BetaComputerToolUseBlockName.TripleClick)]
-    [InlineData(BetaComputerToolUseBlockName.Scroll)]
-    [InlineData(BetaComputerToolUseBlockName.Wait)]
-    [InlineData(BetaComputerToolUseBlockName.Screenshot)]
-    [InlineData(BetaComputerToolUseBlockName.Zoom)]
-    public void SerializationRoundtrip_Works(BetaComputerToolUseBlockName rawValue)
+    [InlineData(BetaComputerToolUseBlockName.Key, 0, "key")]
+    [InlineData(BetaComputerToolUseBlockName.HoldKey, 1, "hold_key")]
+    [InlineData(BetaComputerToolUseBlockName.Type, 2, "type")]
+    [InlineData(BetaComputerToolUseBlockName.CursorPosition, 3, "cursor_position")]
+    [InlineData(BetaComputerToolUseBlockName.MouseMove, 4, "mouse_move")]
+    [InlineData(BetaComputerToolUseBlockName.LeftMouseDown, 5, "left_mouse_down")]
+    [InlineData(BetaComputerToolUseBlockName.LeftMouseUp, 6, "left_mouse_up")]
+    [InlineData(BetaComputerToolUseBlockName.LeftClick, 7, "left_click")]
+    [InlineData(BetaComputerToolUseBlockName.LeftClickDrag, 8, "left_click_drag")]
+    [InlineData(BetaComputerToolUseBlockName.RightClick, 9, "right_click")]
+    [InlineData(BetaComputerToolUseBlockName.MiddleClick, 10, "middle_click")]
+    [InlineData(BetaComputerToolUseBlockName.DoubleClick, 11, "double_click")]
+    [InlineData(BetaComputerToolUseBlockName.TripleClick, 12, "triple_click")]
+    [InlineData(BetaComputerToolUseBlockName.Scroll, 13, "scroll")]
+    [InlineData(BetaComputerToolUseBlockName.Wait, 14, "wait")]
+    [InlineData(BetaComputerToolUseBlockName.Screenshot, 15, "screenshot")]
+    [InlineData(BetaComputerToolUseBlockName.Zoom, 16, "zoom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaComputerToolUseBlockName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaComputerToolUseBlockName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaComputerToolUseBlockName>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -8,15 +8,15 @@ namespace Anthropic.Models.Beta.Organization;
 [JsonConverter(typeof(BetaOrganizationRoleConverter))]
 public enum BetaOrganizationRole
 {
-    Admin,
-    Billing,
-    ClaudeCodeUser,
-    Developer,
-    Managed,
-    MembershipAdmin,
-    Owner,
-    PrimaryOwner,
-    User,
+    Admin = 0,
+    Billing = 1,
+    ClaudeCodeUser = 2,
+    Developer = 3,
+    Managed = 4,
+    MembershipAdmin = 5,
+    Owner = 6,
+    PrimaryOwner = 7,
+    User = 8,
 }
 
 sealed class BetaOrganizationRoleConverter : JsonConverter<BetaOrganizationRole>

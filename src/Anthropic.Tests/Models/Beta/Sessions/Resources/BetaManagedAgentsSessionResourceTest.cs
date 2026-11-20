@@ -253,20 +253,28 @@ public class BetaManagedAgentsSessionResourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionResourceType.GitHubRepository)]
-    [InlineData(BetaManagedAgentsSessionResourceType.File)]
-    [InlineData(BetaManagedAgentsSessionResourceType.MemoryStore)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionResourceType rawValue)
+    [InlineData(BetaManagedAgentsSessionResourceType.GitHubRepository, 0, "github_repository")]
+    [InlineData(BetaManagedAgentsSessionResourceType.File, 1, "file")]
+    [InlineData(BetaManagedAgentsSessionResourceType.MemoryStore, 2, "memory_store")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionResourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionResourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionResourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -33,22 +33,30 @@ public class BetaAnalyticsClaudeTagCategoryTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsClaudeTagCategory.Dm)]
-    [InlineData(BetaAnalyticsClaudeTagCategory.Engaged)]
-    [InlineData(BetaAnalyticsClaudeTagCategory.Monitoring)]
-    [InlineData(BetaAnalyticsClaudeTagCategory.Proactive)]
-    [InlineData(BetaAnalyticsClaudeTagCategory.Scheduled)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsClaudeTagCategory rawValue)
+    [InlineData(BetaAnalyticsClaudeTagCategory.Dm, 0, "dm")]
+    [InlineData(BetaAnalyticsClaudeTagCategory.Engaged, 1, "engaged")]
+    [InlineData(BetaAnalyticsClaudeTagCategory.Monitoring, 2, "monitoring")]
+    [InlineData(BetaAnalyticsClaudeTagCategory.Proactive, 3, "proactive")]
+    [InlineData(BetaAnalyticsClaudeTagCategory.Scheduled, 4, "scheduled")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsClaudeTagCategory rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsClaudeTagCategory> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsClaudeTagCategory>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

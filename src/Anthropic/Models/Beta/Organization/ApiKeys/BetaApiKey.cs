@@ -517,8 +517,8 @@ sealed class PrincipalConverter : JsonConverter<Principal?>
 [JsonConverter(typeof(PrincipalTypeConverter))]
 public enum PrincipalType
 {
-    UserActor,
-    ServiceAccountActor,
+    UserActor = 0,
+    ServiceAccountActor = 1,
 }
 
 sealed class PrincipalTypeConverter : JsonConverter<PrincipalType>
@@ -861,8 +861,8 @@ sealed class ScopeConverter : JsonConverter<Scope>
 [JsonConverter(typeof(ScopeTypeConverter))]
 public enum ScopeType
 {
-    Organization,
-    Workspace,
+    Organization = 0,
+    Workspace = 1,
 }
 
 sealed class ScopeTypeConverter : JsonConverter<ScopeType>
@@ -908,10 +908,10 @@ sealed class ScopeTypeConverter : JsonConverter<ScopeType>
 [JsonConverter(typeof(BetaApiKeyStatusConverter))]
 public enum BetaApiKeyStatus
 {
-    Active,
-    Archived,
-    Expired,
-    Inactive,
+    Active = 0,
+    Archived = 1,
+    Expired = 2,
+    Inactive = 3,
 }
 
 sealed class BetaApiKeyStatusConverter : JsonConverter<BetaApiKeyStatus>

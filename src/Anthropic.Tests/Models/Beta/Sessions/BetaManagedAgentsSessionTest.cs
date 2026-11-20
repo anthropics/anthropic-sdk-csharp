@@ -1336,21 +1336,29 @@ public class BetaManagedAgentsSessionStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionStatus.Rescheduling)]
-    [InlineData(BetaManagedAgentsSessionStatus.Running)]
-    [InlineData(BetaManagedAgentsSessionStatus.Idle)]
-    [InlineData(BetaManagedAgentsSessionStatus.Terminated)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionStatus rawValue)
+    [InlineData(BetaManagedAgentsSessionStatus.Rescheduling, 0, "rescheduling")]
+    [InlineData(BetaManagedAgentsSessionStatus.Running, 1, "running")]
+    [InlineData(BetaManagedAgentsSessionStatus.Idle, 2, "idle")]
+    [InlineData(BetaManagedAgentsSessionStatus.Terminated, 3, "terminated")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

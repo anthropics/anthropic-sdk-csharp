@@ -311,8 +311,8 @@ sealed class BrowserClickTargetConverter : JsonConverter<BrowserClickTarget>
 [JsonConverter(typeof(BrowserClickTargetTypeConverter))]
 public enum BrowserClickTargetType
 {
-    Coordinate,
-    Ref,
+    Coordinate = 0,
+    Ref = 1,
 }
 
 sealed class BrowserClickTargetTypeConverter : JsonConverter<BrowserClickTargetType>

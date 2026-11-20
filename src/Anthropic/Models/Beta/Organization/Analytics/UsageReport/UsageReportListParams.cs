@@ -471,9 +471,9 @@ public record class UsageReportListParams : ParamsBase
 [JsonConverter(typeof(BucketWidthConverter))]
 public enum BucketWidth
 {
-    Day,
-    Hour,
-    Minute,
+    Day = 0,
+    Hour = 1,
+    Minute = 2,
 }
 
 sealed class BucketWidthConverter : JsonConverter<BucketWidth>
@@ -518,15 +518,15 @@ sealed class BucketWidthConverter : JsonConverter<BucketWidth>
 [JsonConverter(typeof(GroupByConverter))]
 public enum GroupBy
 {
-    ClaudeTagCategory,
-    ClaudeTagUserID,
-    ContextWindow,
-    InferenceGeo,
-    Model,
-    Product,
-    RbacGroupID,
-    SlackChannelID,
-    Speed,
+    ClaudeTagCategory = 0,
+    ClaudeTagUserID = 1,
+    ContextWindow = 2,
+    InferenceGeo = 3,
+    Model = 4,
+    Product = 5,
+    RbacGroupID = 6,
+    SlackChannelID = 7,
+    Speed = 8,
 }
 
 sealed class GroupByConverter : JsonConverter<GroupBy>
@@ -579,8 +579,8 @@ sealed class GroupByConverter : JsonConverter<GroupBy>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

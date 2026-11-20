@@ -301,23 +301,29 @@ public class BetaManagedAgentsUserMessageEventParamsContentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Text)]
-    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Image)]
-    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Document)]
-    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Redacted)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserMessageEventParamsContentType rawValue
+    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Text, 0, "text")]
+    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Image, 1, "image")]
+    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Document, 2, "document")]
+    [InlineData(BetaManagedAgentsUserMessageEventParamsContentType.Redacted, 3, "redacted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsUserMessageEventParamsContentType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsUserMessageEventParamsContentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserMessageEventParamsContentType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

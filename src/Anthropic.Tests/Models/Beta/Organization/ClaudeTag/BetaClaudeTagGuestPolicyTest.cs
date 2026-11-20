@@ -139,20 +139,28 @@ public class BetaClaudeTagGuestPolicyTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeTagGuestPolicyType.Allow)]
-    [InlineData(BetaClaudeTagGuestPolicyType.Restrict)]
-    [InlineData(BetaClaudeTagGuestPolicyType.ChannelOnly)]
-    public void SerializationRoundtrip_Works(BetaClaudeTagGuestPolicyType rawValue)
+    [InlineData(BetaClaudeTagGuestPolicyType.Allow, 0, "allow")]
+    [InlineData(BetaClaudeTagGuestPolicyType.Restrict, 1, "restrict")]
+    [InlineData(BetaClaudeTagGuestPolicyType.ChannelOnly, 2, "channel_only")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeTagGuestPolicyType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeTagGuestPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaClaudeTagGuestPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

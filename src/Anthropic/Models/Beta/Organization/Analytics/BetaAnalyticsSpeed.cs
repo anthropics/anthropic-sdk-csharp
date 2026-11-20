@@ -8,8 +8,8 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsSpeedConverter))]
 public enum BetaAnalyticsSpeed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class BetaAnalyticsSpeedConverter : JsonConverter<BetaAnalyticsSpeed>

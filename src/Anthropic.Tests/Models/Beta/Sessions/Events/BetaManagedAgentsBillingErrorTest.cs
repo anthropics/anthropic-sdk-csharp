@@ -228,21 +228,29 @@ public class RetryStatusTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(RetryStatusType.Retrying)]
-    [InlineData(RetryStatusType.Exhausted)]
-    [InlineData(RetryStatusType.Terminal)]
-    public void SerializationRoundtrip_Works(RetryStatusType rawValue)
+    [InlineData(RetryStatusType.Retrying, 0, "retrying")]
+    [InlineData(RetryStatusType.Exhausted, 1, "exhausted")]
+    [InlineData(RetryStatusType.Terminal, 2, "terminal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        RetryStatusType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, RetryStatusType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, RetryStatusType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

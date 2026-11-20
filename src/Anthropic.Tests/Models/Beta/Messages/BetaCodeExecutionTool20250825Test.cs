@@ -301,21 +301,41 @@ public class BetaCodeExecutionTool20250825AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaCodeExecutionTool20250825AllowedCaller.Direct)]
-    [InlineData(BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20250825)]
-    [InlineData(BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20260120)]
-    [InlineData(BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(BetaCodeExecutionTool20250825AllowedCaller rawValue)
+    [InlineData(BetaCodeExecutionTool20250825AllowedCaller.Direct, 0, "direct")]
+    [InlineData(
+        BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    [InlineData(
+        BetaCodeExecutionTool20250825AllowedCaller.CodeExecution20260521,
+        3,
+        "code_execution_20260521"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaCodeExecutionTool20250825AllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaCodeExecutionTool20250825AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

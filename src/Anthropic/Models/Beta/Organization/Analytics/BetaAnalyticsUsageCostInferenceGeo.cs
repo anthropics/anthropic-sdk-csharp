@@ -8,8 +8,8 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsUsageCostInferenceGeoConverter))]
 public enum BetaAnalyticsUsageCostInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaAnalyticsUsageCostInferenceGeoConverter

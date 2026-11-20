@@ -8,8 +8,8 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaBrowserReadPageFilterConverter))]
 public enum BetaBrowserReadPageFilter
 {
-    All,
-    Interactive,
+    All = 0,
+    Interactive = 1,
 }
 
 sealed class BetaBrowserReadPageFilterConverter : JsonConverter<BetaBrowserReadPageFilter>

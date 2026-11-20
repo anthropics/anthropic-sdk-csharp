@@ -320,8 +320,8 @@ sealed class BetaComplianceSettingsStateConverter : JsonConverter<BetaCompliance
 [JsonConverter(typeof(BetaComplianceSettingsStateTypeConverter))]
 public enum BetaComplianceSettingsStateType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaComplianceSettingsStateTypeConverter

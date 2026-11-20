@@ -105,8 +105,8 @@ class BetaImageTransformationsParamFromRaw : IFromRawJson<BetaImageTransformatio
 [JsonConverter(typeof(OversizedImageConverter))]
 public enum OversizedImage
 {
-    Downsize,
-    Error,
+    Downsize = 0,
+    Error = 1,
 }
 
 sealed class OversizedImageConverter : JsonConverter<OversizedImage>

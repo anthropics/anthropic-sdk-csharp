@@ -241,10 +241,10 @@ class BetaToolTextEditor20250124FromRaw : IFromRawJson<BetaToolTextEditor2025012
 [JsonConverter(typeof(BetaToolTextEditor20250124AllowedCallerConverter))]
 public enum BetaToolTextEditor20250124AllowedCaller
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
+    CodeExecution20260521 = 3,
 }
 
 sealed class BetaToolTextEditor20250124AllowedCallerConverter

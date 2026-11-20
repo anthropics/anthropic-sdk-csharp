@@ -596,9 +596,9 @@ sealed class JwksConverter : JsonConverter<Jwks>
 [JsonConverter(typeof(JwksTypeConverter))]
 public enum JwksType
 {
-    Discovery,
-    ExplicitUrl,
-    Inline,
+    Discovery = 0,
+    ExplicitUrl = 1,
+    Inline = 2,
 }
 
 sealed class JwksTypeConverter : JsonConverter<JwksType>

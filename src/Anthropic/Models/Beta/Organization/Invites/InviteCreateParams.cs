@@ -210,11 +210,11 @@ public record class InviteCreateParams : ParamsBase
 [JsonConverter(typeof(RoleConverter))]
 public enum Role
 {
-    Billing,
-    ClaudeCodeUser,
-    Developer,
-    Managed,
-    User,
+    Billing = 0,
+    ClaudeCodeUser = 1,
+    Developer = 2,
+    Managed = 3,
+    User = 4,
 }
 
 sealed class RoleConverter : JsonConverter<Role>

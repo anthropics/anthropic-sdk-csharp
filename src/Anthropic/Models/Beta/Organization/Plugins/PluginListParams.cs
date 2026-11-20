@@ -328,8 +328,8 @@ public record class PluginListParams : ParamsBase
 [JsonConverter(typeof(OwnerTypeConverter))]
 public enum OwnerType
 {
-    Organization,
-    User,
+    Organization = 0,
+    User = 1,
 }
 
 sealed class OwnerTypeConverter : JsonConverter<OwnerType>

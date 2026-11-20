@@ -1170,36 +1170,48 @@ public class ContentBlockTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ContentBlockType.Text)]
-    [InlineData(ContentBlockType.Thinking)]
-    [InlineData(ContentBlockType.RedactedThinking)]
-    [InlineData(ContentBlockType.ToolUse)]
-    [InlineData(ContentBlockType.ServerToolUse)]
-    [InlineData(ContentBlockType.WebSearchToolResult)]
-    [InlineData(ContentBlockType.WebFetchToolResult)]
-    [InlineData(ContentBlockType.AdvisorToolResult)]
-    [InlineData(ContentBlockType.CodeExecutionToolResult)]
-    [InlineData(ContentBlockType.BashCodeExecutionToolResult)]
-    [InlineData(ContentBlockType.TextEditorCodeExecutionToolResult)]
-    [InlineData(ContentBlockType.ToolSearchToolResult)]
-    [InlineData(ContentBlockType.McpToolUse)]
-    [InlineData(ContentBlockType.McpToolResult)]
-    [InlineData(ContentBlockType.ContainerUpload)]
-    [InlineData(ContentBlockType.Compaction)]
-    [InlineData(ContentBlockType.Fallback)]
-    [InlineData(ContentBlockType.McpToolListing)]
-    public void SerializationRoundtrip_Works(ContentBlockType rawValue)
+    [InlineData(ContentBlockType.Text, 0, "text")]
+    [InlineData(ContentBlockType.Thinking, 1, "thinking")]
+    [InlineData(ContentBlockType.RedactedThinking, 2, "redacted_thinking")]
+    [InlineData(ContentBlockType.ToolUse, 3, "tool_use")]
+    [InlineData(ContentBlockType.ServerToolUse, 4, "server_tool_use")]
+    [InlineData(ContentBlockType.WebSearchToolResult, 5, "web_search_tool_result")]
+    [InlineData(ContentBlockType.WebFetchToolResult, 6, "web_fetch_tool_result")]
+    [InlineData(ContentBlockType.AdvisorToolResult, 7, "advisor_tool_result")]
+    [InlineData(ContentBlockType.CodeExecutionToolResult, 8, "code_execution_tool_result")]
+    [InlineData(ContentBlockType.BashCodeExecutionToolResult, 9, "bash_code_execution_tool_result")]
+    [InlineData(
+        ContentBlockType.TextEditorCodeExecutionToolResult,
+        10,
+        "text_editor_code_execution_tool_result"
+    )]
+    [InlineData(ContentBlockType.ToolSearchToolResult, 11, "tool_search_tool_result")]
+    [InlineData(ContentBlockType.McpToolUse, 12, "mcp_tool_use")]
+    [InlineData(ContentBlockType.McpToolResult, 13, "mcp_tool_result")]
+    [InlineData(ContentBlockType.ContainerUpload, 14, "container_upload")]
+    [InlineData(ContentBlockType.Compaction, 15, "compaction")]
+    [InlineData(ContentBlockType.Fallback, 16, "fallback")]
+    [InlineData(ContentBlockType.McpToolListing, 17, "mcp_tool_listing")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ContentBlockType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ContentBlockType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentBlockType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

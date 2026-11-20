@@ -556,12 +556,12 @@ sealed class BetaRawContentBlockDeltaConverter : JsonConverter<BetaRawContentBlo
 [JsonConverter(typeof(BetaRawContentBlockDeltaTypeConverter))]
 public enum BetaRawContentBlockDeltaType
 {
-    TextDelta,
-    InputJsonDelta,
-    CitationsDelta,
-    ThinkingDelta,
-    SignatureDelta,
-    CompactionDelta,
+    TextDelta = 0,
+    InputJsonDelta = 1,
+    CitationsDelta = 2,
+    ThinkingDelta = 3,
+    SignatureDelta = 4,
+    CompactionDelta = 5,
 }
 
 sealed class BetaRawContentBlockDeltaTypeConverter : JsonConverter<BetaRawContentBlockDeltaType>

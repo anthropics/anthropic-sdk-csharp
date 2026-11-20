@@ -363,25 +363,43 @@ public class BetaManagedAgentsSessionThreadStatusIdleEventStopReasonTypeTest : T
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.EndTurn)]
-    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RequiresAction)]
-    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RetriesExhausted)]
-    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.BudgetReached)]
-    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.Refusal)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType rawValue
+    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.EndTurn, 0, "end_turn")]
+    [InlineData(
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RequiresAction,
+        1,
+        "requires_action"
+    )]
+    [InlineData(
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.RetriesExhausted,
+        2,
+        "retries_exhausted"
+    )]
+    [InlineData(
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.BudgetReached,
+        3,
+        "budget_reached"
+    )]
+    [InlineData(BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType.Refusal, 4, "refusal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType> value =
             rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionThreadStatusIdleEventStopReasonType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

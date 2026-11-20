@@ -511,19 +511,27 @@ public class EnvironmentUpdateParamsConfigTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(EnvironmentUpdateParamsConfigType.Cloud)]
-    [InlineData(EnvironmentUpdateParamsConfigType.SelfHosted)]
-    public void SerializationRoundtrip_Works(EnvironmentUpdateParamsConfigType rawValue)
+    [InlineData(EnvironmentUpdateParamsConfigType.Cloud, 0, "cloud")]
+    [InlineData(EnvironmentUpdateParamsConfigType.SelfHosted, 1, "self_hosted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EnvironmentUpdateParamsConfigType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EnvironmentUpdateParamsConfigType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, EnvironmentUpdateParamsConfigType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -567,19 +575,27 @@ public class EnvironmentUpdateParamsScopeTest : TestBase
     }
 
     [Theory]
-    [InlineData(EnvironmentUpdateParamsScope.Organization)]
-    [InlineData(EnvironmentUpdateParamsScope.Account)]
-    public void SerializationRoundtrip_Works(EnvironmentUpdateParamsScope rawValue)
+    [InlineData(EnvironmentUpdateParamsScope.Organization, 0, "organization")]
+    [InlineData(EnvironmentUpdateParamsScope.Account, 1, "account")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        EnvironmentUpdateParamsScope rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, EnvironmentUpdateParamsScope> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, EnvironmentUpdateParamsScope>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

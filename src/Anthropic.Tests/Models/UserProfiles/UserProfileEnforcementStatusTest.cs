@@ -32,21 +32,29 @@ public class UserProfileEnforcementStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileEnforcementStatus.Unrestricted)]
-    [InlineData(UserProfileEnforcementStatus.Pending)]
-    [InlineData(UserProfileEnforcementStatus.Restricted)]
-    [InlineData(UserProfileEnforcementStatus.Banned)]
-    public void SerializationRoundtrip_Works(UserProfileEnforcementStatus rawValue)
+    [InlineData(UserProfileEnforcementStatus.Unrestricted, 0, "unrestricted")]
+    [InlineData(UserProfileEnforcementStatus.Pending, 1, "pending")]
+    [InlineData(UserProfileEnforcementStatus.Restricted, 2, "restricted")]
+    [InlineData(UserProfileEnforcementStatus.Banned, 3, "banned")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileEnforcementStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileEnforcementStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, UserProfileEnforcementStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

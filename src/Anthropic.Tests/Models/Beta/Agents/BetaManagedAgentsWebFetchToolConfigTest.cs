@@ -554,22 +554,32 @@ public class BetaManagedAgentsWebFetchToolConfigPermissionPolicyTypeTest : TestB
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow)]
-    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk)]
-    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsWebFetchToolConfigPermissionPolicyType rawValue
+    [InlineData(
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAllow,
+        0,
+        "always_allow"
+    )]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.AlwaysAsk, 1, "always_ask")]
+    [InlineData(BetaManagedAgentsWebFetchToolConfigPermissionPolicyType.Auto, 2, "auto")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWebFetchToolConfigPermissionPolicyType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWebFetchToolConfigPermissionPolicyType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

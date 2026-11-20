@@ -185,30 +185,34 @@ public class ReasonTest : TestBase
     }
 
     [Theory]
-    [InlineData(Reason.BodyMismatch)]
-    [InlineData(Reason.ContinuationExcluded)]
-    [InlineData(Reason.ContinuationOnly)]
-    [InlineData(Reason.Expired)]
-    [InlineData(Reason.InvalidTargetModel)]
-    [InlineData(Reason.NotEnabled)]
-    [InlineData(Reason.RepriceUnavailable)]
-    [InlineData(Reason.TemporarilyUnavailable)]
-    [InlineData(Reason.VariantFieldsPresent)]
-    [InlineData(Reason.WrongOrganization)]
-    [InlineData(Reason.WrongPlatform)]
-    [InlineData(Reason.WrongWorkspace)]
-    public void SerializationRoundtrip_Works(Reason rawValue)
+    [InlineData(Reason.BodyMismatch, 0, "body_mismatch")]
+    [InlineData(Reason.ContinuationExcluded, 1, "continuation_excluded")]
+    [InlineData(Reason.ContinuationOnly, 2, "continuation_only")]
+    [InlineData(Reason.Expired, 3, "expired")]
+    [InlineData(Reason.InvalidTargetModel, 4, "invalid_target_model")]
+    [InlineData(Reason.NotEnabled, 5, "not_enabled")]
+    [InlineData(Reason.RepriceUnavailable, 6, "reprice_unavailable")]
+    [InlineData(Reason.TemporarilyUnavailable, 7, "temporarily_unavailable")]
+    [InlineData(Reason.VariantFieldsPresent, 8, "variant_fields_present")]
+    [InlineData(Reason.WrongOrganization, 9, "wrong_organization")]
+    [InlineData(Reason.WrongPlatform, 10, "wrong_platform")]
+    [InlineData(Reason.WrongWorkspace, 11, "wrong_workspace")]
+    public void EnumMemberSerializationRoundtrip_Works(Reason rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Reason> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Reason>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

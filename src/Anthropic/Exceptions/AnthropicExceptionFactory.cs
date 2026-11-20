@@ -254,6 +254,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "image_dimensions_too_large")] = (statusCode, responseBody, response) =>
+            new AnthropicImageDimensionsTooLargeException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "invalid_config_type_change")] = (statusCode, responseBody, response) =>
             new AnthropicBetaInvalidConfigTypeChangeException()
             {

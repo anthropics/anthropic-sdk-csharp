@@ -531,21 +531,41 @@ public class WebFetchTool20260309AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(WebFetchTool20260309AllowedCaller.Direct)]
-    [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20250825)]
-    [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260120)]
-    [InlineData(WebFetchTool20260309AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(WebFetchTool20260309AllowedCaller rawValue)
+    [InlineData(WebFetchTool20260309AllowedCaller.Direct, 0, "direct")]
+    [InlineData(
+        WebFetchTool20260309AllowedCaller.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        WebFetchTool20260309AllowedCaller.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    [InlineData(
+        WebFetchTool20260309AllowedCaller.CodeExecution20260521,
+        3,
+        "code_execution_20260521"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        WebFetchTool20260309AllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, WebFetchTool20260309AllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, WebFetchTool20260309AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

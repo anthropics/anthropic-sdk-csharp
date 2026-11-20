@@ -154,13 +154,13 @@ class ServerToolUseBlockParamFromRaw : IFromRawJson<ServerToolUseBlockParam>
 [JsonConverter(typeof(ServerToolUseBlockParamNameConverter))]
 public enum ServerToolUseBlockParamName
 {
-    WebSearch,
-    WebFetch,
-    CodeExecution,
-    BashCodeExecution,
-    TextEditorCodeExecution,
-    ToolSearchToolRegex,
-    ToolSearchToolBm25,
+    WebSearch = 0,
+    WebFetch = 1,
+    CodeExecution = 2,
+    BashCodeExecution = 3,
+    TextEditorCodeExecution = 4,
+    ToolSearchToolRegex = 5,
+    ToolSearchToolBm25 = 6,
 }
 
 sealed class ServerToolUseBlockParamNameConverter : JsonConverter<ServerToolUseBlockParamName>
@@ -593,9 +593,9 @@ sealed class ServerToolUseBlockParamCallerConverter : JsonConverter<ServerToolUs
 [JsonConverter(typeof(ServerToolUseBlockParamCallerTypeConverter))]
 public enum ServerToolUseBlockParamCallerType
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
 }
 
 sealed class ServerToolUseBlockParamCallerTypeConverter

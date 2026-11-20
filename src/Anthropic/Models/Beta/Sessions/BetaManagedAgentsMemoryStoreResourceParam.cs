@@ -146,8 +146,8 @@ class BetaManagedAgentsMemoryStoreResourceParamFromRaw
 [JsonConverter(typeof(AccessConverter))]
 public enum Access
 {
-    ReadWrite,
-    ReadOnly,
+    ReadWrite = 0,
+    ReadOnly = 1,
 }
 
 sealed class AccessConverter : JsonConverter<Access>

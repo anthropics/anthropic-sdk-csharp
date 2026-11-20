@@ -491,9 +491,9 @@ sealed class BetaManagedAgentsImageBlockSourceConverter
 [JsonConverter(typeof(BetaManagedAgentsImageBlockSourceTypeConverter))]
 public enum BetaManagedAgentsImageBlockSourceType
 {
-    Base64,
-    Url,
-    File,
+    Base64 = 0,
+    Url = 1,
+    File = 2,
 }
 
 sealed class BetaManagedAgentsImageBlockSourceTypeConverter

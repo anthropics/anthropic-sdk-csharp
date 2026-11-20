@@ -328,21 +328,27 @@ public class BetaDataResidencyCreateConfigDefaultInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDataResidencyCreateConfigDefaultInferenceGeo.Global)]
-    [InlineData(BetaDataResidencyCreateConfigDefaultInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(
-        BetaDataResidencyCreateConfigDefaultInferenceGeo rawValue
+    [InlineData(BetaDataResidencyCreateConfigDefaultInferenceGeo.Global, 0, "global")]
+    [InlineData(BetaDataResidencyCreateConfigDefaultInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDataResidencyCreateConfigDefaultInferenceGeo rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDataResidencyCreateConfigDefaultInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaDataResidencyCreateConfigDefaultInferenceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -383,18 +389,26 @@ public class BetaDataResidencyCreateConfigWorkspaceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaDataResidencyCreateConfigWorkspaceGeo.Us)]
-    public void SerializationRoundtrip_Works(BetaDataResidencyCreateConfigWorkspaceGeo rawValue)
+    [InlineData(BetaDataResidencyCreateConfigWorkspaceGeo.Us, 0, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaDataResidencyCreateConfigWorkspaceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaDataResidencyCreateConfigWorkspaceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaDataResidencyCreateConfigWorkspaceGeo>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

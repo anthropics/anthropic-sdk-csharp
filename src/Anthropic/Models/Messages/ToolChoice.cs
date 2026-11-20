@@ -440,10 +440,10 @@ sealed class ToolChoiceConverter : JsonConverter<ToolChoice>
 [JsonConverter(typeof(ToolChoiceTypeConverter))]
 public enum ToolChoiceType
 {
-    Auto,
-    Any,
-    Tool,
-    None,
+    Auto = 0,
+    Any = 1,
+    Tool = 2,
+    None = 3,
 }
 
 sealed class ToolChoiceTypeConverter : JsonConverter<ToolChoiceType>

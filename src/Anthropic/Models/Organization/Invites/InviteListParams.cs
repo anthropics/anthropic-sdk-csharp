@@ -270,9 +270,9 @@ public record class InviteListParams : ParamsBase
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Accepted,
-    Expired,
-    Pending,
+    Accepted = 0,
+    Expired = 1,
+    Pending = 2,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

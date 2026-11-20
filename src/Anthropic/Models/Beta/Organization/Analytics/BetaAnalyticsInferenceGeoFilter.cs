@@ -8,9 +8,9 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsInferenceGeoFilterConverter))]
 public enum BetaAnalyticsInferenceGeoFilter
 {
-    Global,
-    NotAvailable,
-    Us,
+    Global = 0,
+    NotAvailable = 1,
+    Us = 2,
 }
 
 sealed class BetaAnalyticsInferenceGeoFilterConverter

@@ -475,8 +475,8 @@ sealed class CheckoutConverter : JsonConverter<Checkout?>
 [JsonConverter(typeof(CheckoutTypeConverter))]
 public enum CheckoutType
 {
-    Branch,
-    Commit,
+    Branch = 0,
+    Commit = 1,
 }
 
 sealed class CheckoutTypeConverter : JsonConverter<CheckoutType>

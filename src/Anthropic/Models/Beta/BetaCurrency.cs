@@ -8,7 +8,7 @@ namespace Anthropic.Models.Beta;
 [JsonConverter(typeof(BetaCurrencyConverter))]
 public enum BetaCurrency
 {
-    Usd,
+    Usd = 0,
 }
 
 sealed class BetaCurrencyConverter : JsonConverter<BetaCurrency>

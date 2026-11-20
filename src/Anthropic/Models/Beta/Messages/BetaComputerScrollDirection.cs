@@ -8,10 +8,10 @@ namespace Anthropic.Models.Beta.Messages;
 [JsonConverter(typeof(BetaComputerScrollDirectionConverter))]
 public enum BetaComputerScrollDirection
 {
-    Up,
-    Down,
-    Left,
-    Right,
+    Up = 0,
+    Down = 1,
+    Left = 2,
+    Right = 3,
 }
 
 sealed class BetaComputerScrollDirectionConverter : JsonConverter<BetaComputerScrollDirection>

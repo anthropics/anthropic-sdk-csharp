@@ -648,20 +648,28 @@ public class BetaEnvironmentConfigTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaEnvironmentConfigType.Cloud)]
-    [InlineData(BetaEnvironmentConfigType.SelfHosted)]
-    public void SerializationRoundtrip_Works(BetaEnvironmentConfigType rawValue)
+    [InlineData(BetaEnvironmentConfigType.Cloud, 0, "cloud")]
+    [InlineData(BetaEnvironmentConfigType.SelfHosted, 1, "self_hosted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaEnvironmentConfigType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaEnvironmentConfigType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentConfigType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -706,20 +714,28 @@ public class BetaEnvironmentScopeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaEnvironmentScope.Organization)]
-    [InlineData(BetaEnvironmentScope.Account)]
-    public void SerializationRoundtrip_Works(BetaEnvironmentScope rawValue)
+    [InlineData(BetaEnvironmentScope.Organization, 0, "organization")]
+    [InlineData(BetaEnvironmentScope.Account, 1, "account")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaEnvironmentScope rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaEnvironmentScope> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaEnvironmentScope>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

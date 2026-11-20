@@ -248,9 +248,9 @@ public record class ModelListParams : ParamsBase
 [JsonConverter(typeof(LifecycleConverter))]
 public enum Lifecycle
 {
-    Active,
-    Deprecated,
-    Retired,
+    Active = 0,
+    Deprecated = 1,
+    Retired = 2,
 }
 
 sealed class LifecycleConverter : JsonConverter<Lifecycle>

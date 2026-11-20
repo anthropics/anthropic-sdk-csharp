@@ -665,20 +665,32 @@ public class BetaManagedAgentsSessionAgentUpdateToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401)]
-    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.McpToolset)]
-    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.Custom)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionAgentUpdateToolType rawValue)
+    [InlineData(
+        BetaManagedAgentsSessionAgentUpdateToolType.AgentToolset20260401,
+        0,
+        "agent_toolset_20260401"
+    )]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(BetaManagedAgentsSessionAgentUpdateToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionAgentUpdateToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionAgentUpdateToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

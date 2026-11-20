@@ -327,8 +327,8 @@ sealed class BetaManagedAgentsCredentialNetworkingParamsConverter
 [JsonConverter(typeof(BetaManagedAgentsCredentialNetworkingParamsTypeConverter))]
 public enum BetaManagedAgentsCredentialNetworkingParamsType
 {
-    Unrestricted,
-    Limited,
+    Unrestricted = 0,
+    Limited = 1,
 }
 
 sealed class BetaManagedAgentsCredentialNetworkingParamsTypeConverter

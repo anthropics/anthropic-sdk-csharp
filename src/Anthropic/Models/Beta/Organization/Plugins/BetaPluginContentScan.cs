@@ -120,10 +120,10 @@ class BetaPluginContentScanFromRaw : IFromRawJson<BetaPluginContentScan>
 [JsonConverter(typeof(AssessmentConverter))]
 public enum Assessment
 {
-    Fail,
-    Pass,
-    Unknown,
-    Warn,
+    Fail = 0,
+    Pass = 1,
+    Unknown = 2,
+    Warn = 3,
 }
 
 sealed class AssessmentConverter : JsonConverter<Assessment>
@@ -176,9 +176,9 @@ sealed class AssessmentConverter : JsonConverter<Assessment>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Completed,
-    Errored,
-    Processing,
+    Completed = 0,
+    Errored = 1,
+    Processing = 2,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

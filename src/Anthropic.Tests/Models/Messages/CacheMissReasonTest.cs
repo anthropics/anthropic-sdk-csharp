@@ -240,24 +240,32 @@ public class CacheMissReasonTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(CacheMissReasonType.ModelChanged)]
-    [InlineData(CacheMissReasonType.SystemChanged)]
-    [InlineData(CacheMissReasonType.ToolsChanged)]
-    [InlineData(CacheMissReasonType.MessagesChanged)]
-    [InlineData(CacheMissReasonType.PreviousMessageNotFound)]
-    [InlineData(CacheMissReasonType.Unavailable)]
-    public void SerializationRoundtrip_Works(CacheMissReasonType rawValue)
+    [InlineData(CacheMissReasonType.ModelChanged, 0, "model_changed")]
+    [InlineData(CacheMissReasonType.SystemChanged, 1, "system_changed")]
+    [InlineData(CacheMissReasonType.ToolsChanged, 2, "tools_changed")]
+    [InlineData(CacheMissReasonType.MessagesChanged, 3, "messages_changed")]
+    [InlineData(CacheMissReasonType.PreviousMessageNotFound, 4, "previous_message_not_found")]
+    [InlineData(CacheMissReasonType.Unavailable, 5, "unavailable")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        CacheMissReasonType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, CacheMissReasonType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, CacheMissReasonType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

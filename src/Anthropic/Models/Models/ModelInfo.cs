@@ -245,9 +245,9 @@ class ModelInfoFromRaw : IFromRawJson<ModelInfo>
 [JsonConverter(typeof(ModelInfoLifecycleConverter))]
 public enum ModelInfoLifecycle
 {
-    Active,
-    Deprecated,
-    Retired,
+    Active = 0,
+    Deprecated = 1,
+    Retired = 2,
 }
 
 sealed class ModelInfoLifecycleConverter : JsonConverter<ModelInfoLifecycle>

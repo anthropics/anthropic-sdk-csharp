@@ -340,20 +340,28 @@ public class BetaFallbackParamSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaFallbackParamSpeed.Standard)]
-    [InlineData(BetaFallbackParamSpeed.Fast)]
-    public void SerializationRoundtrip_Works(BetaFallbackParamSpeed rawValue)
+    [InlineData(BetaFallbackParamSpeed.Standard, 0, "standard")]
+    [InlineData(BetaFallbackParamSpeed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaFallbackParamSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaFallbackParamSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaFallbackParamSpeed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -602,22 +610,30 @@ public class ThinkingTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ThinkingType.Enabled)]
-    [InlineData(ThinkingType.Disabled)]
-    [InlineData(ThinkingType.BetweenTools)]
-    [InlineData(ThinkingType.Adaptive)]
-    public void SerializationRoundtrip_Works(ThinkingType rawValue)
+    [InlineData(ThinkingType.Enabled, 0, "enabled")]
+    [InlineData(ThinkingType.Disabled, 1, "disabled")]
+    [InlineData(ThinkingType.BetweenTools, 2, "between_tools")]
+    [InlineData(ThinkingType.Adaptive, 3, "adaptive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ThinkingType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ThinkingType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ThinkingType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -197,6 +197,88 @@ public class PlatformUserProfilesTest
         Assert.False(request.JsonBody.ContainsKey("user_profile_id"));
     }
 
+    [Fact]
+    public async Task UserProfileID_MessagesCreate_OnBedrock_SentInBody()
+    {
+        var wire = CreateWire(PlainBedrock);
+
+        await CreateClient(PlainBedrock, wire)
+            .WithRawResponse.Messages.Create(
+                new MessageCreateParams
+                {
+                    MaxTokens = 16,
+                    Messages = [new UserMessageParam { Content = "hello" }],
+                    Model = "claude-sonnet-4-5",
+                    UserProfileID = ProfileID,
+                },
+                Ct
+            );
+
+        var request = Assert.Single(wire.Requests);
+        Assert.False(request.Headers.ContainsKey(ProfileHeader));
+        Assert.Equal(ProfileID, request.JsonBody["user_profile_id"]!.GetValue<string>());
+    }
+
+    [Theory]
+    [InlineData(FirstParty)]
+    [InlineData(PlainBedrock)]
+    public async Task UserProfileID_RequestValueBeatsClientExtraHeader(string backend)
+    {
+        var wire = CreateWire(backend);
+
+        await CreateClient(backend, wire)
+            .WithOptions(options =>
+            {
+                options.ExtraHeaders = new Dictionary<string, string>
+                {
+                    [ProfileHeader] = "uprof_client",
+                };
+                return options;
+            })
+            .WithRawResponse.Messages.Create(
+                new MessageCreateParams
+                {
+                    MaxTokens = 16,
+                    Messages = [new UserMessageParam { Content = "hello" }],
+                    Model = "claude-sonnet-4-5",
+                    UserProfileID = ProfileID,
+                },
+                Ct
+            );
+
+        var request = Assert.Single(wire.Requests);
+        if (backend == PlainBedrock)
+        {
+            Assert.False(request.Headers.ContainsKey(ProfileHeader));
+            Assert.Equal(ProfileID, request.JsonBody["user_profile_id"]!.GetValue<string>());
+        }
+        else
+        {
+            Assert.Equal(ProfileID, request.Headers[ProfileHeader]);
+        }
+    }
+
+    [Fact]
+    public async Task UserProfileID_NotSet_OnBedrock_AbsentFromBody()
+    {
+        var wire = CreateWire(PlainBedrock);
+
+        await CreateClient(PlainBedrock, wire)
+            .WithRawResponse.Messages.Create(
+                new MessageCreateParams
+                {
+                    MaxTokens = 16,
+                    Messages = [new UserMessageParam { Content = "hello" }],
+                    Model = "claude-sonnet-4-5",
+                },
+                Ct
+            );
+
+        var request = Assert.Single(wire.Requests);
+        Assert.False(request.Headers.ContainsKey(ProfileHeader));
+        Assert.False(request.JsonBody.ContainsKey("user_profile_id"));
+    }
+
     [Theory]
     [InlineData(PlainBedrock)]
     [InlineData(Mantle)]

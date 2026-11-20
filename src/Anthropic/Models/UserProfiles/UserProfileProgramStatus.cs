@@ -15,18 +15,18 @@ public enum UserProfileProgramStatus
     /// <summary>
     /// The profile is in the program.
     /// </summary>
-    Active,
+    Active = 0,
 
     /// <summary>
     /// The profile is not in the program yet, and something is still awaited.
     /// </summary>
-    Pending,
+    Pending = 1,
 
     /// <summary>
     /// The profile is not in the program and nothing is awaited: Anthropic has declined,
     /// or has withdrawn an earlier approval.
     /// </summary>
-    Rejected,
+    Rejected = 2,
 }
 
 sealed class UserProfileProgramStatusConverter : JsonConverter<UserProfileProgramStatus>

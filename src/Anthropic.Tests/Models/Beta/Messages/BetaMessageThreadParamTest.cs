@@ -111,20 +111,28 @@ public class BetaMessageThreadParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaMessageThreadParamType.Create)]
-    [InlineData(BetaMessageThreadParamType.Continue)]
-    public void SerializationRoundtrip_Works(BetaMessageThreadParamType rawValue)
+    [InlineData(BetaMessageThreadParamType.Create, 0, "create")]
+    [InlineData(BetaMessageThreadParamType.Continue, 1, "continue")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaMessageThreadParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaMessageThreadParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaMessageThreadParamType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

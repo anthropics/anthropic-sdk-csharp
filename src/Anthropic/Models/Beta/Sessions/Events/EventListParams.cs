@@ -388,8 +388,8 @@ public record class EventListParams : ParamsBase
 [JsonConverter(typeof(OrderConverter))]
 public enum Order
 {
-    Asc,
-    Desc,
+    Asc = 0,
+    Desc = 1,
 }
 
 sealed class OrderConverter : JsonConverter<Order>

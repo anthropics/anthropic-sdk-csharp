@@ -32,22 +32,30 @@ public class BrowserScrollDirectionTest : TestBase
     }
 
     [Theory]
-    [InlineData(BrowserScrollDirection.Up)]
-    [InlineData(BrowserScrollDirection.Down)]
-    [InlineData(BrowserScrollDirection.Left)]
-    [InlineData(BrowserScrollDirection.Right)]
-    public void SerializationRoundtrip_Works(BrowserScrollDirection rawValue)
+    [InlineData(BrowserScrollDirection.Up, 0, "up")]
+    [InlineData(BrowserScrollDirection.Down, 1, "down")]
+    [InlineData(BrowserScrollDirection.Left, 2, "left")]
+    [InlineData(BrowserScrollDirection.Right, 3, "right")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BrowserScrollDirection rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BrowserScrollDirection> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserScrollDirection>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

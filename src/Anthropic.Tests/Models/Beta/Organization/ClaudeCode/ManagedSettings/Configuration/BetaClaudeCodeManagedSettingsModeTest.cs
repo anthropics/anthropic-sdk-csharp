@@ -115,19 +115,27 @@ public class BetaClaudeCodeManagedSettingsModeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeCodeManagedSettingsModeType.Organization)]
-    [InlineData(BetaClaudeCodeManagedSettingsModeType.RbacGroups)]
-    public void SerializationRoundtrip_Works(BetaClaudeCodeManagedSettingsModeType rawValue)
+    [InlineData(BetaClaudeCodeManagedSettingsModeType.Organization, 0, "organization")]
+    [InlineData(BetaClaudeCodeManagedSettingsModeType.RbacGroups, 1, "rbac_groups")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeCodeManagedSettingsModeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeCodeManagedSettingsModeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaClaudeCodeManagedSettingsModeType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

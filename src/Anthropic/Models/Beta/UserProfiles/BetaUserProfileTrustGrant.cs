@@ -88,9 +88,9 @@ class BetaUserProfileTrustGrantFromRaw : IFromRawJson<BetaUserProfileTrustGrant>
 [JsonConverter(typeof(StatusConverter))]
 public enum Status
 {
-    Active,
-    Pending,
-    Rejected,
+    Active = 0,
+    Pending = 1,
+    Rejected = 2,
 }
 
 sealed class StatusConverter : JsonConverter<Status>

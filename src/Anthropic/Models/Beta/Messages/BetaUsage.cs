@@ -808,10 +808,10 @@ sealed class BetaUsageIterationConverter : JsonConverter<BetaUsageIteration>
 [JsonConverter(typeof(BetaUsageIterationTypeConverter))]
 public enum BetaUsageIterationType
 {
-    Message,
-    Compaction,
-    AdvisorMessage,
-    FallbackMessage,
+    Message = 0,
+    Compaction = 1,
+    AdvisorMessage = 2,
+    FallbackMessage = 3,
 }
 
 sealed class BetaUsageIterationTypeConverter : JsonConverter<BetaUsageIterationType>
@@ -861,9 +861,9 @@ sealed class BetaUsageIterationTypeConverter : JsonConverter<BetaUsageIterationT
 [JsonConverter(typeof(BetaUsageServiceTierConverter))]
 public enum BetaUsageServiceTier
 {
-    Standard,
-    Priority,
-    Batch,
+    Standard = 0,
+    Priority = 1,
+    Batch = 2,
 }
 
 sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
@@ -911,8 +911,8 @@ sealed class BetaUsageServiceTierConverter : JsonConverter<BetaUsageServiceTier>
 [JsonConverter(typeof(BetaUsageSpeedConverter))]
 public enum BetaUsageSpeed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class BetaUsageSpeedConverter : JsonConverter<BetaUsageSpeed>

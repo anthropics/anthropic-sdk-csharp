@@ -205,19 +205,27 @@ public class MessageContentBlockSourceContentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(MessageContentBlockSourceContentType.Text)]
-    [InlineData(MessageContentBlockSourceContentType.Image)]
-    public void SerializationRoundtrip_Works(MessageContentBlockSourceContentType rawValue)
+    [InlineData(MessageContentBlockSourceContentType.Text, 0, "text")]
+    [InlineData(MessageContentBlockSourceContentType.Image, 1, "image")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        MessageContentBlockSourceContentType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, MessageContentBlockSourceContentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, MessageContentBlockSourceContentType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

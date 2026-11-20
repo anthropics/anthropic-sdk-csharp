@@ -145,22 +145,30 @@ public class BetaSystemMessageOutputConfigEffortTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaSystemMessageOutputConfigEffort.Low)]
-    [InlineData(BetaSystemMessageOutputConfigEffort.Medium)]
-    [InlineData(BetaSystemMessageOutputConfigEffort.High)]
-    [InlineData(BetaSystemMessageOutputConfigEffort.Xhigh)]
-    [InlineData(BetaSystemMessageOutputConfigEffort.Max)]
-    public void SerializationRoundtrip_Works(BetaSystemMessageOutputConfigEffort rawValue)
+    [InlineData(BetaSystemMessageOutputConfigEffort.Low, 0, "low")]
+    [InlineData(BetaSystemMessageOutputConfigEffort.Medium, 1, "medium")]
+    [InlineData(BetaSystemMessageOutputConfigEffort.High, 2, "high")]
+    [InlineData(BetaSystemMessageOutputConfigEffort.Xhigh, 3, "xhigh")]
+    [InlineData(BetaSystemMessageOutputConfigEffort.Max, 4, "max")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaSystemMessageOutputConfigEffort rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaSystemMessageOutputConfigEffort> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaSystemMessageOutputConfigEffort>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -141,20 +141,28 @@ public class BetaClaudeCodeRbacGroupStatusTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaClaudeCodeRbacGroupStatusType.Active)]
-    [InlineData(BetaClaudeCodeRbacGroupStatusType.Deleted)]
-    [InlineData(BetaClaudeCodeRbacGroupStatusType.Unknown)]
-    public void SerializationRoundtrip_Works(BetaClaudeCodeRbacGroupStatusType rawValue)
+    [InlineData(BetaClaudeCodeRbacGroupStatusType.Active, 0, "active")]
+    [InlineData(BetaClaudeCodeRbacGroupStatusType.Deleted, 1, "deleted")]
+    [InlineData(BetaClaudeCodeRbacGroupStatusType.Unknown, 2, "unknown")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaClaudeCodeRbacGroupStatusType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaClaudeCodeRbacGroupStatusType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaClaudeCodeRbacGroupStatusType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

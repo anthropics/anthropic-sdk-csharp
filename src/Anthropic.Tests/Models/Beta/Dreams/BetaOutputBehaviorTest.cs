@@ -110,20 +110,28 @@ public class BetaOutputBehaviorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaOutputBehaviorType.CreateNew)]
-    [InlineData(BetaOutputBehaviorType.UpdateExisting)]
-    public void SerializationRoundtrip_Works(BetaOutputBehaviorType rawValue)
+    [InlineData(BetaOutputBehaviorType.CreateNew, 0, "create_new")]
+    [InlineData(BetaOutputBehaviorType.UpdateExisting, 1, "update_existing")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaOutputBehaviorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaOutputBehaviorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaOutputBehaviorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -670,9 +670,9 @@ sealed class FederationIssuerJwksConverter : JsonConverter<FederationIssuerJwks>
 [JsonConverter(typeof(FederationIssuerJwksTypeConverter))]
 public enum FederationIssuerJwksType
 {
-    Discovery,
-    ExplicitUrl,
-    Inline,
+    Discovery = 0,
+    ExplicitUrl = 1,
+    Inline = 2,
 }
 
 sealed class FederationIssuerJwksTypeConverter : JsonConverter<FederationIssuerJwksType>

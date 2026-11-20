@@ -227,13 +227,13 @@ public record class SpendLimitListParams : ParamsBase
 [JsonConverter(typeof(ScopeTypeConverter))]
 public enum ScopeType
 {
-    Organization,
-    OrganizationService,
-    RbacGroup,
-    SeatTier,
-    UsageTier,
-    User,
-    Workspace,
+    Organization = 0,
+    OrganizationService = 1,
+    RbacGroup = 2,
+    SeatTier = 3,
+    UsageTier = 4,
+    User = 5,
+    Workspace = 6,
 }
 
 sealed class ScopeTypeConverter : JsonConverter<ScopeType>

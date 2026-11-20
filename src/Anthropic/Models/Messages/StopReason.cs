@@ -8,13 +8,13 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(StopReasonConverter))]
 public enum StopReason
 {
-    EndTurn,
-    MaxTokens,
-    StopSequence,
-    ToolUse,
-    PauseTurn,
-    Refusal,
-    ModelContextWindowExceeded,
+    EndTurn = 0,
+    MaxTokens = 1,
+    StopSequence = 2,
+    ToolUse = 3,
+    PauseTurn = 4,
+    Refusal = 5,
+    ModelContextWindowExceeded = 6,
 }
 
 sealed class StopReasonConverter : JsonConverter<StopReason>

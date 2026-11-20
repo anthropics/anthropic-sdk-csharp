@@ -665,11 +665,11 @@ sealed class BetaRequestDocumentBlockSourceConverter : JsonConverter<BetaRequest
 [JsonConverter(typeof(BetaRequestDocumentBlockSourceTypeConverter))]
 public enum BetaRequestDocumentBlockSourceType
 {
-    Base64,
-    Text,
-    Content,
-    Url,
-    File,
+    Base64 = 0,
+    Text = 1,
+    Content = 2,
+    Url = 3,
+    File = 4,
 }
 
 sealed class BetaRequestDocumentBlockSourceTypeConverter

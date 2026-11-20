@@ -537,9 +537,9 @@ sealed class BetaManagedAgentsSessionAgentUpdateToolConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionAgentUpdateToolTypeConverter))]
 public enum BetaManagedAgentsSessionAgentUpdateToolType
 {
-    AgentToolset20260401,
-    McpToolset,
-    Custom,
+    AgentToolset20260401 = 0,
+    McpToolset = 1,
+    Custom = 2,
 }
 
 sealed class BetaManagedAgentsSessionAgentUpdateToolTypeConverter

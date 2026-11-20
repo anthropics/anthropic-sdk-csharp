@@ -206,10 +206,10 @@ class OrganizationInviteFromRaw : IFromRawJson<OrganizationInvite>
 [JsonConverter(typeof(OrganizationInviteStatusConverter))]
 public enum OrganizationInviteStatus
 {
-    Accepted,
-    Deleted,
-    Expired,
-    Pending,
+    Accepted = 0,
+    Deleted = 1,
+    Expired = 2,
+    Pending = 3,
 }
 
 sealed class OrganizationInviteStatusConverter : JsonConverter<OrganizationInviteStatus>

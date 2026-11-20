@@ -740,8 +740,8 @@ sealed class TriggerConverter : JsonConverter<Trigger>
 [JsonConverter(typeof(TriggerTypeConverter))]
 public enum TriggerType
 {
-    InputTokens,
-    ToolUses,
+    InputTokens = 0,
+    ToolUses = 1,
 }
 
 sealed class TriggerTypeConverter : JsonConverter<TriggerType>

@@ -418,8 +418,8 @@ sealed class AgentConverter : JsonConverter<Agent>
 [JsonConverter(typeof(AgentTypeConverter))]
 public enum AgentType
 {
-    Agent,
-    Advisor,
+    Agent = 0,
+    Advisor = 1,
 }
 
 sealed class AgentTypeConverter : JsonConverter<AgentType>

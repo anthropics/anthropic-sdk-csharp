@@ -472,20 +472,28 @@ public class BetaManagedAgentsCredentialAuthTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsCredentialAuthType.McpOAuth)]
-    [InlineData(BetaManagedAgentsCredentialAuthType.StaticBearer)]
-    [InlineData(BetaManagedAgentsCredentialAuthType.EnvironmentVariable)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsCredentialAuthType rawValue)
+    [InlineData(BetaManagedAgentsCredentialAuthType.McpOAuth, 0, "mcp_oauth")]
+    [InlineData(BetaManagedAgentsCredentialAuthType.StaticBearer, 1, "static_bearer")]
+    [InlineData(BetaManagedAgentsCredentialAuthType.EnvironmentVariable, 2, "environment_variable")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsCredentialAuthType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsCredentialAuthType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsCredentialAuthType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

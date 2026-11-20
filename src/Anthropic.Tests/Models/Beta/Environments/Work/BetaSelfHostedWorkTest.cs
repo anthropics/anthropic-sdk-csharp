@@ -226,23 +226,27 @@ public class StateTest : TestBase
     }
 
     [Theory]
-    [InlineData(State.Queued)]
-    [InlineData(State.Starting)]
-    [InlineData(State.Active)]
-    [InlineData(State.Stopping)]
-    [InlineData(State.Stopped)]
-    public void SerializationRoundtrip_Works(State rawValue)
+    [InlineData(State.Queued, 0, "queued")]
+    [InlineData(State.Starting, 1, "starting")]
+    [InlineData(State.Active, 2, "active")]
+    [InlineData(State.Stopping, 3, "stopping")]
+    [InlineData(State.Stopped, 4, "stopped")]
+    public void EnumMemberSerializationRoundtrip_Works(State rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, State> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, State>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

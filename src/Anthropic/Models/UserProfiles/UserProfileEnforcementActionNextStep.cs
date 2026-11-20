@@ -13,7 +13,7 @@ namespace Anthropic.Models.UserProfiles;
 [JsonConverter(typeof(UserProfileEnforcementActionNextStepConverter))]
 public enum UserProfileEnforcementActionNextStep
 {
-    Verify,
+    Verify = 0,
 }
 
 sealed class UserProfileEnforcementActionNextStepConverter

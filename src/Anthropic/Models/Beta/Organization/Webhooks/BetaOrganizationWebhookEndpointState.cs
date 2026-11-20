@@ -11,8 +11,8 @@ namespace Anthropic.Models.Beta.Organization.Webhooks;
 [JsonConverter(typeof(BetaOrganizationWebhookEndpointStateConverter))]
 public enum BetaOrganizationWebhookEndpointState
 {
-    Disabled,
-    Enabled,
+    Disabled = 0,
+    Enabled = 1,
 }
 
 sealed class BetaOrganizationWebhookEndpointStateConverter

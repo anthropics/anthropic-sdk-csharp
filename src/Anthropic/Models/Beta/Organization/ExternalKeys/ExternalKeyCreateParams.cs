@@ -586,9 +586,9 @@ sealed class ProviderConfigConverter : JsonConverter<ProviderConfig>
 [JsonConverter(typeof(ProviderConfigTypeConverter))]
 public enum ProviderConfigType
 {
-    Aws,
-    Gcp,
-    Azure,
+    Aws = 0,
+    Gcp = 1,
+    Azure = 2,
 }
 
 sealed class ProviderConfigTypeConverter : JsonConverter<ProviderConfigType>
@@ -636,7 +636,7 @@ sealed class ProviderConfigTypeConverter : JsonConverter<ProviderConfigType>
 [JsonConverter(typeof(GeoConverter))]
 public enum Geo
 {
-    Us,
+    Us = 0,
 }
 
 sealed class GeoConverter : JsonConverter<Geo>

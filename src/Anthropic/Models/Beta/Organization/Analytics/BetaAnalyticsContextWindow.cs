@@ -8,8 +8,8 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsContextWindowConverter))]
 public enum BetaAnalyticsContextWindow
 {
-    From0To200k,
-    From200kTo1M,
+    From0To200k = 0,
+    From200kTo1M = 1,
 }
 
 sealed class BetaAnalyticsContextWindowConverter : JsonConverter<BetaAnalyticsContextWindow>

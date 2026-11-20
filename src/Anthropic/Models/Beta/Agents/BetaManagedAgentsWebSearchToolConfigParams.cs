@@ -610,9 +610,9 @@ sealed class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyTypeConverter
@@ -662,7 +662,7 @@ sealed class BetaManagedAgentsWebSearchToolConfigParamsPermissionPolicyTypeConve
 [JsonConverter(typeof(BetaManagedAgentsWebSearchToolConfigParamsTypeConverter))]
 public enum BetaManagedAgentsWebSearchToolConfigParamsType
 {
-    WebSearch,
+    WebSearch = 0,
 }
 
 sealed class BetaManagedAgentsWebSearchToolConfigParamsTypeConverter

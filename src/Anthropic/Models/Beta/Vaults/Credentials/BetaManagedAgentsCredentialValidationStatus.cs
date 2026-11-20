@@ -14,21 +14,21 @@ public enum BetaManagedAgentsCredentialValidationStatus
     /// <summary>
     /// The credential successfully authenticated against its MCP server.
     /// </summary>
-    Valid,
+    Valid = 0,
 
     /// <summary>
     /// The probe reached the MCP server and the server rejected the credential,
     /// or no access token is stored. A refresh, if one was tried, didn't recover
     /// it. Usually the end user needs to authorize again.
     /// </summary>
-    Invalid,
+    Invalid = 1,
 
     /// <summary>
     /// The probe couldn't tell whether the credential works, for example because
     /// of a network error or because a refresh succeeded but the new access token
     /// wasn't tested. Validate the credential again to find out.
     /// </summary>
-    Unknown,
+    Unknown = 2,
 }
 
 sealed class BetaManagedAgentsCredentialValidationStatusConverter

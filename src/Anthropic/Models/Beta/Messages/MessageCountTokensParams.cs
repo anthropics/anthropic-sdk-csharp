@@ -618,8 +618,8 @@ public record class MessageCountTokensParams : ParamsBase
 [JsonConverter(typeof(MessageCountTokensParamsSpeedConverter))]
 public enum MessageCountTokensParamsSpeed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class MessageCountTokensParamsSpeedConverter : JsonConverter<MessageCountTokensParamsSpeed>

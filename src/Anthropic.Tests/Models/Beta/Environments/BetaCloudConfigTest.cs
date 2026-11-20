@@ -313,20 +313,28 @@ public class NetworkingTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(NetworkingType.Unrestricted)]
-    [InlineData(NetworkingType.Limited)]
-    public void SerializationRoundtrip_Works(NetworkingType rawValue)
+    [InlineData(NetworkingType.Unrestricted, 0, "unrestricted")]
+    [InlineData(NetworkingType.Limited, 1, "limited")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        NetworkingType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, NetworkingType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, NetworkingType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

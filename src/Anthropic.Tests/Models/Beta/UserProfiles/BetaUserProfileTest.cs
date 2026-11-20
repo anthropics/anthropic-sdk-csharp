@@ -578,20 +578,28 @@ public class BetaUserProfileAccessTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaUserProfileAccessType.Application)]
-    [InlineData(BetaUserProfileAccessType.Passthrough)]
-    public void SerializationRoundtrip_Works(BetaUserProfileAccessType rawValue)
+    [InlineData(BetaUserProfileAccessType.Application, 0, "application")]
+    [InlineData(BetaUserProfileAccessType.Passthrough, 1, "passthrough")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaUserProfileAccessType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaUserProfileAccessType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaUserProfileAccessType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

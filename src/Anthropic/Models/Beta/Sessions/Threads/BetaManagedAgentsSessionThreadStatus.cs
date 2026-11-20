@@ -8,10 +8,10 @@ namespace Anthropic.Models.Beta.Sessions.Threads;
 [JsonConverter(typeof(BetaManagedAgentsSessionThreadStatusConverter))]
 public enum BetaManagedAgentsSessionThreadStatus
 {
-    Running,
-    Idle,
-    Rescheduling,
-    Terminated,
+    Running = 0,
+    Idle = 1,
+    Rescheduling = 2,
+    Terminated = 3,
 }
 
 sealed class BetaManagedAgentsSessionThreadStatusConverter

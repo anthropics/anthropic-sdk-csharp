@@ -675,9 +675,9 @@ sealed class BetaFederationIssuerJwksConverter : JsonConverter<BetaFederationIss
 [JsonConverter(typeof(BetaFederationIssuerJwksTypeConverter))]
 public enum BetaFederationIssuerJwksType
 {
-    Discovery,
-    ExplicitUrl,
-    Inline,
+    Discovery = 0,
+    ExplicitUrl = 1,
+    Inline = 2,
 }
 
 sealed class BetaFederationIssuerJwksTypeConverter : JsonConverter<BetaFederationIssuerJwksType>

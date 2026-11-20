@@ -542,9 +542,9 @@ sealed class BetaManagedAgentsRepositoryNotFoundErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsRepositoryNotFoundErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsRepositoryNotFoundErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsRepositoryNotFoundErrorRetryStatusTypeConverter

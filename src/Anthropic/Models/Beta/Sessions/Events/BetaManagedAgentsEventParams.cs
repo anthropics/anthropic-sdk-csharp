@@ -716,13 +716,13 @@ sealed class BetaManagedAgentsEventParamsConverter : JsonConverter<BetaManagedAg
 [JsonConverter(typeof(BetaManagedAgentsEventParamsTypeConverter))]
 public enum BetaManagedAgentsEventParamsType
 {
-    UserMessage,
-    UserInterrupt,
-    UserToolConfirmation,
-    UserCustomToolResult,
-    UserDefineOutcome,
-    UserToolResult,
-    SystemMessage,
+    UserMessage = 0,
+    UserInterrupt = 1,
+    UserToolConfirmation = 2,
+    UserCustomToolResult = 3,
+    UserDefineOutcome = 4,
+    UserToolResult = 5,
+    SystemMessage = 6,
 }
 
 sealed class BetaManagedAgentsEventParamsTypeConverter

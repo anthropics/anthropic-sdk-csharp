@@ -526,9 +526,9 @@ sealed class BetaManagedAgentsModelRequestFailedErrorRetryStatusConverter
 [JsonConverter(typeof(BetaManagedAgentsModelRequestFailedErrorRetryStatusTypeConverter))]
 public enum BetaManagedAgentsModelRequestFailedErrorRetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class BetaManagedAgentsModelRequestFailedErrorRetryStatusTypeConverter

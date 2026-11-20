@@ -544,9 +544,9 @@ sealed class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthConverter
 [JsonConverter(typeof(BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeConverter))]
 public enum BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthType
 {
-    None,
-    ClientSecretBasic,
-    ClientSecretPost,
+    None = 0,
+    ClientSecretBasic = 1,
+    ClientSecretPost = 2,
 }
 
 sealed class BetaManagedAgentsMcpOAuthRefreshResponseTokenEndpointAuthTypeConverter

@@ -30,20 +30,28 @@ public class UserProfileListOrderByTest : TestBase
     }
 
     [Theory]
-    [InlineData(UserProfileListOrderBy.CreatedAt)]
-    [InlineData(UserProfileListOrderBy.Name)]
-    public void SerializationRoundtrip_Works(UserProfileListOrderBy rawValue)
+    [InlineData(UserProfileListOrderBy.CreatedAt, 0, "created_at")]
+    [InlineData(UserProfileListOrderBy.Name, 1, "name")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        UserProfileListOrderBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, UserProfileListOrderBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, UserProfileListOrderBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -467,8 +467,8 @@ class BetaDataResidencyUpdateConfigAllowedInferenceGeosUnrestrictedConverter
 [JsonConverter(typeof(BetaDataResidencyUpdateConfigDefaultInferenceGeoConverter))]
 public enum BetaDataResidencyUpdateConfigDefaultInferenceGeo
 {
-    Global,
-    Us,
+    Global = 0,
+    Us = 1,
 }
 
 sealed class BetaDataResidencyUpdateConfigDefaultInferenceGeoConverter

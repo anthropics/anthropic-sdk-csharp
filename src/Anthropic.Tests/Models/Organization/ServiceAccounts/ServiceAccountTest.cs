@@ -195,19 +195,27 @@ public class ServiceAccountOrganizationRoleTest : TestBase
     }
 
     [Theory]
-    [InlineData(ServiceAccountOrganizationRole.Admin)]
-    [InlineData(ServiceAccountOrganizationRole.Developer)]
-    public void SerializationRoundtrip_Works(ServiceAccountOrganizationRole rawValue)
+    [InlineData(ServiceAccountOrganizationRole.Admin, 0, "admin")]
+    [InlineData(ServiceAccountOrganizationRole.Developer, 1, "developer")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ServiceAccountOrganizationRole rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ServiceAccountOrganizationRole> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, ServiceAccountOrganizationRole>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

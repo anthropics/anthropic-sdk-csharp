@@ -350,22 +350,30 @@ public class BetaManagedAgentsEffortLevelTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsEffortLevel.Low)]
-    [InlineData(BetaManagedAgentsEffortLevel.Medium)]
-    [InlineData(BetaManagedAgentsEffortLevel.High)]
-    [InlineData(BetaManagedAgentsEffortLevel.Xhigh)]
-    [InlineData(BetaManagedAgentsEffortLevel.Max)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsEffortLevel rawValue)
+    [InlineData(BetaManagedAgentsEffortLevel.Low, 0, "low")]
+    [InlineData(BetaManagedAgentsEffortLevel.Medium, 1, "medium")]
+    [InlineData(BetaManagedAgentsEffortLevel.High, 2, "high")]
+    [InlineData(BetaManagedAgentsEffortLevel.Xhigh, 3, "xhigh")]
+    [InlineData(BetaManagedAgentsEffortLevel.Max, 4, "max")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsEffortLevel rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsEffortLevel> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsEffortLevel>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -408,19 +416,27 @@ public class BetaManagedAgentsModelConfigParamsSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsModelConfigParamsSpeed.Standard)]
-    [InlineData(BetaManagedAgentsModelConfigParamsSpeed.Fast)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsModelConfigParamsSpeed rawValue)
+    [InlineData(BetaManagedAgentsModelConfigParamsSpeed.Standard, 0, "standard")]
+    [InlineData(BetaManagedAgentsModelConfigParamsSpeed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsModelConfigParamsSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsModelConfigParamsSpeed>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

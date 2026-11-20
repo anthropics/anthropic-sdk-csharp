@@ -1657,49 +1657,57 @@ public class BetaBrowserToolUseBlockNameTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaBrowserToolUseBlockName.Navigate)]
-    [InlineData(BetaBrowserToolUseBlockName.ListTabs)]
-    [InlineData(BetaBrowserToolUseBlockName.NewTab)]
-    [InlineData(BetaBrowserToolUseBlockName.SwitchTab)]
-    [InlineData(BetaBrowserToolUseBlockName.CloseTab)]
-    [InlineData(BetaBrowserToolUseBlockName.ReadPage)]
-    [InlineData(BetaBrowserToolUseBlockName.GetPageText)]
-    [InlineData(BetaBrowserToolUseBlockName.ReadConsole)]
-    [InlineData(BetaBrowserToolUseBlockName.ReadNetwork)]
-    [InlineData(BetaBrowserToolUseBlockName.Find)]
-    [InlineData(BetaBrowserToolUseBlockName.FormInput)]
-    [InlineData(BetaBrowserToolUseBlockName.FileUpload)]
-    [InlineData(BetaBrowserToolUseBlockName.ScrollTo)]
-    [InlineData(BetaBrowserToolUseBlockName.Screenshot)]
-    [InlineData(BetaBrowserToolUseBlockName.Zoom)]
-    [InlineData(BetaBrowserToolUseBlockName.LeftClick)]
-    [InlineData(BetaBrowserToolUseBlockName.RightClick)]
-    [InlineData(BetaBrowserToolUseBlockName.MiddleClick)]
-    [InlineData(BetaBrowserToolUseBlockName.DoubleClick)]
-    [InlineData(BetaBrowserToolUseBlockName.TripleClick)]
-    [InlineData(BetaBrowserToolUseBlockName.Hover)]
-    [InlineData(BetaBrowserToolUseBlockName.LeftClickDrag)]
-    [InlineData(BetaBrowserToolUseBlockName.LeftMouseDown)]
-    [InlineData(BetaBrowserToolUseBlockName.LeftMouseUp)]
-    [InlineData(BetaBrowserToolUseBlockName.MouseMove)]
-    [InlineData(BetaBrowserToolUseBlockName.Scroll)]
-    [InlineData(BetaBrowserToolUseBlockName.Type)]
-    [InlineData(BetaBrowserToolUseBlockName.Key)]
-    [InlineData(BetaBrowserToolUseBlockName.HoldKey)]
-    [InlineData(BetaBrowserToolUseBlockName.Wait)]
-    [InlineData(BetaBrowserToolUseBlockName.JavascriptExec)]
-    public void SerializationRoundtrip_Works(BetaBrowserToolUseBlockName rawValue)
+    [InlineData(BetaBrowserToolUseBlockName.Navigate, 0, "navigate")]
+    [InlineData(BetaBrowserToolUseBlockName.ListTabs, 1, "list_tabs")]
+    [InlineData(BetaBrowserToolUseBlockName.NewTab, 2, "new_tab")]
+    [InlineData(BetaBrowserToolUseBlockName.SwitchTab, 3, "switch_tab")]
+    [InlineData(BetaBrowserToolUseBlockName.CloseTab, 4, "close_tab")]
+    [InlineData(BetaBrowserToolUseBlockName.ReadPage, 5, "read_page")]
+    [InlineData(BetaBrowserToolUseBlockName.GetPageText, 6, "get_page_text")]
+    [InlineData(BetaBrowserToolUseBlockName.ReadConsole, 7, "read_console")]
+    [InlineData(BetaBrowserToolUseBlockName.ReadNetwork, 8, "read_network")]
+    [InlineData(BetaBrowserToolUseBlockName.Find, 9, "find")]
+    [InlineData(BetaBrowserToolUseBlockName.FormInput, 10, "form_input")]
+    [InlineData(BetaBrowserToolUseBlockName.FileUpload, 11, "file_upload")]
+    [InlineData(BetaBrowserToolUseBlockName.ScrollTo, 12, "scroll_to")]
+    [InlineData(BetaBrowserToolUseBlockName.Screenshot, 13, "screenshot")]
+    [InlineData(BetaBrowserToolUseBlockName.Zoom, 14, "zoom")]
+    [InlineData(BetaBrowserToolUseBlockName.LeftClick, 15, "left_click")]
+    [InlineData(BetaBrowserToolUseBlockName.RightClick, 16, "right_click")]
+    [InlineData(BetaBrowserToolUseBlockName.MiddleClick, 17, "middle_click")]
+    [InlineData(BetaBrowserToolUseBlockName.DoubleClick, 18, "double_click")]
+    [InlineData(BetaBrowserToolUseBlockName.TripleClick, 19, "triple_click")]
+    [InlineData(BetaBrowserToolUseBlockName.Hover, 20, "hover")]
+    [InlineData(BetaBrowserToolUseBlockName.LeftClickDrag, 21, "left_click_drag")]
+    [InlineData(BetaBrowserToolUseBlockName.LeftMouseDown, 22, "left_mouse_down")]
+    [InlineData(BetaBrowserToolUseBlockName.LeftMouseUp, 23, "left_mouse_up")]
+    [InlineData(BetaBrowserToolUseBlockName.MouseMove, 24, "mouse_move")]
+    [InlineData(BetaBrowserToolUseBlockName.Scroll, 25, "scroll")]
+    [InlineData(BetaBrowserToolUseBlockName.Type, 26, "type")]
+    [InlineData(BetaBrowserToolUseBlockName.Key, 27, "key")]
+    [InlineData(BetaBrowserToolUseBlockName.HoldKey, 28, "hold_key")]
+    [InlineData(BetaBrowserToolUseBlockName.Wait, 29, "wait")]
+    [InlineData(BetaBrowserToolUseBlockName.JavascriptExec, 30, "javascript_exec")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaBrowserToolUseBlockName rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaBrowserToolUseBlockName> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaBrowserToolUseBlockName>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

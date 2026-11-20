@@ -27,24 +27,34 @@ for PATHSPEC in "${TEST_PATHS[@]}"; do
     git checkout "$1" -- "${PATHSPEC}" 2>/dev/null || true
 done
 
-# Instead of running the tests, compile them: an older test that no longer
+# Instead of running all the tests, compile them: an older test that no longer
 # builds is no longer compatible with the latest SDK.
+TESTS=src/Anthropic.Tests/Anthropic.Tests.csproj
 ERRORS=$(mktemp)
-if dotnet build src/Anthropic.Tests/Anthropic.Tests.csproj "-flp:errorsonly;logfile=$ERRORS"; then
-    exit 0
+IGNORED_FILES=$(mktemp)
+if ! dotnet build "$TESTS" "-flp:errorsonly;logfile=$ERRORS"; then
+    # ResponseOnlyTests.txt lists the tests of models that appear only in API responses, which only code
+    # that fakes a response creates. Fail if no error was logged, or on any error but the two kinds ignored there.
+    awk -v tests=src/Anthropic.Tests/Models/ResponseOnlyTests.txt -v root="$PWD/" -v ignored_files="$IGNORED_FILES" '
+        BEGIN { while ((getline test < tests) > 0) response_only[test] }
+        { file = substr($0, index($0, root) + length(root)); sub(/\(.*/, "", file) }
+        / error CS(9035|8625): / && file in response_only { ignored++; print file > ignored_files; next }
+        { failing = failing $0 "\n" }
+        END {
+            ignorable = "required members left unset (CS9035) and nulls no longer allowed (CS8625), in tests of models that appear only in API responses"
+            if (failing && ignored) printf "==> Breaking changes found. Ignored %d error(s) above: %s. These errors fail the check:\n%s", ignored, ignorable, failing
+            if (failing || !ignored) exit 1
+            print "==> No breaking changes in the build. Ignored all " ignored " error(s) above: " ignorable
+        }
+    ' "$ERRORS"
+
+    # The tests below need a build, so build without the files that hold the ignored errors.
+    xargs rm -f < "$IGNORED_FILES"
+    dotnet build "$TESTS" --framework net8.0
 fi
 
-# ResponseOnlyTests.txt lists the tests of models that appear only in API responses, which only code
-# that fakes a response creates. Fail if no error was logged, or on any error but the two kinds ignored there.
-awk -v tests=src/Anthropic.Tests/Models/ResponseOnlyTests.txt -v root="$PWD/" '
-    BEGIN { while ((getline test < tests) > 0) response_only[test] }
-    { file = substr($0, index($0, root) + length(root)); sub(/\(.*/, "", file) }
-    / error CS(9035|8625): / && file in response_only { ignored++; next }
-    { failing = failing $0 "\n" }
-    END {
-        ignorable = "required members left unset (CS9035) and nulls no longer allowed (CS8625), in tests of models that appear only in API responses"
-        if (failing && ignored) printf "==> Breaking changes found. Ignored %d error(s) above: %s. These errors fail the check:\n%s", ignored, ignorable, failing
-        if (failing || !ignored) exit 1
-        print "==> No breaking changes. Ignored all " ignored " error(s) above: " ignorable
-    }
-' "$ERRORS"
+# An enum member whose number or API value changed still builds, so run the older tests that state both.
+if ! dotnet test "$TESTS" --no-build --framework net8.0 --filter "FullyQualifiedName~.EnumMemberSerializationRoundtrip_Works"; then
+    echo "==> The older enum tests did not pass. Each failed test above names a member whose number or API value changed, which is a breaking change."
+    exit 1
+fi

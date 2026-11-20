@@ -277,23 +277,31 @@ public class BetaRawContentBlockDeltaTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaRawContentBlockDeltaType.TextDelta)]
-    [InlineData(BetaRawContentBlockDeltaType.InputJsonDelta)]
-    [InlineData(BetaRawContentBlockDeltaType.CitationsDelta)]
-    [InlineData(BetaRawContentBlockDeltaType.ThinkingDelta)]
-    [InlineData(BetaRawContentBlockDeltaType.SignatureDelta)]
-    [InlineData(BetaRawContentBlockDeltaType.CompactionDelta)]
-    public void SerializationRoundtrip_Works(BetaRawContentBlockDeltaType rawValue)
+    [InlineData(BetaRawContentBlockDeltaType.TextDelta, 0, "text_delta")]
+    [InlineData(BetaRawContentBlockDeltaType.InputJsonDelta, 1, "input_json_delta")]
+    [InlineData(BetaRawContentBlockDeltaType.CitationsDelta, 2, "citations_delta")]
+    [InlineData(BetaRawContentBlockDeltaType.ThinkingDelta, 3, "thinking_delta")]
+    [InlineData(BetaRawContentBlockDeltaType.SignatureDelta, 4, "signature_delta")]
+    [InlineData(BetaRawContentBlockDeltaType.CompactionDelta, 5, "compaction_delta")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaRawContentBlockDeltaType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaRawContentBlockDeltaType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaRawContentBlockDeltaType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

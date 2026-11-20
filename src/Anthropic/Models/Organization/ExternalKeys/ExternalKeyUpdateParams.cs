@@ -202,7 +202,7 @@ public record class ExternalKeyUpdateParams : ParamsBase
 [JsonConverter(typeof(ExternalKeyUpdateParamsGeoConverter))]
 public enum ExternalKeyUpdateParamsGeo
 {
-    Us,
+    Us = 0,
 }
 
 sealed class ExternalKeyUpdateParamsGeoConverter : JsonConverter<ExternalKeyUpdateParamsGeo>
@@ -639,9 +639,9 @@ sealed class ExternalKeyUpdateParamsProviderConfigConverter
 [JsonConverter(typeof(ExternalKeyUpdateParamsProviderConfigTypeConverter))]
 public enum ExternalKeyUpdateParamsProviderConfigType
 {
-    Aws,
-    Gcp,
-    Azure,
+    Aws = 0,
+    Gcp = 1,
+    Azure = 2,
 }
 
 sealed class ExternalKeyUpdateParamsProviderConfigTypeConverter

@@ -677,19 +677,27 @@ public class MessageCountTokensParamsSpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(Messages::MessageCountTokensParamsSpeed.Standard)]
-    [InlineData(Messages::MessageCountTokensParamsSpeed.Fast)]
-    public void SerializationRoundtrip_Works(Messages::MessageCountTokensParamsSpeed rawValue)
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Standard, 0, "standard")]
+    [InlineData(Messages::MessageCountTokensParamsSpeed.Fast, 1, "fast")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Messages::MessageCountTokensParamsSpeed rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Messages::MessageCountTokensParamsSpeed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, Messages::MessageCountTokensParamsSpeed>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

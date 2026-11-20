@@ -462,10 +462,10 @@ sealed class BetaAnalyticsFederatedActorProviderConverter
 [JsonConverter(typeof(BetaAnalyticsFederatedActorProviderTypeConverter))]
 public enum BetaAnalyticsFederatedActorProviderType
 {
-    Aws,
-    Azure,
-    Gcp,
-    Oidc,
+    Aws = 0,
+    Azure = 1,
+    Gcp = 2,
+    Oidc = 3,
 }
 
 sealed class BetaAnalyticsFederatedActorProviderTypeConverter

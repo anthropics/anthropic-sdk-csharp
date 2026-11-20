@@ -301,10 +301,10 @@ class WebSearchTool20260318FromRaw : IFromRawJson<WebSearchTool20260318>
 [JsonConverter(typeof(WebSearchTool20260318AllowedCallerConverter))]
 public enum WebSearchTool20260318AllowedCaller
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
+    CodeExecution20260521 = 3,
 }
 
 sealed class WebSearchTool20260318AllowedCallerConverter
@@ -363,8 +363,8 @@ sealed class WebSearchTool20260318AllowedCallerConverter
 [JsonConverter(typeof(WebSearchTool20260318ResponseInclusionConverter))]
 public enum WebSearchTool20260318ResponseInclusion
 {
-    Full,
-    Excluded,
+    Full = 0,
+    Excluded = 1,
 }
 
 sealed class WebSearchTool20260318ResponseInclusionConverter

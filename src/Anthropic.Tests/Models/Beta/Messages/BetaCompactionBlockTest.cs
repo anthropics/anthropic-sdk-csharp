@@ -322,20 +322,28 @@ public class ToolChangeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolChangeType.ToolAddition)]
-    [InlineData(ToolChangeType.ToolRemoval)]
-    public void SerializationRoundtrip_Works(ToolChangeType rawValue)
+    [InlineData(ToolChangeType.ToolAddition, 0, "tool_addition")]
+    [InlineData(ToolChangeType.ToolRemoval, 1, "tool_removal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolChangeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolChangeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolChangeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

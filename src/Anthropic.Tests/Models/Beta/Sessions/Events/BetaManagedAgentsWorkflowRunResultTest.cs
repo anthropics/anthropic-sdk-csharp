@@ -149,20 +149,28 @@ public class BetaManagedAgentsWorkflowRunResultTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsWorkflowRunResultType.Completed)]
-    [InlineData(BetaManagedAgentsWorkflowRunResultType.Error)]
-    [InlineData(BetaManagedAgentsWorkflowRunResultType.Stopped)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsWorkflowRunResultType rawValue)
+    [InlineData(BetaManagedAgentsWorkflowRunResultType.Completed, 0, "completed")]
+    [InlineData(BetaManagedAgentsWorkflowRunResultType.Error, 1, "error")]
+    [InlineData(BetaManagedAgentsWorkflowRunResultType.Stopped, 2, "stopped")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsWorkflowRunResultType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsWorkflowRunResultType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsWorkflowRunResultType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -222,22 +222,42 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     }
 
     [Theory]
-    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed)]
-    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered)]
-    [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
-    [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
-    [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]
-    public void SerializationRoundtrip_Works(WebhookUpdateParamsEnabledEvent rawValue)
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed, 0, "external_key.failed")]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered, 1, "external_key.recovered")]
+    [InlineData(
+        WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
+        2,
+        "user_profile.enforcement_action_opened"
+    )]
+    [InlineData(
+        WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved,
+        3,
+        "user_profile.enforcement_action_resolved"
+    )]
+    [InlineData(
+        WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated,
+        4,
+        "user_profile.program_status_updated"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        WebhookUpdateParamsEnabledEvent rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, WebhookUpdateParamsEnabledEvent> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, WebhookUpdateParamsEnabledEvent>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -281,20 +301,24 @@ public class StateTest : TestBase
     }
 
     [Theory]
-    [InlineData(State.Disabled)]
-    [InlineData(State.Enabled)]
-    public void SerializationRoundtrip_Works(State rawValue)
+    [InlineData(State.Disabled, 0, "disabled")]
+    [InlineData(State.Enabled, 1, "enabled")]
+    public void EnumMemberSerializationRoundtrip_Works(State rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, State> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, State>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -319,8 +319,8 @@ sealed class BetaMessageThreadParamConverter : JsonConverter<BetaMessageThreadPa
 [JsonConverter(typeof(BetaMessageThreadParamTypeConverter))]
 public enum BetaMessageThreadParamType
 {
-    Create,
-    Continue,
+    Create = 0,
+    Continue = 1,
 }
 
 sealed class BetaMessageThreadParamTypeConverter : JsonConverter<BetaMessageThreadParamType>

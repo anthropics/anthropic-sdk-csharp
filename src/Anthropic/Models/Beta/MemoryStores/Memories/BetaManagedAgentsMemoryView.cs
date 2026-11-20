@@ -20,13 +20,13 @@ public enum BetaManagedAgentsMemoryView
     /// and `content_sha256` fields remain populated, so sync clients can diff without
     /// fetching content.
     /// </summary>
-    Basic,
+    Basic = 0,
 
     /// <summary>
     /// Return the object with `content` populated. On list endpoints, `view=full`
     /// caps `limit` at 20.
     /// </summary>
-    Full,
+    Full = 1,
 }
 
 sealed class BetaManagedAgentsMemoryViewConverter : JsonConverter<BetaManagedAgentsMemoryView>

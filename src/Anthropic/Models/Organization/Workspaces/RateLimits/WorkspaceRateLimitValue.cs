@@ -422,8 +422,8 @@ sealed class SourceConverter : JsonConverter<Source>
 [JsonConverter(typeof(SourceTypeConverter))]
 public enum SourceType
 {
-    Workspace,
-    Organization,
+    Workspace = 0,
+    Organization = 1,
 }
 
 sealed class SourceTypeConverter : JsonConverter<SourceType>

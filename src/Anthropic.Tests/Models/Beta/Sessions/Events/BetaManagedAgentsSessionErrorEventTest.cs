@@ -814,33 +814,41 @@ public class ErrorTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ErrorType.UnknownError)]
-    [InlineData(ErrorType.ModelOverloadedError)]
-    [InlineData(ErrorType.ModelRateLimitedError)]
-    [InlineData(ErrorType.ModelRequestFailedError)]
-    [InlineData(ErrorType.McpConnectionFailedError)]
-    [InlineData(ErrorType.McpAuthenticationFailedError)]
-    [InlineData(ErrorType.BillingError)]
-    [InlineData(ErrorType.CredentialHostUnreachableError)]
-    [InlineData(ErrorType.ToolUseLimitReachedError)]
-    [InlineData(ErrorType.CompactionLimitReachedError)]
-    [InlineData(ErrorType.RepositoryAuthenticationError)]
-    [InlineData(ErrorType.RepositoryForbiddenError)]
-    [InlineData(ErrorType.RepositoryNotFoundError)]
-    [InlineData(ErrorType.RepositoryCheckoutError)]
-    [InlineData(ErrorType.RepositoryCloneError)]
-    public void SerializationRoundtrip_Works(ErrorType rawValue)
+    [InlineData(ErrorType.UnknownError, 0, "unknown_error")]
+    [InlineData(ErrorType.ModelOverloadedError, 1, "model_overloaded_error")]
+    [InlineData(ErrorType.ModelRateLimitedError, 2, "model_rate_limited_error")]
+    [InlineData(ErrorType.ModelRequestFailedError, 3, "model_request_failed_error")]
+    [InlineData(ErrorType.McpConnectionFailedError, 4, "mcp_connection_failed_error")]
+    [InlineData(ErrorType.McpAuthenticationFailedError, 5, "mcp_authentication_failed_error")]
+    [InlineData(ErrorType.BillingError, 6, "billing_error")]
+    [InlineData(ErrorType.CredentialHostUnreachableError, 7, "credential_host_unreachable_error")]
+    [InlineData(ErrorType.ToolUseLimitReachedError, 8, "tool_use_limit_reached_error")]
+    [InlineData(ErrorType.CompactionLimitReachedError, 9, "compaction_limit_reached_error")]
+    [InlineData(ErrorType.RepositoryAuthenticationError, 10, "repository_authentication_error")]
+    [InlineData(ErrorType.RepositoryForbiddenError, 11, "repository_forbidden_error")]
+    [InlineData(ErrorType.RepositoryNotFoundError, 12, "repository_not_found_error")]
+    [InlineData(ErrorType.RepositoryCheckoutError, 13, "repository_checkout_error")]
+    [InlineData(ErrorType.RepositoryCloneError, 14, "repository_clone_error")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ErrorType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ErrorType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ErrorType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

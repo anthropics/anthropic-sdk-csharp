@@ -191,20 +191,28 @@ public class BetaSkillParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaSkillParamsType.Anthropic)]
-    [InlineData(BetaSkillParamsType.Custom)]
-    public void SerializationRoundtrip_Works(BetaSkillParamsType rawValue)
+    [InlineData(BetaSkillParamsType.Anthropic, 0, "anthropic")]
+    [InlineData(BetaSkillParamsType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaSkillParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaSkillParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaSkillParamsType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

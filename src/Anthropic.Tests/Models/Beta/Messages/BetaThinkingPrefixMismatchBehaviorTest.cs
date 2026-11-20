@@ -30,19 +30,27 @@ public class BetaThinkingPrefixMismatchBehaviorTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaThinkingPrefixMismatchBehavior.Error)]
-    [InlineData(BetaThinkingPrefixMismatchBehavior.DropBlock)]
-    public void SerializationRoundtrip_Works(BetaThinkingPrefixMismatchBehavior rawValue)
+    [InlineData(BetaThinkingPrefixMismatchBehavior.Error, 0, "error")]
+    [InlineData(BetaThinkingPrefixMismatchBehavior.DropBlock, 1, "drop_block")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaThinkingPrefixMismatchBehavior rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaThinkingPrefixMismatchBehavior> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaThinkingPrefixMismatchBehavior>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

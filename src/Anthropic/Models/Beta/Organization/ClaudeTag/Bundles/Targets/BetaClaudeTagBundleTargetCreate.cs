@@ -330,8 +330,8 @@ sealed class BetaClaudeTagBundleTargetCreateConverter
 [JsonConverter(typeof(BetaClaudeTagBundleTargetCreateTypeConverter))]
 public enum BetaClaudeTagBundleTargetCreateType
 {
-    SlackChannel,
-    SlackWorkspace,
+    SlackChannel = 0,
+    SlackWorkspace = 1,
 }
 
 sealed class BetaClaudeTagBundleTargetCreateTypeConverter

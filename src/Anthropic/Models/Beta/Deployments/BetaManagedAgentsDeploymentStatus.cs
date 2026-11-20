@@ -15,13 +15,13 @@ public enum BetaManagedAgentsDeploymentStatus
     /// The deployment is active and can run sessions. Archived deployments also report
     /// this status; check `archived_at` to distinguish them.
     /// </summary>
-    Active,
+    Active = 0,
 
     /// <summary>
     /// The deployment is paused. Autonomous triggers are suppressed; manual runs
     /// are still permitted.
     /// </summary>
-    Paused,
+    Paused = 1,
 }
 
 sealed class BetaManagedAgentsDeploymentStatusConverter

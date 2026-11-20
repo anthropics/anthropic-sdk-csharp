@@ -238,22 +238,30 @@ public class BetaBrowserStateChangeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaBrowserStateChangeType.TabOpened)]
-    [InlineData(BetaBrowserStateChangeType.DownloadStarted)]
-    [InlineData(BetaBrowserStateChangeType.DownloadCompleted)]
-    [InlineData(BetaBrowserStateChangeType.DownloadFailed)]
-    public void SerializationRoundtrip_Works(BetaBrowserStateChangeType rawValue)
+    [InlineData(BetaBrowserStateChangeType.TabOpened, 0, "tab_opened")]
+    [InlineData(BetaBrowserStateChangeType.DownloadStarted, 1, "download_started")]
+    [InlineData(BetaBrowserStateChangeType.DownloadCompleted, 2, "download_completed")]
+    [InlineData(BetaBrowserStateChangeType.DownloadFailed, 3, "download_failed")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaBrowserStateChangeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaBrowserStateChangeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaBrowserStateChangeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

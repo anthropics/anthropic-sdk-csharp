@@ -311,23 +311,31 @@ public class StopReasonTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(StopReasonType.EndTurn)]
-    [InlineData(StopReasonType.RequiresAction)]
-    [InlineData(StopReasonType.RetriesExhausted)]
-    [InlineData(StopReasonType.BudgetReached)]
-    [InlineData(StopReasonType.Refusal)]
-    public void SerializationRoundtrip_Works(StopReasonType rawValue)
+    [InlineData(StopReasonType.EndTurn, 0, "end_turn")]
+    [InlineData(StopReasonType.RequiresAction, 1, "requires_action")]
+    [InlineData(StopReasonType.RetriesExhausted, 2, "retries_exhausted")]
+    [InlineData(StopReasonType.BudgetReached, 3, "budget_reached")]
+    [InlineData(StopReasonType.Refusal, 4, "refusal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        StopReasonType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, StopReasonType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, StopReasonType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

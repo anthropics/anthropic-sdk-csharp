@@ -627,9 +627,9 @@ sealed class BetaManagedAgentsCredentialAuthConverter
 [JsonConverter(typeof(BetaManagedAgentsCredentialAuthTypeConverter))]
 public enum BetaManagedAgentsCredentialAuthType
 {
-    McpOAuth,
-    StaticBearer,
-    EnvironmentVariable,
+    McpOAuth = 0,
+    StaticBearer = 1,
+    EnvironmentVariable = 2,
 }
 
 sealed class BetaManagedAgentsCredentialAuthTypeConverter

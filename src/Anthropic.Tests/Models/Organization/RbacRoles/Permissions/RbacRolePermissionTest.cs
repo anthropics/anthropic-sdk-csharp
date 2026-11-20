@@ -346,23 +346,31 @@ public class ResourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ResourceType.Organization)]
-    [InlineData(ResourceType.ConnectorTool)]
-    [InlineData(ResourceType.ConnectorScope)]
-    [InlineData(ResourceType.Connector)]
-    [InlineData(ResourceType.AllConnectors)]
-    public void SerializationRoundtrip_Works(ResourceType rawValue)
+    [InlineData(ResourceType.Organization, 0, "organization")]
+    [InlineData(ResourceType.ConnectorTool, 1, "connector_tool")]
+    [InlineData(ResourceType.ConnectorScope, 2, "connector_scope")]
+    [InlineData(ResourceType.Connector, 3, "connector")]
+    [InlineData(ResourceType.AllConnectors, 4, "all_connectors")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ResourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ResourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResourceType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

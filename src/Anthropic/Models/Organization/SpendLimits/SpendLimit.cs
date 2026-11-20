@@ -798,13 +798,13 @@ sealed class ScopeConverter : JsonConverter<Scope>
 [JsonConverter(typeof(ScopeTypeConverter))]
 public enum ScopeType
 {
-    User,
-    SeatTier,
-    RbacGroup,
-    OrganizationService,
-    Organization,
-    Workspace,
-    UsageTier,
+    User = 0,
+    SeatTier = 1,
+    RbacGroup = 2,
+    OrganizationService = 3,
+    Organization = 4,
+    Workspace = 5,
+    UsageTier = 6,
 }
 
 sealed class ScopeTypeConverter : JsonConverter<ScopeType>

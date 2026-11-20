@@ -389,19 +389,27 @@ public class BetaPackagesParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaPackagesParamsType.Packages)]
-    public void SerializationRoundtrip_Works(BetaPackagesParamsType rawValue)
+    [InlineData(BetaPackagesParamsType.Packages, 0, "packages")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaPackagesParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaPackagesParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaPackagesParamsType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -520,9 +520,9 @@ sealed class BetaManagedAgentsGlobToolConfigPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsGlobToolConfigPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsGlobToolConfigPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsGlobToolConfigPermissionPolicyTypeConverter

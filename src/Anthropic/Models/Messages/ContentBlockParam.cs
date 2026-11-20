@@ -1331,22 +1331,22 @@ sealed class ContentBlockParamConverter : JsonConverter<ContentBlockParam>
 [JsonConverter(typeof(ContentBlockParamTypeConverter))]
 public enum ContentBlockParamType
 {
-    Text,
-    Image,
-    Document,
-    SearchResult,
-    Thinking,
-    RedactedThinking,
-    ToolUse,
-    ToolResult,
-    ServerToolUse,
-    WebSearchToolResult,
-    WebFetchToolResult,
-    CodeExecutionToolResult,
-    BashCodeExecutionToolResult,
-    TextEditorCodeExecutionToolResult,
-    ToolSearchToolResult,
-    ContainerUpload,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    SearchResult = 3,
+    Thinking = 4,
+    RedactedThinking = 5,
+    ToolUse = 6,
+    ToolResult = 7,
+    ServerToolUse = 8,
+    WebSearchToolResult = 9,
+    WebFetchToolResult = 10,
+    CodeExecutionToolResult = 11,
+    BashCodeExecutionToolResult = 12,
+    TextEditorCodeExecutionToolResult = 13,
+    ToolSearchToolResult = 14,
+    ContainerUpload = 15,
 }
 
 sealed class ContentBlockParamTypeConverter : JsonConverter<ContentBlockParamType>

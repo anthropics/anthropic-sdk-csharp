@@ -539,22 +539,30 @@ public class ContentTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ContentType.Text)]
-    [InlineData(ContentType.Image)]
-    [InlineData(ContentType.Document)]
-    [InlineData(ContentType.SearchResult)]
-    public void SerializationRoundtrip_Works(ContentType rawValue)
+    [InlineData(ContentType.Text, 0, "text")]
+    [InlineData(ContentType.Image, 1, "image")]
+    [InlineData(ContentType.Document, 2, "document")]
+    [InlineData(ContentType.SearchResult, 3, "search_result")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ContentType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ContentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ContentType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -330,8 +330,8 @@ sealed class BetaClaudeCodeManagedSettingsModeConverter
 [JsonConverter(typeof(BetaClaudeCodeManagedSettingsModeTypeConverter))]
 public enum BetaClaudeCodeManagedSettingsModeType
 {
-    Organization,
-    RbacGroups,
+    Organization = 0,
+    RbacGroups = 1,
 }
 
 sealed class BetaClaudeCodeManagedSettingsModeTypeConverter

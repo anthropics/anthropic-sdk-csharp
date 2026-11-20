@@ -639,10 +639,10 @@ sealed class BetaManagedAgentsUserToolResultEventParamsContentConverter
 [JsonConverter(typeof(BetaManagedAgentsUserToolResultEventParamsContentTypeConverter))]
 public enum BetaManagedAgentsUserToolResultEventParamsContentType
 {
-    Text,
-    Image,
-    Document,
-    SearchResult,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    SearchResult = 3,
 }
 
 sealed class BetaManagedAgentsUserToolResultEventParamsContentTypeConverter

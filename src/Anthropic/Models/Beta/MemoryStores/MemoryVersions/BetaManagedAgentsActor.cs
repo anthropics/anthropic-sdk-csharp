@@ -448,10 +448,10 @@ sealed class BetaManagedAgentsActorConverter : JsonConverter<BetaManagedAgentsAc
 [JsonConverter(typeof(BetaManagedAgentsActorTypeConverter))]
 public enum BetaManagedAgentsActorType
 {
-    SessionActor,
-    ApiActor,
-    UserActor,
-    ServiceAccountActor,
+    SessionActor = 0,
+    ApiActor = 1,
+    UserActor = 2,
+    ServiceAccountActor = 3,
 }
 
 sealed class BetaManagedAgentsActorTypeConverter : JsonConverter<BetaManagedAgentsActorType>

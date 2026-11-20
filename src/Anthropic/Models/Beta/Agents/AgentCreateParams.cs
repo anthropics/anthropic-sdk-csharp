@@ -1023,9 +1023,9 @@ sealed class ToolConverter : JsonConverter<Tool>
 [JsonConverter(typeof(ToolTypeConverter))]
 public enum ToolType
 {
-    AgentToolset20260401,
-    McpToolset,
-    Custom,
+    AgentToolset20260401 = 0,
+    McpToolset = 1,
+    Custom = 2,
 }
 
 sealed class ToolTypeConverter : JsonConverter<ToolType>

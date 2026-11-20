@@ -228,25 +228,33 @@ public class ScopeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ScopeType.Organization)]
-    [InlineData(ScopeType.OrganizationService)]
-    [InlineData(ScopeType.RbacGroup)]
-    [InlineData(ScopeType.SeatTier)]
-    [InlineData(ScopeType.UsageTier)]
-    [InlineData(ScopeType.User)]
-    [InlineData(ScopeType.Workspace)]
-    public void SerializationRoundtrip_Works(ScopeType rawValue)
+    [InlineData(ScopeType.Organization, 0, "organization")]
+    [InlineData(ScopeType.OrganizationService, 1, "organization_service")]
+    [InlineData(ScopeType.RbacGroup, 2, "rbac_group")]
+    [InlineData(ScopeType.SeatTier, 3, "seat_tier")]
+    [InlineData(ScopeType.UsageTier, 4, "usage_tier")]
+    [InlineData(ScopeType.User, 5, "user")]
+    [InlineData(ScopeType.Workspace, 6, "workspace")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ScopeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ScopeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ScopeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

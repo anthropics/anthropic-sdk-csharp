@@ -254,9 +254,9 @@ public record class ShareListParams : ParamsBase
 [JsonConverter(typeof(TargetTypeConverter))]
 public enum TargetType
 {
-    Organization,
-    OrganizationMember,
-    RbacGroup,
+    Organization = 0,
+    OrganizationMember = 1,
+    RbacGroup = 2,
 }
 
 sealed class TargetTypeConverter : JsonConverter<TargetType>

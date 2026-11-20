@@ -11,10 +11,10 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsActorTypeConverter))]
 public enum BetaAnalyticsActorType
 {
-    ApiActor,
-    FederatedActor,
-    ServiceAccountActor,
-    UserActor,
+    ApiActor = 0,
+    FederatedActor = 1,
+    ServiceAccountActor = 2,
+    UserActor = 3,
 }
 
 sealed class BetaAnalyticsActorTypeConverter : JsonConverter<BetaAnalyticsActorType>

@@ -520,9 +520,9 @@ sealed class BetaManagedAgentsGrepToolConfigPermissionPolicyConverter
 [JsonConverter(typeof(BetaManagedAgentsGrepToolConfigPermissionPolicyTypeConverter))]
 public enum BetaManagedAgentsGrepToolConfigPermissionPolicyType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsGrepToolConfigPermissionPolicyTypeConverter

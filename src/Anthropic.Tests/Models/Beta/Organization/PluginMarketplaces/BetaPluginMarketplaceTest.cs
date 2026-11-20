@@ -208,23 +208,33 @@ public class BetaPluginMarketplaceDefaultInstallationPreferenceTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.AutoInstall)]
-    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.Available)]
-    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.NotAvailable)]
-    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.Required)]
-    public void SerializationRoundtrip_Works(
-        BetaPluginMarketplaceDefaultInstallationPreference rawValue
+    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.AutoInstall, 0, "auto_install")]
+    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.Available, 1, "available")]
+    [InlineData(
+        BetaPluginMarketplaceDefaultInstallationPreference.NotAvailable,
+        2,
+        "not_available"
+    )]
+    [InlineData(BetaPluginMarketplaceDefaultInstallationPreference.Required, 3, "required")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaPluginMarketplaceDefaultInstallationPreference rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaPluginMarketplaceDefaultInstallationPreference> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaPluginMarketplaceDefaultInstallationPreference>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -341,20 +351,28 @@ public class OwnerTypeValueTest : TestBase
     }
 
     [Theory]
-    [InlineData(OwnerTypeValue.Organization)]
-    [InlineData(OwnerTypeValue.User)]
-    public void SerializationRoundtrip_Works(OwnerTypeValue rawValue)
+    [InlineData(OwnerTypeValue.Organization, 0, "organization")]
+    [InlineData(OwnerTypeValue.User, 1, "user")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        OwnerTypeValue rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, OwnerTypeValue> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OwnerTypeValue>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -402,23 +420,31 @@ public class BetaPluginMarketplaceSourceTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaPluginMarketplaceSource.Directory)]
-    [InlineData(BetaPluginMarketplaceSource.GitHub)]
-    [InlineData(BetaPluginMarketplaceSource.Gitlab)]
-    [InlineData(BetaPluginMarketplaceSource.Manual)]
-    [InlineData(BetaPluginMarketplaceSource.PublicGit)]
-    public void SerializationRoundtrip_Works(BetaPluginMarketplaceSource rawValue)
+    [InlineData(BetaPluginMarketplaceSource.Directory, 0, "directory")]
+    [InlineData(BetaPluginMarketplaceSource.GitHub, 1, "github")]
+    [InlineData(BetaPluginMarketplaceSource.Gitlab, 2, "gitlab")]
+    [InlineData(BetaPluginMarketplaceSource.Manual, 3, "manual")]
+    [InlineData(BetaPluginMarketplaceSource.PublicGit, 4, "public_git")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaPluginMarketplaceSource rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaPluginMarketplaceSource> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaPluginMarketplaceSource>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -467,24 +493,32 @@ public class SyncStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(SyncStatus.FailedAuth)]
-    [InlineData(SyncStatus.FailedContent)]
-    [InlineData(SyncStatus.FailedLimits)]
-    [InlineData(SyncStatus.FailedTransient)]
-    [InlineData(SyncStatus.InProgress)]
-    [InlineData(SyncStatus.Success)]
-    public void SerializationRoundtrip_Works(SyncStatus rawValue)
+    [InlineData(SyncStatus.FailedAuth, 0, "failed_auth")]
+    [InlineData(SyncStatus.FailedContent, 1, "failed_content")]
+    [InlineData(SyncStatus.FailedLimits, 2, "failed_limits")]
+    [InlineData(SyncStatus.FailedTransient, 3, "failed_transient")]
+    [InlineData(SyncStatus.InProgress, 4, "in_progress")]
+    [InlineData(SyncStatus.Success, 5, "success")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SyncStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SyncStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SyncStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -560,9 +560,9 @@ public record class UserUsageReportListParams : ParamsBase
 [JsonConverter(typeof(BucketWidthConverter))]
 public enum BucketWidth
 {
-    Day,
-    Hour,
-    Minute,
+    Day = 0,
+    Hour = 1,
+    Minute = 2,
 }
 
 sealed class BucketWidthConverter : JsonConverter<BucketWidth>
@@ -607,15 +607,15 @@ sealed class BucketWidthConverter : JsonConverter<BucketWidth>
 [JsonConverter(typeof(GroupByConverter))]
 public enum GroupBy
 {
-    ClaudeTagCategory,
-    ClaudeTagUserID,
-    ContextWindow,
-    InferenceGeo,
-    Model,
-    Product,
-    RbacGroupID,
-    SlackChannelID,
-    Speed,
+    ClaudeTagCategory = 0,
+    ClaudeTagUserID = 1,
+    ContextWindow = 2,
+    InferenceGeo = 3,
+    Model = 4,
+    Product = 5,
+    RbacGroupID = 6,
+    SlackChannelID = 7,
+    Speed = 8,
 }
 
 sealed class GroupByConverter : JsonConverter<GroupBy>
@@ -671,8 +671,8 @@ sealed class GroupByConverter : JsonConverter<GroupBy>
 [JsonConverter(typeof(OrderConverter))]
 public enum Order
 {
-    Asc,
-    Desc,
+    Asc = 0,
+    Desc = 1,
 }
 
 sealed class OrderConverter : JsonConverter<Order>
@@ -714,10 +714,10 @@ sealed class OrderConverter : JsonConverter<Order>
 [JsonConverter(typeof(OrderByConverter))]
 public enum OrderBy
 {
-    OutputTokens,
-    Requests,
-    TotalTokens,
-    UncachedInputTokens,
+    OutputTokens = 0,
+    Requests = 1,
+    TotalTokens = 2,
+    UncachedInputTokens = 3,
 }
 
 sealed class OrderByConverter : JsonConverter<OrderBy>
@@ -760,8 +760,8 @@ sealed class OrderByConverter : JsonConverter<OrderBy>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Fast,
-    Standard,
+    Fast = 0,
+    Standard = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

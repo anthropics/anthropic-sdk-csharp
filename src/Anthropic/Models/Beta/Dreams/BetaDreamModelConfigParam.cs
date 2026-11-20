@@ -112,8 +112,8 @@ class BetaDreamModelConfigParamFromRaw : IFromRawJson<BetaDreamModelConfigParam>
 [JsonConverter(typeof(BetaDreamModelConfigParamSpeedConverter))]
 public enum BetaDreamModelConfigParamSpeed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class BetaDreamModelConfigParamSpeedConverter : JsonConverter<BetaDreamModelConfigParamSpeed>

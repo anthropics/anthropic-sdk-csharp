@@ -235,22 +235,30 @@ public class BetaThinkingConfigParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaThinkingConfigParamType.Enabled)]
-    [InlineData(BetaThinkingConfigParamType.Disabled)]
-    [InlineData(BetaThinkingConfigParamType.BetweenTools)]
-    [InlineData(BetaThinkingConfigParamType.Adaptive)]
-    public void SerializationRoundtrip_Works(BetaThinkingConfigParamType rawValue)
+    [InlineData(BetaThinkingConfigParamType.Enabled, 0, "enabled")]
+    [InlineData(BetaThinkingConfigParamType.Disabled, 1, "disabled")]
+    [InlineData(BetaThinkingConfigParamType.BetweenTools, 2, "between_tools")]
+    [InlineData(BetaThinkingConfigParamType.Adaptive, 3, "adaptive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaThinkingConfigParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaThinkingConfigParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaThinkingConfigParamType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

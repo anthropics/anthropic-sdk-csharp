@@ -142,22 +142,30 @@ public class BetaSelfHostedWorkHeartbeatResponseStateTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Queued)]
-    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Starting)]
-    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Active)]
-    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Stopping)]
-    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Stopped)]
-    public void SerializationRoundtrip_Works(BetaSelfHostedWorkHeartbeatResponseState rawValue)
+    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Queued, 0, "queued")]
+    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Starting, 1, "starting")]
+    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Active, 2, "active")]
+    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Stopping, 3, "stopping")]
+    [InlineData(BetaSelfHostedWorkHeartbeatResponseState.Stopped, 4, "stopped")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaSelfHostedWorkHeartbeatResponseState rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaSelfHostedWorkHeartbeatResponseState> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaSelfHostedWorkHeartbeatResponseState>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

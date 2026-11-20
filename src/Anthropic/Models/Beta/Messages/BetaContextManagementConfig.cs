@@ -446,9 +446,9 @@ sealed class EditConverter : JsonConverter<Edit>
 [JsonConverter(typeof(EditTypeConverter))]
 public enum EditType
 {
-    ClearToolUses20250919,
-    ClearThinking20251015,
-    Compact20260112,
+    ClearToolUses20250919 = 0,
+    ClearThinking20251015 = 1,
+    Compact20260112 = 2,
 }
 
 sealed class EditTypeConverter : JsonConverter<EditType>

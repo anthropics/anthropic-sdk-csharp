@@ -241,20 +241,28 @@ public class BetaManagedAgentsImageBlockSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsImageBlockSourceType.Base64)]
-    [InlineData(BetaManagedAgentsImageBlockSourceType.Url)]
-    [InlineData(BetaManagedAgentsImageBlockSourceType.File)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsImageBlockSourceType rawValue)
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Base64, 0, "base64")]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.Url, 1, "url")]
+    [InlineData(BetaManagedAgentsImageBlockSourceType.File, 2, "file")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsImageBlockSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsImageBlockSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsImageBlockSourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -658,9 +658,9 @@ sealed class AuthConverter : JsonConverter<Auth>
 [JsonConverter(typeof(AuthTypeConverter))]
 public enum AuthType
 {
-    McpOAuth,
-    StaticBearer,
-    EnvironmentVariable,
+    McpOAuth = 0,
+    StaticBearer = 1,
+    EnvironmentVariable = 2,
 }
 
 sealed class AuthTypeConverter : JsonConverter<AuthType>

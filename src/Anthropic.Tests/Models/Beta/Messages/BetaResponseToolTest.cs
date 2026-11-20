@@ -624,21 +624,29 @@ public class BetaResponseToolAllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaResponseToolAllowedCaller.Direct)]
-    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20250825)]
-    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20260120)]
-    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(BetaResponseToolAllowedCaller rawValue)
+    [InlineData(BetaResponseToolAllowedCaller.Direct, 0, "direct")]
+    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20250825, 1, "code_execution_20250825")]
+    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20260120, 2, "code_execution_20260120")]
+    [InlineData(BetaResponseToolAllowedCaller.CodeExecution20260521, 3, "code_execution_20260521")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaResponseToolAllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaResponseToolAllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaResponseToolAllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -681,19 +689,27 @@ public class BetaResponseToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaResponseToolType.Custom)]
-    public void SerializationRoundtrip_Works(BetaResponseToolType rawValue)
+    [InlineData(BetaResponseToolType.Custom, 0, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaResponseToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaResponseToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaResponseToolType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

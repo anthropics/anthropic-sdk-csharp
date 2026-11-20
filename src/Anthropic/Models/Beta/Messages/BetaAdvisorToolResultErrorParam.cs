@@ -111,13 +111,13 @@ class BetaAdvisorToolResultErrorParamFromRaw : IFromRawJson<BetaAdvisorToolResul
 [JsonConverter(typeof(BetaAdvisorToolResultErrorParamErrorCodeConverter))]
 public enum BetaAdvisorToolResultErrorParamErrorCode
 {
-    MaxUsesExceeded,
-    PromptTooLong,
-    TooManyRequests,
-    Overloaded,
-    Unavailable,
-    ExecutionTimeExceeded,
-    ModelNotFound,
+    MaxUsesExceeded = 0,
+    PromptTooLong = 1,
+    TooManyRequests = 2,
+    Overloaded = 3,
+    Unavailable = 4,
+    ExecutionTimeExceeded = 5,
+    ModelNotFound = 6,
 }
 
 sealed class BetaAdvisorToolResultErrorParamErrorCodeConverter

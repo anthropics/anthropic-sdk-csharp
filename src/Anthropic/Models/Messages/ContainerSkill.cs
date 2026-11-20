@@ -103,8 +103,8 @@ class ContainerSkillFromRaw : IFromRawJson<ContainerSkill>
 [JsonConverter(typeof(ContainerSkillTypeConverter))]
 public enum ContainerSkillType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class ContainerSkillTypeConverter : JsonConverter<ContainerSkillType>

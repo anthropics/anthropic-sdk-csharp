@@ -401,9 +401,9 @@ sealed class BetaManagedAgentsAgentToolEvaluationConverter
 [JsonConverter(typeof(BetaManagedAgentsAgentToolEvaluationTypeConverter))]
 public enum BetaManagedAgentsAgentToolEvaluationType
 {
-    AlwaysAllow,
-    AlwaysAsk,
-    Auto,
+    AlwaysAllow = 0,
+    AlwaysAsk = 1,
+    Auto = 2,
 }
 
 sealed class BetaManagedAgentsAgentToolEvaluationTypeConverter

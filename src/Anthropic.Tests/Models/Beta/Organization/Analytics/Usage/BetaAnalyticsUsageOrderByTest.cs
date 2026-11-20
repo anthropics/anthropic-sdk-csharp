@@ -33,23 +33,31 @@ public class BetaAnalyticsUsageOrderByTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsUsageOrderBy.OutputTokens)]
-    [InlineData(BetaAnalyticsUsageOrderBy.Requests)]
-    [InlineData(BetaAnalyticsUsageOrderBy.Time)]
-    [InlineData(BetaAnalyticsUsageOrderBy.TotalTokens)]
-    [InlineData(BetaAnalyticsUsageOrderBy.UncachedInputTokens)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsUsageOrderBy rawValue)
+    [InlineData(BetaAnalyticsUsageOrderBy.OutputTokens, 0, "output_tokens")]
+    [InlineData(BetaAnalyticsUsageOrderBy.Requests, 1, "requests")]
+    [InlineData(BetaAnalyticsUsageOrderBy.Time, 2, "time")]
+    [InlineData(BetaAnalyticsUsageOrderBy.TotalTokens, 3, "total_tokens")]
+    [InlineData(BetaAnalyticsUsageOrderBy.UncachedInputTokens, 4, "uncached_input_tokens")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsUsageOrderBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsUsageOrderBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsUsageOrderBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

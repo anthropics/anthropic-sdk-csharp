@@ -1051,9 +1051,9 @@ sealed class ResourceConverter : JsonConverter<Resource>
 [JsonConverter(typeof(ResourceTypeConverter))]
 public enum ResourceType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class ResourceTypeConverter : JsonConverter<ResourceType>

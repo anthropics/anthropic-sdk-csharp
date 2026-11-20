@@ -30,20 +30,28 @@ public class BetaAnalyticsProjectGroupByTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsProjectGroupBy.RbacGroupID)]
-    [InlineData(BetaAnalyticsProjectGroupBy.UserID)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsProjectGroupBy rawValue)
+    [InlineData(BetaAnalyticsProjectGroupBy.RbacGroupID, 0, "rbac_group_id")]
+    [InlineData(BetaAnalyticsProjectGroupBy.UserID, 1, "user_id")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsProjectGroupBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsProjectGroupBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaAnalyticsProjectGroupBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

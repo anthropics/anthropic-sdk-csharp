@@ -152,21 +152,27 @@ public class BetaManagedAgentsMultiagentWorkflowsParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsMultiagentWorkflowsParamsType.Enabled)]
-    [InlineData(BetaManagedAgentsMultiagentWorkflowsParamsType.Disabled)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsMultiagentWorkflowsParamsType rawValue
+    [InlineData(BetaManagedAgentsMultiagentWorkflowsParamsType.Enabled, 0, "enabled")]
+    [InlineData(BetaManagedAgentsMultiagentWorkflowsParamsType.Disabled, 1, "disabled")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsMultiagentWorkflowsParamsType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsMultiagentWorkflowsParamsType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -327,8 +327,8 @@ sealed class BetaComplianceSettingsStateParamConverter
 [JsonConverter(typeof(BetaComplianceSettingsStateParamTypeConverter))]
 public enum BetaComplianceSettingsStateParamType
 {
-    Enabled,
-    Disabled,
+    Enabled = 0,
+    Disabled = 1,
 }
 
 sealed class BetaComplianceSettingsStateParamTypeConverter

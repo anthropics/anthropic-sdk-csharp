@@ -262,22 +262,28 @@ public class BetaManagedAgentsRepositoryCloneErrorRetryStatusTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying)]
-    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Exhausted)]
-    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Terminal)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsRepositoryCloneErrorRetryStatusType rawValue
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Retrying, 0, "retrying")]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Exhausted, 1, "exhausted")]
+    [InlineData(BetaManagedAgentsRepositoryCloneErrorRetryStatusType.Terminal, 2, "terminal")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsRepositoryCloneErrorRetryStatusType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsRepositoryCloneErrorRetryStatusType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

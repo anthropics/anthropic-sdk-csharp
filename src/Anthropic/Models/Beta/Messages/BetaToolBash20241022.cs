@@ -230,10 +230,10 @@ class BetaToolBash20241022FromRaw : IFromRawJson<BetaToolBash20241022>
 [JsonConverter(typeof(BetaToolBash20241022AllowedCallerConverter))]
 public enum BetaToolBash20241022AllowedCaller
 {
-    Direct,
-    CodeExecution20250825,
-    CodeExecution20260120,
-    CodeExecution20260521,
+    Direct = 0,
+    CodeExecution20250825 = 1,
+    CodeExecution20260120 = 2,
+    CodeExecution20260521 = 3,
 }
 
 sealed class BetaToolBash20241022AllowedCallerConverter

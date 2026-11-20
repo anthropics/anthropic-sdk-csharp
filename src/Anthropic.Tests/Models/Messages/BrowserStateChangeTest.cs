@@ -237,22 +237,30 @@ public class BrowserStateChangeTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BrowserStateChangeType.TabOpened)]
-    [InlineData(BrowserStateChangeType.DownloadStarted)]
-    [InlineData(BrowserStateChangeType.DownloadCompleted)]
-    [InlineData(BrowserStateChangeType.DownloadFailed)]
-    public void SerializationRoundtrip_Works(BrowserStateChangeType rawValue)
+    [InlineData(BrowserStateChangeType.TabOpened, 0, "tab_opened")]
+    [InlineData(BrowserStateChangeType.DownloadStarted, 1, "download_started")]
+    [InlineData(BrowserStateChangeType.DownloadCompleted, 2, "download_completed")]
+    [InlineData(BrowserStateChangeType.DownloadFailed, 3, "download_failed")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BrowserStateChangeType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BrowserStateChangeType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BrowserStateChangeType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

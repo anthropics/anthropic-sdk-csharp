@@ -499,9 +499,9 @@ sealed class RetryStatusConverter : JsonConverter<RetryStatus>
 [JsonConverter(typeof(RetryStatusTypeConverter))]
 public enum RetryStatusType
 {
-    Retrying,
-    Exhausted,
-    Terminal,
+    Retrying = 0,
+    Exhausted = 1,
+    Terminal = 2,
 }
 
 sealed class RetryStatusTypeConverter : JsonConverter<RetryStatusType>

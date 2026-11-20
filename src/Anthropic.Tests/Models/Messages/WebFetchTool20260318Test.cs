@@ -554,21 +554,41 @@ public class WebFetchTool20260318AllowedCallerTest : TestBase
     }
 
     [Theory]
-    [InlineData(WebFetchTool20260318AllowedCaller.Direct)]
-    [InlineData(WebFetchTool20260318AllowedCaller.CodeExecution20250825)]
-    [InlineData(WebFetchTool20260318AllowedCaller.CodeExecution20260120)]
-    [InlineData(WebFetchTool20260318AllowedCaller.CodeExecution20260521)]
-    public void SerializationRoundtrip_Works(WebFetchTool20260318AllowedCaller rawValue)
+    [InlineData(WebFetchTool20260318AllowedCaller.Direct, 0, "direct")]
+    [InlineData(
+        WebFetchTool20260318AllowedCaller.CodeExecution20250825,
+        1,
+        "code_execution_20250825"
+    )]
+    [InlineData(
+        WebFetchTool20260318AllowedCaller.CodeExecution20260120,
+        2,
+        "code_execution_20260120"
+    )]
+    [InlineData(
+        WebFetchTool20260318AllowedCaller.CodeExecution20260521,
+        3,
+        "code_execution_20260521"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        WebFetchTool20260318AllowedCaller rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, WebFetchTool20260318AllowedCaller> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, WebFetchTool20260318AllowedCaller>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -612,20 +632,28 @@ public class ResponseInclusionTest : TestBase
     }
 
     [Theory]
-    [InlineData(ResponseInclusion.Full)]
-    [InlineData(ResponseInclusion.Excluded)]
-    public void SerializationRoundtrip_Works(ResponseInclusion rawValue)
+    [InlineData(ResponseInclusion.Full, 0, "full")]
+    [InlineData(ResponseInclusion.Excluded, 1, "excluded")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ResponseInclusion rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ResponseInclusion> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ResponseInclusion>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

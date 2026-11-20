@@ -2238,67 +2238,95 @@ public class BetaWebhookEventDataTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaWebhookEventDataType.SessionCreated)]
-    [InlineData(BetaWebhookEventDataType.SessionPending)]
-    [InlineData(BetaWebhookEventDataType.SessionRunning)]
-    [InlineData(BetaWebhookEventDataType.SessionIdled)]
-    [InlineData(BetaWebhookEventDataType.SessionRequiresAction)]
-    [InlineData(BetaWebhookEventDataType.SessionArchived)]
-    [InlineData(BetaWebhookEventDataType.SessionDeleted)]
-    [InlineData(BetaWebhookEventDataType.SessionStatusRescheduled)]
-    [InlineData(BetaWebhookEventDataType.SessionStatusRunStarted)]
-    [InlineData(BetaWebhookEventDataType.SessionStatusIdled)]
-    [InlineData(BetaWebhookEventDataType.SessionStatusTerminated)]
-    [InlineData(BetaWebhookEventDataType.SessionThreadCreated)]
-    [InlineData(BetaWebhookEventDataType.SessionThreadIdled)]
-    [InlineData(BetaWebhookEventDataType.SessionThreadTerminated)]
-    [InlineData(BetaWebhookEventDataType.SessionOutcomeEvaluationEnded)]
-    [InlineData(BetaWebhookEventDataType.VaultCreated)]
-    [InlineData(BetaWebhookEventDataType.VaultArchived)]
-    [InlineData(BetaWebhookEventDataType.VaultDeleted)]
-    [InlineData(BetaWebhookEventDataType.VaultCredentialCreated)]
-    [InlineData(BetaWebhookEventDataType.VaultCredentialArchived)]
-    [InlineData(BetaWebhookEventDataType.VaultCredentialDeleted)]
-    [InlineData(BetaWebhookEventDataType.VaultCredentialRefreshFailed)]
-    [InlineData(BetaWebhookEventDataType.SessionUpdated)]
-    [InlineData(BetaWebhookEventDataType.AgentCreated)]
-    [InlineData(BetaWebhookEventDataType.AgentArchived)]
-    [InlineData(BetaWebhookEventDataType.AgentDeleted)]
-    [InlineData(BetaWebhookEventDataType.DeploymentPaused)]
-    [InlineData(BetaWebhookEventDataType.DeploymentRunFailed)]
-    [InlineData(BetaWebhookEventDataType.DeploymentCreated)]
-    [InlineData(BetaWebhookEventDataType.DeploymentUpdated)]
-    [InlineData(BetaWebhookEventDataType.DeploymentUnpaused)]
-    [InlineData(BetaWebhookEventDataType.AgentUpdated)]
-    [InlineData(BetaWebhookEventDataType.DeploymentArchived)]
-    [InlineData(BetaWebhookEventDataType.DeploymentRunStarted)]
-    [InlineData(BetaWebhookEventDataType.DeploymentDeleted)]
-    [InlineData(BetaWebhookEventDataType.DeploymentRunSucceeded)]
-    [InlineData(BetaWebhookEventDataType.EnvironmentCreated)]
-    [InlineData(BetaWebhookEventDataType.EnvironmentUpdated)]
-    [InlineData(BetaWebhookEventDataType.EnvironmentArchived)]
-    [InlineData(BetaWebhookEventDataType.EnvironmentDeleted)]
-    [InlineData(BetaWebhookEventDataType.MemoryStoreCreated)]
-    [InlineData(BetaWebhookEventDataType.MemoryStoreArchived)]
-    [InlineData(BetaWebhookEventDataType.MemoryStoreDeleted)]
-    [InlineData(BetaWebhookEventDataType.SessionBudgetReached)]
-    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionOpened)]
-    [InlineData(BetaWebhookEventDataType.UserProfileEnforcementActionResolved)]
-    [InlineData(BetaWebhookEventDataType.UserProfileProgramStatusUpdated)]
-    [InlineData(BetaWebhookEventDataType.ExternalKeyFailed)]
-    [InlineData(BetaWebhookEventDataType.ExternalKeyRecovered)]
-    public void SerializationRoundtrip_Works(BetaWebhookEventDataType rawValue)
+    [InlineData(BetaWebhookEventDataType.SessionCreated, 0, "session.created")]
+    [InlineData(BetaWebhookEventDataType.SessionPending, 1, "session.pending")]
+    [InlineData(BetaWebhookEventDataType.SessionRunning, 2, "session.running")]
+    [InlineData(BetaWebhookEventDataType.SessionIdled, 3, "session.idled")]
+    [InlineData(BetaWebhookEventDataType.SessionRequiresAction, 4, "session.requires_action")]
+    [InlineData(BetaWebhookEventDataType.SessionArchived, 5, "session.archived")]
+    [InlineData(BetaWebhookEventDataType.SessionDeleted, 6, "session.deleted")]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRescheduled, 7, "session.status_rescheduled")]
+    [InlineData(BetaWebhookEventDataType.SessionStatusRunStarted, 8, "session.status_run_started")]
+    [InlineData(BetaWebhookEventDataType.SessionStatusIdled, 9, "session.status_idled")]
+    [InlineData(BetaWebhookEventDataType.SessionStatusTerminated, 10, "session.status_terminated")]
+    [InlineData(BetaWebhookEventDataType.SessionThreadCreated, 11, "session.thread_created")]
+    [InlineData(BetaWebhookEventDataType.SessionThreadIdled, 12, "session.thread_idled")]
+    [InlineData(BetaWebhookEventDataType.SessionThreadTerminated, 13, "session.thread_terminated")]
+    [InlineData(
+        BetaWebhookEventDataType.SessionOutcomeEvaluationEnded,
+        14,
+        "session.outcome_evaluation_ended"
+    )]
+    [InlineData(BetaWebhookEventDataType.VaultCreated, 15, "vault.created")]
+    [InlineData(BetaWebhookEventDataType.VaultArchived, 16, "vault.archived")]
+    [InlineData(BetaWebhookEventDataType.VaultDeleted, 17, "vault.deleted")]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialCreated, 18, "vault_credential.created")]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialArchived, 19, "vault_credential.archived")]
+    [InlineData(BetaWebhookEventDataType.VaultCredentialDeleted, 20, "vault_credential.deleted")]
+    [InlineData(
+        BetaWebhookEventDataType.VaultCredentialRefreshFailed,
+        21,
+        "vault_credential.refresh_failed"
+    )]
+    [InlineData(BetaWebhookEventDataType.SessionUpdated, 22, "session.updated")]
+    [InlineData(BetaWebhookEventDataType.AgentCreated, 23, "agent.created")]
+    [InlineData(BetaWebhookEventDataType.AgentArchived, 24, "agent.archived")]
+    [InlineData(BetaWebhookEventDataType.AgentDeleted, 25, "agent.deleted")]
+    [InlineData(BetaWebhookEventDataType.DeploymentPaused, 26, "deployment.paused")]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunFailed, 27, "deployment_run.failed")]
+    [InlineData(BetaWebhookEventDataType.DeploymentCreated, 28, "deployment.created")]
+    [InlineData(BetaWebhookEventDataType.DeploymentUpdated, 29, "deployment.updated")]
+    [InlineData(BetaWebhookEventDataType.DeploymentUnpaused, 30, "deployment.unpaused")]
+    [InlineData(BetaWebhookEventDataType.AgentUpdated, 31, "agent.updated")]
+    [InlineData(BetaWebhookEventDataType.DeploymentArchived, 32, "deployment.archived")]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunStarted, 33, "deployment_run.started")]
+    [InlineData(BetaWebhookEventDataType.DeploymentDeleted, 34, "deployment.deleted")]
+    [InlineData(BetaWebhookEventDataType.DeploymentRunSucceeded, 35, "deployment_run.succeeded")]
+    [InlineData(BetaWebhookEventDataType.EnvironmentCreated, 36, "environment.created")]
+    [InlineData(BetaWebhookEventDataType.EnvironmentUpdated, 37, "environment.updated")]
+    [InlineData(BetaWebhookEventDataType.EnvironmentArchived, 38, "environment.archived")]
+    [InlineData(BetaWebhookEventDataType.EnvironmentDeleted, 39, "environment.deleted")]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreCreated, 40, "memory_store.created")]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreArchived, 41, "memory_store.archived")]
+    [InlineData(BetaWebhookEventDataType.MemoryStoreDeleted, 42, "memory_store.deleted")]
+    [InlineData(BetaWebhookEventDataType.SessionBudgetReached, 43, "session.budget_reached")]
+    [InlineData(
+        BetaWebhookEventDataType.UserProfileEnforcementActionOpened,
+        44,
+        "user_profile.enforcement_action_opened"
+    )]
+    [InlineData(
+        BetaWebhookEventDataType.UserProfileEnforcementActionResolved,
+        45,
+        "user_profile.enforcement_action_resolved"
+    )]
+    [InlineData(
+        BetaWebhookEventDataType.UserProfileProgramStatusUpdated,
+        46,
+        "user_profile.program_status_updated"
+    )]
+    [InlineData(BetaWebhookEventDataType.ExternalKeyFailed, 47, "external_key.failed")]
+    [InlineData(BetaWebhookEventDataType.ExternalKeyRecovered, 48, "external_key.recovered")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaWebhookEventDataType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaWebhookEventDataType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaWebhookEventDataType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

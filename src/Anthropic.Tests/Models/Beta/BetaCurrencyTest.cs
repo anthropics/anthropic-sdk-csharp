@@ -29,19 +29,27 @@ public class BetaCurrencyTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaCurrency.Usd)]
-    public void SerializationRoundtrip_Works(BetaCurrency rawValue)
+    [InlineData(BetaCurrency.Usd, 0, "USD")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaCurrency rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaCurrency> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BetaCurrency>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

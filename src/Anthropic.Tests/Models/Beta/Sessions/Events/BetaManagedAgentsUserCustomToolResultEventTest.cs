@@ -568,23 +568,33 @@ public class BetaManagedAgentsUserCustomToolResultEventContentTypeTest : TestBas
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Text)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Image)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Document)]
-    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.SearchResult)]
-    public void SerializationRoundtrip_Works(
-        BetaManagedAgentsUserCustomToolResultEventContentType rawValue
+    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Text, 0, "text")]
+    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Image, 1, "image")]
+    [InlineData(BetaManagedAgentsUserCustomToolResultEventContentType.Document, 2, "document")]
+    [InlineData(
+        BetaManagedAgentsUserCustomToolResultEventContentType.SearchResult,
+        3,
+        "search_result"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsUserCustomToolResultEventContentType rawValue,
+        int number,
+        string apiValue
     )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventContentType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsUserCustomToolResultEventContentType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

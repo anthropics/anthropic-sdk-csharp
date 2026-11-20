@@ -804,14 +804,14 @@ sealed class BetaManagedAgentsAgentToolConfigConverter
 [JsonConverter(typeof(BetaManagedAgentsAgentToolConfigTypeConverter))]
 public enum BetaManagedAgentsAgentToolConfigType
 {
-    Bash,
-    Edit,
-    Read,
-    Write,
-    Glob,
-    Grep,
-    WebFetch,
-    WebSearch,
+    Bash = 0,
+    Edit = 1,
+    Read = 2,
+    Write = 3,
+    Glob = 4,
+    Grep = 5,
+    WebFetch = 6,
+    WebSearch = 7,
 }
 
 sealed class BetaManagedAgentsAgentToolConfigTypeConverter

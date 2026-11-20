@@ -477,19 +477,27 @@ public class BetaManagedAgentsSessionThreadAgentSkillTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Anthropic)]
-    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Custom)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionThreadAgentSkillType rawValue)
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Anthropic, 0, "anthropic")]
+    [InlineData(BetaManagedAgentsSessionThreadAgentSkillType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionThreadAgentSkillType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionThreadAgentSkillType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -777,20 +785,32 @@ public class BetaManagedAgentsSessionThreadAgentToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401)]
-    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.McpToolset)]
-    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.Custom)]
-    public void SerializationRoundtrip_Works(BetaManagedAgentsSessionThreadAgentToolType rawValue)
+    [InlineData(
+        BetaManagedAgentsSessionThreadAgentToolType.AgentToolset20260401,
+        0,
+        "agent_toolset_20260401"
+    )]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.McpToolset, 1, "mcp_toolset")]
+    [InlineData(BetaManagedAgentsSessionThreadAgentToolType.Custom, 2, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaManagedAgentsSessionThreadAgentToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaManagedAgentsSessionThreadAgentToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

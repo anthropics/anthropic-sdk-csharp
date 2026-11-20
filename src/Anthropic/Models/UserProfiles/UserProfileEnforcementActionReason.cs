@@ -13,12 +13,12 @@ namespace Anthropic.Models.UserProfiles;
 [JsonConverter(typeof(UserProfileEnforcementActionReasonConverter))]
 public enum UserProfileEnforcementActionReason
 {
-    UnsupportedRegion,
-    FraudOrAbuse,
-    HighHarm,
-    UsagePolicyViolation,
-    AccountCompromise,
-    Unspecified,
+    UnsupportedRegion = 0,
+    FraudOrAbuse = 1,
+    HighHarm = 2,
+    UsagePolicyViolation = 3,
+    AccountCompromise = 4,
+    Unspecified = 5,
 }
 
 sealed class UserProfileEnforcementActionReasonConverter

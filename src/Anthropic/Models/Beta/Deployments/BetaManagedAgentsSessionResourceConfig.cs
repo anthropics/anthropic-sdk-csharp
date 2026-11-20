@@ -417,9 +417,9 @@ sealed class BetaManagedAgentsSessionResourceConfigConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionResourceConfigTypeConverter))]
 public enum BetaManagedAgentsSessionResourceConfigType
 {
-    GitHubRepository,
-    File,
-    MemoryStore,
+    GitHubRepository = 0,
+    File = 1,
+    MemoryStore = 2,
 }
 
 sealed class BetaManagedAgentsSessionResourceConfigTypeConverter

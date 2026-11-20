@@ -249,20 +249,28 @@ public class DefaultInferenceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(DefaultInferenceGeo.Global)]
-    [InlineData(DefaultInferenceGeo.Us)]
-    public void SerializationRoundtrip_Works(DefaultInferenceGeo rawValue)
+    [InlineData(DefaultInferenceGeo.Global, 0, "global")]
+    [InlineData(DefaultInferenceGeo.Us, 1, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DefaultInferenceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DefaultInferenceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, DefaultInferenceGeo>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -306,19 +314,27 @@ public class WorkspaceGeoTest : TestBase
     }
 
     [Theory]
-    [InlineData(WorkspaceGeo.Us)]
-    public void SerializationRoundtrip_Works(WorkspaceGeo rawValue)
+    [InlineData(WorkspaceGeo.Us, 0, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        WorkspaceGeo rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, WorkspaceGeo> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, WorkspaceGeo>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -151,20 +151,24 @@ public class TtlTest : TestBase
     }
 
     [Theory]
-    [InlineData(Ttl.Ttl5m)]
-    [InlineData(Ttl.Ttl1h)]
-    public void SerializationRoundtrip_Works(Ttl rawValue)
+    [InlineData(Ttl.Ttl5m, 0, "5m")]
+    [InlineData(Ttl.Ttl1h, 1, "1h")]
+    public void EnumMemberSerializationRoundtrip_Works(Ttl rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Ttl> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Ttl>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

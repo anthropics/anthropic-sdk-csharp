@@ -633,9 +633,9 @@ sealed class IssuerUpdateParamsJwksConverter : JsonConverter<IssuerUpdateParamsJ
 [JsonConverter(typeof(IssuerUpdateParamsJwksTypeConverter))]
 public enum IssuerUpdateParamsJwksType
 {
-    Discovery,
-    ExplicitUrl,
-    Inline,
+    Discovery = 0,
+    ExplicitUrl = 1,
+    Inline = 2,
 }
 
 sealed class IssuerUpdateParamsJwksTypeConverter : JsonConverter<IssuerUpdateParamsJwksType>

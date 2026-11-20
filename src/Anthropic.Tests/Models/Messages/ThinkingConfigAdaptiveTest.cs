@@ -130,20 +130,28 @@ public class DisplayTest : TestBase
     }
 
     [Theory]
-    [InlineData(Display.Summarized)]
-    [InlineData(Display.Omitted)]
-    public void SerializationRoundtrip_Works(Display rawValue)
+    [InlineData(Display.Summarized, 0, "summarized")]
+    [InlineData(Display.Omitted, 1, "omitted")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Display rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Display> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Display>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -269,20 +269,32 @@ public class BetaResponseToolRemovalBlockToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaResponseToolRemovalBlockToolType.ToolReference)]
-    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolReference)]
-    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolsetReference)]
-    public void SerializationRoundtrip_Works(BetaResponseToolRemovalBlockToolType rawValue)
+    [InlineData(BetaResponseToolRemovalBlockToolType.ToolReference, 0, "tool_reference")]
+    [InlineData(BetaResponseToolRemovalBlockToolType.McpToolReference, 1, "mcp_tool_reference")]
+    [InlineData(
+        BetaResponseToolRemovalBlockToolType.McpToolsetReference,
+        2,
+        "mcp_toolset_reference"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaResponseToolRemovalBlockToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaResponseToolRemovalBlockToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaResponseToolRemovalBlockToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

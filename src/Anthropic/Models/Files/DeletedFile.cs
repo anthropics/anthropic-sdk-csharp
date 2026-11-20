@@ -108,7 +108,7 @@ class DeletedFileFromRaw : IFromRawJson<DeletedFile>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    FileDeleted,
+    FileDeleted = 0,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Files.Type>

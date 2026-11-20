@@ -572,8 +572,8 @@ sealed class ConfigConverter : JsonConverter<Config?>
 [JsonConverter(typeof(ConfigTypeConverter))]
 public enum ConfigType
 {
-    Cloud,
-    SelfHosted,
+    Cloud = 0,
+    SelfHosted = 1,
 }
 
 sealed class ConfigTypeConverter : JsonConverter<ConfigType>
@@ -622,8 +622,8 @@ sealed class ConfigTypeConverter : JsonConverter<ConfigType>
 [JsonConverter(typeof(ScopeConverter))]
 public enum Scope
 {
-    Organization,
-    Account,
+    Organization = 0,
+    Account = 1,
 }
 
 sealed class ScopeConverter : JsonConverter<Scope>

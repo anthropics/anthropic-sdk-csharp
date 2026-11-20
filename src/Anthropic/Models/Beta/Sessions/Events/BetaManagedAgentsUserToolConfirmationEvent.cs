@@ -186,8 +186,8 @@ class BetaManagedAgentsUserToolConfirmationEventFromRaw
 [JsonConverter(typeof(ResultConverter))]
 public enum Result
 {
-    Allow,
-    Deny,
+    Allow = 0,
+    Deny = 1,
 }
 
 sealed class ResultConverter : JsonConverter<Result>

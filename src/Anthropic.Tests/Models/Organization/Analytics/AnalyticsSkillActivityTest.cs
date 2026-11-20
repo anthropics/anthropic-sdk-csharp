@@ -457,21 +457,29 @@ public class ShareStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(ShareStatus.Organization)]
-    [InlineData(ShareStatus.Private)]
-    [InlineData(ShareStatus.Public)]
-    public void SerializationRoundtrip_Works(ShareStatus rawValue)
+    [InlineData(ShareStatus.Organization, 0, "organization")]
+    [InlineData(ShareStatus.Private, 1, "private")]
+    [InlineData(ShareStatus.Public, 2, "public")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ShareStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ShareStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ShareStatus>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

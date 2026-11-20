@@ -8,12 +8,12 @@ namespace Anthropic.Models.Messages;
 [JsonConverter(typeof(ThreadUnsupportedFeatureNameConverter))]
 public enum ThreadUnsupportedFeatureName
 {
-    CacheControl,
-    ContextManagement,
-    Fallbacks,
-    Hipaa,
-    InferenceHooks,
-    Thinking,
+    CacheControl = 0,
+    ContextManagement = 1,
+    Fallbacks = 2,
+    Hipaa = 3,
+    InferenceHooks = 4,
+    Thinking = 5,
 }
 
 sealed class ThreadUnsupportedFeatureNameConverter : JsonConverter<ThreadUnsupportedFeatureName>

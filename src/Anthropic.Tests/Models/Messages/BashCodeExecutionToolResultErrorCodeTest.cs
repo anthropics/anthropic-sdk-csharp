@@ -32,22 +32,38 @@ public class BashCodeExecutionToolResultErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BashCodeExecutionToolResultErrorCode.InvalidToolInput)]
-    [InlineData(BashCodeExecutionToolResultErrorCode.Unavailable)]
-    [InlineData(BashCodeExecutionToolResultErrorCode.TooManyRequests)]
-    [InlineData(BashCodeExecutionToolResultErrorCode.ExecutionTimeExceeded)]
-    [InlineData(BashCodeExecutionToolResultErrorCode.OutputFileTooLarge)]
-    public void SerializationRoundtrip_Works(BashCodeExecutionToolResultErrorCode rawValue)
+    [InlineData(BashCodeExecutionToolResultErrorCode.InvalidToolInput, 0, "invalid_tool_input")]
+    [InlineData(BashCodeExecutionToolResultErrorCode.Unavailable, 1, "unavailable")]
+    [InlineData(BashCodeExecutionToolResultErrorCode.TooManyRequests, 2, "too_many_requests")]
+    [InlineData(
+        BashCodeExecutionToolResultErrorCode.ExecutionTimeExceeded,
+        3,
+        "execution_time_exceeded"
+    )]
+    [InlineData(
+        BashCodeExecutionToolResultErrorCode.OutputFileTooLarge,
+        4,
+        "output_file_too_large"
+    )]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BashCodeExecutionToolResultErrorCode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BashCodeExecutionToolResultErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BashCodeExecutionToolResultErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

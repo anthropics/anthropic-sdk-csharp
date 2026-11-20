@@ -747,15 +747,15 @@ sealed class BetaErrorConverter : JsonConverter<BetaError>
 [JsonConverter(typeof(BetaErrorTypeConverter))]
 public enum BetaErrorType
 {
-    InvalidRequestError,
-    AuthenticationError,
-    BillingError,
-    PermissionError,
-    NotFoundError,
-    RateLimitError,
-    TimeoutError,
-    ApiError,
-    OverloadedError,
+    InvalidRequestError = 0,
+    AuthenticationError = 1,
+    BillingError = 2,
+    PermissionError = 3,
+    NotFoundError = 4,
+    RateLimitError = 5,
+    TimeoutError = 6,
+    ApiError = 7,
+    OverloadedError = 8,
 }
 
 sealed class BetaErrorTypeConverter : JsonConverter<BetaErrorType>

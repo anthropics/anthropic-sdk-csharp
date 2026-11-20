@@ -403,9 +403,9 @@ sealed class MessageParamConverter : JsonConverter<MessageParam>
 [JsonConverter(typeof(MessageParamRoleConverter))]
 public enum MessageParamRole
 {
-    User,
-    Assistant,
-    System,
+    User = 0,
+    Assistant = 1,
+    System = 2,
 }
 
 sealed class MessageParamRoleConverter : JsonConverter<MessageParamRole>

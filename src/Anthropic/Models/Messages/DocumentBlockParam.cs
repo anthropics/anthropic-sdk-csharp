@@ -656,11 +656,11 @@ sealed class DocumentBlockParamSourceConverter : JsonConverter<DocumentBlockPara
 [JsonConverter(typeof(DocumentBlockParamSourceTypeConverter))]
 public enum DocumentBlockParamSourceType
 {
-    Base64,
-    Text,
-    Content,
-    Url,
-    File,
+    Base64 = 0,
+    Text = 1,
+    Content = 2,
+    Url = 3,
+    File = 4,
 }
 
 sealed class DocumentBlockParamSourceTypeConverter : JsonConverter<DocumentBlockParamSourceType>

@@ -117,24 +117,36 @@ public class BetaAdvisorToolResultErrorParamErrorCodeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.PromptTooLong)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.TooManyRequests)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Overloaded)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Unavailable)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded)]
-    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound)]
-    public void SerializationRoundtrip_Works(BetaAdvisorToolResultErrorParamErrorCode rawValue)
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.MaxUsesExceeded, 0, "max_uses_exceeded")]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.PromptTooLong, 1, "prompt_too_long")]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.TooManyRequests, 2, "too_many_requests")]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Overloaded, 3, "overloaded")]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.Unavailable, 4, "unavailable")]
+    [InlineData(
+        BetaAdvisorToolResultErrorParamErrorCode.ExecutionTimeExceeded,
+        5,
+        "execution_time_exceeded"
+    )]
+    [InlineData(BetaAdvisorToolResultErrorParamErrorCode.ModelNotFound, 6, "model_not_found")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAdvisorToolResultErrorParamErrorCode rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAdvisorToolResultErrorParamErrorCode> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAdvisorToolResultErrorParamErrorCode>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

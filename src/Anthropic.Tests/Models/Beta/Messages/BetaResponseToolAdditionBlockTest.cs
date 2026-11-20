@@ -379,21 +379,33 @@ public class BetaResponseToolAdditionBlockToolTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaResponseToolAdditionBlockToolType.ToolReference)]
-    [InlineData(BetaResponseToolAdditionBlockToolType.McpToolReference)]
-    [InlineData(BetaResponseToolAdditionBlockToolType.McpToolsetReference)]
-    [InlineData(BetaResponseToolAdditionBlockToolType.ToolDefinition)]
-    public void SerializationRoundtrip_Works(BetaResponseToolAdditionBlockToolType rawValue)
+    [InlineData(BetaResponseToolAdditionBlockToolType.ToolReference, 0, "tool_reference")]
+    [InlineData(BetaResponseToolAdditionBlockToolType.McpToolReference, 1, "mcp_tool_reference")]
+    [InlineData(
+        BetaResponseToolAdditionBlockToolType.McpToolsetReference,
+        2,
+        "mcp_toolset_reference"
+    )]
+    [InlineData(BetaResponseToolAdditionBlockToolType.ToolDefinition, 3, "tool_definition")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaResponseToolAdditionBlockToolType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaResponseToolAdditionBlockToolType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaResponseToolAdditionBlockToolType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

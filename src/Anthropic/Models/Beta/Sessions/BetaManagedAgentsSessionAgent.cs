@@ -579,8 +579,8 @@ sealed class SkillConverter : JsonConverter<Skill>
 [JsonConverter(typeof(SkillTypeConverter))]
 public enum SkillType
 {
-    Anthropic,
-    Custom,
+    Anthropic = 0,
+    Custom = 1,
 }
 
 sealed class SkillTypeConverter : JsonConverter<SkillType>
@@ -1020,9 +1020,9 @@ sealed class BetaManagedAgentsSessionAgentToolConverter
 [JsonConverter(typeof(BetaManagedAgentsSessionAgentToolTypeConverter))]
 public enum BetaManagedAgentsSessionAgentToolType
 {
-    AgentToolset20260401,
-    McpToolset,
-    Custom,
+    AgentToolset20260401 = 0,
+    McpToolset = 1,
+    Custom = 2,
 }
 
 sealed class BetaManagedAgentsSessionAgentToolTypeConverter

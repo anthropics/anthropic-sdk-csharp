@@ -348,21 +348,29 @@ public class TokenEndpointAuthTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(TokenEndpointAuthType.None)]
-    [InlineData(TokenEndpointAuthType.ClientSecretBasic)]
-    [InlineData(TokenEndpointAuthType.ClientSecretPost)]
-    public void SerializationRoundtrip_Works(TokenEndpointAuthType rawValue)
+    [InlineData(TokenEndpointAuthType.None, 0, "none")]
+    [InlineData(TokenEndpointAuthType.ClientSecretBasic, 1, "client_secret_basic")]
+    [InlineData(TokenEndpointAuthType.ClientSecretPost, 2, "client_secret_post")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        TokenEndpointAuthType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, TokenEndpointAuthType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, TokenEndpointAuthType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

@@ -260,20 +260,28 @@ public class RubricTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(RubricType.File)]
-    [InlineData(RubricType.Text)]
-    public void SerializationRoundtrip_Works(RubricType rawValue)
+    [InlineData(RubricType.File, 0, "file")]
+    [InlineData(RubricType.Text, 1, "text")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        RubricType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, RubricType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, RubricType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

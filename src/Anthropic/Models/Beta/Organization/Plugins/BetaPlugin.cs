@@ -686,8 +686,8 @@ sealed class CreatedByConverter : JsonConverter<CreatedBy?>
 [JsonConverter(typeof(CreatedByTypeConverter))]
 public enum CreatedByType
 {
-    UserActor,
-    ApiActor,
+    UserActor = 0,
+    ApiActor = 1,
 }
 
 sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
@@ -737,10 +737,10 @@ sealed class CreatedByTypeConverter : JsonConverter<CreatedByType>
 [JsonConverter(typeof(OrganizationInstallationPreferenceConverter))]
 public enum OrganizationInstallationPreference
 {
-    AutoInstall,
-    Available,
-    NotAvailable,
-    Required,
+    AutoInstall = 0,
+    Available = 1,
+    NotAvailable = 2,
+    Required = 3,
 }
 
 sealed class OrganizationInstallationPreferenceConverter
@@ -1086,8 +1086,8 @@ sealed class OwnerConverter : JsonConverter<Owner>
 [JsonConverter(typeof(OwnerTypeValueConverter))]
 public enum OwnerTypeValue
 {
-    Organization,
-    User,
+    Organization = 0,
+    User = 1,
 }
 
 sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
@@ -1149,9 +1149,9 @@ sealed class OwnerTypeValueConverter : JsonConverter<OwnerTypeValue>
 [JsonConverter(typeof(ReachConverter))]
 public enum Reach
 {
-    Contained,
-    Privileged,
-    Remote,
+    Contained = 0,
+    Privileged = 1,
+    Remote = 2,
 }
 
 sealed class ReachConverter : JsonConverter<Reach>

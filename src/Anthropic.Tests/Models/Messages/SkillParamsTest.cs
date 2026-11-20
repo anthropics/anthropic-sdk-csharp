@@ -191,20 +191,28 @@ public class SkillParamsTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(SkillParamsType.Anthropic)]
-    [InlineData(SkillParamsType.Custom)]
-    public void SerializationRoundtrip_Works(SkillParamsType rawValue)
+    [InlineData(SkillParamsType.Anthropic, 0, "anthropic")]
+    [InlineData(SkillParamsType.Custom, 1, "custom")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        SkillParamsType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, SkillParamsType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, SkillParamsType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

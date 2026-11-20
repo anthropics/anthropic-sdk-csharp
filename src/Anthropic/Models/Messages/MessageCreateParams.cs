@@ -635,8 +635,8 @@ public record class MessageCreateParams : ParamsBase
 [JsonConverter(typeof(ServiceTierConverter))]
 public enum ServiceTier
 {
-    Auto,
-    StandardOnly,
+    Auto = 0,
+    StandardOnly = 1,
 }
 
 sealed class ServiceTierConverter : JsonConverter<ServiceTier>
@@ -686,8 +686,8 @@ sealed class ServiceTierConverter : JsonConverter<ServiceTier>
 [JsonConverter(typeof(SpeedConverter))]
 public enum Speed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class SpeedConverter : JsonConverter<Speed>

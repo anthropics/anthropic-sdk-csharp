@@ -660,20 +660,28 @@ public class DeploymentUpdateParamsResourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(DeploymentUpdateParamsResourceType.GitHubRepository)]
-    [InlineData(DeploymentUpdateParamsResourceType.File)]
-    [InlineData(DeploymentUpdateParamsResourceType.MemoryStore)]
-    public void SerializationRoundtrip_Works(DeploymentUpdateParamsResourceType rawValue)
+    [InlineData(DeploymentUpdateParamsResourceType.GitHubRepository, 0, "github_repository")]
+    [InlineData(DeploymentUpdateParamsResourceType.File, 1, "file")]
+    [InlineData(DeploymentUpdateParamsResourceType.MemoryStore, 2, "memory_store")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DeploymentUpdateParamsResourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DeploymentUpdateParamsResourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, DeploymentUpdateParamsResourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

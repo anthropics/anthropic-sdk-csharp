@@ -91,10 +91,10 @@ class SkillSourceFromRaw : IFromRawJson<SkillSource>
 [JsonConverter(typeof(TypeConverter))]
 public enum Type
 {
-    Custom,
-    Anthropic,
-    AnthropicExample,
-    Plugin,
+    Custom = 0,
+    Anthropic = 1,
+    AnthropicExample = 2,
+    Plugin = 3,
 }
 
 sealed class TypeConverter : JsonConverter<global::Anthropic.Models.Skills.Type>

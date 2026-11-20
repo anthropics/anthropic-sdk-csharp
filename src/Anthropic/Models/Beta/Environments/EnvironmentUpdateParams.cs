@@ -605,8 +605,8 @@ sealed class EnvironmentUpdateParamsConfigConverter : JsonConverter<EnvironmentU
 [JsonConverter(typeof(EnvironmentUpdateParamsConfigTypeConverter))]
 public enum EnvironmentUpdateParamsConfigType
 {
-    Cloud,
-    SelfHosted,
+    Cloud = 0,
+    SelfHosted = 1,
 }
 
 sealed class EnvironmentUpdateParamsConfigTypeConverter
@@ -654,8 +654,8 @@ sealed class EnvironmentUpdateParamsConfigTypeConverter
 [JsonConverter(typeof(EnvironmentUpdateParamsScopeConverter))]
 public enum EnvironmentUpdateParamsScope
 {
-    Organization,
-    Account,
+    Organization = 0,
+    Account = 1,
 }
 
 sealed class EnvironmentUpdateParamsScopeConverter : JsonConverter<EnvironmentUpdateParamsScope>

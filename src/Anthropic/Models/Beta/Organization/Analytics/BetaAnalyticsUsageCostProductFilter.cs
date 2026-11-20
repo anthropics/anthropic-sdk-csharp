@@ -15,18 +15,18 @@ namespace Anthropic.Models.Beta.Organization.Analytics;
 [JsonConverter(typeof(BetaAnalyticsUsageCostProductFilterConverter))]
 public enum BetaAnalyticsUsageCostProductFilter
 {
-    Chat,
-    ChatCoworkUnified,
-    ClaudeCode,
-    ClaudeConsole,
-    ClaudeDesign,
-    ClaudeInChrome,
-    ClaudeTag,
-    Cowork,
-    ManagedAgentsApi,
-    MessageBatchesApi,
-    MessagesApi,
-    OfficeAgent,
+    Chat = 0,
+    ChatCoworkUnified = 1,
+    ClaudeCode = 2,
+    ClaudeConsole = 3,
+    ClaudeDesign = 4,
+    ClaudeInChrome = 5,
+    ClaudeTag = 6,
+    Cowork = 7,
+    ManagedAgentsApi = 8,
+    MessageBatchesApi = 9,
+    MessagesApi = 10,
+    OfficeAgent = 11,
 }
 
 sealed class BetaAnalyticsUsageCostProductFilterConverter

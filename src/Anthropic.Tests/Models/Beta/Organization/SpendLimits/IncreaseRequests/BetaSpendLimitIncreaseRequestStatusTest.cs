@@ -30,20 +30,28 @@ public class BetaSpendLimitIncreaseRequestStatusTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaSpendLimitIncreaseRequestStatus.Approved)]
-    [InlineData(BetaSpendLimitIncreaseRequestStatus.Denied)]
-    [InlineData(BetaSpendLimitIncreaseRequestStatus.Pending)]
-    public void SerializationRoundtrip_Works(BetaSpendLimitIncreaseRequestStatus rawValue)
+    [InlineData(BetaSpendLimitIncreaseRequestStatus.Approved, 0, "approved")]
+    [InlineData(BetaSpendLimitIncreaseRequestStatus.Denied, 1, "denied")]
+    [InlineData(BetaSpendLimitIncreaseRequestStatus.Pending, 2, "pending")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaSpendLimitIncreaseRequestStatus rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaSpendLimitIncreaseRequestStatus> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaSpendLimitIncreaseRequestStatus>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

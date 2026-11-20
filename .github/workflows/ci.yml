@@ -41,9 +41,16 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
 
       - name: Set up .NET
-        uses: actions/setup-dotnet@55ec9447dda3d1cf6bd587150f3262f30ee10815 # v3.4.2
-        with:
-          dotnet-version: '8.0.x'
+        run: |
+          version=10.0.401
+          archive="dotnet-sdk-$version-linux-x64.tar.gz"
+          cd "$RUNNER_TEMP"
+          curl -fsS --retry 3 -O "https://builds.dotnet.microsoft.com/dotnet/Sdk/$version/$archive"
+          echo "51c8b999af9e8dd9998c9edc5944e19a90788862068acd38694e098889054ce8c23d4f0c5cccfa16bf187d044562359e5ee69a9f8ad0bbe913ba90311fbce25b  $archive" | sha512sum --check
+          mkdir dotnet
+          tar -xzf "$archive" -C dotnet
+          echo "$PWD/dotnet" >>"$GITHUB_PATH"
+          echo "DOTNET_ROOT=$PWD/dotnet" >>"$GITHUB_ENV"
 
       - name: Build SDK
         run: ./scripts/build

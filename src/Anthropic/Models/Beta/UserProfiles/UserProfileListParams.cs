@@ -272,13 +272,13 @@ public enum Order
     /// Oldest first when `order_by` is `created_at`, or names in ascending order
     /// when `order_by` is `name`.
     /// </summary>
-    Asc,
+    Asc = 0,
 
     /// <summary>
     /// Newest first when `order_by` is `created_at`, or names in descending order
     /// when `order_by` is `name`. This is the default.
     /// </summary>
-    Desc,
+    Desc = 1,
 }
 
 sealed class OrderConverter : JsonConverter<Order>
@@ -324,13 +324,13 @@ public enum OrderBy
     /// <summary>
     /// Sort by when each user profile was created. This is the default.
     /// </summary>
-    CreatedAt,
+    CreatedAt = 0,
 
     /// <summary>
     /// Sort by `name`, ignoring the case of ASCII letters. Profiles without a name
     /// come last in either direction.
     /// </summary>
-    Name,
+    Name = 1,
 }
 
 sealed class OrderByConverter : JsonConverter<OrderBy>

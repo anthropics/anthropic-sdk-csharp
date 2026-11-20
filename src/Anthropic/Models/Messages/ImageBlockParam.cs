@@ -481,9 +481,9 @@ sealed class ImageBlockParamSourceConverter : JsonConverter<ImageBlockParamSourc
 [JsonConverter(typeof(ImageBlockParamSourceTypeConverter))]
 public enum ImageBlockParamSourceType
 {
-    Base64,
-    Url,
-    File,
+    Base64 = 0,
+    Url = 1,
+    File = 2,
 }
 
 sealed class ImageBlockParamSourceTypeConverter : JsonConverter<ImageBlockParamSourceType>

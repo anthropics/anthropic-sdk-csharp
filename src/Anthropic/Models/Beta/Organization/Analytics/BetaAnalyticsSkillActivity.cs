@@ -423,9 +423,9 @@ class BetaAnalyticsSkillActivityFromRaw : IFromRawJson<BetaAnalyticsSkillActivit
 [JsonConverter(typeof(ShareStatusConverter))]
 public enum ShareStatus
 {
-    Organization,
-    Private,
-    Public,
+    Organization = 0,
+    Private = 1,
+    Public = 2,
 }
 
 sealed class ShareStatusConverter : JsonConverter<ShareStatus>

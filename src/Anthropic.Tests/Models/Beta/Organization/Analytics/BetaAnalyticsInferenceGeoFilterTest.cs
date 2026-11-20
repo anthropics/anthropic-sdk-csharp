@@ -31,20 +31,28 @@ public class BetaAnalyticsInferenceGeoFilterTest : TestBase
     }
 
     [Theory]
-    [InlineData(BetaAnalyticsInferenceGeoFilter.Global)]
-    [InlineData(BetaAnalyticsInferenceGeoFilter.NotAvailable)]
-    [InlineData(BetaAnalyticsInferenceGeoFilter.Us)]
-    public void SerializationRoundtrip_Works(BetaAnalyticsInferenceGeoFilter rawValue)
+    [InlineData(BetaAnalyticsInferenceGeoFilter.Global, 0, "global")]
+    [InlineData(BetaAnalyticsInferenceGeoFilter.NotAvailable, 1, "not_available")]
+    [InlineData(BetaAnalyticsInferenceGeoFilter.Us, 2, "us")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BetaAnalyticsInferenceGeoFilter rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BetaAnalyticsInferenceGeoFilter> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, BetaAnalyticsInferenceGeoFilter>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

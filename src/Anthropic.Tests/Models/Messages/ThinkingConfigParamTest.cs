@@ -178,22 +178,30 @@ public class ThinkingConfigParamTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ThinkingConfigParamType.Enabled)]
-    [InlineData(ThinkingConfigParamType.Disabled)]
-    [InlineData(ThinkingConfigParamType.BetweenTools)]
-    [InlineData(ThinkingConfigParamType.Adaptive)]
-    public void SerializationRoundtrip_Works(ThinkingConfigParamType rawValue)
+    [InlineData(ThinkingConfigParamType.Enabled, 0, "enabled")]
+    [InlineData(ThinkingConfigParamType.Disabled, 1, "disabled")]
+    [InlineData(ThinkingConfigParamType.BetweenTools, 2, "between_tools")]
+    [InlineData(ThinkingConfigParamType.Adaptive, 3, "adaptive")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ThinkingConfigParamType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ThinkingConfigParamType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ThinkingConfigParamType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

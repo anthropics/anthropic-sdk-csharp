@@ -700,11 +700,11 @@ sealed class CitationConverter : JsonConverter<Citation>
 [JsonConverter(typeof(CitationTypeConverter))]
 public enum CitationType
 {
-    CharLocation,
-    PageLocation,
-    ContentBlockLocation,
-    WebSearchResultLocation,
-    SearchResultLocation,
+    CharLocation = 0,
+    PageLocation = 1,
+    ContentBlockLocation = 2,
+    WebSearchResultLocation = 3,
+    SearchResultLocation = 4,
 }
 
 sealed class CitationTypeConverter : JsonConverter<CitationType>

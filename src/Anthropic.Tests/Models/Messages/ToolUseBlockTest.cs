@@ -381,21 +381,29 @@ public class ToolUseBlockCallerTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(ToolUseBlockCallerType.Direct)]
-    [InlineData(ToolUseBlockCallerType.CodeExecution20250825)]
-    [InlineData(ToolUseBlockCallerType.CodeExecution20260120)]
-    public void SerializationRoundtrip_Works(ToolUseBlockCallerType rawValue)
+    [InlineData(ToolUseBlockCallerType.Direct, 0, "direct")]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20250825, 1, "code_execution_20250825")]
+    [InlineData(ToolUseBlockCallerType.CodeExecution20260120, 2, "code_execution_20260120")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        ToolUseBlockCallerType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, ToolUseBlockCallerType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, ToolUseBlockCallerType>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

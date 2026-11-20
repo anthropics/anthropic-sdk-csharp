@@ -149,9 +149,9 @@ class TextEditorCodeExecutionViewResultBlockParamFromRaw
 [JsonConverter(typeof(TextEditorCodeExecutionViewResultBlockParamFileTypeConverter))]
 public enum TextEditorCodeExecutionViewResultBlockParamFileType
 {
-    Text,
-    Image,
-    Pdf,
+    Text = 0,
+    Image = 1,
+    Pdf = 2,
 }
 
 sealed class TextEditorCodeExecutionViewResultBlockParamFileTypeConverter

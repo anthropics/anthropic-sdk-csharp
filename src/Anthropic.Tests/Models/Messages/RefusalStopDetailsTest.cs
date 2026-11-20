@@ -130,23 +130,31 @@ public class CategoryTest : TestBase
     }
 
     [Theory]
-    [InlineData(Category.Cyber)]
-    [InlineData(Category.Bio)]
-    [InlineData(Category.FrontierLlm)]
-    [InlineData(Category.ReasoningExtraction)]
-    [InlineData(Category.GeneralHarms)]
-    public void SerializationRoundtrip_Works(Category rawValue)
+    [InlineData(Category.Cyber, 0, "cyber")]
+    [InlineData(Category.Bio, 1, "bio")]
+    [InlineData(Category.FrontierLlm, 2, "frontier_llm")]
+    [InlineData(Category.ReasoningExtraction, 3, "reasoning_extraction")]
+    [InlineData(Category.GeneralHarms, 4, "general_harms")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        Category rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Category> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Category>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

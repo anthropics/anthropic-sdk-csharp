@@ -397,22 +397,30 @@ public class DocumentBlockParamSourceTypeTest : TestBase
     }
 
     [Theory]
-    [InlineData(DocumentBlockParamSourceType.Base64)]
-    [InlineData(DocumentBlockParamSourceType.Text)]
-    [InlineData(DocumentBlockParamSourceType.Content)]
-    [InlineData(DocumentBlockParamSourceType.Url)]
-    [InlineData(DocumentBlockParamSourceType.File)]
-    public void SerializationRoundtrip_Works(DocumentBlockParamSourceType rawValue)
+    [InlineData(DocumentBlockParamSourceType.Base64, 0, "base64")]
+    [InlineData(DocumentBlockParamSourceType.Text, 1, "text")]
+    [InlineData(DocumentBlockParamSourceType.Content, 2, "content")]
+    [InlineData(DocumentBlockParamSourceType.Url, 3, "url")]
+    [InlineData(DocumentBlockParamSourceType.File, 4, "file")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        DocumentBlockParamSourceType rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, DocumentBlockParamSourceType> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<
             ApiEnum<string, DocumentBlockParamSourceType>
-        >(json, ModelBase.SerializerOptions);
+        >(apiJson, ModelBase.SerializerOptions);
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

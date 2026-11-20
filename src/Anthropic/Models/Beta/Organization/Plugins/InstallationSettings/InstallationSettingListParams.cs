@@ -255,8 +255,8 @@ public record class InstallationSettingListParams : ParamsBase
 [JsonConverter(typeof(TargetTypeConverter))]
 public enum TargetType
 {
-    Organization,
-    RbacGroup,
+    Organization = 0,
+    RbacGroup = 1,
 }
 
 sealed class TargetTypeConverter : JsonConverter<TargetType>

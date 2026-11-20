@@ -451,21 +451,29 @@ public class BucketWidthTest : TestBase
     }
 
     [Theory]
-    [InlineData(BucketWidth.Day)]
-    [InlineData(BucketWidth.Hour)]
-    [InlineData(BucketWidth.Minute)]
-    public void SerializationRoundtrip_Works(BucketWidth rawValue)
+    [InlineData(BucketWidth.Day, 0, "1d")]
+    [InlineData(BucketWidth.Hour, 1, "1h")]
+    [InlineData(BucketWidth.Minute, 2, "1m")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        BucketWidth rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, BucketWidth> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, BucketWidth>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -519,29 +527,37 @@ public class GroupByTest : TestBase
     }
 
     [Theory]
-    [InlineData(GroupBy.ClaudeTagCategory)]
-    [InlineData(GroupBy.ClaudeTagUserID)]
-    [InlineData(GroupBy.ContextWindow)]
-    [InlineData(GroupBy.CostType)]
-    [InlineData(GroupBy.InferenceGeo)]
-    [InlineData(GroupBy.Model)]
-    [InlineData(GroupBy.Product)]
-    [InlineData(GroupBy.RbacGroupID)]
-    [InlineData(GroupBy.SlackChannelID)]
-    [InlineData(GroupBy.Speed)]
-    [InlineData(GroupBy.TokenType)]
-    public void SerializationRoundtrip_Works(GroupBy rawValue)
+    [InlineData(GroupBy.ClaudeTagCategory, 0, "claude_tag_category")]
+    [InlineData(GroupBy.ClaudeTagUserID, 1, "claude_tag_user_id")]
+    [InlineData(GroupBy.ContextWindow, 2, "context_window")]
+    [InlineData(GroupBy.CostType, 3, "cost_type")]
+    [InlineData(GroupBy.InferenceGeo, 4, "inference_geo")]
+    [InlineData(GroupBy.Model, 5, "model")]
+    [InlineData(GroupBy.Product, 6, "product")]
+    [InlineData(GroupBy.RbacGroupID, 7, "rbac_group_id")]
+    [InlineData(GroupBy.SlackChannelID, 8, "slack_channel_id")]
+    [InlineData(GroupBy.Speed, 9, "speed")]
+    [InlineData(GroupBy.TokenType, 10, "token_type")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        GroupBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, GroupBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, GroupBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -586,20 +602,24 @@ public class OrderTest : TestBase
     }
 
     [Theory]
-    [InlineData(Order.Asc)]
-    [InlineData(Order.Desc)]
-    public void SerializationRoundtrip_Works(Order rawValue)
+    [InlineData(Order.Asc, 0, "asc")]
+    [InlineData(Order.Desc, 1, "desc")]
+    public void EnumMemberSerializationRoundtrip_Works(Order rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Order> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Order>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -644,20 +664,28 @@ public class OrderByTest : TestBase
     }
 
     [Theory]
-    [InlineData(OrderBy.Amount)]
-    [InlineData(OrderBy.ListAmount)]
-    public void SerializationRoundtrip_Works(OrderBy rawValue)
+    [InlineData(OrderBy.Amount, 0, "amount")]
+    [InlineData(OrderBy.ListAmount, 1, "list_amount")]
+    public void EnumMemberSerializationRoundtrip_Works(
+        OrderBy rawValue,
+        int number,
+        string apiValue
+    )
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, OrderBy> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, OrderBy>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]
@@ -702,20 +730,24 @@ public class SpeedTest : TestBase
     }
 
     [Theory]
-    [InlineData(Speed.Fast)]
-    [InlineData(Speed.Standard)]
-    public void SerializationRoundtrip_Works(Speed rawValue)
+    [InlineData(Speed.Fast, 0, "fast")]
+    [InlineData(Speed.Standard, 1, "standard")]
+    public void EnumMemberSerializationRoundtrip_Works(Speed rawValue, int number, string apiValue)
     {
         // force implicit conversion because Theory can't do that for us
         ApiEnum<string, Speed> value = rawValue;
+        string apiJson = JsonSerializer.Serialize(apiValue, ModelBase.SerializerOptions);
 
         string json = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiEnum<string, Speed>>(
-            json,
+            apiJson,
             ModelBase.SerializerOptions
         );
 
-        Assert.Equal(value, deserialized);
+        Assert.Equal(number, (int)rawValue);
+        Assert.Equal(apiJson, json);
+        Assert.NotNull(deserialized);
+        Assert.Equal(rawValue, deserialized.Value());
     }
 
     [Fact]

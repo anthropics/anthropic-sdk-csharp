@@ -205,9 +205,9 @@ class UsageFromRaw : IFromRawJson<Usage>
 [JsonConverter(typeof(UsageServiceTierConverter))]
 public enum UsageServiceTier
 {
-    Standard,
-    Priority,
-    Batch,
+    Standard = 0,
+    Priority = 1,
+    Batch = 2,
 }
 
 sealed class UsageServiceTierConverter : JsonConverter<UsageServiceTier>
@@ -255,8 +255,8 @@ sealed class UsageServiceTierConverter : JsonConverter<UsageServiceTier>
 [JsonConverter(typeof(UsageSpeedConverter))]
 public enum UsageSpeed
 {
-    Standard,
-    Fast,
+    Standard = 0,
+    Fast = 1,
 }
 
 sealed class UsageSpeedConverter : JsonConverter<UsageSpeed>

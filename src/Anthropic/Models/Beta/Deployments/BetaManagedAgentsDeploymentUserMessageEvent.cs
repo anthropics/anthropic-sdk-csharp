@@ -556,10 +556,10 @@ sealed class ContentConverter : JsonConverter<Content>
 [JsonConverter(typeof(ContentTypeConverter))]
 public enum ContentType
 {
-    Text,
-    Image,
-    Document,
-    Redacted,
+    Text = 0,
+    Image = 1,
+    Document = 2,
+    Redacted = 3,
 }
 
 sealed class ContentTypeConverter : JsonConverter<ContentType>
