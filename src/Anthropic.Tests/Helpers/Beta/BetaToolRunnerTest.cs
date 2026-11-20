@@ -1300,6 +1300,56 @@ public class BetaToolRunnerTest
     }
 
     [Fact]
+    public async Task ToolOwnCancellation_ReturnsErrorResult()
+    {
+        // A tool's own timeout, such as an HttpClient one, throws an OperationCanceledException
+        // while the runner's token isn't canceled: like any other error, it goes back to the model.
+        var ct = TestContext.Current.CancellationToken;
+        var mock = new Mock<IMessageService>();
+        var callCount = 0;
+        MessageCreateParams? secondCallParams = null;
+
+        mock.Setup(s => s.Create(It.IsAny<MessageCreateParams>(), It.IsAny<CancellationToken>()))
+            .ReturnsAsync(
+                (MessageCreateParams p, CancellationToken _) =>
+                {
+                    callCount++;
+                    if (callCount == 1)
+                    {
+                        return MakeMessage(
+                            [
+                                MakeToolUseBlock(
+                                    "tu_1",
+                                    "get_weather",
+                                    new() { ["location"] = JsonSerializer.SerializeToElement("SF") }
+                                ),
+                            ],
+                            BetaStopReason.ToolUse
+                        );
+                    }
+                    secondCallParams = p;
+                    return MakeMessage([MakeTextBlock("The weather service timed out.")]);
+                }
+            );
+
+        var tool = MakeWeatherTool(
+            (_, _) =>
+                Task.FromException<BetaToolResultBlockParamContent>(
+                    new TaskCanceledException("The request timed out.")
+                )
+        );
+
+        var runner = mock.Object.ToolRunner(BaseParams, [tool]);
+        await runner.RunUntilDoneAsync(ct);
+
+        Assert.NotNull(secondCallParams);
+        var userMsg = secondCallParams.Messages[secondCallParams.Messages.Count - 1];
+        var resultJson = userMsg.Json.GetProperty("content")[0];
+        Assert.True(resultJson.GetProperty("is_error").GetBoolean());
+        Assert.Equal("The request timed out.", resultJson.GetProperty("content").GetString());
+    }
+
+    [Fact]
     public async Task MaxIterations_StopsLoop()
     {
         var ct = TestContext.Current.CancellationToken;
