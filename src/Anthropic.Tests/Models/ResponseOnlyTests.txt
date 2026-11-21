@@ -30,6 +30,7 @@ src/Anthropic.Tests/Models/RequestBodyEncodingInvalidErrorDetailsTest.cs
 src/Anthropic.Tests/Models/RequestBodyEncodingUnsupportedErrorDetailsTest.cs
 src/Anthropic.Tests/Models/RequestBodyTooLargeAfterDecodingErrorDetailsTest.cs
 src/Anthropic.Tests/Models/SandboxEgressRestrictedErrorDetailsTest.cs
+src/Anthropic.Tests/Models/WorkspaceHumanReviewDisabledErrorDetailsTest.cs
 src/Anthropic.Tests/Models/Messages/AvailableToolsLimitExceededErrorDetailsTest.cs
 src/Anthropic.Tests/Models/Messages/BashCodeExecutionOutputBlockTest.cs
 src/Anthropic.Tests/Models/Messages/BashCodeExecutionResultBlockTest.cs

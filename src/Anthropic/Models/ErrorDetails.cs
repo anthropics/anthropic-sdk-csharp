@@ -118,6 +118,8 @@ public record class ErrorDetails : ModelBase
                 CmekKeyUnreachableErrorDetails _ => ErrorDetailsErrorCode.CmekKeyUnreachable,
                 Messages::CompactionUnavailableErrorDetails _ =>
                     ErrorDetailsErrorCode.CompactionUnavailable,
+                WorkspaceHumanReviewDisabledErrorDetails _ =>
+                    ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled,
                 Files::StorageQuotaExceededErrorDetails _ =>
                     ErrorDetailsErrorCode.StorageQuotaExceeded,
                 Files::FileNotDownloadableErrorDetails _ =>
@@ -318,6 +320,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -453,6 +456,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -591,6 +595,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -967,6 +972,12 @@ public record class ErrorDetails : ModelBase
         Messages::CompactionUnavailableErrorDetails value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(WorkspaceHumanReviewDisabledErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -2448,6 +2459,29 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as Messages::CompactionUnavailableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WorkspaceHumanReviewDisabledErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkspaceHumanReviewDisabled(out var value)) {
+    ///     // `value` is of type `WorkspaceHumanReviewDisabledErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkspaceHumanReviewDisabled(
+        [NotNullWhen(true)] out WorkspaceHumanReviewDisabledErrorDetails? value
+    )
+    {
+        value = this.Value as WorkspaceHumanReviewDisabledErrorDetails;
         return value != null;
     }
 
@@ -4517,6 +4551,7 @@ public record class ErrorDetails : ModelBase
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
+    ///     (WorkspaceHumanReviewDisabledErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
     ///     (Files::FileNotDownloadableErrorDetails value) =&gt; {...},
     ///     (Files::FileExpiredErrorDetails value) =&gt; {...},
@@ -4646,6 +4681,7 @@ public record class ErrorDetails : ModelBase
         Action<RampLimitExceededErrorDetails> rampLimitExceeded,
         Action<CmekKeyUnreachableErrorDetails> cmekKeyUnreachable,
         Action<Messages::CompactionUnavailableErrorDetails> compactionUnavailable,
+        Action<WorkspaceHumanReviewDisabledErrorDetails> workspaceHumanReviewDisabled,
         Action<Files::StorageQuotaExceededErrorDetails> storageQuotaExceeded,
         Action<Files::FileNotDownloadableErrorDetails> fileNotDownloadable,
         Action<Files::FileExpiredErrorDetails> fileExpired,
@@ -4845,6 +4881,9 @@ public record class ErrorDetails : ModelBase
                 break;
             case Messages::CompactionUnavailableErrorDetails value:
                 compactionUnavailable(value);
+                break;
+            case WorkspaceHumanReviewDisabledErrorDetails value:
+                workspaceHumanReviewDisabled(value);
                 break;
             case Files::StorageQuotaExceededErrorDetails value:
                 storageQuotaExceeded(value);
@@ -5168,6 +5207,7 @@ public record class ErrorDetails : ModelBase
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
+    ///     (WorkspaceHumanReviewDisabledErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
     ///     (Files::FileNotDownloadableErrorDetails value) =&gt; {...},
     ///     (Files::FileExpiredErrorDetails value) =&gt; {...},
@@ -5306,6 +5346,7 @@ public record class ErrorDetails : ModelBase
         Func<RampLimitExceededErrorDetails, T> rampLimitExceeded,
         Func<CmekKeyUnreachableErrorDetails, T> cmekKeyUnreachable,
         Func<Messages::CompactionUnavailableErrorDetails, T> compactionUnavailable,
+        Func<WorkspaceHumanReviewDisabledErrorDetails, T> workspaceHumanReviewDisabled,
         Func<Files::StorageQuotaExceededErrorDetails, T> storageQuotaExceeded,
         Func<Files::FileNotDownloadableErrorDetails, T> fileNotDownloadable,
         Func<Files::FileExpiredErrorDetails, T> fileExpired,
@@ -5496,6 +5537,7 @@ public record class ErrorDetails : ModelBase
             RampLimitExceededErrorDetails value => rampLimitExceeded(value),
             CmekKeyUnreachableErrorDetails value => cmekKeyUnreachable(value),
             Messages::CompactionUnavailableErrorDetails value => compactionUnavailable(value),
+            WorkspaceHumanReviewDisabledErrorDetails value => workspaceHumanReviewDisabled(value),
             Files::StorageQuotaExceededErrorDetails value => storageQuotaExceeded(value),
             Files::FileNotDownloadableErrorDetails value => fileNotDownloadable(value),
             Files::FileExpiredErrorDetails value => fileExpired(value),
@@ -5762,6 +5804,9 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(
         Messages::CompactionUnavailableErrorDetails value
     ) => new(value);
+
+    public static implicit operator ErrorDetails(WorkspaceHumanReviewDisabledErrorDetails value) =>
+        new(value);
 
     public static implicit operator ErrorDetails(Files::StorageQuotaExceededErrorDetails value) =>
         new(value);
@@ -6114,6 +6159,7 @@ public record class ErrorDetails : ModelBase
             (rampLimitExceeded) => rampLimitExceeded.Validate(),
             (cmekKeyUnreachable) => cmekKeyUnreachable.Validate(),
             (compactionUnavailable) => compactionUnavailable.Validate(),
+            (workspaceHumanReviewDisabled) => workspaceHumanReviewDisabled.Validate(),
             (storageQuotaExceeded) => storageQuotaExceeded.Validate(),
             (fileNotDownloadable) => fileNotDownloadable.Validate(),
             (fileExpired) => fileExpired.Validate(),
@@ -6271,94 +6317,95 @@ public record class ErrorDetails : ModelBase
             RampLimitExceededErrorDetails _ => 33,
             CmekKeyUnreachableErrorDetails _ => 34,
             Messages::CompactionUnavailableErrorDetails _ => 35,
-            Files::StorageQuotaExceededErrorDetails _ => 36,
-            Files::FileNotDownloadableErrorDetails _ => 37,
-            Files::FileExpiredErrorDetails _ => 38,
-            CmekContextUnavailableErrorDetails _ => 39,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 40,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 41,
-            SandboxEgressRestrictedErrorDetails _ => 42,
-            UserProfileNotFoundErrorDetails _ => 43,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 44,
-            AlreadyMemberErrorDetails _ => 45,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 46,
-            EmailDomainNotAllowedErrorDetails _ => 47,
-            InviteAlreadyExistsErrorDetails _ => 48,
-            OrgMemberLimitExceededErrorDetails _ => 49,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 50,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 51,
-            CannotRemoveLastMemberErrorDetails _ => 52,
-            ConcurrentMembershipChangeErrorDetails _ => 53,
-            ExternalKeyValidationFailedErrorDetails _ => 54,
-            ExternalKeyValidationTimedOutErrorDetails _ => 55,
-            KeyProfileMismatchErrorDetails _ => 56,
-            WorkspacePolicyViolationErrorDetails _ => 57,
-            ExternalKeyChangedErrorDetails _ => 58,
-            WorkspaceCreatedIncompleteErrorDetails _ => 59,
-            StorageProfileMismatchErrorDetails _ => 60,
-            ChangeOutcomeUnknownErrorDetails _ => 61,
-            StorageAttachedDuringArchiveErrorDetails _ => 62,
-            WorkspaceMemberLimitExceededErrorDetails _ => 63,
-            OrganizationTypeNotSupportedErrorDetails _ => 64,
-            ParentOrganizationRequiredErrorDetails _ => 65,
-            RbacRoleNotFoundErrorDetails _ => 66,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 67,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 68,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 69,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 70,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 71,
-            Environments::BetaInvalidMetadataErrorDetails _ => 72,
-            BetaGrantRequiredErrorDetails _ => 73,
-            BetaOrganizationNotEligibleErrorDetails _ => 74,
-            BetaProviderNotAllowedErrorDetails _ => 75,
-            BetaUnsupportedRegionErrorDetails _ => 76,
-            BetaStorageAlreadyRegisteredErrorDetails _ => 77,
-            BetaAuthorizationCheckUnavailableErrorDetails _ => 78,
-            BetaInvalidStorageArnErrorDetails _ => 79,
-            BetaExternalStorageInUseErrorDetails _ => 80,
-            BetaExternalStorageInWorkspacePolicyErrorDetails _ => 81,
-            BetaStorageVerificationFailedErrorDetails _ => 82,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 83,
-            BetaCannotSignOutSelfErrorDetails _ => 84,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 85,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 86,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 87,
-            BetaCannotSignOutOwnerErrorDetails _ => 88,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 89,
-            BetaApprovalRequiredErrorDetails _ => 90,
-            BetaExternalStorageNotAvailableErrorDetails _ => 91,
-            BetaHumanReviewNotAvailableErrorDetails _ => 92,
-            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => 93,
-            BetaStorageNotAttachableErrorDetails _ => 94,
-            Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => 95,
-            BetaStorageAttachLimitReachedErrorDetails _ => 96,
-            BetaStorageProfileStillRequiredErrorDetails _ => 97,
-            BetaStorageChangedConcurrentlyErrorDetails _ => 98,
-            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => 99,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 100,
-            BetaUnsupportedCharsetErrorDetails _ => 101,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 102,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 103,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 104,
-            Plugins::BetaScanFailedErrorDetails _ => 105,
-            Plugins::BetaScanPendingErrorDetails _ => 106,
-            BetaRequestBodyTimeoutErrorDetails _ => 107,
-            BetaSettingsDocumentLimitExceededErrorDetails _ => 108,
-            BetaSettingsHistoryLimitExceededErrorDetails _ => 109,
-            BetaCmekFeatureUnsupportedErrorDetails _ => 110,
-            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 111,
-            BetaRbacGroupOrderLimitExceededErrorDetails _ => 112,
-            BetaRbacGroupNotFoundErrorDetails _ => 113,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 114,
-            BetaApiKeyScopeMissingErrorDetails _ => 115,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 116,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 117,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 118,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 119,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 120,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 121,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 122,
-            BetaBundleOnCallErrorDetails _ => 123,
+            WorkspaceHumanReviewDisabledErrorDetails _ => 36,
+            Files::StorageQuotaExceededErrorDetails _ => 37,
+            Files::FileNotDownloadableErrorDetails _ => 38,
+            Files::FileExpiredErrorDetails _ => 39,
+            CmekContextUnavailableErrorDetails _ => 40,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 41,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 42,
+            SandboxEgressRestrictedErrorDetails _ => 43,
+            UserProfileNotFoundErrorDetails _ => 44,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 45,
+            AlreadyMemberErrorDetails _ => 46,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 47,
+            EmailDomainNotAllowedErrorDetails _ => 48,
+            InviteAlreadyExistsErrorDetails _ => 49,
+            OrgMemberLimitExceededErrorDetails _ => 50,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 51,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 52,
+            CannotRemoveLastMemberErrorDetails _ => 53,
+            ConcurrentMembershipChangeErrorDetails _ => 54,
+            ExternalKeyValidationFailedErrorDetails _ => 55,
+            ExternalKeyValidationTimedOutErrorDetails _ => 56,
+            KeyProfileMismatchErrorDetails _ => 57,
+            WorkspacePolicyViolationErrorDetails _ => 58,
+            ExternalKeyChangedErrorDetails _ => 59,
+            WorkspaceCreatedIncompleteErrorDetails _ => 60,
+            StorageProfileMismatchErrorDetails _ => 61,
+            ChangeOutcomeUnknownErrorDetails _ => 62,
+            StorageAttachedDuringArchiveErrorDetails _ => 63,
+            WorkspaceMemberLimitExceededErrorDetails _ => 64,
+            OrganizationTypeNotSupportedErrorDetails _ => 65,
+            ParentOrganizationRequiredErrorDetails _ => 66,
+            RbacRoleNotFoundErrorDetails _ => 67,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 68,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 69,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 70,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 71,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 72,
+            Environments::BetaInvalidMetadataErrorDetails _ => 73,
+            BetaGrantRequiredErrorDetails _ => 74,
+            BetaOrganizationNotEligibleErrorDetails _ => 75,
+            BetaProviderNotAllowedErrorDetails _ => 76,
+            BetaUnsupportedRegionErrorDetails _ => 77,
+            BetaStorageAlreadyRegisteredErrorDetails _ => 78,
+            BetaAuthorizationCheckUnavailableErrorDetails _ => 79,
+            BetaInvalidStorageArnErrorDetails _ => 80,
+            BetaExternalStorageInUseErrorDetails _ => 81,
+            BetaExternalStorageInWorkspacePolicyErrorDetails _ => 82,
+            BetaStorageVerificationFailedErrorDetails _ => 83,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 84,
+            BetaCannotSignOutSelfErrorDetails _ => 85,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 86,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 87,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 88,
+            BetaCannotSignOutOwnerErrorDetails _ => 89,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 90,
+            BetaApprovalRequiredErrorDetails _ => 91,
+            BetaExternalStorageNotAvailableErrorDetails _ => 92,
+            BetaHumanReviewNotAvailableErrorDetails _ => 93,
+            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => 94,
+            BetaStorageNotAttachableErrorDetails _ => 95,
+            Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => 96,
+            BetaStorageAttachLimitReachedErrorDetails _ => 97,
+            BetaStorageProfileStillRequiredErrorDetails _ => 98,
+            BetaStorageChangedConcurrentlyErrorDetails _ => 99,
+            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => 100,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 101,
+            BetaUnsupportedCharsetErrorDetails _ => 102,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 103,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 104,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 105,
+            Plugins::BetaScanFailedErrorDetails _ => 106,
+            Plugins::BetaScanPendingErrorDetails _ => 107,
+            BetaRequestBodyTimeoutErrorDetails _ => 108,
+            BetaSettingsDocumentLimitExceededErrorDetails _ => 109,
+            BetaSettingsHistoryLimitExceededErrorDetails _ => 110,
+            BetaCmekFeatureUnsupportedErrorDetails _ => 111,
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 112,
+            BetaRbacGroupOrderLimitExceededErrorDetails _ => 113,
+            BetaRbacGroupNotFoundErrorDetails _ => 114,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 115,
+            BetaApiKeyScopeMissingErrorDetails _ => 116,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 117,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 118,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 119,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 120,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 121,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 122,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 123,
+            BetaBundleOnCallErrorDetails _ => 124,
             _ => -1,
         };
     }
@@ -7121,6 +7168,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<Messages::CompactionUnavailableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workspace_human_review_disabled":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<WorkspaceHumanReviewDisabledErrorDetails>(
                             element,
                             options
                         );
@@ -9029,6 +9097,7 @@ public enum ErrorDetailsErrorCode
     RampLimitExceeded = 32,
     CmekKeyUnreachable = 33,
     CompactionUnavailable = 34,
+    WorkspaceHumanReviewDisabled = 668512369,
     StorageQuotaExceeded = 35,
     FileNotDownloadable = 36,
     FileExpired = 37,
@@ -9174,6 +9243,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "ramp_limit_exceeded" => ErrorDetailsErrorCode.RampLimitExceeded,
             "cmek_key_unreachable" => ErrorDetailsErrorCode.CmekKeyUnreachable,
             "compaction_unavailable" => ErrorDetailsErrorCode.CompactionUnavailable,
+            "workspace_human_review_disabled" => ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled,
             "storage_quota_exceeded" => ErrorDetailsErrorCode.StorageQuotaExceeded,
             "file_not_downloadable" => ErrorDetailsErrorCode.FileNotDownloadable,
             "file_expired" => ErrorDetailsErrorCode.FileExpired,
@@ -9342,6 +9412,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.RampLimitExceeded => "ramp_limit_exceeded",
                 ErrorDetailsErrorCode.CmekKeyUnreachable => "cmek_key_unreachable",
                 ErrorDetailsErrorCode.CompactionUnavailable => "compaction_unavailable",
+                ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled =>
+                    "workspace_human_review_disabled",
                 ErrorDetailsErrorCode.StorageQuotaExceeded => "storage_quota_exceeded",
                 ErrorDetailsErrorCode.FileNotDownloadable => "file_not_downloadable",
                 ErrorDetailsErrorCode.FileExpired => "file_expired",

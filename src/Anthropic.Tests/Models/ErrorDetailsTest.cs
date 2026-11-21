@@ -290,6 +290,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceHumanReviewDisabledValidationWorks()
+    {
+        ErrorDetails value = new WorkspaceHumanReviewDisabledErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void StorageQuotaExceededValidationWorks()
     {
         ErrorDetails value = new StorageQuotaExceededErrorDetails();
@@ -1414,6 +1421,19 @@ public class ErrorDetailsTest : TestBase
     public void CompactionUnavailableSerializationRoundtripWorks()
     {
         ErrorDetails value = new CompactionUnavailableErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void WorkspaceHumanReviewDisabledSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new WorkspaceHumanReviewDisabledErrorDetails();
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
             element,
@@ -2885,6 +2905,13 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void WorkspaceHumanReviewDisabledErrorCodeWorks()
+    {
+        ErrorDetails value = new WorkspaceHumanReviewDisabledErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void StorageQuotaExceededErrorCodeWorks()
     {
         ErrorDetails value = new StorageQuotaExceededErrorDetails();
@@ -3674,6 +3701,7 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RampLimitExceeded)]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable)]
     [InlineData(ErrorDetailsErrorCode.CompactionUnavailable)]
+    [InlineData(ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled)]
     [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded)]
     [InlineData(ErrorDetailsErrorCode.FileNotDownloadable)]
     [InlineData(ErrorDetailsErrorCode.FileExpired)]
@@ -3882,6 +3910,11 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.RampLimitExceeded, 32, "ramp_limit_exceeded")]
     [InlineData(ErrorDetailsErrorCode.CmekKeyUnreachable, 33, "cmek_key_unreachable")]
     [InlineData(ErrorDetailsErrorCode.CompactionUnavailable, 34, "compaction_unavailable")]
+    [InlineData(
+        ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled,
+        668512369,
+        "workspace_human_review_disabled"
+    )]
     [InlineData(ErrorDetailsErrorCode.StorageQuotaExceeded, 35, "storage_quota_exceeded")]
     [InlineData(ErrorDetailsErrorCode.FileNotDownloadable, 36, "file_not_downloadable")]
     [InlineData(ErrorDetailsErrorCode.FileExpired, 37, "file_expired")]

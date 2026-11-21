@@ -649,6 +649,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "workspace_human_review_disabled")] = (statusCode, responseBody, response) =>
+            new AnthropicWorkspaceHumanReviewDisabledException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "workspace_member_limit_exceeded")] = (statusCode, responseBody, response) =>
             new AnthropicWorkspaceMemberLimitExceededException()
             {
