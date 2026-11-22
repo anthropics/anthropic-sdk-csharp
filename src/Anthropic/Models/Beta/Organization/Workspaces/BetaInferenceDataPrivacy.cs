@@ -14,8 +14,7 @@ public sealed record class BetaInferenceDataPrivacy : JsonModel
 {
     /// <summary>
     /// The Workspace's human review setting. Human review is off only while this
-    /// is `disabled` and Anthropic's approval stands. If Anthropic withdraws approval,
-    /// review is back on, though this field still reads `disabled`.
+    /// is `disabled` and Anthropic's approval stands.
     /// </summary>
     public BetaAnthropicHumanReview? HumanReview
     {
