@@ -14,8 +14,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             CheckJti = true,
             Jwks = new JwksDiscovery()
             {
@@ -25,8 +25,8 @@ public class IssuerCreateParamsTest : TestBase
             MaxJwtLifetimeSeconds = 1,
         };
 
-        string expectedIssuerUrl = "x";
-        string expectedName = "x";
+        string expectedIssuerUrl = "https://token.actions.githubusercontent.com";
+        string expectedName = "github-actions";
         bool expectedCheckJti = true;
         Jwks expectedJwks = new JwksDiscovery()
         {
@@ -47,8 +47,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             CheckJti = true,
             MaxJwtLifetimeSeconds = 1,
         };
@@ -62,8 +62,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             CheckJti = true,
             MaxJwtLifetimeSeconds = 1,
 
@@ -80,8 +80,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             CheckJti = true,
             Jwks = new JwksDiscovery()
             {
@@ -104,8 +104,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             Jwks = new JwksDiscovery()
             {
                 CACertPem = "ca_cert_pem",
@@ -124,8 +124,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             Jwks = new JwksDiscovery()
             {
                 CACertPem = "ca_cert_pem",
@@ -145,7 +145,11 @@ public class IssuerCreateParamsTest : TestBase
     [Fact]
     public void Url_Works()
     {
-        IssuerCreateParams parameters = new() { IssuerUrl = "x", Name = "x" };
+        IssuerCreateParams parameters = new()
+        {
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
+        };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
 
@@ -162,8 +166,8 @@ public class IssuerCreateParamsTest : TestBase
     {
         var parameters = new IssuerCreateParams
         {
-            IssuerUrl = "x",
-            Name = "x",
+            IssuerUrl = "https://token.actions.githubusercontent.com",
+            Name = "github-actions",
             CheckJti = true,
             Jwks = new JwksDiscovery()
             {

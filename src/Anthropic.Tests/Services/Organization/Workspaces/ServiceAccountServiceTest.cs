@@ -52,7 +52,7 @@ public class ServiceAccountServiceTest : TestBase
                 "workspace_id",
                 new()
                 {
-                    ServiceAccountID = "service_account_id",
+                    ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
                     WorkspaceRole = NoBillingWorkspaceRole.WorkspaceAdmin,
                 },
                 TestContext.Current.CancellationToken

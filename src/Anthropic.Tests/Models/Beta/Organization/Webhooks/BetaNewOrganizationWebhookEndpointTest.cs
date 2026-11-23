@@ -190,6 +190,8 @@ public class BetaNewOrganizationWebhookEndpointEnabledEventTest : TestBase
     [Theory]
     [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed)]
     [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered)]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalStorageFailed)]
+    [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalStorageRecovered)]
     [InlineData(BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(
         BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved
@@ -223,6 +225,16 @@ public class BetaNewOrganizationWebhookEndpointEnabledEventTest : TestBase
         BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered,
         1,
         "external_key.recovered"
+    )]
+    [InlineData(
+        BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalStorageFailed,
+        1543611121,
+        "external_storage.failed"
+    )]
+    [InlineData(
+        BetaNewOrganizationWebhookEndpointEnabledEvent.ExternalStorageRecovered,
+        353474999,
+        "external_storage.recovered"
     )]
     [InlineData(
         BetaNewOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,

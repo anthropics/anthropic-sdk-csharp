@@ -199,6 +199,8 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     [Theory]
     [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed)]
     [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalStorageFailed)]
+    [InlineData(WebhookUpdateParamsEnabledEvent.ExternalStorageRecovered)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved)]
     [InlineData(WebhookUpdateParamsEnabledEvent.UserProfileProgramStatusUpdated)]
@@ -224,6 +226,16 @@ public class WebhookUpdateParamsEnabledEventTest : TestBase
     [Theory]
     [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyFailed, 0, "external_key.failed")]
     [InlineData(WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered, 1, "external_key.recovered")]
+    [InlineData(
+        WebhookUpdateParamsEnabledEvent.ExternalStorageFailed,
+        1543611121,
+        "external_storage.failed"
+    )]
+    [InlineData(
+        WebhookUpdateParamsEnabledEvent.ExternalStorageRecovered,
+        353474999,
+        "external_storage.recovered"
+    )]
     [InlineData(
         WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
         2,

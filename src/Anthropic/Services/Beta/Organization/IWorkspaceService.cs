@@ -3,10 +3,13 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models;
+using Anthropic.Models.Beta.Organization;
+using Anthropic.Models.Beta.Organization.ExternalStorage;
+using Anthropic.Models.Beta.Organization.Workspaces;
+using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
-using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.UserProfiles;
-using OrganizationWorkspaces = Anthropic.Models.Beta.Organization.Workspaces;
+using OrganizationWorkspaces = Anthropic.Models.Organization.Workspaces;
 using Workspaces = Anthropic.Services.Beta.Organization.Workspaces;
 
 namespace Anthropic.Services.Beta.Organization;
@@ -40,60 +43,90 @@ public interface IWorkspaceService
     /// <summary>
     /// Create Workspace
     /// </summary>
+    /// <exception cref="AnthropicBetaApprovalRequiredException"/>
     /// <exception cref="AnthropicExternalKeyValidationFailedException"/>
     /// <exception cref="AnthropicExternalKeyValidationTimedOutException"/>
-    /// <exception cref="AnthropicKeyProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaExternalStorageNotAvailableException"/>
+    /// <exception cref="AnthropicBetaGrantRequiredException"/>
+    /// <exception cref="AnthropicBetaHumanReviewNotAvailableException"/>
+    /// <exception cref="AnthropicBetaHumanReviewOnWithExternalStorageException"/>
+    /// <exception cref="AnthropicBetaInvalidStorageArnException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicKeyProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaOrganizationNotEligibleException"/>
+    /// <exception cref="AnthropicBetaStorageNotAttachableException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicStorageProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaStorageVerificationFailedException"/>
+    /// <exception cref="AnthropicBetaTranscriptsStorageRequiredException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
-    /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicWorkspacePolicyViolationException"/>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Create(
-        OrganizationWorkspaces::WorkspaceCreateParams parameters,
+    /// <exception cref="AnthropicBetaAuthorizationCheckUnavailableException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicWorkspaceCreatedIncompleteException"/>
+    Task<BetaWorkspace> Create(
+        WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Get Workspace
     /// </summary>
-    Task<OrganizationWorkspaces::BetaWorkspace> Retrieve(
-        OrganizationWorkspaces::WorkspaceRetrieveParams parameters,
+    Task<BetaWorkspace> Retrieve(
+        WorkspaceRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Retrieve(
+    /// <inheritdoc cref="Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>
+    Task<BetaWorkspace> Retrieve(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceRetrieveParams? parameters = null,
+        WorkspaceRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Update Workspace
     /// </summary>
+    /// <exception cref="AnthropicBetaApprovalRequiredException"/>
     /// <exception cref="AnthropicExternalKeyValidationFailedException"/>
     /// <exception cref="AnthropicExternalKeyValidationTimedOutException"/>
-    /// <exception cref="AnthropicKeyProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaExternalStorageNotAvailableException"/>
+    /// <exception cref="AnthropicBetaGrantRequiredException"/>
+    /// <exception cref="AnthropicBetaHumanReviewNotAvailableException"/>
+    /// <exception cref="AnthropicBetaHumanReviewOnWithExternalStorageException"/>
+    /// <exception cref="AnthropicBetaInvalidStorageArnException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicKeyProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaOrganizationNotEligibleException"/>
+    /// <exception cref="AnthropicBetaStorageAttachLimitReachedException"/>
+    /// <exception cref="AnthropicBetaStorageNotAttachableException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicStorageProfileMismatchException"/>
+    /// <exception cref="AnthropicBetaStorageProfileStillRequiredException"/>
+    /// <exception cref="AnthropicBetaStorageVerificationFailedException"/>
+    /// <exception cref="AnthropicBetaTranscriptsStorageRequiredException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
-    /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
+    /// <exception cref="OrganizationWorkspaces::AnthropicWorkspacePolicyViolationException"/>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Update(
-        OrganizationWorkspaces::WorkspaceUpdateParams parameters,
+    /// <exception cref="AnthropicBetaStorageChangedConcurrentlyException"/>
+    /// <exception cref="AnthropicBetaWorkspaceChangedConcurrentlyException"/>
+    /// <exception cref="AnthropicBetaAuthorizationCheckUnavailableException"/>
+    /// <exception cref="AnthropicChangeOutcomeUnknownException"/>
+    Task<BetaWorkspace> Update(
+        WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Update(
+    /// <inheritdoc cref="Update(WorkspaceUpdateParams, CancellationToken)"/>
+    Task<BetaWorkspace> Update(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceUpdateParams? parameters = null,
+        WorkspaceUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// List Workspaces
     /// </summary>
-    Task<OrganizationWorkspaces::WorkspaceListPage> List(
-        OrganizationWorkspaces::WorkspaceListParams? parameters = null,
+    Task<WorkspaceListPage> List(
+        WorkspaceListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
@@ -101,15 +134,16 @@ public interface IWorkspaceService
     /// Archive Workspace
     /// </summary>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Archive(
-        OrganizationWorkspaces::WorkspaceArchiveParams parameters,
+    /// <exception cref="OrganizationWorkspaces::AnthropicStorageAttachedDuringArchiveException"/>
+    Task<BetaWorkspace> Archive(
+        WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>
-    Task<OrganizationWorkspaces::BetaWorkspace> Archive(
+    /// <inheritdoc cref="Archive(WorkspaceArchiveParams, CancellationToken)"/>
+    Task<BetaWorkspace> Archive(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceArchiveParams? parameters = null,
+        WorkspaceArchiveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }
@@ -135,67 +169,67 @@ public interface IWorkspaceServiceWithRawResponse
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Create(OrganizationWorkspaces::WorkspaceCreateParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Create(WorkspaceCreateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Create(
-        OrganizationWorkspaces::WorkspaceCreateParams parameters,
+    Task<HttpResponse<BetaWorkspace>> Create(
+        WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Retrieve(
-        OrganizationWorkspaces::WorkspaceRetrieveParams parameters,
+    Task<HttpResponse<BetaWorkspace>> Retrieve(
+        WorkspaceRetrieveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Retrieve(OrganizationWorkspaces::WorkspaceRetrieveParams, CancellationToken)"/>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Retrieve(
+    /// <inheritdoc cref="Retrieve(WorkspaceRetrieveParams, CancellationToken)"/>
+    Task<HttpResponse<BetaWorkspace>> Retrieve(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceRetrieveParams? parameters = null,
+        WorkspaceRetrieveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Update(WorkspaceUpdateParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Update(
-        OrganizationWorkspaces::WorkspaceUpdateParams parameters,
+    Task<HttpResponse<BetaWorkspace>> Update(
+        WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Update(OrganizationWorkspaces::WorkspaceUpdateParams, CancellationToken)"/>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Update(
+    /// <inheritdoc cref="Update(WorkspaceUpdateParams, CancellationToken)"/>
+    Task<HttpResponse<BetaWorkspace>> Update(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceUpdateParams? parameters = null,
+        WorkspaceUpdateParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>get /v1/organizations/workspaces</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.List(OrganizationWorkspaces::WorkspaceListParams?, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.List(WorkspaceListParams?, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<OrganizationWorkspaces::WorkspaceListPage>> List(
-        OrganizationWorkspaces::WorkspaceListParams? parameters = null,
+    Task<HttpResponse<WorkspaceListPage>> List(
+        WorkspaceListParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/organizations/workspaces/{workspace_id}/archive</c>, but is otherwise the
-    /// same as <see cref="IWorkspaceService.Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>.
+    /// same as <see cref="IWorkspaceService.Archive(WorkspaceArchiveParams, CancellationToken)"/>.
     /// </summary>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Archive(
-        OrganizationWorkspaces::WorkspaceArchiveParams parameters,
+    Task<HttpResponse<BetaWorkspace>> Archive(
+        WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default
     );
 
-    /// <inheritdoc cref="Archive(OrganizationWorkspaces::WorkspaceArchiveParams, CancellationToken)"/>
-    Task<HttpResponse<OrganizationWorkspaces::BetaWorkspace>> Archive(
+    /// <inheritdoc cref="Archive(WorkspaceArchiveParams, CancellationToken)"/>
+    Task<HttpResponse<BetaWorkspace>> Archive(
         string workspaceID,
-        OrganizationWorkspaces::WorkspaceArchiveParams? parameters = null,
+        WorkspaceArchiveParams? parameters = null,
         CancellationToken cancellationToken = default
     );
 }

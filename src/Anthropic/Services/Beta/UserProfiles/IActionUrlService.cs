@@ -27,7 +27,11 @@ public interface IActionUrlService
     IActionUrlService WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     /// <summary>
-    /// Create Action URL
+    /// Create a link that sends the profile's end customer to the Verification Portal.
+    ///
+    /// <para>See [Send an end customer a link to the Verification
+    /// Portal](https://platform.claude.com/docs/en/manage-claude/user-profiles-verification-portal)
+    /// for when to create the link and what the end customer sees.</para>
     /// </summary>
     Task<BetaUserProfileActionUrl> Create(
         ActionUrlCreateParams parameters,

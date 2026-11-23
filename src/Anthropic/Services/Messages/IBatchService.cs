@@ -41,6 +41,7 @@ public interface IBatchService
     /// <exception cref="AnthropicClaudeCodeKeyCreatorNotMemberException"/>
     /// <exception cref="AnthropicCmekKeyDisabledException"/>
     /// <exception cref="AnthropicOrganizationOnHoldException"/>
+    /// <exception cref="AnthropicWorkspaceHumanReviewDisabledException"/>
     /// <exception cref="AnthropicEnforcedSpendLimitReachedException"/>
     Task<MessageBatch> Create(
         BatchCreateParams parameters,

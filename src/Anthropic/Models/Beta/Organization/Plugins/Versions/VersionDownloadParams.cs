@@ -11,8 +11,8 @@ using Anthropic.Services.Beta.Organization.Plugins;
 namespace Anthropic.Models.Beta.Organization.Plugins.Versions;
 
 /// <summary>
-/// Download one version's `.zip` archive, exactly as stored. Each download of a
-/// Plugin from a member's personal plugin marketplace is recorded on the Compliance
+/// Download one version's `.zip` archive, exactly as stored. Downloads of Plugins
+/// from members' personal plugin marketplaces can be recorded on the Compliance
 /// API activity feed.
 ///
 /// <para>The response body is the archive (`Content-Type: application/zip`), sent
@@ -27,9 +27,11 @@ namespace Anthropic.Models.Beta.Organization.Plugins.Versions;
 /// files that claude.ai's admin settings do not show, and a `read:org_audit` or `read:compliance_org_data`
 /// key created for all of your parent organization's linked organizations can do
 /// this in any organization under it that has access to this API, by passing `organization_id`.
-/// Each such download records a `claude_plugin_archive_accessed` event on the Compliance
-/// API activity feed, identifying the key, the plugin, the version, and the member.
-/// Downloads of organization-owned plugins are not recorded.</para>
+/// The Compliance API activity feed can record such a download as a `claude_plugin_archive_accessed`
+/// event, which identifies the key, the plugin, the version, and the member. It does
+/// so only while activity events are captured for the plugin's organization, and
+/// a record is not guaranteed even then. The files are served whether or not the
+/// download is recorded. Downloads of organization-owned plugins are not recorded.</para>
 ///
 /// <para>Every request must include the beta header `anthropic-beta: ce-plugins-2026-09-01`.
 /// A request without it returns `404`, exactly as if the endpoint did not exist.

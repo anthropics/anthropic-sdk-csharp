@@ -92,6 +92,26 @@ public record class WorkspaceCreateParams : ParamsBase
     }
 
     /// <summary>
+    /// Where the Workspace's retained inference data and transcript copies go, and
+    /// whether Anthropic's human review applies. Requires the `efs-2026-10-01` `anthropic-beta`
+    /// value. When omitted, `safeguards_storage` and `transcripts_storage` are `internal`
+    /// and `human_review` is `enabled`. Cannot be null. An Admin API key can't set
+    /// this field, because it doesn't belong to a user or a service account. Use
+    /// an API key that belongs to one, or an OAuth token.
+    /// </summary>
+    public BetaInferenceDataPrivacyCreateParam? InferenceDataPrivacy
+    {
+        get
+        {
+            this._rawBodyData.Freeze();
+            return this._rawBodyData.GetNullableClass<BetaInferenceDataPrivacyCreateParam>(
+                "inference_data_privacy"
+            );
+        }
+        init { this._rawBodyData.Set("inference_data_privacy", value); }
+    }
+
+    /// <summary>
     /// User-defined tags as string key-value pairs. Keys may not begin with `anthropic`.
     /// </summary>
     public IReadOnlyDictionary<string, string>? Tags

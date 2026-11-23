@@ -1872,7 +1872,9 @@ public static class AnthropicBetaClientExtensions
                         (c.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = ceError.ErrorCode.Value().ToString(),
+                                ErrorCode = AnthropicClientExtensions.ToErrorCode(
+                                    ceError.ErrorCode
+                                ),
                             }
                         );
                     }
@@ -1898,7 +1900,11 @@ public static class AnthropicBetaClientExtensions
 
                         if (ceOutput.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceOutput.Content)
+                            foreach (
+                                var ceOutputContent in ceOutput.Content.Where(o =>
+                                    o.Type.ToString() == "code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -1928,7 +1934,11 @@ public static class AnthropicBetaClientExtensions
 
                         if (ceEncrypted.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceEncrypted.Content)
+                            foreach (
+                                var ceOutputContent in ceEncrypted.Content.Where(o =>
+                                    o.Type.ToString() == "code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -1954,7 +1964,9 @@ public static class AnthropicBetaClientExtensions
                         (c.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = ceError.ErrorCode.Value().ToString(),
+                                ErrorCode = AnthropicClientExtensions.ToErrorCode(
+                                    ceError.ErrorCode
+                                ),
                             }
                         );
                     }
@@ -1980,7 +1992,11 @@ public static class AnthropicBetaClientExtensions
 
                         if (ceOutput.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceOutput.Content)
+                            foreach (
+                                var ceOutputContent in ceOutput.Content.Where(o =>
+                                    o.Type.ToString() == "bash_code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -2086,7 +2102,9 @@ public static class AnthropicBetaClientExtensions
                         (wsrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = wsError.ErrorCode.Value().ToString(),
+                                ErrorCode = AnthropicClientExtensions.ToErrorCode(
+                                    wsError.ErrorCode
+                                ),
                                 RawRepresentation = wsError,
                             }
                         );
@@ -2123,7 +2141,9 @@ public static class AnthropicBetaClientExtensions
                         (wfrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = wfError.ErrorCode.Value().ToString(),
+                                ErrorCode = AnthropicClientExtensions.ToErrorCode(
+                                    wfError.ErrorCode
+                                ),
                                 RawRepresentation = wfError,
                             }
                         );
@@ -2148,7 +2168,9 @@ public static class AnthropicBetaClientExtensions
                         (c.Outputs ??= []).Add(
                             new ErrorContent(teError.ErrorMessage)
                             {
-                                ErrorCode = teError.ErrorCode.Value().ToString(),
+                                ErrorCode = AnthropicClientExtensions.ToErrorCode(
+                                    teError.ErrorCode
+                                ),
                                 RawRepresentation = teError,
                             }
                         );

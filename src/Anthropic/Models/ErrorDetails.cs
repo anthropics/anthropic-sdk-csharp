@@ -6,8 +6,10 @@ using Anthropic.Core;
 using Anthropic.Exceptions;
 using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Environments.Work;
+using Anthropic.Models.Beta.Organization;
 using Anthropic.Models.Beta.Organization.ClaudeCode.ManagedSettings;
 using Anthropic.Models.Beta.Organization.ClaudeTag;
+using Anthropic.Models.Beta.Organization.ExternalStorage;
 using Anthropic.Models.Beta.Organization.RbacGroups;
 using Anthropic.Models.Beta.Organization.SpendLimits;
 using Anthropic.Models.Beta.Organization.Users;
@@ -24,6 +26,7 @@ using Files = Anthropic.Models.Files;
 using Messages = Anthropic.Models.Messages;
 using Plugins = Anthropic.Models.Beta.Organization.Plugins;
 using Skills = Anthropic.Models.Skills;
+using Workspaces = Anthropic.Models.Beta.Organization.Workspaces;
 
 namespace Anthropic.Models;
 
@@ -115,6 +118,8 @@ public record class ErrorDetails : ModelBase
                 CmekKeyUnreachableErrorDetails _ => ErrorDetailsErrorCode.CmekKeyUnreachable,
                 Messages::CompactionUnavailableErrorDetails _ =>
                     ErrorDetailsErrorCode.CompactionUnavailable,
+                WorkspaceHumanReviewDisabledErrorDetails _ =>
+                    ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled,
                 Files::StorageQuotaExceededErrorDetails _ =>
                     ErrorDetailsErrorCode.StorageQuotaExceeded,
                 Files::FileNotDownloadableErrorDetails _ =>
@@ -154,6 +159,13 @@ public record class ErrorDetails : ModelBase
                 WorkspacePolicyViolationErrorDetails _ =>
                     ErrorDetailsErrorCode.WorkspacePolicyViolation,
                 ExternalKeyChangedErrorDetails _ => ErrorDetailsErrorCode.ExternalKeyChanged,
+                WorkspaceCreatedIncompleteErrorDetails _ =>
+                    ErrorDetailsErrorCode.WorkspaceCreatedIncomplete,
+                StorageProfileMismatchErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageProfileMismatch,
+                ChangeOutcomeUnknownErrorDetails _ => ErrorDetailsErrorCode.ChangeOutcomeUnknown,
+                StorageAttachedDuringArchiveErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageAttachedDuringArchive,
                 WorkspaceMemberLimitExceededErrorDetails _ =>
                     ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
                 OrganizationTypeNotSupportedErrorDetails _ =>
@@ -173,6 +185,22 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.HeartbeatPreconditionFailed,
                 Environments::BetaInvalidMetadataErrorDetails _ =>
                     ErrorDetailsErrorCode.InvalidMetadata,
+                BetaGrantRequiredErrorDetails _ => ErrorDetailsErrorCode.GrantRequired,
+                BetaOrganizationNotEligibleErrorDetails _ =>
+                    ErrorDetailsErrorCode.OrganizationNotEligible,
+                BetaProviderNotAllowedErrorDetails _ => ErrorDetailsErrorCode.ProviderNotAllowed,
+                BetaUnsupportedRegionErrorDetails _ => ErrorDetailsErrorCode.UnsupportedRegion,
+                BetaStorageAlreadyRegisteredErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageAlreadyRegistered,
+                BetaAuthorizationCheckUnavailableErrorDetails _ =>
+                    ErrorDetailsErrorCode.AuthorizationCheckUnavailable,
+                BetaInvalidStorageArnErrorDetails _ => ErrorDetailsErrorCode.InvalidStorageArn,
+                BetaExternalStorageInUseErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalStorageInUse,
+                BetaExternalStorageInWorkspacePolicyErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
+                BetaStorageVerificationFailedErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageVerificationFailed,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ =>
                     ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
                 BetaCannotSignOutSelfErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutSelf,
@@ -185,6 +213,25 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutOwnerErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutOwner,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ =>
                     ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
+                BetaApprovalRequiredErrorDetails _ => ErrorDetailsErrorCode.ApprovalRequired,
+                BetaExternalStorageNotAvailableErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalStorageNotAvailable,
+                BetaHumanReviewNotAvailableErrorDetails _ =>
+                    ErrorDetailsErrorCode.HumanReviewNotAvailable,
+                Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ =>
+                    ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage,
+                BetaStorageNotAttachableErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageNotAttachable,
+                Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ =>
+                    ErrorDetailsErrorCode.TranscriptsStorageRequired,
+                BetaStorageAttachLimitReachedErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageAttachLimitReached,
+                BetaStorageProfileStillRequiredErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageProfileStillRequired,
+                BetaStorageChangedConcurrentlyErrorDetails _ =>
+                    ErrorDetailsErrorCode.StorageChangedConcurrently,
+                Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ =>
+                    ErrorDetailsErrorCode.WorkspaceChangedConcurrently,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ =>
                     ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
                 BetaUnsupportedCharsetErrorDetails _ => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -273,6 +320,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -296,6 +344,10 @@ public record class ErrorDetails : ModelBase
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
+                WorkspaceCreatedIncompleteErrorDetails _ => null,
+                StorageProfileMismatchErrorDetails _ => null,
+                ChangeOutcomeUnknownErrorDetails _ => null,
+                StorageAttachedDuringArchiveErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
                 ParentOrganizationRequiredErrorDetails _ => null,
@@ -306,6 +358,16 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaGrantRequiredErrorDetails _ => null,
+                BetaOrganizationNotEligibleErrorDetails _ => null,
+                BetaProviderNotAllowedErrorDetails _ => null,
+                BetaUnsupportedRegionErrorDetails _ => null,
+                BetaStorageAlreadyRegisteredErrorDetails _ => null,
+                BetaAuthorizationCheckUnavailableErrorDetails _ => null,
+                BetaInvalidStorageArnErrorDetails _ => null,
+                BetaExternalStorageInUseErrorDetails _ => null,
+                BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
+                BetaStorageVerificationFailedErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -313,6 +375,16 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
+                BetaApprovalRequiredErrorDetails _ => null,
+                BetaExternalStorageNotAvailableErrorDetails _ => null,
+                BetaHumanReviewNotAvailableErrorDetails _ => null,
+                Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => null,
+                BetaStorageNotAttachableErrorDetails _ => null,
+                Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => null,
+                BetaStorageAttachLimitReachedErrorDetails _ => null,
+                BetaStorageProfileStillRequiredErrorDetails _ => null,
+                BetaStorageChangedConcurrentlyErrorDetails _ => null,
+                Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails x => x.PluginID,
@@ -384,6 +456,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -407,6 +480,10 @@ public record class ErrorDetails : ModelBase
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
+                WorkspaceCreatedIncompleteErrorDetails _ => null,
+                StorageProfileMismatchErrorDetails _ => null,
+                ChangeOutcomeUnknownErrorDetails _ => null,
+                StorageAttachedDuringArchiveErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
                 ParentOrganizationRequiredErrorDetails _ => null,
@@ -417,6 +494,16 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaGrantRequiredErrorDetails _ => null,
+                BetaOrganizationNotEligibleErrorDetails _ => null,
+                BetaProviderNotAllowedErrorDetails _ => null,
+                BetaUnsupportedRegionErrorDetails _ => null,
+                BetaStorageAlreadyRegisteredErrorDetails _ => null,
+                BetaAuthorizationCheckUnavailableErrorDetails _ => null,
+                BetaInvalidStorageArnErrorDetails _ => null,
+                BetaExternalStorageInUseErrorDetails _ => null,
+                BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
+                BetaStorageVerificationFailedErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -424,6 +511,16 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
+                BetaApprovalRequiredErrorDetails _ => null,
+                BetaExternalStorageNotAvailableErrorDetails _ => null,
+                BetaHumanReviewNotAvailableErrorDetails _ => null,
+                Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => null,
+                BetaStorageNotAttachableErrorDetails _ => null,
+                Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => null,
+                BetaStorageAttachLimitReachedErrorDetails _ => null,
+                BetaStorageProfileStillRequiredErrorDetails _ => null,
+                BetaStorageChangedConcurrentlyErrorDetails _ => null,
+                Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -498,6 +595,7 @@ public record class ErrorDetails : ModelBase
                 RampLimitExceededErrorDetails _ => null,
                 CmekKeyUnreachableErrorDetails _ => null,
                 Messages::CompactionUnavailableErrorDetails _ => null,
+                WorkspaceHumanReviewDisabledErrorDetails _ => null,
                 Files::StorageQuotaExceededErrorDetails _ => null,
                 Files::FileNotDownloadableErrorDetails _ => null,
                 Files::FileExpiredErrorDetails _ => null,
@@ -521,6 +619,10 @@ public record class ErrorDetails : ModelBase
                 KeyProfileMismatchErrorDetails _ => null,
                 WorkspacePolicyViolationErrorDetails _ => null,
                 ExternalKeyChangedErrorDetails _ => null,
+                WorkspaceCreatedIncompleteErrorDetails _ => null,
+                StorageProfileMismatchErrorDetails _ => null,
+                ChangeOutcomeUnknownErrorDetails _ => null,
+                StorageAttachedDuringArchiveErrorDetails _ => null,
                 WorkspaceMemberLimitExceededErrorDetails _ => null,
                 OrganizationTypeNotSupportedErrorDetails _ => null,
                 ParentOrganizationRequiredErrorDetails _ => null,
@@ -531,6 +633,16 @@ public record class ErrorDetails : ModelBase
                 Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => null,
                 BetaHeartbeatPreconditionFailedErrorDetails _ => null,
                 Environments::BetaInvalidMetadataErrorDetails _ => null,
+                BetaGrantRequiredErrorDetails _ => null,
+                BetaOrganizationNotEligibleErrorDetails _ => null,
+                BetaProviderNotAllowedErrorDetails _ => null,
+                BetaUnsupportedRegionErrorDetails _ => null,
+                BetaStorageAlreadyRegisteredErrorDetails _ => null,
+                BetaAuthorizationCheckUnavailableErrorDetails _ => null,
+                BetaInvalidStorageArnErrorDetails _ => null,
+                BetaExternalStorageInUseErrorDetails _ => null,
+                BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
+                BetaStorageVerificationFailedErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -538,6 +650,16 @@ public record class ErrorDetails : ModelBase
                 BetaCannotSignOutMembershipAdminErrorDetails _ => null,
                 BetaCannotSignOutOwnerErrorDetails _ => null,
                 BetaCannotSignOutPrivilegedMemberErrorDetails _ => null,
+                BetaApprovalRequiredErrorDetails _ => null,
+                BetaExternalStorageNotAvailableErrorDetails _ => null,
+                BetaHumanReviewNotAvailableErrorDetails _ => null,
+                Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => null,
+                BetaStorageNotAttachableErrorDetails _ => null,
+                Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => null,
+                BetaStorageAttachLimitReachedErrorDetails _ => null,
+                BetaStorageProfileStillRequiredErrorDetails _ => null,
+                BetaStorageChangedConcurrentlyErrorDetails _ => null,
+                Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => null,
                 BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => null,
                 BetaUnsupportedCharsetErrorDetails _ => null,
                 Plugins::BetaPluginNameTakenErrorDetails _ => null,
@@ -855,6 +977,12 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(WorkspaceHumanReviewDisabledErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(Files::StorageQuotaExceededErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
@@ -1008,6 +1136,30 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(WorkspaceCreatedIncompleteErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(StorageProfileMismatchErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(ChangeOutcomeUnknownErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(StorageAttachedDuringArchiveErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(WorkspaceMemberLimitExceededErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
@@ -1086,6 +1238,75 @@ public record class ErrorDetails : ModelBase
         this._element = element;
     }
 
+    public ErrorDetails(BetaGrantRequiredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaOrganizationNotEligibleErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaProviderNotAllowedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaUnsupportedRegionErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaStorageAlreadyRegisteredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaAuthorizationCheckUnavailableErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaInvalidStorageArnErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaExternalStorageInUseErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaExternalStorageInWorkspacePolicyErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaStorageVerificationFailedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
     public ErrorDetails(
         BetaCannotSignOutPrimaryOwnerErrorDetails value,
         JsonElement? element = null
@@ -1136,6 +1357,87 @@ public record class ErrorDetails : ModelBase
 
     public ErrorDetails(
         BetaCannotSignOutPrivilegedMemberErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaApprovalRequiredErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaExternalStorageNotAvailableErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaHumanReviewNotAvailableErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaStorageNotAttachableErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        Workspaces::BetaTranscriptsStorageRequiredErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaStorageAttachLimitReachedErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaStorageProfileStillRequiredErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaStorageChangedConcurrentlyErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value,
         JsonElement? element = null
     )
     {
@@ -2162,6 +2464,29 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WorkspaceHumanReviewDisabledErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkspaceHumanReviewDisabled(out var value)) {
+    ///     // `value` is of type `WorkspaceHumanReviewDisabledErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkspaceHumanReviewDisabled(
+        [NotNullWhen(true)] out WorkspaceHumanReviewDisabledErrorDetails? value
+    )
+    {
+        value = this.Value as WorkspaceHumanReviewDisabledErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="Files::StorageQuotaExceededErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2687,6 +3012,98 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="WorkspaceCreatedIncompleteErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickWorkspaceCreatedIncomplete(out var value)) {
+    ///     // `value` is of type `WorkspaceCreatedIncompleteErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickWorkspaceCreatedIncomplete(
+        [NotNullWhen(true)] out WorkspaceCreatedIncompleteErrorDetails? value
+    )
+    {
+        value = this.Value as WorkspaceCreatedIncompleteErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="StorageProfileMismatchErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickStorageProfileMismatch(out var value)) {
+    ///     // `value` is of type `StorageProfileMismatchErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickStorageProfileMismatch(
+        [NotNullWhen(true)] out StorageProfileMismatchErrorDetails? value
+    )
+    {
+        value = this.Value as StorageProfileMismatchErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="ChangeOutcomeUnknownErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickChangeOutcomeUnknown(out var value)) {
+    ///     // `value` is of type `ChangeOutcomeUnknownErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickChangeOutcomeUnknown(
+        [NotNullWhen(true)] out ChangeOutcomeUnknownErrorDetails? value
+    )
+    {
+        value = this.Value as ChangeOutcomeUnknownErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="StorageAttachedDuringArchiveErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickStorageAttachedDuringArchive(out var value)) {
+    ///     // `value` is of type `StorageAttachedDuringArchiveErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickStorageAttachedDuringArchive(
+        [NotNullWhen(true)] out StorageAttachedDuringArchiveErrorDetails? value
+    )
+    {
+        value = this.Value as StorageAttachedDuringArchiveErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="WorkspaceMemberLimitExceededErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -2915,6 +3332,236 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaGrantRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaGrantRequired(out var value)) {
+    ///     // `value` is of type `BetaGrantRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaGrantRequired(
+        [NotNullWhen(true)] out BetaGrantRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as BetaGrantRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaOrganizationNotEligibleErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaOrganizationNotEligible(out var value)) {
+    ///     // `value` is of type `BetaOrganizationNotEligibleErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaOrganizationNotEligible(
+        [NotNullWhen(true)] out BetaOrganizationNotEligibleErrorDetails? value
+    )
+    {
+        value = this.Value as BetaOrganizationNotEligibleErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaProviderNotAllowedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaProviderNotAllowed(out var value)) {
+    ///     // `value` is of type `BetaProviderNotAllowedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaProviderNotAllowed(
+        [NotNullWhen(true)] out BetaProviderNotAllowedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaProviderNotAllowedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaUnsupportedRegionErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaUnsupportedRegion(out var value)) {
+    ///     // `value` is of type `BetaUnsupportedRegionErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaUnsupportedRegion(
+        [NotNullWhen(true)] out BetaUnsupportedRegionErrorDetails? value
+    )
+    {
+        value = this.Value as BetaUnsupportedRegionErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageAlreadyRegisteredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageAlreadyRegistered(out var value)) {
+    ///     // `value` is of type `BetaStorageAlreadyRegisteredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageAlreadyRegistered(
+        [NotNullWhen(true)] out BetaStorageAlreadyRegisteredErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageAlreadyRegisteredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaAuthorizationCheckUnavailableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaAuthorizationCheckUnavailable(out var value)) {
+    ///     // `value` is of type `BetaAuthorizationCheckUnavailableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaAuthorizationCheckUnavailable(
+        [NotNullWhen(true)] out BetaAuthorizationCheckUnavailableErrorDetails? value
+    )
+    {
+        value = this.Value as BetaAuthorizationCheckUnavailableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaInvalidStorageArnErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaInvalidStorageArn(out var value)) {
+    ///     // `value` is of type `BetaInvalidStorageArnErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaInvalidStorageArn(
+        [NotNullWhen(true)] out BetaInvalidStorageArnErrorDetails? value
+    )
+    {
+        value = this.Value as BetaInvalidStorageArnErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaExternalStorageInUseErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaExternalStorageInUse(out var value)) {
+    ///     // `value` is of type `BetaExternalStorageInUseErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaExternalStorageInUse(
+        [NotNullWhen(true)] out BetaExternalStorageInUseErrorDetails? value
+    )
+    {
+        value = this.Value as BetaExternalStorageInUseErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaExternalStorageInWorkspacePolicyErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaExternalStorageInWorkspacePolicy(out var value)) {
+    ///     // `value` is of type `BetaExternalStorageInWorkspacePolicyErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaExternalStorageInWorkspacePolicy(
+        [NotNullWhen(true)] out BetaExternalStorageInWorkspacePolicyErrorDetails? value
+    )
+    {
+        value = this.Value as BetaExternalStorageInWorkspacePolicyErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageVerificationFailedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageVerificationFailed(out var value)) {
+    ///     // `value` is of type `BetaStorageVerificationFailedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageVerificationFailed(
+        [NotNullWhen(true)] out BetaStorageVerificationFailedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageVerificationFailedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCannotSignOutPrimaryOwnerErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -3071,6 +3718,236 @@ public record class ErrorDetails : ModelBase
     )
     {
         value = this.Value as BetaCannotSignOutPrivilegedMemberErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaApprovalRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaApprovalRequired(out var value)) {
+    ///     // `value` is of type `BetaApprovalRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaApprovalRequired(
+        [NotNullWhen(true)] out BetaApprovalRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as BetaApprovalRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaExternalStorageNotAvailableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaExternalStorageNotAvailable(out var value)) {
+    ///     // `value` is of type `BetaExternalStorageNotAvailableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaExternalStorageNotAvailable(
+        [NotNullWhen(true)] out BetaExternalStorageNotAvailableErrorDetails? value
+    )
+    {
+        value = this.Value as BetaExternalStorageNotAvailableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaHumanReviewNotAvailableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaHumanReviewNotAvailable(out var value)) {
+    ///     // `value` is of type `BetaHumanReviewNotAvailableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaHumanReviewNotAvailable(
+        [NotNullWhen(true)] out BetaHumanReviewNotAvailableErrorDetails? value
+    )
+    {
+        value = this.Value as BetaHumanReviewNotAvailableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaHumanReviewOnWithExternalStorage(out var value)) {
+    ///     // `value` is of type `Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaHumanReviewOnWithExternalStorage(
+        [NotNullWhen(true)] out Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails? value
+    )
+    {
+        value = this.Value as Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageNotAttachableErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageNotAttachable(out var value)) {
+    ///     // `value` is of type `BetaStorageNotAttachableErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageNotAttachable(
+        [NotNullWhen(true)] out BetaStorageNotAttachableErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageNotAttachableErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="Workspaces::BetaTranscriptsStorageRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaTranscriptsStorageRequired(out var value)) {
+    ///     // `value` is of type `Workspaces::BetaTranscriptsStorageRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaTranscriptsStorageRequired(
+        [NotNullWhen(true)] out Workspaces::BetaTranscriptsStorageRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as Workspaces::BetaTranscriptsStorageRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageAttachLimitReachedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageAttachLimitReached(out var value)) {
+    ///     // `value` is of type `BetaStorageAttachLimitReachedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageAttachLimitReached(
+        [NotNullWhen(true)] out BetaStorageAttachLimitReachedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageAttachLimitReachedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageProfileStillRequiredErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageProfileStillRequired(out var value)) {
+    ///     // `value` is of type `BetaStorageProfileStillRequiredErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageProfileStillRequired(
+        [NotNullWhen(true)] out BetaStorageProfileStillRequiredErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageProfileStillRequiredErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageChangedConcurrentlyErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageChangedConcurrently(out var value)) {
+    ///     // `value` is of type `BetaStorageChangedConcurrentlyErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageChangedConcurrently(
+        [NotNullWhen(true)] out BetaStorageChangedConcurrentlyErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageChangedConcurrentlyErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaWorkspaceChangedConcurrently(out var value)) {
+    ///     // `value` is of type `Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaWorkspaceChangedConcurrently(
+        [NotNullWhen(true)] out Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails? value
+    )
+    {
+        value = this.Value as Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails;
         return value != null;
     }
 
@@ -3674,6 +4551,7 @@ public record class ErrorDetails : ModelBase
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
+    ///     (WorkspaceHumanReviewDisabledErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
     ///     (Files::FileNotDownloadableErrorDetails value) =&gt; {...},
     ///     (Files::FileExpiredErrorDetails value) =&gt; {...},
@@ -3697,6 +4575,10 @@ public record class ErrorDetails : ModelBase
     ///     (KeyProfileMismatchErrorDetails value) =&gt; {...},
     ///     (WorkspacePolicyViolationErrorDetails value) =&gt; {...},
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
+    ///     (WorkspaceCreatedIncompleteErrorDetails value) =&gt; {...},
+    ///     (StorageProfileMismatchErrorDetails value) =&gt; {...},
+    ///     (ChangeOutcomeUnknownErrorDetails value) =&gt; {...},
+    ///     (StorageAttachedDuringArchiveErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
     ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
@@ -3707,6 +4589,16 @@ public record class ErrorDetails : ModelBase
     ///     (Environments::BetaEnvironmentUpdateDisabledErrorDetails value) =&gt; {...},
     ///     (BetaHeartbeatPreconditionFailedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidMetadataErrorDetails value) =&gt; {...},
+    ///     (BetaGrantRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaOrganizationNotEligibleErrorDetails value) =&gt; {...},
+    ///     (BetaProviderNotAllowedErrorDetails value) =&gt; {...},
+    ///     (BetaUnsupportedRegionErrorDetails value) =&gt; {...},
+    ///     (BetaStorageAlreadyRegisteredErrorDetails value) =&gt; {...},
+    ///     (BetaAuthorizationCheckUnavailableErrorDetails value) =&gt; {...},
+    ///     (BetaInvalidStorageArnErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageInUseErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageInWorkspacePolicyErrorDetails value) =&gt; {...},
+    ///     (BetaStorageVerificationFailedErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
@@ -3714,6 +4606,16 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
+    ///     (BetaApprovalRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageNotAvailableErrorDetails value) =&gt; {...},
+    ///     (BetaHumanReviewNotAvailableErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value) =&gt; {...},
+    ///     (BetaStorageNotAttachableErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaTranscriptsStorageRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaStorageAttachLimitReachedErrorDetails value) =&gt; {...},
+    ///     (BetaStorageProfileStillRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaStorageChangedConcurrentlyErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -3779,6 +4681,7 @@ public record class ErrorDetails : ModelBase
         Action<RampLimitExceededErrorDetails> rampLimitExceeded,
         Action<CmekKeyUnreachableErrorDetails> cmekKeyUnreachable,
         Action<Messages::CompactionUnavailableErrorDetails> compactionUnavailable,
+        Action<WorkspaceHumanReviewDisabledErrorDetails> workspaceHumanReviewDisabled,
         Action<Files::StorageQuotaExceededErrorDetails> storageQuotaExceeded,
         Action<Files::FileNotDownloadableErrorDetails> fileNotDownloadable,
         Action<Files::FileExpiredErrorDetails> fileExpired,
@@ -3802,6 +4705,10 @@ public record class ErrorDetails : ModelBase
         Action<KeyProfileMismatchErrorDetails> keyProfileMismatch,
         Action<WorkspacePolicyViolationErrorDetails> workspacePolicyViolation,
         Action<ExternalKeyChangedErrorDetails> externalKeyChanged,
+        Action<WorkspaceCreatedIncompleteErrorDetails> workspaceCreatedIncomplete,
+        Action<StorageProfileMismatchErrorDetails> storageProfileMismatch,
+        Action<ChangeOutcomeUnknownErrorDetails> changeOutcomeUnknown,
+        Action<StorageAttachedDuringArchiveErrorDetails> storageAttachedDuringArchive,
         Action<WorkspaceMemberLimitExceededErrorDetails> workspaceMemberLimitExceeded,
         Action<OrganizationTypeNotSupportedErrorDetails> organizationTypeNotSupported,
         Action<ParentOrganizationRequiredErrorDetails> parentOrganizationRequired,
@@ -3812,6 +4719,16 @@ public record class ErrorDetails : ModelBase
         Action<Environments::BetaEnvironmentUpdateDisabledErrorDetails> betaEnvironmentUpdateDisabled,
         Action<BetaHeartbeatPreconditionFailedErrorDetails> betaHeartbeatPreconditionFailed,
         Action<Environments::BetaInvalidMetadataErrorDetails> betaInvalidMetadata,
+        Action<BetaGrantRequiredErrorDetails> betaGrantRequired,
+        Action<BetaOrganizationNotEligibleErrorDetails> betaOrganizationNotEligible,
+        Action<BetaProviderNotAllowedErrorDetails> betaProviderNotAllowed,
+        Action<BetaUnsupportedRegionErrorDetails> betaUnsupportedRegion,
+        Action<BetaStorageAlreadyRegisteredErrorDetails> betaStorageAlreadyRegistered,
+        Action<BetaAuthorizationCheckUnavailableErrorDetails> betaAuthorizationCheckUnavailable,
+        Action<BetaInvalidStorageArnErrorDetails> betaInvalidStorageArn,
+        Action<BetaExternalStorageInUseErrorDetails> betaExternalStorageInUse,
+        Action<BetaExternalStorageInWorkspacePolicyErrorDetails> betaExternalStorageInWorkspacePolicy,
+        Action<BetaStorageVerificationFailedErrorDetails> betaStorageVerificationFailed,
         Action<BetaCannotSignOutPrimaryOwnerErrorDetails> betaCannotSignOutPrimaryOwner,
         Action<BetaCannotSignOutSelfErrorDetails> betaCannotSignOutSelf,
         Action<BetaOrganizationNotEnrolledInBetaErrorDetails> betaOrganizationNotEnrolledInBeta,
@@ -3819,6 +4736,16 @@ public record class ErrorDetails : ModelBase
         Action<BetaCannotSignOutMembershipAdminErrorDetails> betaCannotSignOutMembershipAdmin,
         Action<BetaCannotSignOutOwnerErrorDetails> betaCannotSignOutOwner,
         Action<BetaCannotSignOutPrivilegedMemberErrorDetails> betaCannotSignOutPrivilegedMember,
+        Action<BetaApprovalRequiredErrorDetails> betaApprovalRequired,
+        Action<BetaExternalStorageNotAvailableErrorDetails> betaExternalStorageNotAvailable,
+        Action<BetaHumanReviewNotAvailableErrorDetails> betaHumanReviewNotAvailable,
+        Action<Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails> betaHumanReviewOnWithExternalStorage,
+        Action<BetaStorageNotAttachableErrorDetails> betaStorageNotAttachable,
+        Action<Workspaces::BetaTranscriptsStorageRequiredErrorDetails> betaTranscriptsStorageRequired,
+        Action<BetaStorageAttachLimitReachedErrorDetails> betaStorageAttachLimitReached,
+        Action<BetaStorageProfileStillRequiredErrorDetails> betaStorageProfileStillRequired,
+        Action<BetaStorageChangedConcurrentlyErrorDetails> betaStorageChangedConcurrently,
+        Action<Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails> betaWorkspaceChangedConcurrently,
         Action<BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails> betaSpendLimitsAdminApiWritesNotEnabled,
         Action<BetaUnsupportedCharsetErrorDetails> betaUnsupportedCharset,
         Action<Plugins::BetaPluginNameTakenErrorDetails> betaPluginNameTaken,
@@ -3955,6 +4882,9 @@ public record class ErrorDetails : ModelBase
             case Messages::CompactionUnavailableErrorDetails value:
                 compactionUnavailable(value);
                 break;
+            case WorkspaceHumanReviewDisabledErrorDetails value:
+                workspaceHumanReviewDisabled(value);
+                break;
             case Files::StorageQuotaExceededErrorDetails value:
                 storageQuotaExceeded(value);
                 break;
@@ -4024,6 +4954,18 @@ public record class ErrorDetails : ModelBase
             case ExternalKeyChangedErrorDetails value:
                 externalKeyChanged(value);
                 break;
+            case WorkspaceCreatedIncompleteErrorDetails value:
+                workspaceCreatedIncomplete(value);
+                break;
+            case StorageProfileMismatchErrorDetails value:
+                storageProfileMismatch(value);
+                break;
+            case ChangeOutcomeUnknownErrorDetails value:
+                changeOutcomeUnknown(value);
+                break;
+            case StorageAttachedDuringArchiveErrorDetails value:
+                storageAttachedDuringArchive(value);
+                break;
             case WorkspaceMemberLimitExceededErrorDetails value:
                 workspaceMemberLimitExceeded(value);
                 break;
@@ -4054,6 +4996,36 @@ public record class ErrorDetails : ModelBase
             case Environments::BetaInvalidMetadataErrorDetails value:
                 betaInvalidMetadata(value);
                 break;
+            case BetaGrantRequiredErrorDetails value:
+                betaGrantRequired(value);
+                break;
+            case BetaOrganizationNotEligibleErrorDetails value:
+                betaOrganizationNotEligible(value);
+                break;
+            case BetaProviderNotAllowedErrorDetails value:
+                betaProviderNotAllowed(value);
+                break;
+            case BetaUnsupportedRegionErrorDetails value:
+                betaUnsupportedRegion(value);
+                break;
+            case BetaStorageAlreadyRegisteredErrorDetails value:
+                betaStorageAlreadyRegistered(value);
+                break;
+            case BetaAuthorizationCheckUnavailableErrorDetails value:
+                betaAuthorizationCheckUnavailable(value);
+                break;
+            case BetaInvalidStorageArnErrorDetails value:
+                betaInvalidStorageArn(value);
+                break;
+            case BetaExternalStorageInUseErrorDetails value:
+                betaExternalStorageInUse(value);
+                break;
+            case BetaExternalStorageInWorkspacePolicyErrorDetails value:
+                betaExternalStorageInWorkspacePolicy(value);
+                break;
+            case BetaStorageVerificationFailedErrorDetails value:
+                betaStorageVerificationFailed(value);
+                break;
             case BetaCannotSignOutPrimaryOwnerErrorDetails value:
                 betaCannotSignOutPrimaryOwner(value);
                 break;
@@ -4074,6 +5046,36 @@ public record class ErrorDetails : ModelBase
                 break;
             case BetaCannotSignOutPrivilegedMemberErrorDetails value:
                 betaCannotSignOutPrivilegedMember(value);
+                break;
+            case BetaApprovalRequiredErrorDetails value:
+                betaApprovalRequired(value);
+                break;
+            case BetaExternalStorageNotAvailableErrorDetails value:
+                betaExternalStorageNotAvailable(value);
+                break;
+            case BetaHumanReviewNotAvailableErrorDetails value:
+                betaHumanReviewNotAvailable(value);
+                break;
+            case Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value:
+                betaHumanReviewOnWithExternalStorage(value);
+                break;
+            case BetaStorageNotAttachableErrorDetails value:
+                betaStorageNotAttachable(value);
+                break;
+            case Workspaces::BetaTranscriptsStorageRequiredErrorDetails value:
+                betaTranscriptsStorageRequired(value);
+                break;
+            case BetaStorageAttachLimitReachedErrorDetails value:
+                betaStorageAttachLimitReached(value);
+                break;
+            case BetaStorageProfileStillRequiredErrorDetails value:
+                betaStorageProfileStillRequired(value);
+                break;
+            case BetaStorageChangedConcurrentlyErrorDetails value:
+                betaStorageChangedConcurrently(value);
+                break;
+            case Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value:
+                betaWorkspaceChangedConcurrently(value);
                 break;
             case BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value:
                 betaSpendLimitsAdminApiWritesNotEnabled(value);
@@ -4205,6 +5207,7 @@ public record class ErrorDetails : ModelBase
     ///     (RampLimitExceededErrorDetails value) =&gt; {...},
     ///     (CmekKeyUnreachableErrorDetails value) =&gt; {...},
     ///     (Messages::CompactionUnavailableErrorDetails value) =&gt; {...},
+    ///     (WorkspaceHumanReviewDisabledErrorDetails value) =&gt; {...},
     ///     (Files::StorageQuotaExceededErrorDetails value) =&gt; {...},
     ///     (Files::FileNotDownloadableErrorDetails value) =&gt; {...},
     ///     (Files::FileExpiredErrorDetails value) =&gt; {...},
@@ -4228,6 +5231,10 @@ public record class ErrorDetails : ModelBase
     ///     (KeyProfileMismatchErrorDetails value) =&gt; {...},
     ///     (WorkspacePolicyViolationErrorDetails value) =&gt; {...},
     ///     (ExternalKeyChangedErrorDetails value) =&gt; {...},
+    ///     (WorkspaceCreatedIncompleteErrorDetails value) =&gt; {...},
+    ///     (StorageProfileMismatchErrorDetails value) =&gt; {...},
+    ///     (ChangeOutcomeUnknownErrorDetails value) =&gt; {...},
+    ///     (StorageAttachedDuringArchiveErrorDetails value) =&gt; {...},
     ///     (WorkspaceMemberLimitExceededErrorDetails value) =&gt; {...},
     ///     (OrganizationTypeNotSupportedErrorDetails value) =&gt; {...},
     ///     (ParentOrganizationRequiredErrorDetails value) =&gt; {...},
@@ -4238,6 +5245,16 @@ public record class ErrorDetails : ModelBase
     ///     (Environments::BetaEnvironmentUpdateDisabledErrorDetails value) =&gt; {...},
     ///     (BetaHeartbeatPreconditionFailedErrorDetails value) =&gt; {...},
     ///     (Environments::BetaInvalidMetadataErrorDetails value) =&gt; {...},
+    ///     (BetaGrantRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaOrganizationNotEligibleErrorDetails value) =&gt; {...},
+    ///     (BetaProviderNotAllowedErrorDetails value) =&gt; {...},
+    ///     (BetaUnsupportedRegionErrorDetails value) =&gt; {...},
+    ///     (BetaStorageAlreadyRegisteredErrorDetails value) =&gt; {...},
+    ///     (BetaAuthorizationCheckUnavailableErrorDetails value) =&gt; {...},
+    ///     (BetaInvalidStorageArnErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageInUseErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageInWorkspacePolicyErrorDetails value) =&gt; {...},
+    ///     (BetaStorageVerificationFailedErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
@@ -4245,6 +5262,16 @@ public record class ErrorDetails : ModelBase
     ///     (BetaCannotSignOutMembershipAdminErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrivilegedMemberErrorDetails value) =&gt; {...},
+    ///     (BetaApprovalRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaExternalStorageNotAvailableErrorDetails value) =&gt; {...},
+    ///     (BetaHumanReviewNotAvailableErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value) =&gt; {...},
+    ///     (BetaStorageNotAttachableErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaTranscriptsStorageRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaStorageAttachLimitReachedErrorDetails value) =&gt; {...},
+    ///     (BetaStorageProfileStillRequiredErrorDetails value) =&gt; {...},
+    ///     (BetaStorageChangedConcurrentlyErrorDetails value) =&gt; {...},
+    ///     (Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value) =&gt; {...},
     ///     (BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value) =&gt; {...},
     ///     (BetaUnsupportedCharsetErrorDetails value) =&gt; {...},
     ///     (Plugins::BetaPluginNameTakenErrorDetails value) =&gt; {...},
@@ -4319,6 +5346,7 @@ public record class ErrorDetails : ModelBase
         Func<RampLimitExceededErrorDetails, T> rampLimitExceeded,
         Func<CmekKeyUnreachableErrorDetails, T> cmekKeyUnreachable,
         Func<Messages::CompactionUnavailableErrorDetails, T> compactionUnavailable,
+        Func<WorkspaceHumanReviewDisabledErrorDetails, T> workspaceHumanReviewDisabled,
         Func<Files::StorageQuotaExceededErrorDetails, T> storageQuotaExceeded,
         Func<Files::FileNotDownloadableErrorDetails, T> fileNotDownloadable,
         Func<Files::FileExpiredErrorDetails, T> fileExpired,
@@ -4345,6 +5373,10 @@ public record class ErrorDetails : ModelBase
         Func<KeyProfileMismatchErrorDetails, T> keyProfileMismatch,
         Func<WorkspacePolicyViolationErrorDetails, T> workspacePolicyViolation,
         Func<ExternalKeyChangedErrorDetails, T> externalKeyChanged,
+        Func<WorkspaceCreatedIncompleteErrorDetails, T> workspaceCreatedIncomplete,
+        Func<StorageProfileMismatchErrorDetails, T> storageProfileMismatch,
+        Func<ChangeOutcomeUnknownErrorDetails, T> changeOutcomeUnknown,
+        Func<StorageAttachedDuringArchiveErrorDetails, T> storageAttachedDuringArchive,
         Func<WorkspaceMemberLimitExceededErrorDetails, T> workspaceMemberLimitExceeded,
         Func<OrganizationTypeNotSupportedErrorDetails, T> organizationTypeNotSupported,
         Func<ParentOrganizationRequiredErrorDetails, T> parentOrganizationRequired,
@@ -4361,6 +5393,19 @@ public record class ErrorDetails : ModelBase
         > betaEnvironmentUpdateDisabled,
         Func<BetaHeartbeatPreconditionFailedErrorDetails, T> betaHeartbeatPreconditionFailed,
         Func<Environments::BetaInvalidMetadataErrorDetails, T> betaInvalidMetadata,
+        Func<BetaGrantRequiredErrorDetails, T> betaGrantRequired,
+        Func<BetaOrganizationNotEligibleErrorDetails, T> betaOrganizationNotEligible,
+        Func<BetaProviderNotAllowedErrorDetails, T> betaProviderNotAllowed,
+        Func<BetaUnsupportedRegionErrorDetails, T> betaUnsupportedRegion,
+        Func<BetaStorageAlreadyRegisteredErrorDetails, T> betaStorageAlreadyRegistered,
+        Func<BetaAuthorizationCheckUnavailableErrorDetails, T> betaAuthorizationCheckUnavailable,
+        Func<BetaInvalidStorageArnErrorDetails, T> betaInvalidStorageArn,
+        Func<BetaExternalStorageInUseErrorDetails, T> betaExternalStorageInUse,
+        Func<
+            BetaExternalStorageInWorkspacePolicyErrorDetails,
+            T
+        > betaExternalStorageInWorkspacePolicy,
+        Func<BetaStorageVerificationFailedErrorDetails, T> betaStorageVerificationFailed,
         Func<BetaCannotSignOutPrimaryOwnerErrorDetails, T> betaCannotSignOutPrimaryOwner,
         Func<BetaCannotSignOutSelfErrorDetails, T> betaCannotSignOutSelf,
         Func<BetaOrganizationNotEnrolledInBetaErrorDetails, T> betaOrganizationNotEnrolledInBeta,
@@ -4368,6 +5413,25 @@ public record class ErrorDetails : ModelBase
         Func<BetaCannotSignOutMembershipAdminErrorDetails, T> betaCannotSignOutMembershipAdmin,
         Func<BetaCannotSignOutOwnerErrorDetails, T> betaCannotSignOutOwner,
         Func<BetaCannotSignOutPrivilegedMemberErrorDetails, T> betaCannotSignOutPrivilegedMember,
+        Func<BetaApprovalRequiredErrorDetails, T> betaApprovalRequired,
+        Func<BetaExternalStorageNotAvailableErrorDetails, T> betaExternalStorageNotAvailable,
+        Func<BetaHumanReviewNotAvailableErrorDetails, T> betaHumanReviewNotAvailable,
+        Func<
+            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails,
+            T
+        > betaHumanReviewOnWithExternalStorage,
+        Func<BetaStorageNotAttachableErrorDetails, T> betaStorageNotAttachable,
+        Func<
+            Workspaces::BetaTranscriptsStorageRequiredErrorDetails,
+            T
+        > betaTranscriptsStorageRequired,
+        Func<BetaStorageAttachLimitReachedErrorDetails, T> betaStorageAttachLimitReached,
+        Func<BetaStorageProfileStillRequiredErrorDetails, T> betaStorageProfileStillRequired,
+        Func<BetaStorageChangedConcurrentlyErrorDetails, T> betaStorageChangedConcurrently,
+        Func<
+            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails,
+            T
+        > betaWorkspaceChangedConcurrently,
         Func<
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails,
             T
@@ -4473,6 +5537,7 @@ public record class ErrorDetails : ModelBase
             RampLimitExceededErrorDetails value => rampLimitExceeded(value),
             CmekKeyUnreachableErrorDetails value => cmekKeyUnreachable(value),
             Messages::CompactionUnavailableErrorDetails value => compactionUnavailable(value),
+            WorkspaceHumanReviewDisabledErrorDetails value => workspaceHumanReviewDisabled(value),
             Files::StorageQuotaExceededErrorDetails value => storageQuotaExceeded(value),
             Files::FileNotDownloadableErrorDetails value => fileNotDownloadable(value),
             Files::FileExpiredErrorDetails value => fileExpired(value),
@@ -4501,6 +5566,10 @@ public record class ErrorDetails : ModelBase
             KeyProfileMismatchErrorDetails value => keyProfileMismatch(value),
             WorkspacePolicyViolationErrorDetails value => workspacePolicyViolation(value),
             ExternalKeyChangedErrorDetails value => externalKeyChanged(value),
+            WorkspaceCreatedIncompleteErrorDetails value => workspaceCreatedIncomplete(value),
+            StorageProfileMismatchErrorDetails value => storageProfileMismatch(value),
+            ChangeOutcomeUnknownErrorDetails value => changeOutcomeUnknown(value),
+            StorageAttachedDuringArchiveErrorDetails value => storageAttachedDuringArchive(value),
             WorkspaceMemberLimitExceededErrorDetails value => workspaceMemberLimitExceeded(value),
             OrganizationTypeNotSupportedErrorDetails value => organizationTypeNotSupported(value),
             ParentOrganizationRequiredErrorDetails value => parentOrganizationRequired(value),
@@ -4518,6 +5587,18 @@ public record class ErrorDetails : ModelBase
                 value
             ),
             Environments::BetaInvalidMetadataErrorDetails value => betaInvalidMetadata(value),
+            BetaGrantRequiredErrorDetails value => betaGrantRequired(value),
+            BetaOrganizationNotEligibleErrorDetails value => betaOrganizationNotEligible(value),
+            BetaProviderNotAllowedErrorDetails value => betaProviderNotAllowed(value),
+            BetaUnsupportedRegionErrorDetails value => betaUnsupportedRegion(value),
+            BetaStorageAlreadyRegisteredErrorDetails value => betaStorageAlreadyRegistered(value),
+            BetaAuthorizationCheckUnavailableErrorDetails value =>
+                betaAuthorizationCheckUnavailable(value),
+            BetaInvalidStorageArnErrorDetails value => betaInvalidStorageArn(value),
+            BetaExternalStorageInUseErrorDetails value => betaExternalStorageInUse(value),
+            BetaExternalStorageInWorkspacePolicyErrorDetails value =>
+                betaExternalStorageInWorkspacePolicy(value),
+            BetaStorageVerificationFailedErrorDetails value => betaStorageVerificationFailed(value),
             BetaCannotSignOutPrimaryOwnerErrorDetails value => betaCannotSignOutPrimaryOwner(value),
             BetaCannotSignOutSelfErrorDetails value => betaCannotSignOutSelf(value),
             BetaOrganizationNotEnrolledInBetaErrorDetails value =>
@@ -4531,6 +5612,25 @@ public record class ErrorDetails : ModelBase
             BetaCannotSignOutOwnerErrorDetails value => betaCannotSignOutOwner(value),
             BetaCannotSignOutPrivilegedMemberErrorDetails value =>
                 betaCannotSignOutPrivilegedMember(value),
+            BetaApprovalRequiredErrorDetails value => betaApprovalRequired(value),
+            BetaExternalStorageNotAvailableErrorDetails value => betaExternalStorageNotAvailable(
+                value
+            ),
+            BetaHumanReviewNotAvailableErrorDetails value => betaHumanReviewNotAvailable(value),
+            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value =>
+                betaHumanReviewOnWithExternalStorage(value),
+            BetaStorageNotAttachableErrorDetails value => betaStorageNotAttachable(value),
+            Workspaces::BetaTranscriptsStorageRequiredErrorDetails value =>
+                betaTranscriptsStorageRequired(value),
+            BetaStorageAttachLimitReachedErrorDetails value => betaStorageAttachLimitReached(value),
+            BetaStorageProfileStillRequiredErrorDetails value => betaStorageProfileStillRequired(
+                value
+            ),
+            BetaStorageChangedConcurrentlyErrorDetails value => betaStorageChangedConcurrently(
+                value
+            ),
+            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value =>
+                betaWorkspaceChangedConcurrently(value),
             BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails value =>
                 betaSpendLimitsAdminApiWritesNotEnabled(value),
             BetaUnsupportedCharsetErrorDetails value => betaUnsupportedCharset(value),
@@ -4705,6 +5805,9 @@ public record class ErrorDetails : ModelBase
         Messages::CompactionUnavailableErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(WorkspaceHumanReviewDisabledErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(Files::StorageQuotaExceededErrorDetails value) =>
         new(value);
 
@@ -4777,6 +5880,18 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(ExternalKeyChangedErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(WorkspaceCreatedIncompleteErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(StorageProfileMismatchErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(ChangeOutcomeUnknownErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(StorageAttachedDuringArchiveErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(WorkspaceMemberLimitExceededErrorDetails value) =>
         new(value);
 
@@ -4812,6 +5927,37 @@ public record class ErrorDetails : ModelBase
         Environments::BetaInvalidMetadataErrorDetails value
     ) => new(value);
 
+    public static implicit operator ErrorDetails(BetaGrantRequiredErrorDetails value) => new(value);
+
+    public static implicit operator ErrorDetails(BetaOrganizationNotEligibleErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaProviderNotAllowedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaUnsupportedRegionErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageAlreadyRegisteredErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaAuthorizationCheckUnavailableErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaInvalidStorageArnErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaExternalStorageInUseErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaExternalStorageInWorkspacePolicyErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageVerificationFailedErrorDetails value) =>
+        new(value);
+
     public static implicit operator ErrorDetails(BetaCannotSignOutPrimaryOwnerErrorDetails value) =>
         new(value);
 
@@ -4835,6 +5981,42 @@ public record class ErrorDetails : ModelBase
 
     public static implicit operator ErrorDetails(
         BetaCannotSignOutPrivilegedMemberErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaApprovalRequiredErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaExternalStorageNotAvailableErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaHumanReviewNotAvailableErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageNotAttachableErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        Workspaces::BetaTranscriptsStorageRequiredErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageAttachLimitReachedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaStorageProfileStillRequiredErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaStorageChangedConcurrentlyErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(
+        Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails value
     ) => new(value);
 
     public static implicit operator ErrorDetails(
@@ -4977,6 +6159,7 @@ public record class ErrorDetails : ModelBase
             (rampLimitExceeded) => rampLimitExceeded.Validate(),
             (cmekKeyUnreachable) => cmekKeyUnreachable.Validate(),
             (compactionUnavailable) => compactionUnavailable.Validate(),
+            (workspaceHumanReviewDisabled) => workspaceHumanReviewDisabled.Validate(),
             (storageQuotaExceeded) => storageQuotaExceeded.Validate(),
             (fileNotDownloadable) => fileNotDownloadable.Validate(),
             (fileExpired) => fileExpired.Validate(),
@@ -5001,6 +6184,10 @@ public record class ErrorDetails : ModelBase
             (keyProfileMismatch) => keyProfileMismatch.Validate(),
             (workspacePolicyViolation) => workspacePolicyViolation.Validate(),
             (externalKeyChanged) => externalKeyChanged.Validate(),
+            (workspaceCreatedIncomplete) => workspaceCreatedIncomplete.Validate(),
+            (storageProfileMismatch) => storageProfileMismatch.Validate(),
+            (changeOutcomeUnknown) => changeOutcomeUnknown.Validate(),
+            (storageAttachedDuringArchive) => storageAttachedDuringArchive.Validate(),
             (workspaceMemberLimitExceeded) => workspaceMemberLimitExceeded.Validate(),
             (organizationTypeNotSupported) => organizationTypeNotSupported.Validate(),
             (parentOrganizationRequired) => parentOrganizationRequired.Validate(),
@@ -5011,6 +6198,17 @@ public record class ErrorDetails : ModelBase
             (betaEnvironmentUpdateDisabled) => betaEnvironmentUpdateDisabled.Validate(),
             (betaHeartbeatPreconditionFailed) => betaHeartbeatPreconditionFailed.Validate(),
             (betaInvalidMetadata) => betaInvalidMetadata.Validate(),
+            (betaGrantRequired) => betaGrantRequired.Validate(),
+            (betaOrganizationNotEligible) => betaOrganizationNotEligible.Validate(),
+            (betaProviderNotAllowed) => betaProviderNotAllowed.Validate(),
+            (betaUnsupportedRegion) => betaUnsupportedRegion.Validate(),
+            (betaStorageAlreadyRegistered) => betaStorageAlreadyRegistered.Validate(),
+            (betaAuthorizationCheckUnavailable) => betaAuthorizationCheckUnavailable.Validate(),
+            (betaInvalidStorageArn) => betaInvalidStorageArn.Validate(),
+            (betaExternalStorageInUse) => betaExternalStorageInUse.Validate(),
+            (betaExternalStorageInWorkspacePolicy) =>
+                betaExternalStorageInWorkspacePolicy.Validate(),
+            (betaStorageVerificationFailed) => betaStorageVerificationFailed.Validate(),
             (betaCannotSignOutPrimaryOwner) => betaCannotSignOutPrimaryOwner.Validate(),
             (betaCannotSignOutSelf) => betaCannotSignOutSelf.Validate(),
             (betaOrganizationNotEnrolledInBeta) => betaOrganizationNotEnrolledInBeta.Validate(),
@@ -5018,6 +6216,17 @@ public record class ErrorDetails : ModelBase
             (betaCannotSignOutMembershipAdmin) => betaCannotSignOutMembershipAdmin.Validate(),
             (betaCannotSignOutOwner) => betaCannotSignOutOwner.Validate(),
             (betaCannotSignOutPrivilegedMember) => betaCannotSignOutPrivilegedMember.Validate(),
+            (betaApprovalRequired) => betaApprovalRequired.Validate(),
+            (betaExternalStorageNotAvailable) => betaExternalStorageNotAvailable.Validate(),
+            (betaHumanReviewNotAvailable) => betaHumanReviewNotAvailable.Validate(),
+            (betaHumanReviewOnWithExternalStorage) =>
+                betaHumanReviewOnWithExternalStorage.Validate(),
+            (betaStorageNotAttachable) => betaStorageNotAttachable.Validate(),
+            (betaTranscriptsStorageRequired) => betaTranscriptsStorageRequired.Validate(),
+            (betaStorageAttachLimitReached) => betaStorageAttachLimitReached.Validate(),
+            (betaStorageProfileStillRequired) => betaStorageProfileStillRequired.Validate(),
+            (betaStorageChangedConcurrently) => betaStorageChangedConcurrently.Validate(),
+            (betaWorkspaceChangedConcurrently) => betaWorkspaceChangedConcurrently.Validate(),
             (betaSpendLimitsAdminApiWritesNotEnabled) =>
                 betaSpendLimitsAdminApiWritesNotEnabled.Validate(),
             (betaUnsupportedCharset) => betaUnsupportedCharset.Validate(),
@@ -5108,70 +6317,95 @@ public record class ErrorDetails : ModelBase
             RampLimitExceededErrorDetails _ => 33,
             CmekKeyUnreachableErrorDetails _ => 34,
             Messages::CompactionUnavailableErrorDetails _ => 35,
-            Files::StorageQuotaExceededErrorDetails _ => 36,
-            Files::FileNotDownloadableErrorDetails _ => 37,
-            Files::FileExpiredErrorDetails _ => 38,
-            CmekContextUnavailableErrorDetails _ => 39,
-            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 40,
-            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 41,
-            SandboxEgressRestrictedErrorDetails _ => 42,
-            UserProfileNotFoundErrorDetails _ => 43,
-            ExternalKeyInWorkspacePolicyErrorDetails _ => 44,
-            AlreadyMemberErrorDetails _ => 45,
-            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 46,
-            EmailDomainNotAllowedErrorDetails _ => 47,
-            InviteAlreadyExistsErrorDetails _ => 48,
-            OrgMemberLimitExceededErrorDetails _ => 49,
-            RbacGroupGrantsOwnerAccessErrorDetails _ => 50,
-            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 51,
-            CannotRemoveLastMemberErrorDetails _ => 52,
-            ConcurrentMembershipChangeErrorDetails _ => 53,
-            ExternalKeyValidationFailedErrorDetails _ => 54,
-            ExternalKeyValidationTimedOutErrorDetails _ => 55,
-            KeyProfileMismatchErrorDetails _ => 56,
-            WorkspacePolicyViolationErrorDetails _ => 57,
-            ExternalKeyChangedErrorDetails _ => 58,
-            WorkspaceMemberLimitExceededErrorDetails _ => 59,
-            OrganizationTypeNotSupportedErrorDetails _ => 60,
-            ParentOrganizationRequiredErrorDetails _ => 61,
-            RbacRoleNotFoundErrorDetails _ => 62,
-            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 63,
-            Environments::BetaEnvironmentArchivedErrorDetails _ => 64,
-            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 65,
-            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 66,
-            BetaHeartbeatPreconditionFailedErrorDetails _ => 67,
-            Environments::BetaInvalidMetadataErrorDetails _ => 68,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 69,
-            BetaCannotSignOutSelfErrorDetails _ => 70,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 71,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 72,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 73,
-            BetaCannotSignOutOwnerErrorDetails _ => 74,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 75,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 76,
-            BetaUnsupportedCharsetErrorDetails _ => 77,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 78,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 79,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 80,
-            Plugins::BetaScanFailedErrorDetails _ => 81,
-            Plugins::BetaScanPendingErrorDetails _ => 82,
-            BetaRequestBodyTimeoutErrorDetails _ => 83,
-            BetaSettingsDocumentLimitExceededErrorDetails _ => 84,
-            BetaSettingsHistoryLimitExceededErrorDetails _ => 85,
-            BetaCmekFeatureUnsupportedErrorDetails _ => 86,
-            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 87,
-            BetaRbacGroupOrderLimitExceededErrorDetails _ => 88,
-            BetaRbacGroupNotFoundErrorDetails _ => 89,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 90,
-            BetaApiKeyScopeMissingErrorDetails _ => 91,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 92,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 93,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 94,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 95,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 96,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 97,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 98,
-            BetaBundleOnCallErrorDetails _ => 99,
+            WorkspaceHumanReviewDisabledErrorDetails _ => 36,
+            Files::StorageQuotaExceededErrorDetails _ => 37,
+            Files::FileNotDownloadableErrorDetails _ => 38,
+            Files::FileExpiredErrorDetails _ => 39,
+            CmekContextUnavailableErrorDetails _ => 40,
+            ApiKeys::OrgApiKeyLimitExceededErrorDetails _ => 41,
+            ApiKeys::WorkspaceApiKeyLimitExceededErrorDetails _ => 42,
+            SandboxEgressRestrictedErrorDetails _ => 43,
+            UserProfileNotFoundErrorDetails _ => 44,
+            ExternalKeyInWorkspacePolicyErrorDetails _ => 45,
+            AlreadyMemberErrorDetails _ => 46,
+            CannotInviteEmailsWithUnverifiedDomainsErrorDetails _ => 47,
+            EmailDomainNotAllowedErrorDetails _ => 48,
+            InviteAlreadyExistsErrorDetails _ => 49,
+            OrgMemberLimitExceededErrorDetails _ => 50,
+            RbacGroupGrantsOwnerAccessErrorDetails _ => 51,
+            RbacGroupOwnerAccessUnconfirmedErrorDetails _ => 52,
+            CannotRemoveLastMemberErrorDetails _ => 53,
+            ConcurrentMembershipChangeErrorDetails _ => 54,
+            ExternalKeyValidationFailedErrorDetails _ => 55,
+            ExternalKeyValidationTimedOutErrorDetails _ => 56,
+            KeyProfileMismatchErrorDetails _ => 57,
+            WorkspacePolicyViolationErrorDetails _ => 58,
+            ExternalKeyChangedErrorDetails _ => 59,
+            WorkspaceCreatedIncompleteErrorDetails _ => 60,
+            StorageProfileMismatchErrorDetails _ => 61,
+            ChangeOutcomeUnknownErrorDetails _ => 62,
+            StorageAttachedDuringArchiveErrorDetails _ => 63,
+            WorkspaceMemberLimitExceededErrorDetails _ => 64,
+            OrganizationTypeNotSupportedErrorDetails _ => 65,
+            ParentOrganizationRequiredErrorDetails _ => 66,
+            RbacRoleNotFoundErrorDetails _ => 67,
+            Environments::BetaEnvironmentCreateDisabledErrorDetails _ => 68,
+            Environments::BetaEnvironmentArchivedErrorDetails _ => 69,
+            Environments::BetaInvalidConfigTypeChangeErrorDetails _ => 70,
+            Environments::BetaEnvironmentUpdateDisabledErrorDetails _ => 71,
+            BetaHeartbeatPreconditionFailedErrorDetails _ => 72,
+            Environments::BetaInvalidMetadataErrorDetails _ => 73,
+            BetaGrantRequiredErrorDetails _ => 74,
+            BetaOrganizationNotEligibleErrorDetails _ => 75,
+            BetaProviderNotAllowedErrorDetails _ => 76,
+            BetaUnsupportedRegionErrorDetails _ => 77,
+            BetaStorageAlreadyRegisteredErrorDetails _ => 78,
+            BetaAuthorizationCheckUnavailableErrorDetails _ => 79,
+            BetaInvalidStorageArnErrorDetails _ => 80,
+            BetaExternalStorageInUseErrorDetails _ => 81,
+            BetaExternalStorageInWorkspacePolicyErrorDetails _ => 82,
+            BetaStorageVerificationFailedErrorDetails _ => 83,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 84,
+            BetaCannotSignOutSelfErrorDetails _ => 85,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 86,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 87,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 88,
+            BetaCannotSignOutOwnerErrorDetails _ => 89,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 90,
+            BetaApprovalRequiredErrorDetails _ => 91,
+            BetaExternalStorageNotAvailableErrorDetails _ => 92,
+            BetaHumanReviewNotAvailableErrorDetails _ => 93,
+            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => 94,
+            BetaStorageNotAttachableErrorDetails _ => 95,
+            Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => 96,
+            BetaStorageAttachLimitReachedErrorDetails _ => 97,
+            BetaStorageProfileStillRequiredErrorDetails _ => 98,
+            BetaStorageChangedConcurrentlyErrorDetails _ => 99,
+            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => 100,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 101,
+            BetaUnsupportedCharsetErrorDetails _ => 102,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 103,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 104,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 105,
+            Plugins::BetaScanFailedErrorDetails _ => 106,
+            Plugins::BetaScanPendingErrorDetails _ => 107,
+            BetaRequestBodyTimeoutErrorDetails _ => 108,
+            BetaSettingsDocumentLimitExceededErrorDetails _ => 109,
+            BetaSettingsHistoryLimitExceededErrorDetails _ => 110,
+            BetaCmekFeatureUnsupportedErrorDetails _ => 111,
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 112,
+            BetaRbacGroupOrderLimitExceededErrorDetails _ => 113,
+            BetaRbacGroupNotFoundErrorDetails _ => 114,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 115,
+            BetaApiKeyScopeMissingErrorDetails _ => 116,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 117,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 118,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 119,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 120,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 121,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 122,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 123,
+            BetaBundleOnCallErrorDetails _ => 124,
             _ => -1,
         };
     }
@@ -5949,6 +7183,27 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "workspace_human_review_disabled":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<WorkspaceHumanReviewDisabledErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "storage_quota_exceeded":
             {
                 try
@@ -6426,6 +7681,89 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "workspace_created_incomplete":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<WorkspaceCreatedIncompleteErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_profile_mismatch":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<StorageProfileMismatchErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "change_outcome_unknown":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<ChangeOutcomeUnknownErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_attached_during_archive":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<StorageAttachedDuringArchiveErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "workspace_member_limit_exceeded":
             {
                 try
@@ -6635,6 +7973,215 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "grant_required":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaGrantRequiredErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "organization_not_eligible":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaOrganizationNotEligibleErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "provider_not_allowed":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaProviderNotAllowedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "unsupported_region":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaUnsupportedRegionErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_already_registered":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageAlreadyRegisteredErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "authorization_check_unavailable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaAuthorizationCheckUnavailableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "invalid_storage_arn":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaInvalidStorageArnErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_storage_in_use":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaExternalStorageInUseErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_storage_in_workspace_policy":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaExternalStorageInWorkspacePolicyErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_verification_failed":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageVerificationFailedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "cannot_sign_out_primary_owner":
             {
                 try
@@ -6767,6 +8314,215 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
                 {
                     var deserialized =
                         JsonSerializer.Deserialize<BetaCannotSignOutPrivilegedMemberErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "approval_required":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaApprovalRequiredErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_storage_not_available":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaExternalStorageNotAvailableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "human_review_not_available":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaHumanReviewNotAvailableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "human_review_on_with_external_storage":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_not_attachable":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageNotAttachableErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "transcripts_storage_required":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Workspaces::BetaTranscriptsStorageRequiredErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_attach_limit_reached":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageAttachLimitReachedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_profile_still_required":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageProfileStillRequiredErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_changed_concurrently":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageChangedConcurrentlyErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "workspace_changed_concurrently":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails>(
                             element,
                             options
                         );
@@ -7341,6 +9097,7 @@ public enum ErrorDetailsErrorCode
     RampLimitExceeded = 32,
     CmekKeyUnreachable = 33,
     CompactionUnavailable = 34,
+    WorkspaceHumanReviewDisabled = 668512369,
     StorageQuotaExceeded = 35,
     FileNotDownloadable = 36,
     FileExpired = 37,
@@ -7364,6 +9121,10 @@ public enum ErrorDetailsErrorCode
     KeyProfileMismatch = 55,
     WorkspacePolicyViolation = 56,
     ExternalKeyChanged = 57,
+    WorkspaceCreatedIncomplete = 724555190,
+    StorageProfileMismatch = 679510682,
+    ChangeOutcomeUnknown = 538157612,
+    StorageAttachedDuringArchive = 492893123,
     WorkspaceMemberLimitExceeded = 58,
     OrganizationTypeNotSupported = 59,
     ParentOrganizationRequired = 60,
@@ -7374,6 +9135,16 @@ public enum ErrorDetailsErrorCode
     EnvironmentUpdateDisabled = 65,
     HeartbeatPreconditionFailed = 66,
     InvalidMetadata = 67,
+    GrantRequired = 1832381458,
+    OrganizationNotEligible = 473330095,
+    ProviderNotAllowed = 1396900855,
+    UnsupportedRegion = 2119195443,
+    StorageAlreadyRegistered = 1005495766,
+    AuthorizationCheckUnavailable = 479660100,
+    InvalidStorageArn = 2026729190,
+    ExternalStorageInUse = 1557296840,
+    ExternalStorageInWorkspacePolicy = 1392417940,
+    StorageVerificationFailed = 2088159786,
     CannotSignOutPrimaryOwner = 68,
     CannotSignOutSelf = 69,
     OrganizationNotEnrolledInBeta = 70,
@@ -7381,6 +9152,16 @@ public enum ErrorDetailsErrorCode
     CannotSignOutMembershipAdmin = 72,
     CannotSignOutOwner = 73,
     CannotSignOutPrivilegedMember = 74,
+    ApprovalRequired = 311948738,
+    ExternalStorageNotAvailable = 1659550957,
+    HumanReviewNotAvailable = 42139857,
+    HumanReviewOnWithExternalStorage = 1172875179,
+    StorageNotAttachable = 681479952,
+    TranscriptsStorageRequired = 1311301351,
+    StorageAttachLimitReached = 1233466145,
+    StorageProfileStillRequired = 488961029,
+    StorageChangedConcurrently = 1131762667,
+    WorkspaceChangedConcurrently = 1043618038,
     SpendLimitsAdminApiWritesNotEnabled = 75,
     UnsupportedCharset = 76,
     PluginNameTaken = 77,
@@ -7462,6 +9243,7 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "ramp_limit_exceeded" => ErrorDetailsErrorCode.RampLimitExceeded,
             "cmek_key_unreachable" => ErrorDetailsErrorCode.CmekKeyUnreachable,
             "compaction_unavailable" => ErrorDetailsErrorCode.CompactionUnavailable,
+            "workspace_human_review_disabled" => ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled,
             "storage_quota_exceeded" => ErrorDetailsErrorCode.StorageQuotaExceeded,
             "file_not_downloadable" => ErrorDetailsErrorCode.FileNotDownloadable,
             "file_expired" => ErrorDetailsErrorCode.FileExpired,
@@ -7490,6 +9272,10 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "key_profile_mismatch" => ErrorDetailsErrorCode.KeyProfileMismatch,
             "workspace_policy_violation" => ErrorDetailsErrorCode.WorkspacePolicyViolation,
             "external_key_changed" => ErrorDetailsErrorCode.ExternalKeyChanged,
+            "workspace_created_incomplete" => ErrorDetailsErrorCode.WorkspaceCreatedIncomplete,
+            "storage_profile_mismatch" => ErrorDetailsErrorCode.StorageProfileMismatch,
+            "change_outcome_unknown" => ErrorDetailsErrorCode.ChangeOutcomeUnknown,
+            "storage_attached_during_archive" => ErrorDetailsErrorCode.StorageAttachedDuringArchive,
             "workspace_member_limit_exceeded" => ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded,
             "organization_type_not_supported" => ErrorDetailsErrorCode.OrganizationTypeNotSupported,
             "parent_organization_required" => ErrorDetailsErrorCode.ParentOrganizationRequired,
@@ -7500,6 +9286,18 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "environment_update_disabled" => ErrorDetailsErrorCode.EnvironmentUpdateDisabled,
             "heartbeat_precondition_failed" => ErrorDetailsErrorCode.HeartbeatPreconditionFailed,
             "invalid_metadata" => ErrorDetailsErrorCode.InvalidMetadata,
+            "grant_required" => ErrorDetailsErrorCode.GrantRequired,
+            "organization_not_eligible" => ErrorDetailsErrorCode.OrganizationNotEligible,
+            "provider_not_allowed" => ErrorDetailsErrorCode.ProviderNotAllowed,
+            "unsupported_region" => ErrorDetailsErrorCode.UnsupportedRegion,
+            "storage_already_registered" => ErrorDetailsErrorCode.StorageAlreadyRegistered,
+            "authorization_check_unavailable" =>
+                ErrorDetailsErrorCode.AuthorizationCheckUnavailable,
+            "invalid_storage_arn" => ErrorDetailsErrorCode.InvalidStorageArn,
+            "external_storage_in_use" => ErrorDetailsErrorCode.ExternalStorageInUse,
+            "external_storage_in_workspace_policy" =>
+                ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
+            "storage_verification_failed" => ErrorDetailsErrorCode.StorageVerificationFailed,
             "cannot_sign_out_primary_owner" => ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
             "cannot_sign_out_self" => ErrorDetailsErrorCode.CannotSignOutSelf,
             "organization_not_enrolled_in_beta" =>
@@ -7510,6 +9308,17 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "cannot_sign_out_owner" => ErrorDetailsErrorCode.CannotSignOutOwner,
             "cannot_sign_out_privileged_member" =>
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember,
+            "approval_required" => ErrorDetailsErrorCode.ApprovalRequired,
+            "external_storage_not_available" => ErrorDetailsErrorCode.ExternalStorageNotAvailable,
+            "human_review_not_available" => ErrorDetailsErrorCode.HumanReviewNotAvailable,
+            "human_review_on_with_external_storage" =>
+                ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage,
+            "storage_not_attachable" => ErrorDetailsErrorCode.StorageNotAttachable,
+            "transcripts_storage_required" => ErrorDetailsErrorCode.TranscriptsStorageRequired,
+            "storage_attach_limit_reached" => ErrorDetailsErrorCode.StorageAttachLimitReached,
+            "storage_profile_still_required" => ErrorDetailsErrorCode.StorageProfileStillRequired,
+            "storage_changed_concurrently" => ErrorDetailsErrorCode.StorageChangedConcurrently,
+            "workspace_changed_concurrently" => ErrorDetailsErrorCode.WorkspaceChangedConcurrently,
             "spend_limits_admin_api_writes_not_enabled" =>
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled,
             "unsupported_charset" => ErrorDetailsErrorCode.UnsupportedCharset,
@@ -7603,6 +9412,8 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.RampLimitExceeded => "ramp_limit_exceeded",
                 ErrorDetailsErrorCode.CmekKeyUnreachable => "cmek_key_unreachable",
                 ErrorDetailsErrorCode.CompactionUnavailable => "compaction_unavailable",
+                ErrorDetailsErrorCode.WorkspaceHumanReviewDisabled =>
+                    "workspace_human_review_disabled",
                 ErrorDetailsErrorCode.StorageQuotaExceeded => "storage_quota_exceeded",
                 ErrorDetailsErrorCode.FileNotDownloadable => "file_not_downloadable",
                 ErrorDetailsErrorCode.FileExpired => "file_expired",
@@ -7633,6 +9444,11 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.KeyProfileMismatch => "key_profile_mismatch",
                 ErrorDetailsErrorCode.WorkspacePolicyViolation => "workspace_policy_violation",
                 ErrorDetailsErrorCode.ExternalKeyChanged => "external_key_changed",
+                ErrorDetailsErrorCode.WorkspaceCreatedIncomplete => "workspace_created_incomplete",
+                ErrorDetailsErrorCode.StorageProfileMismatch => "storage_profile_mismatch",
+                ErrorDetailsErrorCode.ChangeOutcomeUnknown => "change_outcome_unknown",
+                ErrorDetailsErrorCode.StorageAttachedDuringArchive =>
+                    "storage_attached_during_archive",
                 ErrorDetailsErrorCode.WorkspaceMemberLimitExceeded =>
                     "workspace_member_limit_exceeded",
                 ErrorDetailsErrorCode.OrganizationTypeNotSupported =>
@@ -7646,6 +9462,18 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.HeartbeatPreconditionFailed =>
                     "heartbeat_precondition_failed",
                 ErrorDetailsErrorCode.InvalidMetadata => "invalid_metadata",
+                ErrorDetailsErrorCode.GrantRequired => "grant_required",
+                ErrorDetailsErrorCode.OrganizationNotEligible => "organization_not_eligible",
+                ErrorDetailsErrorCode.ProviderNotAllowed => "provider_not_allowed",
+                ErrorDetailsErrorCode.UnsupportedRegion => "unsupported_region",
+                ErrorDetailsErrorCode.StorageAlreadyRegistered => "storage_already_registered",
+                ErrorDetailsErrorCode.AuthorizationCheckUnavailable =>
+                    "authorization_check_unavailable",
+                ErrorDetailsErrorCode.InvalidStorageArn => "invalid_storage_arn",
+                ErrorDetailsErrorCode.ExternalStorageInUse => "external_storage_in_use",
+                ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy =>
+                    "external_storage_in_workspace_policy",
+                ErrorDetailsErrorCode.StorageVerificationFailed => "storage_verification_failed",
                 ErrorDetailsErrorCode.CannotSignOutPrimaryOwner => "cannot_sign_out_primary_owner",
                 ErrorDetailsErrorCode.CannotSignOutSelf => "cannot_sign_out_self",
                 ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta =>
@@ -7657,6 +9485,20 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.CannotSignOutOwner => "cannot_sign_out_owner",
                 ErrorDetailsErrorCode.CannotSignOutPrivilegedMember =>
                     "cannot_sign_out_privileged_member",
+                ErrorDetailsErrorCode.ApprovalRequired => "approval_required",
+                ErrorDetailsErrorCode.ExternalStorageNotAvailable =>
+                    "external_storage_not_available",
+                ErrorDetailsErrorCode.HumanReviewNotAvailable => "human_review_not_available",
+                ErrorDetailsErrorCode.HumanReviewOnWithExternalStorage =>
+                    "human_review_on_with_external_storage",
+                ErrorDetailsErrorCode.StorageNotAttachable => "storage_not_attachable",
+                ErrorDetailsErrorCode.TranscriptsStorageRequired => "transcripts_storage_required",
+                ErrorDetailsErrorCode.StorageAttachLimitReached => "storage_attach_limit_reached",
+                ErrorDetailsErrorCode.StorageProfileStillRequired =>
+                    "storage_profile_still_required",
+                ErrorDetailsErrorCode.StorageChangedConcurrently => "storage_changed_concurrently",
+                ErrorDetailsErrorCode.WorkspaceChangedConcurrently =>
+                    "workspace_changed_concurrently",
                 ErrorDetailsErrorCode.SpendLimitsAdminApiWritesNotEnabled =>
                     "spend_limits_admin_api_writes_not_enabled",
                 ErrorDetailsErrorCode.UnsupportedCharset => "unsupported_charset",

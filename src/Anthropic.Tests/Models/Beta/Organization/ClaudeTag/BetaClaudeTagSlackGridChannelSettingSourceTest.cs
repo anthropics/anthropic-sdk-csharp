@@ -11,13 +11,13 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
     {
         var model = new BetaClaudeTagSlackGridChannelSettingSource
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_grid_channel");
 
@@ -30,7 +30,7 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
     {
         var model = new BetaClaudeTagSlackGridChannelSettingSource
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -47,7 +47,7 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
     {
         var model = new BetaClaudeTagSlackGridChannelSettingSource
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -59,8 +59,8 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
 
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
         JsonElement expectedType = JsonSerializer.SerializeToElement("slack_grid_channel");
 
@@ -73,7 +73,7 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
     {
         var model = new BetaClaudeTagSlackGridChannelSettingSource
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         model.Validate();
@@ -84,7 +84,7 @@ public class BetaClaudeTagSlackGridChannelSettingSourceTest : TestBase
     {
         var model = new BetaClaudeTagSlackGridChannelSettingSource
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         BetaClaudeTagSlackGridChannelSettingSource copied = new(model);

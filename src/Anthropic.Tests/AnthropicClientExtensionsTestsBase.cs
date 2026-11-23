@@ -8287,6 +8287,132 @@ public abstract class AnthropicClientExtensionsTestsBase
     [Theory]
     [InlineData("code_execution")]
     [InlineData("bash_code_execution")]
+    [InlineData("text_editor_code_execution")]
+    [InlineData("web_search")]
+    [InlineData("web_fetch")]
+    public async Task GetResponseAsync_ServerToolResult_WithUnknownErrorCode(string tool)
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Hi"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "{{tool}}_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "{{tool}}_tool_result_error",
+                        "error_code": "new_code"
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Hi",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        IList<AIContent>? outputs = response.Messages[0].Contents[0] switch
+        {
+            CodeInterpreterToolResultContent code => code.Outputs,
+            WebSearchToolResultContent web => web.Outputs,
+            _ => null,
+        };
+        Assert.NotNull(outputs);
+        Assert.Equal("new_code", Assert.IsType<ErrorContent>(Assert.Single(outputs)).ErrorCode);
+    }
+
+    [Theory]
+    [InlineData("code_execution")]
+    [InlineData("bash_code_execution")]
+    public async Task GetResponseAsync_CodeExecutionResult_SkipsUnknownOutputType(string tool)
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "Hi"
+                    }]
+                }]
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "{{tool}}_tool_result",
+                    "tool_use_id": "srvtoolu_01",
+                    "content": {
+                        "type": "{{tool}}_result",
+                        "stdout": "",
+                        "stderr": "",
+                        "return_code": 0,
+                        "content": [
+                            { "type": "new_output" },
+                            { "type": "{{tool}}_output", "file_id": "file_01" }
+                        ]
+                    }
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 10,
+                    "output_tokens": 5
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Hi",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        CodeInterpreterToolResultContent codeResult =
+            Assert.IsType<CodeInterpreterToolResultContent>(response.Messages[0].Contents[0]);
+        Assert.NotNull(codeResult.Outputs);
+        Assert.Equal(
+            "file_01",
+            Assert.IsType<HostedFileContent>(Assert.Single(codeResult.Outputs)).FileId
+        );
+    }
+
+    [Theory]
+    [InlineData("code_execution")]
+    [InlineData("bash_code_execution")]
     public async Task GetResponseAsync_CodeExecutionResult_WithStdout(string executionType)
     {
         VerbatimHttpHandler handler = new(

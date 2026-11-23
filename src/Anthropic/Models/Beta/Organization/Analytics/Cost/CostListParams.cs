@@ -18,7 +18,12 @@ namespace Anthropic.Models.Beta.Organization.Analytics.Cost;
 /// ranked by spend or ordered by time bucket; every combination is returned across
 /// pages. With no `group_by[]` and no `time_bucket_width`, a single row aggregates
 /// the whole range. Includes all cost, whether or not it is attributable to a seat
-/// user. Requires an API key with the `read:analytics` scope, or an Admin API key.</para>
+/// user. Requires an API key with the `read:analytics` scope, or an Admin API key.
+/// This endpoint is in beta and is not available to organizations with HIPAA readiness
+/// enabled: their API requests return a 400 error. A parent organization's report
+/// across its child organizations leaves out the child organizations that have HIPAA
+/// readiness enabled. If the parent has child organizations and all of them have
+/// HIPAA readiness enabled, the request returns a 400 error.</para>
 ///
 /// <para>NOTE: Do not inherit from this type outside the SDK unless you're okay with
 /// breaking changes in non-major versions. We may add new methods in the future that
@@ -88,7 +93,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to usage incurred by sessions of specific Claude Managed Agents agents.
-    /// Use `group_by[]=agent_id` to break out per-agent values. Claude Platform organizations only.
+    /// Use `group_by[]=agent_id` to break out per-agent values.
     /// </summary>
     public IReadOnlyList<string>? AgentIds
     {
@@ -111,7 +116,6 @@ public record class CostListParams : ParamsBase
     /// whichever identity the usage is attributed to. Include an empty entry (`api_key_ids[]=`)
     /// to also match usage that no API key authenticated. Use `group_by[]=api_key_id`
     /// to break out per-key values; usage without a key has a null `api_key_id`.
-    /// Claude Platform organizations only.
     /// </summary>
     public IReadOnlyList<string>? ApiKeyIds
     {
@@ -203,7 +207,6 @@ public record class CostListParams : ParamsBase
     /// <summary>
     /// Filter to usage incurred by Claude Managed Agents sessions that specific deployments
     /// started. Use `group_by[]=deployment_id` to break out per-deployment values.
-    /// Claude Platform organizations only.
     /// </summary>
     public IReadOnlyList<string>? DeploymentIds
     {
@@ -238,8 +241,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to usage incurred by Claude Managed Agents sessions that ran in specific
-    /// environments. Use `group_by[]=environment_id` to break out per-environment
-    /// values. Claude Platform organizations only.
+    /// environments. Use `group_by[]=environment_id` to break out per-environment values.
     /// </summary>
     public IReadOnlyList<string>? EnvironmentIds
     {
@@ -432,8 +434,10 @@ public record class CostListParams : ParamsBase
     /// <summary>
     /// Filter a parent organization's report to specific child organizations, by
     /// organization UUID or `org_` ID; an ID that is not one of its child organizations
-    /// matches nothing. Requires an API key created at the parent organization level.
-    /// Use `group_by[]=organization_id` to break out per-organization values.
+    /// matches nothing. The report leaves out child organizations with HIPAA readiness
+    /// enabled, and naming one returns a 400 error. Requires an API key created at
+    /// the parent organization level. Use `group_by[]=organization_id` to break
+    /// out per-organization values.
     /// </summary>
     public IReadOnlyList<string>? OrganizationIds
     {
@@ -508,8 +512,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to specific service tiers. Use `group_by[]=service_tier` to break out
-    /// per-tier values. Claude Platform organizations only; matches nothing for a
-    /// Claude Enterprise organization.
+    /// per-tier values.
     /// </summary>
     public IReadOnlyList<ApiEnum<string, BetaAnalyticsServiceTier>>? ServiceTiers
     {
@@ -531,8 +534,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to usage incurred by specific Claude Managed Agents sessions, by tagged
-    /// session ID (`sesn_...`). Use `group_by[]=session_id` to break out per-session
-    /// values. Claude Platform organizations only.
+    /// session ID (`sesn_...`). Use `group_by[]=session_id` to break out per-session values.
     /// </summary>
     public IReadOnlyList<string>? SessionIds
     {
@@ -616,8 +618,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to usage attributed to specific user profiles, by tagged user profile
-    /// ID (`uprof_...`). Use `group_by[]=user_profile_id` to break out per-profile
-    /// values. Claude Platform organizations only.
+    /// ID (`uprof_...`). Use `group_by[]=user_profile_id` to break out per-profile values.
     /// </summary>
     public IReadOnlyList<string>? UserProfileIds
     {
@@ -637,8 +638,7 @@ public record class CostListParams : ParamsBase
 
     /// <summary>
     /// Filter to usage in specific workspaces, by tagged workspace ID (`wrkspc_...`).
-    /// Use `group_by[]=workspace_id` to break out per-workspace values. Claude Platform
-    /// organizations only; matches nothing for a Claude Enterprise organization.
+    /// Use `group_by[]=workspace_id` to break out per-workspace values.
     /// </summary>
     public IReadOnlyList<string>? WorkspaceIds
     {

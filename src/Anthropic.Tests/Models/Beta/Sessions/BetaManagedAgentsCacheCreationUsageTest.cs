@@ -15,8 +15,8 @@ public class BetaManagedAgentsCacheCreationUsageTest : TestBase
             Ephemeral5mInputTokens = 0,
         };
 
-        int expectedEphemeral1hInputTokens = 0;
-        int expectedEphemeral5mInputTokens = 0;
+        long expectedEphemeral1hInputTokens = 0;
+        long expectedEphemeral5mInputTokens = 0;
 
         Assert.Equal(expectedEphemeral1hInputTokens, model.Ephemeral1hInputTokens);
         Assert.Equal(expectedEphemeral5mInputTokens, model.Ephemeral5mInputTokens);
@@ -56,8 +56,8 @@ public class BetaManagedAgentsCacheCreationUsageTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        int expectedEphemeral1hInputTokens = 0;
-        int expectedEphemeral5mInputTokens = 0;
+        long expectedEphemeral1hInputTokens = 0;
+        long expectedEphemeral5mInputTokens = 0;
 
         Assert.Equal(expectedEphemeral1hInputTokens, deserialized.Ephemeral1hInputTokens);
         Assert.Equal(expectedEphemeral5mInputTokens, deserialized.Ephemeral5mInputTokens);

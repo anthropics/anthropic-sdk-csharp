@@ -15,7 +15,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         var parameters = new SlackChannelCreateParams
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Settings = new()
             {
                 Enabled = true,
@@ -30,8 +30,8 @@ public class SlackChannelCreateParamsTest : TestBase
 
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
         BetaClaudeTagSettingsCreate expectedSettings = new()
         {
@@ -59,7 +59,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         var parameters = new SlackChannelCreateParams
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         Assert.Null(parameters.Settings);
@@ -73,7 +73,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         var parameters = new SlackChannelCreateParams
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
 
             // Null should be interpreted as omitted for these properties
             Settings = null,
@@ -91,7 +91,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         var parameters = new SlackChannelCreateParams
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Settings = new()
             {
                 Enabled = true,
@@ -120,7 +120,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         SlackChannelCreateParams parameters = new()
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -139,7 +139,7 @@ public class SlackChannelCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         SlackChannelCreateParams parameters = new()
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -156,7 +156,7 @@ public class SlackChannelCreateParamsTest : TestBase
     {
         var parameters = new SlackChannelCreateParams
         {
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Settings = new()
             {
                 Enabled = true,

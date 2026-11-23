@@ -11,11 +11,11 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         string expectedFederationRuleID = "federation_rule_id";
-        string expectedWorkspaceID = "workspace_id";
+        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
 
         Assert.Equal(expectedFederationRuleID, parameters.FederationRuleID);
         Assert.Equal(expectedWorkspaceID, parameters.WorkspaceID);
@@ -27,7 +27,7 @@ public class WorkspaceAddParamsTest : TestBase
         WorkspaceAddParams parameters = new()
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -48,7 +48,7 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "workspace_id",
+            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
         };
 
         WorkspaceAddParams copied = new(parameters);

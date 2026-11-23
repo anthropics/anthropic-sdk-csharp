@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.Json;
 using Anthropic.Core;
-using Anthropic.Models.Beta.Organization.Workspaces;
+using Workspaces = Anthropic.Models.Beta.Organization.Workspaces;
 
 namespace Anthropic.Tests.Models.Beta.Organization.Workspaces;
 
@@ -11,7 +11,7 @@ public class WorkspaceListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new WorkspaceListPageResponse
+        var model = new Workspaces::WorkspaceListPageResponse
         {
             Data =
             [
@@ -23,9 +23,9 @@ public class WorkspaceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     DataResidency = new()
                     {
-                        AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                        WorkspaceGeo = WorkspaceGeo.Us,
+                        AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                        DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                        WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -36,6 +36,12 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "team", "platform" },
                     },
                     UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                    InferenceDataPrivacy = new()
+                    {
+                        HumanReview = new(Workspaces::Type.Disabled),
+                        SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                        TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                    },
                 },
             ],
             FirstID = "first_id",
@@ -43,7 +49,7 @@ public class WorkspaceListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        List<BetaWorkspace> expectedData =
+        List<Workspaces::BetaWorkspace> expectedData =
         [
             new()
             {
@@ -53,9 +59,9 @@ public class WorkspaceListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 DataResidency = new()
                 {
-                    AllowedInferenceGeos = new Unrestricted(),
-                    DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                    WorkspaceGeo = WorkspaceGeo.Us,
+                    AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                    DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                    WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                 },
                 DisplayColor = "#6C5BB9",
                 ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -66,6 +72,12 @@ public class WorkspaceListPageResponseTest : TestBase
                     { "team", "platform" },
                 },
                 UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                InferenceDataPrivacy = new()
+                {
+                    HumanReview = new(Workspaces::Type.Disabled),
+                    SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                    TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                },
             },
         ];
         string expectedFirstID = "first_id";
@@ -85,7 +97,7 @@ public class WorkspaceListPageResponseTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new WorkspaceListPageResponse
+        var model = new Workspaces::WorkspaceListPageResponse
         {
             Data =
             [
@@ -97,9 +109,9 @@ public class WorkspaceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     DataResidency = new()
                     {
-                        AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                        WorkspaceGeo = WorkspaceGeo.Us,
+                        AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                        DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                        WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -110,6 +122,12 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "team", "platform" },
                     },
                     UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                    InferenceDataPrivacy = new()
+                    {
+                        HumanReview = new(Workspaces::Type.Disabled),
+                        SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                        TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                    },
                 },
             ],
             FirstID = "first_id",
@@ -118,7 +136,7 @@ public class WorkspaceListPageResponseTest : TestBase
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<WorkspaceListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<Workspaces::WorkspaceListPageResponse>(
             json,
             ModelBase.SerializerOptions
         );
@@ -129,7 +147,7 @@ public class WorkspaceListPageResponseTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new WorkspaceListPageResponse
+        var model = new Workspaces::WorkspaceListPageResponse
         {
             Data =
             [
@@ -141,9 +159,9 @@ public class WorkspaceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     DataResidency = new()
                     {
-                        AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                        WorkspaceGeo = WorkspaceGeo.Us,
+                        AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                        DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                        WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -154,6 +172,12 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "team", "platform" },
                     },
                     UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                    InferenceDataPrivacy = new()
+                    {
+                        HumanReview = new(Workspaces::Type.Disabled),
+                        SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                        TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                    },
                 },
             ],
             FirstID = "first_id",
@@ -162,13 +186,13 @@ public class WorkspaceListPageResponseTest : TestBase
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
-        var deserialized = JsonSerializer.Deserialize<WorkspaceListPageResponse>(
+        var deserialized = JsonSerializer.Deserialize<Workspaces::WorkspaceListPageResponse>(
             element,
             ModelBase.SerializerOptions
         );
         Assert.NotNull(deserialized);
 
-        List<BetaWorkspace> expectedData =
+        List<Workspaces::BetaWorkspace> expectedData =
         [
             new()
             {
@@ -178,9 +202,9 @@ public class WorkspaceListPageResponseTest : TestBase
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 DataResidency = new()
                 {
-                    AllowedInferenceGeos = new Unrestricted(),
-                    DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                    WorkspaceGeo = WorkspaceGeo.Us,
+                    AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                    DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                    WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                 },
                 DisplayColor = "#6C5BB9",
                 ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -191,6 +215,12 @@ public class WorkspaceListPageResponseTest : TestBase
                     { "team", "platform" },
                 },
                 UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                InferenceDataPrivacy = new()
+                {
+                    HumanReview = new(Workspaces::Type.Disabled),
+                    SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                    TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                },
             },
         ];
         string expectedFirstID = "first_id";
@@ -210,7 +240,7 @@ public class WorkspaceListPageResponseTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new WorkspaceListPageResponse
+        var model = new Workspaces::WorkspaceListPageResponse
         {
             Data =
             [
@@ -222,9 +252,9 @@ public class WorkspaceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     DataResidency = new()
                     {
-                        AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                        WorkspaceGeo = WorkspaceGeo.Us,
+                        AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                        DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                        WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -235,6 +265,12 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "team", "platform" },
                     },
                     UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                    InferenceDataPrivacy = new()
+                    {
+                        HumanReview = new(Workspaces::Type.Disabled),
+                        SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                        TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                    },
                 },
             ],
             FirstID = "first_id",
@@ -248,7 +284,7 @@ public class WorkspaceListPageResponseTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new WorkspaceListPageResponse
+        var model = new Workspaces::WorkspaceListPageResponse
         {
             Data =
             [
@@ -260,9 +296,9 @@ public class WorkspaceListPageResponseTest : TestBase
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     DataResidency = new()
                     {
-                        AllowedInferenceGeos = new Unrestricted(),
-                        DefaultInferenceGeo = DefaultInferenceGeo.Global,
-                        WorkspaceGeo = WorkspaceGeo.Us,
+                        AllowedInferenceGeos = new Workspaces::Unrestricted(),
+                        DefaultInferenceGeo = Workspaces::DefaultInferenceGeo.Global,
+                        WorkspaceGeo = Workspaces::WorkspaceGeo.Us,
                     },
                     DisplayColor = "#6C5BB9",
                     ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
@@ -273,6 +309,12 @@ public class WorkspaceListPageResponseTest : TestBase
                         { "team", "platform" },
                     },
                     UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
+                    InferenceDataPrivacy = new()
+                    {
+                        HumanReview = new(Workspaces::Type.Disabled),
+                        SafeguardsStorage = new Workspaces::BetaInternalStorage(),
+                        TranscriptsStorage = new Workspaces::BetaInternalStorage(),
+                    },
                 },
             ],
             FirstID = "first_id",
@@ -280,7 +322,7 @@ public class WorkspaceListPageResponseTest : TestBase
             LastID = "last_id",
         };
 
-        WorkspaceListPageResponse copied = new(model);
+        Workspaces::WorkspaceListPageResponse copied = new(model);
 
         Assert.Equal(model, copied);
     }

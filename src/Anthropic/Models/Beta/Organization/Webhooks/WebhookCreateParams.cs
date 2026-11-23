@@ -261,6 +261,8 @@ public enum EnabledEvent
 {
     ExternalKeyFailed = 0,
     ExternalKeyRecovered = 1,
+    ExternalStorageFailed = 1543611121,
+    ExternalStorageRecovered = 353474999,
     UserProfileEnforcementActionOpened = 2,
     UserProfileEnforcementActionResolved = 3,
     UserProfileProgramStatusUpdated = 4,
@@ -278,6 +280,8 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
         {
             "external_key.failed" => EnabledEvent.ExternalKeyFailed,
             "external_key.recovered" => EnabledEvent.ExternalKeyRecovered,
+            "external_storage.failed" => EnabledEvent.ExternalStorageFailed,
+            "external_storage.recovered" => EnabledEvent.ExternalStorageRecovered,
             "user_profile.enforcement_action_opened" =>
                 EnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -299,6 +303,8 @@ sealed class EnabledEventConverter : JsonConverter<EnabledEvent>
             {
                 EnabledEvent.ExternalKeyFailed => "external_key.failed",
                 EnabledEvent.ExternalKeyRecovered => "external_key.recovered",
+                EnabledEvent.ExternalStorageFailed => "external_storage.failed",
+                EnabledEvent.ExternalStorageRecovered => "external_storage.recovered",
                 EnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 EnabledEvent.UserProfileEnforcementActionResolved =>

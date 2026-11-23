@@ -245,44 +245,64 @@ sealed class BetaWebSearchToolResultBlockContentConverter
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(
-                element,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
+            type = element.GetProperty("type").GetString();
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<List<BetaWebSearchResultBlock>>(
-                element,
-                options
-            );
-            if (deserialized != null)
+            case "web_search_tool_result_error":
             {
-                foreach (var item in deserialized)
+                try
                 {
-                    item.Validate();
+                    var deserialized = JsonSerializer.Deserialize<BetaWebSearchToolResultError>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
                 }
-                return new(deserialized, element);
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<List<BetaWebSearchResultBlock>>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        foreach (var item in deserialized)
+                        {
+                            item.Validate();
+                        }
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(

@@ -212,6 +212,8 @@ public enum BetaOrganizationWebhookEndpointEnabledEvent
 {
     ExternalKeyFailed = 0,
     ExternalKeyRecovered = 1,
+    ExternalStorageFailed = 1543611121,
+    ExternalStorageRecovered = 353474999,
     UserProfileEnforcementActionOpened = 2,
     UserProfileEnforcementActionResolved = 3,
     UserProfileProgramStatusUpdated = 4,
@@ -231,6 +233,10 @@ sealed class BetaOrganizationWebhookEndpointEnabledEventConverter
             "external_key.failed" => BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyFailed,
             "external_key.recovered" =>
                 BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered,
+            "external_storage.failed" =>
+                BetaOrganizationWebhookEndpointEnabledEvent.ExternalStorageFailed,
+            "external_storage.recovered" =>
+                BetaOrganizationWebhookEndpointEnabledEvent.ExternalStorageRecovered,
             "user_profile.enforcement_action_opened" =>
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -255,6 +261,10 @@ sealed class BetaOrganizationWebhookEndpointEnabledEventConverter
                     "external_key.failed",
                 BetaOrganizationWebhookEndpointEnabledEvent.ExternalKeyRecovered =>
                     "external_key.recovered",
+                BetaOrganizationWebhookEndpointEnabledEvent.ExternalStorageFailed =>
+                    "external_storage.failed",
+                BetaOrganizationWebhookEndpointEnabledEvent.ExternalStorageRecovered =>
+                    "external_storage.recovered",
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 BetaOrganizationWebhookEndpointEnabledEvent.UserProfileEnforcementActionResolved =>

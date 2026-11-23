@@ -52,7 +52,11 @@ public class BetaClaudeTagSettingSourceTest : TestBase
     public void SlackGridChannelValidationWorks()
     {
         BetaClaudeTagSettingSource value = new BetaClaudeTagSlackGridChannelSettingSource(
-            new BetaClaudeTagSlackChannelIdentifiers() { ChannelID = "xx", WorkspaceID = "xx" }
+            new BetaClaudeTagSlackChannelIdentifiers()
+            {
+                ChannelID = "C0456EFGH",
+                WorkspaceID = "T0123ABCD",
+            }
         );
         value.Validate();
     }
@@ -132,7 +136,11 @@ public class BetaClaudeTagSettingSourceTest : TestBase
     public void SlackGridChannelSerializationRoundtripWorks()
     {
         BetaClaudeTagSettingSource value = new BetaClaudeTagSlackGridChannelSettingSource(
-            new BetaClaudeTagSlackChannelIdentifiers() { ChannelID = "xx", WorkspaceID = "xx" }
+            new BetaClaudeTagSlackChannelIdentifiers()
+            {
+                ChannelID = "C0456EFGH",
+                WorkspaceID = "T0123ABCD",
+            }
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaClaudeTagSettingSource>(
@@ -188,7 +196,11 @@ public class BetaClaudeTagSettingSourceTest : TestBase
     public void SlackGridChannelTypeWorks()
     {
         BetaClaudeTagSettingSource value = new BetaClaudeTagSlackGridChannelSettingSource(
-            new BetaClaudeTagSlackChannelIdentifiers() { ChannelID = "xx", WorkspaceID = "xx" }
+            new BetaClaudeTagSlackChannelIdentifiers()
+            {
+                ChannelID = "C0456EFGH",
+                WorkspaceID = "T0123ABCD",
+            }
         );
         Assert.Equal(BetaClaudeTagSettingSourceType.SlackGridChannel, value.Type.Value());
     }

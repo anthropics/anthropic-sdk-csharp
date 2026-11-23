@@ -314,6 +314,8 @@ public enum WebhookUpdateParamsEnabledEvent
 {
     ExternalKeyFailed = 0,
     ExternalKeyRecovered = 1,
+    ExternalStorageFailed = 1543611121,
+    ExternalStorageRecovered = 353474999,
     UserProfileEnforcementActionOpened = 2,
     UserProfileEnforcementActionResolved = 3,
     UserProfileProgramStatusUpdated = 4,
@@ -332,6 +334,9 @@ sealed class WebhookUpdateParamsEnabledEventConverter
         {
             "external_key.failed" => WebhookUpdateParamsEnabledEvent.ExternalKeyFailed,
             "external_key.recovered" => WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered,
+            "external_storage.failed" => WebhookUpdateParamsEnabledEvent.ExternalStorageFailed,
+            "external_storage.recovered" =>
+                WebhookUpdateParamsEnabledEvent.ExternalStorageRecovered,
             "user_profile.enforcement_action_opened" =>
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened,
             "user_profile.enforcement_action_resolved" =>
@@ -354,6 +359,9 @@ sealed class WebhookUpdateParamsEnabledEventConverter
             {
                 WebhookUpdateParamsEnabledEvent.ExternalKeyFailed => "external_key.failed",
                 WebhookUpdateParamsEnabledEvent.ExternalKeyRecovered => "external_key.recovered",
+                WebhookUpdateParamsEnabledEvent.ExternalStorageFailed => "external_storage.failed",
+                WebhookUpdateParamsEnabledEvent.ExternalStorageRecovered =>
+                    "external_storage.recovered",
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionOpened =>
                     "user_profile.enforcement_action_opened",
                 WebhookUpdateParamsEnabledEvent.UserProfileEnforcementActionResolved =>

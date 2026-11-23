@@ -24,6 +24,12 @@ public class WorkspaceCreateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            InferenceDataPrivacy = new()
+            {
+                HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+                SafeguardsStorage = new BetaInternalStorageParam(),
+                TranscriptsStorage = new BetaInternalStorageParam(),
+            },
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
@@ -39,6 +45,12 @@ public class WorkspaceCreateParamsTest : TestBase
         };
         string expectedDisplayColor = "#6C5BB9";
         string expectedExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK";
+        BetaInferenceDataPrivacyCreateParam expectedInferenceDataPrivacy = new()
+        {
+            HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+            SafeguardsStorage = new BetaInternalStorageParam(),
+            TranscriptsStorage = new BetaInternalStorageParam(),
+        };
         Dictionary<string, string> expectedTags = new()
         {
             { "env", "prod" },
@@ -51,6 +63,7 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.Equal(expectedDataResidency, parameters.DataResidency);
         Assert.Equal(expectedDisplayColor, parameters.DisplayColor);
         Assert.Equal(expectedExternalKeyID, parameters.ExternalKeyID);
+        Assert.Equal(expectedInferenceDataPrivacy, parameters.InferenceDataPrivacy);
         Assert.NotNull(parameters.Tags);
         Assert.Equal(expectedTags.Count, parameters.Tags.Count);
         foreach (var item in expectedTags)
@@ -83,6 +96,12 @@ public class WorkspaceCreateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            InferenceDataPrivacy = new()
+            {
+                HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+                SafeguardsStorage = new BetaInternalStorageParam(),
+                TranscriptsStorage = new BetaInternalStorageParam(),
+            },
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
         };
@@ -106,6 +125,12 @@ public class WorkspaceCreateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            InferenceDataPrivacy = new()
+            {
+                HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+                SafeguardsStorage = new BetaInternalStorageParam(),
+                TranscriptsStorage = new BetaInternalStorageParam(),
+            },
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
 
@@ -132,6 +157,12 @@ public class WorkspaceCreateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            InferenceDataPrivacy = new()
+            {
+                HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+                SafeguardsStorage = new BetaInternalStorageParam(),
+                TranscriptsStorage = new BetaInternalStorageParam(),
+            },
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
@@ -160,6 +191,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.False(parameters.RawBodyData.ContainsKey("display_color"));
         Assert.Null(parameters.ExternalKeyID);
         Assert.False(parameters.RawBodyData.ContainsKey("external_key_id"));
+        Assert.Null(parameters.InferenceDataPrivacy);
+        Assert.False(parameters.RawBodyData.ContainsKey("inference_data_privacy"));
         Assert.Null(parameters.Tags);
         Assert.False(parameters.RawBodyData.ContainsKey("tags"));
         Assert.Null(parameters.UserProfileID);
@@ -177,6 +210,7 @@ public class WorkspaceCreateParamsTest : TestBase
             DataResidency = null,
             DisplayColor = null,
             ExternalKeyID = null,
+            InferenceDataPrivacy = null,
             Tags = null,
             UserProfileID = null,
         };
@@ -187,6 +221,8 @@ public class WorkspaceCreateParamsTest : TestBase
         Assert.True(parameters.RawBodyData.ContainsKey("display_color"));
         Assert.Null(parameters.ExternalKeyID);
         Assert.True(parameters.RawBodyData.ContainsKey("external_key_id"));
+        Assert.Null(parameters.InferenceDataPrivacy);
+        Assert.True(parameters.RawBodyData.ContainsKey("inference_data_privacy"));
         Assert.Null(parameters.Tags);
         Assert.True(parameters.RawBodyData.ContainsKey("tags"));
         Assert.Null(parameters.UserProfileID);
@@ -241,6 +277,12 @@ public class WorkspaceCreateParamsTest : TestBase
             },
             DisplayColor = "#6C5BB9",
             ExternalKeyID = "ekey_01SDCCSbTxrXDpWc1phhtcfK",
+            InferenceDataPrivacy = new()
+            {
+                HumanReview = new(BetaAnthropicHumanReviewParamType.Disabled),
+                SafeguardsStorage = new BetaInternalStorageParam(),
+                TranscriptsStorage = new BetaInternalStorageParam(),
+            },
             Tags = new Dictionary<string, string>() { { "env", "prod" }, { "team", "platform" } },
             UserProfileID = "uprof_01SDCCSbTxrXDpWc1phhtcfK",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],

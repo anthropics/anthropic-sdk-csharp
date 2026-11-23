@@ -1,18 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
-using Anthropic.Core.Telemetry;
 using Anthropic.Credentials;
-using Anthropic.Exceptions;
 using Anthropic.Services;
 
 namespace Anthropic;
@@ -291,24 +286,15 @@ public class AnthropicClient : IAnthropicClient
 /// <inheritdoc/>
 public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
 {
+    protected readonly ClientOptions _options;
+    private readonly TokenCache? _ownedCredentials;
+
     internal ClientOptions Options
     {
         get { return this._options; }
     }
 
-#if NET
-    static readonly Random Random = Random.Shared;
-#else
-    static readonly ThreadLocal<Random> _threadLocalRandom = new(() => new Random());
-
-    static Random Random
-    {
-        get { return _threadLocalRandom.Value!; }
-    }
-#endif
-
-    protected readonly ClientOptions _options;
-    private readonly TokenCache? _ownedCredentials;
+    readonly RetryingExecutor _executor;
 
     /// <inheritdoc/>
     public HttpClient HttpClient
@@ -445,126 +431,17 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         get { return _beta.Value; }
     }
 
-    async Task<HttpResponse> ExecuteWithRetries<T>(
+    /// <inheritdoc/>
+    public Task<HttpResponse> Execute<T>(
         HttpRequest<T> request,
-        Activity? span,
-        CancellationToken cancellationToken
+        CancellationToken cancellationToken = default
     )
         where T : ParamsBase
     {
-        // A body that reads from a caller's stream can only be sent once, so such a request gets no retries.
-        var maxRetries = request.Params.IsBodyRepeatable()
-            ? this.MaxRetries ?? ClientOptions.DefaultMaxRetries
-            : 0;
-        var retries = 0;
-        var authRetryConsumed = false;
-        while (true)
-        {
-            HttpResponse? response = null;
-            try
-            {
-                response = await ExecuteOnce(request, retries, span, cancellationToken)
-                    .ConfigureAwait(false);
-            }
-            catch (Exception e)
-            {
-                if (++retries > maxRetries || !ShouldRetry(e, cancellationToken))
-                {
-                    throw;
-                }
-            }
-
-            // 401 with token credentials: force-refresh the token and retry once.
-            // Gated on retries == 0 so an auth retry never stacks on top of a transport
-            // retry, and on IsBodyRepeatable because a multipart body reads from the caller's
-            // streams, which the first attempt has already consumed.
-            if (
-                response?.StatusCode == HttpStatusCode.Unauthorized
-                && ActiveTokenCache is { } tokenCache
-            )
-            {
-                if (!authRetryConsumed && retries == 0 && request.Params.IsBodyRepeatable())
-                {
-                    authRetryConsumed = true;
-                    var failedToken = tokenCache.Cached?.Token;
-                    // Prime the cache so the retry's BeforeSend picks up the fresh token.
-                    AccessToken fresh;
-                    try
-                    {
-                        fresh = await tokenCache
-                            .GetTokenAsync(forceRefresh: true, cancellationToken)
-                            .ConfigureAwait(false);
-                    }
-                    catch
-                    {
-                        // A failed refresh abandons the 401 response, so release it here.
-                        response.Dispose();
-                        throw;
-                    }
-                    // Only retry if the refresh actually produced a different token —
-                    // StaticTokenCredentials / ANTHROPIC_AUTH_TOKEN can't change, so
-                    // skipping avoids one wasted round-trip.
-                    if (!string.Equals(fresh.Token, failedToken, StringComparison.Ordinal))
-                    {
-                        response.Dispose();
-                        retries++;
-                        continue;
-                    }
-                }
-                else
-                {
-                    // Not retrying — invalidate so the caller's next request fetches fresh.
-                    tokenCache.Invalidate();
-                }
-            }
-
-            if (response != null && (++retries > maxRetries || !ShouldRetry(response)))
-            {
-                if (span != null)
-                {
-                    // The span records the final attempt's response.
-                    SpanAttributes.SetResponseHeaderAttributes(span, response.RawMessage);
-                    Tracing.SetResponseStatusCode(span, response.RawMessage);
-                }
-                if (response.IsSuccessStatusCode)
-                {
-                    return response;
-                }
-
-                try
-                {
-                    throw AnthropicExceptionFactory.CreateApiException(
-                        response.StatusCode,
-                        await response.ReadAsString(cancellationToken).ConfigureAwait(false),
-                        response
-                    );
-                }
-                catch (HttpRequestException e)
-                {
-                    throw new AnthropicIOException("I/O Exception", e);
-                }
-                finally
-                {
-                    response.Dispose();
-                }
-            }
-
-            TimeSpan backoff;
-            try
-            {
-                backoff = ComputeRetryBackoff(retries, response);
-            }
-            finally
-            {
-                // The response being retried is abandoned whether or not the computation
-                // succeeds.
-                response?.Dispose();
-            }
-            await Task.Delay(backoff, cancellationToken).ConfigureAwait(false);
-        }
+        return this._executor.Execute(request, cancellationToken);
     }
 
-    private TokenCache? ActiveTokenCache
+    internal TokenCache? ActiveTokenCache
     {
         get
         {
@@ -662,273 +539,23 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     )
         where T : ParamsBase
     {
-        // 401 handling lives in Execute<T> so it can drive the retry loop.
+        // 401 handling lives in RetryingExecutor so it can drive the retry loop.
         return default;
     }
 
-    /// <inheritdoc/>
-    public async Task<HttpResponse> Execute<T>(
+    internal ValueTask SendingRequest<T>(
         HttpRequest<T> request,
-        CancellationToken cancellationToken = default
+        HttpRequestMessage requestMessage,
+        CancellationToken cancellationToken
     )
-        where T : ParamsBase
-    {
-        // One span covers every attempt of the call, and ends when its response has been read.
-        // A request that was not made through an SDK method has no span name, and no span. The
-        // attributes are built only for a span that would be emitted.
-        var span =
-            request.Span
-            ?? (
-                request.SpanName == null || !Tracing.IsEnabled(this._options)
-                    ? null
-                    : Tracing.StartApiCallSpan(
-                        this._options.ResolvedOpenTelemetry,
-                        request.SpanName,
-                        Tracing.StartAttributes(this._options, request),
-                        this._options.OpenTelemetrySource
-                    )
-            );
-        if (span == null)
-        {
-            return await this.ExecuteWithRetries(request, null, cancellationToken)
-                .ConfigureAwait(false);
-        }
-        HttpResponse response;
-        try
-        {
-            response = await this.ExecuteWithRetries(request, span, cancellationToken)
-                .ConfigureAwait(false);
-        }
-        catch (Exception e)
-        {
-            Tracing.EndApiCallSpan(span, e, cancellationToken);
-            throw;
-        }
-        response.Span = span;
-        return response;
-    }
+        where T : ParamsBase => BeforeSend(request, requestMessage, cancellationToken);
 
-    async Task<HttpResponse> ExecuteOnce<T>(
+    internal ValueTask ReceivedResponse<T>(
         HttpRequest<T> request,
-        int retryCount,
-        Activity? span,
-        CancellationToken cancellationToken = default
+        HttpResponseMessage httpResponseMessage,
+        CancellationToken cancellationToken
     )
-        where T : ParamsBase
-    {
-        using HttpRequestMessage requestMessage = new(
-            request.Method,
-            request.Params.Url(this._options)
-        )
-        {
-            Content = request.Params.BodyContent(),
-        };
-        Qualifiers.Attach(requestMessage, request.Qualifiers);
-        // Wire parity with the other SDKs: bare media type, no charset suffix
-        // (JSON is UTF-8 by definition per RFC 8259).
-        if (requestMessage.Content?.Headers.ContentType is { CharSet: not null } contentType)
-        {
-            contentType.CharSet = null;
-        }
-        request.Params.AddHeadersToRequest(requestMessage, this._options);
-        if (!requestMessage.Headers.Contains("x-stainless-retry-count"))
-        {
-            requestMessage.Headers.Add(
-                "x-stainless-retry-count",
-                retryCount.ToString(CultureInfo.InvariantCulture)
-            );
-        }
-        var timeout = this.Timeout ?? ClientOptions.DefaultTimeout;
-        using CancellationTokenSource timeoutCts = new(timeout);
-        using var cts = CancellationTokenSource.CreateLinkedTokenSource(
-            timeoutCts.Token,
-            cancellationToken
-        );
-        HttpResponseMessage responseMessage;
-        try
-        {
-            await BeforeSend(request, requestMessage, cts.Token).ConfigureAwait(false);
-            if (span != null)
-            {
-                Tracing.InjectTraceHeaders(span, requestMessage.Headers);
-                Tracing.TrackRequest(
-                    requestMessage,
-                    span,
-                    request.Params,
-                    Content.IsRecorded(this._options.ResolvedOpenTelemetry)
-                );
-            }
-            responseMessage = await this
-                ._options.SendRequestAsync(requestMessage, cts.Token)
-                .ConfigureAwait(false);
-            await AfterSend(request, responseMessage, cts.Token).ConfigureAwait(false);
-        }
-        catch (HttpRequestException e)
-        {
-            throw new AnthropicIOException("I/O exception", e);
-        }
-        catch (OperationCanceledException e)
-            when (timeoutCts.IsCancellationRequested && !cancellationToken.IsCancellationRequested)
-        {
-            throw new TaskCanceledException(
-                string.Format(
-                    "The request was canceled due to the configured client timeout of {0} elapsing.",
-                    timeout
-                ),
-                new TimeoutException(e.Message, e)
-            );
-        }
-        // `cts` is disposed as this method returns, before any of the body has been read, so its
-        // token must not travel with the response: every body read links against the response's
-        // token, and linking against a disposed source throws on .NET Framework in <=4.5.2
-        // compatibility mode (and is inert everywhere else). Body reads are governed by the
-        // tokens handed to them instead.
-        return new() { RawMessage = responseMessage };
-    }
-
-    static TimeSpan ComputeRetryBackoff(int retries, HttpResponse? response)
-    {
-        TimeSpan? apiBackoff = ParseRetryAfterMsHeader(response) ?? ParseRetryAfterHeader(response);
-        if (apiBackoff != null && apiBackoff > TimeSpan.Zero)
-        {
-            // If the API asks us to wait a certain amount of time, then just do what it says.
-            // `Task.Delay` throws for delays above `int.MaxValue` milliseconds, so wait at most that long.
-            var maxDelay = TimeSpan.FromMilliseconds(int.MaxValue);
-            return apiBackoff < maxDelay ? (TimeSpan)apiBackoff : maxDelay;
-        }
-
-        // Apply exponential backoff, but not more than the max.
-        var backoffSeconds = Math.Min(0.5 * Math.Pow(2.0, retries - 1), 8.0);
-        var jitter = 1.0 - 0.25 * Random.NextDouble();
-        return TimeSpan.FromSeconds(backoffSeconds * jitter);
-    }
-
-    static TimeSpan? ParseRetryAfterMsHeader(HttpResponse? response)
-    {
-        IEnumerable<string>? headerValues = null;
-        response?.TryGetHeaderValues("Retry-After-Ms", out headerValues);
-        var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
-        if (headerValue == null)
-        {
-            return null;
-        }
-
-        if (
-            float.TryParse(
-                headerValue,
-                NumberStyles.Float,
-                CultureInfo.InvariantCulture,
-                out var retryAfterMs
-            )
-        )
-        {
-            // NaN, infinite or out-of-range values can't be converted to a TimeSpan (the conversion
-            // throws), so treat them like an unparsable header.
-            if (
-                float.IsNaN(retryAfterMs)
-                || Math.Abs(retryAfterMs) >= TimeSpan.MaxValue.TotalMilliseconds
-            )
-            {
-                return null;
-            }
-
-            return TimeSpan.FromMilliseconds(retryAfterMs);
-        }
-
-        return null;
-    }
-
-    static TimeSpan? ParseRetryAfterHeader(HttpResponse? response)
-    {
-        IEnumerable<string>? headerValues = null;
-        response?.TryGetHeaderValues("Retry-After", out headerValues);
-        var headerValue = headerValues == null ? null : Enumerable.FirstOrDefault(headerValues);
-        if (headerValue == null)
-        {
-            return null;
-        }
-
-        if (
-            float.TryParse(
-                headerValue,
-                NumberStyles.Float,
-                CultureInfo.InvariantCulture,
-                out var retryAfterSeconds
-            )
-        )
-        {
-            // NaN, infinite or out-of-range values can't be converted to a TimeSpan (the conversion
-            // throws), so treat them like an unparsable header.
-            if (
-                float.IsNaN(retryAfterSeconds)
-                || Math.Abs(retryAfterSeconds) >= TimeSpan.MaxValue.TotalSeconds
-            )
-            {
-                return null;
-            }
-
-            return TimeSpan.FromSeconds(retryAfterSeconds);
-        }
-        else if (
-            DateTimeOffset.TryParse(
-                headerValue,
-                CultureInfo.InvariantCulture,
-                DateTimeStyles.AssumeUniversal,
-                out var retryAfterDate
-            )
-        )
-        {
-            return retryAfterDate - DateTimeOffset.Now;
-        }
-
-        return null;
-    }
-
-    static bool ShouldRetry(HttpResponse response)
-    {
-        if (
-            response.TryGetHeaderValues("X-Should-Retry", out var headerValues)
-            && bool.TryParse(Enumerable.FirstOrDefault(headerValues), out var shouldRetry)
-        )
-        {
-            // If the server explicitly says whether to retry, then we obey.
-            return shouldRetry;
-        }
-
-        return (int)response.StatusCode switch
-        {
-            // Retry on request timeouts
-            408
-            or
-            // Retry on lock timeouts
-            409
-            or
-            // Retry on rate limits
-            429
-            or
-            // Retry internal errors
-            >= 500 => true,
-            _ => false,
-        };
-    }
-
-    static bool ShouldRetry(Exception e, CancellationToken cancellationToken)
-    {
-        if (cancellationToken.IsCancellationRequested)
-        {
-            // The caller cancelled the request, so don't retry.
-            return false;
-        }
-
-        // Retry connection errors and attempts that hit the per-attempt timeout.
-        return (
-                e is IOException
-                && e is not FileNotFoundException
-                && e is not DirectoryNotFoundException
-            )
-            || e is AnthropicIOException
-            || e is OperationCanceledException;
-    }
+        where T : ParamsBase => AfterSend(request, httpResponseMessage, cancellationToken);
 
     public void Dispose()
     {
@@ -943,6 +570,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         // The tracing environment variables are read now: a later change of the environment does
         // not reach this client.
         _ = _options.ResolvedOpenTelemetry;
+        _executor = new(this);
 
         _messages = new(() => new MessageServiceWithRawResponse(this));
         _models = new(() => new ModelServiceWithRawResponse(this));

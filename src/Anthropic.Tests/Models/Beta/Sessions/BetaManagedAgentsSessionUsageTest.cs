@@ -27,14 +27,14 @@ public class BetaManagedAgentsSessionUsageTest : TestBase
             Ephemeral1hInputTokens = 0,
             Ephemeral5mInputTokens = 0,
         };
-        int expectedCacheReadInputTokens = 0;
-        int expectedInputTokens = 0;
+        long expectedCacheReadInputTokens = 0;
+        long expectedInputTokens = 0;
         BetaMonetaryAmount expectedListCost = new()
         {
             Amount = "2500",
             Currency = BetaCurrency.Usd,
         };
-        int expectedOutputTokens = 0;
+        long expectedOutputTokens = 0;
         BetaManagedAgentsServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 0,
@@ -100,14 +100,14 @@ public class BetaManagedAgentsSessionUsageTest : TestBase
             Ephemeral1hInputTokens = 0,
             Ephemeral5mInputTokens = 0,
         };
-        int expectedCacheReadInputTokens = 0;
-        int expectedInputTokens = 0;
+        long expectedCacheReadInputTokens = 0;
+        long expectedInputTokens = 0;
         BetaMonetaryAmount expectedListCost = new()
         {
             Amount = "2500",
             Currency = BetaCurrency.Usd,
         };
-        int expectedOutputTokens = 0;
+        long expectedOutputTokens = 0;
         BetaManagedAgentsServerToolUsage expectedServerToolUse = new()
         {
             WebFetchRequests = 0,

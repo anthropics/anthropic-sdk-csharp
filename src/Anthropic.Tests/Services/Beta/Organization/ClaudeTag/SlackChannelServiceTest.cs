@@ -13,7 +13,7 @@ public class SlackChannelServiceTest : TestBase
             .Beta.Organization.ClaudeTag.SlackChannels.Create(
                 new()
                 {
-                    Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+                    Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
                 },
                 TestContext.Current.CancellationToken
             );

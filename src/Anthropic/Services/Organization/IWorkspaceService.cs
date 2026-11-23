@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Models;
+using Anthropic.Models.Organization;
 using Anthropic.Models.Organization.ExternalKeys;
 using Anthropic.Models.Organization.Workspaces;
 using Anthropic.Models.UserProfiles;
@@ -46,6 +47,7 @@ public interface IWorkspaceService
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
+    /// <exception cref="AnthropicWorkspaceCreatedIncompleteException"/>
     Task<Workspace> Create(
         WorkspaceCreateParams parameters,
         CancellationToken cancellationToken = default
@@ -72,10 +74,12 @@ public interface IWorkspaceService
     /// <exception cref="AnthropicExternalKeyValidationFailedException"/>
     /// <exception cref="AnthropicExternalKeyValidationTimedOutException"/>
     /// <exception cref="AnthropicKeyProfileMismatchException"/>
+    /// <exception cref="AnthropicStorageProfileMismatchException"/>
     /// <exception cref="AnthropicUserProfileNotFoundException"/>
     /// <exception cref="AnthropicWorkspacePolicyViolationException"/>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
     /// <exception cref="AnthropicExternalKeyChangedException"/>
+    /// <exception cref="AnthropicChangeOutcomeUnknownException"/>
     Task<Workspace> Update(
         WorkspaceUpdateParams parameters,
         CancellationToken cancellationToken = default
@@ -100,6 +104,7 @@ public interface IWorkspaceService
     /// Archive Workspace
     /// </summary>
     /// <exception cref="AnthropicSandboxEgressRestrictedException"/>
+    /// <exception cref="AnthropicStorageAttachedDuringArchiveException"/>
     Task<Workspace> Archive(
         WorkspaceArchiveParams parameters,
         CancellationToken cancellationToken = default

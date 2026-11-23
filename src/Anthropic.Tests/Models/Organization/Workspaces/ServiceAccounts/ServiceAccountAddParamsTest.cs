@@ -13,12 +13,12 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = NoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
         string expectedWorkspaceID = "workspace_id";
-        string expectedServiceAccountID = "service_account_id";
+        string expectedServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK";
         ApiEnum<string, NoBillingWorkspaceRole> expectedWorkspaceRole =
             NoBillingWorkspaceRole.WorkspaceAdmin;
 
@@ -33,7 +33,7 @@ public class ServiceAccountAddParamsTest : TestBase
         ServiceAccountAddParams parameters = new()
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = NoBillingWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -55,7 +55,7 @@ public class ServiceAccountAddParamsTest : TestBase
         var parameters = new ServiceAccountAddParams
         {
             WorkspaceID = "workspace_id",
-            ServiceAccountID = "service_account_id",
+            ServiceAccountID = "svac_01SDCCSbTxrXDpWc1phhtcfK",
             WorkspaceRole = NoBillingWorkspaceRole.WorkspaceAdmin,
         };
 

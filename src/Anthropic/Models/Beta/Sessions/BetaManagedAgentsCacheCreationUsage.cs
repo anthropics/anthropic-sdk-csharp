@@ -21,12 +21,12 @@ public sealed record class BetaManagedAgentsCacheCreationUsage : JsonModel
     /// <summary>
     /// Tokens used to create 1-hour ephemeral cache entries.
     /// </summary>
-    public int? Ephemeral1hInputTokens
+    public long? Ephemeral1hInputTokens
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<int>("ephemeral_1h_input_tokens");
+            return this._rawData.GetNullableStruct<long>("ephemeral_1h_input_tokens");
         }
         init
         {
@@ -43,12 +43,12 @@ public sealed record class BetaManagedAgentsCacheCreationUsage : JsonModel
     /// <summary>
     /// Tokens used to create 5-minute ephemeral cache entries.
     /// </summary>
-    public int? Ephemeral5mInputTokens
+    public long? Ephemeral5mInputTokens
     {
         get
         {
             this._rawData.Freeze();
-            return this._rawData.GetNullableStruct<int>("ephemeral_5m_input_tokens");
+            return this._rawData.GetNullableStruct<long>("ephemeral_5m_input_tokens");
         }
         init
         {

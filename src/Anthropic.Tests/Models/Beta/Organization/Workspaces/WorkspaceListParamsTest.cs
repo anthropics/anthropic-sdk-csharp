@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
+using Anthropic.Core;
+using Anthropic.Models.Beta;
 using Anthropic.Models.Beta.Organization.Workspaces;
 
 namespace Anthropic.Tests.Models.Beta.Organization.Workspaces;
@@ -17,6 +20,7 @@ public class WorkspaceListParamsTest : TestBase
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedAfterID = "after_id";
@@ -25,6 +29,7 @@ public class WorkspaceListParamsTest : TestBase
         bool expectedIncludeArchived = true;
         bool expectedIncludeDefault = true;
         long expectedLimit = 1;
+        List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedAfterID, parameters.AfterID);
         Assert.Equal(expectedBeforeID, parameters.BeforeID);
@@ -37,6 +42,12 @@ public class WorkspaceListParamsTest : TestBase
         Assert.Equal(expectedIncludeArchived, parameters.IncludeArchived);
         Assert.Equal(expectedIncludeDefault, parameters.IncludeDefault);
         Assert.Equal(expectedLimit, parameters.Limit);
+        Assert.NotNull(parameters.Betas);
+        Assert.Equal(expectedBetas.Count, parameters.Betas.Count);
+        for (int i = 0; i < expectedBetas.Count; i++)
+        {
+            Assert.Equal(expectedBetas[i], parameters.Betas[i]);
+        }
     }
 
     [Fact]
@@ -56,6 +67,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
 
     [Fact]
@@ -70,6 +83,7 @@ public class WorkspaceListParamsTest : TestBase
             IncludeArchived = null,
             IncludeDefault = null,
             Limit = null,
+            Betas = null,
         };
 
         Assert.Null(parameters.AfterID);
@@ -84,6 +98,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
 
     [Fact]
@@ -97,6 +113,7 @@ public class WorkspaceListParamsTest : TestBase
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -106,6 +123,7 @@ public class WorkspaceListParamsTest : TestBase
             IncludeArchived = null,
             IncludeDefault = null,
             Limit = null,
+            Betas = null,
         };
 
         Assert.Null(parameters.AfterID);
@@ -120,6 +138,8 @@ public class WorkspaceListParamsTest : TestBase
         Assert.False(parameters.RawQueryData.ContainsKey("include_default"));
         Assert.Null(parameters.Limit);
         Assert.False(parameters.RawQueryData.ContainsKey("limit"));
+        Assert.Null(parameters.Betas);
+        Assert.False(parameters.RawHeaderData.ContainsKey("anthropic-beta"));
     }
 
     [Fact]
@@ -148,6 +168,20 @@ public class WorkspaceListParamsTest : TestBase
     }
 
     [Fact]
+    public void AddHeadersToRequest_Works()
+    {
+        HttpRequestMessage requestMessage = new();
+        WorkspaceListParams parameters = new() { Betas = [AnthropicBeta.ComputerUse2024_10_22] };
+
+        parameters.AddHeadersToRequest(requestMessage, new() { ApiKey = "my-anthropic-api-key" });
+
+        Assert.Equal(
+            ["computer-use-2024-10-22"],
+            requestMessage.Headers.GetValues("anthropic-beta")
+        );
+    }
+
+    [Fact]
     public void CopyConstructor_Works()
     {
         var parameters = new WorkspaceListParams
@@ -158,6 +192,7 @@ public class WorkspaceListParamsTest : TestBase
             IncludeArchived = true,
             IncludeDefault = true,
             Limit = 1,
+            Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         WorkspaceListParams copied = new(parameters);

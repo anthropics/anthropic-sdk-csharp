@@ -12,7 +12,12 @@ public class TargetServiceTest : TestBase
             .client.WithQuery("beta=true")
             .Beta.Organization.ClaudeTag.Bundles.Targets.Create(
                 "capp_011CZkZjLP1cWxj5EtMmdgbq",
-                new() { Target = new BetaClaudeTagSlackChannelBundleTargetCreate("xxxxxxxx") },
+                new()
+                {
+                    Target = new BetaClaudeTagSlackChannelBundleTargetCreate(
+                        "slch_01SvpyRQK3nN6eH9uhRA7n1q"
+                    ),
+                },
                 TestContext.Current.CancellationToken
             );
         betaClaudeTagBundleTarget.Validate();

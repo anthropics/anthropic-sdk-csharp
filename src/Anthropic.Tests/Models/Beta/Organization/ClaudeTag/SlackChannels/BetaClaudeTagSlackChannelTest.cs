@@ -24,7 +24,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 Model = "model",
                 ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Sources = new()
             {
                 Enabled = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
@@ -50,8 +50,8 @@ public class BetaClaudeTagSlackChannelTest : TestBase
         };
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
         BetaClaudeTagSettingSources expectedSources = new()
         {
@@ -90,7 +90,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 Model = "model",
                 ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Sources = new()
             {
                 Enabled = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
@@ -128,7 +128,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 Model = "model",
                 ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Sources = new()
             {
                 Enabled = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
@@ -161,8 +161,8 @@ public class BetaClaudeTagSlackChannelTest : TestBase
         };
         BetaClaudeTagSlackChannelIdentifiers expectedSlack = new()
         {
-            ChannelID = "xx",
-            WorkspaceID = "xx",
+            ChannelID = "C0456EFGH",
+            WorkspaceID = "T0123ABCD",
         };
         BetaClaudeTagSettingSources expectedSources = new()
         {
@@ -201,7 +201,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 Model = "model",
                 ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Sources = new()
             {
                 Enabled = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),
@@ -233,7 +233,7 @@ public class BetaClaudeTagSlackChannelTest : TestBase
                 Model = "model",
                 ReplyMode = new BetaClaudeTagReplyModeAutomatic(),
             },
-            Slack = new() { ChannelID = "xx", WorkspaceID = "xx" },
+            Slack = new() { ChannelID = "C0456EFGH", WorkspaceID = "T0123ABCD" },
             Sources = new()
             {
                 Enabled = new BetaClaudeTagSlackChannelSettingSource("slack_channel_id"),

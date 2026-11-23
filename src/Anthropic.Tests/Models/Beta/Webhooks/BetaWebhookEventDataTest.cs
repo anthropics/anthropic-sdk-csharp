@@ -600,6 +600,28 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void ExternalStorageFailedValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
+    public void ExternalStorageRecoveredValidationWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageRecoveredEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        value.Validate();
+    }
+
+    [Fact]
     public void SessionCreatedSerializationRoundtripWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -1486,6 +1508,40 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void ExternalStorageFailedSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void ExternalStorageRecoveredSerializationRoundtripWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageRecoveredEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<BetaWebhookEventData>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void SessionCreatedTypeWorks()
     {
         BetaWebhookEventData value = new BetaWebhookSessionCreatedEventData()
@@ -2084,6 +2140,28 @@ public class BetaWebhookEventDataTest : TestBase
     }
 
     [Fact]
+    public void ExternalStorageFailedTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageFailedEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.ExternalStorageFailed, value.Type.Value());
+    }
+
+    [Fact]
+    public void ExternalStorageRecoveredTypeWorks()
+    {
+        BetaWebhookEventData value = new BetaWebhookExternalStorageRecoveredEventData()
+        {
+            ID = "id",
+            OrganizationID = "organization_id",
+        };
+        Assert.Equal(BetaWebhookEventDataType.ExternalStorageRecovered, value.Type.Value());
+    }
+
+    [Fact]
     public void UnknownVariantCommonProperties_Works()
     {
         BetaWebhookEventData value = new(
@@ -2218,6 +2296,8 @@ public class BetaWebhookEventDataTypeTest : TestBase
     [InlineData(BetaWebhookEventDataType.UserProfileProgramStatusUpdated)]
     [InlineData(BetaWebhookEventDataType.ExternalKeyFailed)]
     [InlineData(BetaWebhookEventDataType.ExternalKeyRecovered)]
+    [InlineData(BetaWebhookEventDataType.ExternalStorageFailed)]
+    [InlineData(BetaWebhookEventDataType.ExternalStorageRecovered)]
     public void Validation_Works(BetaWebhookEventDataType rawValue)
     {
         // force implicit conversion because Theory can't do that for us
@@ -2307,6 +2387,16 @@ public class BetaWebhookEventDataTypeTest : TestBase
     )]
     [InlineData(BetaWebhookEventDataType.ExternalKeyFailed, 47, "external_key.failed")]
     [InlineData(BetaWebhookEventDataType.ExternalKeyRecovered, 48, "external_key.recovered")]
+    [InlineData(
+        BetaWebhookEventDataType.ExternalStorageFailed,
+        1543611121,
+        "external_storage.failed"
+    )]
+    [InlineData(
+        BetaWebhookEventDataType.ExternalStorageRecovered,
+        353474999,
+        "external_storage.recovered"
+    )]
     public void EnumMemberSerializationRoundtrip_Works(
         BetaWebhookEventDataType rawValue,
         int number,

@@ -18,15 +18,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
@@ -44,15 +48,19 @@ public class DeploymentCreateParamsTest : TestBase
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
 
-        Agent expectedAgent = "string";
-        string expectedEnvironmentID = "x";
+        Agent expectedAgent = new Sessions::BetaManagedAgentsAgentParams()
+        {
+            ID = "agent_011CZkYpogX7uDKUyvBTophP",
+            Version = 0,
+        };
+        string expectedEnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW";
         List<BetaManagedAgentsDeploymentInitialEventParams> expectedInitialEvents =
         [
             new BetaManagedAgentsUserMessageEventParams(
-                [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
             ),
         ];
-        string expectedName = "x";
+        string expectedName = "Daily order report";
         Sessions::BetaManagedAgentsBudgetLimit expectedBudget = new(
             new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }
         );
@@ -120,15 +128,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
@@ -151,15 +163,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Schedule = new() { Expression = "0 9 * * 1-5", Timezone = "America/Los_Angeles" },
@@ -189,15 +205,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
@@ -240,15 +260,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -276,15 +300,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },
             Resources =
             [
@@ -316,15 +344,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         DeploymentCreateParams parameters = new()
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -338,15 +370,19 @@ public class DeploymentCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         DeploymentCreateParams parameters = new()
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
             WorkspaceID = "wrkspc_011CZkZaBF1tNoB5wlCeusgy",
         };
@@ -368,15 +404,19 @@ public class DeploymentCreateParamsTest : TestBase
     {
         var parameters = new DeploymentCreateParams
         {
-            Agent = "string",
-            EnvironmentID = "x",
+            Agent = new Sessions::BetaManagedAgentsAgentParams()
+            {
+                ID = "agent_011CZkYpogX7uDKUyvBTophP",
+                Version = 0,
+            },
+            EnvironmentID = "env_011CZkZ9X2dpNyB7HsEFoRfW",
             InitialEvents =
             [
                 new BetaManagedAgentsUserMessageEventParams(
-                    [new BetaManagedAgentsTextBlock("Where is my order #1234?")]
+                    [new BetaManagedAgentsTextBlock("Compile yesterday's orders into report.md.")]
                 ),
             ],
-            Name = "x",
+            Name = "Daily order report",
             Budget = new(new BetaMonetaryAmount() { Amount = "2500", Currency = BetaCurrency.Usd }),
             Description = "description",
             Metadata = new Dictionary<string, string>() { { "foo", "string" } },

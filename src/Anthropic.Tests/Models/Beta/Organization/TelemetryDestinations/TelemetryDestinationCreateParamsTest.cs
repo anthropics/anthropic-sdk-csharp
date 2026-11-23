@@ -14,7 +14,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             DisplayName = "display_name",
             Headers = new Dictionary<string, string>() { { "foo", "string" } },
@@ -28,7 +28,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
-        string expectedEndpointUrl = "x";
+        string expectedEndpointUrl = "https://gateway.example.com";
         BetaTelemetryDestinationWorkspacesParams expectedWorkspaces =
             new BetaTelemetryDestinationWorkspacesAllParams();
         string expectedDisplayName = "display_name";
@@ -67,7 +67,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             DisplayName = "display_name",
         };
@@ -85,7 +85,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             DisplayName = "display_name",
 
@@ -108,7 +108,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             DisplayName = "display_name",
             Headers = new Dictionary<string, string>() { { "foo", "string" } },
@@ -141,7 +141,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             Headers = new Dictionary<string, string>() { { "foo", "string" } },
             Traces = new()
@@ -163,7 +163,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             Headers = new Dictionary<string, string>() { { "foo", "string" } },
             Traces = new()
@@ -187,7 +187,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         TelemetryDestinationCreateParams parameters = new()
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
         };
 
@@ -207,7 +207,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
         HttpRequestMessage requestMessage = new();
         TelemetryDestinationCreateParams parameters = new()
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
@@ -225,7 +225,7 @@ public class TelemetryDestinationCreateParamsTest : TestBase
     {
         var parameters = new TelemetryDestinationCreateParams
         {
-            EndpointUrl = "x",
+            EndpointUrl = "https://gateway.example.com",
             Workspaces = new BetaTelemetryDestinationWorkspacesAllParams(),
             DisplayName = "display_name",
             Headers = new Dictionary<string, string>() { { "foo", "string" } },
