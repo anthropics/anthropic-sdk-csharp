@@ -16,10 +16,9 @@ namespace Anthropic.Models.Beta.Organization.Plugins.Shares;
 /// List the shares the owner of a member-owned Plugin has given — to every member
 /// of the organization, to an RBAC Group, or to one member — most recently granted first.
 ///
-/// <para>Shares are read-only in this API: members give and withdraw them in claude.ai,
-/// and who gave a share is recorded on the Compliance API activity feed rather than
-/// on the share. An organization-owned Plugin has installation settings instead,
-/// so this path returns 404 for one.</para>
+/// <para>Shares are read-only in this API: members give and withdraw them in claude.ai.
+/// The Plugin's `owner` gave each share listed. An organization-owned Plugin has
+/// installation settings instead of shares, so this path returns 404 for one.</para>
 ///
 /// <para>**Accepted credentials:** an Admin API key with the `read:plugins` or `read:org_audit`
 /// scope, or a Compliance Access Key with the `read:compliance_org_data` scope.</para>

@@ -32,9 +32,9 @@ public interface IShareService
     /// first.
     ///
     /// <para>Shares are read-only in this API: members give and withdraw them in
-    /// claude.ai, and who gave a share is recorded on the Compliance API activity feed
-    /// rather than on the share. An organization-owned Plugin has installation settings
-    /// instead, so this path returns 404 for one.</para>
+    /// claude.ai. The Plugin's `owner` gave each share listed. An organization-owned
+    /// Plugin has installation settings instead of shares, so this path returns 404 for
+    /// one.</para>
     ///
     /// <para>**Accepted credentials:** an Admin API key with the `read:plugins` or
     /// `read:org_audit` scope, or a Compliance Access Key with the

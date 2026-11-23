@@ -11,8 +11,8 @@ namespace Anthropic.Models.Beta.Organization.Plugins.Shares;
 
 /// <summary>
 /// One share the owner of a member-owned Plugin has given. Shares are read-only in
-/// this API and have no ID of their own; who gave a share is recorded on the Compliance
-/// API activity feed, not here.
+/// this API and have no ID of their own. The Plugin's `owner` is the member who
+/// gave the share.
 /// </summary>
 [JsonConverter(typeof(JsonModelConverter<BetaPluginShare, BetaPluginShareFromRaw>))]
 public sealed record class BetaPluginShare : JsonModel
