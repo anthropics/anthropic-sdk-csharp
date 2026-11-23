@@ -254,8 +254,7 @@ public sealed record class BetaAnalyticsUsageGroup : JsonModel
 
     /// <summary>
     /// Service tier the usage was served at. Populated only when `service_tier` is
-    /// in `group_by[]`; null for usage with no service tier (for example, code execution)
-    /// and for Claude Enterprise usage.
+    /// in `group_by[]`; null for usage with no service tier (for example, code execution).
     /// </summary>
     public required ApiEnum<string, BetaAnalyticsServiceTier>? ServiceTier
     {
@@ -316,7 +315,7 @@ public sealed record class BetaAnalyticsUsageGroup : JsonModel
     /// <summary>
     /// User profile the usage was attributed to, as a tagged `uprof_` ID. Populated
     /// only when `user_profile_id` is in `group_by[]`; null for usage that named
-    /// no profile and for Claude Enterprise usage.
+    /// no profile.
     /// </summary>
     public required string? UserProfileID
     {
@@ -329,9 +328,10 @@ public sealed record class BetaAnalyticsUsageGroup : JsonModel
     }
 
     /// <summary>
-    /// Workspace the usage occurred in, as a tagged workspace ID, including the
-    /// organization's default workspace. Populated only when `workspace_id` is in
-    /// `group_by[]`; null for Claude Enterprise usage.
+    /// Workspace the usage occurred in, as a tagged workspace ID, including a Claude
+    /// Platform organization's default workspace. Populated only when `workspace_id`
+    /// is in `group_by[]`; null for usage in a Claude Enterprise organization's
+    /// default workspace, which is its only workspace.
     /// </summary>
     public required string? WorkspaceID
     {
