@@ -345,10 +345,6 @@ sealed class ContentBlockSourceContentConverter : JsonConverter<ContentBlockSour
             );
             if (deserialized != null)
             {
-                foreach (var item in deserialized)
-                {
-                    item.Validate();
-                }
                 return new(deserialized, element);
             }
         }

@@ -352,59 +352,86 @@ sealed class BetaCodeExecutionToolResultBlockParamContentConverter
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(
-                element,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
+            type = element.GetProperty("type").GetString();
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaCodeExecutionResultBlockParam>(
-                element,
-                options
-            );
-            if (deserialized != null)
+            case "code_execution_tool_result_error":
             {
-                deserialized.Validate();
-                return new(deserialized, element);
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCodeExecutionToolResultErrorParam>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "code_execution_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaCodeExecutionResultBlockParam>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "encrypted_code_execution_result":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaEncryptedCodeExecutionResultBlockParam>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                return new BetaCodeExecutionToolResultBlockParamContent(element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized =
-                JsonSerializer.Deserialize<BetaEncryptedCodeExecutionResultBlockParam>(
-                    element,
-                    options
-                );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(

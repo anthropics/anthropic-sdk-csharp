@@ -363,10 +363,6 @@ sealed class BetaDataResidencyUpdateConfigAllowedInferenceGeosConverter
             >(element, options);
             if (deserialized != null)
             {
-                foreach (var item in deserialized)
-                {
-                    item.Validate();
-                }
                 return new(deserialized, element);
             }
         }

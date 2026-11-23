@@ -598,37 +598,57 @@ sealed class AgentConverter : JsonConverter<Agent>
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<Sessions::BetaManagedAgentsAgentParams>(
-                element,
-                options
-            );
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
+            type = element.GetProperty("type").GetString();
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<string>(element, options);
-            if (deserialized != null)
+            case "agent":
             {
-                return new(deserialized, element);
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<Sessions::BetaManagedAgentsAgentParams>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<string>(element, options);
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
             }
         }
-        catch (Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Agent value, JsonSerializerOptions options)

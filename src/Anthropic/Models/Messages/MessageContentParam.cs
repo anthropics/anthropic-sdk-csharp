@@ -256,10 +256,6 @@ sealed class MessageContentParamConverter : JsonConverter<MessageContentParam>
             );
             if (deserialized != null)
             {
-                foreach (var item in deserialized)
-                {
-                    item.Validate();
-                }
                 return new(deserialized, element);
             }
         }

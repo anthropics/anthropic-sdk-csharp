@@ -567,6 +567,11 @@ public static class AnthropicClientExtensions
         return result;
     }
 
+    /// <summary>Returns the enum member's name, or the API's value for a code this SDK version doesn't know.</summary>
+    internal static string ToErrorCode<TEnum>(ApiEnum<string, TEnum> code)
+        where TEnum : struct, Enum =>
+        Enum.IsDefined(typeof(TEnum), code.Value()) ? code.Value().ToString() : code.Raw();
+
     /// <summary>Infers a media type from the file extension in a URL or path, defaulting to <c>application/octet-stream</c>.</summary>
     internal static string InferMediaTypeFromExtension(string urlOrPath)
     {
@@ -1995,10 +2000,7 @@ public static class AnthropicClientExtensions
                     if (ce.Content.TryPickError(out var ceError))
                     {
                         (c.Outputs ??= []).Add(
-                            new ErrorContent(null)
-                            {
-                                ErrorCode = ceError.ErrorCode.Value().ToString(),
-                            }
+                            new ErrorContent(null) { ErrorCode = ToErrorCode(ceError.ErrorCode) }
                         );
                     }
 
@@ -2023,7 +2025,11 @@ public static class AnthropicClientExtensions
 
                         if (ceOutput.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceOutput.Content)
+                            foreach (
+                                var ceOutputContent in ceOutput.Content.Where(o =>
+                                    o.Type.ToString() == "code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -2053,7 +2059,11 @@ public static class AnthropicClientExtensions
 
                         if (ceEncrypted.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceEncrypted.Content)
+                            foreach (
+                                var ceOutputContent in ceEncrypted.Content.Where(o =>
+                                    o.Type.ToString() == "code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -2075,10 +2085,7 @@ public static class AnthropicClientExtensions
                     if (ce.Content.TryPickBashCodeExecutionToolResultError(out var ceError))
                     {
                         (c.Outputs ??= []).Add(
-                            new ErrorContent(null)
-                            {
-                                ErrorCode = ceError.ErrorCode.Value().ToString(),
-                            }
+                            new ErrorContent(null) { ErrorCode = ToErrorCode(ceError.ErrorCode) }
                         );
                     }
 
@@ -2103,7 +2110,11 @@ public static class AnthropicClientExtensions
 
                         if (ceOutput.Content is { Count: > 0 })
                         {
-                            foreach (var ceOutputContent in ceOutput.Content)
+                            foreach (
+                                var ceOutputContent in ceOutput.Content.Where(o =>
+                                    o.Type.ToString() == "bash_code_execution_output"
+                                )
+                            )
                             {
                                 (c.Outputs ??= []).Add(
                                     new HostedFileContent(ceOutputContent.FileID)
@@ -2204,7 +2215,7 @@ public static class AnthropicClientExtensions
                         (wsrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = wsError.ErrorCode.Value().ToString(),
+                                ErrorCode = ToErrorCode(wsError.ErrorCode),
                                 RawRepresentation = wsError,
                             }
                         );
@@ -2237,7 +2248,7 @@ public static class AnthropicClientExtensions
                         (wfrc.Outputs ??= []).Add(
                             new ErrorContent(null)
                             {
-                                ErrorCode = wfError.ErrorCode.Value().ToString(),
+                                ErrorCode = ToErrorCode(wfError.ErrorCode),
                                 RawRepresentation = wfError,
                             }
                         );
@@ -2258,7 +2269,7 @@ public static class AnthropicClientExtensions
                         (c.Outputs ??= []).Add(
                             new ErrorContent(teError.ErrorMessage)
                             {
-                                ErrorCode = teError.ErrorCode.Value().ToString(),
+                                ErrorCode = ToErrorCode(teError.ErrorCode),
                                 RawRepresentation = teError,
                             }
                         );

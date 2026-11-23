@@ -378,49 +378,78 @@ sealed class KeepConverter : JsonConverter<Keep>
     )
     {
         var element = JsonSerializer.Deserialize<JsonElement>(ref reader, options);
+        string? type;
         try
         {
-            var deserialized = JsonSerializer.Deserialize<All>(element, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
+            type = element.GetProperty("type").GetString();
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
+        catch
         {
-            // ignore
+            type = null;
         }
 
-        try
+        switch (type)
         {
-            var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(element, options);
-            if (deserialized != null)
+            case "thinking_turns":
             {
-                deserialized.Validate();
-                return new(deserialized, element);
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaThinkingTurns>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "all":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            default:
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<All>(element, options);
+                    if (deserialized != null)
+                    {
+                        deserialized.Validate();
+                        return new(deserialized, element);
+                    }
+                }
+                catch (System::Exception e)
+                    when (e is JsonException || e is AnthropicInvalidDataException)
+                {
+                    // ignore
+                }
+
+                return new(element);
             }
         }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        try
-        {
-            var deserialized = JsonSerializer.Deserialize<BetaAllThinkingTurns>(element, options);
-            if (deserialized != null)
-            {
-                deserialized.Validate();
-                return new(deserialized, element);
-            }
-        }
-        catch (System::Exception e) when (e is JsonException || e is AnthropicInvalidDataException)
-        {
-            // ignore
-        }
-
-        return new(element);
     }
 
     public override void Write(Utf8JsonWriter writer, Keep value, JsonSerializerOptions options)
