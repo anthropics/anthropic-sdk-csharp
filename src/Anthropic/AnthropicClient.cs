@@ -565,11 +565,10 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
     }
 
     public AnthropicClientWithRawResponse()
+        : this(new ClientOptions()) { }
+
+    public AnthropicClientWithRawResponse(ClientOptions options)
     {
-        _options = new();
-        // The tracing environment variables are read now: a later change of the environment does
-        // not reach this client.
-        _ = _options.ResolvedOpenTelemetry;
         _executor = new(this);
 
         _messages = new(() => new MessageServiceWithRawResponse(this));
@@ -579,11 +578,7 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
         _userProfiles = new(() => new UserProfileServiceWithRawResponse(this));
         _organization = new(() => new OrganizationServiceWithRawResponse(this));
         _beta = new(() => new BetaServiceWithRawResponse(this));
-    }
 
-    public AnthropicClientWithRawResponse(ClientOptions options)
-        : this()
-    {
         // Wrap any raw provider in the token cache. When constructed via
         // AnthropicClient.WithRawResponse this is already a TokenCache and is reused.
         // We own (and will dispose) the credentials only when this ctor created the
@@ -593,6 +588,8 @@ public class AnthropicClientWithRawResponse : IAnthropicClientWithRawResponse
             _ownedCredentials = new TokenCache(credentials);
             options.Credentials = _ownedCredentials;
         }
+        // The tracing environment variables are read now: a later change of the environment does
+        // not reach this client.
         _ = options.ResolvedOpenTelemetry;
         _options = options;
     }
