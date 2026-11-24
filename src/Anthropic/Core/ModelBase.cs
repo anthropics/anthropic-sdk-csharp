@@ -3,6 +3,8 @@ using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Compliance.Review;
+using Anthropic.Models.Beta.Compliance.Review.Items;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
@@ -42,6 +44,7 @@ using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
+using Cases = Anthropic.Models.Beta.Compliance.Review.Cases;
 using ComplianceSettings = Anthropic.Models.Beta.Organization.ComplianceSettings;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
@@ -59,6 +62,7 @@ using Issuers = Anthropic.Models.Beta.Organization.Federation.Issuers;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 using Models = Anthropic.Models.Beta.Models;
+using Notices = Anthropic.Models.Beta.Compliance.Review.Notices;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
@@ -817,6 +821,20 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, Dreams::BetaDreamStatus>(),
             new ApiEnumConverter<string, Dreams::BetaDreamingErrorType>(),
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewOrder>(),
+            new ApiEnumConverter<string, Cases::Type>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseOrderBy>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseStatusType>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseStatusFilter>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewDetermination>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewPolicyCategory>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewViolatedPolicyCategory>(),
+            new ApiEnumConverter<string, Notices::Type>(),
+            new ApiEnumConverter<string, BetaComplianceReviewActorType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewContentUnavailableReasonType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewItemDetailsType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewMessageContentType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewReadReasonType>(),
             new ApiEnumConverter<string, BetaOrganizationRole>(),
             new ApiEnumConverter<string, OrganizationApiKeys::PrincipalType>(),
             new ApiEnumConverter<string, OrganizationApiKeys::ScopeType>(),
