@@ -97,7 +97,7 @@ public static class AWSSigner
         {
             if (sb.Length > 0)
                 sb.Append(';');
-            sb.Append(header.ToLower());
+            sb.Append(header.ToLowerInvariant());
         }
         return sb.ToString();
     }
