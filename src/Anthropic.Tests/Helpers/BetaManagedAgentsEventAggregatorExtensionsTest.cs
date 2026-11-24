@@ -1,5 +1,7 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text.Json;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Core;
 using Anthropic.Helpers;
@@ -55,12 +57,37 @@ public class BetaManagedAgentsEventAggregatorExtensionsTest
         var source = GetTestValues(EventStart("evt_1"), EventDelta("evt_1", "Hello", 0));
 
         var seen = new List<Events::BetaManagedAgentsStreamSessionEvents>();
-        await foreach (var events in source.CollectAsync(aggregator))
+        await foreach (var events in source.CollectAsync(aggregator, TestContext.Current.CancellationToken))
         {
             seen.Add(events);
         }
 
         Assert.Equal(2, seen.Count);
         Assert.Equal("Hello", aggregator.GetAgentMessageText("evt_1"));
+    }
+
+    [Fact]
+    public async Task CollectAsyncForwardsTheTokenFromWithCancellationToTheSource()
+    {
+        using var cts = new CancellationTokenSource();
+        CancellationToken? received = null;
+        async IAsyncEnumerable<Events::BetaManagedAgentsStreamSessionEvents> Source(
+            [EnumeratorCancellation] CancellationToken token = default
+        )
+        {
+            received = token;
+            yield return EventStart("evt_1");
+            await Task.CompletedTask;
+        }
+
+#pragma warning disable xUnit1051
+        await foreach (
+            var _ in Source()
+                .CollectAsync(new BetaManagedAgentsEventAggregator())
+                .WithCancellation(cts.Token)
+        ) { }
+#pragma warning restore xUnit1051
+
+        Assert.Equal(cts.Token, received);
     }
 }

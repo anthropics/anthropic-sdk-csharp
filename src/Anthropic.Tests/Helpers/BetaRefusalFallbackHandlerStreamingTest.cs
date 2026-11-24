@@ -1433,7 +1433,7 @@ public class BetaRefusalFallbackHandlerStreamingTest
         var events = await Consume(invoker);
 
         BetaMessageContentAggregator aggregator = new();
-        await foreach (var unused in aggregator.CollectAsync(ToStreamEvents(events))) { }
+        await foreach (var unused in aggregator.CollectAsync(ToStreamEvents(events), TestContext.Current.CancellationToken)) { }
         var message = aggregator.Message();
 
         Assert.Equal(FallbackModel, message.Model.Raw());
