@@ -615,6 +615,147 @@ public class AnthropicClientBetaExtensionsTests : AnthropicClientExtensionsTests
     }
 
     [Fact]
+    public async Task GetResponseAsync_SkillTool_WithContainerIdString_KeepsContainerId()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "messages": [{ "role": "user", "content": [{ "type": "text", "text": "Use skill" }] }],
+                "model": "claude-haiku-4-5",
+                "container": { "id": "container-saved", "skills": [{ "skill_id": "new-skill", "type": "custom" }] },
+                "tools": [{ "name": "code_execution", "type": "code_execution_20250825" }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_skill_container_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "ok" }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 5, "output_tokens": 1 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Container = "container-saved",
+            },
+            Tools = [new BetaSkillParams() { SkillID = "new-skill", Type = BetaSkillParamsType.Custom }.AsAITool()],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use skill",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_SkillTool_WithContainerObject_KeepsIdAndExistingSkills()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "messages": [{ "role": "user", "content": [{ "type": "text", "text": "Use skill" }] }],
+                "model": "claude-haiku-4-5",
+                "container": { "id": "container-saved", "skills": [{ "skill_id": "old-skill", "type": "anthropic" }, { "skill_id": "new-skill", "type": "custom" }] },
+                "tools": [{ "name": "code_execution", "type": "code_execution_20250825" }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_skill_container_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "ok" }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 5, "output_tokens": 1 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Container = new BetaContainerParams() { ID = "container-saved", Skills = [new BetaSkillParams() { SkillID = "old-skill", Type = BetaSkillParamsType.Anthropic }] },
+            },
+            Tools = [new BetaSkillParams() { SkillID = "new-skill", Type = BetaSkillParamsType.Custom }.AsAITool()],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use skill",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
+    public async Task GetResponseAsync_SkillTool_WithoutContainer_CreatesContainerWithSkills()
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "messages": [{ "role": "user", "content": [{ "type": "text", "text": "Use skill" }] }],
+                "model": "claude-haiku-4-5",
+                "container": { "skills": [{ "skill_id": "new-skill", "type": "custom" }] },
+                "tools": [{ "name": "code_execution", "type": "code_execution_20250825" }]
+            }
+            """,
+            actualResponse: """
+            {
+                "id": "msg_skill_container_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{ "type": "text", "text": "ok" }],
+                "stop_reason": "end_turn",
+                "usage": { "input_tokens": 5, "output_tokens": 1 }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+        ChatOptions options = new()
+        {
+            RawRepresentationFactory = _ => new MessageCreateParams()
+            {
+                MaxTokens = 1024,
+                Model = "claude-haiku-4-5",
+                Messages = [],
+                Container = null,
+            },
+            Tools = [new BetaSkillParams() { SkillID = "new-skill", Type = BetaSkillParamsType.Custom }.AsAITool()],
+        };
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "Use skill",
+            options,
+            TestContext.Current.CancellationToken
+        );
+        Assert.NotNull(response);
+    }
+
+    [Fact]
     public async Task GetResponseAsync_McpToolResultBlock_WithError()
     {
         VerbatimHttpHandler handler = new(

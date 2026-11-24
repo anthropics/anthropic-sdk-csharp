@@ -1460,21 +1460,34 @@ public static class AnthropicBetaClientExtensions
 
                     if (skills?.Count > 0)
                     {
-                        // Merge with any existing skills in the container
-                        if (
-                            createParams.Container is { } existingContainer
-                            && existingContainer.TryPickBetaContainerParams(
-                                out var existingContainerParams
-                            )
-                            && existingContainerParams.Skills is { Count: > 0 } existingSkills
-                        )
+                        // Add the skills to the requested container, keeping its ID, its
+                        // existing skills and any other fields it carries.
+                        BetaContainerParams? existingContainerParams = null;
+                        string? existingContainerID = null;
+                        if (createParams.Container is { } existingContainer)
+                        {
+                            if (!existingContainer.TryPickBetaContainerParams(out existingContainerParams))
+                            {
+                                existingContainer.TryPickString(out existingContainerID);
+                            }
+                        }
+
+                        if (existingContainerParams?.Skills is { Count: > 0 } existingSkills)
                         {
                             skills.InsertRange(0, existingSkills);
                         }
 
                         createParams = createParams with
                         {
-                            Container = new BetaContainerParams() { Skills = skills },
+                            Container = existingContainerParams is not null
+                                ? existingContainerParams with { Skills = skills }
+                                : existingContainerID is not null
+                                    ? new BetaContainerParams()
+                                    {
+                                        ID = existingContainerID,
+                                        Skills = skills,
+                                    }
+                                    : new BetaContainerParams() { Skills = skills },
                         };
 
                         // Ensure code execution tool is present
