@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Runtime.CompilerServices;
+using System.Threading;
 using System.Threading.Tasks;
 using Anthropic.Exceptions;
 using Anthropic.Models.Messages;
@@ -28,7 +30,8 @@ public abstract class SseAggregator<TMessage, TResult>
     /// <exception cref="InvalidOperationException">Will be thrown if the aggregator is in an invalid state.</exception>
     /// <exception cref="AnthropicInvalidDataException">Will be thrown if the aggregator encounters an invalid state of the source message stream.</exception>
     public virtual async IAsyncEnumerable<TMessage> CollectAsync(
-        IAsyncEnumerable<TMessage> messageStream
+        IAsyncEnumerable<TMessage> messageStream,
+        [EnumeratorCancellation] CancellationToken cancellationToken = default
     )
     {
         if (_messages is not null)
@@ -40,7 +43,7 @@ public abstract class SseAggregator<TMessage, TResult>
 
         _messages = NewMessages();
 
-        await foreach (var message in messageStream)
+        await foreach (var message in messageStream.WithCancellation(cancellationToken))
         {
             if (_streamEnded)
             {

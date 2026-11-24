@@ -236,6 +236,60 @@ public class MessageStreamingAggregationTest
     }
 
     [Fact]
+    public async Task CollectAsync_ForwardsTheTokenFromWithCancellationToTheSource()
+    {
+        using var cts = new CancellationTokenSource();
+        CancellationToken? received = null;
+        async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues(
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken token = default
+        )
+        {
+            received = token;
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            await Task.CompletedTask;
+            yield return new(new RawMessageStopEvent());
+        }
+        MessageContentAggregator aggregator = new();
+
+#pragma warning disable xUnit1051
+        await foreach (
+            var _ in GetTestValues()
+                .CollectAsync(aggregator)
+                .WithCancellation(cts.Token)
+        ) { }
+#pragma warning restore xUnit1051
+
+        Assert.Equal(cts.Token, received);
+    }
+
+    [Fact]
+    public async Task CollectAsync_StopsWhenTheTokenIsCancelledBeforeTheFirstMove()
+    {
+        using var cts = new CancellationTokenSource();
+        cts.Cancel();
+        async IAsyncEnumerable<RawMessageStreamEvent> GetTestValues(
+            [System.Runtime.CompilerServices.EnumeratorCancellation] CancellationToken token = default
+        )
+        {
+            token.ThrowIfCancellationRequested();
+            yield return new(new RawMessageStartEvent(GenerateStartMessage));
+            await Task.CompletedTask;
+        }
+        MessageContentAggregator aggregator = new();
+
+        await Assert.ThrowsAnyAsync<OperationCanceledException>(async () =>
+        {
+#pragma warning disable xUnit1051
+            await foreach (
+                var _ in GetTestValues()
+                    .CollectAsync(aggregator)
+                    .WithCancellation(cts.Token)
+            ) { }
+#pragma warning restore xUnit1051
+        });
+    }
+
+    [Fact]
     public async Task CreateStreamingAggregationPartialAggregation_Throws()
     {
         // arrange
