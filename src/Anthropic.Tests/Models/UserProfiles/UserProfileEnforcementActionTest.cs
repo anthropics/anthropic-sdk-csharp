@@ -114,7 +114,7 @@ public class UserProfileEnforcementActionTest : TestBase
                   "id": "enac_011CZkZCu8hGbp5mYRQgUmz9",
                   "action": "verify",
                   "expires_at": null,
-                  "opened_at": "2026-10-02T19:30:00Z",
+                  "opened_at": "2026-10-02T19:30:00+00:00",
                   "reason": "fraud_or_abuse",
                   "type": "restriction"
                 }
@@ -126,7 +126,7 @@ public class UserProfileEnforcementActionTest : TestBase
         string expectedID = "enac_011CZkZCu8hGbp5mYRQgUmz9";
         ApiEnum<string, UserProfileEnforcementActionNextStep> expectedAction =
             UserProfileEnforcementActionNextStep.Verify;
-        DateTimeOffset expectedOpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00Z");
+        DateTimeOffset expectedOpenedAt = DateTimeOffset.Parse("2026-10-02T19:30:00+00:00");
         ApiEnum<string, UserProfileEnforcementActionReason> expectedReason =
             UserProfileEnforcementActionReason.FraudOrAbuse;
         ApiEnum<string, UserProfileEnforcementActionType> expectedType =

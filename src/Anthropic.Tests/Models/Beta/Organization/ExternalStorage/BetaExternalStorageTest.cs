@@ -534,7 +534,7 @@ public class StatusTest : TestBase
                 {
                   "type": "pending_configuration",
                   "healthy": true,
-                  "last_checked_at": "2024-10-30T23:58:27.427722Z"
+                  "last_checked_at": "2024-10-30T23:58:27.427722+00:00"
                 }
                 """
             )
@@ -543,7 +543,9 @@ public class StatusTest : TestBase
 
         ApiEnum<string, StatusType> expectedType = StatusType.PendingConfiguration;
         bool expectedHealthy = true;
-        DateTimeOffset expectedLastCheckedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
+        DateTimeOffset expectedLastCheckedAt = DateTimeOffset.Parse(
+            "2024-10-30T23:58:27.427722+00:00"
+        );
 
         Assert.Equal(expectedType, value.Type);
         Assert.Equal(expectedHealthy, value.Healthy);
