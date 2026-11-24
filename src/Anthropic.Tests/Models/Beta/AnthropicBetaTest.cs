@@ -66,6 +66,7 @@ public class AnthropicBetaTest : TestBase
     [InlineData(AnthropicBeta.CEUserManagement2026_07_13)]
     [InlineData(AnthropicBeta.CEClaudeCodeManagedSettings2026_10_06)]
     [InlineData(AnthropicBeta.Efs2026_10_01)]
+    [InlineData(AnthropicBeta.GoogleManagedDataControls2026_09_01)]
     [InlineData(AnthropicBeta.UserProfilesBilling2026_10_01)]
     public void Validation_Works(AnthropicBeta rawValue)
     {
@@ -185,6 +186,11 @@ public class AnthropicBetaTest : TestBase
         "ce-claude-code-managed-settings-2026-10-06"
     )]
     [InlineData(AnthropicBeta.Efs2026_10_01, 79987699, "efs-2026-10-01")]
+    [InlineData(
+        AnthropicBeta.GoogleManagedDataControls2026_09_01,
+        106673710,
+        "google-managed-data-controls-2026-09-01"
+    )]
     [InlineData(
         AnthropicBeta.UserProfilesBilling2026_10_01,
         57,

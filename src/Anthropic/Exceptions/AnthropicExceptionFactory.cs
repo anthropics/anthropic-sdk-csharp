@@ -153,6 +153,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "cmek_not_approved")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaCmekNotApprovedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "compaction_block_ambiguous")] = (statusCode, responseBody, response) =>
             new AnthropicCompactionBlockAmbiguousException()
             {
@@ -241,6 +249,22 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "external_key_not_found")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaExternalKeyNotFoundException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "external_key_provider_mismatch")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaExternalKeyProviderMismatchException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "external_key_validation_failed")] = (statusCode, responseBody, response) =>
             new AnthropicExternalKeyValidationFailedException()
             {
@@ -283,6 +307,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "file_not_downloadable")] = (statusCode, responseBody, response) =>
             new AnthropicFileNotDownloadableException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "gcp_project_not_verified")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaGcpProjectNotVerifiedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -449,6 +481,14 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(400, "region_not_supported")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaRegionNotSupportedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(400, "request_body_encoding_invalid")] = (statusCode, responseBody, response) =>
             new AnthropicRequestBodyEncodingInvalidException()
             {
@@ -507,6 +547,14 @@ public class AnthropicExceptionFactory
             },
         [(400, "storage_attach_limit_reached")] = (statusCode, responseBody, response) =>
             new AnthropicBetaStorageAttachLimitReachedException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(400, "storage_not_approved")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageNotApprovedException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,
@@ -885,6 +933,18 @@ public class AnthropicExceptionFactory
                 RequestID = response?.RequestID,
                 WorkspaceID = response?.WorkspaceID,
             },
+        [(409, "gcp_project_controlled_by_another_organization")] = (
+            statusCode,
+            responseBody,
+            response
+        ) =>
+            new AnthropicBetaGcpProjectControlledByAnotherOrganizationException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
         [(409, "plugin_name_taken")] = (statusCode, responseBody, response) =>
             new AnthropicBetaPluginNameTakenException()
             {
@@ -943,6 +1003,14 @@ public class AnthropicExceptionFactory
             },
         [(409, "storage_changed_concurrently")] = (statusCode, responseBody, response) =>
             new AnthropicBetaStorageChangedConcurrentlyException()
+            {
+                StatusCode = statusCode,
+                ResponseBody = responseBody,
+                RequestID = response?.RequestID,
+                WorkspaceID = response?.WorkspaceID,
+            },
+        [(409, "storage_in_use")] = (statusCode, responseBody, response) =>
+            new AnthropicBetaStorageInUseException()
             {
                 StatusCode = statusCode,
                 ResponseBody = responseBody,

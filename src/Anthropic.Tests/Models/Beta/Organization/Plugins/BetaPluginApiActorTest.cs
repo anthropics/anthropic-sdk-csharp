@@ -9,9 +9,9 @@ public class BetaPluginApiActorTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT" };
+        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz" };
 
-        string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
+        string expectedApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz";
         JsonElement expectedType = JsonSerializer.SerializeToElement("api_actor");
 
         Assert.Equal(expectedApiKeyID, model.ApiKeyID);
@@ -21,7 +21,7 @@ public class BetaPluginApiActorTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT" };
+        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaPluginApiActor>(
@@ -35,7 +35,7 @@ public class BetaPluginApiActorTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT" };
+        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaPluginApiActor>(
@@ -44,7 +44,7 @@ public class BetaPluginApiActorTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
+        string expectedApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz";
         JsonElement expectedType = JsonSerializer.SerializeToElement("api_actor");
 
         Assert.Equal(expectedApiKeyID, deserialized.ApiKeyID);
@@ -54,7 +54,7 @@ public class BetaPluginApiActorTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT" };
+        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz" };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class BetaPluginApiActorTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT" };
+        var model = new BetaPluginApiActor { ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz" };
 
         BetaPluginApiActor copied = new(model);
 

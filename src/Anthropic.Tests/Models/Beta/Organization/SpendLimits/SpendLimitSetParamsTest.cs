@@ -168,7 +168,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceValidationWorks()
     {
-        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         value.Validate();
     }
 
@@ -195,7 +195,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceSerializationRoundtripWorks()
     {
-        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Scope>(element, ModelBase.SerializerOptions);
 
@@ -219,7 +219,7 @@ public class ScopeTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceTypeWorks()
     {
-        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Scope value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         Assert.Equal(ScopeTypeValue.Workspace, value.Type.Value());
     }
 

@@ -12,12 +12,12 @@ public class MemberRemoveResponseTest : TestBase
         var model = new MemberRemoveResponse
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member_deleted");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedUserID, model.UserID);
@@ -30,7 +30,7 @@ public class MemberRemoveResponseTest : TestBase
         var model = new MemberRemoveResponse
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -48,7 +48,7 @@ public class MemberRemoveResponseTest : TestBase
         var model = new MemberRemoveResponse
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -60,7 +60,7 @@ public class MemberRemoveResponseTest : TestBase
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member_deleted");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedUserID, deserialized.UserID);
@@ -73,7 +73,7 @@ public class MemberRemoveResponseTest : TestBase
         var model = new MemberRemoveResponse
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         model.Validate();
@@ -85,7 +85,7 @@ public class MemberRemoveResponseTest : TestBase
         var model = new MemberRemoveResponse
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         MemberRemoveResponse copied = new(model);

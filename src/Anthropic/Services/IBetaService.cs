@@ -54,6 +54,8 @@ public interface IBetaService
 
     Beta::ITunnelService Tunnels { get; }
 
+    Beta::IComplianceService Compliance { get; }
+
     Beta::IOrganizationService Organization { get; }
 }
 
@@ -99,6 +101,8 @@ public interface IBetaServiceWithRawResponse
     Beta::IDreamServiceWithRawResponse Dreams { get; }
 
     Beta::ITunnelServiceWithRawResponse Tunnels { get; }
+
+    Beta::IComplianceServiceWithRawResponse Compliance { get; }
 
     Beta::IOrganizationServiceWithRawResponse Organization { get; }
 }

@@ -543,7 +543,7 @@ public class DataTest : TestBase
                 {
                   "id": "sevt_011CZkZGPp1iBcp4kaQSihUm",
                   "type": "user.message",
-                  "processed_at": "2026-03-15T10:00:00Z",
+                  "processed_at": "2026-03-15T10:00:00+00:00",
                   "session_thread_id": "session_thread_id",
                   "tool_use_id": "tool_use_id",
                   "is_error": true
@@ -555,7 +555,7 @@ public class DataTest : TestBase
 
         string expectedID = "sevt_011CZkZGPp1iBcp4kaQSihUm";
         ApiEnum<string, DataType> expectedType = DataType.UserMessage;
-        DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        DateTimeOffset expectedProcessedAt = DateTimeOffset.Parse("2026-03-15T10:00:00+00:00");
         string expectedSessionThreadID = "session_thread_id";
         string expectedToolUseID = "tool_use_id";
         bool expectedIsError = true;

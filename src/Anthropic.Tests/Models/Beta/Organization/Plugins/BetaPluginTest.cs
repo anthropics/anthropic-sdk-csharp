@@ -412,7 +412,7 @@ public class CreatedByTest : TestBase
     public void BetaPluginApiActorValidationWorks()
     {
         Plugins::CreatedBy value = new Plugins::BetaPluginApiActor(
-            "apikey_01Rj2N8SVvo6BePZj99NhmiT"
+            "apikey_01BcDeFgHjKmNpQrStUvWxYz"
         );
         value.Validate();
     }
@@ -438,7 +438,7 @@ public class CreatedByTest : TestBase
     public void BetaPluginApiActorSerializationRoundtripWorks()
     {
         Plugins::CreatedBy value = new Plugins::BetaPluginApiActor(
-            "apikey_01Rj2N8SVvo6BePZj99NhmiT"
+            "apikey_01BcDeFgHjKmNpQrStUvWxYz"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Plugins::CreatedBy>(
@@ -464,7 +464,7 @@ public class CreatedByTest : TestBase
     public void BetaPluginApiActorTypeWorks()
     {
         Plugins::CreatedBy value = new Plugins::BetaPluginApiActor(
-            "apikey_01Rj2N8SVvo6BePZj99NhmiT"
+            "apikey_01BcDeFgHjKmNpQrStUvWxYz"
         );
         Assert.Equal(Plugins::CreatedByType.ApiActor, value.Type.Value());
     }

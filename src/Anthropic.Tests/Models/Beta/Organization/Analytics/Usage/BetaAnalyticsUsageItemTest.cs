@@ -25,7 +25,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 },
                 ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-                ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
                 ClaudeTagUserID = "U0123ABCDEF",
                 ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -41,7 +41,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             },
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
@@ -68,7 +68,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -84,7 +84,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
         DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z");
         BetaAnalyticsUsageMetrics expectedUsage = new()
@@ -121,7 +121,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 },
                 ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-                ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
                 ClaudeTagUserID = "U0123ABCDEF",
                 ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -137,7 +137,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             },
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
@@ -178,7 +178,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 },
                 ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-                ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
                 ClaudeTagUserID = "U0123ABCDEF",
                 ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -194,7 +194,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             },
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
@@ -228,7 +228,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -244,7 +244,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
         DateTimeOffset expectedStartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z");
         BetaAnalyticsUsageMetrics expectedUsage = new()
@@ -281,7 +281,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 },
                 ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-                ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
                 ClaudeTagUserID = "U0123ABCDEF",
                 ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -297,7 +297,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             },
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()
@@ -332,7 +332,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 },
                 ActorType = BetaAnalyticsActorType.UserActor,
                 AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-                ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
                 ClaudeTagUserID = "U0123ABCDEF",
                 ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -348,7 +348,7 @@ public class BetaAnalyticsUsageItemTest : TestBase
                 SlackChannelID = "C0123ABCDEF",
                 Speed = BetaAnalyticsSpeed.Fast,
                 UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-                WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+                WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             },
             StartingAt = DateTimeOffset.Parse("2026-09-01T00:00:00Z"),
             Usage = new()

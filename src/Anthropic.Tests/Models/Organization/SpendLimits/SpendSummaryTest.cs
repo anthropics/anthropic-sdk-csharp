@@ -385,7 +385,7 @@ public class SpendSummaryScopeTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceValidationWorks()
     {
-        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         value.Validate();
     }
 
@@ -464,7 +464,7 @@ public class SpendSummaryScopeTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceSerializationRoundtripWorks()
     {
-        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<SpendSummaryScope>(
             element,
@@ -525,7 +525,7 @@ public class SpendSummaryScopeTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceTypeWorks()
     {
-        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        SpendSummaryScope value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         Assert.Equal(SpendSummaryScopeType.Workspace, value.Type.Value());
     }
 
@@ -676,7 +676,7 @@ public class SourceTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceScopeValidationWorks()
     {
-        Source value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         value.Validate();
     }
 
@@ -740,7 +740,7 @@ public class SourceTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceScopeSerializationRoundtripWorks()
     {
-        Source value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -795,7 +795,7 @@ public class SourceTest : TestBase
     [Fact]
     public void SpendLimitWorkspaceScopeTypeWorks()
     {
-        Source value = new SpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new SpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         Assert.Equal(SourceType.Workspace, value.Type.Value());
     }
 

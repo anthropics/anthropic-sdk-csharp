@@ -19,7 +19,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -43,7 +43,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -54,7 +54,7 @@ public class CostListParamsTest : TestBase
             BetaAnalyticsActorType.ServiceAccountActor,
         ];
         List<string> expectedAgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"];
-        List<string> expectedApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"];
+        List<string> expectedApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"];
         List<ApiEnum<string, BetaAnalyticsClaudeTagCategory>> expectedClaudeTagCategories =
         [
             BetaAnalyticsClaudeTagCategory.Engaged,
@@ -98,7 +98,7 @@ public class CostListParamsTest : TestBase
         ApiEnum<string, BetaAnalyticsTimeBucketWidth> expectedTimeBucketWidth =
             BetaAnalyticsTimeBucketWidth.Day;
         List<string> expectedUserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"];
-        List<string> expectedWorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"];
+        List<string> expectedWorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"];
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedStartingAt, parameters.StartingAt);
@@ -252,7 +252,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -272,7 +272,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
         };
 
         Assert.Null(parameters.ExcludeDeletedUsers);
@@ -296,7 +296,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -316,7 +316,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
 
             // Null should be interpreted as omitted for these properties
             ExcludeDeletedUsers = null,
@@ -347,7 +347,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -371,7 +371,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -555,7 +555,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -579,7 +579,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -587,7 +587,7 @@ public class CostListParamsTest : TestBase
         Assert.True(
             TestBase.UrisEqual(
                 new Uri(
-                    "https://api.anthropic.com/v1/organizations/analytics/cost?starting_at=2026-09-01T00%3a00%3a00%2b00%3a00&actor_ids%5b%5d=user_01WxYzAbCdEfGhJkMnPqRsTu&actor_types%5b%5d=service_account_actor&agent_ids%5b%5d=agent_01VHd3EAGJ6PLkP9LM7DDu3f&api_key_ids%5b%5d=apikey_01Rj2N8SVvo6BePZj99NhmiT&claude_tag_categories%5b%5d=engaged&claude_tag_user_ids%5b%5d=U0123ABCDEF&context_windows%5b%5d=0-200k&deployment_ids%5b%5d=depl_01JFC6ihzZHtAuyHsaENdJhY&ending_at=2026-10-01T00%3a00%3a00%2b00%3a00&environment_ids%5b%5d=env_017oTjuGedHtjhJauVC5xGJD&exclude_deleted_users=true&group_by%5b%5d=actor&inference_geos%5b%5d=global&limit=1&models%5b%5d=string&order=asc&order_by=amount&organization_ids%5b%5d=12345678-1234-5678-1234-567812345678&page=page&products%5b%5d=chat&rbac_group_ids%5b%5d=rbac_group_012rppKaSVsmTo6NqRDXQXNF&service_tiers%5b%5d=batch&session_ids%5b%5d=sesn_0187kPDyNCwibNNvfaPEApCJ&slack_channel_ids%5b%5d=C0123ABCDEF&speeds%5b%5d=fast&time_bucket_width=1d&user_profile_ids%5b%5d=uprof_01M33NeYUQK2WV9PpYcsPHLi&workspace_ids%5b%5d=wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                    "https://api.anthropic.com/v1/organizations/analytics/cost?starting_at=2026-09-01T00%3a00%3a00%2b00%3a00&actor_ids%5b%5d=user_01WxYzAbCdEfGhJkMnPqRsTu&actor_types%5b%5d=service_account_actor&agent_ids%5b%5d=agent_01VHd3EAGJ6PLkP9LM7DDu3f&api_key_ids%5b%5d=apikey_01BcDeFgHjKmNpQrStUvWxYz&claude_tag_categories%5b%5d=engaged&claude_tag_user_ids%5b%5d=U0123ABCDEF&context_windows%5b%5d=0-200k&deployment_ids%5b%5d=depl_01JFC6ihzZHtAuyHsaENdJhY&ending_at=2026-10-01T00%3a00%3a00%2b00%3a00&environment_ids%5b%5d=env_017oTjuGedHtjhJauVC5xGJD&exclude_deleted_users=true&group_by%5b%5d=actor&inference_geos%5b%5d=global&limit=1&models%5b%5d=string&order=asc&order_by=amount&organization_ids%5b%5d=12345678-1234-5678-1234-567812345678&page=page&products%5b%5d=chat&rbac_group_ids%5b%5d=rbac_group_012rppKaSVsmTo6NqRDXQXNF&service_tiers%5b%5d=batch&session_ids%5b%5d=sesn_0187kPDyNCwibNNvfaPEApCJ&slack_channel_ids%5b%5d=C0123ABCDEF&speeds%5b%5d=fast&time_bucket_width=1d&user_profile_ids%5b%5d=uprof_01M33NeYUQK2WV9PpYcsPHLi&workspace_ids%5b%5d=wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                 ),
                 url
             )
@@ -621,7 +621,7 @@ public class CostListParamsTest : TestBase
             ActorIds = ["user_01WxYzAbCdEfGhJkMnPqRsTu"],
             ActorTypes = [BetaAnalyticsActorType.ServiceAccountActor],
             AgentIds = ["agent_01VHd3EAGJ6PLkP9LM7DDu3f"],
-            ApiKeyIds = ["apikey_01Rj2N8SVvo6BePZj99NhmiT"],
+            ApiKeyIds = ["apikey_01BcDeFgHjKmNpQrStUvWxYz"],
             ClaudeTagCategories = [BetaAnalyticsClaudeTagCategory.Engaged],
             ClaudeTagUserIds = ["U0123ABCDEF"],
             ContextWindows = [BetaAnalyticsContextWindow.From0To200k],
@@ -645,7 +645,7 @@ public class CostListParamsTest : TestBase
             Speeds = [BetaAnalyticsSpeed.Fast],
             TimeBucketWidth = BetaAnalyticsTimeBucketWidth.Day,
             UserProfileIds = ["uprof_01M33NeYUQK2WV9PpYcsPHLi"],
-            WorkspaceIds = ["wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"],
+            WorkspaceIds = ["wrkspc_01AbCdEfGhJkLmNpQrStUvWx"],
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 

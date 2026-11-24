@@ -108,6 +108,11 @@ internal abstract class BetaServiceDecorator : IBetaService
         get { return Subresource(nameof(Tunnels), service => service.Tunnels); }
     }
 
+    public Beta::IComplianceService Compliance
+    {
+        get { return Subresource(nameof(Compliance), service => service.Compliance); }
+    }
+
     public Beta::IOrganizationService Organization
     {
         get { return Subresource(nameof(Organization), service => service.Organization); }
@@ -208,6 +213,11 @@ internal abstract class BetaServiceWithRawResponseDecorator : IBetaServiceWithRa
     public Beta::ITunnelServiceWithRawResponse Tunnels
     {
         get { return Subresource(nameof(Tunnels), service => service.Tunnels); }
+    }
+
+    public Beta::IComplianceServiceWithRawResponse Compliance
+    {
+        get { return Subresource(nameof(Compliance), service => service.Compliance); }
     }
 
     public Beta::IOrganizationServiceWithRawResponse Organization

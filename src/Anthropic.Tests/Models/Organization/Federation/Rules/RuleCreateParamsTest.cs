@@ -35,7 +35,7 @@ public class RuleCreateParamsTest : TestBase
             AppliesToAllWorkspaces = true,
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string expectedIssuerID = "fdis_01SDCCSbTxrXDpWc1phhtcfK";
@@ -62,7 +62,7 @@ public class RuleCreateParamsTest : TestBase
         bool expectedAppliesToAllWorkspaces = true;
         string expectedDescription = "description";
         long expectedTokenLifetimeSeconds = 60;
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.Equal(expectedIssuerID, parameters.IssuerID);
         Assert.Equal(expectedMatch, parameters.Match);
@@ -102,7 +102,7 @@ public class RuleCreateParamsTest : TestBase
                 ServiceAccountName = "service_account_name",
             },
             Description = "description",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         Assert.Null(parameters.AppliesToAllWorkspaces);
@@ -138,7 +138,7 @@ public class RuleCreateParamsTest : TestBase
                 ServiceAccountName = "service_account_name",
             },
             Description = "description",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
 
             // Null should be interpreted as omitted for these properties
             AppliesToAllWorkspaces = null,
@@ -180,7 +180,7 @@ public class RuleCreateParamsTest : TestBase
             AppliesToAllWorkspaces = true,
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         } with
         {
             // Null should be interpreted as omitted for these properties
@@ -336,7 +336,7 @@ public class RuleCreateParamsTest : TestBase
             AppliesToAllWorkspaces = true,
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         RuleCreateParams copied = new(parameters);

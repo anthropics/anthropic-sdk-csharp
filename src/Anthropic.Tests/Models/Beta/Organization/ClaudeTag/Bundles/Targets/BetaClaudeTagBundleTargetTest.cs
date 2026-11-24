@@ -100,7 +100,7 @@ public class BetaClaudeTagBundleTargetTest : TestBase
                 """
                 {
                   "id": "id",
-                  "created_at": "2019-12-27T18:11:19.117Z",
+                  "created_at": "2019-12-27T18:11:19.117+00:00",
                   "type": "slack_channel"
                 }
                 """
@@ -109,7 +109,7 @@ public class BetaClaudeTagBundleTargetTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedID = "id";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117Z");
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2019-12-27T18:11:19.117+00:00");
         ApiEnum<string, BetaClaudeTagBundleTargetType> expectedType =
             BetaClaudeTagBundleTargetType.SlackChannel;
 

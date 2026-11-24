@@ -43,6 +43,7 @@ public sealed class BetaService : IBetaService
         _userProfiles = new(() => new Beta::UserProfileService(client));
         _dreams = new(() => new Beta::DreamService(client));
         _tunnels = new(() => new Beta::TunnelService(client));
+        _compliance = new(() => new Beta::ComplianceService(client));
         _organization = new(() => new Beta::OrganizationService(client));
     }
 
@@ -136,6 +137,12 @@ public sealed class BetaService : IBetaService
         get { return _tunnels.Value; }
     }
 
+    readonly Lazy<Beta::IComplianceService> _compliance;
+    public Beta::IComplianceService Compliance
+    {
+        get { return _compliance.Value; }
+    }
+
     readonly Lazy<Beta::IOrganizationService> _organization;
     public Beta::IOrganizationService Organization
     {
@@ -173,6 +180,7 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
         _userProfiles = new(() => new Beta::UserProfileServiceWithRawResponse(client));
         _dreams = new(() => new Beta::DreamServiceWithRawResponse(client));
         _tunnels = new(() => new Beta::TunnelServiceWithRawResponse(client));
+        _compliance = new(() => new Beta::ComplianceServiceWithRawResponse(client));
         _organization = new(() => new Beta::OrganizationServiceWithRawResponse(client));
     }
 
@@ -264,6 +272,12 @@ public sealed class BetaServiceWithRawResponse : IBetaServiceWithRawResponse
     public Beta::ITunnelServiceWithRawResponse Tunnels
     {
         get { return _tunnels.Value; }
+    }
+
+    readonly Lazy<Beta::IComplianceServiceWithRawResponse> _compliance;
+    public Beta::IComplianceServiceWithRawResponse Compliance
+    {
+        get { return _compliance.Value; }
     }
 
     readonly Lazy<Beta::IOrganizationServiceWithRawResponse> _organization;

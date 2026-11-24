@@ -3,6 +3,8 @@ using System.Text.Json;
 using Anthropic.Exceptions;
 using Anthropic.Models;
 using Anthropic.Models.Beta;
+using Anthropic.Models.Beta.Compliance.Review;
+using Anthropic.Models.Beta.Compliance.Review.Items;
 using Anthropic.Models.Beta.Environments.Work;
 using Anthropic.Models.Beta.MemoryStores.Memories;
 using Anthropic.Models.Beta.MemoryStores.MemoryVersions;
@@ -42,9 +44,11 @@ using ApiKeys = Anthropic.Models.Organization.ApiKeys;
 using Batches = Anthropic.Models.Messages.Batches;
 using BetaFiles = Anthropic.Models.Beta.Files;
 using BetaSkills = Anthropic.Models.Beta.Skills;
+using Cases = Anthropic.Models.Beta.Compliance.Review.Cases;
 using ComplianceSettings = Anthropic.Models.Beta.Organization.ComplianceSettings;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
+using DataControls = Anthropic.Models.Beta.UserProfiles.Providers.Google.DataControls;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
 using Deployments = Anthropic.Models.Beta.Deployments;
 using Dreams = Anthropic.Models.Beta.Dreams;
@@ -58,6 +62,7 @@ using Issuers = Anthropic.Models.Beta.Organization.Federation.Issuers;
 using Messages = Anthropic.Models.Beta.Messages;
 using MessagesBatches = Anthropic.Models.Beta.Messages.Batches;
 using Models = Anthropic.Models.Beta.Models;
+using Notices = Anthropic.Models.Beta.Compliance.Review.Notices;
 using OrganizationApiKeys = Anthropic.Models.Beta.Organization.ApiKeys;
 using OrganizationExternalKeys = Anthropic.Models.Beta.Organization.ExternalKeys;
 using OrganizationInvites = Anthropic.Models.Beta.Organization.Invites;
@@ -68,6 +73,7 @@ using OrganizationSpendLimits = Anthropic.Models.Beta.Organization.SpendLimits;
 using Permissions = Anthropic.Models.Beta.Organization.RbacRoles.Permissions;
 using PluginMarketplaces = Anthropic.Models.Beta.Organization.PluginMarketplaces;
 using Plugins = Anthropic.Models.Beta.Organization.Plugins;
+using ProjectsDataControls = Anthropic.Models.Beta.Organization.Providers.Google.Projects.DataControls;
 using RateLimits = Anthropic.Models.Organization.Workspaces.RateLimits;
 using RbacGroups = Anthropic.Models.Organization.RbacGroups;
 using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
@@ -801,12 +807,34 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserProfiles::Order>(),
             new ApiEnumConverter<string, UserProfiles::OrderBy>(),
             new ApiEnumConverter<string, BetaUserProfileActionType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekControlType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekControlParamsType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekRegionStatusType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageControlType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageControlParamsType>(),
+            new ApiEnumConverter<string, DataControls::Check>(),
+            new ApiEnumConverter<string, DataControls::Role>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageRegionStatusType>(),
             new ApiEnumConverter<string, Dreams::BetaDreamInputType>(),
             new ApiEnumConverter<string, Dreams::Speed>(),
             new ApiEnumConverter<string, Dreams::BetaDreamModelConfigParamSpeed>(),
             new ApiEnumConverter<string, Dreams::BetaDreamStatus>(),
             new ApiEnumConverter<string, Dreams::BetaDreamingErrorType>(),
             new ApiEnumConverter<string, Dreams::BetaOutputBehaviorType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewOrder>(),
+            new ApiEnumConverter<string, Cases::Type>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseOrderBy>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseStatusType>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewCaseStatusFilter>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewDetermination>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewPolicyCategory>(),
+            new ApiEnumConverter<string, Cases::BetaComplianceReviewViolatedPolicyCategory>(),
+            new ApiEnumConverter<string, Notices::Type>(),
+            new ApiEnumConverter<string, BetaComplianceReviewActorType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewContentUnavailableReasonType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewItemDetailsType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewMessageContentType>(),
+            new ApiEnumConverter<string, BetaComplianceReviewReadReasonType>(),
             new ApiEnumConverter<string, BetaOrganizationRole>(),
             new ApiEnumConverter<string, OrganizationApiKeys::PrincipalType>(),
             new ApiEnumConverter<string, OrganizationApiKeys::ScopeType>(),
@@ -848,6 +876,32 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ExternalStorage::Check>(),
             new ApiEnumConverter<string, ExternalStorage::Role>(),
             new ApiEnumConverter<string, ExternalStorage::ProviderConfigType>(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekControlType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekControlParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekRegionStatusType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageControlType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageControlParamsType
+            >(),
+            new ApiEnumConverter<string, ProjectsDataControls::Check>(),
+            new ApiEnumConverter<string, ProjectsDataControls::Role>(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageRegionStatusType
+            >(),
             new ApiEnumConverter<string, Users::Role>(),
             new ApiEnumConverter<string, Workspaces::BetaAllowedInferenceGeo>(),
             new ApiEnumConverter<string, Workspaces::Type>(),

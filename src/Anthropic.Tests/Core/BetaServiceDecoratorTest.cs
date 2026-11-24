@@ -62,6 +62,7 @@ public class BetaServiceDecoratorTest : TestBase
         Assert.Same(inner.UserProfiles, decorator.UserProfiles);
         Assert.Same(inner.Dreams, decorator.Dreams);
         Assert.Same(inner.Tunnels, decorator.Tunnels);
+        Assert.Same(inner.Compliance, decorator.Compliance);
         Assert.Same(inner.Organization, decorator.Organization);
         Assert.Equal(
             new[]
@@ -81,6 +82,7 @@ public class BetaServiceDecoratorTest : TestBase
                 nameof(inner.UserProfiles),
                 nameof(inner.Dreams),
                 nameof(inner.Tunnels),
+                nameof(inner.Compliance),
                 nameof(inner.Organization),
             },
             names
@@ -109,6 +111,7 @@ public class BetaServiceDecoratorTest : TestBase
         Assert.Same(inner.UserProfiles, decorator.UserProfiles);
         Assert.Same(inner.Dreams, decorator.Dreams);
         Assert.Same(inner.Tunnels, decorator.Tunnels);
+        Assert.Same(inner.Compliance, decorator.Compliance);
         Assert.Same(inner.Organization, decorator.Organization);
         Assert.Equal(
             new[]
@@ -128,6 +131,7 @@ public class BetaServiceDecoratorTest : TestBase
                 nameof(inner.UserProfiles),
                 nameof(inner.Dreams),
                 nameof(inner.Tunnels),
+                nameof(inner.Compliance),
                 nameof(inner.Organization),
             },
             names

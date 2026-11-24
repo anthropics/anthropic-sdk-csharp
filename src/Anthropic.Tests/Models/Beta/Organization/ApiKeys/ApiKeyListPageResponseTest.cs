@@ -17,7 +17,7 @@ public class ApiKeyListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                    ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     CreatedBy = new()
                     {
@@ -29,7 +29,7 @@ public class ApiKeyListPageResponseTest : TestBase
                     PartialKeyHint = "sk-ant-api03-R2D...igAA",
                     Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                     Scope = new ApiKeys::BetaApiKeyWorkspaceScope(
-                        "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                        "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
                 },
@@ -43,7 +43,7 @@ public class ApiKeyListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 CreatedBy = new()
                 {
@@ -54,7 +54,7 @@ public class ApiKeyListPageResponseTest : TestBase
                 Name = "Developer Key",
                 PartialKeyHint = "sk-ant-api03-R2D...igAA",
                 Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
-                Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
+                Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx"),
                 Status = ApiKeys::BetaApiKeyStatus.Active,
             },
         ];
@@ -81,7 +81,7 @@ public class ApiKeyListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                    ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     CreatedBy = new()
                     {
@@ -93,7 +93,7 @@ public class ApiKeyListPageResponseTest : TestBase
                     PartialKeyHint = "sk-ant-api03-R2D...igAA",
                     Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                     Scope = new ApiKeys::BetaApiKeyWorkspaceScope(
-                        "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                        "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
                 },
@@ -121,7 +121,7 @@ public class ApiKeyListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                    ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     CreatedBy = new()
                     {
@@ -133,7 +133,7 @@ public class ApiKeyListPageResponseTest : TestBase
                     PartialKeyHint = "sk-ant-api03-R2D...igAA",
                     Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                     Scope = new ApiKeys::BetaApiKeyWorkspaceScope(
-                        "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                        "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
                 },
@@ -154,7 +154,7 @@ public class ApiKeyListPageResponseTest : TestBase
         [
             new()
             {
-                ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                 CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                 CreatedBy = new()
                 {
@@ -165,7 +165,7 @@ public class ApiKeyListPageResponseTest : TestBase
                 Name = "Developer Key",
                 PartialKeyHint = "sk-ant-api03-R2D...igAA",
                 Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
-                Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"),
+                Scope = new ApiKeys::BetaApiKeyWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx"),
                 Status = ApiKeys::BetaApiKeyStatus.Active,
             },
         ];
@@ -192,7 +192,7 @@ public class ApiKeyListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                    ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     CreatedBy = new()
                     {
@@ -204,7 +204,7 @@ public class ApiKeyListPageResponseTest : TestBase
                     PartialKeyHint = "sk-ant-api03-R2D...igAA",
                     Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                     Scope = new ApiKeys::BetaApiKeyWorkspaceScope(
-                        "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                        "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
                 },
@@ -226,7 +226,7 @@ public class ApiKeyListPageResponseTest : TestBase
             [
                 new()
                 {
-                    ID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+                    ID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
                     CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
                     CreatedBy = new()
                     {
@@ -238,7 +238,7 @@ public class ApiKeyListPageResponseTest : TestBase
                     PartialKeyHint = "sk-ant-api03-R2D...igAA",
                     Principal = new ApiKeys::BetaApiKeyUserActor("user_01WxYzAbCdEfGhJkMnPqRsTu"),
                     Scope = new ApiKeys::BetaApiKeyWorkspaceScope(
-                        "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+                        "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
                     ),
                     Status = ApiKeys::BetaApiKeyStatus.Active,
                 },

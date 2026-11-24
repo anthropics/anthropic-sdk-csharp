@@ -9,10 +9,10 @@ public class ApiKeyWorkspaceScopeTest : TestBase
     [Fact]
     public void FieldRoundtrip_Works()
     {
-        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" };
+        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
@@ -21,7 +21,7 @@ public class ApiKeyWorkspaceScopeTest : TestBase
     [Fact]
     public void SerializationRoundtrip_Works()
     {
-        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" };
+        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiKeyWorkspaceScope>(
@@ -35,7 +35,7 @@ public class ApiKeyWorkspaceScopeTest : TestBase
     [Fact]
     public void FieldRoundtripThroughSerialization_Works()
     {
-        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" };
+        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ApiKeyWorkspaceScope>(
@@ -45,7 +45,7 @@ public class ApiKeyWorkspaceScopeTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
@@ -54,7 +54,7 @@ public class ApiKeyWorkspaceScopeTest : TestBase
     [Fact]
     public void Validation_Works()
     {
-        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" };
+        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" };
 
         model.Validate();
     }
@@ -62,7 +62,7 @@ public class ApiKeyWorkspaceScopeTest : TestBase
     [Fact]
     public void CopyConstructor_Works()
     {
-        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" };
+        var model = new ApiKeyWorkspaceScope { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" };
 
         ApiKeyWorkspaceScope copied = new(model);
 

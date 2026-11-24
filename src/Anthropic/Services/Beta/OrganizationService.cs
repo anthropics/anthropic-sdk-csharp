@@ -41,6 +41,7 @@ public sealed class OrganizationService : IOrganizationService
         _invites = new(() => new Organization::InviteService(client));
         _serviceAccounts = new(() => new Organization::ServiceAccountService(client));
         _externalStorage = new(() => new Organization::ExternalStorageService(client));
+        _providers = new(() => new Organization::ProviderService(client));
         _users = new(() => new Organization::UserService(client));
         _workspaces = new(() => new Organization::WorkspaceService(client));
         _rateLimits = new(() => new Organization::RateLimitService(client));
@@ -91,6 +92,12 @@ public sealed class OrganizationService : IOrganizationService
     public Organization::IExternalStorageService ExternalStorage
     {
         get { return _externalStorage.Value; }
+    }
+
+    readonly Lazy<Organization::IProviderService> _providers;
+    public Organization::IProviderService Providers
+    {
+        get { return _providers.Value; }
     }
 
     readonly Lazy<Organization::IUserService> _users;
@@ -217,6 +224,7 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
         _externalStorage = new(() =>
             new Organization::ExternalStorageServiceWithRawResponse(client)
         );
+        _providers = new(() => new Organization::ProviderServiceWithRawResponse(client));
         _users = new(() => new Organization::UserServiceWithRawResponse(client));
         _workspaces = new(() => new Organization::WorkspaceServiceWithRawResponse(client));
         _rateLimits = new(() => new Organization::RateLimitServiceWithRawResponse(client));
@@ -273,6 +281,12 @@ public sealed class OrganizationServiceWithRawResponse : IOrganizationServiceWit
     public Organization::IExternalStorageServiceWithRawResponse ExternalStorage
     {
         get { return _externalStorage.Value; }
+    }
+
+    readonly Lazy<Organization::IProviderServiceWithRawResponse> _providers;
+    public Organization::IProviderServiceWithRawResponse Providers
+    {
+        get { return _providers.Value; }
     }
 
     readonly Lazy<Organization::IUserServiceWithRawResponse> _users;

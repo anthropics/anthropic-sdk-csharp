@@ -167,10 +167,10 @@ public class BetaManagedAgentsSessionResourceTest : TestBase
                 """
                 {
                   "id": "sesrsc_011CZkZCKr6eXym1gWMPdQiu",
-                  "created_at": "2026-03-15T10:00:00Z",
+                  "created_at": "2026-03-15T10:00:00+00:00",
                   "mount_path": "/workspace/example-repo",
                   "type": "github_repository",
-                  "updated_at": "2026-03-15T10:00:00Z"
+                  "updated_at": "2026-03-15T10:00:00+00:00"
                 }
                 """
             )
@@ -178,11 +178,11 @@ public class BetaManagedAgentsSessionResourceTest : TestBase
         Assert.Throws<AnthropicInvalidDataException>(() => value.Validate());
 
         string expectedID = "sesrsc_011CZkZCKr6eXym1gWMPdQiu";
-        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00+00:00");
         string expectedMountPath = "/workspace/example-repo";
         ApiEnum<string, BetaManagedAgentsSessionResourceType> expectedType =
             BetaManagedAgentsSessionResourceType.GitHubRepository;
-        DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00Z");
+        DateTimeOffset expectedUpdatedAt = DateTimeOffset.Parse("2026-03-15T10:00:00+00:00");
 
         Assert.Equal(expectedID, value.ID);
         Assert.Equal(expectedCreatedAt, value.CreatedAt);

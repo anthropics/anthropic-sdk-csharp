@@ -15,12 +15,12 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
         string expectedFederationRuleID = "federation_rule_id";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedFederationRuleID, parameters.FederationRuleID);
@@ -39,7 +39,7 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         Assert.Null(parameters.Betas);
@@ -52,7 +52,7 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
 
             // Null should be interpreted as omitted for these properties
             Betas = null,
@@ -68,7 +68,7 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -86,7 +86,7 @@ public class WorkspaceAddParamsTest : TestBase
         WorkspaceAddParams parameters = new()
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         var url = parameters.Url(new() { ApiKey = "my-anthropic-api-key" });
@@ -108,7 +108,7 @@ public class WorkspaceAddParamsTest : TestBase
         WorkspaceAddParams parameters = new()
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -126,7 +126,7 @@ public class WorkspaceAddParamsTest : TestBase
         var parameters = new WorkspaceAddParams
         {
             FederationRuleID = "federation_rule_id",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
