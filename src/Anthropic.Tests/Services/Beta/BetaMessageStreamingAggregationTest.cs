@@ -1367,6 +1367,45 @@ public class BetaMessageStreamingAggregationTest
     }
 
     [Fact]
+    public async Task CreateStreamingAggregation_PassesThroughUnmodelledCitationTypes()
+    {
+        // A citation type this SDK version doesn't know must survive aggregation as raw JSON, the
+        // same way it survives a non-streaming response.
+        var unknownCitation = JsonSerializer.Deserialize<JsonElement>(
+            "{\"type\":\"shiny_new_location\",\"cited_text\":\"Somewhere\"}"
+        );
+        async IAsyncEnumerable<BetaRawMessageStreamEvent> GetTestValues()
+        {
+            yield return new(new BetaRawMessageStartEvent(GenerateStartMessage));
+            yield return new(
+                new BetaRawContentBlockStartEvent()
+                {
+                    Index = 0,
+                    ContentBlock = new(new BetaTextBlock() { Citations = [], Text = "Over" }),
+                }
+            );
+            yield return new(
+                new BetaRawContentBlockDeltaEvent()
+                {
+                    Index = 0,
+                    Delta = new(new BetaCitationsDelta(new Citation(unknownCitation))),
+                }
+            );
+            yield return new(new BetaRawContentBlockStopEvent() { Index = 0 });
+            yield return new(new BetaRawMessageStopEvent());
+            await Task.CompletedTask;
+        }
+
+        var stream = await GetTestValues().Aggregate();
+
+        var text = Assert.IsType<BetaTextBlock>(Assert.Single(stream.Content).Value);
+        Assert.NotNull(text.Citations);
+        var citation = Assert.Single(text.Citations);
+        Assert.Null(citation.Value);
+        Assert.True(JsonElement.DeepEquals(unknownCitation, citation.Json));
+    }
+
+    [Fact]
     public async Task CreateStreamingAggregation_TextBlockWithoutCitationDeltasKeepsWireShape()
     {
         // The wire text block carries no `citations` key; aggregation must not add one, or a
