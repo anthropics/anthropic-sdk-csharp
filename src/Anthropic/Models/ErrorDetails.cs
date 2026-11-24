@@ -201,6 +201,17 @@ public record class ErrorDetails : ModelBase
                     ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
                 BetaStorageVerificationFailedErrorDetails _ =>
                     ErrorDetailsErrorCode.StorageVerificationFailed,
+                BetaCmekNotApprovedErrorDetails _ => ErrorDetailsErrorCode.CmekNotApproved,
+                BetaExternalKeyNotFoundErrorDetails _ => ErrorDetailsErrorCode.ExternalKeyNotFound,
+                BetaExternalKeyProviderMismatchErrorDetails _ =>
+                    ErrorDetailsErrorCode.ExternalKeyProviderMismatch,
+                BetaGcpProjectNotVerifiedErrorDetails _ =>
+                    ErrorDetailsErrorCode.GcpProjectNotVerified,
+                BetaRegionNotSupportedErrorDetails _ => ErrorDetailsErrorCode.RegionNotSupported,
+                BetaStorageNotApprovedErrorDetails _ => ErrorDetailsErrorCode.StorageNotApproved,
+                BetaGcpProjectControlledByAnotherOrganizationErrorDetails _ =>
+                    ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization,
+                BetaStorageInUseErrorDetails _ => ErrorDetailsErrorCode.StorageInUse,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ =>
                     ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
                 BetaCannotSignOutSelfErrorDetails _ => ErrorDetailsErrorCode.CannotSignOutSelf,
@@ -368,6 +379,14 @@ public record class ErrorDetails : ModelBase
                 BetaExternalStorageInUseErrorDetails _ => null,
                 BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
                 BetaStorageVerificationFailedErrorDetails _ => null,
+                BetaCmekNotApprovedErrorDetails _ => null,
+                BetaExternalKeyNotFoundErrorDetails _ => null,
+                BetaExternalKeyProviderMismatchErrorDetails _ => null,
+                BetaGcpProjectNotVerifiedErrorDetails _ => null,
+                BetaRegionNotSupportedErrorDetails _ => null,
+                BetaStorageNotApprovedErrorDetails _ => null,
+                BetaGcpProjectControlledByAnotherOrganizationErrorDetails _ => null,
+                BetaStorageInUseErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -504,6 +523,14 @@ public record class ErrorDetails : ModelBase
                 BetaExternalStorageInUseErrorDetails _ => null,
                 BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
                 BetaStorageVerificationFailedErrorDetails _ => null,
+                BetaCmekNotApprovedErrorDetails _ => null,
+                BetaExternalKeyNotFoundErrorDetails _ => null,
+                BetaExternalKeyProviderMismatchErrorDetails _ => null,
+                BetaGcpProjectNotVerifiedErrorDetails _ => null,
+                BetaRegionNotSupportedErrorDetails _ => null,
+                BetaStorageNotApprovedErrorDetails _ => null,
+                BetaGcpProjectControlledByAnotherOrganizationErrorDetails _ => null,
+                BetaStorageInUseErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -643,6 +670,14 @@ public record class ErrorDetails : ModelBase
                 BetaExternalStorageInUseErrorDetails _ => null,
                 BetaExternalStorageInWorkspacePolicyErrorDetails _ => null,
                 BetaStorageVerificationFailedErrorDetails _ => null,
+                BetaCmekNotApprovedErrorDetails _ => null,
+                BetaExternalKeyNotFoundErrorDetails _ => null,
+                BetaExternalKeyProviderMismatchErrorDetails _ => null,
+                BetaGcpProjectNotVerifiedErrorDetails _ => null,
+                BetaRegionNotSupportedErrorDetails _ => null,
+                BetaStorageNotApprovedErrorDetails _ => null,
+                BetaGcpProjectControlledByAnotherOrganizationErrorDetails _ => null,
+                BetaStorageInUseErrorDetails _ => null,
                 BetaCannotSignOutPrimaryOwnerErrorDetails _ => null,
                 BetaCannotSignOutSelfErrorDetails _ => null,
                 BetaOrganizationNotEnrolledInBetaErrorDetails _ => null,
@@ -1302,6 +1337,60 @@ public record class ErrorDetails : ModelBase
         BetaStorageVerificationFailedErrorDetails value,
         JsonElement? element = null
     )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaCmekNotApprovedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaExternalKeyNotFoundErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaExternalKeyProviderMismatchErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaGcpProjectNotVerifiedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaRegionNotSupportedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaStorageNotApprovedErrorDetails value, JsonElement? element = null)
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(
+        BetaGcpProjectControlledByAnotherOrganizationErrorDetails value,
+        JsonElement? element = null
+    )
+    {
+        this.Value = value;
+        this._element = element;
+    }
+
+    public ErrorDetails(BetaStorageInUseErrorDetails value, JsonElement? element = null)
     {
         this.Value = value;
         this._element = element;
@@ -3562,6 +3651,188 @@ public record class ErrorDetails : ModelBase
 
     /// <summary>
     /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaCmekNotApprovedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaCmekNotApproved(out var value)) {
+    ///     // `value` is of type `BetaCmekNotApprovedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaCmekNotApproved(
+        [NotNullWhen(true)] out BetaCmekNotApprovedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaCmekNotApprovedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaExternalKeyNotFoundErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaExternalKeyNotFound(out var value)) {
+    ///     // `value` is of type `BetaExternalKeyNotFoundErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaExternalKeyNotFound(
+        [NotNullWhen(true)] out BetaExternalKeyNotFoundErrorDetails? value
+    )
+    {
+        value = this.Value as BetaExternalKeyNotFoundErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaExternalKeyProviderMismatchErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaExternalKeyProviderMismatch(out var value)) {
+    ///     // `value` is of type `BetaExternalKeyProviderMismatchErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaExternalKeyProviderMismatch(
+        [NotNullWhen(true)] out BetaExternalKeyProviderMismatchErrorDetails? value
+    )
+    {
+        value = this.Value as BetaExternalKeyProviderMismatchErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaGcpProjectNotVerifiedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaGcpProjectNotVerified(out var value)) {
+    ///     // `value` is of type `BetaGcpProjectNotVerifiedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaGcpProjectNotVerified(
+        [NotNullWhen(true)] out BetaGcpProjectNotVerifiedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaGcpProjectNotVerifiedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaRegionNotSupportedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaRegionNotSupported(out var value)) {
+    ///     // `value` is of type `BetaRegionNotSupportedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaRegionNotSupported(
+        [NotNullWhen(true)] out BetaRegionNotSupportedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaRegionNotSupportedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageNotApprovedErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageNotApproved(out var value)) {
+    ///     // `value` is of type `BetaStorageNotApprovedErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageNotApproved(
+        [NotNullWhen(true)] out BetaStorageNotApprovedErrorDetails? value
+    )
+    {
+        value = this.Value as BetaStorageNotApprovedErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaGcpProjectControlledByAnotherOrganizationErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaGcpProjectControlledByAnotherOrganization(out var value)) {
+    ///     // `value` is of type `BetaGcpProjectControlledByAnotherOrganizationErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaGcpProjectControlledByAnotherOrganization(
+        [NotNullWhen(true)] out BetaGcpProjectControlledByAnotherOrganizationErrorDetails? value
+    )
+    {
+        value = this.Value as BetaGcpProjectControlledByAnotherOrganizationErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
+    /// type <see cref="BetaStorageInUseErrorDetails"/>.
+    ///
+    /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
+    ///
+    /// <example>
+    /// <code>
+    /// if (instance.TryPickBetaStorageInUse(out var value)) {
+    ///     // `value` is of type `BetaStorageInUseErrorDetails`
+    ///     Console.WriteLine(value);
+    /// }
+    /// </code>
+    /// </example>
+    /// </summary>
+    public bool TryPickBetaStorageInUse([NotNullWhen(true)] out BetaStorageInUseErrorDetails? value)
+    {
+        value = this.Value as BetaStorageInUseErrorDetails;
+        return value != null;
+    }
+
+    /// <summary>
+    /// Returns true and sets the <c>out</c> parameter if the instance was constructed with a variant of
     /// type <see cref="BetaCannotSignOutPrimaryOwnerErrorDetails"/>.
     ///
     /// <para>Consider using <see cref="Switch"/> or <see cref="Match"/> if you need to handle every variant.</para>
@@ -4599,6 +4870,14 @@ public record class ErrorDetails : ModelBase
     ///     (BetaExternalStorageInUseErrorDetails value) =&gt; {...},
     ///     (BetaExternalStorageInWorkspacePolicyErrorDetails value) =&gt; {...},
     ///     (BetaStorageVerificationFailedErrorDetails value) =&gt; {...},
+    ///     (BetaCmekNotApprovedErrorDetails value) =&gt; {...},
+    ///     (BetaExternalKeyNotFoundErrorDetails value) =&gt; {...},
+    ///     (BetaExternalKeyProviderMismatchErrorDetails value) =&gt; {...},
+    ///     (BetaGcpProjectNotVerifiedErrorDetails value) =&gt; {...},
+    ///     (BetaRegionNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaStorageNotApprovedErrorDetails value) =&gt; {...},
+    ///     (BetaGcpProjectControlledByAnotherOrganizationErrorDetails value) =&gt; {...},
+    ///     (BetaStorageInUseErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
@@ -4729,6 +5008,14 @@ public record class ErrorDetails : ModelBase
         Action<BetaExternalStorageInUseErrorDetails> betaExternalStorageInUse,
         Action<BetaExternalStorageInWorkspacePolicyErrorDetails> betaExternalStorageInWorkspacePolicy,
         Action<BetaStorageVerificationFailedErrorDetails> betaStorageVerificationFailed,
+        Action<BetaCmekNotApprovedErrorDetails> betaCmekNotApproved,
+        Action<BetaExternalKeyNotFoundErrorDetails> betaExternalKeyNotFound,
+        Action<BetaExternalKeyProviderMismatchErrorDetails> betaExternalKeyProviderMismatch,
+        Action<BetaGcpProjectNotVerifiedErrorDetails> betaGcpProjectNotVerified,
+        Action<BetaRegionNotSupportedErrorDetails> betaRegionNotSupported,
+        Action<BetaStorageNotApprovedErrorDetails> betaStorageNotApproved,
+        Action<BetaGcpProjectControlledByAnotherOrganizationErrorDetails> betaGcpProjectControlledByAnotherOrganization,
+        Action<BetaStorageInUseErrorDetails> betaStorageInUse,
         Action<BetaCannotSignOutPrimaryOwnerErrorDetails> betaCannotSignOutPrimaryOwner,
         Action<BetaCannotSignOutSelfErrorDetails> betaCannotSignOutSelf,
         Action<BetaOrganizationNotEnrolledInBetaErrorDetails> betaOrganizationNotEnrolledInBeta,
@@ -5026,6 +5313,30 @@ public record class ErrorDetails : ModelBase
             case BetaStorageVerificationFailedErrorDetails value:
                 betaStorageVerificationFailed(value);
                 break;
+            case BetaCmekNotApprovedErrorDetails value:
+                betaCmekNotApproved(value);
+                break;
+            case BetaExternalKeyNotFoundErrorDetails value:
+                betaExternalKeyNotFound(value);
+                break;
+            case BetaExternalKeyProviderMismatchErrorDetails value:
+                betaExternalKeyProviderMismatch(value);
+                break;
+            case BetaGcpProjectNotVerifiedErrorDetails value:
+                betaGcpProjectNotVerified(value);
+                break;
+            case BetaRegionNotSupportedErrorDetails value:
+                betaRegionNotSupported(value);
+                break;
+            case BetaStorageNotApprovedErrorDetails value:
+                betaStorageNotApproved(value);
+                break;
+            case BetaGcpProjectControlledByAnotherOrganizationErrorDetails value:
+                betaGcpProjectControlledByAnotherOrganization(value);
+                break;
+            case BetaStorageInUseErrorDetails value:
+                betaStorageInUse(value);
+                break;
             case BetaCannotSignOutPrimaryOwnerErrorDetails value:
                 betaCannotSignOutPrimaryOwner(value);
                 break;
@@ -5255,6 +5566,14 @@ public record class ErrorDetails : ModelBase
     ///     (BetaExternalStorageInUseErrorDetails value) =&gt; {...},
     ///     (BetaExternalStorageInWorkspacePolicyErrorDetails value) =&gt; {...},
     ///     (BetaStorageVerificationFailedErrorDetails value) =&gt; {...},
+    ///     (BetaCmekNotApprovedErrorDetails value) =&gt; {...},
+    ///     (BetaExternalKeyNotFoundErrorDetails value) =&gt; {...},
+    ///     (BetaExternalKeyProviderMismatchErrorDetails value) =&gt; {...},
+    ///     (BetaGcpProjectNotVerifiedErrorDetails value) =&gt; {...},
+    ///     (BetaRegionNotSupportedErrorDetails value) =&gt; {...},
+    ///     (BetaStorageNotApprovedErrorDetails value) =&gt; {...},
+    ///     (BetaGcpProjectControlledByAnotherOrganizationErrorDetails value) =&gt; {...},
+    ///     (BetaStorageInUseErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutPrimaryOwnerErrorDetails value) =&gt; {...},
     ///     (BetaCannotSignOutSelfErrorDetails value) =&gt; {...},
     ///     (BetaOrganizationNotEnrolledInBetaErrorDetails value) =&gt; {...},
@@ -5406,6 +5725,17 @@ public record class ErrorDetails : ModelBase
             T
         > betaExternalStorageInWorkspacePolicy,
         Func<BetaStorageVerificationFailedErrorDetails, T> betaStorageVerificationFailed,
+        Func<BetaCmekNotApprovedErrorDetails, T> betaCmekNotApproved,
+        Func<BetaExternalKeyNotFoundErrorDetails, T> betaExternalKeyNotFound,
+        Func<BetaExternalKeyProviderMismatchErrorDetails, T> betaExternalKeyProviderMismatch,
+        Func<BetaGcpProjectNotVerifiedErrorDetails, T> betaGcpProjectNotVerified,
+        Func<BetaRegionNotSupportedErrorDetails, T> betaRegionNotSupported,
+        Func<BetaStorageNotApprovedErrorDetails, T> betaStorageNotApproved,
+        Func<
+            BetaGcpProjectControlledByAnotherOrganizationErrorDetails,
+            T
+        > betaGcpProjectControlledByAnotherOrganization,
+        Func<BetaStorageInUseErrorDetails, T> betaStorageInUse,
         Func<BetaCannotSignOutPrimaryOwnerErrorDetails, T> betaCannotSignOutPrimaryOwner,
         Func<BetaCannotSignOutSelfErrorDetails, T> betaCannotSignOutSelf,
         Func<BetaOrganizationNotEnrolledInBetaErrorDetails, T> betaOrganizationNotEnrolledInBeta,
@@ -5599,6 +5929,17 @@ public record class ErrorDetails : ModelBase
             BetaExternalStorageInWorkspacePolicyErrorDetails value =>
                 betaExternalStorageInWorkspacePolicy(value),
             BetaStorageVerificationFailedErrorDetails value => betaStorageVerificationFailed(value),
+            BetaCmekNotApprovedErrorDetails value => betaCmekNotApproved(value),
+            BetaExternalKeyNotFoundErrorDetails value => betaExternalKeyNotFound(value),
+            BetaExternalKeyProviderMismatchErrorDetails value => betaExternalKeyProviderMismatch(
+                value
+            ),
+            BetaGcpProjectNotVerifiedErrorDetails value => betaGcpProjectNotVerified(value),
+            BetaRegionNotSupportedErrorDetails value => betaRegionNotSupported(value),
+            BetaStorageNotApprovedErrorDetails value => betaStorageNotApproved(value),
+            BetaGcpProjectControlledByAnotherOrganizationErrorDetails value =>
+                betaGcpProjectControlledByAnotherOrganization(value),
+            BetaStorageInUseErrorDetails value => betaStorageInUse(value),
             BetaCannotSignOutPrimaryOwnerErrorDetails value => betaCannotSignOutPrimaryOwner(value),
             BetaCannotSignOutSelfErrorDetails value => betaCannotSignOutSelf(value),
             BetaOrganizationNotEnrolledInBetaErrorDetails value =>
@@ -5958,6 +6299,31 @@ public record class ErrorDetails : ModelBase
     public static implicit operator ErrorDetails(BetaStorageVerificationFailedErrorDetails value) =>
         new(value);
 
+    public static implicit operator ErrorDetails(BetaCmekNotApprovedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaExternalKeyNotFoundErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaExternalKeyProviderMismatchErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaGcpProjectNotVerifiedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaRegionNotSupportedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageNotApprovedErrorDetails value) =>
+        new(value);
+
+    public static implicit operator ErrorDetails(
+        BetaGcpProjectControlledByAnotherOrganizationErrorDetails value
+    ) => new(value);
+
+    public static implicit operator ErrorDetails(BetaStorageInUseErrorDetails value) => new(value);
+
     public static implicit operator ErrorDetails(BetaCannotSignOutPrimaryOwnerErrorDetails value) =>
         new(value);
 
@@ -6209,6 +6575,15 @@ public record class ErrorDetails : ModelBase
             (betaExternalStorageInWorkspacePolicy) =>
                 betaExternalStorageInWorkspacePolicy.Validate(),
             (betaStorageVerificationFailed) => betaStorageVerificationFailed.Validate(),
+            (betaCmekNotApproved) => betaCmekNotApproved.Validate(),
+            (betaExternalKeyNotFound) => betaExternalKeyNotFound.Validate(),
+            (betaExternalKeyProviderMismatch) => betaExternalKeyProviderMismatch.Validate(),
+            (betaGcpProjectNotVerified) => betaGcpProjectNotVerified.Validate(),
+            (betaRegionNotSupported) => betaRegionNotSupported.Validate(),
+            (betaStorageNotApproved) => betaStorageNotApproved.Validate(),
+            (betaGcpProjectControlledByAnotherOrganization) =>
+                betaGcpProjectControlledByAnotherOrganization.Validate(),
+            (betaStorageInUse) => betaStorageInUse.Validate(),
             (betaCannotSignOutPrimaryOwner) => betaCannotSignOutPrimaryOwner.Validate(),
             (betaCannotSignOutSelf) => betaCannotSignOutSelf.Validate(),
             (betaOrganizationNotEnrolledInBeta) => betaOrganizationNotEnrolledInBeta.Validate(),
@@ -6365,47 +6740,55 @@ public record class ErrorDetails : ModelBase
             BetaExternalStorageInUseErrorDetails _ => 81,
             BetaExternalStorageInWorkspacePolicyErrorDetails _ => 82,
             BetaStorageVerificationFailedErrorDetails _ => 83,
-            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 84,
-            BetaCannotSignOutSelfErrorDetails _ => 85,
-            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 86,
-            BetaCannotSignOutManagedMemberErrorDetails _ => 87,
-            BetaCannotSignOutMembershipAdminErrorDetails _ => 88,
-            BetaCannotSignOutOwnerErrorDetails _ => 89,
-            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 90,
-            BetaApprovalRequiredErrorDetails _ => 91,
-            BetaExternalStorageNotAvailableErrorDetails _ => 92,
-            BetaHumanReviewNotAvailableErrorDetails _ => 93,
-            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => 94,
-            BetaStorageNotAttachableErrorDetails _ => 95,
-            Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => 96,
-            BetaStorageAttachLimitReachedErrorDetails _ => 97,
-            BetaStorageProfileStillRequiredErrorDetails _ => 98,
-            BetaStorageChangedConcurrentlyErrorDetails _ => 99,
-            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => 100,
-            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 101,
-            BetaUnsupportedCharsetErrorDetails _ => 102,
-            Plugins::BetaPluginNameTakenErrorDetails _ => 103,
-            Plugins::BetaSkillNameTakenErrorDetails _ => 104,
-            Plugins::BetaRegistrationPendingErrorDetails _ => 105,
-            Plugins::BetaScanFailedErrorDetails _ => 106,
-            Plugins::BetaScanPendingErrorDetails _ => 107,
-            BetaRequestBodyTimeoutErrorDetails _ => 108,
-            BetaSettingsDocumentLimitExceededErrorDetails _ => 109,
-            BetaSettingsHistoryLimitExceededErrorDetails _ => 110,
-            BetaCmekFeatureUnsupportedErrorDetails _ => 111,
-            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 112,
-            BetaRbacGroupOrderLimitExceededErrorDetails _ => 113,
-            BetaRbacGroupNotFoundErrorDetails _ => 114,
-            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 115,
-            BetaApiKeyScopeMissingErrorDetails _ => 116,
-            BetaClaudeTagWritesNotEnabledErrorDetails _ => 117,
-            BetaComplianceConfigurationRestrictedErrorDetails _ => 118,
-            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 119,
-            Environments::BetaEnvironmentNotFoundErrorDetails _ => 120,
-            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 121,
-            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 122,
-            BetaBundleAttachmentNotSupportedErrorDetails _ => 123,
-            BetaBundleOnCallErrorDetails _ => 124,
+            BetaCmekNotApprovedErrorDetails _ => 84,
+            BetaExternalKeyNotFoundErrorDetails _ => 85,
+            BetaExternalKeyProviderMismatchErrorDetails _ => 86,
+            BetaGcpProjectNotVerifiedErrorDetails _ => 87,
+            BetaRegionNotSupportedErrorDetails _ => 88,
+            BetaStorageNotApprovedErrorDetails _ => 89,
+            BetaGcpProjectControlledByAnotherOrganizationErrorDetails _ => 90,
+            BetaStorageInUseErrorDetails _ => 91,
+            BetaCannotSignOutPrimaryOwnerErrorDetails _ => 92,
+            BetaCannotSignOutSelfErrorDetails _ => 93,
+            BetaOrganizationNotEnrolledInBetaErrorDetails _ => 94,
+            BetaCannotSignOutManagedMemberErrorDetails _ => 95,
+            BetaCannotSignOutMembershipAdminErrorDetails _ => 96,
+            BetaCannotSignOutOwnerErrorDetails _ => 97,
+            BetaCannotSignOutPrivilegedMemberErrorDetails _ => 98,
+            BetaApprovalRequiredErrorDetails _ => 99,
+            BetaExternalStorageNotAvailableErrorDetails _ => 100,
+            BetaHumanReviewNotAvailableErrorDetails _ => 101,
+            Workspaces::BetaHumanReviewOnWithExternalStorageErrorDetails _ => 102,
+            BetaStorageNotAttachableErrorDetails _ => 103,
+            Workspaces::BetaTranscriptsStorageRequiredErrorDetails _ => 104,
+            BetaStorageAttachLimitReachedErrorDetails _ => 105,
+            BetaStorageProfileStillRequiredErrorDetails _ => 106,
+            BetaStorageChangedConcurrentlyErrorDetails _ => 107,
+            Workspaces::BetaWorkspaceChangedConcurrentlyErrorDetails _ => 108,
+            BetaSpendLimitsAdminApiWritesNotEnabledErrorDetails _ => 109,
+            BetaUnsupportedCharsetErrorDetails _ => 110,
+            Plugins::BetaPluginNameTakenErrorDetails _ => 111,
+            Plugins::BetaSkillNameTakenErrorDetails _ => 112,
+            Plugins::BetaRegistrationPendingErrorDetails _ => 113,
+            Plugins::BetaScanFailedErrorDetails _ => 114,
+            Plugins::BetaScanPendingErrorDetails _ => 115,
+            BetaRequestBodyTimeoutErrorDetails _ => 116,
+            BetaSettingsDocumentLimitExceededErrorDetails _ => 117,
+            BetaSettingsHistoryLimitExceededErrorDetails _ => 118,
+            BetaCmekFeatureUnsupportedErrorDetails _ => 119,
+            BetaRbacGroupManagedSettingsNotFoundErrorDetails _ => 120,
+            BetaRbacGroupOrderLimitExceededErrorDetails _ => 121,
+            BetaRbacGroupNotFoundErrorDetails _ => 122,
+            BetaSlackChannelSetUpSettingsRefusedErrorDetails _ => 123,
+            BetaApiKeyScopeMissingErrorDetails _ => 124,
+            BetaClaudeTagWritesNotEnabledErrorDetails _ => 125,
+            BetaComplianceConfigurationRestrictedErrorDetails _ => 126,
+            BetaOrganizationLevelScopedApiKeyRequiredErrorDetails _ => 127,
+            Environments::BetaEnvironmentNotFoundErrorDetails _ => 128,
+            BetaSlackChannelSetUpEnvironmentNotFoundErrorDetails _ => 129,
+            BetaSlackChannelSetUpSettingsConflictErrorDetails _ => 130,
+            BetaBundleAttachmentNotSupportedErrorDetails _ => 131,
+            BetaBundleOnCallErrorDetails _ => 132,
             _ => -1,
         };
     }
@@ -8182,6 +8565,172 @@ sealed class ErrorDetailsConverter : JsonConverter<ErrorDetails>
 
                 return new(element);
             }
+            case "cmek_not_approved":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaCmekNotApprovedErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_key_not_found":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaExternalKeyNotFoundErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "external_key_provider_mismatch":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaExternalKeyProviderMismatchErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "gcp_project_not_verified":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaGcpProjectNotVerifiedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "region_not_supported":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaRegionNotSupportedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_not_approved":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaStorageNotApprovedErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "gcp_project_controlled_by_another_organization":
+            {
+                try
+                {
+                    var deserialized =
+                        JsonSerializer.Deserialize<BetaGcpProjectControlledByAnotherOrganizationErrorDetails>(
+                            element,
+                            options
+                        );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
+            case "storage_in_use":
+            {
+                try
+                {
+                    var deserialized = JsonSerializer.Deserialize<BetaStorageInUseErrorDetails>(
+                        element,
+                        options
+                    );
+                    if (deserialized != null)
+                    {
+                        return new(deserialized, element);
+                    }
+                }
+                catch (JsonException)
+                {
+                    // ignore
+                }
+
+                return new(element);
+            }
             case "cannot_sign_out_primary_owner":
             {
                 try
@@ -9145,6 +9694,14 @@ public enum ErrorDetailsErrorCode
     ExternalStorageInUse = 1557296840,
     ExternalStorageInWorkspacePolicy = 1392417940,
     StorageVerificationFailed = 2088159786,
+    CmekNotApproved = 1038548484,
+    ExternalKeyNotFound = 1658390889,
+    ExternalKeyProviderMismatch = 1506305217,
+    GcpProjectNotVerified = 320507479,
+    RegionNotSupported = 796967125,
+    StorageNotApproved = 954219448,
+    GcpProjectControlledByAnotherOrganization = 397868983,
+    StorageInUse = 1815481125,
     CannotSignOutPrimaryOwner = 68,
     CannotSignOutSelf = 69,
     OrganizationNotEnrolledInBeta = 70,
@@ -9298,6 +9855,15 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
             "external_storage_in_workspace_policy" =>
                 ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy,
             "storage_verification_failed" => ErrorDetailsErrorCode.StorageVerificationFailed,
+            "cmek_not_approved" => ErrorDetailsErrorCode.CmekNotApproved,
+            "external_key_not_found" => ErrorDetailsErrorCode.ExternalKeyNotFound,
+            "external_key_provider_mismatch" => ErrorDetailsErrorCode.ExternalKeyProviderMismatch,
+            "gcp_project_not_verified" => ErrorDetailsErrorCode.GcpProjectNotVerified,
+            "region_not_supported" => ErrorDetailsErrorCode.RegionNotSupported,
+            "storage_not_approved" => ErrorDetailsErrorCode.StorageNotApproved,
+            "gcp_project_controlled_by_another_organization" =>
+                ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization,
+            "storage_in_use" => ErrorDetailsErrorCode.StorageInUse,
             "cannot_sign_out_primary_owner" => ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
             "cannot_sign_out_self" => ErrorDetailsErrorCode.CannotSignOutSelf,
             "organization_not_enrolled_in_beta" =>
@@ -9474,6 +10040,16 @@ sealed class ErrorDetailsErrorCodeConverter : JsonConverter<ErrorDetailsErrorCod
                 ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy =>
                     "external_storage_in_workspace_policy",
                 ErrorDetailsErrorCode.StorageVerificationFailed => "storage_verification_failed",
+                ErrorDetailsErrorCode.CmekNotApproved => "cmek_not_approved",
+                ErrorDetailsErrorCode.ExternalKeyNotFound => "external_key_not_found",
+                ErrorDetailsErrorCode.ExternalKeyProviderMismatch =>
+                    "external_key_provider_mismatch",
+                ErrorDetailsErrorCode.GcpProjectNotVerified => "gcp_project_not_verified",
+                ErrorDetailsErrorCode.RegionNotSupported => "region_not_supported",
+                ErrorDetailsErrorCode.StorageNotApproved => "storage_not_approved",
+                ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization =>
+                    "gcp_project_controlled_by_another_organization",
+                ErrorDetailsErrorCode.StorageInUse => "storage_in_use",
                 ErrorDetailsErrorCode.CannotSignOutPrimaryOwner => "cannot_sign_out_primary_owner",
                 ErrorDetailsErrorCode.CannotSignOutSelf => "cannot_sign_out_self",
                 ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta =>

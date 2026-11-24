@@ -69,6 +69,7 @@ using OrganizationSpendLimits = Anthropic.Models.Beta.Organization.SpendLimits;
 using Permissions = Anthropic.Models.Beta.Organization.RbacRoles.Permissions;
 using PluginMarketplaces = Anthropic.Models.Beta.Organization.PluginMarketplaces;
 using Plugins = Anthropic.Models.Beta.Organization.Plugins;
+using ProjectsDataControls = Anthropic.Models.Beta.Organization.Providers.Google.Projects.DataControls;
 using RateLimits = Anthropic.Models.Organization.Workspaces.RateLimits;
 using RbacGroups = Anthropic.Models.Organization.RbacGroups;
 using ServiceAccounts = Anthropic.Models.Organization.ServiceAccounts;
@@ -857,6 +858,32 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, ExternalStorage::Check>(),
             new ApiEnumConverter<string, ExternalStorage::Role>(),
             new ApiEnumConverter<string, ExternalStorage::ProviderConfigType>(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekControlType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekControlParamsType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectCmekRegionStatusType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageControlType
+            >(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageControlParamsType
+            >(),
+            new ApiEnumConverter<string, ProjectsDataControls::Check>(),
+            new ApiEnumConverter<string, ProjectsDataControls::Role>(),
+            new ApiEnumConverter<
+                string,
+                ProjectsDataControls::BetaGoogleManagedProjectStorageRegionStatusType
+            >(),
             new ApiEnumConverter<string, Users::Role>(),
             new ApiEnumConverter<string, Workspaces::BetaAllowedInferenceGeo>(),
             new ApiEnumConverter<string, Workspaces::Type>(),

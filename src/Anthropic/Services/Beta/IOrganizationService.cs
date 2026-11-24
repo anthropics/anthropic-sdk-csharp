@@ -39,6 +39,8 @@ public interface IOrganizationService
 
     Organization::IExternalStorageService ExternalStorage { get; }
 
+    Organization::IProviderService Providers { get; }
+
     Organization::IUserService Users { get; }
 
     Organization::IWorkspaceService Workspaces { get; }
@@ -101,6 +103,8 @@ public interface IOrganizationServiceWithRawResponse
     Organization::IServiceAccountServiceWithRawResponse ServiceAccounts { get; }
 
     Organization::IExternalStorageServiceWithRawResponse ExternalStorage { get; }
+
+    Organization::IProviderServiceWithRawResponse Providers { get; }
 
     Organization::IUserServiceWithRawResponse Users { get; }
 

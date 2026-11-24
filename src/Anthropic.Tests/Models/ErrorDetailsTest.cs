@@ -651,6 +651,62 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaCmekNotApprovedValidationWorks()
+    {
+        ErrorDetails value = new BetaCmekNotApprovedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaExternalKeyNotFoundValidationWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyNotFoundErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaExternalKeyProviderMismatchValidationWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyProviderMismatchErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaGcpProjectNotVerifiedValidationWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectNotVerifiedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaRegionNotSupportedValidationWorks()
+    {
+        ErrorDetails value = new BetaRegionNotSupportedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageNotApprovedValidationWorks()
+    {
+        ErrorDetails value = new BetaStorageNotApprovedErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaGcpProjectControlledByAnotherOrganizationValidationWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectControlledByAnotherOrganizationErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
+    public void BetaStorageInUseValidationWorks()
+    {
+        ErrorDetails value = new BetaStorageInUseErrorDetails();
+        value.Validate();
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerValidationWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -2080,6 +2136,110 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaCmekNotApprovedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaCmekNotApprovedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaExternalKeyNotFoundSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyNotFoundErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaExternalKeyProviderMismatchSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyProviderMismatchErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaGcpProjectNotVerifiedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectNotVerifiedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaRegionNotSupportedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaRegionNotSupportedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageNotApprovedSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaStorageNotApprovedErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaGcpProjectControlledByAnotherOrganizationSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectControlledByAnotherOrganizationErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
+    public void BetaStorageInUseSerializationRoundtripWorks()
+    {
+        ErrorDetails value = new BetaStorageInUseErrorDetails();
+        string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
+        var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
+            element,
+            ModelBase.SerializerOptions
+        );
+
+        Assert.Equal(value, deserialized);
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerSerializationRoundtripWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -3275,6 +3435,65 @@ public class ErrorDetailsTest : TestBase
     }
 
     [Fact]
+    public void BetaCmekNotApprovedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaCmekNotApprovedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.CmekNotApproved, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaExternalKeyNotFoundErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyNotFoundErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalKeyNotFound, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaExternalKeyProviderMismatchErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaExternalKeyProviderMismatchErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.ExternalKeyProviderMismatch, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaGcpProjectNotVerifiedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectNotVerifiedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.GcpProjectNotVerified, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaRegionNotSupportedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaRegionNotSupportedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.RegionNotSupported, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaStorageNotApprovedErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaStorageNotApprovedErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageNotApproved, value.ErrorCode.Value());
+    }
+
+    [Fact]
+    public void BetaGcpProjectControlledByAnotherOrganizationErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaGcpProjectControlledByAnotherOrganizationErrorDetails();
+        Assert.Equal(
+            ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization,
+            value.ErrorCode.Value()
+        );
+    }
+
+    [Fact]
+    public void BetaStorageInUseErrorCodeWorks()
+    {
+        ErrorDetails value = new BetaStorageInUseErrorDetails();
+        Assert.Equal(ErrorDetailsErrorCode.StorageInUse, value.ErrorCode.Value());
+    }
+
+    [Fact]
     public void BetaCannotSignOutPrimaryOwnerErrorCodeWorks()
     {
         ErrorDetails value = new BetaCannotSignOutPrimaryOwnerErrorDetails();
@@ -3749,6 +3968,14 @@ public class ErrorDetailsErrorCodeTest : TestBase
     [InlineData(ErrorDetailsErrorCode.ExternalStorageInUse)]
     [InlineData(ErrorDetailsErrorCode.ExternalStorageInWorkspacePolicy)]
     [InlineData(ErrorDetailsErrorCode.StorageVerificationFailed)]
+    [InlineData(ErrorDetailsErrorCode.CmekNotApproved)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyNotFound)]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyProviderMismatch)]
+    [InlineData(ErrorDetailsErrorCode.GcpProjectNotVerified)]
+    [InlineData(ErrorDetailsErrorCode.RegionNotSupported)]
+    [InlineData(ErrorDetailsErrorCode.StorageNotApproved)]
+    [InlineData(ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization)]
+    [InlineData(ErrorDetailsErrorCode.StorageInUse)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutPrimaryOwner)]
     [InlineData(ErrorDetailsErrorCode.CannotSignOutSelf)]
     [InlineData(ErrorDetailsErrorCode.OrganizationNotEnrolledInBeta)]
@@ -4042,6 +4269,22 @@ public class ErrorDetailsErrorCodeTest : TestBase
         2088159786,
         "storage_verification_failed"
     )]
+    [InlineData(ErrorDetailsErrorCode.CmekNotApproved, 1038548484, "cmek_not_approved")]
+    [InlineData(ErrorDetailsErrorCode.ExternalKeyNotFound, 1658390889, "external_key_not_found")]
+    [InlineData(
+        ErrorDetailsErrorCode.ExternalKeyProviderMismatch,
+        1506305217,
+        "external_key_provider_mismatch"
+    )]
+    [InlineData(ErrorDetailsErrorCode.GcpProjectNotVerified, 320507479, "gcp_project_not_verified")]
+    [InlineData(ErrorDetailsErrorCode.RegionNotSupported, 796967125, "region_not_supported")]
+    [InlineData(ErrorDetailsErrorCode.StorageNotApproved, 954219448, "storage_not_approved")]
+    [InlineData(
+        ErrorDetailsErrorCode.GcpProjectControlledByAnotherOrganization,
+        397868983,
+        "gcp_project_controlled_by_another_organization"
+    )]
+    [InlineData(ErrorDetailsErrorCode.StorageInUse, 1815481125, "storage_in_use")]
     [InlineData(
         ErrorDetailsErrorCode.CannotSignOutPrimaryOwner,
         68,
