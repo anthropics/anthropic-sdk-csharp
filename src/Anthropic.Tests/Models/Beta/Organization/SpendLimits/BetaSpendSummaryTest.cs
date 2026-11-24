@@ -390,7 +390,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     public void BetaSpendLimitWorkspaceValidationWorks()
     {
         BetaSpendSummaryScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         value.Validate();
     }
@@ -471,7 +471,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     public void BetaSpendLimitWorkspaceSerializationRoundtripWorks()
     {
         BetaSpendSummaryScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaSpendSummaryScope>(
@@ -534,7 +534,7 @@ public class BetaSpendSummaryScopeTest : TestBase
     public void BetaSpendLimitWorkspaceTypeWorks()
     {
         BetaSpendSummaryScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         Assert.Equal(BetaSpendSummaryScopeType.Workspace, value.Type.Value());
     }
@@ -686,7 +686,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceScopeValidationWorks()
     {
-        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         value.Validate();
     }
 
@@ -750,7 +750,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceScopeSerializationRoundtripWorks()
     {
-        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<Source>(element, ModelBase.SerializerOptions);
 
@@ -805,7 +805,7 @@ public class SourceTest : TestBase
     [Fact]
     public void BetaSpendLimitWorkspaceScopeTypeWorks()
     {
-        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ");
+        Source value = new BetaSpendLimitWorkspaceScope("wrkspc_01AbCdEfGhJkLmNpQrStUvWx");
         Assert.Equal(SourceType.Workspace, value.Type.Value());
     }
 

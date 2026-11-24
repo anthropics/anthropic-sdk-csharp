@@ -39,7 +39,7 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 
@@ -68,7 +68,7 @@ public class RuleCreateParamsTest : TestBase
         Dictionary<string, string> expectedAttributes = new() { { "foo", "string" } };
         string expectedDescription = "description";
         long expectedTokenLifetimeSeconds = 60;
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         List<ApiEnum<string, AnthropicBeta>> expectedBetas = [AnthropicBeta.ComputerUse2024_10_22];
 
         Assert.Equal(expectedIssuerID, parameters.IssuerID);
@@ -124,7 +124,7 @@ public class RuleCreateParamsTest : TestBase
             },
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         Assert.Null(parameters.AppliesToAllWorkspaces);
@@ -163,7 +163,7 @@ public class RuleCreateParamsTest : TestBase
             },
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
 
             // Null should be interpreted as omitted for these properties
             AppliesToAllWorkspaces = null,
@@ -209,7 +209,7 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         } with
         {
@@ -415,7 +415,7 @@ public class RuleCreateParamsTest : TestBase
             Attributes = new Dictionary<string, string>() { { "foo", "string" } },
             Description = "description",
             TokenLifetimeSeconds = 60,
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             Betas = [AnthropicBeta.ComputerUse2024_10_22],
         };
 

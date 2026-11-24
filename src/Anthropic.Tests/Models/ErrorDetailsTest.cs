@@ -463,7 +463,7 @@ public class ErrorDetailsTest : TestBase
     public void WorkspaceCreatedIncompleteValidationWorks()
     {
         ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         value.Validate();
     }
@@ -1804,7 +1804,7 @@ public class ErrorDetailsTest : TestBase
     public void WorkspaceCreatedIncompleteSerializationRoundtripWorks()
     {
         ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<ErrorDetails>(
@@ -3244,7 +3244,7 @@ public class ErrorDetailsTest : TestBase
     public void WorkspaceCreatedIncompleteErrorCodeWorks()
     {
         ErrorDetails value = new WorkspaceCreatedIncompleteErrorDetails(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         Assert.Equal(ErrorDetailsErrorCode.WorkspaceCreatedIncomplete, value.ErrorCode.Value());
     }

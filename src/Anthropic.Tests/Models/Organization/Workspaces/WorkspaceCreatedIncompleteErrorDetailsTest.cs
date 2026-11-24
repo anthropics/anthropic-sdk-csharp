@@ -11,13 +11,13 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
     {
         var model = new WorkspaceCreatedIncompleteErrorDetails
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
             "workspace_created_incomplete"
         );
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, model.ErrorCode));
         Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
@@ -28,7 +28,7 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
     {
         var model = new WorkspaceCreatedIncompleteErrorDetails
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -45,7 +45,7 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
     {
         var model = new WorkspaceCreatedIncompleteErrorDetails
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -58,7 +58,7 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
         JsonElement expectedErrorCode = JsonSerializer.SerializeToElement(
             "workspace_created_incomplete"
         );
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedErrorCode, deserialized.ErrorCode));
         Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
@@ -69,7 +69,7 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
     {
         var model = new WorkspaceCreatedIncompleteErrorDetails
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         model.Validate();
@@ -80,7 +80,7 @@ public class WorkspaceCreatedIncompleteErrorDetailsTest : TestBase
     {
         var model = new WorkspaceCreatedIncompleteErrorDetails
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         WorkspaceCreatedIncompleteErrorDetails copied = new(model);

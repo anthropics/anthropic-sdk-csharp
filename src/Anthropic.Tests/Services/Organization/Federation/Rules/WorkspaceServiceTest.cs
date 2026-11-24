@@ -21,7 +21,7 @@ public class WorkspaceServiceTest : TestBase
         var federationRuleWorkspace =
             await this.client.Organization.Federation.Rules.Workspaces.Add(
                 "federation_rule_id",
-                new() { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" },
+                new() { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" },
                 TestContext.Current.CancellationToken
             );
         federationRuleWorkspace.Validate();

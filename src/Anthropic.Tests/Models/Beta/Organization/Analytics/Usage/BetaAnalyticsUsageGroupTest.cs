@@ -21,7 +21,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -37,7 +37,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         BetaAnalyticsActor expectedActor = new BetaAnalyticsReportUserActor()
@@ -50,7 +50,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
             BetaAnalyticsActorType.UserActor;
         string expectedAgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f";
-        string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
+        string expectedApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz";
         ApiEnum<string, BetaAnalyticsClaudeTagCategory> expectedClaudeTagCategory =
             BetaAnalyticsClaudeTagCategory.Dm;
         string expectedClaudeTagUserID = "U0123ABCDEF";
@@ -70,7 +70,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         string expectedSlackChannelID = "C0123ABCDEF";
         ApiEnum<string, BetaAnalyticsSpeed> expectedSpeed = BetaAnalyticsSpeed.Fast;
         string expectedUserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.Equal(expectedActor, model.Actor);
         Assert.Equal(expectedActorType, model.ActorType);
@@ -108,7 +108,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -124,7 +124,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -150,7 +150,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -166,7 +166,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -186,7 +186,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         ApiEnum<string, BetaAnalyticsActorType> expectedActorType =
             BetaAnalyticsActorType.UserActor;
         string expectedAgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f";
-        string expectedApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT";
+        string expectedApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz";
         ApiEnum<string, BetaAnalyticsClaudeTagCategory> expectedClaudeTagCategory =
             BetaAnalyticsClaudeTagCategory.Dm;
         string expectedClaudeTagUserID = "U0123ABCDEF";
@@ -206,7 +206,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
         string expectedSlackChannelID = "C0123ABCDEF";
         ApiEnum<string, BetaAnalyticsSpeed> expectedSpeed = BetaAnalyticsSpeed.Fast;
         string expectedUserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.Equal(expectedActor, deserialized.Actor);
         Assert.Equal(expectedActorType, deserialized.ActorType);
@@ -244,7 +244,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -260,7 +260,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         model.Validate();
@@ -280,7 +280,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             },
             ActorType = BetaAnalyticsActorType.UserActor,
             AgentID = "agent_01VHd3EAGJ6PLkP9LM7DDu3f",
-            ApiKeyID = "apikey_01Rj2N8SVvo6BePZj99NhmiT",
+            ApiKeyID = "apikey_01BcDeFgHjKmNpQrStUvWxYz",
             ClaudeTagCategory = BetaAnalyticsClaudeTagCategory.Dm,
             ClaudeTagUserID = "U0123ABCDEF",
             ContextWindow = BetaAnalyticsContextWindow.From0To200k,
@@ -296,7 +296,7 @@ public class BetaAnalyticsUsageGroupTest : TestBase
             SlackChannelID = "C0123ABCDEF",
             Speed = BetaAnalyticsSpeed.Fast,
             UserProfileID = "uprof_01M33NeYUQK2WV9PpYcsPHLi",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         BetaAnalyticsUsageGroup copied = new(model);

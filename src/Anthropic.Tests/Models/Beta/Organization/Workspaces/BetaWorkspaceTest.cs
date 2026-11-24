@@ -13,7 +13,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -36,7 +36,7 @@ public class BetaWorkspaceTest : TestBase
             },
         };
 
-        string expectedID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z");
         string expectedCompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
@@ -88,7 +88,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -125,7 +125,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -155,7 +155,7 @@ public class BetaWorkspaceTest : TestBase
         );
         Assert.NotNull(deserialized);
 
-        string expectedID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         DateTimeOffset expectedArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z");
         string expectedCompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c";
         DateTimeOffset expectedCreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z");
@@ -207,7 +207,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -238,7 +238,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -264,7 +264,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -289,7 +289,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -318,7 +318,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -354,7 +354,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),
@@ -382,7 +382,7 @@ public class BetaWorkspaceTest : TestBase
     {
         var model = new Workspaces::BetaWorkspace
         {
-            ID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            ID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             ArchivedAt = DateTimeOffset.Parse("2024-11-01T23:59:27.427722Z"),
             CompartmentID = "f8a7b6c5-4d3e-4f1a-8b9c-0d1e2f3a4b5c",
             CreatedAt = DateTimeOffset.Parse("2024-10-30T23:58:27.427722Z"),

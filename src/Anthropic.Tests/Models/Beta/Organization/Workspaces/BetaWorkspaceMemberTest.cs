@@ -12,13 +12,13 @@ public class BetaWorkspaceMemberTest : TestBase
         var model = new BetaWorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin,
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         ApiEnum<string, BetaWorkspaceRole> expectedWorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -33,7 +33,7 @@ public class BetaWorkspaceMemberTest : TestBase
         var model = new BetaWorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -52,7 +52,7 @@ public class BetaWorkspaceMemberTest : TestBase
         var model = new BetaWorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -65,7 +65,7 @@ public class BetaWorkspaceMemberTest : TestBase
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         ApiEnum<string, BetaWorkspaceRole> expectedWorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -80,7 +80,7 @@ public class BetaWorkspaceMemberTest : TestBase
         var model = new BetaWorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin,
         };
 
@@ -93,7 +93,7 @@ public class BetaWorkspaceMemberTest : TestBase
         var model = new BetaWorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = BetaWorkspaceRole.WorkspaceAdmin,
         };
 

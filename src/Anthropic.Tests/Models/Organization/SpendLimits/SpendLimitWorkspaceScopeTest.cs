@@ -11,11 +11,11 @@ public class SpendLimitWorkspaceScopeTest : TestBase
     {
         var model = new SpendLimitWorkspaceScope
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
         Assert.Equal(expectedWorkspaceID, model.WorkspaceID);
@@ -26,7 +26,7 @@ public class SpendLimitWorkspaceScopeTest : TestBase
     {
         var model = new SpendLimitWorkspaceScope
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string json = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -43,7 +43,7 @@ public class SpendLimitWorkspaceScopeTest : TestBase
     {
         var model = new SpendLimitWorkspaceScope
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         string element = JsonSerializer.Serialize(model, ModelBase.SerializerOptions);
@@ -54,7 +54,7 @@ public class SpendLimitWorkspaceScopeTest : TestBase
         Assert.NotNull(deserialized);
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace");
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
         Assert.Equal(expectedWorkspaceID, deserialized.WorkspaceID);
@@ -65,7 +65,7 @@ public class SpendLimitWorkspaceScopeTest : TestBase
     {
         var model = new SpendLimitWorkspaceScope
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         model.Validate();
@@ -76,7 +76,7 @@ public class SpendLimitWorkspaceScopeTest : TestBase
     {
         var model = new SpendLimitWorkspaceScope
         {
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
         };
 
         SpendLimitWorkspaceScope copied = new(model);

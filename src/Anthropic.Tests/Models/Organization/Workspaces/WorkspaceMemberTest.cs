@@ -12,13 +12,13 @@ public class WorkspaceMemberTest : TestBase
         var model = new WorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         ApiEnum<string, WorkspaceRole> expectedWorkspaceRole = WorkspaceRole.WorkspaceAdmin;
 
         Assert.True(JsonElement.DeepEquals(expectedType, model.Type));
@@ -33,7 +33,7 @@ public class WorkspaceMemberTest : TestBase
         var model = new WorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 
@@ -52,7 +52,7 @@ public class WorkspaceMemberTest : TestBase
         var model = new WorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 
@@ -65,7 +65,7 @@ public class WorkspaceMemberTest : TestBase
 
         JsonElement expectedType = JsonSerializer.SerializeToElement("workspace_member");
         string expectedUserID = "user_01WxYzAbCdEfGhJkMnPqRsTu";
-        string expectedWorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ";
+        string expectedWorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx";
         ApiEnum<string, WorkspaceRole> expectedWorkspaceRole = WorkspaceRole.WorkspaceAdmin;
 
         Assert.True(JsonElement.DeepEquals(expectedType, deserialized.Type));
@@ -80,7 +80,7 @@ public class WorkspaceMemberTest : TestBase
         var model = new WorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 
@@ -93,7 +93,7 @@ public class WorkspaceMemberTest : TestBase
         var model = new WorkspaceMember
         {
             UserID = "user_01WxYzAbCdEfGhJkMnPqRsTu",
-            WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ",
+            WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx",
             WorkspaceRole = WorkspaceRole.WorkspaceAdmin,
         };
 

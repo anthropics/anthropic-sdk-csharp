@@ -195,7 +195,7 @@ public class BetaSpendLimitScopeTest : TestBase
     public void BetaSpendLimitWorkspaceValidationWorks()
     {
         BetaSpendLimitScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         value.Validate();
     }
@@ -276,7 +276,7 @@ public class BetaSpendLimitScopeTest : TestBase
     public void BetaSpendLimitWorkspaceSerializationRoundtripWorks()
     {
         BetaSpendLimitScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaSpendLimitScope>(
@@ -339,7 +339,7 @@ public class BetaSpendLimitScopeTest : TestBase
     public void BetaSpendLimitWorkspaceTypeWorks()
     {
         BetaSpendLimitScope value = new BetaSpendLimitWorkspaceScope(
-            "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ"
+            "wrkspc_01AbCdEfGhJkLmNpQrStUvWx"
         );
         Assert.Equal(BetaSpendLimitScopeType.Workspace, value.Type.Value());
     }

@@ -24,7 +24,7 @@ public class WorkspaceServiceTest : TestBase
             .client.WithQuery("beta=true")
             .Beta.Organization.Federation.Rules.Workspaces.Add(
                 "federation_rule_id",
-                new() { WorkspaceID = "wrkspc_01JwQvzr7rXLA5AGx3HKfFUJ" },
+                new() { WorkspaceID = "wrkspc_01AbCdEfGhJkLmNpQrStUvWx" },
                 TestContext.Current.CancellationToken
             );
         betaFederationRuleWorkspace.Validate();

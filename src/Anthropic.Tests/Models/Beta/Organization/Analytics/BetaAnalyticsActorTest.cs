@@ -47,7 +47,7 @@ public class BetaAnalyticsActorTest : TestBase
     [Fact]
     public void ApiValidationWorks()
     {
-        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01Rj2N8SVvo6BePZj99NhmiT");
+        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01BcDeFgHjKmNpQrStUvWxYz");
         value.Validate();
     }
 
@@ -109,7 +109,7 @@ public class BetaAnalyticsActorTest : TestBase
     [Fact]
     public void ApiSerializationRoundtripWorks()
     {
-        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01Rj2N8SVvo6BePZj99NhmiT");
+        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01BcDeFgHjKmNpQrStUvWxYz");
         string element = JsonSerializer.Serialize(value, ModelBase.SerializerOptions);
         var deserialized = JsonSerializer.Deserialize<BetaAnalyticsActor>(
             element,
@@ -159,7 +159,7 @@ public class BetaAnalyticsActorTest : TestBase
     [Fact]
     public void ApiTypeWorks()
     {
-        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01Rj2N8SVvo6BePZj99NhmiT");
+        BetaAnalyticsActor value = new BetaAnalyticsApiActor("apikey_01BcDeFgHjKmNpQrStUvWxYz");
         Assert.Equal(BetaAnalyticsActorTypeValue.ApiActor, value.Type.Value());
     }
 
