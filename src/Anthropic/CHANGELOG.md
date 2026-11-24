@@ -1,5 +1,18 @@
 # Changelog
 
+## [13.14.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.13.0...Anthropic-v13.14.0) (2026-11-24)
+
+### Features
+
+* **api:** add Google-managed data controls for Google Cloud projects
+* **api:** add Google-managed data controls for user profiles
+* **api:** add support for compliance review cases, notices, and items
+
+
+### Chores
+
+* **docs:** name both causes of the tool use limit error
+
 ## [13.13.0](https://github.com/anthropics/anthropic-sdk-csharp/compare/Anthropic-v13.12.0...Anthropic-v13.13.0) (2026-11-23)
 
 ### Features
