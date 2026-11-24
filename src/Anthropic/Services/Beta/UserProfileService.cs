@@ -40,12 +40,19 @@ public sealed class UserProfileService : IUserProfileService
 
         _withRawResponse = new(() => new UserProfileServiceWithRawResponse(client.WithRawResponse));
         _actionUrls = new(() => new ActionUrlService(client));
+        _providers = new(() => new ProviderService(client));
     }
 
     readonly Lazy<IActionUrlService> _actionUrls;
     public IActionUrlService ActionUrls
     {
         get { return _actionUrls.Value; }
+    }
+
+    readonly Lazy<IProviderService> _providers;
+    public IProviderService Providers
+    {
+        get { return _providers.Value; }
     }
 
     /// <inheritdoc/>
@@ -193,12 +200,19 @@ public sealed class UserProfileServiceWithRawResponse : IUserProfileServiceWithR
         _client = client;
 
         _actionUrls = new(() => new ActionUrlServiceWithRawResponse(client));
+        _providers = new(() => new ProviderServiceWithRawResponse(client));
     }
 
     readonly Lazy<IActionUrlServiceWithRawResponse> _actionUrls;
     public IActionUrlServiceWithRawResponse ActionUrls
     {
         get { return _actionUrls.Value; }
+    }
+
+    readonly Lazy<IProviderServiceWithRawResponse> _providers;
+    public IProviderServiceWithRawResponse Providers
+    {
+        get { return _providers.Value; }
     }
 
     /// <inheritdoc/>

@@ -45,6 +45,7 @@ using BetaSkills = Anthropic.Models.Beta.Skills;
 using ComplianceSettings = Anthropic.Models.Beta.Organization.ComplianceSettings;
 using CostReport = Anthropic.Models.Beta.Organization.Analytics.CostReport;
 using Credentials = Anthropic.Models.Beta.Vaults.Credentials;
+using DataControls = Anthropic.Models.Beta.UserProfiles.Providers.Google.DataControls;
 using DeploymentRuns = Anthropic.Models.Beta.DeploymentRuns;
 using Deployments = Anthropic.Models.Beta.Deployments;
 using Dreams = Anthropic.Models.Beta.Dreams;
@@ -801,6 +802,14 @@ public abstract record class ModelBase
             new ApiEnumConverter<string, UserProfiles::Order>(),
             new ApiEnumConverter<string, UserProfiles::OrderBy>(),
             new ApiEnumConverter<string, BetaUserProfileActionType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekControlType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekControlParamsType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedCmekRegionStatusType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageControlType>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageControlParamsType>(),
+            new ApiEnumConverter<string, DataControls::Check>(),
+            new ApiEnumConverter<string, DataControls::Role>(),
+            new ApiEnumConverter<string, DataControls::BetaGoogleManagedStorageRegionStatusType>(),
             new ApiEnumConverter<string, Dreams::BetaDreamInputType>(),
             new ApiEnumConverter<string, Dreams::Speed>(),
             new ApiEnumConverter<string, Dreams::BetaDreamModelConfigParamSpeed>(),

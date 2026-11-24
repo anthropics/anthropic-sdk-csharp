@@ -32,6 +32,8 @@ public interface IUserProfileService
 
     IActionUrlService ActionUrls { get; }
 
+    IProviderService Providers { get; }
+
     /// <summary>
     /// Register one of your end customers and get the ID to send on the requests you
     /// make for them.
@@ -151,6 +153,8 @@ public interface IUserProfileServiceWithRawResponse
     IUserProfileServiceWithRawResponse WithOptions(Func<ClientOptions, ClientOptions> modifier);
 
     IActionUrlServiceWithRawResponse ActionUrls { get; }
+
+    IProviderServiceWithRawResponse Providers { get; }
 
     /// <summary>
     /// Returns a raw HTTP response for <c>post /v1/user_profiles</c>, but is otherwise the
