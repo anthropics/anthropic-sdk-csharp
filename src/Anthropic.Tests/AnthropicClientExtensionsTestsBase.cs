@@ -1749,6 +1749,162 @@ public abstract class AnthropicClientExtensionsTestsBase
         Assert.Equal(25L, response.Usage.CachedInputTokenCount);
     }
 
+    [Theory]
+    [InlineData("""{"web_fetch_requests":2,"web_search_requests":3}""", 2L, 3L)]
+    // Amazon Bedrock omits web_fetch_requests (and Bedrock Mantle sometimes both counters).
+    [InlineData("""{"web_search_requests":3}""", null, 3L)]
+    [InlineData("""{}""", null, null)]
+    public async Task GetResponseAsync_WithServerToolUsage_ReportsPresentCounters(
+        string serverToolUse,
+        long? expectedWebFetchRequests,
+        long? expectedWebSearchRequests
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "max_tokens": 1024
+            }
+            """,
+            actualResponse: $$"""
+            {
+                "id": "msg_01",
+                "type": "message",
+                "role": "assistant",
+                "model": "claude-haiku-4-5",
+                "content": [{
+                    "type": "text",
+                    "text": "Response"
+                }],
+                "stop_reason": "end_turn",
+                "usage": {
+                    "input_tokens": 100,
+                    "output_tokens": 10,
+                    "server_tool_use": {{serverToolUse}}
+                }
+            }
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        ChatResponse response = await chatClient.GetResponseAsync(
+            "hello",
+            new(),
+            TestContext.Current.CancellationToken
+        );
+
+        Assert.NotNull(response.Usage);
+        Assert.Equal(110, response.Usage.TotalTokenCount);
+        AssertServerToolCounts(response.Usage, expectedWebFetchRequests, expectedWebSearchRequests);
+    }
+
+    [Theory]
+    [InlineData("""{"web_fetch_requests":2,"web_search_requests":3}""", 2L, 3L)]
+    [InlineData("""{"web_search_requests":3}""", null, 3L)]
+    [InlineData("""{}""", null, null)]
+    public async Task GetStreamingResponseAsync_WithServerToolUsage_ReportsPresentCounters(
+        string serverToolUse,
+        long? expectedWebFetchRequests,
+        long? expectedWebSearchRequests
+    )
+    {
+        VerbatimHttpHandler handler = new(
+            expectedRequest: """
+            {
+                "max_tokens": 1024,
+                "model": "claude-haiku-4-5",
+                "messages": [{
+                    "role": "user",
+                    "content": [{
+                        "type": "text",
+                        "text": "hello"
+                    }]
+                }],
+                "stream": true
+            }
+            """,
+            actualResponse: $$$$"""
+            event: message_start
+            data: {"type":"message_start","message":{"id":"msg_01","type":"message","role":"assistant","model":"claude-haiku-4-5","content":[],"stop_reason":null,"stop_sequence":null,"usage":{"input_tokens":8,"output_tokens":0}}}
+
+            event: content_block_start
+            data: {"type":"content_block_start","index":0,"content_block":{"type":"text","text":""}}
+
+            event: content_block_delta
+            data: {"type":"content_block_delta","index":0,"delta":{"type":"text_delta","text":"Hello!"}}
+
+            event: content_block_stop
+            data: {"type":"content_block_stop","index":0}
+
+            event: message_delta
+            data: {"type":"message_delta","delta":{"stop_reason":"end_turn","stop_sequence":null},"usage":{"output_tokens":12,"server_tool_use":{{{{serverToolUse}}}}}}
+
+            event: message_stop
+            data: {"type":"message_stop"}
+
+            """
+        );
+
+        IChatClient chatClient = CreateChatClient(handler, "claude-haiku-4-5");
+
+        List<ChatResponseUpdate> updates = [];
+        await foreach (
+            var update in chatClient.GetStreamingResponseAsync(
+                "hello",
+                new(),
+                TestContext.Current.CancellationToken
+            )
+        )
+        {
+            updates.Add(update);
+        }
+
+        var usageContent = updates
+            .SelectMany(u => u.Contents.OfType<UsageContent>())
+            .LastOrDefault();
+        Assert.NotNull(usageContent);
+        Assert.Equal(20, usageContent.Details.TotalTokenCount);
+        AssertServerToolCounts(
+            usageContent.Details,
+            expectedWebFetchRequests,
+            expectedWebSearchRequests
+        );
+    }
+
+    private static void AssertServerToolCounts(
+        UsageDetails usage,
+        long? expectedWebFetchRequests,
+        long? expectedWebSearchRequests
+    )
+    {
+        long? webFetchRequests = usage.AdditionalCounts?.TryGetValue(
+            "WebFetchRequests",
+            out long fetch
+        )
+            is true
+            ? fetch
+            : null;
+        long? webSearchRequests = usage.AdditionalCounts?.TryGetValue(
+            "WebSearchRequests",
+            out long search
+        )
+            is true
+            ? search
+            : null;
+
+        Assert.Equal(expectedWebFetchRequests, webFetchRequests);
+        Assert.Equal(expectedWebSearchRequests, webSearchRequests);
+    }
+
     [Fact]
     public async Task GetResponseAsync_WithThinkingTokens_ReportsReasoningTokenCount()
     {
